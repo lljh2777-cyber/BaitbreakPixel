@@ -1,5 +1,6 @@
 extends Node2D
 
+const Effort = preload("res://scripts/effort_check.gd")
 const Rope = preload("res://scripts/rope.gd")
 const Layout = preload("res://scripts/pond_layout.gd")
 const AnglerController = preload("res://scripts/angler_rig.gd")
@@ -55,7 +56,7 @@ var reel_speed := 0.0
 var practice_line_sensitivity := 1.0
 var practice_line_force := 1.0
 var slack_hold_seconds := 0.5
-var mouth_window_seconds := 0.4
+var mouth_window_seconds := 0.24
 var break_hold_seconds := 3.0
 var qte_width := 0.2
 var qte_result_width := 0.2
@@ -146,6 +147,7 @@ var match_paused := false
 var simulation_tick := 0
 var qte_id := 0
 var qte_grace_seconds := 0.0
+var effort_checks := {"fish":Effort.fresh(),"angler":Effort.fresh()}
 
 func _init() -> void:
 	targets=Layout.interaction_targets()
@@ -153,6 +155,60 @@ func _init() -> void:
 func uses_mobile_tackle() -> bool: return ruleset=="duel"
 
 func play_feedback(cue: String) -> void: feedback_requested.emit(cue)
+
+func effort_multiplier(role: String) -> float:
+	return float(effort_checks[role].multiplier) if hooked==HookState.HOOKED and not landing and net_state!="caught" and effort_checks[role].effect_age>0 else 1.0
+
+func _cancel_effort(role: String) -> void:
+	var state: Dictionary=effort_checks[role]
+	if state.active:
+		state.active=false
+		state.wait=maxf(state.wait,3.0)
+		state.result_age=0.0
+
+func _tick_efforts(delta: float, fish_input: Dictionary, angler_input: Dictionary) -> void:
+	if hooked!=HookState.HOOKED or landing or net_state=="caught":
+		for role in effort_checks: Effort.reset(effort_checks[role])
+		return
+	var target := line_anchor(bound_bait) if wraps.is_empty() else Vector2(wraps[-1].entry)
+	var opposing: float=-Vector2(fish_input.move).dot((target-mouth()).normalized())
+	var attempts := {"fish":opposing>0.25 and stamina>0,"angler":angler.spool<0 or (angler.auto_reel and reel_speed< -0.5)}
+	for role in ["fish","angler"]:
+		var state: Dictionary=effort_checks[role]
+		state.effect_age=maxf(0,state.effect_age-delta)
+		state.result_age=maxf(0,state.result_age-delta)
+		if state.effect_age<=0: state.multiplier=1.0
+		if role=="fish" and not qte.is_empty(): _cancel_effort(role); continue
+		var command: Dictionary=fish_input if role=="fish" else angler_input
+		if state.active:
+			state.age+=delta
+			var pressed: bool=command.qte
+			command.qte=false # One Space judges one check; never also starts wrapping.
+			if pressed or state.age>=Effort.LEAD+Effort.SWEEP+qte_grace_seconds:
+				var good := Effort.finish(state,pressed,command.get("qte_at_age",-1.0),rng)
+				play_feedback(("effort_good_" if good else "effort_bad_")+role)
+		elif state.effect_age<=0 and state.result_age<=0 and attempts[role] and not command.qte:
+			state.wait=maxf(0,state.wait-delta)
+			if state.wait<=0:
+				Effort.open(state,rng)
+				play_feedback("qte_"+role)
+
+func effort_ai_press(role: String) -> bool:
+	var state: Dictionary=effort_checks[role]
+	if not state.active: return false
+	var skilled: bool=posmod(state.id*37+int(rng.seed)%100+(19 if role=="angler" else 0),100)<72
+	var threshold: float=state.zone+state.width*0.5 if skilled else maxf(0.01,state.zone-0.06)
+	return Effort.progress(state)>=threshold
+
+func skill_check(role: String) -> Dictionary:
+	var state: Dictionary=effort_checks[role]
+	if role=="fish" and (not qte.is_empty() or (qte_result_age>0 and not state.active)):
+		return {"active":not qte.is_empty(),"id":qte_id,"kind":qte if not qte.is_empty() else qte_result_kind,
+			"age":qte_age,"zone":qte_zone if not qte.is_empty() else qte_result_zone,"width":qte_width if not qte.is_empty() else qte_result_width,
+			"progress":qte_progress() if not qte.is_empty() else qte_result_progress,"result_age":qte_result_age,"good":qte_result_good,"result":qte_result,"origin":qte_origin}
+	return {"active":state.active,"id":state.id,"kind":"effort","age":state.age,"zone":state.zone,"width":state.width,
+		"progress":Effort.progress(state) if state.active else state.progress,"result_age":state.result_age,"good":state.good,
+		"result":"发力成功" if state.good else "短暂脱力","origin":Vector2(452,83) if fish.x<320 else Vector2(12,83)}
 
 func advance_tick(fish_command: Dictionary, angler_command: Dictionary) -> void:
 	simulate(TICK_SECONDS,fish_command,angler_command)
@@ -162,9 +218,12 @@ func simulate(delta: float, fish_command: Dictionary, angler_command: Dictionary
 	var fish_input := Commands.fish(fish_command,aim,power)
 	var angler_input := Commands.angler(angler_command,angler.cursor)
 	angler.update(self,delta,angler_input)
+	_tick_efforts(delta,fish_input,angler_input)
 	power=fish_input.power
 	if not movement_locked() and fish_input.aim.length()>0.01: aim=fish_input.aim.normalized()
 	_simulate_fish(delta,fish_input.move,fish_input.suck,fish_input.home,fish_input.dash,fish_input.slow,fish_input.qte,fish_input.qte_at_age)
+	if net_state=="caught" or match_over:
+		for role in effort_checks: Effort.reset(effort_checks[role])
 
 func capture_snapshot() -> Dictionary: return Snapshot.capture(self)
 
@@ -172,7 +231,7 @@ func restore_snapshot(snapshot: Dictionary) -> bool: return Snapshot.restore(sel
 
 func set_escape_timing(slack: float, window: float, breaking: float) -> void:
 	slack_hold_seconds=clampf(slack,0.1,3.0) if is_finite(slack) else 0.5
-	mouth_window_seconds=clampf(window,0.12,1.0) if is_finite(window) else 0.4
+	mouth_window_seconds=clampf(window,0.12,1.0) if is_finite(window) else 0.24
 	break_hold_seconds=clampf(breaking,0.5,10.0) if is_finite(breaking) else 3.0
 
 func set_practice_line_tuning(sensitivity: float, force: float) -> void:
@@ -191,11 +250,12 @@ func reset_world(config: Dictionary = {}) -> void:
 	angler.auto_net=not uses_mobile_tackle()
 	simulation_tick=0
 	qte_id=0
+	effort_checks={"fish":Effort.fresh(),"angler":Effort.fresh()}
 	qte_grace_seconds=clampf(Commands.number(config.get("qte_grace"),0),0,0.25)
 	match_over=false
 	winner_role=""
 	match_paused=false
-	set_escape_timing(Commands.number(config.get("slack_hold"),0.5),Commands.number(config.get("mouth_window"),0.4),Commands.number(config.get("break_hold"),3.0))
+	set_escape_timing(Commands.number(config.get("slack_hold"),0.5),Commands.number(config.get("mouth_window"),0.24),Commands.number(config.get("break_hold"),3.0))
 	set_practice_line_tuning(Commands.number(config.get("line_sensitivity"),1.0),Commands.number(config.get("line_force"),1.0))
 	water_strength=maxf(0,Commands.number(config.get("water_strength"),1.0))
 	net_aim=Vector2.ZERO
@@ -418,16 +478,18 @@ func line_pull_velocity() -> Vector2:
 	var target := line_anchor(bound_bait) if wraps.is_empty() else Vector2(wraps[-1].entry)
 	var load := clampf((tension-0.12)/0.88,0,1)
 	# A taut line transmits a real force toward its last contact; slack does not push the fish.
-	return (target-mouth()).normalized()*65*load*sqrt(line_tuning().y)*(1.0 if wraps.is_empty() else 0.5)
+	return (target-mouth()).normalized()*65*load*sqrt(line_tuning().y)*effort_multiplier("angler")/effort_multiplier("fish")*(1.0 if wraps.is_empty() else 0.5)
 
 func _open_qte(kind: String) -> void:
 	qte_id+=1
 	qte = kind
 	qte_age = 0
-	qte_width=0.2 if kind=="wrap" else mouth_window_seconds/2.0
-	qte_zone=clampf(rng.randf_range(0.67,0.75)-qte_width*0.5,0.1,0.98-qte_width)
+	qte_width=0.12 if kind=="wrap" else mouth_window_seconds/2.0
+	qte_zone=rng.randf_range(0.10,0.90-qte_width)
 	qte_origin = Vector2(452,83) if fish.x<320 else Vector2(12,83)
 	qte_result_age = 0
+	_cancel_effort("fish")
+	play_feedback("qte_fish")
 
 func _finish_qte_visual(good: bool, message: String = "") -> void:
 	if qte.is_empty(): return
@@ -445,7 +507,6 @@ func _begin_wrap() -> bool:
 	wrap_target = contact_target
 	_open_qte("wrap")
 	low_age = 0
-	play_feedback("warn")
 	return true
 
 func _fail_wrap() -> void:
@@ -538,7 +599,7 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 			if stamina<=0 and sprinting: sprint_exhausted = true
 		var speed := SPRINT_SPEED if sprinting else (26.0 if slow else 70.0)
 		if hooked==HookState.HOOKED:
-			speed *= lerpf(0.4,1.0,clampf(stamina/20,0,1))
+			speed *= lerpf(0.4,1.0,clampf(stamina/20,0,1))*effort_multiplier("fish")
 			if feeding: speed *= 0.68
 		velocity = velocity.move_toward(movement.limit_length(1)*speed,delta*(650 if sprinting else 330))
 		move_fish((velocity*vegetation_drag(fish)+water_velocity(fish)+pull)*delta)
@@ -625,9 +686,9 @@ func _enter_hook(index: int) -> void:
 	_open_qte("entry")
 	hook_count += 1
 	returning = false
-	play_feedback("warn")
 
 func _attach_hook() -> void:
+	for role in effort_checks: Effort.reset(effort_checks[role],rng.randf_range(1.2,2.8))
 	hooked = HookState.HOOKED
 	qte = ""
 	tension = 0.5
@@ -685,9 +746,11 @@ func _step_line(delta: float, qte_pressed: bool, judged_age: float = -1) -> void
 	var raw_tension := base+(length_now-available)/LINE_ELASTIC_PIXELS
 	var tuning := line_tuning()
 	# Reeling is the objective. Tension feedback only tempers it or pays out under heavy load.
+	var force_gain := effort_multiplier("angler")/effort_multiplier("fish")
 	var desired_speed := angler.spool_target(raw_tension,tuning,not angler.auto_reel)
+	if desired_speed<0: desired_speed*=force_gain
 	if tuning.y<=0: reel_speed=0
-	elif not angler.auto_reel: reel_speed=angler.manual_spool_speed(reel_speed,delta*tuning.x*maxf(1,tuning.y))
+	elif not angler.auto_reel: reel_speed=angler.manual_spool_speed(reel_speed,delta*tuning.x*maxf(1,tuning.y),force_gain)
 	else: reel_speed=move_toward(reel_speed,desired_speed,delta*60*tuning.x*maxf(1,tuning.y))
 	available = clampf(available+reel_speed*delta*(0.22 if latched else 1.0),0,MAX_LINE_LENGTH)
 	if latched: fish_line_length = available
@@ -701,6 +764,7 @@ func _step_line(delta: float, qte_pressed: bool, judged_age: float = -1) -> void
 		landing_age += delta
 		if landing_age >= 0.65:
 			landing = true
+			for role in effort_checks: Effort.reset(effort_checks[role])
 			landing_from = fish
 			landing_age = 0
 			line_catches += 1
@@ -748,6 +812,7 @@ func _step_landing(delta: float) -> void:
 		notice_age = 4
 
 func _clear_hook() -> void:
+	for role in effort_checks: Effort.reset(effort_checks[role])
 	hooked = HookState.FREE
 	bound_bait = -1
 	qte = ""
@@ -1194,6 +1259,7 @@ func can_home() -> bool:
 
 func finish(success: bool, why: String) -> void:
 	if match_over: return
+	for role in effort_checks: Effort.reset(effort_checks[role])
 	match_over=true
 	winner_role="fish" if success else "angler"
 	reason=why

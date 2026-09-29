@@ -121,7 +121,7 @@ func _title(frame: Control) -> void:
 	button(frame,"设置",274,func(): open("settings"),false,124)
 	var quit := button(frame,"退出",274,func(): get_tree().quit(),false,124)
 	quit.position.x = 150
-	text(content,"0.12.2 · 像素池塘",Vector2(391,280),10,Color("91afa7"))
+	text(content,"0.13 · 像素池塘",Vector2(391,280),10,Color("91afa7"))
 	text(content,"小鱼 · 吃饵脱身",Vector2(391,119),18,GOLD)
 	text(content,"人类 · 收线抄网",Vector2(391,159),18,GOLD)
 	text(content,"独自练习 · 双人对战",Vector2(375,199),16,GOLD)
@@ -151,7 +151,7 @@ func _help(frame: Control) -> void:
 		"左键吸食 · 滚轮调吸力 · Q 慢游",
 		"按住右键加速耗体力 · 吃饵补体力",
 		"所有 QTE：浮漂到绿色判定区按空格",
-		"上钩会被拉向水面 · 吸食时游速降低",
+		"上钩抗拉会触发发力：成功加力，失败脱力",
 		"接触草木石按空格，边游抗拉、绿区再按",
 		"缠线后松线按空格脱钩 · 持续拉紧可断线",
 		"抄网：红区锁定后躲开 · 木石能挡住网口",
@@ -165,7 +165,7 @@ func _help(frame: Control) -> void:
 			"W 收线 · S 放线，未咬钩时也能调整深度",
 			"W 收至岸边取回钓组 · 松开 W/S 保持线长",
 			"持续过紧会断线 · 过松会给鱼脱钩机会",
-			"鱼会借草木石缠线；移动钓位改变拉力方向",
+			"收线发力先听音 · 空格判定，加力或脱力",
 			"按住 E + 左键画路线，网口依次跟随",
 			"松开 E 或左键会放弃并撤网 · 木石挡网",
 			"6 分钟内提鱼出水获胜；F3 调节逃脱时间",
@@ -226,7 +226,7 @@ func _timing(frame: Control) -> void:
 			caption.text="%s  %.2f 秒" % [row[1],value]
 		)
 	text(frame,"松口窗口：入口吐钩和低张力脱钩的绿色成功区",Vector2(20,231),10,Color("91afa7"))
-	button(frame,"恢复默认",257,func(): sliders[0].value=0.5; sliders[1].value=0.4; sliders[2].value=3.0,false,100)
+	button(frame,"恢复默认",257,func(): sliders[0].value=0.5; sliders[1].value=0.24; sliders[2].value=3.0,false,100)
 	var back := button(frame,"保存并返回",257,func(): game.save_profile(); open(timing_previous),true,216)
 	back.position.x=130
 

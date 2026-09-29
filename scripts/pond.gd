@@ -94,7 +94,7 @@ func _ready() -> void:
 	else: _load_profile()
 	sound = Sound.new()
 	add_child(sound)
-	feedback_requested.connect(sound.play)
+	feedback_requested.connect(_play_local_feedback)
 	match_ended.connect(_present_result)
 	network=Network.new()
 	network.game=self
@@ -113,7 +113,7 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | side-view | 640x360 | v0.12.2 | reeling-fix")
+	print("PIXEL_READY | side-view | 640x360 | v0.13 | effort-qte")
 
 func _register_inputs() -> void:
 	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[], "use":[KEY_E], "slow":[KEY_Q], "qte":[KEY_SPACE]}
@@ -133,6 +133,12 @@ func _register_inputs() -> void:
 	cast_button.button_index=MOUSE_BUTTON_LEFT
 	InputMap.action_add_event("cast",cast_button)
 
+func _play_local_feedback(cue: String) -> void:
+	if cue.begins_with("qte_") or cue.begins_with("effort_"):
+		if not cue.ends_with("_"+player_role): return
+		sound.play("qte" if cue.begins_with("qte_") else ("success" if cue.begins_with("effort_good_") else "fail"))
+	else: sound.play(cue)
+
 func _load_profile() -> void:
 	var file := ConfigFile.new()
 	if file.load(save_path) == OK:
@@ -142,7 +148,9 @@ func _load_profile() -> void:
 		wins = maxi(0, int(file.get_value("record", "wins", 0)))
 		angler_wins=maxi(0,int(file.get_value("record","angler_wins",0)))
 		set_practice_line_tuning(float(file.get_value("practice", "line_sensitivity", 1.0)),float(file.get_value("practice", "line_force", 1.0)))
-		set_escape_timing(float(file.get_value("timing","slack_hold",0.5)),float(file.get_value("timing","mouth_window",0.4)),float(file.get_value("timing","break_hold",3.0)))
+		var window := float(file.get_value("timing","mouth_window",0.24))
+		if file.has_section_key("timing","mouth_window") and int(file.get_value("timing","qte_revision",0))<1: window*=0.6
+		set_escape_timing(float(file.get_value("timing","slack_hold",0.5)),window,float(file.get_value("timing","break_hold",3.0)))
 
 func save_profile() -> void:
 	var file := ConfigFile.new()
@@ -155,6 +163,7 @@ func save_profile() -> void:
 	file.set_value("practice", "line_force", offline_rules.get("practice_line_force",practice_line_force))
 	file.set_value("timing","slack_hold",offline_rules.get("slack_hold_seconds",slack_hold_seconds))
 	file.set_value("timing","mouth_window",offline_rules.get("mouth_window_seconds",mouth_window_seconds))
+	file.set_value("timing","qte_revision",1)
 	file.set_value("timing","break_hold",offline_rules.get("break_hold_seconds",break_hold_seconds))
 	save_error = file.save(save_path)
 
@@ -219,6 +228,7 @@ func hint() -> String:
 	if net_state=="caught": return "被抄网捞起……" if challenge else "被抄中了 · 正在送回巢边"
 	if hooked == HookState.MOUTH: return "暂时不能移动 · 浮漂进入绿区时按空格"
 	if hooked == HookState.HOOKED:
+		if qte.is_empty() and effort_checks.fish.active: return "继续游动抗拉 · 发力浮漂到绿区按空格"
 		if qte=="wrap": return "游动抗拉，保持接触 · 浮漂到绿区按空格"
 		if winding(): return "正在缠绕 · 可继续游动，靠近线圈制造松线"
 		if qte == "slack": return "保持松线，同时在绿区按空格"
@@ -242,6 +252,7 @@ func hint() -> String:
 
 func angler_hint() -> String:
 	if landing or net_state=="caught": return "鱼已被控制 · 正在提出水面"
+	if effort_checks.angler.active: return "保持 W 收线 · 发力浮漂到绿区按空格"
 	if manual_net and net_state in ["prepare","warning"]: return "抄网展开中 · 保持 E + 左键画路线，转弯会被保留"
 	if manual_net and net_state=="sweep": return "网口沿所画路线前进 · 保持 E + 左键；W/S 仍可收放线"
 	if angler.net_held and not net_blocks_hooks(): return "持网中 · 在水中按住左键拖动；松开 E 取消"

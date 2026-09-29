@@ -47,6 +47,7 @@ func angler_command(_world: Node2D, pointer: Vector2) -> Dictionary:
 	var result := {
 		"target":pointer,"walk":Input.get_axis("left","right"),
 		"deploy":Input.is_action_just_pressed("slow"),"reel":Input.is_action_pressed("up"),"release":Input.is_action_pressed("down"),
+		"qte":Input.is_action_just_pressed("qte"),
 		"net_hold":held and not needs_neutral,"drag":drag and not needs_neutral,
 		"net_events":net_events.duplicate(true)
 	}

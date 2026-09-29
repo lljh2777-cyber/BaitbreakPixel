@@ -498,6 +498,7 @@ func _hud(t: float) -> void:
 	if game.menu.visible: return
 	if game.player_role=="angler":
 		_angler_hud(t)
+		_skill_hud(t)
 		return
 	draw_rect(Rect2(0,0,640,35), INK)
 	label_at(Vector2(12,15), "像素池塘", 12, GOLD)
@@ -535,21 +536,35 @@ func _hud(t: float) -> void:
 		label_at(Vector2(254,100), spool+(" · 缠绕减力" if world.latched else " · 向水面牵引"), 9, Color("9cbbb4"))
 		if world.high_age > 0:
 			draw_rect(Rect2(246,108,148*minf(1,world.high_age/world.break_hold_seconds),3), RED)
-	if not world.qte.is_empty() or world.qte_result_age>0: _qte(t)
+	_skill_hud(t)
 
-func _qte(t: float) -> void:
-	var showing_result: bool = world.qte.is_empty()
-	var kind: String = world.qte_result_kind if showing_result else world.qte
-	var zone_start: float = world.qte_result_zone if showing_result else world.qte_zone
-	var progress: float = world.qte_result_progress if showing_result else world.qte_progress()
-	var zone_width: float=world.qte_result_width if showing_result else world.qte_width
+func _skill_hud(t: float) -> void:
+	var check: Dictionary=world.skill_check(game.player_role)
+	if check.active or check.result_age>0: _qte(t,check)
+	var state: Dictionary=world.effort_checks[game.player_role]
+	if state.effect_age>0 and not check.active and check.result_age<=0:
+		var color := MINT if state.multiplier>1 else RED
+		var p := Vector2(450,278)
+		panel(Rect2(p,Vector2(180,20)))
+		label_at(p+Vector2(8,14),("加力" if state.multiplier>1 else "脱力")+" · %.1f 秒" % state.effect_age,11,color)
+
+func _qte(t: float, check: Dictionary) -> void:
+	var showing_result: bool = not check.active
+	var kind: String = check.kind
+	var zone_start: float = check.zone
+	var progress: float = check.progress
+	var zone_width: float = check.width
+	if check.active and check.age<0.4:
+		panel(Rect2(check.origin,Vector2(176,34)),Color("103e57"))
+		label_at(check.origin+Vector2(12,22),"注意 · 即将判定",13,GOLD)
+		return
 	var success_zone: bool = progress>=zone_start and progress<=zone_start+zone_width
-	var effect: float = 1-world.qte_result_age/0.7
-	var intro: float = clampf(world.qte_age/0.3,0,1) if not showing_result else 1.0
-	var origin: Vector2 = world.qte_origin+Vector2(0,roundf(10*pow(1-intro,3)))
-	if showing_result and not world.qte_result_good: origin.x += roundf(sin(effect*42)*(1-effect)*3)
+	var effect: float = 1-check.result_age/0.7
+	var intro: float = clampf(check.age/0.3,0,1) if not showing_result else 1.0
+	var origin: Vector2 = check.origin+Vector2(0,roundf(10*pow(1-intro,3)))
+	if showing_result and not check.good: origin.x += roundf(sin(effect*42)*(1-effect)*3)
 	var accent := MINT if kind=="slack" else GOLD
-	if showing_result: accent = MINT if world.qte_result_good else RED
+	if showing_result: accent = MINT if check.good else RED
 	panel(Rect2(origin,Vector2(176,216)),Color("103e57"))
 	# Muted water ripples echo the reference without obscuring the metal and green zone.
 	for wave in range(15):
@@ -557,7 +572,7 @@ func _qte(t: float) -> void:
 		var points := PackedVector2Array()
 		for part in range(6): points.append((base+Vector2(part*3,sin(part*0.7+t*0.8+wave)*2)).round())
 		draw_polyline(points,Color(0.12,0.47,0.64,0.25),1)
-	var title := "吐钩判定" if kind=="entry" else ("缠线判定" if kind=="wrap" else "松线脱钩")
+	var title := ("收线发力" if game.player_role=="angler" else "抗拉发力") if kind=="effort" else "吐钩判定" if kind=="entry" else ("缠线判定" if kind=="wrap" else "松线脱钩")
 	label_at(origin+Vector2(14,23),title,14,accent)
 	var center := origin+Gauge.CENTER
 	draw_arc(center,69,0,TAU,48,Color(0.22,0.66,0.76,0.13),1)
@@ -576,12 +591,12 @@ func _qte(t: float) -> void:
 		draw_line((origin+Gauge.point(ratio,43)).round(),(origin+Gauge.point(ratio,55)).round(),Color("081724"),4)
 		draw_line((origin+Gauge.point(ratio,44)).round(),(origin+Gauge.point(ratio,54)).round(),CREAM,2)
 	var marker: Vector2 = (origin+Gauge.point(progress)).round()
-	if world.qte_age>=0.4 or showing_result:
+	if check.age>=0.4 or showing_result:
 		for trail in range(1,6):
 			var p: Vector2 = origin+Gauge.point(maxf(0,progress-trail*0.018))
 			draw_rect(Rect2(p.round(),Vector2(2,2)),Color(CREAM,(1-trail/6.0)*0.35))
 	else:
-		draw_arc(center,69,-PI/2,-PI/2+TAU*world.qte_age/0.4,40,Color(MINT,0.5),1)
+		draw_arc(center,69,-PI/2,-PI/2+TAU*check.age/0.4,40,Color(MINT,0.5),1)
 	draw_arc(marker+Vector2(0,3),10+sin(t*4),0,TAU,16,Color(MINT,0.25),1)
 	draw_texture(bobber_texture,marker-Vector2(8,8))
 	var key_center := center+Vector2(1,-1)
@@ -592,19 +607,19 @@ func _qte(t: float) -> void:
 	draw_rect(key_rect,green if success_zone else Color("547c85"),false,1)
 	label_at(key_rect.position+Vector2(8,16),"空格",12,CREAM)
 	if showing_result:
-		label_at(origin+Vector2(14,187),world.qte_result,14,accent)
-		label_at(origin+Vector2(14,204),"线圈保留 · 准备松线" if world.qte_result_good and kind=="wrap" else ("继续游动" if world.qte_result_good else "调整后可以再试"),10,CREAM)
-		if world.qte_result_good:
+		label_at(origin+Vector2(14,187),check.result,14,accent)
+		label_at(origin+Vector2(14,204),("力量提升 · 持续 2 秒" if check.good else "力量减弱 · 持续 1.5 秒") if kind=="effort" else "线圈保留 · 准备松线" if check.good and kind=="wrap" else ("继续游动" if check.good else "调整后可以再试"),10,CREAM)
+		if check.good:
 			draw_arc(center,57+effect*13,0,TAU,48,Color(accent,(1-effect)*0.6),1)
 			for spark in range(10):
 				var p := center+Vector2.from_angle(spark*TAU/10)*(57+effect*15)
 				draw_rect(Rect2(p.round(),Vector2(2,2)),Color(accent,1-effect))
 	else:
 		var instruction := "浮漂进入绿区时按空格"
-		if world.qte_age<0.4: instruction="准备…"
+		if check.age<0.4: instruction="准备…"
 		elif success_zone: instruction="现在按空格"
 		label_at(origin+Vector2(14,187),instruction,12,green if success_zone else CREAM)
-		var detail := "边游动抗拉，边保持接触" if kind=="wrap" else ("移动保持低张力" if kind=="slack" else "抓住机会吐出鱼钩")
+		var detail := ("保持 W 收线 · 空格判定" if game.player_role=="angler" else "继续游动抗拉 · 空格判定") if kind=="effort" else "边游动抗拉，边保持接触" if kind=="wrap" else ("移动保持低张力" if kind=="slack" else "抓住机会吐出鱼钩")
 		label_at(origin+Vector2(14,204),detail,10,Color("9cbbb4"))
 
 func _track_point(path: PackedVector2Array, progress: float) -> Vector2:

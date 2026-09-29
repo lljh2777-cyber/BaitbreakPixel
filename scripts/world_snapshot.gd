@@ -1,7 +1,7 @@
 extends RefCounted
 
 # Explicit, versioned value schema. Local views, input sources and profiles are excluded.
-const SCHEMA := 2
+const SCHEMA := 3
 const MAP_ID := "pond_v1"
 const WORLD_FIELDS: Array[String] = [
 	"fish",
@@ -113,6 +113,7 @@ const WORLD_FIELDS: Array[String] = [
 	"simulation_tick",
 	"qte_id",
 	"qte_grace_seconds",
+	"effort_checks",
 ]
 const RIG_FIELDS: Array[String] = [
 	"x",
@@ -188,6 +189,8 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 	if state.target_opacity.size()!=world.targets.size(): return false
 	if state.hooked!=0 and state.bound_bait<0: return false
 	if state.qte_id<0 or not state.qte in ["","entry","slack","wrap"]: return false
+	for role in ["fish","angler"]:
+		if not world.Effort.valid(state.effort_checks.get(role)): return false
 	if not state.net_state in ["wait","rest","prepare","warning","sweep","miss","withdraw","caught"]: return false
 	if state.wrap_target < -1 or state.wrap_target>=world.targets.size(): return false
 	if state.contact_target < -1 or state.contact_target>=world.targets.size(): return false

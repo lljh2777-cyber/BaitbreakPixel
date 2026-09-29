@@ -194,8 +194,9 @@ func spool_target(raw_tension: float, tuning: Vector2, manual: bool) -> float:
 	if manual: return spool*(90.0 if spool>0 else 36.0)
 	return clampf(-24*tuning.y+(raw_tension-0.5)*100*tuning.x,-36*tuning.y,24*tuning.y)
 
-func manual_spool_speed(current: float, delta: float) -> float:
+func manual_spool_speed(current: float, delta: float, force_gain: float = 1.0) -> float:
 	var target := spool_target(0,Vector2.ONE,true)
+	if target<0: target*=force_gain
 	# Brake promptly on release/reversal; accelerating the new direction stays smooth.
 	if current*target<0:
 		var brake_time := absf(current)/720.0

@@ -43,7 +43,20 @@ func sample(now: float) -> Node2D:
 				world.baits[index].grains[grain].pos=Vector2(old.grains[grain].pos).lerp(latest.grains[grain].pos,ratio)
 	if not b.qte.is_empty() and a.qte_id==b.qte_id and a.qte==b.qte:
 		world.qte_age=lerpf(a.qte_age,b.qte_age,ratio)
-	else: world.qte_age=b.qte_age; world.simulation_tick=b.simulation_tick
+	else: world.qte_age=b.qte_age
+	for role in ["fish","angler"]:
+		var old: Dictionary=a.effort_checks[role]
+		var latest: Dictionary=b.effort_checks[role]
+		if old.active and latest.active and old.id==latest.id:
+			world.effort_checks[role].age=lerpf(old.age,latest.age,ratio)
+		else: world.effort_checks[role].age=latest.age
+	# On a newly appearing check use the current tick, matching its unsmoothed age.
+	var changed_check: bool=a.qte_id!=b.qte_id or a.qte!=b.qte
+	for role in ["fish","angler"]:
+		changed_check=changed_check or a.effort_checks[role].id!=b.effort_checks[role].id or a.effort_checks[role].active!=b.effort_checks[role].active
+	if changed_check: world.simulation_tick=b.simulation_tick; world.qte_age=b.qte_age
+	if changed_check:
+		for role in ["fish","angler"]: world.effort_checks[role].age=b.effort_checks[role].age
 	# Net position remains on its authoritative polyline; never lerp across a corner.
 	if world.hooked==world.HookState.HOOKED: world._rebuild_rope()
 	return world

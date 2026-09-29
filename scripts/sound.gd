@@ -11,10 +11,10 @@ func _ready() -> void:
 		voice.volume_db = -16
 		add_child(voice)
 		voices.append(voice)
-	for name in ["eat", "warn", "success", "fail", "break", "win", "splash", "tap"]:
-		var notes: Array = {"eat":[660.0, 880.0], "warn":[330.0, 220.0], "success":[440.0, 660.0, 880.0], "fail":[220.0, 165.0], "break":[880.0, 220.0], "win":[440.0, 554.0, 660.0, 880.0], "splash":[170.0,130.0,85.0], "tap":[145.0]}[name]
+	for name in ["eat", "warn", "qte", "success", "fail", "break", "win", "splash", "tap"]:
+		var notes: Array = {"eat":[660.0, 880.0], "warn":[330.0, 220.0], "qte":[880.0,1320.0], "success":[440.0, 660.0, 880.0], "fail":[220.0, 165.0], "break":[880.0, 220.0], "win":[440.0, 554.0, 660.0, 880.0], "splash":[170.0,130.0,85.0], "tap":[145.0]}[name]
 		var bytes := PackedByteArray()
-		var duration := 0.075 if name == "eat" else 0.13
+		var duration := 0.075 if name in ["eat","qte"] else 0.13
 		var count := int(22050 * duration * notes.size())
 		bytes.resize(count * 2)
 		for sample in count:
@@ -37,6 +37,7 @@ func _process(delta: float) -> void:
 func play(name: String) -> void:
 	# Headless verification has no audio device or mixer frames to drain playback.
 	if DisplayServer.get_name() == "headless": return
+	if not cues.has(name): return
 	if name == "eat":
 		if bite_cooldown > 0: return
 		bite_cooldown = 0.10

@@ -1,8 +1,8 @@
 extends RefCounted
 
 const VERSION := 1
-# Peers must share the finite-tether/reeling rules introduced in 0.12.2.
-const BUILD := "0.12.2"
+# Peers must share the random skill-check and exertion rules introduced in 0.13.
+const BUILD := "0.13"
 const DEFAULT_PORT := 24712
 const MAX_PACKET := 196608
 const MAX_STATE := 1048576
@@ -57,6 +57,7 @@ static func input(role: String, raw: Dictionary) -> Dictionary:
 		clean.qte_at_age=-1.0 # Never trust a client's claimed timing or success.
 		return clean
 	var clean := Commands.angler(raw,Vector2(232,180))
+	clean.qte_at_age=-1.0
 	clean.auto_reel=false
 	clean.auto_net=false
 	clean.target=clean.target.clamp(Vector2(0,0),Vector2(640,360))

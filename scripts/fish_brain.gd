@@ -35,6 +35,7 @@ func hold(game: Node2D, point: Vector2) -> Vector2:
 	return ((point-game.fish)*4-game.line_pull_velocity()-game.water_velocity(game.fish))/maxf(1,speed)
 
 func _judge(game: Node2D) -> bool:
+	if game.qte.is_empty() and game.effort_checks.fish.active: return game.effort_ai_press("fish")
 	if game.qte.is_empty():
 		qte_kind=""
 		qte_last_age=-1

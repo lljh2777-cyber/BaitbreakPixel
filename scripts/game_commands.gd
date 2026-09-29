@@ -34,5 +34,6 @@ static func angler(command: Dictionary, previous_cursor: Vector2) -> Dictionary:
 		"target":vector(command.get("target"),previous_cursor),
 		"deploy":flag(command,"deploy"),"reel":flag(command,"reel"),"release":flag(command,"release"),
 		"net_hold":flag(command,"net_hold"),"drag":flag(command,"drag"),"net_events":events,
-		"auto_reel":flag(command,"auto_reel"),"auto_net":flag(command,"auto_net")
+		"auto_reel":flag(command,"auto_reel"),"auto_net":flag(command,"auto_net"),
+		"qte":flag(command,"qte"),"qte_at_age":clampf(number(command.get("qte_at_age"),-1),-1,2.4)
 	}

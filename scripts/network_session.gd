@@ -36,6 +36,7 @@ var qte_accepted := 0
 var remote_queue: Array[Dictionary]=[]
 var remote_held: Dictionary={}
 var qte_history: Dictionary={}
+var effort_history: Dictionary={"fish":{},"angler":{}}
 var last_rx := 0
 var last_input_rx := 0
 var started_at := 0
@@ -138,6 +139,7 @@ func close(notify_peer: bool = false) -> void:
 	remote_queue.clear()
 	remote_held.clear()
 	qte_history.clear()
+	effort_history={"fish":{},"angler":{}}
 	ping_tokens.clear()
 	fragments.clear()
 	presentation.clear()
@@ -197,7 +199,7 @@ func _send(packet: Dictionary, reliable: bool, channel: int) -> void:
 
 func _handle(packet: Dictionary) -> void:
 	if packet.get("v")!=Protocol.VERSION:
-		fail("联机协议不兼容，请双方使用 0.12.2 版"); return
+		fail("联机协议不兼容，请双方使用 0.13 版"); return
 	var kind: String=packet.get("kind","") if packet.get("kind","") is String else ""
 	last_rx=now()
 	if kind=="ping" and packet.get("token") is int:
@@ -207,11 +209,11 @@ func _handle(packet: Dictionary) -> void:
 		ping_tokens.erase(packet.token); return
 	if kind=="hello" and is_host and status=="waiting":
 		if packet.get("build")!=Protocol.BUILD:
-			_send({"kind":"reject","reason":"版本不同，请双方使用 0.12.2 版"},true,2); return
+			_send({"kind":"reject","reason":"版本不同，请双方使用 0.13 版"},true,2); return
 		_send({"kind":"welcome","session":session_id,"role":remote_role,"config":config,"build":Protocol.BUILD,"ready":local_ready},true,2)
 		message="玩家已连接，双方准备后开始"
 		changed.emit(); return
-	if kind=="reject" and not is_host: fail("版本不同，请双方使用 0.12.2 版"); return
+	if kind=="reject" and not is_host: fail("版本不同，请双方使用 0.13 版"); return
 	if kind=="welcome" and not is_host and status=="connecting":
 		if packet.get("build")!=Protocol.BUILD or not packet.get("role") in ["fish","angler"] or not packet.get("config") is Dictionary or not packet.get("session") is String: fail("房间信息无效"); return
 		session_id=packet.session
@@ -246,7 +248,7 @@ func _handle(packet: Dictionary) -> void:
 			received_effect_seq=packet.seq
 			if packet.get("cues") is Array and packet.cues.size()<=16:
 				for cue in packet.cues:
-					if cue in ["eat","warn","splash","success","fail","break","tap"]: game.play_feedback(cue)
+					if cue in ["eat","warn","splash","success","fail","break","tap","qte_fish","qte_angler","effort_good_fish","effort_bad_fish","effort_good_angler","effort_bad_angler"]: game.play_feedback(cue)
 
 func set_ready(value: bool = true) -> void:
 	if not active() or remote_id==0 or not status in ["waiting","finished"]: return
@@ -266,6 +268,7 @@ func _reset_round() -> void:
 	remote_queue.clear()
 	remote_held.clear()
 	qte_history.clear()
+	effort_history={"fish":{},"angler":{}}
 	cues.clear()
 	effect_seq=0
 	received_effect_seq=0
@@ -317,6 +320,7 @@ func tick(delta: float, local_command: Dictionary) -> void:
 	if status!="playing": return
 	var local := Protocol.input(local_role,local_command)
 	if is_host:
+		var before := _check_identity()
 		var remote := _take_remote()
 		game.advance_tick(local if local_role=="fish" else remote,local if local_role=="angler" else remote)
 		_remember_qte()
@@ -327,14 +331,23 @@ func tick(delta: float, local_command: Dictionary) -> void:
 		if game.match_over:
 			_phase("finished")
 			_send_state(true)
+		elif before!=_check_identity(): _send_state(true)
+		elif not game.qte.is_empty() or game.qte_result_age>0 or game.effort_checks.fish.active or game.effort_checks.angler.active or game.effort_checks.fish.effect_age>0 or game.effort_checks.angler.effect_age>0:
+			# A missing fragment must not hide a short skill window. While a check
+			# is active, send complete reliable states at 10 Hz, with interpolation.
+			if game.simulation_tick-last_snapshot_tick>=6: _send_state(true)
 		elif game.simulation_tick-last_snapshot_tick>=2: _send_state(false)
 	else:
 		input_seq+=1
 		var displayed := presentation.sample(now()/1000.0)
+		var check: Dictionary=displayed.skill_check(local_role)
 		var events := _tag_events(local)
 		local.net_events=[]
 		_send({"kind":"input","session":session_id,"round":round_id,"seq":input_seq,"command":local,
-			"seen_tick":displayed.simulation_tick,"qte_id":displayed.qte_id,"events":events,"gesture":gesture_id},true,1)
+			"seen_tick":displayed.simulation_tick,"qte_id":check.id if check.kind=="effort" and check.active else displayed.qte_id,"check_kind":"effort" if check.kind=="effort" and check.active else "regular","events":events,"gesture":gesture_id},true,1)
+
+func _check_identity() -> Array:
+	return [game.qte_id,game.qte,game.qte_result_age>0,game.effort_checks.fish.id,game.effort_checks.fish.active,game.effort_checks.fish.effect_age>0,game.effort_checks.angler.id,game.effort_checks.angler.active,game.effort_checks.angler.effect_age>0]
 
 func _tag_events(command: Dictionary) -> Array[Dictionary]:
 	var result: Array[Dictionary]=[]
@@ -378,7 +391,7 @@ func receive_input(packet: Dictionary) -> void:
 			command.drag=false
 	received_input_seq=packet.seq
 	last_input_rx=now()
-	remote_queue.append({"command":command,"seq":packet.seq,"seen_tick":packet.seen_tick,"qte_id":packet.qte_id})
+	remote_queue.append({"command":command,"seq":packet.seq,"seen_tick":packet.seen_tick,"qte_id":packet.qte_id,"check_kind":packet.get("check_kind","regular")})
 
 func _take_remote() -> Dictionary:
 	if now()-last_input_rx>INPUT_LEASE_MS:
@@ -401,7 +414,7 @@ func _take_remote() -> Dictionary:
 		var age: float=combined.qte_at_age
 		if not pressed and cmd.get("qte",false) and _valid_qte(entry):
 			pressed=true
-			age=qte_history[entry.seen_tick].age if not game.qte.is_empty() else -1.0
+			age=effort_history[remote_role][entry.seen_tick].age if entry.get("check_kind")=="effort" else (qte_history[entry.seen_tick].age if not game.qte.is_empty() else -1.0)
 			qte_accepted+=1
 		var home: bool=combined.home or cmd.get("home",false)
 		var deploy: bool=combined.deploy or cmd.get("deploy",false)
@@ -416,11 +429,24 @@ func _take_remote() -> Dictionary:
 	return combined
 
 func _remember_qte() -> void:
+	for role in ["fish","angler"]:
+		var state: Dictionary=game.effort_checks[role]
+		effort_history[role][game.simulation_tick]={"id":state.id,"age":state.age,"active":state.active}
+		for tick_id in effort_history[role].keys():
+			if tick_id<game.simulation_tick-QTE_HISTORY_TICKS: effort_history[role].erase(tick_id)
 	qte_history[game.simulation_tick]={"id":game.qte_id,"kind":game.qte,"age":game.qte_age,"valid":game.qte!="slack" or game.tension<0.25}
 	for tick_id in qte_history.keys():
 		if tick_id<game.simulation_tick-QTE_HISTORY_TICKS: qte_history.erase(tick_id)
 
 func _valid_qte(entry: Dictionary) -> bool:
+	if entry.get("check_kind","regular")=="effort":
+		var state: Dictionary=game.effort_checks[remote_role]
+		if not state.active or entry.qte_id!=state.id or not effort_history[remote_role].has(entry.seen_tick): return false
+		if remote_role=="fish" and not game.qte.is_empty(): return false
+		if entry.seen_tick>game.simulation_tick or game.simulation_tick-entry.seen_tick>QTE_HISTORY_TICKS: return false
+		var past: Dictionary=effort_history[remote_role][entry.seen_tick]
+		return past.id==state.id and past.active
+	if entry.get("check_kind","regular")!="regular" or remote_role!="fish": return false
 	if entry.qte_id!=game.qte_id or not qte_history.has(entry.seen_tick): return false
 	if entry.seen_tick>game.simulation_tick or game.simulation_tick-entry.seen_tick>QTE_HISTORY_TICKS: return false
 	var past: Dictionary=qte_history[entry.seen_tick]
