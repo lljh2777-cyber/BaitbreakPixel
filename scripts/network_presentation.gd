@@ -74,10 +74,16 @@ func sample(now: float) -> Node2D:
 		for role in ["fish","angler"]: world.effort_checks[role].age=b.effort_checks[role].age
 	if a.net_action.observing and b.net_action.observing:
 		world.net_action.age=lerpf(a.net_action.age,b.net_action.age,ratio)
-	# A committed sweep is a single segment; interpolation remains on that exact lane.
-	# Retraction may contain obstacle corners, so it retains authoritative positions.
+	# A sweep is a single segment. During retraction interpolate time on the actual
+	# collision-cleared path, never a chord that cuts across an obstacle corner.
 	if a.net_state=="sweep" and b.net_state=="sweep": world.net_pos=Vector2(a.net_pos).lerp(b.net_pos,ratio)
-	if a.net_state==b.net_state: world.net_age=lerpf(a.net_age,b.net_age,ratio)
+	if a.net_state==b.net_state:
+		world.net_age=lerpf(a.net_age,b.net_age,ratio)
+		if b.net_state in ["withdraw","caught"]:
+			var delay: float=world.NET_SETTLE if b.net_state=="caught" else 0.0
+			world.net_pos=world._net_retract_point(clampf((world.net_age-delay)/world.net_retract_duration,0,1))
+			if b.net_state=="caught":
+				world.fish=world.net_pos+world.net_catch_offset.lerp(world.net_bag_offset(),smoothstep(0,1,world.net_age/world.NET_SETTLE))
 	if world.hooked==world.HookState.HOOKED: world._rebuild_rope()
 	return world
 

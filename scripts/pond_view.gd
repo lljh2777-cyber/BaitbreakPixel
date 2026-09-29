@@ -8,6 +8,10 @@ const Observation = preload("res://scripts/net_observation.gd")
 const Shore = preload("res://scripts/shore_view.gd")
 const LineMotion = preload("res://scripts/line_motion.gd")
 const FishWinding = preload("res://scripts/fish_winding.gd")
+const NetMotion = preload("res://scripts/net_motion.gd")
+const NetVisual = preload("res://scripts/net_visual.gd")
+var net_motion := NetMotion.new()
+var net_frame: Dictionary={"active":false}
 var line_frame: Dictionary={}
 var line_motion := LineMotion.new()
 const INK := Color("142e39")
@@ -55,6 +59,7 @@ func _draw() -> void:
 	world=game.network.display_world() if is_instance_valid(game.network) and game.network.active() and game.shared_session else game
 	var t: float = world.elapsed
 	line_frame=line_motion.sample(world)
+	net_frame=net_motion.sample(world)
 	if game.player_role=="angler":
 		if world.net_action.observing: Observation.draw(self,world,t)
 		else: shore.draw(self,world,t)
@@ -507,14 +512,8 @@ func _player(t: float) -> void:
 		draw_rect(Rect2(38, 276, 44, 2), INK)
 		draw_rect(Rect2(38, 276, 44 * world.home_age / world.rule("home_hold"), 2), MINT)
 
-func _net_draw_position() -> Vector2:
-	var p: Vector2=world.net_pos
-	if world.net_state=="miss":
-		p-=Vector2.from_angle(world.net_angle)*sin(PI*world.net_age/world.NET_MISS)*(4 if world.net_blocked else 2)
-	return p.round()
-
-func _net_back(t: float) -> void:
-	if world.net_active(): _draw_landing_net(_net_draw_position(),t,false)
+func _net_back(_t: float) -> void:
+	if net_frame.active: NetVisual.back(self,NetMotion.fish_pose(world,net_frame))
 
 func _net(t: float) -> void:
 	if not world.net_active(): return
@@ -542,87 +541,15 @@ func _net(t: float) -> void:
 		if world.net_state=="warning":
 			var remaining: float=1-world.net_age/world.net_warning_seconds()
 			draw_arc(from,9,-PI/2,-PI/2+TAU*remaining,24,RED,2)
-	_draw_landing_net(_net_draw_position(),t,true)
-	if world.net_state=="sweep":
-		var velocity_scale := clampf(world.net_motion.length()/300,0,1)
-		for index in range(12):
-			var life := fmod(world.net_age*2.5+index/12.0,1)
-			var bubble: Vector2=world.net_pos-direction*(10+life*38)+direction.orthogonal()*sin(index*2.7)*24
-			draw_rect(Rect2(bubble.round(),Vector2(2,2)),Color(MINT,(1-life)*velocity_scale*0.65))
+	var pose:=NetMotion.fish_pose(world,net_frame)
+	NetVisual.front(self,pose)
+	NetVisual.water(self,world,net_frame,pose)
 	if world.net_state=="miss" and world.net_blocked:
 		var progress: float=world.net_age/world.NET_MISS
 		for index in range(5):
 			var normal := direction.rotated((index-2)*0.3)
 			var at: Vector2=to+direction*world.net_rim().x+normal*(2+progress*8)
 			draw_line(at,at+normal*4,Color(GOLD,1-progress),1)
-	if world.net_state in ["caught","withdraw"] and world.net_pos.y<95:
-		for index in range(7):
-			var life := fmod(t*2.4+index/7.0,1)
-			var drip: Vector2=world.net_pos+Vector2((index-3)*5,12+life*42)
-			draw_line(drip.round(),(drip+Vector2(0,3+life*4)).round(),Color(MINT,0.7*(1-life)),1)
-	if world.net_splash>0:
-		var life: float=1-world.net_splash/0.6
-		var origin: Vector2=world.net_splash_at
-		var surface := absf(origin.y-57)<2
-		for index in range(11):
-			var spread := Vector2((index-5)*4*life,-sin(index*1.7)*12*life+life*life*18)
-			draw_rect(Rect2((origin+spread).round(),Vector2(2,2)),Color(CREAM,(1-life)*0.8))
-		if surface:
-			var ring := PackedVector2Array()
-			for index in range(33): ring.append(origin+Vector2.from_angle(index*TAU/32)*Vector2(8+life*32,2+life*3))
-			draw_polyline(ring,Color(MINT,1-life),1)
-		else: draw_arc(origin,6+life*16,0,TAU,24,Color(MINT,(1-life)*0.6),1)
-
-func _draw_landing_net(p: Vector2, t: float, front: bool) -> void:
-	var opening: float=lerpf(0.25,1,smoothstep(0,1,world.net_age/world.net_warning_seconds())) if world.net_state in ["prepare","warning"] else 1.0
-	var rim: Vector2=world.net_rim()*opening
-	var angle: float=world.net_angle
-	var caught: bool=world.net_state=="caught"
-	var settling: float=smoothstep(0,1,world.net_age/world.NET_SETTLE) if caught else 0.0
-	if not caught and world.net_state=="sweep": settling=world.net_capture*0.45
-	var outline := PackedVector2Array()
-	var bag := PackedVector2Array()
-	var back: Vector2=p+world.net_bag_offset()*opening
-	var joint := p
-	for index in range(33):
-		var circle := Vector2.from_angle(index*TAU/32)
-		var rim_point := p+(circle*rim).rotated(angle)
-		outline.append(rim_point.round())
-		var bag_shape := (circle*rim*0.60).rotated(angle).lerp(circle*Vector2(18,25),settling)
-		bag.append((back+bag_shape).round())
-		if rim_point.y<joint.y: joint=rim_point
-	if not front:
-		var pole_top: Vector2=Vector2(world.angler.x+7,50) if world.manual_net else Vector2(world.net_from.x+(-18 if world.net_from.x<320 else 18),40)
-		var pole := PackedVector2Array([pole_top,pole_top.lerp(joint,0.52)+Vector2(sin(t*3)*1.5,0),joint])
-		draw_polyline(pole,INK,7)
-		draw_polyline(pole,Color("957044"),5)
-		draw_polyline(pole,Color("d8b87a"),2)
-		var bag_hull := Geometry2D.convex_hull(outline+bag)
-		draw_colored_polygon(bag_hull,Color(0.28,0.49,0.49,0.20))
-		draw_colored_polygon(bag,Color(0.12,0.28,0.33,0.28 if caught else 0.16))
-		draw_polyline(bag,Color("7ca2a0"),1)
-		for index in range(0,32,4): draw_line(outline[index],bag[index],Color(0.62,0.78,0.70,0.55),1)
-		return
-	# Mesh is drawn over the fish; it settles into the actual bag, not in front of the hoop.
-	for lean in [-1,1]:
-		var along := Vector2(lean*0.65,0.76).normalized()
-		for index in range(-4,5):
-			var offset := index/5.0
-			var base := along.orthogonal()*offset
-			var reach := sqrt(1-offset*offset)
-			var a := ((base-along*reach)*rim*0.60).rotated(angle).lerp((base-along*reach)*Vector2(18,25),settling)
-			var b := ((base+along*reach)*rim*0.60).rotated(angle).lerp((base+along*reach)*Vector2(18,25),settling)
-			draw_line((back+a).round(),(back+b).round(),Color(0.66,0.81,0.74,0.58),1)
-	for index in range(0,32,4): draw_line(outline[index],bag[index],Color(0.65,0.81,0.73,0.32),1)
-	draw_polyline(outline,INK,5)
-	draw_polyline(outline,Color("b59663"),3)
-	for index in range(1,outline.size()):
-		if outline[index].y<p.y: draw_line(outline[index-1],outline[index],CREAM,1)
-		else: draw_line(outline[index-1],outline[index],Color("8dbeac"),1)
-	draw_rect(Rect2(joint-Vector2(3,3),Vector2(7,6)),Color("8cabad"))
-	if world.net_state=="sweep" and world.net_capture>0:
-		draw_arc(p,37,-PI/2,-PI/2+TAU*world.net_capture,40,GOLD,2)
-		label_at(p+Vector2(-26,-43),"收拢 %d%%" % int(world.net_capture*100),10,GOLD)
 
 func _hud(t: float) -> void:
 	if game.menu.visible: return

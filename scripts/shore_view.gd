@@ -154,7 +154,9 @@ func _underwater(view: Node2D, world: Node2D, t: float) -> void:
 		for index in fish_shape.size(): fish_shape[index]=position+axis_x*fish_shape[index].x+axis_y*fish_shape[index].y
 	else:
 		for index in fish_shape.size(): fish_shape[index]=position+fish_shape[index].rotated(direction.angle())
-	if world.net_state=="caught" or world.landing:
+	if world.net_state=="caught":
+		pass # The carried fish is drawn between the back and front of the moving pocket.
+	elif world.landing:
 		view.draw_set_transform(position,direction.angle())
 		view.draw_texture(view.fish_texture,Vector2(-12,-6))
 		view.draw_set_transform(Vector2.ZERO)
@@ -214,32 +216,5 @@ func _tackle(view: Node2D, world: Node2D, t: float) -> void:
 	hand.draw(view,pose,t,reel_speed)
 	reel_hand.draw(view,pose,world)
 
-func _net(view: Node2D, world: Node2D, t: float) -> void:
-	if not world.Net.busy(world): return
-	var p := to_screen(world.net_pos,world)
-	var warning: bool=world.net_state in ["prepare","warning"]
-	var opening: float=smoothstep(0,1,world.net_age/world.net_warning_seconds()) if warning else 1.0
-	var rim := PackedVector2Array()
-	var bag := PackedVector2Array()
-	for index in 33:
-		var circle := Vector2.from_angle(index*TAU/32)
-		var point: Vector2=world.net_pos+(circle*world.net_rim()*maxf(0.2,opening)).rotated(world.net_angle)
-		rim.append(to_screen(point,world).round())
-		bag.append(to_screen(world.net_pos+world.net_bag_offset()+(circle*world.net_rim()*0.6).rotated(world.net_angle),world).round())
-	var reaching: float=opening if warning else (1.0-smoothstep(0.7,1.0,world.net_age/world.net_retract_duration) if world.net_state in ["withdraw","caught"] else 1.0)
-	var grip := Vector2(172,398).lerp(Vector2(175+sin(t*1.5),307),reaching)
-	var direction := (p-grip).normalized()
-	var handle := PackedVector2Array([(grip-direction*90).round(),grip.round(),p.round()])
-	view.draw_polyline(handle,INK,6)
-	view.draw_polyline(handle,Color("957044"),4)
-	view.draw_polyline(handle,Color("d8b87a"),1)
-	view.draw_colored_polygon(Geometry2D.convex_hull(rim+bag),Color(0.28,0.49,0.49,0.2))
-	for index in range(0,32,4): view.draw_line(rim[index],bag[index],Color("668a80"),1)
-	for index in range(0,16,3): view.draw_line(bag[index],bag[32-index],Color("719a8a"),1)
-	view.draw_polyline(bag,Color("527768"),1)
-	view.draw_polyline(rim,INK,4); view.draw_polyline(rim,Color("e1c18c"),2)
-	# Reuse the existing pixel hand. Its grip stays attached to the net handle.
-	reel_hand.draw_hand(view,{"grip":grip,"angle":direction.angle()+0.75,"cell":0,"pivot":ReelHand.GRIP})
-	if warning:
-		var lane := projected(PackedVector2Array([world.net_from,world.net_to]),world)
-		view.draw_polyline(lane,Color(MINT,0.5),1)
+func _net(view: Node2D, world: Node2D, _t: float) -> void:
+	view.NetVisual.draw_shore(view,world,view.net_frame,reel_hand)
