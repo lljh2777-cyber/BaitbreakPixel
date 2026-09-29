@@ -12,7 +12,7 @@ const CREAM := Color("ffe5bc")
 const INK := Color("122b38")
 const MINT := Color("8de0bd")
 const GOLD := Color("ffd379")
-const SHAFT_LENGTH := 180.0
+const SHAFT_LENGTH := 210.0
 const SHAFT_SEGMENTS := 32
 
 static func to_screen(point: Vector2) -> Vector2:

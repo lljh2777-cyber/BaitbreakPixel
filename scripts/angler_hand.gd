@@ -1,12 +1,13 @@
 extends RefCounted
 
-const Sprite = preload("res://assets/first_person/angler_hand_pixel.png")
+const Sprite = preload("res://assets/first_person/angler_hand_forearm.png")
 const PaletteShader = preload("res://scripts/hand_palette.gdshader")
-const PIXEL_SIZE := 80
+const PIXEL_SIZE := 112
 const PALETTE := ["10263b","ffd49a","f2b777","d58f53","a85e38","edb951","bd8739","865c2b","8b9256","536650","314b43","24383c","dce7de","9cabb4","5c6c80","344758"]
-const SIZE := 136.0
-const WRIST := Vector2(0.70,0.56)
-const SOCKET := Vector2(0.093,0.075)
+const SIZE := 172.0
+const WRIST := Vector2(0.49,0.42)
+const SOCKET := Vector2(0.077,0.065)
+const ROD_AXIS := Vector2(-0.70710678,-0.70710678)
 const FOREARM_ROOT := Vector2(1.0,1.0)
 var pixel_texture: ViewportTexture
 
@@ -36,13 +37,13 @@ func prepare(view: Node2D) -> void:
 	pixel_texture=pixel_view.get_texture()
 
 static func pose(horizontal: float, time: float, reel_speed: float) -> Dictionary:
-	# One horizontal control drives a rigid arm sweep. The rod tip is an output,
-	# never a target that can compress the shaft between a fixed elbow and tip.
+	# Keep a low, forward fishing stance. Most of the lateral input is an arm
+	# translation, with only a small wrist turn; it must not turn into a rod lift.
 	var travel := clampf(horizontal,0,1)
-	var axis := (SOCKET-WRIST).normalized()
-	var angle := lerpf(-0.10,0.68,travel)
+	var axis := ROD_AXIS
+	var angle := lerpf(-0.34,-0.28,travel)
 	angle+=sin(time*7)*0.002*minf(absf(reel_speed)/36,1)
-	var wrist := Vector2(lerpf(450,573,travel),lerpf(302,315,travel))
+	var wrist := Vector2(lerpf(444,580,travel),264)
 	return {"wrist":wrist,"angle":angle,"socket":point(SOCKET,wrist,angle),"axis":axis.rotated(angle)}
 
 static func point(uv: Vector2, wrist: Vector2, angle: float) -> Vector2:
@@ -59,6 +60,6 @@ func draw(view: Node2D, wrist: Vector2, angle: float, time: float, reel_speed: f
 		var arc := PackedVector2Array()
 		var phase := time*7*signf(reel_speed)+glint*PI
 		for step in 5:
-			var local := Vector2.from_angle(phase+step*0.09)*Vector2(0.078,0.040)
-			arc.append(point(Vector2(0.158,0.486)+local.rotated(-0.8),wrist,angle).round())
+			var local := Vector2.from_angle(phase+step*0.09)*Vector2(0.052,0.028)
+			arc.append(point(Vector2(0.144,0.390)+local.rotated(-0.8),wrist,angle).round())
 		view.draw_polyline(arc,Color("dce7de"),1)

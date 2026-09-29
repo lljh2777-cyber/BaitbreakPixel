@@ -1,10 +1,10 @@
 {
-  "version": "0.15.4",
-  "pack_sha256": "2ede701317347b46ede3609b680daebf75b1c4af13a3e30825d8a33a27523544",
+  "version": "0.15.5",
+  "pack_sha256": "066547297e54e7e964a5aee0ce9b481af6687532f89afdd3e283cdfc290f2c69",
   "script_sha256": {
     "scripts/angler_brain.gd": "08c3ae512e055f28269e6df51eeb1cb1584ffed8d5152521f1f3ca8304ac38b2",
     "scripts/angler_controller.gd": "cf870f0d5277403a54ee51ee6e7e5b8f1dee032241636046e505974567136a7a",
-    "scripts/angler_hand.gd": "67044c58f06b2522a678a33f70fa26b6156d98d649a25b9b7aaa5d6954800e47",
+    "scripts/angler_hand.gd": "fce0398d50ae99b26f0e8cc0894ce34bc12f013ad97f7c49b1ce1710600524a5",
     "scripts/angler_rig.gd": "7ac227ff1abb88e30a714933b731962155cff5bc27af15803df69f5a81921b09",
     "scripts/angler_visual.gd": "220f2896ef24c9342bfc7b5b5cbc76c0b2169b78e2d20dae8acae559ff612529",
     "scripts/effort_check.gd": "b9f9f6b825d8f85197b63c3c8357f091d3754cbd6e437bdf0b89050d5b70c3b4",
@@ -13,25 +13,26 @@
     "scripts/hand_palette.gdshader": "821a1a18ea07e9fc77ce72aca698253e79a43b16f4a0c1c30c91416edb944211",
     "scripts/hook_gauge.gd": "4fe42c7690fa40f42e970af97eb26915793ec166c01b06da3ea21eb1fb692593",
     "scripts/local_input.gd": "03c863d16d7d984a0debb3b25dc5176acf92046ba8d27ec33600a16793b2a454",
-    "scripts/menu.gd": "badaf2c1eaf3a0e33c20f252afc7de9a27ea91f193a0d6ba5f07740af1abdae8",
+    "scripts/menu.gd": "2bfb5f7b9a1a1a1756160e42ea27cbd218fd99b7d10516dc09d9ce4d5d54f2ed",
     "scripts/network_presentation.gd": "ab78468473adb4bdafad6fccef744b8b625f8c4bdf41763a59ced305f9aa854c",
     "scripts/network_protocol.gd": "b6e3df1eaa8e245f4fc4be9a670488b986070d730607790526b42ce65622f83f",
     "scripts/network_session.gd": "c8e3472c60baa2a441f37cd94ecfb95df7a0490b5af5bf7c771b4c2b4c2714c2",
     "scripts/pixel_art.gd": "888fc105bd231fcbd7cee637cb515d3aa254aebf23af05a6730c974f21eb5c4a",
-    "scripts/pond.gd": "9b50ccfb48397553adb2d1857f168d0c9b5fca7a33bea77f9357442b9dea0ecc",
+    "scripts/pond.gd": "23abea7b216973cb68e4163a72a797b5456537032bd6cb77cd3c144b84f30c3a",
     "scripts/pond_layout.gd": "516f4fbbead3281ebc09e921fbebc77917c1e611a698a217a5b083f14c7678fe",
     "scripts/pond_view.gd": "a1503a6457836ffd226cf707b1920a41a351232e31591229c288c70682d6b68a",
     "scripts/rope.gd": "2e30152e65b00f39fe25324b992afd39925acfadd80b64dce385df865d69fe42",
     "scripts/round_stats.gd": "0b288ab7b53e40604e685ee962943fb5e44705d30e9035a780e04b207d4bfd9a",
-    "scripts/shore_view.gd": "de34be43bd013be4f13311d7f584478857f127b4c6c651539aabdb2af4b54ff0",
+    "scripts/shore_view.gd": "2a7f2664b407b40cb09160bf25b2df4cbb7f950328aa37941bf8a5cb9348255a",
     "scripts/sound.gd": "284a28068b134f48c78e641e5edcb9d43448f4a19212ce90cf327d3ecdf564da",
     "scripts/world_simulation.gd": "bcc22f4657f1e5f0c1a87dedb2e6570c693586554f627cee9e4f20e608251345",
     "scripts/world_snapshot.gd": "99fb84008a7682413849852c6852b46dd65f591982132916be5b399afe334127"
   },
   "decoded_texture_sha256": {
     "assets/first_person/angler_hand.png": "c8cbaa67ce2b6bfd676962a37622d69bf45642705353b0ceb3482dd4ccff4d56",
+    "assets/first_person/angler_hand_forearm.png": "9c7a67fe7427fc908cf2a3d500b6d049eec34cb9a881fc8092f4e1bac8632638",
     "assets/first_person/angler_hand_pixel.png": "5ed02376f9320ac28088a98a75775820783fb4353075ca4a51e3ea55c4710e5e",
     "assets/first_person/sunset_lake.png": "1284feae9dec7733199166d38cd54847e4cebca2b27d64daf71cdd10ae4c3b9f"
   },
-  "exported_resources": 36
+  "exported_resources": 38
 }
