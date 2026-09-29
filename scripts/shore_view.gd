@@ -27,7 +27,7 @@ static func projected(path: PackedVector2Array) -> PackedVector2Array:
 static func rod_tip(world: Node2D, t: float) -> Vector2:
 	var x: float=to_screen(world.angler.anchor()).x
 	var load: float=world.tension if world.hooked==world.HookState.HOOKED else 0
-	return Vector2(clampf(x+64,80,614),167+load*9+sin(t*2)*0.5)
+	return Vector2(clampf(x+64,80,614),130+load*9+sin(t*2)*0.5)
 
 static func rig_index(world: Node2D) -> int:
 	if world.bound_bait>=0: return world.bound_bait
@@ -53,6 +53,13 @@ static func ellipse(center: Vector2, radii: Vector2, count: int=32) -> PackedVec
 	var path := PackedVector2Array()
 	for index in count+1: path.append((center+Vector2.from_angle(index*TAU/float(count))*radii).round())
 	return path
+
+static func rod_controls(pose: Dictionary, tip: Vector2, load: float, strength: float) -> PackedVector2Array:
+	var grip: Vector2=pose.socket
+	var length := grip.distance_to(tip)
+	var bend := minf(26,length*0.16)*load*clampf(1-(strength-1)*0.2,0.8,1.15)
+	# Leave the rigid handle along its own axis, and flex only the upper shaft.
+	return PackedVector2Array([grip,grip+pose.axis*length*0.35,grip.lerp(tip,0.76)+Vector2(0,-bend),tip])
 
 func draw(view: Node2D, world: Node2D, t: float) -> void:
 	view.draw_texture_rect(Lake,Rect2(0,0,640,360),false)
@@ -118,9 +125,10 @@ func _tackle(view: Node2D, world: Node2D, t: float) -> void:
 	var index := rig_index(world)
 	var load: float=world.tension if world.hooked==world.HookState.HOOKED else 0
 	var reel_speed: float=world.reel_speed if world.hooked==world.HookState.HOOKED else world.angler.free_reel_speed
-	var wrist := Hand.wrist_position(world.angler.x)
-	var hand_angle := Hand.grip_angle(wrist,tip,t,reel_speed)
-	var grip := Hand.point(Hand.SOCKET,wrist,hand_angle)
+	var pose := Hand.pose(tip,t,reel_speed)
+	var wrist: Vector2=pose.wrist
+	var hand_angle: float=pose.angle
+	var grip: Vector2=pose.socket
 	var strength: float=world.effort_multiplier("angler")
 	var line_end := float_at
 	if world.angler.casting:
@@ -146,9 +154,8 @@ func _tackle(view: Node2D, world: Node2D, t: float) -> void:
 		view.draw_rect(Rect2(-2,2,5,2),Color("3d6e7c"))
 		view.draw_set_transform(Vector2.ZERO)
 	var rod := PackedVector2Array()
-	var first := grip.lerp(tip,0.35)+Vector2(-load*5,-load*11)
-	var second := grip.lerp(tip,0.76)+Vector2(0,-load*26+(strength-1)*7)
-	for part in 33: rod.append(grip.bezier_interpolate(first,second,tip,part/32.0).round())
+	var controls := rod_controls(pose,tip,load,strength)
+	for part in 33: rod.append(grip.bezier_interpolate(controls[1],controls[2],tip,part/32.0).round())
 	for part in range(1,rod.size()):
 		var width := lerpf(4.5,1.2,part/32.0)
 		view.draw_line(rod[part-1],rod[part],Color("13222b"),width+2)

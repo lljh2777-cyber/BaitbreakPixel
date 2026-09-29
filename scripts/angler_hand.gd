@@ -7,10 +7,8 @@ const PALETTE := ["10263b","ffd49a","f2b777","d58f53","a85e38","edb951","bd8739"
 const SIZE := 136.0
 const WRIST := Vector2(0.70,0.56)
 const SOCKET := Vector2(0.093,0.075)
-const GRID := 18
-var mesh := ArrayMesh.new()
-var uvs := PackedVector2Array()
-var indices := PackedInt32Array()
+const FOREARM_ROOT := Vector2(1.0,1.0)
+const ELBOW := Vector2(612,356)
 var pixel_texture: ViewportTexture
 
 func prepare(view: Node2D) -> void:
@@ -38,40 +36,29 @@ func prepare(view: Node2D) -> void:
 	pixel_view.add_child(art)
 	pixel_texture=pixel_view.get_texture()
 
-func _init() -> void:
-	for row in GRID+1:
-		for column in GRID+1: uvs.append(Vector2(column,row)/float(GRID))
-	for row in GRID:
-		for column in GRID:
-			var i := row*(GRID+1)+column
-			indices.append_array(PackedInt32Array([i,i+1,i+GRID+2,i,i+GRID+2,i+GRID+1]))
-
-static func wrist_position(x: float) -> Vector2:
-	return Vector2(554+clampf((x-300)/300,-1,1)*12,294)
-
-static func grip_angle(wrist: Vector2, tip: Vector2, time: float, reel_speed: float) -> float:
-	var winding := sin(time*9)*0.009*minf(absf(reel_speed)/36,1)
-	return (tip-wrist).angle()-(SOCKET-WRIST).angle()+winding
+static func pose(tip: Vector2, time: float, reel_speed: float) -> Dictionary:
+	# A single rigid forearm pivots below the play area. Solve its angle so the
+	# rod's axis continues from the ferrule towards the target without a wrist twist.
+	var axis := (SOCKET-WRIST).normalized()
+	var socket_offset := (SOCKET-FOREARM_ROOT)*SIZE
+	var target := tip-ELBOW
+	var cross_offset := socket_offset.dot(axis.orthogonal())
+	var length_on_axis := sqrt(maxf(0,target.length_squared()-cross_offset*cross_offset))
+	var shaft_length := maxf(1,length_on_axis-socket_offset.dot(axis))
+	var angle := target.angle()-(socket_offset+axis*shaft_length).angle()
+	# Wind through the elbow, not by bending the wrist; keep this secondary motion small.
+	angle+=sin(time*7)*0.002*minf(absf(reel_speed)/36,1)
+	var wrist := ELBOW+((WRIST-FOREARM_ROOT)*SIZE).rotated(angle)
+	return {"wrist":wrist,"angle":angle,"socket":point(SOCKET,wrist,angle),"axis":axis.rotated(angle)}
 
 static func point(uv: Vector2, wrist: Vector2, angle: float) -> Vector2:
-	# Rotate the grip as one piece; blend into the cuff so the sleeve stays on the forearm.
-	var wrist_weight := 1.0-smoothstep(1.28,1.72,uv.x+uv.y)
-	return wrist+((uv-WRIST)*SIZE).rotated(angle*wrist_weight)
+	return wrist+((uv-WRIST)*SIZE).rotated(angle)
 
 func draw(view: Node2D, wrist: Vector2, angle: float, time: float, reel_speed: float) -> void:
-	var vertices := PackedVector3Array()
-	for uv in uvs:
-		var p := point(uv,wrist,angle).round()
-		vertices.append(Vector3(p.x,p.y,0))
-	var arrays := []
-	arrays.resize(Mesh.ARRAY_MAX)
-	arrays[Mesh.ARRAY_VERTEX]=vertices
-	arrays[Mesh.ARRAY_TEX_UV]=uvs
-	arrays[Mesh.ARRAY_INDEX]=indices
-	mesh.clear_surfaces()
-	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
 	if pixel_texture==null: return
-	view.draw_mesh(mesh,pixel_texture)
+	view.draw_set_transform(wrist,angle)
+	view.draw_texture_rect(pixel_texture,Rect2(-WRIST*SIZE,Vector2(SIZE,SIZE)),false)
+	view.draw_set_transform(Vector2.ZERO)
 	if absf(reel_speed)<0.5: return
 	# Light travels around the metal spool in the actual winding direction.
 	for glint in 2:
