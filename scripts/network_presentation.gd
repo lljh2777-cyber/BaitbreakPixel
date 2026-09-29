@@ -34,6 +34,8 @@ func sample(now: float) -> Node2D:
 	world.net_capture=lerpf(a.net_capture,b.net_capture,ratio) if a.net_state=="sweep" and b.net_state=="sweep" else b.net_capture
 	world.angler.x=lerpf(previous.rig.x,current.rig.x,ratio)
 	world.angler.line_sway=lerpf(previous.rig.line_sway,current.rig.line_sway,ratio)
+	world.angler.rod_load=lerpf(previous.rig.rod_load,current.rig.rod_load,ratio)
+	world.angler.rod_lift=lerpf(previous.rig.rod_lift,current.rig.rod_lift,ratio)
 	world.angler.surface_x=lerpf(previous.rig.surface_x,current.rig.surface_x,ratio) if previous.rig.surface_live==current.rig.surface_live else current.rig.surface_x
 	world.angler.surface_velocity=lerpf(previous.rig.surface_velocity,current.rig.surface_velocity,ratio)
 	world.angler.reel_phase=fposmod(lerp_angle(previous.rig.reel_phase,current.rig.reel_phase,ratio),TAU)

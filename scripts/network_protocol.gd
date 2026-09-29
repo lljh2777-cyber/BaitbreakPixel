@@ -2,7 +2,7 @@ extends RefCounted
 
 const VERSION := 1
 # Peers must share capture timing and the round-statistics snapshot schema.
-const BUILD := "0.16"
+const BUILD := "0.17"
 const DEFAULT_PORT := 24712
 const MAX_PACKET := 196608
 const MAX_STATE := 1048576

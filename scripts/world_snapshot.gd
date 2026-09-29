@@ -1,7 +1,7 @@
 extends RefCounted
 
 # Explicit, versioned value schema. Local views, input sources and profiles are excluded.
-const SCHEMA := 5
+const SCHEMA := 6
 const MAP_ID := "pond_v1"
 const WORLD_FIELDS: Array[String] = [
 	"fish",
@@ -151,6 +151,8 @@ const RIG_FIELDS: Array[String] = [
 	"release_phase",
 	"reel_hand_mode",
 	"reel_hand_amount",
+	"rod_load",
+	"rod_lift",
 ]
 
 static func capture(world: Node2D) -> Dictionary:
@@ -198,6 +200,7 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 	if snapshot.rig.surface_x<0 or snapshot.rig.surface_x>640 or absf(snapshot.rig.surface_velocity)>10000: return false
 	if not snapshot.rig.reel_hand_mode in [-1,0,1] or snapshot.rig.reel_hand_amount<0 or snapshot.rig.reel_hand_amount>1: return false
 	if snapshot.rig.reel_phase<0 or snapshot.rig.reel_phase>=TAU or snapshot.rig.release_phase<0 or snapshot.rig.release_phase>=TAU: return false
+	if snapshot.rig.rod_load<0 or snapshot.rig.rod_load>1 or snapshot.rig.rod_lift<0 or snapshot.rig.rod_lift>1: return false
 	if not state.ruleset in ["survival","duel"] or state.simulation_tick<0: return false
 	if not state.winner_role in ["","fish","angler"] or state.match_over!=(state.winner_role!=""): return false
 	if state.hooked<0 or state.hooked>2 or state.bound_bait < -1 or state.bound_bait>=4: return false

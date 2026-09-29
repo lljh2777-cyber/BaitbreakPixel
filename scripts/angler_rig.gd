@@ -30,6 +30,8 @@ var reel_phase := 0.0
 var release_phase := 0.0
 var reel_hand_mode := 0
 var reel_hand_amount := 0.0
+var rod_load := 0.0
+var rod_lift := 0.0
 const CAST_SECONDS := 0.7
 
 func reset() -> void:
@@ -62,6 +64,8 @@ func reset() -> void:
 	release_phase=0
 	reel_hand_mode=0
 	reel_hand_amount=0
+	rod_load=0
+	rod_lift=0
 
 func surface_target(game: Node2D) -> Vector2:
 	if game.bound_bait>=0:
@@ -84,6 +88,11 @@ func feedback_reel_speed(game: Node2D) -> float:
 
 func step_tackle_feedback(game: Node2D, delta: float) -> void:
 	if not game.uses_mobile_tackle(): return
+	var bracing:bool=game.hooked==game.HookState.HOOKED and not game.landing and game.net_state!="caught"
+	var target_load:float=clampf(game.tension,0,1) if bracing else 0.0
+	var target_lift:=0.25+0.75*target_load if bracing else 0.0
+	rod_load=lerpf(rod_load,target_load,1-exp(-delta*(10 if target_load>rod_load else 6)))
+	rod_lift=lerpf(rod_lift,target_lift,1-exp(-delta*(8 if target_lift>rod_lift else 5)))
 	var target := surface_target(game)
 	if casting:
 		surface_x=cast_to.x; surface_velocity=0; surface_live=false

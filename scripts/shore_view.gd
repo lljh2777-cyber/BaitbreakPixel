@@ -15,7 +15,7 @@ const INK := Color("122b38")
 const MINT := Color("8de0bd")
 const GOLD := Color("ffd379")
 const SHAFT_LENGTH := 109.58981932643195
-const SHAFT_SEGMENTS := 32
+const SHAFT_SEGMENTS := 48
 
 static func projection_at(y: float) -> Vector2:
 	# Fixed perspective: the distant float lane is narrower than near water.
@@ -41,12 +41,11 @@ static func rod_tip(world: Node2D, t: float) -> Vector2:
 	return tackle_pose(world,t).tip
 
 static func tackle_pose(world: Node2D, t: float) -> Dictionary:
-	var hooked: bool=world.hooked==world.HookState.HOOKED
-	var load: float=world.tension if hooked else 0
+	var load:float=world.angler.rod_load
 	var reel_speed: float=world.angler.feedback_reel_speed(world)
 	# The existing replicated sway gives the held rig a small, damped follow-through.
 	var held_x: float=world.angler.x+world.angler.line_sway*0.2
-	var pose := Hand.pose(inverse_lerp(18,588,held_x),t,reel_speed)
+	var pose := Hand.pose(inverse_lerp(18,588,held_x),t,reel_speed,world.angler.rod_lift)
 	var rod := rod_points(pose,load,world.effort_multiplier("angler"),float_position(world,t))
 	return {"hand":pose,"rod":rod,"tip":rod[-1],"load":load,"reel_speed":reel_speed}
 
@@ -91,13 +90,14 @@ static func rod_points(pose: Dictionary, load: float, strength: float, pull_targ
 	var axis: Vector2=pose.axis
 	var straight_tip: Vector2=pose.socket+axis*SHAFT_LENGTH
 	var pull := (pull_target-straight_tip).normalized()
-	var bend := axis.cross(pull)*0.38*clampf(load,0,1)*clampf(1-(strength-1)*0.2,0.8,1.15)
+	var bend := clampf(axis.cross(pull)*3.0,-2.2,2.2)*clampf(load,0,1)*clampf(1-(strength-1)*0.2,0.8,1.15)
 	var points := PackedVector2Array([pose.socket])
 	# Equal material lengths: load changes curvature, never the size of the rod.
 	# The first segment remains exactly tangent to the rigid handle ferrule.
 	for part in SHAFT_SEGMENTS:
 		var ratio := part/float(SHAFT_SEGMENTS-1)
-		points.append(points[-1]+axis.rotated(bend*ratio*ratio)*(SHAFT_LENGTH/SHAFT_SEGMENTS))
+		var flex:=ratio*ratio*(0.28+0.72*ratio)
+		points.append(points[-1]+axis.rotated(bend*flex)*(SHAFT_LENGTH/SHAFT_SEGMENTS))
 	return points
 
 func draw(view: Node2D, world: Node2D, t: float) -> void:

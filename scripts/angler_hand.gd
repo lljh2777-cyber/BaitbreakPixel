@@ -34,36 +34,46 @@ func prepare(view: Node2D) -> void:
 	pixels.add_child(art)
 	pixel_texture=pixels.get_texture()
 
-static func pose(horizontal: float, time: float, reel_speed: float) -> Dictionary:
+static func pose(horizontal: float, time: float, reel_speed: float, brace: float=0.0) -> Dictionary:
 	var travel := clampf(horizontal,0,1)
 	var arm_angle := deg_to_rad(lerpf(-12,12,travel))
 	var angle := deg_to_rad(lerpf(-3,15,travel))
 	angle+=sin(time*7)*0.0015*minf(absf(reel_speed)/36,1)
+	brace=clampf(brace,0,1)
+	angle+=deg_to_rad(6)*brace
 	# A fixed off-screen arm pivot drives a real wrist arc. The wrist adds a
 	# smaller rotation, keeping the grip upright as the arm sweeps across the lake.
 	# Neither the float nor the camera is allowed to cancel this movement.
 	var wrist := ARM_PIVOT+WRIST_REACH.rotated(arm_angle)
-	return {"wrist":wrist,"angle":angle,"arm_angle":arm_angle,"socket":point(SOCKET,wrist,angle),"axis":ROD_AXIS.rotated(angle)}
+	wrist+=Vector2(4,-14)*brace
+	return {"wrist":wrist,"angle":angle,"arm_angle":arm_angle,"brace":brace,"socket":point(SOCKET,wrist,angle),"axis":ROD_AXIS.rotated(angle)}
 
 static func point(source: Vector2, wrist: Vector2, angle: float) -> Vector2:
 	return wrist+((source-WRIST)*SIZE).rotated(angle)
 
 func draw(view: Node2D, pose: Dictionary, _time: float, _reel_speed: float) -> void:
 	if pixel_texture==null: return
-	var corners := [Vector2(970,786),Vector2(1448,786),CANVAS,Vector2(970,1086)]
-	var vertices := PackedVector2Array(); var uv := PackedVector2Array()
-	for source: Vector2 in corners:
-		vertices.append(point(source,pose.wrist,pose.angle))
-		uv.append(source/CANVAS)
-	view.draw_polygon(vertices,PackedColorArray([Color.WHITE]),uv,pixel_texture)
+	# Only the outer cloth continues below the viewport during the lift.
+	# Fingers, wrist, reel and the ferrule keep the same rigid transform.
+	for band in [Vector2(970,1248),Vector2(1248,1448)]:
+		var vertices := PackedVector2Array(); var uv := PackedVector2Array()
+		for source: Vector2 in [Vector2(band.x,786),Vector2(band.y,786),Vector2(band.y,1086),Vector2(band.x,1086)]:
+			var continuation:Vector2=Vector2(24,30)*pose.get("brace",0.0)*maxf(0,(source.x-1248)/200)
+			vertices.append(point(source,pose.wrist,pose.angle)+continuation.rotated(pose.angle))
+			uv.append(source/CANVAS)
+		view.draw_polygon(vertices,PackedColorArray([Color.WHITE]),uv,pixel_texture)
 
 func draw_rod(view: Node2D, points: PackedVector2Array) -> void:
 	if pixel_texture==null: return
 	var side := Vector2(-ROD_AXIS.y,ROD_AXIS.x)
+	var normals:=PackedVector2Array()
+	for index in points.size():
+		var tangent:Vector2=(points[mini(index+1,points.size()-1)]-points[maxi(index-1,0)]).normalized()
+		normals.append(Vector2(-tangent.y,tangent.x))
 	# Sample the same reference shaft in material-length strips; load curves it.
 	for part in range(1,points.size()):
 		var a := (part-1)/float(points.size()-1); var b := part/float(points.size()-1)
-		var normal := Vector2(-(points[part]-points[part-1]).normalized().y,(points[part]-points[part-1]).normalized().x)
-		var vertices := PackedVector2Array([points[part-1]+normal*6,points[part]+normal*6,points[part]-normal*6,points[part-1]-normal*6])
+		# Adjacent strips share the same edge even under a deep bend.
+		var vertices := PackedVector2Array([points[part-1]+normals[part-1]*6,points[part]+normals[part]*6,points[part]-normals[part]*6,points[part-1]-normals[part-1]*6])
 		var uv := PackedVector2Array([(SOCKET.lerp(TIP,a)+side*(6/SIZE))/CANVAS,(SOCKET.lerp(TIP,b)+side*(6/SIZE))/CANVAS,(SOCKET.lerp(TIP,b)-side*(6/SIZE))/CANVAS,(SOCKET.lerp(TIP,a)-side*(6/SIZE))/CANVAS])
 		view.draw_polygon(vertices,PackedColorArray([Color.WHITE]),uv,pixel_texture)
