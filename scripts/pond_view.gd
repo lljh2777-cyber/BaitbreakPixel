@@ -248,7 +248,7 @@ func _player(t: float) -> void:
 	if direction.x < 0:
 		tilt -= PI
 		flip = -1
-	if game.hooked == game.HookState.MOUTH:
+	if game.hooked == game.HookState.MOUTH or game.net_state=="caught":
 		tilt += sin(t * 45) * 0.13
 		position.y += int(sin(t * 32) * 1.5)
 	elif game.velocity.length() > 5:
@@ -269,33 +269,70 @@ func _player(t: float) -> void:
 		draw_rect(Rect2(38, 276, 44 * game.home_age / 2, 2), MINT)
 
 func _net(t: float) -> void:
-	if not game.net_state in ["prepare", "warning", "sweep"]: return
+	if not game.net_state in ["prepare", "warning", "sweep", "withdraw", "caught"]: return
 	var from: Vector2 = game.net_from
 	var to: Vector2 = game.net_to
 	var left: bool = from.x < to.x
 	var alpha := 0.18 + 0.12 * sin(t * 9)
-	var x := 0 if left else 628
-	draw_rect(Rect2(x, 55, 12, 258), Color(0.98,0.35,0.32,alpha + 0.1))
-	if game.net_state == "warning":
-		var low := minf(from.x, to.x) - 18
-		var high := maxf(from.x, to.x) + 18
-		draw_rect(Rect2(low, from.y-33, high-low, 66), Color(0.95,0.37,0.33,0.08))
-		for xx in range(int(low), int(high), 12):
-			draw_rect(Rect2(xx, from.y-33, 6, 1), RED)
-			draw_rect(Rect2(xx, from.y+33, 6, 1), RED)
-		label_at(Vector2(low + 10, from.y - 40), "抄网来向  ››" if left else "‹‹  抄网来向", 12, RED)
-		var arrow_x := 14 if left else 626
-		var sign_x := 1 if left else -1
-		draw_colored_polygon(PackedVector2Array([Vector2(arrow_x,from.y-6),Vector2(arrow_x+sign_x*8,from.y),Vector2(arrow_x,from.y+6)]), RED)
-	if game.net_state == "sweep":
-		var p: Vector2 = game.net_pos.round()
-		var outline := PackedVector2Array([Vector2(-12,-28),Vector2(12,-28),Vector2(20,-17),Vector2(20,17),Vector2(12,28),Vector2(-12,28),Vector2(-20,17),Vector2(-20,-17),Vector2(-12,-28)])
-		for index in outline.size(): outline[index] += p
-		draw_colored_polygon(outline, Color(0.75,0.80,0.73,0.14))
-		for offset in range(-14, 15, 7): draw_line(p+Vector2(offset,-24),p+Vector2(offset,24),Color("90a79b"),1)
-		for offset in range(-21, 22, 7): draw_line(p+Vector2(-17,offset),p+Vector2(17,offset),Color("90a79b"),1)
-		draw_polyline(outline, Color("e2b386"), 2)
-		draw_line(p+Vector2(0,-28), Vector2(p.x + (-20 if left else 20),40), Color("e2b386"),3)
+	var direction: Vector2 = (to-from).normalized()
+	if game.net_state in ["prepare","warning","sweep"]:
+		if game.net_kind=="drop":
+			draw_rect(Rect2(clampf(from.x-62,0,516),55,124,9),Color(RED,alpha+0.14))
+		else:
+			draw_rect(Rect2(0 if left else 628,55,12,258),Color(RED,alpha+0.14))
+		var arrow: Vector2 = Vector2(from.x,73) if game.net_kind=="drop" else Vector2(16 if left else 624,from.y)
+		draw_colored_polygon(PackedVector2Array([arrow+direction*8,arrow-direction*5+direction.orthogonal()*5,arrow-direction*5-direction.orthogonal()*5]),RED)
+	if game.net_state in ["prepare","warning"]:
+		var danger: PackedVector2Array = game.net_warning_outline()
+		draw_colored_polygon(danger,Color(RED,0.055 if game.net_state=="prepare" else 0.11))
+		for index in range(1,danger.size()):
+			if index%2==0: draw_line(danger[index-1],danger[index],Color(RED,0.85),1)
+		for index in range(1,5):
+			var arrow: Vector2 = from.lerp(to,index/5.0)
+			draw_line(arrow-direction*4+direction.orthogonal()*4,arrow,Color(RED,0.45),1)
+			draw_line(arrow-direction*4-direction.orthogonal()*4,arrow,Color(RED,0.45),1)
+	var p: Vector2=game.net_pos
+	if game.net_state=="prepare":
+		var entry := Vector2(0,-65) if game.net_kind=="drop" else Vector2(-55 if left else 55,0)
+		p=from+entry*(1-clampf(game.net_age/game.NET_PREPARE,0,1))
+	_draw_landing_net(p.round(),direction,t,0.55 if game.net_state in ["prepare","warning"] else 1.0)
+	if game.net_state=="sweep":
+		for index in range(10):
+			var life := fmod(game.net_age*2+index/10.0,1)
+			var spray := p-direction*(7+life*35)+direction.orthogonal()*sin(index*2.7)*25
+			draw_rect(Rect2(spray.round(),Vector2(2,2)),Color(CREAM,(1-life)*0.6))
+	if game.net_state=="withdraw" and game.net_blocked:
+		draw_arc(to,11+game.net_age*22,0,TAU,16,Color(GOLD,maxf(0,1-game.net_age/game.NET_WITHDRAW)),1)
+
+func _draw_landing_net(p: Vector2, direction: Vector2, t: float, opacity: float) -> void:
+	var rim: Vector2=game.NET_RIM
+	var pole_top := Vector2(game.net_from.x+(-25 if game.net_from.x<320 else 25),41)
+	var joint := p-Vector2(0,rim.y)
+	draw_line(pole_top+Vector2(2,1),joint+Vector2(2,1),Color(INK,opacity),7)
+	draw_line(pole_top,joint,Color(Color("a27e4b"),opacity),5)
+	draw_line(pole_top-Vector2(1,0),joint-Vector2(1,0),Color(Color("e6c78e"),opacity),1)
+	var outline := PackedVector2Array()
+	var bag := PackedVector2Array()
+	var back := p-direction*24+Vector2(0,6+sin(t*5))
+	for index in range(33):
+		var circle := Vector2.from_angle(index*TAU/32)
+		outline.append((p+circle*rim).round())
+		bag.append((back+circle*rim*0.63).round())
+	draw_colored_polygon(bag,Color(0.38,0.61,0.61,0.22*opacity))
+	draw_polyline(bag,Color(0.63,0.78,0.73,0.6*opacity),1)
+	for index in range(0,32,4): draw_line(outline[index],bag[index],Color(0.63,0.78,0.73,0.55*opacity),1)
+	draw_colored_polygon(outline,Color(0.69,0.86,0.78,0.09*opacity))
+	for lean in [-1,1]:
+		var along := Vector2(lean*0.65,0.76).normalized()
+		for index in range(-4,5):
+			var offset := index/5.0
+			var base := along.orthogonal()*offset
+			var reach := sqrt(1-offset*offset)
+			draw_line((p+(base-along*reach)*rim).round(),(p+(base+along*reach)*rim).round(),Color(0.66,0.81,0.74,0.75*opacity),1)
+	draw_polyline(outline,Color(INK,opacity),5)
+	draw_polyline(outline,Color(Color("d3ad72"),opacity),3)
+	draw_polyline(outline,Color(CREAM,opacity),1)
+	draw_rect(Rect2(joint-Vector2(3,3),Vector2(7,6)),Color(Color("8cabad"),opacity))
 
 func _hud(t: float) -> void:
 	if game.menu.visible: return
@@ -311,10 +348,17 @@ func _hud(t: float) -> void:
 	draw_rect(Rect2(366,22,70,3), Color("335762"))
 	draw_rect(Rect2(366,22,70*game.stamina/100,3), GOLD if game.sprinting else (RED if game.sprint_exhausted else MINT))
 	var remaining := maxi(0, int(ceil(game.TIME_LIMIT-game.clock)))
-	label_at(Vector2(515,23), "%02d:%02d" % [remaining/60,remaining%60] if game.challenge else "无倒计时", 16, RED if remaining < 60 else CREAM)
+	label_at(Vector2(515,23), "%02d:%02d" % [remaining/60,remaining%60] if game.challenge else "N 抄网练习", 14, RED if remaining < 60 else CREAM)
 	draw_rect(Rect2(0,333,640,27), INK)
 	label_at(Vector2(12,350), game.hint(), 12)
 	label_at(Vector2(584,350), "H 帮助", 10, Color("9cbbb4"))
+	if game.net_state in ["prepare","warning","sweep","caught"]:
+		panel(Rect2(230,63,180,26))
+		var phase := "横向扫网" if game.net_kind=="sweep" else "上方下探"
+		if game.net_state=="prepare": phase+=" · 准备"
+		elif game.net_state=="warning": phase+=" · %.1f 秒" % maxf(0,game.NET_WARNING-game.net_age)
+		elif game.net_state=="caught": phase="被捞中了……"
+		label_at(Vector2(240,81),phase,12,RED)
 	if game.hooked == game.HookState.HOOKED:
 		panel(Rect2(246,62,148,43))
 		label_at(Vector2(254,76), "张力 %d%%" % int(game.tension*100), 11, CREAM)

@@ -98,12 +98,12 @@ func _title(frame: Control) -> void:
 	text(frame,"吃饵，不上钩",Vector2(18,38),27)
 	text(frame,"小鱼的池塘逃生记",Vector2(21,80),13,Color("b4c8bc"))
 	button(frame,"开始挑战   ·   6 分钟 / 60 食物",113,func(): game.reset(true),true,254)
-	button(frame,"自由练习   ·   无时间限制",147,func(): game.reset(false),false,254)
+	button(frame,"自由练习   ·   N 触发抄网",147,func(): game.reset(false),false,254)
 	button(frame,"操作说明",181,func(): open("help"),false,254)
 	button(frame,"设置",215,func(): open("settings"),false,124)
 	var quit := button(frame,"退出",215,func(): get_tree().quit(),false,124)
 	quit.position.x = 150
-	text(frame,"2D MVP 0.5  ·  浮漂判定 / 自由调节",Vector2(20,253),10,Color("91afa7"))
+	text(frame,"2D MVP 0.6  ·  扫网 / 下探 / 躲避练习",Vector2(20,253),10,Color("91afa7"))
 	text(content,"01  吃饵",Vector2(391,119),18,GOLD)
 	text(content,"02  脱钩",Vector2(391,159),18,GOLD)
 	text(content,"03  躲网，回巢",Vector2(391,199),18,GOLD)
@@ -115,7 +115,9 @@ func _pause(frame: Control) -> void:
 	button(frame,"重新开始本局",89,func(): game.reset(game.challenge))
 	var offset := 0
 	if not game.challenge:
-		button(frame,"练习调节   ·   收放线",121,func(): open("practice"))
+		button(frame,"练习调节 · 收放线",121,func(): open("practice"),false,158)
+		var net_button := button(frame,"抄网练习 · N",121,func(): close(); game.request_net(),false,158)
+		net_button.position.x=188
 		offset=32
 	button(frame,"操作说明",121+offset,func(): open("help"))
 	button(frame,"设置",153+offset,func(): open("settings"))
@@ -132,7 +134,7 @@ func _help(frame: Control) -> void:
 		"上钩接触掩体：空格开始，绿区再按空格",
 		"成功自动缠一圈，再保持松线按 E 脱钩",
 		"持续拉紧 3 秒断线 · 练习 F2 调收放线",
-		"红光提示抄网方向，离开红框避开网口",
+		"抄网：红光预警，游离红色扫网 / 下探区域",
 		"吃够食物后回左下巢穴，按 E 停留 2 秒",
 		"R 重开 · Esc 暂停 · F11 全屏 · 练习 N 试网"
 	]

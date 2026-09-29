@@ -12,6 +12,13 @@ const TIME_LIMIT := 360.0
 const SOLIDS: Array = Layout.SOLIDS
 const HOOK_SCALE := 0.70
 const BITE_RADIUS := 7.0
+const NET_RIM := Vector2(23,31)
+const NET_CATCH := Vector2(30,36)
+const NET_PREPARE := 0.8
+const NET_WARNING := 2.2
+const NET_SWEEP := 1.6
+const NET_WITHDRAW := 0.7
+const NET_LIFT := 1.15
 
 var fish := Vector2(66, 265)
 var velocity := Vector2.ZERO
@@ -89,6 +96,12 @@ var net_from := Vector2.ZERO
 var net_to := Vector2.ZERO
 var net_pos := Vector2.ZERO
 var net_pulse := 0.0
+var net_kind := "sweep"
+var net_blocked := false
+var net_return_from := Vector2.ZERO
+var net_catch_offset := Vector2.ZERO
+var net_dodges := 0
+var net_catches := 0
 var paused := false
 var view: Node2D
 var menu: Control
@@ -124,7 +137,7 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | side-view | 640x360 | v0.5")
+	print("PIXEL_READY | side-view | 640x360 | v0.6")
 
 func _register_inputs() -> void:
 	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[KEY_SHIFT], "use":[KEY_E], "slow":[KEY_Q], "wrap":[KEY_SPACE]}
@@ -220,6 +233,12 @@ func reset(is_challenge: bool) -> void:
 	net_count = 0
 	net_queued = false
 	net_pulse = 0
+	net_kind = "sweep"
+	net_blocked = false
+	net_return_from = Vector2.ZERO
+	net_catch_offset = Vector2.ZERO
+	net_dodges = 0
+	net_catches = 0
 	cycle_phase = ""
 	cycle_slot = -1
 	cycle_age = 0
@@ -316,7 +335,7 @@ func winding() -> bool:
 	return not wraps.is_empty() and wraps[-1].progress<1.0
 
 func movement_locked() -> bool:
-	return hooked==HookState.MOUTH or qte=="wrap" or winding()
+	return hooked==HookState.MOUTH or qte=="wrap" or winding() or net_state=="caught"
 
 func _open_qte(kind: String) -> void:
 	qte = kind
@@ -434,7 +453,7 @@ func step(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: 
 	if not sprinting and stamina_delay<=0: stamina = minf(100,stamina+delta*18)
 	_update_contacts(delta)
 	_step_net(delta)
-	if lost: return
+	if lost or net_state=="caught": return
 	var was_free := hooked == HookState.FREE
 	if hooked == HookState.MOUTH:
 		_step_qte(delta, interact)
@@ -662,13 +681,18 @@ func _step_supply(delta: float) -> void:
 			cycle_slot = -1
 
 func request_net() -> void:
-	if net_count < 3 and net_state in ["wait", "rest"]: net_queued = true
+	if won or lost: return
+	if net_state in ["wait","rest"]:
+		net_state="wait"
+		net_queued=true
+		notice="抄网练习已准备 · 脱钩后开始" if hooked!=HookState.FREE else "抄网即将入水 · 留意红光"
+		notice_age=3
 
 func net_blocks_hooks() -> bool:
-	return net_state in ["prepare", "warning", "sweep"]
+	return net_state in ["prepare", "warning", "sweep", "withdraw", "caught"]
 
 func _net_contact(point: Vector2) -> bool:
-	var net_scale := Vector2(22,33)
+	var net_scale := NET_RIM
 	for solid in SOLIDS:
 		var scaled := PackedVector2Array()
 		for vertex in solid.points: scaled.append(vertex/net_scale)
@@ -677,21 +701,76 @@ func _net_contact(point: Vector2) -> bool:
 
 func _plan_net() -> void:
 	# The rim stops at solid cover; its telegraph shows only the reachable sweep lane.
-	var y := clampf(fish.y,112,245)
+	net_kind="sweep" if net_count%2==0 else "drop"
+	var y := clampf(fish.y,112,278)
 	net_from = Vector2(620 if fish.x > 337 else 20,y)
-	var destination := Vector2(366 if fish.x > 337 else 307,y)
+	# A low attack must enter above bank-side rocks, never spawn with its rim inside one.
+	if net_kind=="sweep":
+		for attempt in range(48):
+			if not _net_contact(net_from): break
+			net_from.y-=2
+		y=net_from.y
+	var destination := Vector2(36 if fish.x > 337 else 604,y)
+	if net_kind=="drop":
+		net_from=Vector2(clampf(fish.x+(72 if fish.x<320 else -72),38,602),67)
+		destination=Vector2(fish.x,clampf(fish.y+40,120,278))
 	net_to = net_from
+	net_blocked=false
 	var steps := ceili(net_from.distance_to(destination)/2)
 	for step in range(1,steps+1):
 		var candidate := net_from.lerp(destination,float(step)/steps)
-		if _net_contact(candidate): break
+		if _net_contact(candidate): net_blocked=true; break
 		net_to = candidate
 	net_pos = net_from
 
+func net_warning_outline() -> PackedVector2Array:
+	var points := PackedVector2Array()
+	for endpoint in [net_from,net_to]:
+		for index in range(32): points.append(endpoint+Vector2.from_angle(index*TAU/32)*NET_CATCH)
+	return Geometry2D.convex_hull(points)
+
+func _catch_in_net() -> void:
+	net_state="caught"
+	net_age=0
+	net_return_from=net_pos
+	net_catch_offset=fish-net_pos
+	net_catches+=1
+	velocity=Vector2.ZERO
+	sprinting=false
+	returning=false
+	home_age=0
+	sound.play("fail")
+
+func _finish_net_recovery() -> void:
+	net_state="rest"
+	net_age=0
+	net_wait=0
+	net_recovery=2
+
 func _step_net(delta: float) -> void:
+	if net_state=="caught":
+		net_age+=delta
+		var ratio := clampf(net_age/NET_LIFT,0,1)
+		net_pos=net_return_from.lerp(Vector2(net_return_from.x,47),ratio*ratio)
+		fish=net_pos+net_catch_offset*(1-ratio)
+		if net_age>=NET_LIFT:
+			if challenge: finish(false,"net")
+			else:
+				fish=HOME+Vector2(0,-14)
+				fish_before=fish
+				hook_cooldown=2
+				notice="被抄中了 · 已回到巢边，按 N 再试"
+				notice_age=4
+				_finish_net_recovery()
+		return
+	if net_state=="withdraw":
+		net_age+=delta
+		net_pos=net_return_from.lerp(net_from,clampf(net_age/NET_WITHDRAW,0,1))
+		if net_age>=NET_WITHDRAW: _finish_net_recovery()
+		return
 	if net_state == "rest":
 		net_age += delta
-		if net_age >= 25: net_state = "wait"; net_wait = 0
+		if net_age >= 10: net_state = "wait"; net_wait = 0
 		return
 	if hooked != HookState.FREE:
 		net_recovery = 4
@@ -700,27 +779,31 @@ func _step_net(delta: float) -> void:
 	if not cycle_phase.is_empty() or net_recovery > 0: return
 	if net_state == "wait":
 		if challenge and started: net_wait += delta
-		if (net_queued or net_wait >= 90) and net_count < 3:
+		if net_queued or net_wait >= (18 if net_count==0 else 35):
 			net_state = "prepare"
 			net_age = 0
 			net_queued = false
 			_plan_net()
+			sound.play("warn")
 		return
 	net_age += delta
-	if net_state == "prepare" and net_age >= 1.5:
+	if net_state == "prepare" and net_age >= NET_PREPARE:
 		net_state = "warning"; net_age = 0; sound.play("warn")
 	elif net_state == "warning":
-		if net_age >= 2.5:
+		if net_age >= NET_WARNING:
 			net_state = "sweep"; net_age = 0; net_count += 1
+			sound.play("splash")
 	elif net_state == "sweep":
 		var old_net := net_pos
-		net_pos = net_from.lerp(net_to, clampf(net_age / 2.3, 0, 1))
-		var scale := Vector2(22, 33)
+		net_pos = net_from.lerp(net_to, clampf(net_age / NET_SWEEP, 0, 1))
+		var scale := NET_CATCH
 		if _segment_distance((fish_before - old_net) / scale, (fish - net_pos) / scale, Vector2.ZERO) <= 1:
-			finish(false, "net")
-		elif net_age >= 2.3:
-			net_state = "rest"; net_age = 0
-			notice = "躲过抄网！趁休整继续吃饵。"; notice_age = 3
+			_catch_in_net()
+		elif net_age >= NET_SWEEP:
+			net_state="withdraw"; net_age=0; net_return_from=net_pos
+			net_dodges+=1
+			notice="木石挡住了网口 · 可以继续觅食" if net_blocked else "躲过抄网！继续觅食。"
+			notice_age=3
 
 static func _segment_distance(a: Vector2, b: Vector2, point: Vector2) -> float:
 	var length_squared := a.distance_squared_to(b)
@@ -745,6 +828,7 @@ func finish(success: bool, why: String) -> void:
 	print("PIXEL_RESULT | success=", success, " | score=", score, " | seconds=", clock, " | reason=", why)
 
 func hint() -> String:
+	if net_state=="caught": return "被抄网捞起……" if challenge else "被抄中了 · 正在送回巢边"
 	if hooked == HookState.MOUTH: return "暂时不能移动 · 浮漂进入绿区时按 E"
 	if hooked == HookState.HOOKED:
 		if qte=="wrap": return "缠线判定 · 浮漂进入绿区时按空格"
@@ -754,8 +838,8 @@ func hint() -> String:
 		if high_age > 0: return "持续拉紧 %.1f / 3.0 秒可断线" % high_age
 		if latched: return "已缠线 · 靠近线圈保持低张力，浮漂到绿区按 E"
 		return "游入水草、木枝或石头 · 空格缠线；也可持续拉紧断线"
-	if net_state == "prepare": return "钓鱼者正收竿，准备抄网……"
-	if net_state in ["warning", "sweep"]: return "红光是抄网来向 · 游离红框，或升降躲避"
+	if net_state == "prepare": return "抄网准备入水 · 留意红光方向"
+	if net_state in ["warning", "sweep"]: return "上方下探 · 横向游离红色区域" if net_kind=="drop" else "横向扫网 · 向上或向下游离红色区域"
 	if returning: return "正在回巢 %.1f / 2.0 秒" % home_age
 	if can_home(): return "按 E 并停留 2 秒回巢"
 	if score >= (TARGET if challenge else 18) - 0.001: return "食物够了！回左下角薄荷色巢穴按 E"
