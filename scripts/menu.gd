@@ -103,7 +103,7 @@ func _title(frame: Control) -> void:
 	button(frame,"设置",215,func(): open("settings"),false,124)
 	var quit := button(frame,"退出",215,func(): get_tree().quit(),false,124)
 	quit.position.x = 150
-	text(frame,"2D MVP 0.6  ·  扫网 / 下探 / 躲避练习",Vector2(20,253),10,Color("91afa7"))
+	text(frame,"2D MVP 0.7  ·  抗拉 / 缠线 / 觅食逃生",Vector2(20,253),10,Color("91afa7"))
 	text(content,"01  吃饵",Vector2(391,119),18,GOLD)
 	text(content,"02  脱钩",Vector2(391,159),18,GOLD)
 	text(content,"03  躲网，回巢",Vector2(391,199),18,GOLD)
@@ -129,11 +129,11 @@ func _help(frame: Control) -> void:
 	var lines := [
 		"WASD / 方向键 游动 · 鼠标决定朝向",
 		"左键吸食 · 滚轮调吸力 · Q 慢游",
-		"长按 Shift 加速耗体力 · 草木石可穿行",
+		"Shift 加速 / 逆线抗拉耗体力 · 吃饵补体力",
 		"钩尖入口：浮漂到绿色判定区时按 E",
-		"上钩接触掩体：空格开始，绿区再按空格",
-		"成功自动缠一圈，再保持松线按 E 脱钩",
-		"持续拉紧 3 秒断线 · 练习 F2 调收放线",
+		"上钩会被拉向水面 · 吸食时游速降低",
+		"接触草木石按空格，边游抗拉、绿区再按",
+		"缠线后松线按 E 脱钩 · 拉紧 3 秒断线",
 		"抄网：红光预警，游离红色扫网 / 下探区域",
 		"吃够食物后回左下巢穴，按 E 停留 2 秒",
 		"R 重开 · Esc 暂停 · F11 全屏 · 练习 N 试网"
@@ -185,7 +185,7 @@ func _practice(frame: Control) -> void:
 	force.position=Vector2(20,181)
 	force.size=Vector2(326,17)
 	frame.add_child(force)
-	text(frame,"越高，收放线越快；0% 关闭自动收放线。",Vector2(20,201),11,CREAM)
+	text(frame,"越高收鱼越有力；0% 关闭收放线与拉力。",Vector2(20,201),11,CREAM)
 	sensitivity.value_changed.connect(func(value: float):
 		game.set_practice_line_tuning(value/100,game.practice_line_force)
 		sensitivity_label.text="灵敏度 %d%%" % roundi(value)

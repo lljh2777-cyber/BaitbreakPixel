@@ -248,7 +248,7 @@ func _player(t: float) -> void:
 	if direction.x < 0:
 		tilt -= PI
 		flip = -1
-	if game.hooked == game.HookState.MOUTH or game.net_state=="caught":
+	if game.hooked == game.HookState.MOUTH or game.net_state=="caught" or game.landing:
 		tilt += sin(t * 45) * 0.13
 		position.y += int(sin(t * 32) * 1.5)
 	elif game.velocity.length() > 5:
@@ -261,6 +261,15 @@ func _player(t: float) -> void:
 	draw_set_transform(position, tilt, Vector2(flip, 1))
 	draw_texture(fish_texture, Vector2(-12,-6))
 	draw_set_transform(Vector2.ZERO)
+	if game.hooked==game.HookState.HOOKED and not game.landing:
+		var pull: Vector2 = game.line_pull_velocity()
+		if pull.length()>2:
+			var direction_to_line := pull.normalized()
+			var pointer := position+direction_to_line*(23+fmod(t*12,9))
+			draw_line(pointer-direction_to_line*4+direction_to_line.orthogonal()*3,pointer,RED,1)
+			draw_line(pointer-direction_to_line*4-direction_to_line.orthogonal()*3,pointer,RED,1)
+		if not game.latched and position.y<125:
+			draw_rect(Rect2(game.baits[game.bound_bait].home.x-35,57,70,4),Color(RED,0.4+0.2*sin(t*9)))
 	if game.result_flash > 0:
 		var radius: float = (0.7 - game.result_flash) * 25 + 12
 		draw_arc(position, radius, 0, TAU, 16, MINT if game.result_good else RED, 1)
@@ -344,7 +353,7 @@ func _hud(t: float) -> void:
 	label_at(Vector2(272,15), "吸力 %d%%" % int(game.power*100), 11, CREAM)
 	draw_rect(Rect2(272,22,68,3), Color("335762"))
 	draw_rect(Rect2(272,22,68*game.power,3), GOLD)
-	label_at(Vector2(366,15), "加速" if game.sprinting else ("恢复" if game.sprint_exhausted else "体力"), 11, GOLD if game.sprinting else CREAM)
+	label_at(Vector2(366,15), "加速" if game.sprinting else ("抗拉" if game.resisting else ("乏力" if game.stamina<20 else "体力")), 11, GOLD if game.sprinting or game.resisting else CREAM)
 	draw_rect(Rect2(366,22,70,3), Color("335762"))
 	draw_rect(Rect2(366,22,70*game.stamina/100,3), GOLD if game.sprinting else (RED if game.sprint_exhausted else MINT))
 	var remaining := maxi(0, int(ceil(game.TIME_LIMIT-game.clock)))
@@ -362,11 +371,11 @@ func _hud(t: float) -> void:
 	if game.hooked == game.HookState.HOOKED:
 		panel(Rect2(246,62,148,43))
 		label_at(Vector2(254,76), "张力 %d%%" % int(game.tension*100), 11, CREAM)
-		label_at(Vector2(325,76), "缠线 ×%d" % game.wraps.size() if game.latched else "上钩", 10, MINT if game.latched else RED)
+		label_at(Vector2(325,76), "缠线 ×%d" % game.wraps.size() if game.latched else ("提离水面" if game.landing else "收鱼中"), 10, MINT if game.latched else RED)
 		draw_rect(Rect2(254,83,132,6), Color("335762"))
 		draw_rect(Rect2(254,83,132*game.tension,6), MINT.lerp(RED,game.tension))
 		var spool := "放线 ↓" if game.reel_speed>0.5 else ("收线 ↑" if game.reel_speed < -0.5 else "稳线")
-		label_at(Vector2(254,100), "自动"+spool, 9, Color("9cbbb4"))
+		label_at(Vector2(254,100), spool+(" · 缠绕减力" if game.latched else " · 向水面牵引"), 9, Color("9cbbb4"))
 		if game.high_age > 0:
 			draw_rect(Rect2(246,108,148*minf(1,game.high_age/3),3), RED)
 	if not game.qte.is_empty() or game.qte_result_age>0: _qte(t)
@@ -437,7 +446,7 @@ func _qte(t: float) -> void:
 		if game.qte_age<0.4: instruction="准备…"
 		elif success_zone: instruction="现在按空格" if kind=="wrap" else "现在按 E"
 		label_at(origin+Vector2(14,187),instruction,12,green if success_zone else CREAM)
-		var detail := "成功自动缠绕一圈" if kind=="wrap" else ("移动保持低张力" if kind=="slack" else "抓住机会吐出鱼钩")
+		var detail := "边游动抗拉，边保持接触" if kind=="wrap" else ("移动保持低张力" if kind=="slack" else "抓住机会吐出鱼钩")
 		label_at(origin+Vector2(14,204),detail,10,Color("9cbbb4"))
 
 func _track_point(path: PackedVector2Array, progress: float) -> Vector2:
