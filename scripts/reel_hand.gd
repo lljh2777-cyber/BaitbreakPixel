@@ -2,7 +2,9 @@ extends RefCounted
 
 const Sprite=preload("res://assets/first_person/left_reel_hands_v016.png")
 const Hand=preload("res://scripts/angler_hand.gd")
-const SIZE:=76.0
+# Match the visible palm size to the reference right hand; keep the grip
+# as the scale origin so resizing cannot pull the fingers off the reel.
+const SIZE:=104.0
 const GRIP:=Vector2(0.805,0.405)
 const PINCH:=Vector2(0.80,0.40)
 var texture:ViewportTexture
@@ -27,7 +29,7 @@ static func pose(right:Dictionary,rig:RefCounted) -> Dictionary:
 	var reach:=smoothstep(0,1,rig.reel_hand_amount)
 	var target:=adjuster if paying else crank
 	var angle:float=right.angle*0.35+(sin(rig.release_phase)*0.10 if paying else sin(rig.reel_phase)*0.065)
-	var grip:=target+Vector2(-14,70)*(1-reach)
+	var grip:=target+Vector2(-14,100)*(1-reach)
 	return {"hub":hub,"crank":crank,"adjuster":adjuster,"grip":grip,"angle":angle,"cell":1 if paying else 0,"pivot":PINCH if paying else GRIP,"reach":reach}
 
 static func sprite_point(local:Vector2,state:Dictionary) -> Vector2:
