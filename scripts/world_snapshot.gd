@@ -1,7 +1,7 @@
 extends RefCounted
 
 # Explicit, versioned value schema. Local views, input sources and profiles are excluded.
-const SCHEMA := 4
+const SCHEMA := 5
 const MAP_ID := "pond_v1"
 const WORLD_FIELDS: Array[String] = [
 	"fish",
@@ -144,6 +144,13 @@ const RIG_FIELDS: Array[String] = [
 	"anchor_before",
 	"line_sway",
 	"sway_speed",
+	"surface_x",
+	"surface_velocity",
+	"surface_live",
+	"reel_phase",
+	"release_phase",
+	"reel_hand_mode",
+	"reel_hand_amount",
 ]
 
 static func capture(world: Node2D) -> Dictionary:
@@ -188,6 +195,9 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 	if not snapshot.get("rng_seed") is int or not snapshot.get("rng_state") is int: return false
 	var state: Dictionary=snapshot.state
 	if not fields_match(world,state,WORLD_FIELDS) or not fields_match(world.angler,snapshot.rig,RIG_FIELDS): return false
+	if snapshot.rig.surface_x<0 or snapshot.rig.surface_x>640 or absf(snapshot.rig.surface_velocity)>10000: return false
+	if not snapshot.rig.reel_hand_mode in [-1,0,1] or snapshot.rig.reel_hand_amount<0 or snapshot.rig.reel_hand_amount>1: return false
+	if snapshot.rig.reel_phase<0 or snapshot.rig.reel_phase>=TAU or snapshot.rig.release_phase<0 or snapshot.rig.release_phase>=TAU: return false
 	if not state.ruleset in ["survival","duel"] or state.simulation_tick<0: return false
 	if not state.winner_role in ["","fish","angler"] or state.match_over!=(state.winner_role!=""): return false
 	if state.hooked<0 or state.hooked>2 or state.bound_bait < -1 or state.bound_bait>=4: return false

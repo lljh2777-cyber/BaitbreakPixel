@@ -33,6 +33,12 @@ func sample(now: float) -> Node2D:
 	world.fish_before=world.fish-(Vector2(b.fish)-Vector2(b.fish_before))
 	world.net_capture=lerpf(a.net_capture,b.net_capture,ratio) if a.net_state=="sweep" and b.net_state=="sweep" else b.net_capture
 	world.angler.x=lerpf(previous.rig.x,current.rig.x,ratio)
+	world.angler.line_sway=lerpf(previous.rig.line_sway,current.rig.line_sway,ratio)
+	world.angler.surface_x=lerpf(previous.rig.surface_x,current.rig.surface_x,ratio) if previous.rig.surface_live==current.rig.surface_live else current.rig.surface_x
+	world.angler.surface_velocity=lerpf(previous.rig.surface_velocity,current.rig.surface_velocity,ratio)
+	world.angler.reel_phase=fposmod(lerp_angle(previous.rig.reel_phase,current.rig.reel_phase,ratio),TAU)
+	world.angler.release_phase=fposmod(lerp_angle(previous.rig.release_phase,current.rig.release_phase,ratio),TAU)
+	world.angler.reel_hand_amount=lerpf(previous.rig.reel_hand_amount,current.rig.reel_hand_amount,ratio) if previous.rig.reel_hand_mode==current.rig.reel_hand_mode else current.rig.reel_hand_amount
 	for index in world.baits.size():
 		var old: Dictionary=a.baits[index]
 		var latest: Dictionary=b.baits[index]

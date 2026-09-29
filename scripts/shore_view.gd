@@ -4,7 +4,9 @@ extends RefCounted
 const Lake = preload("res://assets/first_person/sunset_lake.png")
 const Layout = preload("res://scripts/pond_layout.gd")
 const Hand = preload("res://scripts/angler_hand.gd")
+const ReelHand = preload("res://scripts/reel_hand.gd")
 var hand := Hand.new()
+var reel_hand := ReelHand.new()
 const SCALE := Vector2(0.925,0.35)
 const ORIGIN := Vector2(24,213)
 const WATER_LEVEL := 55.0
@@ -43,7 +45,7 @@ static func tackle_pose(world: Node2D, t: float) -> Dictionary:
 	var load: float=world.tension if hooked else 0
 	var reel_speed: float=world.reel_speed if hooked else world.angler.free_reel_speed
 	# The existing replicated sway gives the held rig a small, damped follow-through.
-	var held_x: float=world.angler.x+world.angler.line_sway*0.8
+	var held_x: float=world.angler.x+world.angler.line_sway*0.2
 	var pose := Hand.pose(inverse_lerp(18,588,held_x),t,reel_speed)
 	var rod := rod_points(pose,load,world.effort_multiplier("angler"),float_position(world,t))
 	return {"hand":pose,"rod":rod,"tip":rod[-1],"load":load,"reel_speed":reel_speed}
@@ -62,8 +64,7 @@ static func float_position(world: Node2D, t: float) -> Vector2:
 	var target := anchor+Vector2(0,150)
 	if index>=0: target=world.mouth() if world.bound_bait==index else Vector2(world.baits[index].pos)
 	if world.hooked==world.HookState.HOOKED and world.rope_path.size()>2: target=world.rope_path[1]
-	var ratio := clampf((WATER_LEVEL-anchor.y)/maxf(1,target.y-anchor.y),0,1)
-	var x := anchor.lerp(target,ratio).x
+	var x:float=world.angler.surface_x if world.angler.surface_live else target.x
 	var dip: float=world.tension*1.7 if world.hooked==world.HookState.HOOKED else 0.0
 	if world.hooked==world.HookState.MOUTH: dip=3.5
 	return Vector2(to_screen(Vector2(x,WATER_LEVEL),world).x,ORIGIN.y+sin(t*2.2)*0.6+dip)
@@ -72,6 +73,19 @@ static func ellipse(center: Vector2, radii: Vector2, count: int=32) -> PackedVec
 	var path := PackedVector2Array()
 	for index in count+1: path.append((center+Vector2.from_angle(index*TAU/float(count))*radii).round())
 	return path
+
+static func surface_line(world: Node2D, tip: Vector2, end: Vector2) -> PackedVector2Array:
+	var load:float=world.tension if world.hooked==world.HookState.HOOKED else 0.35
+	var slack:=0.0
+	if world.hooked==world.HookState.HOOKED:
+		slack=maxf(0,world.rope_length-world.Rope.length_of(world.rope_path))
+	var sag:=lerpf(13,1.5,load)+minf(slack*0.22,25)
+	var trail:float=clampf(-world.angler.surface_velocity*0.11,-12,12)*(1-load*0.7)
+	var line:=PackedVector2Array()
+	for part in 33:
+		var ratio:=part/32.0
+		line.append(tip.lerp(end,ratio)+Vector2(trail*sin(ratio*PI),sag*4*ratio*(1-ratio)))
+	return line
 
 static func rod_points(pose: Dictionary, load: float, strength: float, pull_target: Vector2) -> PackedVector2Array:
 	var axis: Vector2=pose.axis
@@ -157,16 +171,14 @@ func _tackle(view: Node2D, world: Node2D, t: float) -> void:
 		var ratio: float=clampf(world.angler.cast_age/world.angler.CAST_SECONDS,0,1)
 		line_end=tip.lerp(float_at,ratio)-Vector2(0,sin(ratio*PI)*17)
 	if index>=0 or world.angler.casting:
-		var line := PackedVector2Array()
-		for part in 25:
-			var ratio := part/24.0
-			line.append((tip.lerp(line_end,ratio)+Vector2(sin(ratio*PI)*(1-load)*(2+world.angler.line_sway*0.16),ratio*(1-ratio)*(1-load)*10)).round())
+		var line := surface_line(world,tip,line_end)
+		for part in line.size(): line[part]=line[part].round()
 		view.draw_polyline(line,Color(CREAM,0.85),1)
 		if not world.angler.casting and not world.landing and not (world.net_state=="caught" and world.fish.y<WATER_LEVEL):
 			for ring in 2:
 				var age := fmod(t*0.6+ring*0.5,1)
 				view.draw_polyline(ellipse(float_at,Vector2(8+age*12,2+age*3)),Color(CREAM,(1-age)*0.44),1)
-		var angle := sin(t*(9 if world.hooked!=world.HookState.FREE else 2))*0.13
+		var angle := clampf(world.angler.surface_velocity*0.006,-0.32,0.32)+sin(t*2.2)*0.035
 		view.draw_set_transform(line_end.round(),angle)
 		view.draw_line(Vector2(0,-13),Vector2(0,-5),INK,3)
 		view.draw_line(Vector2(0,-12),Vector2(0,-6),GOLD,1)
@@ -177,6 +189,7 @@ func _tackle(view: Node2D, world: Node2D, t: float) -> void:
 		view.draw_set_transform(Vector2.ZERO)
 	hand.draw_rod(view,tackle.rod)
 	hand.draw(view,pose,t,reel_speed)
+	reel_hand.draw(view,pose,world)
 
 func _net(view: Node2D, world: Node2D, _t: float) -> void:
 	if world.manual_net and world.net_state in ["prepare","warning","sweep","miss","withdraw","caught"]:

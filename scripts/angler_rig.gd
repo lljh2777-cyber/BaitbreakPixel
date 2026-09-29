@@ -23,6 +23,13 @@ var previous_anchor := Vector2(232,48)
 var anchor_before := Vector2(232,48)
 var line_sway := 0.0
 var sway_speed := 0.0
+var surface_x := 232.0
+var surface_velocity := 0.0
+var surface_live := false
+var reel_phase := 0.0
+var release_phase := 0.0
+var reel_hand_mode := 0
+var reel_hand_amount := 0.0
 const CAST_SECONDS := 0.7
 
 func reset() -> void:
@@ -48,6 +55,58 @@ func reset() -> void:
 	anchor_before=anchor()
 	line_sway=0
 	sway_speed=0
+	surface_x=anchor().x
+	surface_velocity=0
+	surface_live=false
+	reel_phase=0
+	release_phase=0
+	reel_hand_mode=0
+	reel_hand_amount=0
+
+func surface_target(game: Node2D) -> Vector2:
+	if game.bound_bait>=0:
+		if game.rope_path.size()>2: return game.rope_path[1]
+		return game.mouth()
+	for bait in game.baits:
+		if bait.hook and bait.active and not bait.removed: return bait.pos
+	return Vector2(INF,INF)
+
+func step_tackle_feedback(game: Node2D, delta: float) -> void:
+	if not game.uses_mobile_tackle(): return
+	var target := surface_target(game)
+	if casting:
+		surface_x=cast_to.x; surface_velocity=0; surface_live=false
+	elif not target.is_finite():
+		surface_live=false; surface_velocity=0
+	else:
+		if not surface_live:
+			surface_x=target.x; surface_velocity=0; surface_live=true
+		# A buoy has its own momentum. The submerged hook/fish supplies most of
+		# its lateral pull; rod motion reaches it through a tension-dependent spring.
+		var load:float=game.tension if game.hooked==game.HookState.HOOKED else 0.35
+		var goal := lerpf(anchor().x,target.x,0.78)
+		var count := maxi(1,ceili(delta*120))
+		for part in count:
+			var dt := delta/count
+			var current:float=game.water_velocity(Vector2(surface_x,60)).x
+			var relative := surface_velocity-current
+			var drag := relative*(4.5+absf(relative)*0.025)
+			surface_velocity+=((goal-surface_x)*(4.5+load*13)-drag)*dt
+			surface_x+=surface_velocity*dt
+			if surface_x<20 or surface_x>620:
+				surface_x=clampf(surface_x,20,620); surface_velocity=0
+	var speed:float=game.reel_speed if game.hooked==game.HookState.HOOKED else 0.0
+	var desired := 0
+	if game.hooked==game.HookState.HOOKED and not game.landing and not net_held and game.net_state!="caught" and absf(speed)>0.5:
+		desired=-1 if speed<0 else 1
+	# Integrate phase, not elapsed*speed: slowing, reversing and pausing never
+	# teleport the handle or make the left hand jump to another point on its orbit.
+	reel_phase=fposmod(reel_phase+maxf(0,-speed)/36*TAU*1.3*delta,TAU)
+	release_phase=fposmod(release_phase+maxf(0,speed)/90*TAU*0.7*delta,TAU)
+	if reel_hand_mode==0: reel_hand_mode=desired
+	var reaching := desired!=0 and desired==reel_hand_mode
+	reel_hand_amount=move_toward(reel_hand_amount,1.0 if reaching else 0.0,delta*(5 if reaching else 6))
+	if reel_hand_amount==0: reel_hand_mode=desired
 
 func anchor() -> Vector2: return Vector2(x+26,48)
 
