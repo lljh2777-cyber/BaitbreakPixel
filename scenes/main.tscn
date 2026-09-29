@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://scripts/pond.gd" id="1_wf55c"]
+[ext_resource type="Script" path="res://scripts/pond.gd" id="1_w6r8r"]
 
 [node name="PixelPond" type="Node2D" unique_id=1565850568]
-script = ExtResource("1_wf55c")
+script = ExtResource("1_w6r8r")

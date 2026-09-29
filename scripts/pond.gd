@@ -7,6 +7,8 @@ const Sound = preload("res://scripts/sound.gd")
 const FishBrain = preload("res://scripts/fish_brain.gd")
 const AnglerBrain = preload("res://scripts/angler_brain.gd")
 const LocalInput = preload("res://scripts/local_input.gd")
+const Network = preload("res://scripts/network_session.gd")
+var network: Node
 var fish_brain := FishBrain.new()
 var angler_brain := AnglerBrain.new()
 var local_input := LocalInput.new()
@@ -31,8 +33,13 @@ var save_path := "user://pixel.cfg"
 var save_error := OK
 var capture_mode := ""
 var capture_frame := 0
+var offline_rules: Dictionary={}
 
 func reset(is_challenge: bool, role: String = "fish") -> void:
+	if is_instance_valid(network) and network.active(): network.close(true)
+	if shared_session and not offline_rules.is_empty():
+		for key in offline_rules: set(key,offline_rules[key])
+		offline_rules.clear()
 	player_role="angler" if role=="angler" else "fish"
 	shared_session=false
 	fish_source="ai" if player_role=="angler" else "local"
@@ -48,6 +55,9 @@ func reset(is_challenge: bool, role: String = "fish") -> void:
 	menu.close()
 
 func start_shared_session(local_role: String, config: Dictionary) -> void:
+	if not shared_session:
+		for key in ["slack_hold_seconds","mouth_window_seconds","break_hold_seconds","practice_line_sensitivity","practice_line_force","water_strength"]:
+			offline_rules[key]=get(key)
 	player_role="angler" if local_role=="angler" else "fish"
 	shared_session=true
 	fish_source="external"
@@ -86,6 +96,11 @@ func _ready() -> void:
 	add_child(sound)
 	feedback_requested.connect(sound.play)
 	match_ended.connect(_present_result)
+	network=Network.new()
+	network.game=self
+	add_child(network)
+	network.changed.connect(_network_changed)
+	feedback_requested.connect(network.remember_feedback)
 	view = View.new()
 	view.game = self
 	add_child(view)
@@ -98,7 +113,7 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | side-view | 640x360 | v0.11 | command-driven-world")
+	print("PIXEL_READY | side-view | 640x360 | v0.12 | lan-duel")
 
 func _register_inputs() -> void:
 	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[], "use":[KEY_E], "slow":[KEY_Q], "qte":[KEY_SPACE]}
@@ -136,11 +151,11 @@ func save_profile() -> void:
 	file.set_value("record", "best", best_score)
 	file.set_value("record", "wins", wins)
 	file.set_value("record","angler_wins",angler_wins)
-	file.set_value("practice", "line_sensitivity", practice_line_sensitivity)
-	file.set_value("practice", "line_force", practice_line_force)
-	file.set_value("timing","slack_hold",slack_hold_seconds)
-	file.set_value("timing","mouth_window",mouth_window_seconds)
-	file.set_value("timing","break_hold",break_hold_seconds)
+	file.set_value("practice", "line_sensitivity", offline_rules.get("practice_line_sensitivity",practice_line_sensitivity))
+	file.set_value("practice", "line_force", offline_rules.get("practice_line_force",practice_line_force))
+	file.set_value("timing","slack_hold",offline_rules.get("slack_hold_seconds",slack_hold_seconds))
+	file.set_value("timing","mouth_window",offline_rules.get("mouth_window_seconds",mouth_window_seconds))
+	file.set_value("timing","break_hold",offline_rules.get("break_hold_seconds",break_hold_seconds))
 	save_error = file.save(save_path)
 
 func apply_settings() -> void:
@@ -150,9 +165,44 @@ func apply_settings() -> void:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN if fullscreen else DisplayServer.WINDOW_MODE_WINDOWED)
 
 func restart_round() -> void:
-	if not shared_session: reset(challenge,player_role)
+	if is_instance_valid(network) and network.active():
+		if network.status=="finished": network.set_ready(not network.local_ready)
+	elif not shared_session: reset(challenge,player_role)
+
+func return_to_title() -> void:
+	network.close(true)
+	reset(false)
+	menu.open("title")
+
+func _network_changed() -> void:
+	if not is_instance_valid(menu): return
+	if network.status=="failed" and shared_session and match_over: menu.open("result")
+	elif network.status in ["waiting","connecting","failed"]: menu.open("room")
+	elif network.status in ["starting","countdown"]: menu.close()
+
+func network_settings() -> Dictionary:
+	return {"slack_hold":slack_hold_seconds,"mouth_window":mouth_window_seconds,"break_hold":break_hold_seconds,"water_strength":water_strength}
+
+func _network_command() -> Dictionary:
+	var role: String=network.local_role
+	if menu.visible:
+		var neutral: Dictionary=network.Protocol.neutral(role,self)
+		if role=="angler":
+			neutral.net_events=local_input.net_events.duplicate(true)
+			local_input.net_events.clear()
+		return neutral
+	var pointer := get_global_mouse_position()
+	if role=="angler": return local_input.angler_command(self,pointer)
+	network.local_power=clampf(network.local_power+local_input.power_steps*0.1,0.1,1)
+	var command := local_input.fish_command(network.display_world(),pointer)
+	command.power=network.local_power
+	return command
 
 func _physics_process(_delta: float) -> void:
+	if is_instance_valid(network) and network.active():
+		network.poll()
+		if network.active(): network.tick(TICK_SECONDS,_network_command() if network.status=="playing" else {})
+		return
 	if shared_session or menu.visible or paused or match_over: return
 	var pointer := get_global_mouse_position()
 	var fish_command: Dictionary=fish_brain.command(self,TICK_SECONDS) if fish_source=="ai" else local_input.fish_command(self,pointer)
@@ -177,12 +227,14 @@ func hint() -> String:
 		if latched: return "已缠线 · 靠近线圈保持低张力，浮漂到绿区按空格"
 		if stamina<20: return "体力不足 · 缠线减轻拉力，或顺线游动恢复"
 		return "正在被拉向水面 · 逆线游动抗拉，接触草木石后空格缠线"
+	if manual_net and net_state in ["prepare","warning"]: return "对方正在展开抄网 · 留意网口，游开一段距离"
+	if manual_net and net_state=="sweep": return "远离正在移动的网口 · 木石可以挡住抄网"
 	if net_state == "prepare": return "抄网准备入水 · 留意红光方向"
 	if net_state in ["warning", "sweep"]: return "上方下探 · 横向游离红色区域" if net_kind=="drop" else "横向扫网 · 向上或向下游离红色区域"
 	if returning: return "正在回巢 %.1f / 2.0 秒" % home_age
 	if can_home(): return "按 E 并停留 2 秒回巢"
 	if score >= (TARGET if challenge else 18) - 0.001: return "食物够了！回左下角薄荷色巢穴按 E"
-	if notice_age > 0: return notice
+	if notice_age > 0 and not uses_mobile_tackle(): return notice
 	if cycle_phase == "warning": return "闪烁的饵即将收回，剩余颗粒下次继续"
 	if cycle_phase == "refill": return "正在补饵，可前往另一侧取食"
 	if vegetation_drag(fish) < 1: return "浓密水草中 · 游动稍慢，向上游出草丛"
@@ -201,7 +253,7 @@ func angler_hint() -> String:
 		if latched: return "鱼线已缠住 · W 收线压缩松口机会，E + 左键拖动抄网"
 		return "W 收线 · S 放线 · A/D 移动钓位 · 按住 E + 左键拖动抄网"
 	if notice_age>0: return notice
-	return "Q 下钩 / 补饵 · W 收线 / S 放线 · E + 左键拖动抄网 · F3 时间设置"
+	return "Q 下钩 / 补饵 · W/S 收放线 · E + 左键拖动抄网" if shared_session else "Q 下钩 / 补饵 · W 收线 / S 放线 · E + 左键拖动抄网 · F3 时间设置"
 
 func _unhandled_input(event: InputEvent) -> void:
 	if menu.visible: return

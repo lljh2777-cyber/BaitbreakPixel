@@ -6,8 +6,15 @@ var previous := "title"
 var timing_previous := "pause"
 var content: Control
 var first_button: Button
+var net_address := "127.0.0.1"
+var net_port := "24712"
+var net_role := "fish"
+var room_status: Label
+var ready_button: Button
+var room_roles: Label
 const CREAM := Color("fff0cd")
 const GOLD := Color("ffd379")
+const MINT := Color("8de0bd")
 const INK := Color("142e39")
 
 func _ready() -> void:
@@ -53,6 +60,8 @@ func open(which: String) -> void:
 	var frame := Panel.new()
 	frame.position = Vector2(28,54) if which == "title" else Vector2(136,33)
 	frame.size = Vector2(294,280) if which == "title" else Vector2(368,296)
+	if which=="title": frame.position.y=29; frame.size.y=306
+	if which in ["network","room"]: frame.position=Vector2(91,20); frame.size=Vector2(458,322)
 	frame.add_theme_stylebox_override("panel",style(INK,Color("527b7b")))
 	content.add_child(frame)
 	first_button = null
@@ -64,6 +73,8 @@ func open(which: String) -> void:
 		"practice": _practice(frame)
 		"timing": _timing(frame)
 		"result": _result(frame)
+		"network": _network(frame)
+		"room": _room(frame)
 	if first_button: first_button.grab_focus()
 
 func close() -> void:
@@ -105,20 +116,22 @@ func _title(frame: Control) -> void:
 	button(frame,"小鱼挑战   ·   对抗钓鱼人 AI",104,func(): game.reset(true),true,254)
 	button(frame,"钓鱼人挑战   ·   对抗小鱼 AI",138,func(): game.reset(true,"angler"),false,254)
 	button(frame,"自由练习   ·   小鱼 / 调节鱼线",172,func(): game.reset(false),false,254)
-	button(frame,"操作说明",206,func(): open("help"),false,254)
-	button(frame,"设置",240,func(): open("settings"),false,124)
-	var quit := button(frame,"退出",240,func(): get_tree().quit(),false,124)
+	button(frame,"双人联机   ·   局域网 / 本机",206,func(): open("network"),false,254)
+	button(frame,"操作说明",240,func(): open("help"),false,254)
+	button(frame,"设置",274,func(): open("settings"),false,124)
+	var quit := button(frame,"退出",274,func(): get_tree().quit(),false,124)
 	quit.position.x = 150
-	text(content,"0.11 · 像素池塘",Vector2(391,280),10,Color("91afa7"))
+	text(content,"0.12 · 像素池塘",Vector2(391,280),10,Color("91afa7"))
 	text(content,"小鱼 · 吃饵脱身",Vector2(391,119),18,GOLD)
 	text(content,"人类 · 收线抄网",Vector2(391,159),18,GOLD)
-	text(content,"另一方由 AI 控制",Vector2(391,199),18,GOLD)
+	text(content,"独自练习 · 双人对战",Vector2(375,199),16,GOLD)
 	text(content,"6 分钟 · 一场拉锯",Vector2(391,239),12,CREAM)
 
 func _pause(frame: Control) -> void:
 	text(frame,"水下小憩",Vector2(20,19),24)
 	button(frame,"继续本局",57,close,true)
-	button(frame,"重新开始本局",89,func(): game.restart_round())
+	if not game.shared_session: button(frame,"重新开始本局",89,func(): game.restart_round())
+	else: text(frame,"联机对局继续运行，菜单不会暂停",Vector2(20,108),12,GOLD)
 	var offset := 0
 	if not game.challenge and not game.shared_session:
 		button(frame,"练习调节 · 收放线",121,func(): open("practice"),false,158)
@@ -127,8 +140,8 @@ func _pause(frame: Control) -> void:
 		offset=32
 	button(frame,"操作说明",121+offset,func(): open("help"))
 	button(frame,"设置",153+offset,func(): open("settings"))
-	button(frame,"返回标题",185+offset,func(): open("title"))
-	text(frame,"Esc 继续 · 切出窗口会自动暂停",Vector2(20,258),11,Color("91afa7"))
+	button(frame,"离开房间" if game.shared_session else "返回标题",185+offset,func(): game.return_to_title())
+	text(frame,"Esc 返回对局" if game.shared_session else "Esc 继续 · 切出窗口会自动暂停",Vector2(20,258),11,Color("91afa7"))
 
 func _help(frame: Control) -> void:
 	var human: bool=game.player_role=="angler"
@@ -158,6 +171,9 @@ func _help(frame: Control) -> void:
 			"6 分钟内提鱼出水获胜；F3 调节逃脱时间",
 			"鱼吃满 60 回巢则失败 · R 重开 / Esc 暂停"
 		]
+	if game.shared_session:
+		lines[8]="6 分钟内提鱼获胜 · 鱼回巢或超时则败" if human else "吃满回巢，或存活到超时，即可获胜"
+		lines[9]="Esc 打开菜单 · 联机对局不会暂停"
 	for index in lines.size(): text(frame,lines[index],Vector2(20,50+index*19),12,CREAM)
 	button(frame,"明白了",251,func(): open(previous),true)
 
@@ -178,7 +194,8 @@ func _settings(frame: Control) -> void:
 		volume_label.text = "音量 %d%%" % int(value)
 	)
 	button(frame,"切换全屏 / 窗口",155,func(): game.fullscreen = not game.fullscreen; game.apply_settings())
-	button(frame,"时间窗口调节 · F3",199,func(): open("timing"))
+	var timing_button := button(frame,"本局时间设置由房主确定" if game.shared_session else "时间窗口调节 · F3",199,func(): open("timing"))
+	timing_button.disabled=game.shared_session
 	button(frame,"保存并返回",251,func(): game.save_profile(); open(previous),true)
 
 func _timing(frame: Control) -> void:
@@ -253,19 +270,21 @@ func _practice(frame: Control) -> void:
 func _result(frame: Control) -> void:
 	var human: bool=game.player_role=="angler"
 	var title: String=("成功捕获" if game.won else "鱼逃走了") if human else ("安全回巢" if game.won else "这次没能逃掉")
+	if not human and game.won and game.reason=="timeout": title="存活到最后"
 	text(frame,title,Vector2(20,18),25,GOLD if game.won else Color("f58375"))
 	var why := "带着食物回家，池塘又安静了。"
 	if game.reason == "net": why = "被抄网捞起了。下次早点离开红色区域。"
 	elif game.reason == "landed": why = "被提到水面。保持深度，寻找脱钩机会。"
 	elif game.reason == "timeout": why = "时间到了。下次吃够食物就及时回巢。"
+	if not human and game.won and game.reason=="timeout": why="时间耗尽，你躲过了这次追捕。"
 	if human:
 		why="收拢网袋，把鱼带出了水面。" if game.reason=="net" else ("成功收线，将鱼提离水面。" if game.reason=="landed" else ("小鱼吃够食物，抢先返回了巢穴。" if game.reason=="home" else "时间到了，小鱼仍然自由。"))
 	text(frame,why,Vector2(20,62),12)
 	text(frame,("鱼吃到的食物   %.1f" if human else "带回食物   %.1f") % game.score,Vector2(20,102),16,GOLD)
 	text(frame,"用时 %02d:%02d   ·   上钩 %d 次 / 逃脱 %d 次" % [int(game.elapsed)/60,int(game.elapsed)%60,game.hook_count,game.escape_count],Vector2(20,134),12)
 	text(frame,"钓鱼成功 %d 次" % game.angler_wins if human else "挑战成功 %d 次   ·   最佳收获 %.1f" % [game.wins,game.best_score],Vector2(20,160),12,Color("91afa7"))
-	button(frame,"再来一局",207,func(): game.restart_round(),true)
-	button(frame,"返回标题",245,func(): open("title"))
+	ready_button=button(frame,"准备下一局" if game.shared_session else "再来一局",207,func(): game.restart_round(),true)
+	button(frame,"离开房间" if game.shared_session else "返回标题",245,func(): game.return_to_title())
 
 func _input(event: InputEvent) -> void:
 	if not visible or not event is InputEventKey or not event.pressed or event.echo: return
@@ -274,4 +293,67 @@ func _input(event: InputEvent) -> void:
 			if screen in ["settings","practice","timing"]: game.save_profile()
 			open(timing_previous if screen=="timing" else previous)
 		elif screen == "pause": close()
+		elif screen=="network": open("title")
 		get_viewport().set_input_as_handled()
+
+func _network(frame: Control) -> void:
+	text(frame,"双人联机",Vector2(20,16),24)
+	text(frame,"一人扮演鱼，一人钓鱼 · 双方准备后开始",Vector2(20,50),12,CREAM,418)
+	text(frame,"房主地址",Vector2(20,87),12)
+	var address_input := LineEdit.new()
+	address_input.name="HostAddress"
+	address_input.text=net_address
+	address_input.placeholder_text="例如 192.168.1.10"
+	address_input.position=Vector2(99,78); address_input.size=Vector2(218,28)
+	frame.add_child(address_input)
+	address_input.text_changed.connect(func(value: String): net_address=value)
+	text(frame,"端口",Vector2(330,62),11)
+	var port_input := LineEdit.new()
+	port_input.name="HostPort"; port_input.text=net_port; port_input.max_length=5
+	port_input.position=Vector2(329,78); port_input.size=Vector2(109,28)
+	frame.add_child(port_input)
+	port_input.text_changed.connect(func(value: String): net_port=value)
+	text(frame,"房主扮演",Vector2(20,126),12)
+	var role_input := OptionButton.new()
+	role_input.name="HostRole"
+	role_input.add_item("小鱼"); role_input.add_item("钓鱼人")
+	role_input.selected=0 if net_role=="fish" else 1
+	role_input.position=Vector2(99,116); role_input.size=Vector2(150,28)
+	frame.add_child(role_input)
+	role_input.item_selected.connect(func(value: int): net_role="fish" if value==0 else "angler")
+	button(frame,"创建房间",158,func(): game.network.host_game(net_role,int(net_port),game.network_settings()),true,199)
+	var join := button(frame,"加入房间",158,func(): game.network.join_game(net_address,int(net_port)),false,199)
+	join.position.x=239
+	text(frame,"同一电脑：开两个游戏，地址填 127.0.0.1",Vector2(20,204),12,CREAM,418)
+	text(frame,"同一局域网：加入者填写房主电脑的 IP",Vector2(20,226),12,CREAM,418)
+	text(frame,"时间窗口沿用房主当前设置；本局中锁定",Vector2(20,248),11,Color("91afa7"),418)
+	button(frame,"返回",276,func(): open("title"),false,418)
+
+func _room(frame: Control) -> void:
+	text(frame,"联机房间",Vector2(20,17),24)
+	room_status=text(frame,"",Vector2(20,61),13,GOLD,418)
+	room_status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
+	room_status.size.y=58
+	room_roles=text(frame,"",Vector2(20,120),14,CREAM,418)
+	if game.network.is_host and game.network.active():
+		var ips: Array[String]=[]
+		for ip in IP.get_local_addresses():
+			if "." in ip and not ip.begins_with("127.") and not ip.begins_with("169.254."): ips.append(ip)
+		text(frame,"房主 IP："+(" / ".join(ips.slice(0,2)) if not ips.is_empty() else "127.0.0.1"),Vector2(20,160),12,MINT,418)
+		text(frame,"端口 %d · 本机加入填 127.0.0.1" % game.network.port,Vector2(20,183),12,CREAM,418)
+	else: text(frame,"地址 %s : %d" % [game.network.address,game.network.port],Vector2(20,161),12,MINT,418)
+	ready_button=button(frame,"准备",218,func(): game.network.set_ready(not game.network.local_ready),true,418)
+	button(frame,"返回标题",276,func(): game.return_to_title(),false,418)
+
+func _process(_delta: float) -> void:
+	if not visible or not is_instance_valid(game.network): return
+	var net: Node=game.network
+	if screen=="room":
+		if is_instance_valid(room_status): room_status.text=net.message
+		if is_instance_valid(room_roles): room_roles.text="你是%s · 对方%s" % ["小鱼" if net.local_role=="fish" else "钓鱼人","已准备" if net.remote_ready else "未准备"]
+		if is_instance_valid(ready_button):
+			ready_button.disabled=net.status!="waiting" or net.remote_id==0
+			ready_button.text="已准备 · 点击取消" if net.local_ready else "准备"
+	elif screen=="result" and game.shared_session and is_instance_valid(ready_button):
+		ready_button.disabled=not net.active()
+		ready_button.text=("已准备 · 等待对方" if net.local_ready else ("对方已准备 · 再来一局" if net.remote_ready else "准备下一局")) if net.active() else "对方已离开"

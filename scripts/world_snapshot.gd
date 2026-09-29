@@ -1,7 +1,7 @@
 extends RefCounted
 
 # Explicit, versioned value schema. Local views, input sources and profiles are excluded.
-const SCHEMA := 1
+const SCHEMA := 2
 const MAP_ID := "pond_v1"
 const WORLD_FIELDS: Array[String] = [
 	"fish",
@@ -112,6 +112,7 @@ const WORLD_FIELDS: Array[String] = [
 	"match_paused",
 	"simulation_tick",
 	"qte_id",
+	"qte_grace_seconds",
 ]
 const RIG_FIELDS: Array[String] = [
 	"x",
@@ -166,6 +167,14 @@ static func fields_match(object: Object, values: Dictionary, fields: Array[Strin
 		if not values.has(key) or typeof(object.get(key))!=typeof(values[key]): return false
 	return true
 
+static func record_matches(values: Dictionary, reference: Dictionary, excluded: String = "") -> bool:
+	for key in reference:
+		if key==excluded: continue
+		if not values.has(key): return false
+		if (reference[key] is int or reference[key] is float) and (values[key] is int or values[key] is float): continue
+		if typeof(values[key])!=typeof(reference[key]): return false
+	return true
+
 static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 	if snapshot.get("schema")!=SCHEMA or snapshot.get("map_id")!=MAP_ID or not plain(snapshot): return false
 	if not snapshot.get("state") is Dictionary or not snapshot.get("rig") is Dictionary: return false
@@ -177,14 +186,23 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 	if state.hooked<0 or state.hooked>2 or state.bound_bait < -1 or state.bound_bait>=4: return false
 	if state.baits.size()!=4 or state.net_route_next<1 or state.net_route_next>maxi(1,state.net_route.size()): return false
 	if state.target_opacity.size()!=world.targets.size(): return false
+	if state.hooked!=0 and state.bound_bait<0: return false
+	if state.qte_id<0 or not state.qte in ["","entry","slack","wrap"]: return false
+	if not state.net_state in ["wait","rest","prepare","warning","sweep","miss","withdraw","caught"]: return false
+	if state.wrap_target < -1 or state.wrap_target>=world.targets.size(): return false
+	if state.contact_target < -1 or state.contact_target>=world.targets.size(): return false
+	if state.wraps.size()>world.targets.size() or state.baits.size()!=4: return false
+	var bait_reference: Dictionary=world._make_bait(0)
 	for bait in state.baits:
-		if not bait is Dictionary or not bait.get("grains") is Array: return false
-		for key in ["id","home","pos","angle","hook","removed","active","age","budget","tip_before"]:
-			if not bait.has(key): return false
+		if not bait is Dictionary or not bait.get("grains") is Array or bait.grains.size()>2048: return false
+		if not record_matches(bait,bait_reference,"grains"): return false
 		for grain in bait.grains:
-			if not grain is Dictionary: return false
-			for key in ["id","offset","pos","layer","fleck","free","eaten","progress","points"]:
-				if not grain.has(key): return false
+			if not grain is Dictionary or not record_matches(grain,bait_reference.grains[0]): return false
+			if not grain.id is String or grain.id.is_empty() or grain.id.length()>64: return false
+	for wrap in state.wraps:
+		if not wrap is Dictionary: return false
+		if not record_matches(wrap,{"center":Vector2.ZERO,"radii":Vector2.ONE,"entry":Vector2.ZERO,"loop":PackedVector2Array(),"progress":0.0,"target":0}): return false
+		if not wrap.target is int or wrap.target<0 or wrap.target>=world.targets.size() or wrap.loop.size()<2 or wrap.loop.size()>512: return false
 	# Validate before mutating, and never fire sound/result/profile side effects on restore.
 	var detached: Dictionary=bytes_to_var(var_to_bytes(snapshot))
 	for key in WORLD_FIELDS: world.set(key,detached.state[key])

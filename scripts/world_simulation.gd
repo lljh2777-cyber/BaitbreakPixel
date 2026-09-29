@@ -143,6 +143,7 @@ var winner_role := ""
 var match_paused := false
 var simulation_tick := 0
 var qte_id := 0
+var qte_grace_seconds := 0.0
 
 func _init() -> void:
 	targets=Layout.interaction_targets()
@@ -161,7 +162,7 @@ func simulate(delta: float, fish_command: Dictionary, angler_command: Dictionary
 	angler.update(self,delta,angler_input)
 	power=fish_input.power
 	if not movement_locked() and fish_input.aim.length()>0.01: aim=fish_input.aim.normalized()
-	_simulate_fish(delta,fish_input.move,fish_input.suck,fish_input.home,fish_input.dash,fish_input.slow,fish_input.qte)
+	_simulate_fish(delta,fish_input.move,fish_input.suck,fish_input.home,fish_input.dash,fish_input.slow,fish_input.qte,fish_input.qte_at_age)
 
 func capture_snapshot() -> Dictionary: return Snapshot.capture(self)
 
@@ -188,6 +189,7 @@ func reset_world(config: Dictionary = {}) -> void:
 	angler.auto_net=not uses_mobile_tackle()
 	simulation_tick=0
 	qte_id=0
+	qte_grace_seconds=clampf(Commands.number(config.get("qte_grace"),0),0,0.25)
 	match_over=false
 	winner_role=""
 	match_paused=false
@@ -486,7 +488,7 @@ func step(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: 
 	# Compatibility helper for existing gameplay probes; production uses advance_tick.
 	_simulate_fish(delta,movement,sucking,interact,dash,slow,qte_pressed)
 
-func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: bool = false, slow: bool = false, qte_pressed: bool = false) -> void:
+func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: bool = false, slow: bool = false, qte_pressed: bool = false, qte_at_age: float = -1) -> void:
 	if match_paused or match_over or not is_finite(delta) or delta<=0: return
 	simulation_tick+=1
 	elapsed += delta
@@ -535,9 +537,9 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 	if match_over or net_state=="caught": return
 	var was_free := hooked == HookState.FREE
 	if hooked == HookState.MOUTH:
-		_step_qte(delta, qte_pressed)
+		_step_qte(delta, qte_pressed,qte_at_age)
 	elif hooked == HookState.HOOKED:
-		_step_line(delta, qte_pressed and not began_wrap)
+		_step_line(delta, qte_pressed and not began_wrap,qte_at_age)
 	if match_over or landing: return
 	for index in baits.size(): _step_bait(index, delta, feeding and hooked!=HookState.MOUTH, previous_mouth)
 	if hooked != HookState.FREE: returning = false
@@ -629,19 +631,23 @@ func _attach_hook() -> void:
 	_rebuild_rope()
 	rope_length = Rope.length_of(rope_path)
 
-func _step_qte(delta: float, qte_pressed: bool) -> void:
+func _step_qte(delta: float, qte_pressed: bool, judged_age: float = -1) -> void:
 	if qte.is_empty(): return
 	qte_age += delta
-	var progress := qte_progress()
-	if qte_pressed or qte_age >= 2.4:
-		var success := qte_pressed and qte_age >= 0.4 and progress >= qte_zone and progress <= qte_zone + qte_width
+	# Only the authority can supply an age verified against its own QTE history.
+	var age := judged_age if judged_age>=0 else qte_age
+	var progress := clampf((age-0.4)/2.0,0,1)
+	if qte_pressed or qte_age >= 2.4+qte_grace_seconds:
+		var success := qte_pressed and age>=0.4 and age<=2.4 and progress>=qte_zone and progress<=qte_zone+qte_width
 		result_flash = 0.7
 		result_good = success
 		if qte=="wrap":
 			if success: _commit_wrap()
 			else: _fail_wrap()
+			qte_result_progress=progress
 			return
 		_finish_qte_visual(success)
+		qte_result_progress=progress
 		if success:
 			_release_hook(false)
 		else:
@@ -655,7 +661,7 @@ func _step_qte(delta: float, qte_pressed: bool) -> void:
 func qte_progress() -> float:
 	return clampf((qte_age - 0.4) / 2.0, 0, 1)
 
-func _step_line(delta: float, qte_pressed: bool) -> void:
+func _step_line(delta: float, qte_pressed: bool, judged_age: float = -1) -> void:
 	var anchor := line_anchor(bound_bait)
 	var animating := winding()
 	if animating: wraps[-1].progress = minf(1,wraps[-1].progress+delta/WIND_SECONDS)
@@ -695,7 +701,7 @@ func _step_line(delta: float, qte_pressed: bool) -> void:
 	else: landing_age = 0
 	if qte=="wrap":
 		if not touching_target(wrap_target): _fail_wrap()
-		else: _step_qte(delta,qte_pressed)
+		else: _step_qte(delta,qte_pressed,judged_age)
 		return
 	if animating: return
 	if qte == "slack":
@@ -707,7 +713,7 @@ func _step_line(delta: float, qte_pressed: bool) -> void:
 			result_flash = 0.7
 			result_good = false
 			play_feedback("fail")
-		else: _step_qte(delta, qte_pressed)
+		else: _step_qte(delta, qte_pressed,judged_age)
 	else:
 		low_age = low_age + delta if tension < 0.25 and retry_age <= 0 else 0.0
 		if low_age >= slack_hold_seconds:
