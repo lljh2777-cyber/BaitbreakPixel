@@ -43,7 +43,7 @@ static func rod_tip(world: Node2D, t: float) -> Vector2:
 static func tackle_pose(world: Node2D, t: float) -> Dictionary:
 	var hooked: bool=world.hooked==world.HookState.HOOKED
 	var load: float=world.tension if hooked else 0
-	var reel_speed: float=world.reel_speed if hooked else world.angler.free_reel_speed
+	var reel_speed: float=world.angler.feedback_reel_speed(world)
 	# The existing replicated sway gives the held rig a small, damped follow-through.
 	var held_x: float=world.angler.x+world.angler.line_sway*0.2
 	var pose := Hand.pose(inverse_lerp(18,588,held_x),t,reel_speed)

@@ -71,6 +71,17 @@ func surface_target(game: Node2D) -> Vector2:
 		if bait.hook and bait.active and not bait.removed: return bait.pos
 	return Vector2(INF,INF)
 
+func feedback_reel_speed(game: Node2D) -> float:
+	if casting or game.landing or game.net_state=="caught": return 0.0
+	if game.hooked==game.HookState.HOOKED: return game.reel_speed
+	if game.hooked!=game.HookState.FREE: return 0.0
+	# Free tackle has a separate spool. Ignore its cached speed after retrieval
+	# or a broken line, and stop the animation at the physical line limits.
+	if (free_reel_speed>0 and free_line_length>=520) or (free_reel_speed<0 and free_line_length<=45): return 0.0
+	for bait in game.baits:
+		if bait.hook and bait.active and not bait.removed: return free_reel_speed
+	return 0.0
+
 func step_tackle_feedback(game: Node2D, delta: float) -> void:
 	if not game.uses_mobile_tackle(): return
 	var target := surface_target(game)
@@ -95,9 +106,9 @@ func step_tackle_feedback(game: Node2D, delta: float) -> void:
 			surface_x+=surface_velocity*dt
 			if surface_x<20 or surface_x>620:
 				surface_x=clampf(surface_x,20,620); surface_velocity=0
-	var speed:float=game.reel_speed if game.hooked==game.HookState.HOOKED else 0.0
+	var speed:=feedback_reel_speed(game)
 	var desired := 0
-	if game.hooked==game.HookState.HOOKED and not game.landing and not net_held and game.net_state!="caught" and absf(speed)>0.5:
+	if not net_held and absf(speed)>0.5:
 		desired=-1 if speed<0 else 1
 	# Integrate phase, not elapsed*speed: slowing, reversing and pausing never
 	# teleport the handle or make the left hand jump to another point on its orbit.

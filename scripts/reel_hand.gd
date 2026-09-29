@@ -58,7 +58,7 @@ func draw(view:Node2D,right:Dictionary,world:Node2D) -> void:
 	view.draw_rect(Rect2(state.crank.round()-Vector2(3,2),Vector2(6,4)),Color("30251e"))
 	view.draw_rect(Rect2(state.adjuster.round()-Vector2(2,2),Vector2(4,4)),Color("776752"))
 	# The spool turns as line actually travels; paying out does not wind the handle backwards.
-	var phase:float=rig.reel_phase if world.reel_speed<=0 else -rig.release_phase*3
+	var phase:float=rig.reel_phase if rig.feedback_reel_speed(world)<=0 else -rig.release_phase*3
 	for i in 2:
 		var glint:Vector2=state.hub+(Vector2.from_angle(phase+i*PI)*Vector2(4,7)).rotated(right.angle)
 		view.draw_rect(Rect2(glint.round(),Vector2(2,2)),Color("c7c1a9"))
