@@ -58,9 +58,15 @@ func _world(t: float) -> void:
 		for step in range(6):
 			draw_rect(Rect2(shaft * 149 + step * 7 + 21, 55 + step * 43, 16 + step * 3, 43), Color(0.63, 0.89, 0.74, 0.025))
 	for index in range(31):
-		var x := posmod(index * 61 + int(t * 2), 632) + 4
-		var y := 65 + posmod(index * 47 - int(t * (2 + index % 3)), 234)
-		draw_rect(Rect2(x, y, 1 + index % 2, 1), Color(0.65, 0.86, 0.75, 0.35))
+		var base := Vector2(4+posmod(index*61,632),65+posmod(index*47,234))
+		var drifting: Vector2 = (base+game.water_offset(base)*2).round()
+		draw_rect(Rect2(drifting,Vector2(1+index%2,1)),Color(0.65,0.86,0.75,0.35))
+	for index in range(16):
+		var base := Vector2(30+posmod(index*97,580),77+posmod(index*53,220))
+		var drifting: Vector2 = base+game.water_offset(base)*2
+		var flow: Vector2 = game.water_velocity(base)
+		var alpha: float = (0.09+0.055*sin(t*1.3+index))*game.water_strength
+		draw_line(drifting.round(),(drifting-flow*2.4).round(),Color(0.68,0.91,0.85,alpha),1)
 	# Distant silhouettes are muted; detailed foreground silhouettes share collision data.
 	for index in range(15):
 		var x := index*47-16
@@ -152,10 +158,16 @@ func _baits(t: float) -> void:
 		var bait: Dictionary = game.baits[index]
 		if bait.active and bait.hook and not bait.removed and not game.net_blocks_hooks():
 			if game.bound_bait != index:
-				draw_line(Vector2(bait.home.x, 55), Vector2(bait.pos) + Vector2(0, -4), Color("b9d5bf"), 1)
-			var tip: Vector2 = game._tip(index)
+				var filament := PackedVector2Array()
+				var eye: Vector2 = game.hook_point(index,Vector2(-5,-10))
+				for segment in range(17):
+					var ratio := segment/16.0
+					var point := Vector2(bait.home.x,55).lerp(eye,ratio)
+					point.x += sin(ratio*PI)*sin(t*0.75+ratio*2)*2.5*game.water_strength
+					filament.append(point.round())
+				draw_polyline(filament,Color("b9d5bf"),1)
 			var hook := PackedVector2Array([Vector2(-5,-10),Vector2(-5,4),Vector2(-3,7),Vector2(1,7),Vector2(3,5),Vector2(3,1),Vector2.ZERO])
-			for point in hook.size(): hook[point] = (hook[point] + tip).round()
+			for point in hook.size(): hook[point] = game.hook_point(index,hook[point]).round()
 			draw_polyline(hook, RED if game.bound_bait == index else Color("e1e3ce"), 1)
 		var flashing: bool = game.cycle_phase == "warning" and game.cycle_slot == index and int(t * 6) % 2 == 0
 		for grain in bait.grains:
@@ -174,6 +186,9 @@ func _baits(t: float) -> void:
 		if bait.active and not game.menu.visible:
 			var label := "有钩饵" if bait.hook and not bait.removed else "散饵"
 			label_at(Vector2(bait.pos) + Vector2(-17, -14), label, 10, Color("bdd4be"))
+		# A tiny glint remains at the actual tip after the grains are drawn over the hook.
+		if bait.active and bait.hook and not bait.removed and not game.net_blocks_hooks():
+			draw_rect(Rect2(game._tip(index).round(),Vector2.ONE),RED if game.bound_bait==index else CREAM)
 
 func _line_back() -> void:
 	if game.hooked == game.HookState.HOOKED and game.rope_path.size() >= 2:
@@ -223,7 +238,7 @@ func _player(t: float) -> void:
 				var p := start.lerp(mouth, ratio).round()
 				draw_rect(Rect2(p, Vector2(2,1)), MINT)
 	var position: Vector2 = game.fish.round()
-	var tilt := direction.angle()
+	var tilt: float = direction.angle()+game.water_velocity(game.fish).x*0.009
 	var flip := 1.0
 	if direction.x < 0:
 		tilt -= PI
@@ -233,6 +248,11 @@ func _player(t: float) -> void:
 		position.y += int(sin(t * 32) * 1.5)
 	elif game.velocity.length() > 5:
 		position.y += int(sin(t * 18))
+	if game.sprinting:
+		for index in range(7):
+			var life := fmod(t*2.8+index/7.0,1)
+			var wake: Vector2 = position-direction*(13+life*27)+direction.orthogonal()*sin(index*2.7)*5
+			draw_rect(Rect2(wake.round(),Vector2(3,1)),Color(MINT,(1-life)*0.65))
 	draw_set_transform(position, tilt, Vector2(flip, 1))
 	draw_texture(fish_texture, Vector2(-12,-6))
 	draw_set_transform(Vector2.ZERO)
@@ -282,9 +302,9 @@ func _hud(t: float) -> void:
 	label_at(Vector2(272,15), "吸力 %d%%" % int(game.power*100), 11, CREAM)
 	draw_rect(Rect2(272,22,68,3), Color("335762"))
 	draw_rect(Rect2(272,22,68*game.power,3), GOLD)
-	label_at(Vector2(366,15), "体力", 11, CREAM)
+	label_at(Vector2(366,15), "加速" if game.sprinting else ("恢复" if game.sprint_exhausted else "体力"), 11, GOLD if game.sprinting else CREAM)
 	draw_rect(Rect2(366,22,70,3), Color("335762"))
-	draw_rect(Rect2(366,22,70*game.stamina/100,3), MINT)
+	draw_rect(Rect2(366,22,70*game.stamina/100,3), GOLD if game.sprinting else (RED if game.sprint_exhausted else MINT))
 	var remaining := maxi(0, int(ceil(game.TIME_LIMIT-game.clock)))
 	label_at(Vector2(515,23), "%02d:%02d" % [remaining/60,remaining%60] if game.challenge else "无倒计时", 16, RED if remaining < 60 else CREAM)
 	draw_rect(Rect2(0,333,640,27), INK)
@@ -296,40 +316,94 @@ func _hud(t: float) -> void:
 		label_at(Vector2(325,76), "缠线 ×%d" % game.wraps.size() if game.latched else "上钩", 10, MINT if game.latched else RED)
 		draw_rect(Rect2(254,83,132,6), Color("335762"))
 		draw_rect(Rect2(254,83,132*game.tension,6), MINT.lerp(RED,game.tension))
-		label_at(Vector2(254,100), "自动收放线 · 缓慢", 9, Color("9cbbb4"))
+		var spool := "放线 ↓" if game.reel_speed>0.5 else ("收线 ↑" if game.reel_speed < -0.5 else "稳线")
+		label_at(Vector2(254,100), "自动"+spool, 9, Color("9cbbb4"))
 		if game.high_age > 0:
 			draw_rect(Rect2(246,108,148*minf(1,game.high_age/3),3), RED)
-	if not game.qte.is_empty(): _qte(t)
+	if not game.qte.is_empty() or game.qte_result_age>0: _qte(t)
 
-func _qte(_t: float) -> void:
-	var origin := Vector2(471,95) if game.fish.x < 320 else Vector2(19,95)
-	panel(Rect2(origin,Vector2(150,159)))
-	var title := "吐钩判定" if game.qte=="entry" else ("缠线判定" if game.qte=="wrap" else "松线脱钩")
-	label_at(origin+Vector2(13,22),title,14,GOLD)
+func _qte(t: float) -> void:
+	var showing_result: bool = game.qte.is_empty()
+	var kind: String = game.qte_result_kind if showing_result else game.qte
+	var zone_start: float = game.qte_result_zone if showing_result else game.qte_zone
+	var progress: float = game.qte_result_progress if showing_result else game.qte_progress()
+	var success_zone: bool = progress>=zone_start and progress<=zone_start+0.2
+	var effect: float = 1-game.qte_result_age/0.7
+	var intro: float = clampf(game.qte_age/0.3,0,1) if not showing_result else 1.0
+	var origin: Vector2 = game.qte_origin+Vector2(0,roundf(10*pow(1-intro,3)))
+	if showing_result and not game.qte_result_good: origin.x += roundf(sin(effect*42)*(1-effect)*3)
+	var accent := MINT if kind=="slack" else GOLD
+	if showing_result: accent = MINT if game.qte_result_good else RED
+	panel(Rect2(origin,Vector2(160,185)))
+	draw_rect(Rect2(origin+Vector2(1,1),Vector2(158,2)),accent)
+	for corner in [Vector2(5,6),Vector2(152,6),Vector2(5,176),Vector2(152,176)]:
+		draw_rect(Rect2(origin+corner,Vector2(3,3)),Color(accent,0.55))
+	var title := "吐钩判定" if kind=="entry" else ("缠线判定" if kind=="wrap" else "松线脱钩")
+	label_at(origin+Vector2(14,23),title,14,accent)
+	var center := origin+Vector2(80,87)
+	draw_circle(center,47,Color("102833"))
+	for tick in range(24):
+		var direction := Vector2.from_angle(-PI/2+tick*TAU/24)
+		draw_line((center+direction*44).round(),(center+direction*(47 if tick%3==0 else 45)).round(),Color(accent,0.30),1)
 	var path := PackedVector2Array()
-	# Entry follows a J-shaped metal hook; slack uses a full circular timing track.
-	for index in range(101):
-		var ratio := index/100.0
+	# All decoration follows the exact normalized progress used by the skill check.
+	for index in range(121):
+		var ratio := index/120.0
 		var p: Vector2
-		if game.qte == "entry":
-			if ratio < 0.42: p = Vector2(50,39+ratio/0.42*53)
+		if kind == "entry":
+			if ratio < 0.42: p = Vector2(54,47+ratio/0.42*53)
 			elif ratio < 0.87:
 				var angle := PI-(ratio-0.42)/0.45*PI
-				p = Vector2(74,92) + Vector2(cos(angle),sin(angle))*24
-			else: p = Vector2(98,92-(ratio-0.87)/0.13*23)
-		else: p = Vector2(75,79)+Vector2.from_angle(-PI/2+ratio*TAU)*34
+				p = Vector2(78,100) + Vector2(cos(angle),sin(angle))*24
+			else: p = Vector2(102,100-(ratio-0.87)/0.13*23)
+		else: p = Vector2(80,87)+Vector2.from_angle(-PI/2+ratio*TAU)*36
 		path.append((origin+p).round())
-	draw_polyline(path, Color("42636b"), 5)
+	draw_polyline(path,Color("091f29"),9)
+	draw_polyline(path,Color("547c80"),5)
+	draw_polyline(path,Color("284b58"),2)
 	var zone := PackedVector2Array()
-	for index in range(int(game.qte_zone*100), mini(101,int((game.qte_zone+0.2)*100)+1)): zone.append(path[index])
-	draw_polyline(zone, CREAM, 5)
-	var progress: float = game.qte_progress()
-	var marker: Vector2 = path[clampi(int(progress*100),0,100)]
-	if game.qte_age >= 0.4:
-		draw_rect(Rect2(marker-Vector2(3,3),Vector2(7,7)), RED)
-		draw_rect(Rect2(marker-Vector2.ONE,Vector2(3,3)), CREAM)
+	zone.append(_track_point(path,zone_start))
+	for index in range(ceili(zone_start*120),mini(121,ceili((zone_start+0.2)*120))): zone.append(path[index])
+	zone.append(_track_point(path,zone_start+0.2))
+	draw_polyline(zone,Color(accent,0.14+0.08*sin(t*8)),11)
+	draw_polyline(zone,CREAM,5)
+	draw_polyline(zone,Color.WHITE,1)
+	for endpoint in [zone[0],zone[-1]]: draw_rect(Rect2(endpoint-Vector2.ONE,Vector2(3,3)),accent)
+	var marker := _track_point(path,progress)
+	if game.qte_age>=0.4 or showing_result:
+		for trail in range(1,9):
+			var p := _track_point(path,maxf(0,progress-trail*0.013))
+			draw_rect(Rect2(p-Vector2.ONE,Vector2(3,3)),Color(accent,(1-trail/9.0)*0.55))
+		var head_color := accent if success_zone or showing_result else RED
+		draw_circle(marker,6,Color(head_color,0.2))
+		draw_colored_polygon(PackedVector2Array([marker+Vector2(0,-4),marker+Vector2(4,0),marker+Vector2(0,4),marker+Vector2(-4,0)]),head_color)
+		draw_rect(Rect2(marker-Vector2.ONE,Vector2(3,3)),CREAM)
 	else:
-		label_at(origin+Vector2(106,64), "准备", 10, GOLD)
-	label_at(origin+Vector2(18,138),"白区内按空格" if game.qte=="wrap" else "白区内按 E",12)
-	if game.qte=="wrap": label_at(origin+Vector2(18,152),"成功自动缠绕一圈",10,MINT)
-	if game.qte == "slack": label_at(origin+Vector2(18,152), "同时移动，保持低张力", 10, MINT)
+		draw_arc(center,49,-PI/2,-PI/2+TAU*game.qte_age/0.4,32,accent,1)
+	var key_center := center if kind!="entry" else origin+Vector2(79,69)
+	var key_size := Vector2(40,22) if kind=="wrap" else Vector2(24,22)
+	var key_rect := Rect2((key_center-key_size*0.5).round(),key_size)
+	draw_rect(Rect2(key_rect.position+Vector2(0,2),key_size),Color("091f29"))
+	draw_rect(key_rect,accent if success_zone else Color("254651"))
+	draw_rect(key_rect,accent,false,1)
+	label_at(key_rect.position+Vector2(8,16),"空格" if kind=="wrap" else "E",12,INK if success_zone else CREAM)
+	if showing_result:
+		label_at(origin+Vector2(14,155),game.qte_result,14,accent)
+		label_at(origin+Vector2(14,173),"线圈保留 · 准备松线" if game.qte_result_good and kind=="wrap" else ("继续游动" if game.qte_result_good else "调整后可以再试"),10,CREAM)
+		if game.qte_result_good:
+			draw_arc(center,39+effect*15,0,TAU,32,Color(accent,1-effect),2)
+			for spark in range(10):
+				var p := center+Vector2.from_angle(spark*TAU/10)*(38+effect*22)
+				draw_rect(Rect2(p.round(),Vector2(2,2)),Color(accent,1-effect))
+	else:
+		var instruction := "指针进入白区时按键"
+		if game.qte_age<0.4: instruction="准备…"
+		elif success_zone: instruction="现在按空格" if kind=="wrap" else "现在按 E"
+		label_at(origin+Vector2(14,155),instruction,12,accent if success_zone else CREAM)
+		var detail := "成功自动缠绕一圈" if kind=="wrap" else ("移动保持低张力" if kind=="slack" else "抓住机会吐出鱼钩")
+		label_at(origin+Vector2(14,173),detail,10,Color("9cbbb4"))
+
+func _track_point(path: PackedVector2Array, progress: float) -> Vector2:
+	var index := clampf(progress,0,1)*(path.size()-1)
+	var before := int(index)
+	return path[before].lerp(path[mini(before+1,path.size()-1)],index-before).round()

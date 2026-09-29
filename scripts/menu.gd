@@ -101,7 +101,7 @@ func _title(frame: Control) -> void:
 	button(frame,"设置",215,func(): open("settings"),false,124)
 	var quit := button(frame,"退出",215,func(): get_tree().quit(),false,124)
 	quit.position.x = 150
-	text(frame,"2D MVP 0.3  ·  空格缠线 / 穿行掩体",Vector2(20,253),10,Color("91afa7"))
+	text(frame,"2D MVP 0.4  ·  水流 / 持续加速 / 动态判定",Vector2(20,253),10,Color("91afa7"))
 	text(content,"01  吃饵",Vector2(391,119),18,GOLD)
 	text(content,"02  脱钩",Vector2(391,159),18,GOLD)
 	text(content,"03  躲网，回巢",Vector2(391,199),18,GOLD)
@@ -120,8 +120,8 @@ func _help(frame: Control) -> void:
 	text(frame,"怎样在池塘里活下来",Vector2(20,16),21)
 	var lines := [
 		"WASD / 方向键 游动 · 鼠标决定朝向",
-		"左键吸食 · 滚轮调吸力 · Q 慢游 / Shift 冲刺",
-		"草木石可穿过，接触时会变透明",
+		"左键吸食 · 滚轮调吸力 · Q 慢游",
+		"长按 Shift 加速耗体力 · 草木石可穿行",
 		"钩尖入口：白色判定区内按 E 吐钩",
 		"上钩后接触掩体：空格开始，白区再按空格",
 		"成功自动缠一圈，再保持松线按 E 脱钩",

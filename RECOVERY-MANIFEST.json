@@ -1,12 +1,12 @@
 {
-  "version": "0.3",
-  "pack_sha256": "7e0a3ff88aff78df1624375c59ff76fd6fad22ecf0704079a8a48c53d6ccb608",
+  "version": "0.4",
+  "pack_sha256": "23630af4e26f05a66208a710ccdd007c356436e80961e6a798b58dfc851a5546",
   "script_sha256": {
-    "scripts/menu.gd": "d8b871ff097e90f9ab836f4b46c526cd6ca1fa2c1b2f5986b125cd4fc7571622",
+    "scripts/menu.gd": "ba27538f46707a65379561e8f1413e1a75ea303e17901c8547f67d27efbc2659",
     "scripts/pixel_art.gd": "888fc105bd231fcbd7cee637cb515d3aa254aebf23af05a6730c974f21eb5c4a",
-    "scripts/pond.gd": "bc36ffadacfab997b505ed77a20510b13c524c6593e5539e6dad7b8907820beb",
+    "scripts/pond.gd": "fde26de4a6322752cec139f5b9a8be34184d4d0b66ac64d36a644bb8725e05ff",
     "scripts/pond_layout.gd": "516f4fbbead3281ebc09e921fbebc77917c1e611a698a217a5b083f14c7678fe",
-    "scripts/pond_view.gd": "59eecc2e520b0b5c2f1b07b8b8adad97b5b88193c0e5bd0794618e857f005f06",
+    "scripts/pond_view.gd": "8d9006921cf4b44013c8f0e2283b3f8bb876ef8251d479f7b4574d5b06196205",
     "scripts/rope.gd": "2e30152e65b00f39fe25324b992afd39925acfadd80b64dce385df865d69fe42",
     "scripts/sound.gd": "a5a65eaa6ea8b54bde98e5733a198867e85b1dcbbca6640b4a98f0907656fc3e"
   },
