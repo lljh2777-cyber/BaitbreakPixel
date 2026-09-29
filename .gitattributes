@@ -1,0 +1,6 @@
+# Preserve existing bytes/line endings, including verified recovered release sources.
+* -text
+*.png binary
+*.jpg binary
+*.wav binary
+*.ogg binary

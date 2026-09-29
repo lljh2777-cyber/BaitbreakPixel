@@ -1,0 +1,18 @@
+# Godot-generated caches (keep source .uid and .import files).
+.godot/
+
+# Local captures, test logs and exported games.
+artifacts/
+Releases/
+*.log
+*.exe
+*.pck
+*.zip
+
+# Local credentials and machine files.
+.env
+.env.*
+!.env.example
+export_credentials.cfg
+Thumbs.db
+.DS_Store

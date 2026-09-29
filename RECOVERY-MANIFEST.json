@@ -1,0 +1,14 @@
+{
+  "version": "0.1",
+  "pack_sha256": "fb705a9a762eae16bad33906a7297b0367895b37d90279d800c58fa6d25bafb8",
+  "script_sha256": {
+    "scripts/menu.gd": "79c10046f3c4bbf1b6db4afd15aac5cf3d3172285ca0301412367fb4204ce16d",
+    "scripts/pixel_art.gd": "d3bdfbe4761bedb11d58da385431b43e5b9474753c04280f1fccf584ac56f0a5",
+    "scripts/pond.gd": "92864e0db9e3a0c5c0dd50520e6025039e0a0a1ca04e71d4f009b494a0e57ed4",
+    "scripts/pond_view.gd": "6dbc1a7287078f607089e7dab09a691f0f8b3a7ddd280bc9aa8d61e034382db1",
+    "scripts/rope.gd": "c3e89544656f7c70bc14a898ae572d1b493566c351108ba51c56049a5bd6337f",
+    "scripts/sound.gd": "a5a65eaa6ea8b54bde98e5733a198867e85b1dcbbca6640b4a98f0907656fc3e"
+  },
+  "decoded_texture_sha256": {},
+  "exported_resources": 11
+}
