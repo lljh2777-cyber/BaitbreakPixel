@@ -42,5 +42,5 @@
 - `artifacts/line-inertia-v016.gif`：摆竿与浮漂惯性。
 - `artifacts/reel-hands-v016.gif`：收放线左手动画局部放大，保持原速。
 - `artifacts/reel-motion-v016.mp4`：完整实际游戏录像。
-- 左手像素素材：`assets/first_person/left_reel_hands_v016.png`。内置 imagegen 生成和编辑提示词见 [素材记录](assets/first_person/left_reel_hands_v016.md)。
+- 左手像素素材：`assets/first_person/left_reel_hands_v016.png`。内置 imagegen 生成和编辑提示词见 [素材记录](../../assets/first_person/left_reel_hands_v016.md)。
 

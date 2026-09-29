@@ -1,6 +1,6 @@
 # 0.20 双人联机试玩
 
-抄网操作、模块及规则迁移见 [NET-ARCHITECTURE.md](NET-ARCHITECTURE.md)。
+抄网操作、模块及规则迁移见 [NET-ARCHITECTURE.md](../architecture/NET-ARCHITECTURE.md)。
 
 当前双方必须使用 0.20，快照 schema 9。房主先在设置页保存玩法方案，再创建房间；双方准备前可通过“查看房主规则”查看全部选项与修改项。更换规则需离开并重新创建房间。长 QTE 使用自身捕获的时长及房主的历史输入核验，不沿用旧的 2.4 秒上限。新增 F 解缠，QTE 的时机与张力由房主核验；延迟补偿不会绕过按键时与当前的张力要求。反向退线、剩余线圈和结算统计同步。
 
@@ -46,6 +46,6 @@ QTE 按键携带客户端显示的模拟 tick 和判定编号。房主只在自�
 
 当前输入全量可靠传输，网络丢包时可能产生等待；尚未加入本机移动预测、断线重连、房主迁移、旁观者或多鱼多人。网络验证包含真实 UDP、同机双进程原生键鼠，以及针对片段丢失／乱序／重复和 QTE 200 毫秒延迟的受控检查；没有进行长时间广域网压力测试。
 
-主要实现位于 `scripts/network_session.gd`、`network_protocol.gd`、`network_presentation.gd`。验证结果见 `TEST-REPORT-0.12.md`。
+主要实现位于 `scripts/network_session.gd`、`network_protocol.gd`、`network_presentation.gd`。早期联机验证见 [0.12 测试报告](../test-reports/TEST-REPORT-0.12.md)，当前抄网联机验证见 [0.20 测试报告](../test-reports/TEST-REPORT-0.20.0.md)。
 
 技术依据：[Godot ENetMultiplayerPeer](https://docs.godotengine.org/en/stable/classes/class_enetmultiplayerpeer.html)、[传输模式与通道](https://docs.godotengine.org/en/stable/classes/class_multiplayerpeer.html)。当前使用默认通道协商；调试时发现显式 max_channels 在本机 4.7.2 运行时导致入站限流，默认设置已通过双向实测，对应 [Godot 4.7 实现](https://github.com/godotengine/godot/blob/4.7-stable/modules/enet/enet_multiplayer_peer.cpp)。

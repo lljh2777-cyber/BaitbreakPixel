@@ -16,7 +16,7 @@ if ($LASTEXITCODE -ne 0 -or ($pixelOutput | Select-String 'SCRIPT ERROR|ERROR:')
     throw 'Resource pack export failed.'
 }
 Copy-Item -LiteralPath $pixelRuntime -Destination (Join-Path $OutputDirectory 'BaitbreakPixel.exe') -Force
-Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'PLAY.txt') -Destination (Join-Path $OutputDirectory '开始试玩.txt') -Force
+Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'docs\gameplay\PLAY.txt') -Destination (Join-Path $OutputDirectory '开始试玩.txt') -Force
 & $pixelConsole --headless --path $PSScriptRoot --script res://tools/engine_notices.gd -- (Join-Path $OutputDirectory 'GODOT-NOTICES.txt')
 if ($LASTEXITCODE -ne 0) { throw 'Engine notices export failed.' }
 $pixelArchive = $OutputDirectory.TrimEnd('\') + '.zip'

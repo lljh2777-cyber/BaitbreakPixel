@@ -35,7 +35,7 @@
 
 ## 结构边界
 
-见 [规则架构](RULES-ARCHITECTURE.md) 与 [完整目录](RULES-CATALOG.md)。个人存档、方案文件操作留在应用与持久化模块；世界模拟继续不依赖输入、菜单或文件系统。
+见 [规则架构](../architecture/RULES-ARCHITECTURE.md) 与 [完整目录](../gameplay/RULES-CATALOG.md)。个人存档、方案文件操作留在应用与持久化模块；世界模拟继续不依赖输入、菜单或文件系统。
 
 ## 发布包
 
