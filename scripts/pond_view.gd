@@ -2,6 +2,7 @@ extends Node2D
 
 const Art = preload("res://scripts/pixel_art.gd")
 const Layout = preload("res://scripts/pond_layout.gd")
+const Gauge = preload("res://scripts/hook_gauge.gd")
 const INK := Color("142e39")
 const CREAM := Color("fff0cd")
 const MINT := Color("8de0bd")
@@ -9,12 +10,16 @@ const GOLD := Color("ffd379")
 const RED := Color("f58375")
 var game: Node2D
 var fish_texture: Texture2D
+var gauge_texture: Texture2D
+var bobber_texture: Texture2D
 var font: SystemFont
 var props: Array[Dictionary] = []
 var plant_frames: Array = []
 
 func _ready() -> void:
 	fish_texture = Art.fish()
+	gauge_texture = Gauge.metal_texture()
+	bobber_texture = Gauge.bobber_texture()
 	for solid in Layout.SOLIDS: props.append(Art.prop(solid))
 	for index in Layout.PLANTS.size():
 		var frames: Array[Dictionary] = []
@@ -296,7 +301,7 @@ func _hud(t: float) -> void:
 	if game.menu.visible: return
 	draw_rect(Rect2(0,0,640,35), INK)
 	label_at(Vector2(12,15), "像素池塘", 12, GOLD)
-	label_at(Vector2(12,28), "限时挑战" if game.challenge else "自由练习", 10, MINT)
+	label_at(Vector2(12,28), "限时挑战" if game.challenge else "练习 · F2 调节", 10, MINT)
 	var target: float = game.TARGET if game.challenge else 18
 	label_at(Vector2(111,22), "食物 %02d / %d" % [int(game.score),int(target)], 15)
 	label_at(Vector2(272,15), "吸力 %d%%" % int(game.power*100), 11, CREAM)
@@ -334,74 +339,62 @@ func _qte(t: float) -> void:
 	if showing_result and not game.qte_result_good: origin.x += roundf(sin(effect*42)*(1-effect)*3)
 	var accent := MINT if kind=="slack" else GOLD
 	if showing_result: accent = MINT if game.qte_result_good else RED
-	panel(Rect2(origin,Vector2(160,185)))
-	draw_rect(Rect2(origin+Vector2(1,1),Vector2(158,2)),accent)
-	for corner in [Vector2(5,6),Vector2(152,6),Vector2(5,176),Vector2(152,176)]:
-		draw_rect(Rect2(origin+corner,Vector2(3,3)),Color(accent,0.55))
+	panel(Rect2(origin,Vector2(176,216)),Color("103e57"))
+	# Muted water ripples echo the reference without obscuring the metal and green zone.
+	for wave in range(15):
+		var base := origin+Vector2(8+posmod(wave*67,148),32+posmod(wave*29,133))
+		var points := PackedVector2Array()
+		for part in range(6): points.append((base+Vector2(part*3,sin(part*0.7+t*0.8+wave)*2)).round())
+		draw_polyline(points,Color(0.12,0.47,0.64,0.25),1)
 	var title := "吐钩判定" if kind=="entry" else ("缠线判定" if kind=="wrap" else "松线脱钩")
 	label_at(origin+Vector2(14,23),title,14,accent)
-	var center := origin+Vector2(80,87)
-	draw_circle(center,47,Color("102833"))
-	for tick in range(24):
-		var direction := Vector2.from_angle(-PI/2+tick*TAU/24)
-		draw_line((center+direction*44).round(),(center+direction*(47 if tick%3==0 else 45)).round(),Color(accent,0.30),1)
-	var path := PackedVector2Array()
-	# All decoration follows the exact normalized progress used by the skill check.
-	for index in range(121):
-		var ratio := index/120.0
-		var p: Vector2
-		if kind == "entry":
-			if ratio < 0.42: p = Vector2(54,47+ratio/0.42*53)
-			elif ratio < 0.87:
-				var angle := PI-(ratio-0.42)/0.45*PI
-				p = Vector2(78,100) + Vector2(cos(angle),sin(angle))*24
-			else: p = Vector2(102,100-(ratio-0.87)/0.13*23)
-		else: p = Vector2(80,87)+Vector2.from_angle(-PI/2+ratio*TAU)*36
-		path.append((origin+p).round())
-	draw_polyline(path,Color("091f29"),9)
-	draw_polyline(path,Color("547c80"),5)
-	draw_polyline(path,Color("284b58"),2)
-	var zone := PackedVector2Array()
-	zone.append(_track_point(path,zone_start))
-	for index in range(ceili(zone_start*120),mini(121,ceili((zone_start+0.2)*120))): zone.append(path[index])
-	zone.append(_track_point(path,zone_start+0.2))
-	draw_polyline(zone,Color(accent,0.14+0.08*sin(t*8)),11)
-	draw_polyline(zone,CREAM,5)
-	draw_polyline(zone,Color.WHITE,1)
-	for endpoint in [zone[0],zone[-1]]: draw_rect(Rect2(endpoint-Vector2.ONE,Vector2(3,3)),accent)
-	var marker := _track_point(path,progress)
+	var center := origin+Gauge.CENTER
+	draw_arc(center,69,0,TAU,48,Color(0.22,0.66,0.76,0.13),1)
+	draw_texture(gauge_texture,origin)
+	for tick in range(1,9):
+		var ratio := tick/10.0
+		draw_line((origin+Gauge.point(ratio,37)).round(),(origin+Gauge.point(ratio,43)).round(),Color("081724"),4)
+		draw_line((origin+Gauge.point(ratio,37)).round(),(origin+Gauge.point(ratio,43)).round(),Color("b5c0c1"),2)
+	var zone: PackedVector2Array = Gauge.section(zone_start,zone_start+0.2)
+	for index in zone.size(): zone[index]+=origin
+	var green := Color("63ed4d") if success_zone else Color("2fbe44")
+	draw_polyline(zone,Color("082818"),10)
+	draw_polyline(zone,Color("157432"),8)
+	draw_polyline(zone,green,5)
+	for ratio in [zone_start,zone_start+0.2]:
+		draw_line((origin+Gauge.point(ratio,43)).round(),(origin+Gauge.point(ratio,55)).round(),Color("081724"),4)
+		draw_line((origin+Gauge.point(ratio,44)).round(),(origin+Gauge.point(ratio,54)).round(),CREAM,2)
+	var marker: Vector2 = (origin+Gauge.point(progress)).round()
 	if game.qte_age>=0.4 or showing_result:
-		for trail in range(1,9):
-			var p := _track_point(path,maxf(0,progress-trail*0.013))
-			draw_rect(Rect2(p-Vector2.ONE,Vector2(3,3)),Color(accent,(1-trail/9.0)*0.55))
-		var head_color := accent if success_zone or showing_result else RED
-		draw_circle(marker,6,Color(head_color,0.2))
-		draw_colored_polygon(PackedVector2Array([marker+Vector2(0,-4),marker+Vector2(4,0),marker+Vector2(0,4),marker+Vector2(-4,0)]),head_color)
-		draw_rect(Rect2(marker-Vector2.ONE,Vector2(3,3)),CREAM)
+		for trail in range(1,6):
+			var p: Vector2 = origin+Gauge.point(maxf(0,progress-trail*0.018))
+			draw_rect(Rect2(p.round(),Vector2(2,2)),Color(CREAM,(1-trail/6.0)*0.35))
 	else:
-		draw_arc(center,49,-PI/2,-PI/2+TAU*game.qte_age/0.4,32,accent,1)
-	var key_center := center if kind!="entry" else origin+Vector2(79,69)
+		draw_arc(center,69,-PI/2,-PI/2+TAU*game.qte_age/0.4,40,Color(MINT,0.5),1)
+	draw_arc(marker+Vector2(0,3),10+sin(t*4),0,TAU,16,Color(MINT,0.25),1)
+	draw_texture(bobber_texture,marker-Vector2(8,8))
+	var key_center := center+Vector2(1,-1)
 	var key_size := Vector2(40,22) if kind=="wrap" else Vector2(24,22)
 	var key_rect := Rect2((key_center-key_size*0.5).round(),key_size)
 	draw_rect(Rect2(key_rect.position+Vector2(0,2),key_size),Color("091f29"))
-	draw_rect(key_rect,accent if success_zone else Color("254651"))
-	draw_rect(key_rect,accent,false,1)
-	label_at(key_rect.position+Vector2(8,16),"空格" if kind=="wrap" else "E",12,INK if success_zone else CREAM)
+	draw_rect(key_rect,Color("22473e") if success_zone else Color("10354a"))
+	draw_rect(key_rect,green if success_zone else Color("547c85"),false,1)
+	label_at(key_rect.position+Vector2(8,16),"空格" if kind=="wrap" else "E",12,CREAM)
 	if showing_result:
-		label_at(origin+Vector2(14,155),game.qte_result,14,accent)
-		label_at(origin+Vector2(14,173),"线圈保留 · 准备松线" if game.qte_result_good and kind=="wrap" else ("继续游动" if game.qte_result_good else "调整后可以再试"),10,CREAM)
+		label_at(origin+Vector2(14,187),game.qte_result,14,accent)
+		label_at(origin+Vector2(14,204),"线圈保留 · 准备松线" if game.qte_result_good and kind=="wrap" else ("继续游动" if game.qte_result_good else "调整后可以再试"),10,CREAM)
 		if game.qte_result_good:
-			draw_arc(center,39+effect*15,0,TAU,32,Color(accent,1-effect),2)
+			draw_arc(center,57+effect*13,0,TAU,48,Color(accent,(1-effect)*0.6),1)
 			for spark in range(10):
-				var p := center+Vector2.from_angle(spark*TAU/10)*(38+effect*22)
+				var p := center+Vector2.from_angle(spark*TAU/10)*(57+effect*15)
 				draw_rect(Rect2(p.round(),Vector2(2,2)),Color(accent,1-effect))
 	else:
-		var instruction := "指针进入白区时按键"
+		var instruction := "浮漂进入绿区时按键"
 		if game.qte_age<0.4: instruction="准备…"
 		elif success_zone: instruction="现在按空格" if kind=="wrap" else "现在按 E"
-		label_at(origin+Vector2(14,155),instruction,12,accent if success_zone else CREAM)
+		label_at(origin+Vector2(14,187),instruction,12,green if success_zone else CREAM)
 		var detail := "成功自动缠绕一圈" if kind=="wrap" else ("移动保持低张力" if kind=="slack" else "抓住机会吐出鱼钩")
-		label_at(origin+Vector2(14,173),detail,10,Color("9cbbb4"))
+		label_at(origin+Vector2(14,204),detail,10,Color("9cbbb4"))
 
 func _track_point(path: PackedVector2Array, progress: float) -> Vector2:
 	var index := clampf(progress,0,1)*(path.size()-1)

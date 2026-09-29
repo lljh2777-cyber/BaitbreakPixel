@@ -10,6 +10,8 @@ const HOME := Vector2(60, 281)
 const TARGET := 60.0
 const TIME_LIMIT := 360.0
 const SOLIDS: Array = Layout.SOLIDS
+const HOOK_SCALE := 0.70
+const BITE_RADIUS := 7.0
 
 var fish := Vector2(66, 265)
 var velocity := Vector2.ZERO
@@ -30,6 +32,8 @@ var rope_path := PackedVector2Array()
 var rope_length := 0.0
 var tension := 0.0
 var reel_speed := 0.0
+var practice_line_sensitivity := 1.0
+var practice_line_force := 1.0
 var latched := false
 var high_age := 0.0
 var low_age := 0.0
@@ -120,7 +124,7 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | side-view | 640x360 | v0.4")
+	print("PIXEL_READY | side-view | 640x360 | v0.5")
 
 func _register_inputs() -> void:
 	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[KEY_SHIFT], "use":[KEY_E], "slow":[KEY_Q], "wrap":[KEY_SPACE]}
@@ -139,6 +143,7 @@ func _load_profile() -> void:
 		fullscreen = bool(file.get_value("settings", "fullscreen", false))
 		best_score = maxf(0, float(file.get_value("record", "best", 0)))
 		wins = maxi(0, int(file.get_value("record", "wins", 0)))
+		set_practice_line_tuning(float(file.get_value("practice", "line_sensitivity", 1.0)),float(file.get_value("practice", "line_force", 1.0)))
 
 func save_profile() -> void:
 	var file := ConfigFile.new()
@@ -146,7 +151,17 @@ func save_profile() -> void:
 	file.set_value("settings", "fullscreen", fullscreen)
 	file.set_value("record", "best", best_score)
 	file.set_value("record", "wins", wins)
+	file.set_value("practice", "line_sensitivity", practice_line_sensitivity)
+	file.set_value("practice", "line_force", practice_line_force)
 	save_error = file.save(save_path)
+
+func set_practice_line_tuning(sensitivity: float, force: float) -> void:
+	practice_line_sensitivity = clampf(sensitivity,0.25,2.5) if is_finite(sensitivity) else 1.0
+	practice_line_force = clampf(force,0,2.5) if is_finite(force) else 1.0
+	reel_speed = 0
+
+func line_tuning() -> Vector2:
+	return Vector2.ONE if challenge else Vector2(practice_line_sensitivity,practice_line_force)
 
 func apply_settings() -> void:
 	AudioServer.set_bus_mute(0, volume <= 0.001)
@@ -241,7 +256,7 @@ func _tip(index: int) -> Vector2:
 	return mouth() if bound_bait == index and hooked != HookState.FREE else Vector2(baits[index].pos) + Vector2(2, 1).rotated(baits[index].angle)
 
 func hook_point(index: int, local: Vector2) -> Vector2:
-	return _tip(index)+local.rotated(baits[index].angle)
+	return _tip(index)+(local*HOOK_SCALE).rotated(baits[index].angle)
 
 func water_offset(point: Vector2) -> Vector2:
 	return Vector2(sin(elapsed*0.75+point.y*0.007)*5+sin(elapsed*1.25+point.x*0.005),sin(elapsed*0.95+point.x*0.008)*2.5)*water_strength
@@ -307,7 +322,7 @@ func _open_qte(kind: String) -> void:
 	qte = kind
 	qte_age = 0
 	qte_zone = rng.randf_range(0.57,0.65)
-	qte_origin = Vector2(468,92) if fish.x<320 else Vector2(12,92)
+	qte_origin = Vector2(452,83) if fish.x<320 else Vector2(12,83)
 	qte_result_age = 0
 
 func _finish_qte_visual(good: bool, message: String = "") -> void:
@@ -449,13 +464,13 @@ func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2) -> 
 		var target: Vector2 = bait.home + water_offset(bait.home)
 		bait.angle = sin(elapsed*0.75+bait.home.y*0.007)*0.16*water_strength
 		if bait.hook and not bait.removed and bound_bait != index and sucking:
-			var gain := strength(_tip(index)) * power * power
-			target += (mouth() - target).normalized() * gain * 16
-		bait.pos = Vector2(bait.pos).move_toward(target, delta * 28)
+			var gain := strength(_tip(index)) * power
+			target = target.move_toward(mouth(),gain*26)
+		bait.pos = Vector2(bait.pos).move_toward(target, delta * 44)
 		if bait.hook and not bait.removed and hooked == HookState.FREE and hook_cooldown <= 0 and not net_blocks_hooks():
 			var relative := _tip(index) - mouth() - aim * 3
 			var before := old_tip - old_mouth - aim * 3
-			if _segment_distance(before, relative, Vector2.ZERO) < 5:
+			if _segment_distance(before, relative, Vector2.ZERO) < BITE_RADIUS:
 				_enter_hook(index)
 				sucking = false
 	var layer := 3
@@ -546,9 +561,10 @@ func _step_line(delta: float, interact: bool, wrap_pressed: bool = false) -> voi
 	var available := fish_line_length if latched else rope_length
 	var raw_tension := base+(length_now-available)/32
 	var error := raw_tension-0.50
-	var desired_speed := clampf(error*36,-12,16) if absf(error)>0.06 else 0.0
+	var tuning := line_tuning()
+	var desired_speed := clampf(error*36*tuning.x,-12*tuning.y,16*tuning.y) if absf(error)>0.06 else 0.0
 	# Responsive spool, with finite speed. A coil slows transmission to the fish end.
-	reel_speed = move_toward(reel_speed,desired_speed,delta*60)
+	reel_speed = move_toward(reel_speed,desired_speed,delta*60*tuning.x*maxf(1,tuning.y)) if tuning.y>0 else 0.0
 	if animating:
 		reel_speed = 0
 	else:
@@ -729,14 +745,14 @@ func finish(success: bool, why: String) -> void:
 	print("PIXEL_RESULT | success=", success, " | score=", score, " | seconds=", clock, " | reason=", why)
 
 func hint() -> String:
-	if hooked == HookState.MOUTH: return "暂时不能移动 · 白区内按 E 吐钩"
+	if hooked == HookState.MOUTH: return "暂时不能移动 · 浮漂进入绿区时按 E"
 	if hooked == HookState.HOOKED:
-		if qte=="wrap": return "缠线判定 · 白区内再按一次空格"
+		if qte=="wrap": return "缠线判定 · 浮漂进入绿区时按空格"
 		if winding(): return "正在自动缠绕一圈……"
-		if qte == "slack": return "保持松线，同时在白区按 E"
+		if qte == "slack": return "保持松线，同时在绿区按 E"
 		if contact_target>=0 and wrap_retry<=0: return "接触%s · 按空格开始缠线判定" % targets[contact_target].name
 		if high_age > 0: return "持续拉紧 %.1f / 3.0 秒可断线" % high_age
-		if latched: return "已缠线 · 靠近线圈保持低张力，圆环白区按 E"
+		if latched: return "已缠线 · 靠近线圈保持低张力，浮漂到绿区按 E"
 		return "游入水草、木枝或石头 · 空格缠线；也可持续拉紧断线"
 	if net_state == "prepare": return "钓鱼者正收竿，准备抄网……"
 	if net_state in ["warning", "sweep"]: return "红光是抄网来向 · 游离红框，或升降躲避"
@@ -755,6 +771,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		match event.physical_keycode:
 			KEY_ESCAPE: paused = true; menu.open("pause")
 			KEY_H: paused = true; menu.open("help")
+			KEY_F2:
+				if not challenge: menu.open("practice")
 			KEY_R: reset(challenge)
 			KEY_N:
 				if not challenge: request_net()

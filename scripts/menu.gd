@@ -30,7 +30,8 @@ func style(color: Color, border: Color) -> StyleBoxFlat:
 	return result
 
 func open(which: String) -> void:
-	if which in ["help","settings"] and not screen in ["help","settings"]:
+	if which=="practice" and game.challenge: return
+	if which in ["help","settings","practice"] and (not visible or not screen in ["help","settings","practice"]):
 		previous = screen if visible else "pause"
 	screen = which
 	game.paused = true
@@ -56,6 +57,7 @@ func open(which: String) -> void:
 		"pause": _pause(frame)
 		"help": _help(frame)
 		"settings": _settings(frame)
+		"practice": _practice(frame)
 		"result": _result(frame)
 	if first_button: first_button.grab_focus()
 
@@ -101,7 +103,7 @@ func _title(frame: Control) -> void:
 	button(frame,"设置",215,func(): open("settings"),false,124)
 	var quit := button(frame,"退出",215,func(): get_tree().quit(),false,124)
 	quit.position.x = 150
-	text(frame,"2D MVP 0.4  ·  水流 / 持续加速 / 动态判定",Vector2(20,253),10,Color("91afa7"))
+	text(frame,"2D MVP 0.5  ·  浮漂判定 / 自由调节",Vector2(20,253),10,Color("91afa7"))
 	text(content,"01  吃饵",Vector2(391,119),18,GOLD)
 	text(content,"02  脱钩",Vector2(391,159),18,GOLD)
 	text(content,"03  躲网，回巢",Vector2(391,199),18,GOLD)
@@ -109,11 +111,15 @@ func _title(frame: Control) -> void:
 
 func _pause(frame: Control) -> void:
 	text(frame,"水下小憩",Vector2(20,19),24)
-	button(frame,"继续游动",67,close,true)
-	button(frame,"重新开始本局",102,func(): game.reset(game.challenge))
-	button(frame,"操作说明",137,func(): open("help"))
-	button(frame,"设置",172,func(): open("settings"))
-	button(frame,"返回标题",207,func(): open("title"))
+	button(frame,"继续游动",57,close,true)
+	button(frame,"重新开始本局",89,func(): game.reset(game.challenge))
+	var offset := 0
+	if not game.challenge:
+		button(frame,"练习调节   ·   收放线",121,func(): open("practice"))
+		offset=32
+	button(frame,"操作说明",121+offset,func(): open("help"))
+	button(frame,"设置",153+offset,func(): open("settings"))
+	button(frame,"返回标题",185+offset,func(): open("title"))
 	text(frame,"Esc 继续 · 切出窗口会自动暂停",Vector2(20,258),11,Color("91afa7"))
 
 func _help(frame: Control) -> void:
@@ -122,10 +128,10 @@ func _help(frame: Control) -> void:
 		"WASD / 方向键 游动 · 鼠标决定朝向",
 		"左键吸食 · 滚轮调吸力 · Q 慢游",
 		"长按 Shift 加速耗体力 · 草木石可穿行",
-		"钩尖入口：白色判定区内按 E 吐钩",
-		"上钩后接触掩体：空格开始，白区再按空格",
+		"钩尖入口：浮漂到绿色判定区时按 E",
+		"上钩接触掩体：空格开始，绿区再按空格",
 		"成功自动缠一圈，再保持松线按 E 脱钩",
-		"持续拉紧 3 秒也能断线；Ctrl 不再用于升降",
+		"持续拉紧 3 秒断线 · 练习 F2 调收放线",
 		"红光提示抄网方向，离开红框避开网口",
 		"吃够食物后回左下巢穴，按 E 停留 2 秒",
 		"R 重开 · Esc 暂停 · F11 全屏 · 练习 N 试网"
@@ -153,6 +159,43 @@ func _settings(frame: Control) -> void:
 	text(frame,"画面按整数倍缩放，保留清晰像素。",Vector2(20,201),12,Color("91afa7"))
 	button(frame,"保存并返回",251,func(): game.save_profile(); open(previous),true)
 
+func _practice(frame: Control) -> void:
+	text(frame,"练习 · 收放线调节",Vector2(20,17),22)
+	text(frame,"只影响自由练习，调整后继续当前这局。",Vector2(20,52),12,Color("91afa7"))
+	var sensitivity_label := text(frame,"灵敏度 %d%%" % roundi(game.practice_line_sensitivity*100),Vector2(20,78),15,GOLD)
+	var sensitivity := HSlider.new()
+	sensitivity.name="LineSensitivity"
+	sensitivity.min_value=25
+	sensitivity.max_value=250
+	sensitivity.step=5
+	sensitivity.value=game.practice_line_sensitivity*100
+	sensitivity.position=Vector2(20,106)
+	sensitivity.size=Vector2(326,17)
+	frame.add_child(sensitivity)
+	text(frame,"越高，张力变化后响应越快。",Vector2(20,126),11,CREAM)
+	var force_label := text(frame,"力度 %d%%" % roundi(game.practice_line_force*100),Vector2(20,153),15,GOLD)
+	var force := HSlider.new()
+	force.name="LineForce"
+	force.min_value=0
+	force.max_value=250
+	force.step=10
+	force.value=game.practice_line_force*100
+	force.position=Vector2(20,181)
+	force.size=Vector2(326,17)
+	frame.add_child(force)
+	text(frame,"越高，收放线越快；0% 关闭自动收放线。",Vector2(20,201),11,CREAM)
+	sensitivity.value_changed.connect(func(value: float):
+		game.set_practice_line_tuning(value/100,game.practice_line_force)
+		sensitivity_label.text="灵敏度 %d%%" % roundi(value)
+	)
+	force.value_changed.connect(func(value: float):
+		game.set_practice_line_tuning(game.practice_line_sensitivity,value/100)
+		force_label.text="力度 %d%%" % roundi(value)
+	)
+	button(frame,"恢复默认",251,func(): sensitivity.value=100; force.value=100,false,100)
+	var back := button(frame,"保存并返回",251,func(): game.save_profile(); open(previous),true,216)
+	back.position.x=130
+
 func _result(frame: Control) -> void:
 	text(frame,"安全回巢" if game.won else "这次没能逃掉",Vector2(20,18),25,GOLD if game.won else Color("f58375"))
 	var why := "带着食物回家，池塘又安静了。"
@@ -169,8 +212,8 @@ func _result(frame: Control) -> void:
 func _input(event: InputEvent) -> void:
 	if not visible or not event is InputEventKey or not event.pressed or event.echo: return
 	if event.physical_keycode == KEY_ESCAPE:
-		if screen in ["help","settings"]:
-			if screen == "settings": game.save_profile()
+		if screen in ["help","settings","practice"]:
+			if screen in ["settings","practice"]: game.save_profile()
 			open(previous)
 		elif screen == "pause": close()
 		get_viewport().set_input_as_handled()
