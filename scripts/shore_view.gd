@@ -15,17 +15,20 @@ const GOLD := Color("ffd379")
 const SHAFT_LENGTH := 109.58981932643195
 const SHAFT_SEGMENTS := 32
 
-static func view_offset(world: Node2D) -> Vector2:
-	if world==null: return Vector2.ZERO
-	# Water objects and net input share the same first-person framing offset.
-	var travel := clampf(inverse_lerp(18,588,world.angler.x),0,1)
-	return Vector2(lerpf(384,430,travel)-(ORIGIN.x+world.angler.anchor().x*SCALE.x),0)
+static func projection_at(y: float) -> Vector2:
+	# Fixed perspective: the distant float lane is narrower than near water.
+	# This depends only on world depth, never on the angler, hand or line.
+	var near := clampf((y-WATER_LEVEL)/(312-WATER_LEVEL),0,1)
+	return Vector2(lerpf(225,ORIGIN.x,near),lerpf(0.44,SCALE.x,near))
 
-static func to_screen(point: Vector2, world: Node2D=null) -> Vector2:
-	return ORIGIN+Vector2(point.x,point.y-WATER_LEVEL)*SCALE+view_offset(world)
+static func to_screen(point: Vector2, _world: Node2D=null) -> Vector2:
+	var projection := projection_at(point.y)
+	return Vector2(projection.x+point.x*projection.y,ORIGIN.y+(point.y-WATER_LEVEL)*SCALE.y)
 
-static func to_world(point: Vector2, world: Node2D=null) -> Vector2:
-	return (point-ORIGIN-view_offset(world))/SCALE+Vector2(0,WATER_LEVEL)
+static func to_world(point: Vector2, _world: Node2D=null) -> Vector2:
+	var y := (point.y-ORIGIN.y)/SCALE.y+WATER_LEVEL
+	var projection := projection_at(y)
+	return Vector2((point.x-projection.x)/projection.y,y)
 
 static func projected(path: PackedVector2Array, world: Node2D=null) -> PackedVector2Array:
 	var result := PackedVector2Array()
@@ -39,10 +42,9 @@ static func tackle_pose(world: Node2D, t: float) -> Dictionary:
 	var hooked: bool=world.hooked==world.HookState.HOOKED
 	var load: float=world.tension if hooked else 0
 	var reel_speed: float=world.reel_speed if hooked else world.angler.free_reel_speed
-	var surface := float_position(world,t)
-	if world.landing or (world.net_state=="caught" and world.fish.y<WATER_LEVEL):
-		surface=to_screen(Vector2(world.angler.anchor().x,WATER_LEVEL),world)
-	var pose := Hand.pose(inverse_lerp(18,588,world.angler.x),t,reel_speed,surface)
+	# The existing replicated sway gives the held rig a small, damped follow-through.
+	var held_x: float=world.angler.x+world.angler.line_sway*0.8
+	var pose := Hand.pose(inverse_lerp(18,588,held_x),t,reel_speed)
 	var rod := rod_points(pose,load,world.effort_multiplier("angler"),float_position(world,t))
 	return {"hand":pose,"rod":rod,"tip":rod[-1],"load":load,"reel_speed":reel_speed}
 
@@ -118,7 +120,7 @@ func _underwater(view: Node2D, world: Node2D, t: float) -> void:
 		var p := to_screen(bait.pos,world)
 		view.draw_circle(p,2.5,Color(0.65,0.64,0.41,0.11))
 	var position := to_screen(world.fish,world)+Vector2(sin(t*1.3)*1.2,cos(t*1.7)*0.5)
-	var direction: Vector2=(world.aim*SCALE).normalized()
+	var direction: Vector2=(to_screen(world.fish+world.aim)-to_screen(world.fish)).normalized()
 	var fish_shape := PackedVector2Array([Vector2(12,0),Vector2(5,-4),Vector2(-5,-4),Vector2(-9,-2),Vector2(-15,-5),Vector2(-13,0),Vector2(-15,5),Vector2(-9,2),Vector2(-5,4),Vector2(5,4)])
 	for index in fish_shape.size(): fish_shape[index]=position+fish_shape[index].rotated(direction.angle())
 	if world.net_state=="caught" or world.landing:
@@ -199,10 +201,10 @@ func _net(view: Node2D, world: Node2D, _t: float) -> void:
 	var blocked: bool=world.manual_net_blocked(target)
 	var color := Color("f58375") if blocked or world.angler.net_cooldown>0 else MINT
 	if not world.net_blocks_hooks():
-		view.draw_polyline(ellipse(center,Vector2(world.NET_RIM.y+2,world.NET_RIM.y+2)*SCALE),Color(color,0.65),1)
+		view.draw_polyline(projected(ellipse(target,Vector2.ONE*(world.NET_RIM.y+2))),Color(color,0.65),1)
 		view.label_at(center+Vector2(-28,-18),"木石挡网" if blocked else "从这里下网",10,color)
 	if world.manual_net and world.net_state in ["prepare","warning","sweep"]:
 		var pending := projected(world.manual_net_pending_path(),world)
 		if pending.size()>1: view.draw_polyline(pending,Color(MINT,0.7),1)
-	var water_rect := Rect2(to_screen(Vector2(0,80),world),Vector2(640,214)*SCALE)
-	view.draw_rect(water_rect,Color(MINT,0.12),false,1)
+	var water_edge := projected(PackedVector2Array([Vector2(0,80),Vector2(640,80),Vector2(640,294),Vector2(0,294),Vector2(0,80)]))
+	view.draw_polyline(water_edge,Color(MINT,0.12),1)

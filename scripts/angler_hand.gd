@@ -9,6 +9,8 @@ const TIP := Vector2(872,462)
 const ROD_AXIS := Vector2(-0.5045176672416012,-0.8634013686815031)
 const SIZE := 0.285
 const PIXEL_SIZE := Vector2i(362,272)
+const ARM_PIVOT := Vector2(470,800)
+const WRIST_REACH := Vector2(0,-500)
 var pixel_texture: ViewportTexture
 
 func prepare(view: Node2D) -> void:
@@ -32,13 +34,16 @@ func prepare(view: Node2D) -> void:
 	pixels.add_child(art)
 	pixel_texture=pixels.get_texture()
 
-static func pose(horizontal: float, time: float, reel_speed: float, float_at: Vector2=Vector2(410,213)) -> Dictionary:
-	var angle := deg_to_rad(lerpf(-6,6,clampf(horizontal,0,1)))
+static func pose(horizontal: float, time: float, reel_speed: float) -> Dictionary:
+	var travel := clampf(horizontal,0,1)
+	var arm_angle := deg_to_rad(lerpf(-12,12,travel))
+	var angle := deg_to_rad(lerpf(-3,15,travel))
 	angle+=sin(time*7)*0.0015*minf(absf(reel_speed)/36,1)
-	# Both line endpoints share this framing, preserving the reference V at both limits.
-	var tip := Vector2(float_at.x+24,159)
-	var wrist := tip-((TIP-WRIST)*SIZE).rotated(angle)
-	return {"wrist":wrist,"angle":angle,"socket":point(SOCKET,wrist,angle),"axis":ROD_AXIS.rotated(angle)}
+	# A fixed off-screen arm pivot drives a real wrist arc. The wrist adds a
+	# smaller rotation, keeping the grip upright as the arm sweeps across the lake.
+	# Neither the float nor the camera is allowed to cancel this movement.
+	var wrist := ARM_PIVOT+WRIST_REACH.rotated(arm_angle)
+	return {"wrist":wrist,"angle":angle,"arm_angle":arm_angle,"socket":point(SOCKET,wrist,angle),"axis":ROD_AXIS.rotated(angle)}
 
 static func point(source: Vector2, wrist: Vector2, angle: float) -> Vector2:
 	return wrist+((source-WRIST)*SIZE).rotated(angle)
