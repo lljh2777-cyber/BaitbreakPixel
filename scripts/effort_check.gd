@@ -7,7 +7,7 @@ const BOOST := 1.35
 const WEAK := 0.60
 
 static func fresh() -> Dictionary:
-	return {"active":false,"id":0,"age":0.0,"zone":0.4,"width":WIDTH,"wait":5.0,
+	return {"active":false,"id":0,"kind":"effort","message":"","age":0.0,"zone":0.4,"width":WIDTH,"wait":5.0,
 		"multiplier":1.0,"effect_age":0.0,"result_age":0.0,"good":false,"progress":0.0,"boost":BOOST,"weak":WEAK}
 
 static func reset(state: Dictionary, wait: float = 5.0) -> void:
@@ -18,6 +18,8 @@ static func reset(state: Dictionary, wait: float = 5.0) -> void:
 
 static func open(state: Dictionary, rng: RandomNumberGenerator, tuning: Dictionary = {}) -> void:
 	state.id+=1
+	state.kind="effort"
+	state.message=""
 	state.active=true
 	state.age=0.0
 	state.width=clampf(float(tuning.get("window",0.2))/SWEEP,0.06,0.25)
@@ -47,4 +49,5 @@ static func valid(state: Variant) -> bool:
 	if not state is Dictionary: return false
 	for key in fresh():
 		if not state.has(key) or typeof(state[key])!=typeof(fresh()[key]): return false
+	if not state.kind in ["effort","untangle"] or state.message.length()>80: return false
 	return state.id>=0 and state.age>=0 and state.age<=3.0 and state.zone>=0.1 and state.zone+state.width<=0.99 and state.width>=0.06 and state.width<=0.25 and state.wait>=0 and state.wait<=12 and state.effect_age>=0 and state.effect_age<=2.0 and state.result_age>=0 and state.result_age<=0.7 and state.multiplier>=0.3 and state.multiplier<=1.8 and state.boost>=1.1 and state.boost<=1.8 and state.weak>=0.3 and state.weak<=0.9

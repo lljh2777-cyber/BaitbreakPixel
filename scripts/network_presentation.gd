@@ -41,6 +41,11 @@ func sample(now: float) -> Node2D:
 	world.angler.reel_phase=fposmod(lerp_angle(previous.rig.reel_phase,current.rig.reel_phase,ratio),TAU)
 	world.angler.release_phase=fposmod(lerp_angle(previous.rig.release_phase,current.rig.release_phase,ratio),TAU)
 	world.angler.reel_hand_amount=lerpf(previous.rig.reel_hand_amount,current.rig.reel_hand_amount,ratio) if previous.rig.reel_hand_mode==current.rig.reel_hand_mode else current.rig.reel_hand_amount
+	world.untangle_age=lerpf(a.untangle_age,b.untangle_age,ratio) if a.untangle_phase==b.untangle_phase else b.untangle_age
+	if a.wraps.size()==b.wraps.size():
+		for index in b.wraps.size():
+			if a.wraps[index].target==b.wraps[index].target:
+				world.wraps[index].progress=lerpf(a.wraps[index].progress,b.wraps[index].progress,ratio)
 	for index in world.baits.size():
 		var old: Dictionary=a.baits[index]
 		var latest: Dictionary=b.baits[index]

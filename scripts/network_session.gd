@@ -332,7 +332,7 @@ func tick(delta: float, local_command: Dictionary) -> void:
 			_phase("finished")
 			_send_state(true)
 		elif before!=_check_identity(): _send_state(true)
-		elif not game.qte.is_empty() or game.qte_result_age>0 or game.effort_checks.fish.active or game.effort_checks.angler.active or game.effort_checks.fish.effect_age>0 or game.effort_checks.angler.effect_age>0 or game.net_state in ["prepare","warning","sweep","caught"]:
+		elif not game.qte.is_empty() or game.qte_result_age>0 or game.effort_checks.fish.active or game.effort_checks.angler.active or game.effort_checks.fish.effect_age>0 or game.effort_checks.angler.effect_age>0 or not game.untangle_phase.is_empty() or game.net_state in ["prepare","warning","sweep","caught"]:
 			# A missing fragment must not hide a short skill window. While a check
 			# is active, send complete reliable states at 10 Hz, with interpolation.
 			if game.simulation_tick-last_snapshot_tick>=6: _send_state(true)
@@ -344,10 +344,10 @@ func tick(delta: float, local_command: Dictionary) -> void:
 		var events := _tag_events(local)
 		local.net_events=[]
 		_send({"kind":"input","session":session_id,"round":round_id,"seq":input_seq,"command":local,
-			"seen_tick":displayed.simulation_tick,"qte_id":check.id if check.kind=="effort" and check.active else displayed.qte_id,"check_kind":"effort" if check.kind=="effort" and check.active else "regular","events":events,"gesture":gesture_id},true,1)
+			"seen_tick":displayed.simulation_tick,"qte_id":check.id if check.kind in ["effort","untangle"] and check.active else displayed.qte_id,"check_kind":"effort" if check.kind in ["effort","untangle"] and check.active else "regular","events":events,"gesture":gesture_id},true,1)
 
 func _check_identity() -> Array:
-	return [game.qte_id,game.qte,game.qte_result_age>0,game.effort_checks.fish.id,game.effort_checks.fish.active,game.effort_checks.fish.effect_age>0,game.effort_checks.angler.id,game.effort_checks.angler.active,game.effort_checks.angler.effect_age>0,game.net_state,game.net_capture>0]
+	return [game.qte_id,game.qte,game.qte_result_age>0,game.effort_checks.fish.id,game.effort_checks.fish.active,game.effort_checks.fish.effect_age>0,game.effort_checks.angler.id,game.effort_checks.angler.active,game.effort_checks.angler.effect_age>0,game.net_state,game.net_capture>0,game.untangle_phase,game.wraps.size()]
 
 func _tag_events(command: Dictionary) -> Array[Dictionary]:
 	var result: Array[Dictionary]=[]
@@ -404,6 +404,8 @@ func _take_remote() -> Dictionary:
 	combined.qte_at_age=-1.0
 	combined.home=false
 	combined.deploy=false
+	combined.untangle=false
+	combined.qte_condition_valid=true
 	combined.net_events=[]
 	for index in mini(8,remote_queue.size()):
 		var entry: Dictionary=remote_queue.pop_front()
@@ -412,17 +414,22 @@ func _take_remote() -> Dictionary:
 		events.append_array(cmd.get("net_events",[]))
 		var pressed: bool=combined.qte
 		var age: float=combined.qte_at_age
+		var condition_valid: bool=combined.qte_condition_valid
 		if not pressed and cmd.get("qte",false) and _valid_qte(entry):
 			pressed=true
 			age=effort_history[remote_role][entry.seen_tick].age if entry.get("check_kind")=="effort" else (qte_history[entry.seen_tick].age if not game.qte.is_empty() else -1.0)
 			qte_accepted+=1
+			if entry.get("check_kind")=="effort": condition_valid=effort_history[remote_role][entry.seen_tick].valid
 		var home: bool=combined.home or cmd.get("home",false)
 		var deploy: bool=combined.deploy or cmd.get("deploy",false)
+		var untangle: bool=combined.untangle or cmd.get("untangle",false)
 		combined=cmd.duplicate(true)
 		combined.qte=pressed
 		combined.qte_at_age=age
 		combined.home=home
 		combined.deploy=deploy
+		combined.untangle=untangle
+		combined.qte_condition_valid=condition_valid
 		combined.net_events=events
 		applied_input_seq=entry.seq
 	remote_held=combined.duplicate(true)
@@ -431,7 +438,7 @@ func _take_remote() -> Dictionary:
 func _remember_qte() -> void:
 	for role in ["fish","angler"]:
 		var state: Dictionary=game.effort_checks[role]
-		effort_history[role][game.simulation_tick]={"id":state.id,"age":state.age,"active":state.active}
+		effort_history[role][game.simulation_tick]={"id":state.id,"kind":state.kind,"age":state.age,"active":state.active,"valid":state.kind!="untangle" or game.untangle_tension_valid()}
 		for tick_id in effort_history[role].keys():
 			if tick_id<game.simulation_tick-QTE_HISTORY_TICKS: effort_history[role].erase(tick_id)
 	qte_history[game.simulation_tick]={"id":game.qte_id,"kind":game.qte,"age":game.qte_age,"valid":game.qte!="slack" or game.tension<0.25}
@@ -445,7 +452,7 @@ func _valid_qte(entry: Dictionary) -> bool:
 		if remote_role=="fish" and not game.qte.is_empty(): return false
 		if entry.seen_tick>game.simulation_tick or game.simulation_tick-entry.seen_tick>QTE_HISTORY_TICKS: return false
 		var past: Dictionary=effort_history[remote_role][entry.seen_tick]
-		return past.id==state.id and past.active
+		return past.id==state.id and past.active and past.kind==state.kind
 	if entry.get("check_kind","regular")!="regular" or remote_role!="fish": return false
 	if entry.qte_id!=game.qte_id or not qte_history.has(entry.seen_tick): return false
 	if entry.seen_tick>game.simulation_tick or game.simulation_tick-entry.seen_tick>QTE_HISTORY_TICKS: return false

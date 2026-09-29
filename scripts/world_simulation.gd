@@ -95,6 +95,14 @@ var wrap_target := -1
 var wrap_retry := 0.0
 var wraps: Array[Dictionary] = []
 var fish_line_length := 0.0
+var untangle_phase := ""
+var untangle_target := -1
+var untangle_age := 0.0
+var untangle_cooldown := 0.0
+const UNTANGLE_MIN := 0.25
+const UNTANGLE_MAX := 0.55
+const UNWIND_SECONDS := 0.7
+const UNTANGLE_COOLDOWN := 3.0
 const WIND_SECONDS := 0.85
 var result_flash := 0.0
 var result_good := false
@@ -164,6 +172,9 @@ func uses_mobile_tackle() -> bool: return ruleset=="duel"
 func play_feedback(cue: String) -> void: feedback_requested.emit(cue)
 
 func effort_multiplier(role: String) -> float:
+	if role=="angler" and hooked==HookState.HOOKED and not landing and net_state!="caught":
+		if untangle_phase in ["check","unwind"]: return 0.55
+		if untangle_phase=="recover": return 0.60
 	return float(effort_checks[role].multiplier) if hooked==HookState.HOOKED and not landing and net_state!="caught" and effort_checks[role].effect_age>0 else 1.0
 
 func _cancel_effort(role: String) -> void:
@@ -185,6 +196,7 @@ func _tick_efforts(delta: float, fish_input: Dictionary, angler_input: Dictionar
 		state.effect_age=maxf(0,state.effect_age-delta)
 		state.result_age=maxf(0,state.result_age-delta)
 		if state.effect_age<=0: state.multiplier=1.0
+		if role=="angler" and not untangle_phase.is_empty(): continue
 		if role=="fish" and not qte.is_empty(): _cancel_effort(role); continue
 		var command: Dictionary=fish_input if role=="fish" else angler_input
 		if state.active:
@@ -214,9 +226,91 @@ func skill_check(role: String) -> Dictionary:
 		return {"active":not qte.is_empty(),"id":qte_id,"kind":qte if not qte.is_empty() else qte_result_kind,
 			"age":qte_age,"zone":qte_zone if not qte.is_empty() else qte_result_zone,"width":qte_width if not qte.is_empty() else qte_result_width,
 			"progress":qte_progress() if not qte.is_empty() else qte_result_progress,"result_age":qte_result_age,"good":qte_result_good,"result":qte_result,"origin":qte_origin}
-	return {"active":state.active,"id":state.id,"kind":"effort","age":state.age,"zone":state.zone,"width":state.width,
+	return {"active":state.active,"id":state.id,"kind":state.kind,"age":state.age,"zone":state.zone,"width":state.width,
 		"progress":Effort.progress(state) if state.active else state.progress,"result_age":state.result_age,"good":state.good,
-		"result":"发力成功" if state.good else "短暂脱力","origin":Vector2(452,83) if fish.x<320 else Vector2(12,83)}
+		"result":state.message if state.kind=="untangle" else ("发力成功" if state.good else "短暂脱力"),"origin":Vector2(452,83) if fish.x<320 else Vector2(12,83)}
+
+func untangle_tension_valid() -> bool:
+	return tension>=UNTANGLE_MIN and tension<=UNTANGLE_MAX
+
+func can_untangle() -> bool:
+	var state: Dictionary=effort_checks.angler
+	return hooked==HookState.HOOKED and not landing and not match_over and not wraps.is_empty() and not winding() and untangle_phase.is_empty() and untangle_cooldown<=0 and not state.active and state.effect_age<=0 and state.result_age<=0 and net_state in ["wait","rest"] and not angler.net_held
+
+func _begin_untangle() -> bool:
+	if not can_untangle(): return false
+	untangle_phase="check"
+	untangle_target=wraps[-1].target
+	untangle_age=0.0
+	Effort.open(effort_checks.angler,rng,effort_tuning())
+	effort_checks.angler.kind="untangle"
+	play_feedback("qte_angler")
+	return true
+
+func _reset_untangle() -> void:
+	# An interrupted animation has not earned a removed coil.
+	if untangle_phase=="unwind":
+		for coil in wraps:
+			if coil.target==untangle_target: coil.progress=1.0
+		_rebuild_rope()
+	if effort_checks.angler.kind=="untangle": Effort.reset(effort_checks.angler)
+	untangle_phase=""
+	untangle_target=-1
+	untangle_age=0.0
+
+func _judge_untangle(pressed: bool, judged_age: float = -1.0, failure: String = "") -> void:
+	var state: Dictionary=effort_checks.angler
+	var good := Effort.finish(state,pressed,judged_age,rng)
+	good=good and untangle_tension_valid() and failure.is_empty()
+	state.good=good
+	state.multiplier=1.0
+	state.effect_age=0.0
+	state.message="解开一圈" if good else (failure if not failure.is_empty() else "张力不合适" if pressed and not untangle_tension_valid() else "判定失败")
+	Stats.record(round_stats,"angler",good)
+	untangle_phase="unwind" if good else "recover"
+	untangle_age=0.0
+	untangle_cooldown=UNTANGLE_COOLDOWN
+	play_feedback(("effort_good_" if good else "effort_bad_")+"angler")
+
+func _tick_untangle(delta: float, command: Dictionary) -> void:
+	# Run after fish movement, line tension and fish QTE. Escape/capture wins a
+	# simultaneous result; neither a stale input nor a saved success revives it.
+	if hooked!=HookState.HOOKED or landing or match_over or net_state!="wait" and net_state!="rest" or angler.net_held:
+		if not untangle_phase.is_empty():
+			_reset_untangle()
+			untangle_cooldown=maxf(untangle_cooldown,UNTANGLE_COOLDOWN)
+		return
+	if untangle_phase.is_empty(): return
+	untangle_age+=delta
+	if untangle_phase=="recover":
+		if untangle_age>=0.75: _reset_untangle()
+		return
+	if wraps.is_empty() or wraps[-1].target!=untangle_target:
+		if untangle_phase=="check": _judge_untangle(false,-1,"鱼再次缠线")
+		else: _reset_untangle()
+		return
+	if untangle_phase=="check":
+		var state: Dictionary=effort_checks.angler
+		state.age+=delta
+		if command.qte or state.age>=Effort.LEAD+Effort.SWEEP+qte_grace_seconds:
+			_judge_untangle(command.qte,command.qte_at_age,"张力不合适" if not command.qte_condition_valid else "")
+	elif untangle_phase=="unwind":
+		wraps[-1].progress=maxf(0.0,1.0-untangle_age/UNWIND_SECONDS)
+		if untangle_age>=UNWIND_SECONDS:
+			# Preserve elastic extension, including excess slack. Changing the
+			# attachment must never teleport the fish or introduce a force spike.
+			var offset: float=fish_line_length-Vector2(wraps[-1].entry).distance_to(mouth())
+			wraps.pop_back()
+			latched=not wraps.is_empty()
+			var target := Vector2(wraps[-1].entry) if latched else line_anchor(bound_bait)
+			var available := clampf(target.distance_to(mouth())+offset+(0.0 if latched else 0.32*LINE_ELASTIC_PIXELS),0,MAX_LINE_LENGTH)
+			if latched: fish_line_length=available
+			else: rope_length=available; fish_line_length=0.0
+			round_stats.unwrap_good+=1
+			untangle_phase=""
+			untangle_target=-1
+			untangle_age=0.0
+		_rebuild_rope()
 
 func advance_tick(fish_command: Dictionary, angler_command: Dictionary) -> void:
 	simulate(TICK_SECONDS,fish_command,angler_command)
@@ -226,10 +320,13 @@ func simulate(delta: float, fish_command: Dictionary, angler_command: Dictionary
 	var fish_input := Commands.fish(fish_command,aim,power)
 	var angler_input := Commands.angler(angler_command,angler.cursor)
 	angler.update(self,delta,angler_input)
+	untangle_cooldown=maxf(0,untangle_cooldown-delta)
+	if angler_input.untangle: _begin_untangle()
 	_tick_efforts(delta,fish_input,angler_input)
 	power=fish_input.power
 	if not movement_locked() and fish_input.aim.length()>0.01: aim=fish_input.aim.normalized()
 	_simulate_fish(delta,fish_input.move,fish_input.suck,fish_input.home,fish_input.dash,fish_input.slow,fish_input.qte,fish_input.qte_at_age)
+	_tick_untangle(delta,angler_input)
 	angler.step_tackle_feedback(self,delta)
 	if net_state=="caught" or match_over:
 		for role in effort_checks: Effort.reset(effort_checks[role])
@@ -284,6 +381,8 @@ func reset_world(config: Dictionary = {}) -> void:
 	simulation_tick=0
 	qte_id=0
 	effort_checks={"fish":Effort.fresh(),"angler":Effort.fresh()}
+	_reset_untangle()
+	untangle_cooldown=0.0
 	round_stats=Stats.fresh()
 	net_capture=0.0
 	qte_grace_seconds=clampf(Commands.number(config.get("qte_grace"),0),0,0.25)
@@ -504,7 +603,7 @@ func _update_contacts(delta: float) -> void:
 			contact_target = index
 
 func winding() -> bool:
-	return not wraps.is_empty() and wraps[-1].progress<1.0
+	return untangle_phase!="unwind" and not wraps.is_empty() and wraps[-1].progress<1.0
 
 func movement_locked() -> bool:
 	return hooked==HookState.MOUTH or landing or net_state=="caught"
@@ -541,6 +640,7 @@ func _finish_qte_visual(good: bool, message: String = "", judged: bool = true) -
 	qte_result = message if not message.is_empty() else (("缠线成功" if qte=="wrap" else "吐钩成功") if good else "判定失败")
 
 func _begin_wrap() -> bool:
+	if untangle_phase=="unwind": return false
 	if hooked!=HookState.HOOKED or wrap_retry>0 or winding() or not touching_target(contact_target): return false
 	if target_is_wrapped(contact_target) or not qte.is_empty(): return false
 	wrap_target = contact_target
@@ -564,6 +664,7 @@ func _commit_wrap() -> void:
 	var coil := Layout.coil_at(targets[wrap_target],fish)
 	coil.target = wrap_target
 	wraps.append(coil)
+	untangle_cooldown=maxf(untangle_cooldown,WIND_SECONDS+0.5)
 	# Only this successful skill check creates an attachment. The coil stays after swimming away.
 	fish_line_length = mouth().distance_to(coil.entry)+9.0
 	reel_speed = 0
@@ -790,6 +891,9 @@ func _step_line(delta: float, qte_pressed: bool, judged_age: float = -1) -> void
 	# Reeling is the objective. Tension feedback only tempers it or pays out under heavy load.
 	var force_gain := effort_multiplier("angler")/effort_multiplier("fish")
 	var desired_speed := angler.spool_target(raw_tension,tuning,not angler.auto_reel)
+	if angler.auto_reel and untangle_phase in ["check","unwind"]:
+		# The AI uses the same spool actuator; no direct tension/line-length edits.
+		desired_speed=clampf((raw_tension-0.40)*170,-36,90)*tuning.y
 	if desired_speed<0: desired_speed*=force_gain
 	if tuning.y<=0: reel_speed=0
 	elif not angler.auto_reel: reel_speed=angler.manual_spool_speed(reel_speed,delta*tuning.x*maxf(1,tuning.y),force_gain)
@@ -855,6 +959,8 @@ func _step_landing(delta: float) -> void:
 		notice_age = 4
 
 func _clear_hook() -> void:
+	_reset_untangle()
+	untangle_cooldown=0.0
 	for role in effort_checks: Effort.reset(effort_checks[role])
 	hooked = HookState.FREE
 	bound_bait = -1

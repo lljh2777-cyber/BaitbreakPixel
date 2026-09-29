@@ -2,7 +2,7 @@ extends RefCounted
 
 const VERSION := 1
 # Peers must share capture timing and the round-statistics snapshot schema.
-const BUILD := "0.17"
+const BUILD := "0.18"
 const DEFAULT_PORT := 24712
 const MAX_PACKET := 196608
 const MAX_STATE := 1048576
@@ -58,6 +58,7 @@ static func input(role: String, raw: Dictionary) -> Dictionary:
 		return clean
 	var clean := Commands.angler(raw,Vector2(232,180))
 	clean.qte_at_age=-1.0
+	clean.qte_condition_valid=true # Authority derives conditions from its own history.
 	clean.auto_reel=false
 	clean.auto_net=false
 	clean.target=clean.target.clamp(Vector2(0,0),Vector2(640,360))

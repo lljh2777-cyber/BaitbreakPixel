@@ -1,7 +1,7 @@
 extends RefCounted
 
 # Explicit, versioned value schema. Local views, input sources and profiles are excluded.
-const SCHEMA := 6
+const SCHEMA := 7
 const MAP_ID := "pond_v1"
 const WORLD_FIELDS: Array[String] = [
 	"fish",
@@ -62,6 +62,10 @@ const WORLD_FIELDS: Array[String] = [
 	"wrap_retry",
 	"wraps",
 	"fish_line_length",
+	"untangle_phase",
+	"untangle_target",
+	"untangle_age",
+	"untangle_cooldown",
 	"result_flash",
 	"result_good",
 	"baits",
@@ -217,6 +221,11 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 	if state.wrap_target < -1 or state.wrap_target>=world.targets.size(): return false
 	if state.contact_target < -1 or state.contact_target>=world.targets.size(): return false
 	if state.wraps.size()>world.targets.size() or state.baits.size()!=4: return false
+	if not state.untangle_phase in ["","check","unwind","recover"] or state.untangle_age<0 or state.untangle_age>3.0 or state.untangle_cooldown<0 or state.untangle_cooldown>world.UNTANGLE_COOLDOWN: return false
+	if state.untangle_target < -1 or state.untangle_target>=world.targets.size(): return false
+	if state.untangle_phase in ["check","unwind"]:
+		if state.hooked!=2 or state.wraps.is_empty() or not state.wraps[-1] is Dictionary or state.wraps[-1].get("target")!=state.untangle_target: return false
+		if state.effort_checks.angler.kind!="untangle" or state.effort_checks.angler.active!=(state.untangle_phase=="check"): return false
 	var bait_reference: Dictionary=world._make_bait(0)
 	for bait in state.baits:
 		if not bait is Dictionary or not bait.get("grains") is Array or bait.grains.size()>2048: return false
@@ -228,6 +237,7 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 		if not wrap is Dictionary: return false
 		if not record_matches(wrap,{"center":Vector2.ZERO,"radii":Vector2.ONE,"entry":Vector2.ZERO,"loop":PackedVector2Array(),"progress":0.0,"target":0}): return false
 		if not wrap.target is int or wrap.target<0 or wrap.target>=world.targets.size() or wrap.loop.size()<2 or wrap.loop.size()>512: return false
+		if wrap.progress<0 or wrap.progress>1: return false
 	# Validate before mutating, and never fire sound/result/profile side effects on restore.
 	var detached: Dictionary=bytes_to_var(var_to_bytes(snapshot))
 	for key in WORLD_FIELDS: world.set(key,detached.state[key])

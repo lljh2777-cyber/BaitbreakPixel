@@ -45,6 +45,11 @@ static func tackle_pose(world: Node2D, t: float) -> Dictionary:
 	var reel_speed: float=world.angler.feedback_reel_speed(world)
 	# The existing replicated sway gives the held rig a small, damped follow-through.
 	var held_x: float=world.angler.x+world.angler.line_sway*0.2
+	# A small wrist/arm sweep uses the same articulated pose as normal steering.
+	# Ease in/out within the unwind so hands, reel, rod and line stay attached.
+	if world.untangle_phase=="unwind":
+		var unwind:float=clampf(world.untangle_age/world.UNWIND_SECONDS,0,1)
+		held_x+=sin(unwind*TAU)*sin(unwind*PI)*22.0
 	var pose := Hand.pose(inverse_lerp(18,588,held_x),t,reel_speed,world.angler.rod_lift)
 	var rod := rod_points(pose,load,world.effort_multiplier("angler"),float_position(world,t))
 	return {"hand":pose,"rod":rod,"tip":rod[-1],"load":load,"reel_speed":reel_speed}

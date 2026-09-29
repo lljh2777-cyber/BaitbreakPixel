@@ -114,10 +114,10 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.17.0 | loaded-rod-and-arm-lift")
+	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.18.0 | angler-untangle-counterplay")
 
 func _register_inputs() -> void:
-	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[], "use":[KEY_E], "slow":[KEY_Q], "qte":[KEY_SPACE]}
+	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[], "use":[KEY_E], "slow":[KEY_Q], "qte":[KEY_SPACE], "untangle":[KEY_F]}
 	for action in mapping:
 		if not InputMap.has_action(action): InputMap.add_action(action)
 		InputMap.action_erase_events(action)
@@ -240,6 +240,8 @@ func hint() -> String:
 		if qte=="wrap": return "游动抗拉，保持接触 · 浮漂到绿区按空格"
 		if winding(): return "正在缠绕 · 可继续游动，靠近线圈制造松线"
 		if qte == "slack": return "保持松线，同时在绿区按空格"
+		if untangle_phase=="check": return "对方正在解缠 · 游动改变张力，或争取松口"
+		if untangle_phase=="unwind": return "线圈正在退开 · 仍可游动、松口或拉断线"
 		if contact_target>=0 and wrap_retry<=0: return "接触%s · 按空格开始缠线判定" % targets[contact_target].name
 		if high_age > 0: return "持续拉紧 %.1f / %.1f 秒可断线" % [high_age,break_hold_seconds]
 		if latched: return "已缠线 · 靠近线圈保持低张力，浮漂到绿区按空格"
@@ -260,6 +262,9 @@ func hint() -> String:
 
 func angler_hint() -> String:
 	if landing or net_state=="caught": return "鱼已被控制 · 正在提出水面"
+	if untangle_phase=="check": return "W/S 保持张力 25–55% · 浮漂进入绿区按空格解缠"
+	if untangle_phase=="unwind": return "正在退开一圈 · 可继续 W/S 控线，鱼仍可能逃脱"
+	if untangle_phase=="recover": return "解缠失败 · 线圈保留，短暂恢复中"
 	if effort_checks.angler.active: return "保持 W 收线 · 发力浮漂到绿区按空格"
 	if manual_net and net_state in ["prepare","warning"]: return "抄网展开中 · 保持 E + 左键画路线，转弯会被保留"
 	if manual_net and net_state=="sweep": return "保持网口接触直到收拢 · 疲惫、接近水面的上钩鱼更易捕获"
@@ -269,7 +274,8 @@ func angler_hint() -> String:
 	if hooked==HookState.HOOKED:
 		if tension>=0.88: return "张力过高！按 S 放线，避免持续高张力断线"
 		if tension<0.25: return "鱼正在找机会松口 · 按 W 收线"
-		if latched: return "鱼线已缠住 · W 收线压缩松口机会，E + 左键拖动抄网"
+		if latched:
+			return "鱼线缠住 · 解缠恢复 %.1fs，W/S 保持控制" % untangle_cooldown if untangle_cooldown>0 else "鱼线缠住 · F 解缠，W/S 保持张力并按空格判定"
 		return "W 收线 · S 放线 · A/D 左右移竿 · E + 左键在近水区拖网"
 	if notice_age>0: return notice
 	return "Q 下钩 / 补饵 · W/S 收放线 · E + 左键拖动抄网" if shared_session else "Q 下钩 / 补饵 · W 收线 / S 放线 · E + 左键拖动抄网 · F3 时间设置"

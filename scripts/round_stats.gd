@@ -2,7 +2,7 @@ extends RefCounted
 
 static func fresh() -> Dictionary:
 	return {"fish_good":0,"fish_total":0,"angler_good":0,"angler_total":0,
-		"wrap_good":0,"breaks":0,"slips":0,"danger_seconds":0.0,"hooked_seconds":0.0}
+		"wrap_good":0,"unwrap_good":0,"breaks":0,"slips":0,"danger_seconds":0.0,"hooked_seconds":0.0}
 
 static func record(stats: Dictionary, role: String, good: bool) -> void:
 	stats[role+"_total"]+=1

@@ -122,7 +122,7 @@ func _title(frame: Control) -> void:
 	button(frame,"设置",274,func(): open("settings"),false,124)
 	var quit := button(frame,"退出",274,func(): get_tree().quit(),false,124)
 	quit.position.x = 150
-	text(content,"0.17.0 · 岸边第一人称",Vector2(341,280),10,Color("91afa7"))
+	text(content,"0.18.0 · 岸边第一人称",Vector2(341,280),10,Color("91afa7"))
 	text(content,"小鱼 · 吃饵脱身",Vector2(391,119),18,GOLD)
 	text(content,"人类 · 收线抄网",Vector2(391,159),18,GOLD)
 	text(content,"独自练习 · 双人对战",Vector2(375,199),16,GOLD)
@@ -164,9 +164,9 @@ func _help(frame: Control) -> void:
 			"A / D 左右移竿 · 浮漂沿横向水域移动",
 			"Q 下钩；饵用完 / 断线后 Q 重新挂饵",
 			"W 收线 · S 放线，未咬钩时也能调整深度",
-			"观察浮漂下顿、摆动和水中模糊虚影",
+			"缠线时 F 解缠 · W/S 保持张力 25–55%",
 			"持续过紧会断线 · 过松会给鱼脱钩机会",
-			"收线发力先听音 · 空格判定，加力或脱力",
+			"听音准备 · 空格判定，解缠成功退开一圈",
 			"E + 左键在近水区画网路，松开即可取消",
 			"保持网口接触直到收拢 · 疲惫的鱼更易捞",
 			"6 分钟内提鱼出水获胜；F3 调节逃脱时间",
@@ -312,7 +312,7 @@ func _result(frame: Control) -> void:
 	text(frame,"小鱼 QTE   "+game.Stats.rate(game.round_stats,"fish"),Vector2(20,137),12,MINT)
 	text(frame,"人类 QTE   "+game.Stats.rate(game.round_stats,"angler"),Vector2(20,157),12,GOLD)
 	text(frame,"危险张力 %.1fs / 拉扯 %.1fs" % [game.round_stats.danger_seconds,game.round_stats.hooked_seconds],Vector2(20,179),12)
-	text(frame,"缠线成功 %d 次 · 下网 %d 次 / 捕获 %d 次" % [game.round_stats.wrap_good,game.net_count,game.net_catches],Vector2(20,199),12,Color("91afa7"))
+	text(frame,"缠线 %d · 解缠 %d · 下网 %d / 捕获 %d" % [game.round_stats.wrap_good,game.round_stats.unwrap_good,game.net_count,game.net_catches],Vector2(20,199),12,Color("91afa7"))
 	ready_button=button(frame,"准备下一局" if game.shared_session else "再来一局",227,func(): game.restart_round(),true)
 	button(frame,"离开房间" if game.shared_session else "返回标题",261,func(): game.return_to_title())
 
