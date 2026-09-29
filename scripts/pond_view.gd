@@ -162,7 +162,8 @@ func _make_plant_layer(t: float, plant_index: int) -> Dictionary:
 func _baits(t: float) -> void:
 	for index in game.baits.size():
 		var bait: Dictionary = game.baits[index]
-		if bait.active and bait.hook and not bait.removed and not game.net_blocks_hooks():
+		# Net activity suppresses new bites, not the physical hook or its hanging line.
+		if bait.active and bait.hook and not bait.removed:
 			if game.bound_bait != index:
 				var filament := PackedVector2Array()
 				var eye: Vector2 = game.hook_point(index,Vector2(-5,-10))
@@ -193,7 +194,7 @@ func _baits(t: float) -> void:
 			var label := "有钩饵" if bait.hook and not bait.removed else "散饵"
 			label_at(Vector2(bait.pos) + Vector2(-17, -14), label, 10, Color("bdd4be"))
 		# A tiny glint remains at the actual tip after the grains are drawn over the hook.
-		if bait.active and bait.hook and not bait.removed and not game.net_blocks_hooks():
+		if bait.active and bait.hook and not bait.removed:
 			draw_rect(Rect2(game._tip(index).round(),Vector2.ONE),RED if game.bound_bait==index else CREAM)
 
 func _line_back() -> void:
