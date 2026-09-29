@@ -42,6 +42,7 @@ func _draw() -> void:
 	var t: float = game.elapsed
 	_world(t)
 	_baits(t)
+	_angler(t)
 	_line()
 	_net_back(t)
 	_player(t)
@@ -169,7 +170,7 @@ func _baits(t: float) -> void:
 				var eye: Vector2 = game.hook_point(index,Vector2(-5,-10))
 				for segment in range(17):
 					var ratio := segment/16.0
-					var point := Vector2(bait.home.x,55).lerp(eye,ratio)
+					var point: Vector2 = game.line_anchor(index).lerp(eye,ratio)
 					point.x += sin(ratio*PI)*sin(t*0.75+ratio*2)*2.5*game.water_strength
 					filament.append(point.round())
 				draw_polyline(filament,Color("b9d5bf"),1)
@@ -196,6 +197,73 @@ func _baits(t: float) -> void:
 		# A tiny glint remains at the actual tip after the grains are drawn over the hook.
 		if bait.active and bait.hook and not bait.removed:
 			draw_rect(Rect2(game._tip(index).round(),Vector2.ONE),RED if game.bound_bait==index else CREAM)
+
+func _angler(t: float) -> void:
+	if game.player_role!="angler": return
+	var p := Vector2(roundf(game.angler.x),43)
+	var flex: float=game.tension*3 if game.hooked==game.HookState.HOOKED else sin(t*1.4)
+	draw_rect(Rect2(p+Vector2(-5,-8),Vector2(8,8)),Color("ecc695"))
+	draw_rect(Rect2(p+Vector2(-7,-11),Vector2(12,4)),Color("be9056"))
+	draw_rect(Rect2(p+Vector2(-4,-14),Vector2(7,4)),Color("dfbd78"))
+	draw_rect(Rect2(p+Vector2(2,-6),Vector2(1,2)),INK)
+	draw_rect(Rect2(p+Vector2(-5,0),Vector2(9,7)),Color("34495a"))
+	draw_rect(Rect2(p+Vector2(-5,7),Vector2(3,4)),Color("102f3f"))
+	draw_rect(Rect2(p+Vector2(1,7),Vector2(3,4)),Color("102f3f"))
+	draw_line(p+Vector2(3,1),p+Vector2(10,3),Color("ecc695"),3)
+	var rod := PackedVector2Array([p+Vector2(8,4),p+Vector2(18,-8-flex),p+Vector2(25,-4-flex),game.angler.anchor()])
+	draw_polyline(rod,INK,3)
+	draw_polyline(rod,GOLD,1)
+	if game.angler.casting:
+		var ball: Vector2=game.angler.projectile().round()
+		draw_line(game.angler.anchor(),ball,Color("b9d5bf"),1)
+		draw_rect(Rect2(ball-Vector2(2,2),Vector2(5,4)),Color("a26c3f"))
+		draw_rect(Rect2(ball-Vector2(2,2),Vector2(3,2)),GOLD)
+		draw_line(ball,ball+Vector2(0,4),CREAM,1)
+	if game.menu.visible: return
+	var cursor: Vector2=game.angler.cursor.round()
+	var color := MINT if game.angler.net_cooldown<=0 else Color("7ca9a0")
+	for side in [-1,1]:
+		draw_line(cursor+Vector2(side*5,0),cursor+Vector2(side*9,0),color,1)
+		draw_line(cursor+Vector2(0,side*5),cursor+Vector2(0,side*9),color,1)
+	if game.hooked==game.HookState.FREE and not game.angler.casting:
+		draw_rect(Rect2(cursor-Vector2(1,1),Vector2(2,2)),GOLD)
+
+func _angler_hud(_t: float) -> void:
+	draw_rect(Rect2(0,0,640,29),INK)
+	label_at(Vector2(12,19),"钓鱼人",13,GOLD)
+	label_at(Vector2(94,19),"鱼的食物 %02d / 60" % int(game.score),12,CREAM)
+	label_at(Vector2(237,19),"鱼体力",11,CREAM)
+	draw_rect(Rect2(281,11,62,6),Color("335762"))
+	draw_rect(Rect2(281,11,62*game.stamina/100,6),MINT)
+	label_at(Vector2(360,19),"抄网 %.1fs" % game.angler.net_cooldown if game.angler.net_cooldown>0 else "空格 抄网",11,MINT)
+	var remaining := maxi(0,int(ceil(game.TIME_LIMIT-game.clock)))
+	label_at(Vector2(529,20),"%02d:%02d" % [remaining/60,remaining%60],14,CREAM)
+	draw_rect(Rect2(0,327,640,33),INK)
+	label_at(Vector2(12,341),game.angler_hint(),11,GOLD)
+	label_at(Vector2(12,355),"A/D 钓位   左键 投饵 / 放线   右键 收线   空格 抄网   E 收饵",10,Color("9cbbb4"))
+	label_at(Vector2(584,350),"H 帮助",10,CREAM)
+	# Opponent checks remain autonomous; never invite the angler to press a fish QTE.
+	panel(Rect2(10,65,151,50))
+	label_at(Vector2(18,81),"小鱼 · "+game.fish_brain.state,11,MINT)
+	if game.hooked==game.HookState.HOOKED:
+		var spool := "放线" if game.reel_speed>0.5 else ("收线" if game.reel_speed< -0.5 else "稳线")
+		label_at(Vector2(18,96),"张力 %d%% · %s" % [int(game.tension*100),spool],11,RED if game.tension>=0.88 else CREAM)
+		draw_rect(Rect2(18,103,134,5),Color("335762"))
+		draw_rect(Rect2(18,103,134*game.tension,5),MINT.lerp(RED,game.tension))
+		if game.high_age>0: label_at(Vector2(18,129),"断线风险 %.1f / 3s" % game.high_age,10,RED)
+	elif game.hooked==game.HookState.MOUTH:
+		label_at(Vector2(18,100),"钩尖入口 · 等待挂牢",11,GOLD)
+	else:
+		var remaining_bait := 0
+		for bait in game.baits:
+			if bait.hook and not bait.removed:
+				for grain in bait.grains:
+					if not grain.eaten and not grain.free: remaining_bait+=1
+		label_at(Vector2(18,100),"钩饵余量 %d 粒" % remaining_bait,11,CREAM)
+	if game.net_blocks_hooks():
+		var names := {"prepare":"抄网入水","warning":"锁定落点…","sweep":"扫网中","miss":"被木石挡住" if game.net_blocked else "扑空了","withdraw":"撤网中","caught":"收拢提网…"}
+		panel(Rect2(445,65,182,26))
+		label_at(Vector2(454,83),names.get(game.net_state,"抄网中"),12,RED)
 
 func _line_back() -> void:
 	if game.hooked == game.HookState.HOOKED and game.rope_path.size() >= 2:
@@ -227,15 +295,15 @@ func _line() -> void:
 			outline.append(outline[0])
 			draw_polyline(outline,Color(MINT,0.65 if game.qte=="wrap" else 0.32),1)
 	elif game.hooked == game.HookState.MOUTH:
-		draw_line(Vector2(game.baits[game.bound_bait].home.x, 53), game.mouth(), RED, 1)
+		draw_line(game.line_anchor(game.bound_bait), game.mouth(), RED, 1)
 
 func _player(t: float) -> void:
 	var mouth: Vector2 = game.mouth()
 	var direction: Vector2 = game.aim
-	if game.hooked == game.HookState.FREE and not game.menu.visible:
+	if game.hooked == game.HookState.FREE and not game.menu.visible and (game.player_role=="fish" or game.feeding):
 		var side := direction.orthogonal() * 27
 		var far := mouth + direction * 44
-		var pulling := Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+		var pulling: bool=game.feeding
 		var fade := 0.17 if pulling else 0.045
 		draw_colored_polygon(PackedVector2Array([mouth, far+side, far-side]), Color(0.67,0.94,0.81,fade))
 		if pulling:
@@ -271,7 +339,7 @@ func _player(t: float) -> void:
 			draw_line(pointer-direction_to_line*4+direction_to_line.orthogonal()*3,pointer,RED,1)
 			draw_line(pointer-direction_to_line*4-direction_to_line.orthogonal()*3,pointer,RED,1)
 		if not game.latched and position.y<125:
-			draw_rect(Rect2(game.baits[game.bound_bait].home.x-35,57,70,4),Color(RED,0.4+0.2*sin(t*9)))
+			draw_rect(Rect2(game.line_anchor(game.bound_bait).x-35,57,70,4),Color(RED,0.4+0.2*sin(t*9)))
 	if game.result_flash > 0:
 		var radius: float = (0.7 - game.result_flash) * 25 + 12
 		draw_arc(position, radius, 0, TAU, 16, MINT if game.result_good else RED, 1)
@@ -392,6 +460,9 @@ func _draw_landing_net(p: Vector2, t: float, front: bool) -> void:
 
 func _hud(t: float) -> void:
 	if game.menu.visible: return
+	if game.player_role=="angler":
+		_angler_hud(t)
+		return
 	draw_rect(Rect2(0,0,640,35), INK)
 	label_at(Vector2(12,15), "像素池塘", 12, GOLD)
 	label_at(Vector2(12,28), "限时挑战" if game.challenge else "练习 · F2 调节", 10, MINT)

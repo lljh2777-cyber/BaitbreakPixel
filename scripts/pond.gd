@@ -5,6 +5,8 @@ const View = preload("res://scripts/pond_view.gd")
 const Menus = preload("res://scripts/menu.gd")
 const Sound = preload("res://scripts/sound.gd")
 const Layout = preload("res://scripts/pond_layout.gd")
+const AnglerController = preload("res://scripts/angler_controller.gd")
+const FishBrain = preload("res://scripts/fish_brain.gd")
 enum HookState { FREE, MOUTH, HOOKED }
 const HOME := Vector2(60, 281)
 const TARGET := 60.0
@@ -23,6 +25,11 @@ const NET_SETTLE := 0.32
 const NET_MISS := 0.22
 
 var fish := Vector2(66, 265)
+var player_role := "fish"
+var angler := AnglerController.new()
+var fish_brain := FishBrain.new()
+var net_aim := Vector2.ZERO
+var angler_wins := 0
 var velocity := Vector2.ZERO
 var aim := Vector2.RIGHT
 var power := 0.35
@@ -152,7 +159,7 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | side-view | 640x360 | v0.8.1")
+	print("PIXEL_READY | side-view | 640x360 | v0.9 | dual-role")
 
 func _register_inputs() -> void:
 	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[], "use":[KEY_E], "slow":[KEY_Q], "qte":[KEY_SPACE]}
@@ -166,6 +173,11 @@ func _register_inputs() -> void:
 	var sprint_button := InputEventMouseButton.new()
 	sprint_button.button_index = MOUSE_BUTTON_RIGHT
 	InputMap.action_add_event("dash",sprint_button)
+	if not InputMap.has_action("cast"): InputMap.add_action("cast")
+	InputMap.action_erase_events("cast")
+	var cast_button := InputEventMouseButton.new()
+	cast_button.button_index=MOUSE_BUTTON_LEFT
+	InputMap.action_add_event("cast",cast_button)
 
 func _load_profile() -> void:
 	var file := ConfigFile.new()
@@ -174,6 +186,7 @@ func _load_profile() -> void:
 		fullscreen = bool(file.get_value("settings", "fullscreen", false))
 		best_score = maxf(0, float(file.get_value("record", "best", 0)))
 		wins = maxi(0, int(file.get_value("record", "wins", 0)))
+		angler_wins=maxi(0,int(file.get_value("record","angler_wins",0)))
 		set_practice_line_tuning(float(file.get_value("practice", "line_sensitivity", 1.0)),float(file.get_value("practice", "line_force", 1.0)))
 
 func save_profile() -> void:
@@ -182,6 +195,7 @@ func save_profile() -> void:
 	file.set_value("settings", "fullscreen", fullscreen)
 	file.set_value("record", "best", best_score)
 	file.set_value("record", "wins", wins)
+	file.set_value("record","angler_wins",angler_wins)
 	file.set_value("practice", "line_sensitivity", practice_line_sensitivity)
 	file.set_value("practice", "line_force", practice_line_force)
 	save_error = file.save(save_path)
@@ -200,8 +214,13 @@ func apply_settings() -> void:
 	if DisplayServer.get_name() != "headless":
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN if fullscreen else DisplayServer.WINDOW_MODE_WINDOWED)
 
-func reset(is_challenge: bool) -> void:
+func reset(is_challenge: bool, role: String = "fish") -> void:
+	player_role="angler" if role=="angler" else "fish"
+	angler.reset()
+	fish_brain.reset(rng.randi())
+	net_aim=Vector2.ZERO
 	challenge = is_challenge
+	if player_role=="angler": challenge=true
 	fish = Vector2(66, 265)
 	velocity = Vector2.ZERO
 	aim = Vector2.RIGHT
@@ -244,6 +263,7 @@ func reset(is_challenge: bool) -> void:
 	started = false
 	won = false
 	lost = false
+	reason = ""
 	returning = false
 	home_age = 0
 	hook_count = 0
@@ -273,10 +293,20 @@ func reset(is_challenge: bool) -> void:
 	supply_queue.assign([2, 3])
 	baits.clear()
 	for index in range(4): _create_bait(index)
+	if player_role=="angler":
+		baits[0].active=false
+		started=true
 	paused = false
 	notice = "鼠标朝向决定吸食方向 · 先试试右侧无钩饵"
 	notice_age = 5
+	if player_role=="angler": notice="点击水中投饵 · 鱼上钩后按住右键收线"
 	menu.close()
+
+func restart_round() -> void:
+	reset(challenge,player_role)
+
+func line_anchor(index: int) -> Vector2:
+	return angler.anchor() if player_role=="angler" else Vector2(baits[index].home.x,53)
 
 func _create_bait(index: int) -> void:
 	var hooked_bait := index % 2 == 0
@@ -367,7 +397,7 @@ func movement_locked() -> bool:
 
 func line_pull_velocity() -> Vector2:
 	if hooked!=HookState.HOOKED or landing: return Vector2.ZERO
-	var target := Vector2(baits[bound_bait].home.x,53) if wraps.is_empty() else Vector2(wraps[-1].entry)
+	var target := line_anchor(bound_bait) if wraps.is_empty() else Vector2(wraps[-1].entry)
 	var load := clampf((tension-0.12)/0.88,0,1)
 	# A taut line transmits a real force toward its last contact; slack does not push the fish.
 	return (target-mouth()).normalized()*65*load*sqrt(line_tuning().y)*(1.0 if wraps.is_empty() else 0.5)
@@ -440,18 +470,29 @@ func visible_coil(wrap: Dictionary) -> PackedVector2Array:
 
 func _rebuild_rope() -> void:
 	if hooked!=HookState.HOOKED: return
-	rope_path = PackedVector2Array([Vector2(baits[bound_bait].home.x,53)])
+	rope_path = PackedVector2Array([line_anchor(bound_bait)])
 	for wrap in wraps:
 		rope_path.append_array(visible_coil(wrap))
 	rope_path.append(mouth())
 
 func _physics_process(delta: float) -> void:
 	if menu.visible or paused or won or lost: return
+	if player_role=="angler":
+		controlled_step(delta,{"target":get_global_mouse_position(),"walk":Input.get_axis("left","right"),"cast":Input.is_action_just_pressed("cast"),"release":Input.is_action_pressed("cast"),"reel":Input.is_action_pressed("dash"),"retrieve":Input.is_action_just_pressed("use"),"net":Input.is_action_just_pressed("qte")})
+		return
 	if not movement_locked():
 		var pointing := get_global_mouse_position() - fish
 		if pointing.length() > 4: aim = pointing.normalized()
 	var movement := Input.get_vector("left", "right", "up", "down")
 	step(delta, movement, Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT), Input.is_action_just_pressed("use"), Input.is_action_pressed("dash"), Input.is_action_pressed("slow"),Input.is_action_just_pressed("qte"))
+
+func controlled_step(delta: float, angler_command: Dictionary = {}) -> void:
+	if paused or won or lost: return
+	angler.update(self,delta,angler_command)
+	var command: Dictionary=fish_brain.command(self,delta)
+	power=0.35
+	if not movement_locked() and Vector2(command.aim).length()>0.01: aim=Vector2(command.aim).normalized()
+	step(delta,command.move,command.suck,command.home,command.dash,command.slow,command.qte)
 
 func step(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: bool = false, slow: bool = false, qte_pressed: bool = false) -> void:
 	if paused or won or lost: return
@@ -498,13 +539,13 @@ func step(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: 
 	if not sprinting and stamina_delay<=0: stamina = minf(100,stamina+delta*18)
 	_update_contacts(delta)
 	_step_net(delta)
-	if lost or net_state=="caught": return
+	if won or lost or net_state=="caught": return
 	var was_free := hooked == HookState.FREE
 	if hooked == HookState.MOUTH:
 		_step_qte(delta, qte_pressed)
 	elif hooked == HookState.HOOKED:
 		_step_line(delta, qte_pressed and not began_wrap)
-	if lost or landing: return
+	if won or lost or landing: return
 	for index in baits.size(): _step_bait(index, delta, feeding and hooked!=HookState.MOUTH, previous_mouth)
 	if hooked != HookState.FREE: returning = false
 	if interact and was_free and hooked == HookState.FREE and can_home(): returning = not returning
@@ -514,7 +555,7 @@ func step(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: 
 	else:
 		returning = false
 		home_age = 0
-	if won: return
+	if won or lost: return
 	if challenge and clock >= TIME_LIMIT:
 		finish(false, "timeout")
 		return
@@ -617,7 +658,7 @@ func qte_progress() -> float:
 	return clampf((qte_age - 0.4) / 2.0, 0, 1)
 
 func _step_line(delta: float, qte_pressed: bool) -> void:
-	var anchor := Vector2(baits[bound_bait].home.x, 53)
+	var anchor := line_anchor(bound_bait)
 	var animating := winding()
 	if animating: wraps[-1].progress = minf(1,wraps[-1].progress+delta/WIND_SECONDS)
 	_rebuild_rope()
@@ -628,8 +669,8 @@ func _step_line(delta: float, qte_pressed: bool) -> void:
 	var raw_tension := base+(length_now-available)/32
 	var tuning := line_tuning()
 	# Reeling is the objective. Tension feedback only tempers it or pays out under heavy load.
-	var desired_speed := clampf(-24*tuning.y+(raw_tension-0.5)*100*tuning.x,-36*tuning.y,24*tuning.y)
-	reel_speed = move_toward(reel_speed,desired_speed,delta*60*tuning.x*maxf(1,tuning.y)) if tuning.y>0 else 0.0
+	var desired_speed := angler.spool_target(raw_tension,tuning,player_role=="angler")
+	reel_speed = move_toward(reel_speed,desired_speed,delta*(180 if player_role=="angler" else 60)*tuning.x*maxf(1,tuning.y)) if tuning.y>0 else 0.0
 	available = maxf(0,available+reel_speed*delta*(0.22 if latched else 1.0))
 	if latched: fish_line_length = available
 	else: rope_length = available
@@ -677,7 +718,7 @@ func _step_line(delta: float, qte_pressed: bool) -> void:
 func _step_landing(delta: float) -> void:
 	landing_age += delta
 	var ratio := clampf(landing_age/1.05,0,1)
-	fish = landing_from.lerp(Vector2(baits[bound_bait].home.x,39),ratio*ratio)
+	fish = landing_from.lerp(Vector2(line_anchor(bound_bait).x,39),ratio*ratio)
 	_rebuild_rope()
 	if ratio<1: return
 	if challenge: finish(false,"landed")
@@ -715,6 +756,7 @@ func _release_hook(broken: bool) -> void:
 	_clear_hook()
 	escape_count += 1
 	notice = "鱼线断了！继续觅食。" if broken else "吐钩成功！换个角度继续。"
+	if player_role=="angler": notice="鱼挣断了线 · 还有钩饵可重新投放" if broken else "鱼逃脱了 · 调整钓点或准备抄网"
 	notice_age = 3
 	result_flash = 0.7
 	result_good = true
@@ -729,6 +771,7 @@ func _step_supply(delta: float) -> void:
 	if not challenge or hooked != HookState.FREE or not net_state in ["wait", "rest"]: return
 	if cycle_phase.is_empty():
 		for index in baits.size():
+			if player_role=="angler" and baits[index].hook: continue
 			if baits[index].active and (baits[index].age >= 30 or not _remaining(baits[index])):
 				cycle_slot = index
 				cycle_phase = "warning"
@@ -756,11 +799,13 @@ func _step_supply(delta: float) -> void:
 
 func request_net() -> void:
 	if won or lost: return
+	if player_role=="angler" and (landing or hooked==HookState.MOUTH): return
 	if net_state in ["wait","rest"]:
 		net_state="wait"
 		net_queued=true
 		notice="抄网练习已准备 · 脱钩后开始" if hooked!=HookState.FREE else "抄网即将入水 · 留意红光"
 		notice_age=3
+		if player_role=="angler": notice="抄网路线已锁定 · 收线把鱼引入网口"
 
 func net_blocks_hooks() -> bool:
 	return net_state in ["prepare", "warning", "sweep", "miss", "withdraw", "caught"]
@@ -790,6 +835,10 @@ func _plan_net() -> void:
 	if net_kind=="drop":
 		net_from=Vector2(clampf(fish.x+(72 if fish.x<320 else -72),38,602),67)
 		destination=Vector2(fish.x,clampf(fish.y+40,120,278))
+	if player_role=="angler":
+		net_kind="drop"
+		net_from=Vector2(angler.anchor().x,67)
+		destination=net_from+(net_aim.clamp(Vector2(30,100),Vector2(610,278))-net_from).limit_length(230)
 	net_angle=(destination-net_from).angle()
 	net_to = net_from
 	net_blocked=false
@@ -888,20 +937,20 @@ func _step_net(delta: float) -> void:
 		var count := maxi(1,ceili(delta*120))
 		for part in count:
 			_advance_net(delta/count,frame_from.lerp(frame_to,float(part)/count),frame_from.lerp(frame_to,float(part+1)/count))
-			if lost or net_state=="rest": break
+			if won or lost or net_state=="rest": break
 		net_motion=(net_pos-net_last_position)/maxf(delta,0.001)
 		return
 	if net_state == "rest":
 		net_age += delta
 		if net_age >= 10: net_state = "wait"; net_wait = 0
 		return
-	if hooked != HookState.FREE:
+	if hooked != HookState.FREE and player_role!="angler":
 		net_recovery = 4
 		return
-	if not cycle_phase.is_empty() or net_recovery > 0: return
+	if player_role!="angler" and (not cycle_phase.is_empty() or net_recovery > 0): return
 	if net_state == "wait":
-		if challenge and started: net_wait += delta
-		if net_queued or net_wait >= (18 if net_count==0 else 35):
+		if challenge and started and player_role!="angler": net_wait += delta
+		if net_queued or (player_role!="angler" and net_wait >= (18 if net_count==0 else 35)):
 			net_state = "prepare"
 			net_age = 0
 			net_queued = false
@@ -916,6 +965,7 @@ func _advance_net(delta: float, frame_from: Vector2, frame_to: Vector2) -> void:
 		var ratio := clampf((net_age-NET_SETTLE)/net_retract_duration,0,1)
 		net_pos=_net_retract_point(ratio)
 		fish=net_pos+net_catch_offset.lerp(net_bag_offset(),settle)
+		_rebuild_rope()
 		if ratio>=1:
 			if challenge: finish(false,"net")
 			else:
@@ -972,19 +1022,24 @@ func can_home() -> bool:
 
 func finish(success: bool, why: String) -> void:
 	if won or lost: return
-	won = success
-	lost = not success
+	# The shared simulation reports fish outcomes; the UI records the selected side's result.
+	won = success if player_role=="fish" else why in ["net","landed"]
+	lost = not won
 	reason = why
 	velocity = Vector2.ZERO
-	if success and challenge:
+	if won and challenge and player_role=="angler":
+		angler_wins+=1
+		save_profile()
+	elif success and challenge and player_role=="fish":
 		wins += 1
 		best_score = maxf(best_score, score)
 		save_profile()
-	sound.play("win" if success else "fail")
+	sound.play("win" if won else "fail")
 	menu.open("result")
-	print("PIXEL_RESULT | success=", success, " | score=", score, " | seconds=", clock, " | reason=", why)
+	print("PIXEL_RESULT | role=",player_role," | success=", won, " | score=", score, " | seconds=", clock, " | reason=", why)
 
 func hint() -> String:
+	if player_role=="angler": return angler_hint()
 	if landing: return "被拉出水了……" if challenge else "被拉出水了 · 正在送回巢边"
 	if net_state=="caught": return "被抄网捞起……" if challenge else "被抄中了 · 正在送回巢边"
 	if hooked == HookState.MOUTH: return "暂时不能移动 · 浮漂进入绿区时按空格"
@@ -1008,6 +1063,18 @@ func hint() -> String:
 	if vegetation_drag(fish) < 1: return "浓密水草中 · 游动稍慢，向上游出草丛"
 	return "左键吸食 · 滚轮调吸力 · Q 慢游 · 按住右键加速"
 
+func angler_hint() -> String:
+	if landing or net_state=="caught": return "鱼已被控制 · 正在提出水面"
+	if angler.casting: return "钩饵飞行中…"
+	if hooked==HookState.MOUTH: return "鱼正在尝试吐钩 · 挂牢后可以收放线"
+	if hooked==HookState.HOOKED:
+		if tension>=0.88: return "张力过高！按住左键放线，避免鱼挣断线"
+		if tension<0.25: return "鱼正在找机会吐钩 · 按住右键收线"
+		if latched: return "鱼线被缠住 · 收线压缩松线机会，空格抄网"
+		return "右键收线 · 左键放线 · A/D 改变牵引方向 · 空格抄网"
+	if notice_age>0: return notice
+	return "左键投饵 · E 收回钩饵 · A/D 沿岸移动 · 鼠标瞄准，空格抄网"
+
 func _unhandled_input(event: InputEvent) -> void:
 	if menu.visible: return
 	if event is InputEventKey and event.pressed and not event.echo:
@@ -1016,14 +1083,14 @@ func _unhandled_input(event: InputEvent) -> void:
 			KEY_H: paused = true; menu.open("help")
 			KEY_F2:
 				if not challenge: menu.open("practice")
-			KEY_R: reset(challenge)
+			KEY_R: restart_round()
 			KEY_N:
 				if not challenge: request_net()
 			KEY_F11: fullscreen = not fullscreen; apply_settings(); save_profile()
-	elif event is InputEventMouseMotion and not movement_locked():
+	elif event is InputEventMouseMotion and player_role=="fish" and not movement_locked():
 		var direction := get_global_mouse_position() - fish
 		if direction.length() > 4: aim = direction.normalized()
-	elif event is InputEventMouseButton and event.pressed:
+	elif event is InputEventMouseButton and event.pressed and player_role=="fish":
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP: power = minf(1, power + 0.1)
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN: power = maxf(0.1, power - 0.1)
 

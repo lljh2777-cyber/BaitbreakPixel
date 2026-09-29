@@ -96,23 +96,24 @@ func button(parent: Control, title: String, y: float, action: Callable, primary:
 func _title(frame: Control) -> void:
 	text(frame,"BAITBREAK  /  PIXEL",Vector2(20,16),11,Color("8de0bd"))
 	text(frame,"吃饵，不上钩",Vector2(18,38),27)
-	text(frame,"小鱼的池塘逃生记",Vector2(21,80),13,Color("b4c8bc"))
-	button(frame,"开始挑战   ·   6 分钟 / 60 食物",113,func(): game.reset(true),true,254)
-	button(frame,"自由练习   ·   N 触发抄网",147,func(): game.reset(false),false,254)
-	button(frame,"操作说明",181,func(): open("help"),false,254)
-	button(frame,"设置",215,func(): open("settings"),false,124)
-	var quit := button(frame,"退出",215,func(): get_tree().quit(),false,124)
+	text(frame,"一座池塘 · 两种立场",Vector2(21,80),13,Color("b4c8bc"))
+	button(frame,"小鱼挑战   ·   对抗钓鱼人 AI",104,func(): game.reset(true),true,254)
+	button(frame,"钓鱼人挑战   ·   对抗小鱼 AI",138,func(): game.reset(true,"angler"),false,254)
+	button(frame,"自由练习   ·   小鱼 / 调节鱼线",172,func(): game.reset(false),false,254)
+	button(frame,"操作说明",206,func(): open("help"),false,254)
+	button(frame,"设置",240,func(): open("settings"),false,124)
+	var quit := button(frame,"退出",240,func(): get_tree().quit(),false,124)
 	quit.position.x = 150
-	text(frame,"2D MVP 0.8.1  ·  入水 / 扫网 / 收拢提网",Vector2(20,253),10,Color("91afa7"))
-	text(content,"01  吃饵",Vector2(391,119),18,GOLD)
-	text(content,"02  脱钩",Vector2(391,159),18,GOLD)
-	text(content,"03  躲网，回巢",Vector2(391,199),18,GOLD)
-	text(content,"鼠标瞄准 · 小心钩尖",Vector2(391,239),12,CREAM)
+	text(content,"0.9 · 单人双视角",Vector2(391,280),10,Color("91afa7"))
+	text(content,"小鱼 · 吃饵脱身",Vector2(391,119),18,GOLD)
+	text(content,"人类 · 收线抄网",Vector2(391,159),18,GOLD)
+	text(content,"另一方由 AI 控制",Vector2(391,199),18,GOLD)
+	text(content,"6 分钟 · 一场拉锯",Vector2(391,239),12,CREAM)
 
 func _pause(frame: Control) -> void:
 	text(frame,"水下小憩",Vector2(20,19),24)
-	button(frame,"继续游动",57,close,true)
-	button(frame,"重新开始本局",89,func(): game.reset(game.challenge))
+	button(frame,"继续本局",57,close,true)
+	button(frame,"重新开始本局",89,func(): game.restart_round())
 	var offset := 0
 	if not game.challenge:
 		button(frame,"练习调节 · 收放线",121,func(): open("practice"),false,158)
@@ -125,7 +126,8 @@ func _pause(frame: Control) -> void:
 	text(frame,"Esc 继续 · 切出窗口会自动暂停",Vector2(20,258),11,Color("91afa7"))
 
 func _help(frame: Control) -> void:
-	text(frame,"怎样在池塘里活下来",Vector2(20,16),21)
+	var human: bool=game.player_role=="angler"
+	text(frame,"把鱼带出水面" if human else "怎样在池塘里活下来",Vector2(20,16),21)
 	var lines := [
 		"WASD / 方向键 游动 · 鼠标决定朝向",
 		"左键吸食 · 滚轮调吸力 · Q 慢游",
@@ -138,6 +140,19 @@ func _help(frame: Control) -> void:
 		"吃够食物后回左下巢穴，按 E 停留 2 秒",
 		"R 重开 · Esc 暂停 · F11 全屏 · 练习 N 试网"
 	]
+	if human:
+		lines=[
+			"A / D 沿岸移动 · 鼠标选择投饵 / 抄网位置",
+			"未上钩：左键投饵 · E 收回并重新选落点",
+			"上钩后：按住右键收线 · 按住左键放线",
+			"松开鼠标保持线长 · 留意张力和鱼的体力",
+			"持续过紧会断线 · 过松会给鱼脱钩机会",
+			"鱼会借草木石缠线；移动钓位改变拉力方向",
+			"空格向鼠标位置抄网 · 冷却 12 秒",
+			"抄网有准备时间，木石挡网，预判鱼的去向",
+			"钩饵有限；6 分钟内提鱼出水或抄中即胜利",
+			"鱼吃满 60 回巢则失败 · R 重开 / Esc 暂停"
+		]
 	for index in lines.size(): text(frame,lines[index],Vector2(20,50+index*19),12,CREAM)
 	button(frame,"明白了",251,func(): open(previous),true)
 
@@ -199,16 +214,20 @@ func _practice(frame: Control) -> void:
 	back.position.x=130
 
 func _result(frame: Control) -> void:
-	text(frame,"安全回巢" if game.won else "这次没能逃掉",Vector2(20,18),25,GOLD if game.won else Color("f58375"))
+	var human: bool=game.player_role=="angler"
+	var title: String=("成功捕获" if game.won else "鱼逃走了") if human else ("安全回巢" if game.won else "这次没能逃掉")
+	text(frame,title,Vector2(20,18),25,GOLD if game.won else Color("f58375"))
 	var why := "带着食物回家，池塘又安静了。"
 	if game.reason == "net": why = "被抄网捞起了。下次早点离开红色区域。"
 	elif game.reason == "landed": why = "被提到水面。保持深度，寻找脱钩机会。"
 	elif game.reason == "timeout": why = "时间到了。下次吃够食物就及时回巢。"
+	if human:
+		why="收拢网袋，把鱼带出了水面。" if game.reason=="net" else ("成功收线，将鱼提离水面。" if game.reason=="landed" else ("小鱼吃够食物，抢先返回了巢穴。" if game.reason=="home" else "时间到了，小鱼仍然自由。"))
 	text(frame,why,Vector2(20,62),12)
-	text(frame,"带回食物   %.1f" % game.score,Vector2(20,102),16,GOLD)
+	text(frame,("鱼吃到的食物   %.1f" if human else "带回食物   %.1f") % game.score,Vector2(20,102),16,GOLD)
 	text(frame,"用时 %02d:%02d   ·   上钩 %d 次 / 逃脱 %d 次" % [int(game.elapsed)/60,int(game.elapsed)%60,game.hook_count,game.escape_count],Vector2(20,134),12)
-	text(frame,"挑战成功 %d 次   ·   最佳收获 %.1f" % [game.wins,game.best_score],Vector2(20,160),12,Color("91afa7"))
-	button(frame,"再游一局",207,func(): game.reset(game.challenge),true)
+	text(frame,"钓鱼成功 %d 次" % game.angler_wins if human else "挑战成功 %d 次   ·   最佳收获 %.1f" % [game.wins,game.best_score],Vector2(20,160),12,Color("91afa7"))
+	button(frame,"再来一局",207,func(): game.restart_round(),true)
 	button(frame,"返回标题",245,func(): open("title"))
 
 func _input(event: InputEvent) -> void:
