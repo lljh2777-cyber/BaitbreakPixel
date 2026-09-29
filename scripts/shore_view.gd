@@ -12,7 +12,7 @@ const CREAM := Color("ffe5bc")
 const INK := Color("122b38")
 const MINT := Color("8de0bd")
 const GOLD := Color("ffd379")
-const SHAFT_LENGTH := 210.0
+const SHAFT_LENGTH := 160.0
 const SHAFT_SEGMENTS := 32
 
 static func to_screen(point: Vector2) -> Vector2:
@@ -33,7 +33,7 @@ static func tackle_pose(world: Node2D, t: float) -> Dictionary:
 	var hooked: bool=world.hooked==world.HookState.HOOKED
 	var load: float=world.tension if hooked else 0
 	var reel_speed: float=world.reel_speed if hooked else world.angler.free_reel_speed
-	var pose := Hand.pose(inverse_lerp(18,588,world.angler.x),t,reel_speed,SHAFT_LENGTH)
+	var pose := Hand.pose(inverse_lerp(18,588,world.angler.x),t,reel_speed)
 	var rod := rod_points(pose,load,world.effort_multiplier("angler"),float_position(world,t))
 	return {"hand":pose,"rod":rod,"tip":rod[-1],"load":load,"reel_speed":reel_speed}
 

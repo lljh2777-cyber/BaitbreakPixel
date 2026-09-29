@@ -4,16 +4,16 @@ const Sprite = preload("res://assets/first_person/angler_hand_forearm.png")
 const PaletteShader = preload("res://scripts/hand_palette.gdshader")
 const PIXEL_SIZE := 112
 const PALETTE := ["10263b","ffd49a","f2b777","d58f53","a85e38","edb951","bd8739","865c2b","8b9256","536650","314b43","24383c","dce7de","9cabb4","5c6c80","344758"]
-const SIZE := 142.0
+const SIZE := 152.0
 const WRIST := Vector2(0.49,0.42)
 const SOCKET := Vector2(0.077,0.065)
 const ROD_AXIS := Vector2(-0.70710678,-0.70710678)
 const FOREARM_ROOT := Vector2(1.0,1.0)
 const UPPER_ORIGIN := Vector2(0.60,0.55)
-const SHOULDER := Vector2(480,420)
-const UPPER_LENGTH := 170.0
+const SHOULDER := Vector2(440,500)
+const UPPER_LENGTH := 220.0
 const FOREARM_LENGTH := 110.0
-const REST_TIP_HEIGHT := 112.0
+const WRIST_HEIGHT := 300.0
 const HAND_UVS := [Vector2(0,0),Vector2(1,0),Vector2(1,0.10),Vector2(0.10,1),Vector2(0,1)]
 const SLEEVE_UVS := [Vector2(0.02,1),Vector2(1,0.02),Vector2(1,1)]
 var pixel_texture: ViewportTexture
@@ -43,17 +43,18 @@ func prepare(view: Node2D) -> void:
 	pixel_view.add_child(art)
 	pixel_texture=pixel_view.get_texture()
 
-static func pose(horizontal: float, time: float, reel_speed: float, shaft_length: float=210.0) -> Dictionary:
+static func pose(horizontal: float, time: float, reel_speed: float) -> Dictionary:
 	# The hand, forearm and upper arm have separate rigid transforms. Solve the
 	# elbow on a fixed-length upper-arm circle, rather than sliding the whole art.
 	var travel := clampf(horizontal,0,1)
-	var angle := deg_to_rad(lerpf(-22,-7,travel))
+	var angle := deg_to_rad(lerpf(-8,7,travel))
 	angle+=sin(time*7)*0.002*minf(absf(reel_speed)/36,1)
 	var source_arm := FOREARM_ROOT-WRIST
 	var forearm_angle := source_arm.angle()+angle+deg_to_rad(lerpf(-4,4,travel))
 	var forearm := Vector2.from_angle(forearm_angle)*FOREARM_LENGTH
-	var tip_offset := ((SOCKET-WRIST)*SIZE+ROD_AXIS*shaft_length).rotated(angle)
-	var wrist_y := REST_TIP_HEIGHT-tip_offset.y
+	# Frame the grip in the lower-right corner. The articulated elbow stays
+	# below the play area, so only the hand and a short cuff enter the picture.
+	var wrist_y := WRIST_HEIGHT
 	var elbow_y := wrist_y+forearm.y
 	var shoulder_dy := elbow_y-SHOULDER.y
 	var elbow := Vector2(SHOULDER.x+sqrt(maxf(0,UPPER_LENGTH*UPPER_LENGTH-shoulder_dy*shoulder_dy)),elbow_y)
