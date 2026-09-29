@@ -5,6 +5,7 @@ extends RefCounted
 const STEPS := 28
 const COIL_STEPS := 64
 const FishWinding=preload("res://scripts/fish_winding.gd")
+const Grass=preload("res://scripts/grass_binding.gd")
 var last_time := -1.0
 var last_target := -1
 var last_progress := 1.0
@@ -87,21 +88,29 @@ static func coil(wrap: Dictionary, progress: float, unwind: bool) -> Dictionary:
 	# Unthread the turn first, then ease the freed bend back into the main line.
 	var turn := turn_progress(inverse_lerp(0.20,1.0,p)) if unwind else turn_progress(p)
 	var attach := smooth(p/0.50)
-	var loose := sin(PI*p)*(5.0 if unwind else 3.5)
+	var grass: bool=wrap.get("grass",false)
+	var loose := sin(PI*p)*((1.5 if unwind else 1.2) if grass else (5.0 if unwind else 3.5))
 	var points := PackedVector2Array()
 	var front: Array[bool]=[]
 	for i in COIL_STEPS+1:
 		var fraction := turn*i/float(COIL_STEPS)
-		var angle := -PI/2+TAU*fraction
+		var angle := (0.0 if grass else -PI/2)+TAU*fraction
 		# The loose turn lifts away, then seats against the object. Its ends
 		# remain at the original contact, so there is never a detached loop.
 		var expansion := loose*pow(sin(PI*fraction),2)
 		var radii: Vector2=wrap.radii+Vector2(expansion,expansion*0.50)
-		points.append(Vector2(wrap.center)+Vector2(cos(angle),sin(angle))*radii)
-		if i>0: front.append(sin(angle)>0 and sin(-PI/2+TAU*turn*(i-1)/float(COIL_STEPS))>=0)
+		var point:=Vector2(wrap.center)+Vector2(cos(angle),sin(angle))*radii
+		if grass:
+			# A small oblique turn hugs a few stalks rather than surrounding the
+			# rectangular interaction area with a conspicuous horizontal halo.
+			point.y+=(fraction-0.5)*float(wrap.pitch)+sin(angle)*float(wrap.slant)+sin(angle*2)*0.35
+		points.append(point)
+		if i>0: front.append(sin(angle)>0 and sin((0.0 if grass else -PI/2)+TAU*turn*(i-1)/float(COIL_STEPS))>=0)
 	points[0]=wrap.entry
-	if is_equal_approx(turn,1.0): points[-1]=wrap.entry
-	return {"points":points,"front":front,"tangent":Vector2.from_angle(TAU*turn),"attach":attach,"turn":turn}
+	if is_equal_approx(turn,1.0): points[-1]=Vector2(wrap.entry)+Vector2(0,float(wrap.pitch)) if grass else Vector2(wrap.entry)
+	var tangent:=Vector2.from_angle(TAU*turn)
+	if grass: tangent=Vector2(-sin(TAU*turn)*wrap.radii.x,cos(TAU*turn)*(wrap.radii.y+wrap.slant)+wrap.pitch/TAU).normalized()
+	return {"points":points,"front":front,"tangent":tangent,"attach":attach,"turn":turn}
 
 static func append_piece(data: Dictionary, points: PackedVector2Array, front: bool, flags: Array=[]) -> void:
 	if data.path.is_empty(): data.path.append(points[0])
@@ -121,7 +130,7 @@ static func point_at(points: PackedVector2Array, distances: PackedFloat32Array, 
 	return points[end-1].lerp(points[end],clampf((distance-distances[end-1])/maxf(0.0001,distances[end]-distances[end-1]),0,1))
 
 static func build(world: Node2D, override: Dictionary={}, fish_pose: Dictionary={}) -> Dictionary:
-	var data := {"path":PackedVector2Array(),"front":[],"effects":[],"tail":PackedVector2Array()}
+	var data := {"path":PackedVector2Array(),"front":[],"effects":[],"tail":PackedVector2Array(),"grass":[]}
 	if world.hooked!=world.HookState.HOOKED or world.bound_bait<0: return data
 	var previous: Vector2=world.line_anchor(world.bound_bait)
 	var mouth: Vector2=world.mouth()
@@ -139,11 +148,17 @@ static func build(world: Node2D, override: Dictionary={}, fish_pose: Dictionary=
 		if override.get("target",-1)==wrap.target:
 			progress=override.progress; unwind=override.unwind
 		var moving: bool=progress<1 or unwind
-		var geometry := coil(wrap,progress,unwind)
+		var cover:=Grass.profile(world,wrap,progress)
+		var visible_wrap: Dictionary=wrap if cover.is_empty() else cover.wrap
+		var geometry := coil(visible_wrap,progress,unwind)
 		var ring: PackedVector2Array=geometry.points
 		var local := {"path":PackedVector2Array(),"front":[]}
 		append_piece(local,strand(world,previous,ring[0],previous.distance_to(ring[0]),Vector2.ZERO,Vector2.RIGHT),false)
+		var coil_start: int=maxi(0,data.path.size()-1)+local.path.size()-1
 		append_piece(local,ring,false,geometry.front)
+		if not cover.is_empty():
+			cover.from=coil_start; cover.to=coil_start+COIL_STEPS
+			data.grass.append(cover)
 		var head_index: int=local.path.size()-1
 		var tail: PackedVector2Array=PackedVector2Array()
 		if last:
@@ -163,7 +178,7 @@ static func build(world: Node2D, override: Dictionary={}, fish_pose: Dictionary=
 				tail=local.path.slice(head_index)
 			data.tail=tail
 		if moving:
-			data.effects.append({"point":local.path[head_index],"center":wrap.center,"radii":wrap.radii,"strength":sin(PI*progress),"progress":1.0-progress if unwind else progress,"unwind":unwind,"head_front":geometry.turn>0.25 and geometry.turn<0.75,"trail":local.path.slice(maxi(0,head_index-7),head_index+1)})
+			data.effects.append({"point":local.path[head_index],"center":visible_wrap.center,"radii":visible_wrap.radii,"strength":sin(PI*progress),"progress":1.0-progress if unwind else progress,"unwind":unwind,"head_front":geometry.front[-1] if not cover.is_empty() else geometry.turn>0.25 and geometry.turn<0.75,"trail":local.path.slice(maxi(0,head_index-7),head_index+1)})
 		append_piece(data,local.path,false,local.front)
 		previous=ring[-1]
 	return data

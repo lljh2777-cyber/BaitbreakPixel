@@ -114,6 +114,7 @@ func _world(t: float) -> void:
 	# The far half of the lap is genuinely behind wood, rocks and both weed layers.
 	_winding_fish(t,false)
 	_baits(t,true)
+	if not line_frame.grass.is_empty(): _line_back()
 	_plants(t,true)
 	draw_rect(Rect2(0, 313, 640, 47), Color("697f70"))
 	for x in range(0,640,4):
@@ -122,7 +123,7 @@ func _world(t: float) -> void:
 		var x := (index * 73) % 638
 		var y := 319 + index * 19 % 38
 		draw_rect(Rect2(x, y, 3, 2), Color("506b66") if index % 2 else Color("8d9b78"))
-	_line_back()
+	if line_frame.grass.is_empty(): _line_back()
 	for index in props.size():
 		var prop: Dictionary = props[index]
 		draw_texture(prop.texture,prop.position,Color(1,1,1,world.target_opacity[index]))
@@ -150,7 +151,21 @@ func _plants(t: float, background: bool) -> void:
 	for index in Layout.PLANTS.size():
 		if Layout.PLANTS[index].back!=background: continue
 		var sprite: Dictionary = plant_frames[index][frame]
-		draw_texture(sprite.texture,sprite.position,Color(1,1,1,world.target_opacity[Layout.SOLIDS.size()+index]))
+		var tint:=Color(1,1,1,world.target_opacity[Layout.SOLIDS.size()+index])
+		var cover: Dictionary={}
+		for candidate: Dictionary in line_frame.grass:
+			if candidate.plant==index: cover=candidate; break
+		if cover.is_empty():
+			draw_texture(sprite.texture,sprite.position,tint)
+		else:
+			# Deform only the bound clump. Pixel strips keep the root anchored
+			# and gather the stalks at the same point used by the line geometry.
+			var size: Vector2=sprite.texture.get_size()
+			for row in range(0,int(size.y),2):
+				var a:=LineMotion.Grass.deform(Vector2(sprite.position)+Vector2(0,row),cover)
+				var b:=LineMotion.Grass.deform(Vector2(sprite.position)+Vector2(size.x,row),cover)
+				var height:=minf(2,size.y-row)
+				draw_texture_rect_region(sprite.texture,Rect2(a.round(),Vector2(roundf(b.x-a.x),height)),Rect2(0,row,size.x,height),tint)
 
 func _make_plant_layer(t: float, plant_index: int) -> Dictionary:
 	# Crop cached frames per clump so only the contacted plants fade.
@@ -166,7 +181,7 @@ func _make_plant_layer(t: float, plant_index: int) -> Dictionary:
 			var fraction := float(stem)/maxi(1,plant.stems-1)
 			var base := Vector2(plant.x+(fraction-0.5)*plant.width,109)
 			var height: float = plant.height * (0.67+0.33*sin(stem*2.37+1.2))
-			if stem == plant.stems/2: height = plant.height
+			if stem == int(plant.stems)/2: height = plant.height
 			var lean: float = (fraction-0.5)*plant.width*0.38
 			var phase: float = plant.x*0.13+stem*0.7
 			var path := PackedVector2Array()
@@ -233,7 +248,7 @@ func _baits(t: float, behind: bool=false) -> void:
 			else:
 				draw_rect(Rect2(p,Vector2(2,2) if grain.layer<2 else Vector2.ONE),color.darkened(0.18))
 				draw_rect(Rect2(p,Vector2(2 if grain.fleck%2 else 1,1)),color)
-		if bait.active and not game.menu.visible and not orbit:
+		if bait.active and not game.menu.visible and not orbit and (index!=world.bound_bait or line_frame.grass.is_empty()):
 			var label := "有钩饵" if bait.hook and not bait.removed else "散饵"
 			label_at(Vector2(bait.pos) + Vector2(-17, -14), label, 10, Color("bdd4be"))
 		# A tiny glint remains at the actual tip after the grains are drawn over the hook.
@@ -328,15 +343,36 @@ func _line_pixels(points: PackedVector2Array) -> PackedVector2Array:
 		if pixels.is_empty() or pixel!=pixels[-1]: pixels.append(pixel)
 	return pixels
 
-func _draw_strand(points: PackedVector2Array, color: Color) -> void:
+func _draw_strand(points: PackedVector2Array, color: Color, fine: bool=false) -> void:
 	var pixels := _line_pixels(points)
 	if pixels.size()<2: return
-	draw_polyline(pixels,Color(INK,0.82),3)
+	if not fine: draw_polyline(pixels,Color(INK,0.82),3)
 	draw_polyline(pixels,color,1)
+
+func _rope_layer(front_only: bool) -> void:
+	var path: PackedVector2Array=line_frame.path
+	var run:=PackedVector2Array()
+	var previous_fine:=false
+	var color:=MINT.lerp(RED,world.tension)
+	var fine_color:=Color("b8c9a4").lerp(RED,world.tension*0.7)
+	if not front_only: fine_color.a=0.28
+	for segment in range(path.size()-1):
+		var fine:=false
+		for cover: Dictionary in line_frame.grass:
+			if segment>=cover.from and segment<cover.to: fine=true; break
+		var visible: bool=not front_only or line_frame.front[segment]
+		if not visible or fine!=previous_fine:
+			_draw_strand(run,fine_color if previous_fine else color,previous_fine)
+			run.clear()
+		if visible:
+			if run.is_empty(): run.append(path[segment])
+			run.append(path[segment+1])
+		previous_fine=fine
+	_draw_strand(run,fine_color if previous_fine else color,previous_fine)
 
 func _line_back() -> void:
 	if line_frame.get("path",PackedVector2Array()).size()<2: return
-	_draw_strand(line_frame.path,MINT.lerp(RED,world.tension))
+	_rope_layer(false)
 	_line_details(false)
 	if world.wraps.is_empty(): _line_force_marks(line_frame.path)
 
@@ -388,22 +424,15 @@ func _line() -> void:
 	if world.hooked==world.HookState.HOOKED:
 		# Repaint only the near-side portions using the exact same geometry as
 		# the back layer. This preserves depth without ghost/double fish lines.
-		var front := PackedVector2Array()
-		for i in line_frame.front.size():
-			if line_frame.front[i]:
-				if front.is_empty(): front.append(line_frame.path[i])
-				front.append(line_frame.path[i+1])
-			else:
-				_draw_strand(front,MINT.lerp(RED,world.tension))
-				front.clear()
-		_draw_strand(front,MINT.lerp(RED,world.tension))
+		_rope_layer(true)
 		_line_details(true)
 		if not world.wraps.is_empty() and line_frame.tail.size()>1: _line_force_marks(line_frame.tail)
-		if world.contact_target>=0 and not world.winding() and not game.menu.visible:
+		if world.contact_target>=0 and not world.winding() and not game.menu.visible and not world.target_is_wrapped(world.contact_target):
 			var target: Dictionary = world.targets[world.contact_target]
-			var outline: PackedVector2Array = target.polygon.duplicate()
-			outline.append(outline[0])
-			draw_polyline(outline,Color(MINT,0.65 if world.qte=="wrap" else 0.32),1)
+			if target.kind!="grass":
+				var outline: PackedVector2Array = target.polygon.duplicate()
+				outline.append(outline[0])
+				draw_polyline(outline,Color(MINT,0.65 if world.qte=="wrap" else 0.32),1)
 	elif world.hooked == world.HookState.MOUTH:
 		draw_line(world.line_anchor(world.bound_bait), world.mouth(), RED, 1)
 

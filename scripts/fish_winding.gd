@@ -1,4 +1,5 @@
 extends RefCounted
+const Grass=preload("res://scripts/grass_binding.gd")
 
 # A presentation-only lap. Input, tension, contact and net catches continue to
 # use the authoritative fish. No displacement is written back to the world.
@@ -11,6 +12,8 @@ static func pose(world: Node2D) -> Dictionary:
 	if world.hooked!=world.HookState.HOOKED or not world.winding() or world.landing or world.net_state=="caught": return result
 	var wrap: Dictionary=world.wraps[-1]
 	var p: float=clampf(wrap.progress,0,1)
+	var cover:=Grass.profile(world,wrap,p)
+	if not cover.is_empty(): wrap=cover.wrap
 	# Approach, one complete lap, then rejoin the still-moving player. The lap
 	# slows at its ends so neither the mouth nor the body teleports into a turn.
 	var lap:=clampf((p-0.14)/0.72,0,1)
