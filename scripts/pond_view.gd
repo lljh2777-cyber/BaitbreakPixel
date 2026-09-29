@@ -232,11 +232,12 @@ func _angler(t: float) -> void:
 		draw_arc(start,game.NET_RIM.y+2,0,TAU,32,Color(preview,0.5),1)
 		label_at(start+Vector2(-30,-38),"木石挡网" if blocked else "从这里下网",10,preview)
 	if game.manual_net and game.net_state in ["prepare","warning","sweep"]:
-		var target: Vector2=game.manual_net_target(game.angler.cursor)
-		var direction: Vector2=(target-game.net_pos).normalized()
-		draw_line(game.net_pos,target,Color(MINT,0.4),1)
-		draw_line(target-direction*7+direction.orthogonal()*4,target,MINT,1)
-		draw_line(target-direction*7-direction.orthogonal()*4,target,MINT,1)
+		var path: PackedVector2Array=game.manual_net_pending_path()
+		if path.size()>1:
+			draw_polyline(path,Color(MINT,0.7),1)
+			var direction: Vector2=(path[-1]-path[-2]).normalized()
+			draw_line(path[-1]-direction*7+direction.orthogonal()*4,path[-1],MINT,1)
+			draw_line(path[-1]-direction*7-direction.orthogonal()*4,path[-1],MINT,1)
 	if game.hooked==game.HookState.FREE and not game.angler.casting:
 		draw_rect(Rect2(cursor-Vector2(1,1),Vector2(2,2)),GOLD)
 
@@ -273,7 +274,7 @@ func _angler_hud(_t: float) -> void:
 					if not grain.eaten and not grain.free: remaining_bait+=1
 		label_at(Vector2(18,100),"钩饵 %d 粒 · Q 下钩" % remaining_bait,11,CREAM)
 	if game.net_blocks_hooks():
-		var names := {"prepare":"抄网入水","warning":"准备扫网…","sweep":"拖动扫网 · 松 E 取消","miss":"被木石挡住" if game.net_blocked else "扑空了","withdraw":"撤网中","caught":"收拢提网…"}
+		var names := {"prepare":"抄网入水","warning":"准备扫网…","sweep":"沿轨迹扫网 · 松 E 取消","miss":"被木石挡住" if game.net_blocked else "扑空了","withdraw":"撤网中","caught":"收拢提网…"}
 		panel(Rect2(445,65,182,26))
 		label_at(Vector2(454,83),names.get(game.net_state,"抄网中"),12,RED)
 
@@ -391,14 +392,17 @@ func _net(t: float) -> void:
 		var arrow := Vector2(from.x,73) if game.net_kind=="drop" else Vector2(16 if direction.x>0 else 624,from.y)
 		draw_colored_polygon(PackedVector2Array([arrow+direction*8,arrow-direction*5+direction.orthogonal()*5,arrow-direction*5-direction.orthogonal()*5]),RED)
 	if game.net_state in ["prepare","warning"]:
-		var danger: PackedVector2Array=game.net_warning_outline()
-		draw_colored_polygon(danger,Color(RED,0.04 if game.net_state=="prepare" else 0.10))
-		for index in range(1,danger.size()):
-			if index%2==0: draw_line(danger[index-1],danger[index],Color(RED,0.7),1)
-		for index in range(1,5):
-			var arrow := from.lerp(to,index/5.0)
-			draw_line(arrow-direction*4+direction.orthogonal()*3,arrow,Color(RED,0.5),1)
-			draw_line(arrow-direction*4-direction.orthogonal()*3,arrow,Color(RED,0.5),1)
+		if game.manual_net:
+			draw_arc(from,game.NET_CATCH.y,0,TAU,40,Color(RED,0.5),1)
+		else:
+			var danger: PackedVector2Array=game.net_warning_outline()
+			draw_colored_polygon(danger,Color(RED,0.04 if game.net_state=="prepare" else 0.10))
+			for index in range(1,danger.size()):
+				if index%2==0: draw_line(danger[index-1],danger[index],Color(RED,0.7),1)
+			for index in range(1,5):
+				var arrow := from.lerp(to,index/5.0)
+				draw_line(arrow-direction*4+direction.orthogonal()*3,arrow,Color(RED,0.5),1)
+				draw_line(arrow-direction*4-direction.orthogonal()*3,arrow,Color(RED,0.5),1)
 		if game.net_state=="warning":
 			var remaining: float=1-game.net_age/game.net_warning_seconds()
 			draw_arc(from,9,-PI/2,-PI/2+TAU*remaining,24,RED,2)

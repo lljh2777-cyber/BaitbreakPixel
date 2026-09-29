@@ -87,6 +87,14 @@ func suspend_controls(game: Node2D) -> void:
 	spool=0
 	game.cancel_manual_net()
 
+func steer_net(game: Node2D, point: Vector2) -> void:
+	if needs_neutral or casting or game.paused or game.won or game.lost or game.landing or game.hooked==game.HookState.MOUTH: return
+	cursor=point.clamp(Vector2(30,80),Vector2(610,294))
+	if game.manual_net and game.net_state in ["prepare","warning","sweep"]:
+		game.record_manual_net_point(cursor)
+	elif net_cooldown<=0 and game.net_state in ["wait","rest"] and Rect2(0,80,640,233).has_point(point):
+		if game.begin_manual_net(cursor): net_cooldown=12
+
 func update(game: Node2D, delta: float, command: Dictionary) -> void:
 	cast_cooldown=maxf(0,cast_cooldown-delta)
 	net_cooldown=maxf(0,net_cooldown-delta)
@@ -111,13 +119,8 @@ func update(game: Node2D, delta: float, command: Dictionary) -> void:
 		dragging=net_held and command.get("drag",false)
 	if not net_held or not dragging:
 		game.cancel_manual_net()
-	elif not casting and not game.landing and game.hooked!=game.HookState.MOUTH:
-		if game.manual_net and game.net_state in ["prepare","warning","sweep"]:
-			game.net_aim=cursor
-			game.net_to=game.manual_net_target(cursor)
-			game.net_warning_shape=game._make_net_warning_outline()
-		elif net_cooldown<=0 and game.net_state in ["wait","rest"] and Rect2(0,80,640,233).has_point(raw_cursor):
-			if game.begin_manual_net(cursor): net_cooldown=12
+	else:
+		steer_net(game,raw_cursor)
 	if command.get("deploy",false): deploy(game)
 	if not casting: return
 	cast_age+=delta

@@ -1,15 +1,15 @@
 {
-  "version": "0.10.1",
-  "pack_sha256": "fe930ae5348e80730e83d568307b72558f8f2f9f81268f9429b3fd0644c55873",
+  "version": "0.10.2",
+  "pack_sha256": "b1bad97d1158489faecf00bfbefda4902f799051b45a9594b16e2521877f78a1",
   "script_sha256": {
-    "scripts/angler_controller.gd": "ef4f3fab30d7aed7b0203dfe88f18e23e77cee0e5808e561d976ccaa3c0d6d20",
-    "scripts/fish_brain.gd": "e48a0425a01f205f72a17360dca8f98d10845a4d64634b13127d3c71c02cd79c",
+    "scripts/angler_controller.gd": "b928bf438a22448bb626c2fe2d077a1fe5e83b26d84e8c4e2bc8729d1752c432",
+    "scripts/fish_brain.gd": "1c46c9ab095b7876c1d54d4e10710092169e34bd0d760a187cb360a86d0b2bde",
     "scripts/hook_gauge.gd": "4fe42c7690fa40f42e970af97eb26915793ec166c01b06da3ea21eb1fb692593",
-    "scripts/menu.gd": "f3adc36f7ab944cca9210e2eedd4a0f26bc96a41469ff20d8848a450e1ba14aa",
+    "scripts/menu.gd": "9e09d17e632d3bd52bd7ab47057ee8a04684dd4416b28bf5e4fa08b21ee2d396",
     "scripts/pixel_art.gd": "888fc105bd231fcbd7cee637cb515d3aa254aebf23af05a6730c974f21eb5c4a",
-    "scripts/pond.gd": "935f4b542cc1a40b50bf214ea7a075d78da868a63680e90a8b58103b28419fe3",
+    "scripts/pond.gd": "9b956e435d0b19730a3312f1256a0ba642694b1a7bc8d4798df0198906404d7b",
     "scripts/pond_layout.gd": "516f4fbbead3281ebc09e921fbebc77917c1e611a698a217a5b083f14c7678fe",
-    "scripts/pond_view.gd": "9e8933285c7cc6531f163adbe3dd688871c0ecb1afc4d5bc05b63fc85d371436",
+    "scripts/pond_view.gd": "c0b2b6ddb3312a73cc48117d4c0235579f21f46f3210233f96421da1a2306889",
     "scripts/rope.gd": "2e30152e65b00f39fe25324b992afd39925acfadd80b64dce385df865d69fe42",
     "scripts/sound.gd": "105f1b9854c725f76332add962a0e0f5790719bc3b525630007ca62b604629ba"
   },

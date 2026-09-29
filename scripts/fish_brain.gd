@@ -59,9 +59,11 @@ func command(game: Node2D, delta: float) -> Dictionary:
 	if net_alert and (Geometry2D.is_point_in_polygon(game.fish,game.net_warning_outline()) or game.fish.distance_to(game.net_pos)<65): evade_memory=0.8
 	else: evade_memory=maxf(0,evade_memory-delta)
 	if net_alert and evade_memory>0:
-		var direction: Vector2=(game.net_to-game.net_from).normalized()
+		var start: Vector2=game.net_pos if game.manual_net else game.net_from
+		var direction: Vector2=(game.net_to-start).normalized()
+		if direction.length_squared()<0.01: direction=Vector2.from_angle(game.net_angle)
 		var normal := direction.orthogonal()
-		var projection: Vector2=Geometry2D.get_closest_point_to_segment(game.fish,game.net_from,game.net_to)
+		var projection: Vector2=Geometry2D.get_closest_point_to_segment(game.fish,start,game.net_to)
 		var sign_side := signf((game.fish-projection).dot(normal))
 		if sign_side==0: sign_side=-1
 		var safe := projection+normal*sign_side*85

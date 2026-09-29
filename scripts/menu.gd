@@ -108,7 +108,7 @@ func _title(frame: Control) -> void:
 	button(frame,"设置",240,func(): open("settings"),false,124)
 	var quit := button(frame,"退出",240,func(): get_tree().quit(),false,124)
 	quit.position.x = 150
-	text(content,"0.10.1 · 水中自由下网",Vector2(391,280),10,Color("91afa7"))
+	text(content,"0.10.2 · 抄网轨迹修复",Vector2(391,280),10,Color("91afa7"))
 	text(content,"小鱼 · 吃饵脱身",Vector2(391,119),18,GOLD)
 	text(content,"人类 · 收线抄网",Vector2(391,159),18,GOLD)
 	text(content,"另一方由 AI 控制",Vector2(391,199),18,GOLD)
@@ -152,7 +152,7 @@ func _help(frame: Control) -> void:
 			"W 收至岸边取回钓组 · 松开 W/S 保持线长",
 			"持续过紧会断线 · 过松会给鱼脱钩机会",
 			"鱼会借草木石缠线；移动钓位改变拉力方向",
-			"按住 E，左键在水中任意空处下网并拖动",
+			"按住 E + 左键画路线，网口依次跟随",
 			"松开 E 或左键会放弃并撤网 · 木石挡网",
 			"6 分钟内提鱼出水获胜；F3 调节逃脱时间",
 			"鱼吃满 60 回巢则失败 · R 重开 / Esc 暂停"

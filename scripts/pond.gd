@@ -33,6 +33,8 @@ var manual_net := false
 var net_trail := PackedVector2Array()
 var net_return_path := PackedVector2Array()
 var net_exit_path := PackedVector2Array()
+var net_route := PackedVector2Array()
+var net_route_next := 1
 const MANUAL_NET_WARNING := 0.55
 const MANUAL_NET_SECONDS := 5.0
 const MANUAL_NET_SPEED := 160.0
@@ -172,7 +174,7 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | side-view | 640x360 | v0.10.1 | underwater-net-start")
+	print("PIXEL_READY | side-view | 640x360 | v0.10.2 | recorded-net-route")
 
 func _register_inputs() -> void:
 	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[], "use":[KEY_E], "slow":[KEY_Q], "qte":[KEY_SPACE]}
@@ -238,6 +240,8 @@ func apply_settings() -> void:
 
 func reset(is_challenge: bool, role: String = "fish") -> void:
 	player_role="angler" if role=="angler" else "fish"
+	# Preserve every delivered turn of a hand-drawn route, even between physics ticks.
+	Input.use_accumulated_input=player_role!="angler"
 	angler.reset()
 	fish_brain.reset(rng.randi())
 	net_aim=Vector2.ZERO
@@ -245,6 +249,8 @@ func reset(is_challenge: bool, role: String = "fish") -> void:
 	net_trail.clear()
 	net_return_path.clear()
 	net_exit_path.clear()
+	net_route.clear()
+	net_route_next=1
 	bait_batch=0
 	challenge = is_challenge
 	if player_role=="angler": challenge=true
@@ -855,6 +861,22 @@ func net_warning_seconds() -> float:
 func manual_net_target(point: Vector2) -> Vector2:
 	return point.clamp(Vector2(30,85),Vector2(610,280))
 
+func record_manual_net_point(point: Vector2) -> void:
+	if not manual_net or not net_state in ["prepare","warning","sweep"]: return
+	var target := manual_net_target(point)
+	net_aim=target
+	if net_route.is_empty() or net_route[-1].distance_to(target)>=0.1:
+		net_route.append(target)
+	net_to=manual_net_goal()
+
+func manual_net_goal() -> Vector2:
+	return net_route[net_route_next] if net_route_next<net_route.size() else net_pos
+
+func manual_net_pending_path() -> PackedVector2Array:
+	var path := PackedVector2Array([net_pos])
+	for index in range(net_route_next,net_route.size()): path.append(net_route[index])
+	return path
+
 func manual_net_blocked(point: Vector2) -> bool:
 	for solid in SOLIDS:
 		if Layout.touches(point,NET_RIM.y+2,PackedVector2Array(solid.points)): return true
@@ -908,6 +930,8 @@ func begin_manual_net(point: Vector2) -> bool:
 	net_motion=Vector2.ZERO
 	net_blocked=false
 	net_trail=PackedVector2Array([net_from])
+	net_route=PackedVector2Array([start])
+	net_route_next=1
 	net_return_path.clear()
 	net_warning_shape=_make_net_warning_outline()
 	sound.play("warn")
@@ -1072,6 +1096,8 @@ func _finish_net_recovery() -> void:
 	net_trail.clear()
 	net_return_path.clear()
 	net_exit_path.clear()
+	net_route.clear()
+	net_route_next=1
 	net_state="rest"
 	net_age=0
 	net_wait=0
@@ -1084,10 +1110,22 @@ func _step_net(delta: float) -> void:
 		var frame_from := fish_before
 		var frame_to := fish
 		# Substeps resolve relative fish/net motion and preserve the actual first impact position.
-		var count := maxi(1,ceili(delta*120))
-		for part in count:
-			_advance_net(delta/count,frame_from.lerp(frame_to,float(part)/count),frame_from.lerp(frame_to,float(part+1)/count))
+		var advanced := 0.0
+		while advanced<delta-0.0000001:
+			var span := minf(1.0/120,delta-advanced)
+			if manual_net and net_state=="sweep" and net_route_next<net_route.size():
+				var distance := net_pos.distance_to(manual_net_goal())
+				if distance<0.0001:
+					net_route_next+=1
+					continue
+				# End exactly at each turn; consume the remaining time on the next leg.
+				span=minf(span,distance/MANUAL_NET_SPEED)
+			_advance_net(span,frame_from.lerp(frame_to,advanced/delta),frame_from.lerp(frame_to,(advanced+span)/delta))
+			advanced+=span
 			if won or lost or net_state=="rest": break
+		if manual_net and net_state in ["prepare","warning","sweep"]:
+			net_to=manual_net_goal()
+			net_warning_shape=_make_net_warning_outline()
 		net_motion=(net_pos-net_last_position)/maxf(delta,0.001)
 		return
 	if net_state == "rest":
@@ -1146,9 +1184,9 @@ func _advance_net(delta: float, frame_from: Vector2, frame_to: Vector2) -> void:
 	elif net_state == "sweep":
 		var old_net := net_pos
 		if manual_net:
-			var goal := manual_net_target(net_aim)
+			var goal := manual_net_goal()
 			var shift := goal-net_pos
-			if shift.length()>0.01:
+			if shift.length()>0.0001:
 				net_angle=shift.angle()
 				var candidate := net_pos.move_toward(goal,MANUAL_NET_SPEED*delta)
 				if _net_contact(candidate):
@@ -1158,7 +1196,6 @@ func _advance_net(delta: float, frame_from: Vector2, frame_to: Vector2) -> void:
 					sound.play("tap")
 				else: net_pos=candidate
 			net_to=goal
-			net_warning_shape=_make_net_warning_outline()
 		else: net_pos = net_from.lerp(net_to, smoothstep(0,1,net_age / NET_SWEEP))
 		var scale := NET_CATCH
 		var hit := _net_hit_fraction((frame_from-old_net).rotated(-net_angle)/scale,(frame_to-net_pos).rotated(-net_angle)/scale)
@@ -1169,7 +1206,10 @@ func _advance_net(delta: float, frame_from: Vector2, frame_to: Vector2) -> void:
 				net_pos=hit_net
 				fish=hit_fish
 				_catch_in_net()
-		if manual_net and net_state=="sweep" and (net_trail.is_empty() or net_trail[-1].distance_to(net_pos)>2): net_trail.append(net_pos)
+		if manual_net and net_state=="sweep":
+			if net_trail.is_empty() or net_trail[-1].distance_to(net_pos)>0.0001: net_trail.append(net_pos)
+			if net_route_next<net_route.size() and net_pos.distance_to(manual_net_goal())<0.0001: net_route_next+=1
+			net_to=manual_net_goal()
 		if net_state=="sweep" and net_age >= (MANUAL_NET_SECONDS if manual_net else NET_SWEEP):
 			net_state="miss"; net_age=0
 			net_dodges+=1
@@ -1231,8 +1271,8 @@ func hint() -> String:
 
 func angler_hint() -> String:
 	if landing or net_state=="caught": return "鱼已被控制 · 正在提出水面"
-	if manual_net and net_state in ["prepare","warning"]: return "抄网入水中 · 保持 E + 左键，拖动指向扫网位置"
-	if manual_net and net_state=="sweep": return "E + 左键拖动控制网口 · 松开 E 放弃；W/S 仍可收放线"
+	if manual_net and net_state in ["prepare","warning"]: return "抄网展开中 · 保持 E + 左键画路线，转弯会被保留"
+	if manual_net and net_state=="sweep": return "网口沿所画路线前进 · 保持 E + 左键；W/S 仍可收放线"
 	if angler.net_held and not net_blocks_hooks(): return "持网中 · 在水中按住左键拖动；松开 E 取消"
 	if angler.casting: return "正在下钩…"
 	if hooked==HookState.MOUTH: return "鱼正在尝试松口 · 挂牢后 W/S 收放线"
@@ -1246,6 +1286,12 @@ func angler_hint() -> String:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if menu.visible: return
+	if player_role=="angler":
+		if event.is_action_released("use") or (event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT and not event.pressed):
+			cancel_manual_net()
+		elif event is InputEventMouseMotion or (event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT and event.pressed):
+			if Input.is_action_pressed("use") and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+				angler.steer_net(self,get_global_transform_with_canvas().affine_inverse()*event.position)
 	if event is InputEventKey and event.pressed and not event.echo:
 		match event.physical_keycode:
 			KEY_ESCAPE: paused = true; menu.open("pause")
