@@ -2,10 +2,11 @@ extends RefCounted
 
 # Explicit, versioned value schema. Local views, input sources and profiles are excluded.
 const Rules = preload("res://scripts/game_rules.gd")
-const SCHEMA := 8
+const SCHEMA := 9
 const MAP_ID := "pond_v1"
 const WORLD_FIELDS: Array[String] = [
 	"rules",
+	"net_action",
 	"qte_timing",
 	"fish",
 	"net_aim",
@@ -198,6 +199,8 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 	if state.qte_timing.window<0.04 or state.qte_timing.window>2.0 or state.qte_timing.window>state.qte_timing.sweep*0.8+0.000001 or state.qte_timing.zone<0.099 or state.qte_timing.zone>0.9: return false
 	if state.qte_timing.lead<0 or state.qte_timing.lead>2 or state.qte_timing.sweep<0.5 or state.qte_timing.sweep>8: return false
 	if not fields_match(world,state,WORLD_FIELDS) or not fields_match(world.angler,snapshot.rig,RIG_FIELDS): return false
+	if not state.get("net_action") is Dictionary or not record_matches(state.net_action,world.Net.fresh()): return false
+	if state.net_action.age<0 or state.net_action.slow_age<0 or state.net_action.impulse.length()>1000: return false
 	if state.stamina<0 or state.stamina>state.rules.stamina_max: return false
 	if snapshot.rig.surface_x<0 or snapshot.rig.surface_x>640 or absf(snapshot.rig.surface_velocity)>10000: return false
 	if not snapshot.rig.reel_hand_mode in [-1,0,1] or snapshot.rig.reel_hand_amount<0 or snapshot.rig.reel_hand_amount>1: return false

@@ -107,7 +107,7 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.19.0 | configurable-game-rules")
+	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.20.0 | two-point-directional-net")
 
 func _register_inputs() -> void:
 	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[], "use":[KEY_E], "slow":[KEY_Q], "qte":[KEY_SPACE], "untangle":[KEY_F]}
@@ -182,7 +182,8 @@ func rules_preset_path() -> String:
 	return "user://rules-presets-test" if "--test-profile" in OS.get_cmdline_user_args() else "user://rules-presets"
 
 func screen_to_game(point: Vector2) -> Vector2:
-	return View.Shore.to_world(point,self) if player_role=="angler" else point
+	var shown: Node2D=network.display_world() if is_instance_valid(network) and network.active() and shared_session else self
+	return View.Shore.to_world(point,shown) if player_role=="angler" and not shown.net_action.observing else point
 
 func _network_command() -> Dictionary:
 	var role: String=network.local_role
@@ -216,7 +217,7 @@ func controlled_step(delta: float, angler_command: Dictionary = {}) -> void:
 
 func hint() -> String:
 	if player_role=="angler": return angler_hint()
-	if net_state=="sweep" and net_capture>0: return "网袋正在收拢！趁现在游出网口，右键冲刺会消耗体力"
+	if net_action.slow_age>0: return "擦到网边 · 短暂减速，仍可游动"
 	if landing: return "被拉出水了……" if challenge else "被拉出水了 · 正在送回巢边"
 	if net_state=="caught": return "被抄网捞起……" if challenge else "被抄中了 · 正在送回巢边"
 	if hooked == HookState.MOUTH: return "暂时不能移动 · 浮漂进入绿区时按空格"
@@ -251,9 +252,9 @@ func angler_hint() -> String:
 	if untangle_phase=="unwind": return "正在退开一圈 · 可继续 W/S 控线，鱼仍可能逃脱"
 	if untangle_phase=="recover": return "解缠失败 · 线圈保留，短暂恢复中"
 	if effort_checks.angler.active: return "保持 W 收线 · 发力浮漂到绿区按空格"
-	if manual_net and net_state in ["prepare","warning"]: return "抄网展开中 · 保持 E + 左键画路线，转弯会被保留"
-	if manual_net and net_state=="sweep": return "保持网口接触直到收拢 · 疲惫、接近水面的上钩鱼更易捕获"
-	if angler.net_held and not net_blocks_hooks(): return "持网中 · 在水中按住左键拖动；松开 E 取消"
+	if net_action.observing: return "左键选终点 B · E 取消，仍消耗冷却" if net_action.has_a else "左键选起点 A · 观察期间世界继续运行"
+	if Net.busy(self): return "路线已锁定 · 挥网期间暂停摇轮，鱼线仍有拉力"
+	if angler.net_cooldown>0: return "抄网恢复 %.1f 秒 · W/S 控线，A/D 移竿" % angler.net_cooldown
 	if angler.casting: return "正在下钩…"
 	if hooked==HookState.MOUTH: return "鱼正在尝试松口 · 挂牢后 W/S 收放线"
 	if hooked==HookState.HOOKED:
@@ -261,14 +262,17 @@ func angler_hint() -> String:
 		if tension<rule("tension_low"): return "鱼正在找机会松口 · 按 W 收线"
 		if latched:
 			return "鱼线缠住 · 解缠恢复 %.1fs，W/S 保持控制" % untangle_cooldown if untangle_cooldown>0 else "鱼线缠住 · F 解缠，W/S 保持张力并按空格判定"
-		return "W 收线 · S 放线 · A/D 左右移竿 · E + 左键在近水区拖网"
+		return "W 收线 · S 放线 · A/D 左右移竿 · E 观察 · 左键选 A/B"
 	if notice_age>0: return notice
-	return "Q 下钩 / 补饵 · W/S 收放线 · E + 左键拖动抄网" if shared_session else "Q 下钩 / 补饵 · W 收线 / S 放线 · E + 左键拖动抄网 · F3 玩法规则"
+	return "Q 下钩 / 补饵 · W/S 收放线 · E 观察 · 左键选 A/B" if shared_session else "Q 下钩 / 补饵 · W 收线 / S 放线 · E 观察 · 左键选 A/B · F3 玩法规则"
 
 func _unhandled_input(event: InputEvent) -> void:
 	if menu.visible: return
 	var point := Vector2.ZERO
 	if event is InputEventMouse: point=screen_to_game(get_global_transform_with_canvas().affine_inverse()*event.position)
+	if player_role=="angler" and event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT:
+		var shown: Node2D=network.display_world() if is_instance_valid(network) and network.active() and shared_session else self
+		if not shown.net_action.observing or not View.Observation.interactive(view,shown,point): return
 	local_input.handle(event,player_role,point)
 	if event is InputEventKey and event.pressed and not event.echo:
 		match event.physical_keycode:

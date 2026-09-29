@@ -4,7 +4,7 @@ extends RefCounted
 const Rules = preload("res://scripts/game_rules.gd")
 
 static func load_profile(file: ConfigFile) -> Dictionary:
-	if int(file.get_value("rules","version",0))==Rules.VERSION:
+	if int(file.get_value("rules","version",0)) in [1,Rules.VERSION]:
 		var values: Variant=file.get_value("rules","values",{})
 		return Rules.normalize(values) if values is Dictionary else Rules.defaults()
 	var old := {}

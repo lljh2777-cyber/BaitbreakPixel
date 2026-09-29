@@ -2,7 +2,8 @@ extends RefCounted
 
 # Pure value rules: no scene tree, profile I/O, input, or presentation state.
 const Catalog = preload("res://scripts/rules_catalog.gd")
-const VERSION := 1
+const VERSION := 2
+const RETIRED_NET := ["net_prepare", "net_auto_warning", "net_manual_time", "net_auto_sweep", "net_capture_base", "net_capture_min", "net_fatigue", "net_surface"]
 const QTE_KINDS := ["entry","slack","wrap","fish_effort","angler_effort","untangle"]
 const LEGACY_PROPERTIES := ["water_strength","practice_line_sensitivity","practice_line_force","practice_effort_frequency","practice_effort_window","practice_effort_boost","practice_effort_weak","slack_hold_seconds","mouth_window_seconds","break_hold_seconds"]
 const MAX_QTE_AGE := 10.3 # Validation ceiling, not a gameplay duration.
@@ -26,7 +27,7 @@ static func normalize(input: Dictionary) -> Dictionary:
 	values.untangle_max=maxf(values.untangle_max,values.untangle_min+0.05)
 	values.line_free_max=minf(values.line_free_max,values.line_max)
 	values.cast_depth=minf(values.cast_depth,values.line_free_max)
-	values.net_capture_min=minf(values.net_capture_min,values.net_capture_base)
+	values.net_min_path=minf(values.net_min_path,values.net_max_path)
 	var supply: float=4.0*values.bait_points
 	values.food_goal=minf(values.food_goal,supply)
 	values.practice_goal=minf(values.practice_goal,supply)
@@ -83,9 +84,10 @@ static func document(values: Dictionary) -> Dictionary:
 	return {"format":"baitbreak-rules","version":VERSION,"values":normalize(values)}
 
 static func parse_document(data: Variant) -> Dictionary:
-	if not data is Dictionary or data.get("format")!="baitbreak-rules" or data.get("version")!=VERSION or not data.get("values") is Dictionary: return {"error":"规则文件格式或版本不支持"}
+	if not data is Dictionary or data.get("format")!="baitbreak-rules" or (data.get("version")!=1 and data.get("version")!=VERSION) or not data.get("values") is Dictionary: return {"error":"规则文件格式或版本不支持"}
 	var known := defaults()
 	for key in data.values:
+		if data.version==1 and key in RETIRED_NET: continue
 		if not known.has(key): return {"error":"未知选项："+str(key)}
 		var raw: Variant=data.values[key]
 		if known[key] is bool:

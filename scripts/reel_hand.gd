@@ -62,5 +62,5 @@ func draw(view:Node2D,right:Dictionary,world:Node2D) -> void:
 	for i in 2:
 		var glint:Vector2=state.hub+(Vector2.from_angle(phase+i*PI)*Vector2(4,7)).rotated(right.angle)
 		view.draw_rect(Rect2(glint.round(),Vector2(2,2)),Color("c7c1a9"))
-	if rig.reel_hand_amount<=0: return
+	if rig.reel_hand_amount<=0 or world.Net.busy(world): return
 	draw_hand(view,state)

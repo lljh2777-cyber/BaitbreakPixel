@@ -28,7 +28,7 @@ static func angler(command: Dictionary, previous_cursor: Vector2) -> Dictionary:
 	if source is Array:
 		for event in source:
 			if not event is Dictionary: continue
-			if event.get("kind","") in ["cancel","suspend"]: events.append({"kind":event.kind})
+			if event.get("kind","") in ["toggle","cancel","suspend"]: events.append({"kind":event.kind})
 			elif event.get("kind","")=="point" and event.get("point") is Vector2 and event.point.is_finite():
 				events.append({"kind":"point","point":event.point})
 	return {

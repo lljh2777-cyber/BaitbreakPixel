@@ -200,7 +200,7 @@ func _send(packet: Dictionary, reliable: bool, channel: int) -> void:
 
 func _handle(packet: Dictionary) -> void:
 	if packet.get("v")!=Protocol.VERSION:
-		fail("联机协议不兼容，请双方使用 0.19 版"); return
+		fail("联机协议不兼容，请双方使用 "+Protocol.BUILD+" 版"); return
 	var kind: String=packet.get("kind","") if packet.get("kind","") is String else ""
 	last_rx=now()
 	if kind=="ping" and packet.get("token") is int:
@@ -210,11 +210,11 @@ func _handle(packet: Dictionary) -> void:
 		ping_tokens.erase(packet.token); return
 	if kind=="hello" and is_host and status=="waiting":
 		if packet.get("build")!=Protocol.BUILD:
-			_send({"kind":"reject","reason":"版本不同，请双方使用 0.19 版"},true,2); return
+			_send({"kind":"reject","reason":"版本不同，请双方使用 "+Protocol.BUILD+" 版"},true,2); return
 		_send({"kind":"welcome","session":session_id,"role":remote_role,"config":config,"build":Protocol.BUILD,"ready":local_ready},true,2)
 		message="玩家已连接，双方准备后开始"
 		changed.emit(); return
-	if kind=="reject" and not is_host: fail("版本不同，请双方使用 0.19 版"); return
+	if kind=="reject" and not is_host: fail("版本不同，请双方使用 "+Protocol.BUILD+" 版"); return
 	if kind=="welcome" and not is_host and status=="connecting":
 		if packet.get("build")!=Protocol.BUILD or not packet.get("role") in ["fish","angler"] or not packet.get("config") is Dictionary or not packet.get("session") is String: fail("房间信息无效"); return
 		session_id=packet.session
@@ -350,25 +350,17 @@ func tick(delta: float, local_command: Dictionary) -> void:
 			"seen_tick":displayed.simulation_tick,"qte_id":check.id if check.kind in ["effort","untangle"] and check.active else displayed.qte_id,"check_kind":"effort" if check.kind in ["effort","untangle"] and check.active else "regular","events":events,"gesture":gesture_id},true,1)
 
 func _check_identity() -> Array:
-	return [game.qte_id,game.qte,game.qte_result_age>0,game.effort_checks.fish.id,game.effort_checks.fish.active,game.effort_checks.fish.effect_age>0,game.effort_checks.angler.id,game.effort_checks.angler.active,game.effort_checks.angler.effect_age>0,game.net_state,game.net_capture>0,game.untangle_phase,game.wraps.size()]
+	return [game.qte_id,game.qte,game.qte_result_age>0,game.effort_checks.fish.id,game.effort_checks.fish.active,game.effort_checks.fish.effect_age>0,game.effort_checks.angler.id,game.effort_checks.angler.active,game.effort_checks.angler.effect_age>0,game.net_state,game.net_action.observing,game.net_action.has_a,game.net_capture>0,game.untangle_phase,game.wraps.size()]
 
 func _tag_events(command: Dictionary) -> Array[Dictionary]:
 	var result: Array[Dictionary]=[]
 	if local_role!="angler": return result
 	for event in command.net_events:
-		if event.kind=="point":
-			if not gesture_open: gesture_id+=1; gesture_open=true
-			result.append({"kind":"point","point":event.point,"gesture":gesture_id})
-		else:
-			result.append({"kind":event.kind,"gesture":gesture_id})
-			gesture_open=false
-	if command.net_hold and command.drag and not gesture_open:
+		# Reliable, sequenced discrete actions. A click release is not a cancellation.
 		gesture_id+=1
-		gesture_open=true
-		result.append({"kind":"point","point":command.target,"gesture":gesture_id})
-	elif gesture_open and not (command.net_hold and command.drag):
-		result.append({"kind":"cancel","gesture":gesture_id})
-		gesture_open=false
+		var tagged: Dictionary=event.duplicate(true)
+		tagged.gesture=gesture_id
+		result.append(tagged)
 	return result
 
 func receive_input(packet: Dictionary) -> void:
@@ -382,16 +374,13 @@ func receive_input(packet: Dictionary) -> void:
 		for event in packet.events:
 			if not event is Dictionary or not event.get("gesture") is int: continue
 			var gid: int=event.gesture
-			if event.get("kind")=="point" and event.get("point") is Vector2 and event.point.is_finite():
-				if gid<=closed_gesture or gid<remote_gesture or gid>remote_gesture+1: continue
-				remote_gesture=gid
-				command.net_events.append({"kind":"point","point":event.point.clamp(Vector2.ZERO,Vector2(640,360))})
-			elif event.get("kind") in ["cancel","suspend"] and gid==remote_gesture:
-				closed_gesture=maxi(closed_gesture,gid)
+			if gid<=remote_gesture: continue
+			if event.get("kind") in ["toggle","cancel","suspend"]:
 				command.net_events.append({"kind":event.kind})
-		if packet.gesture!=remote_gesture or packet.gesture<=closed_gesture:
-			command.net_hold=false
-			command.drag=false
+			elif event.get("kind")=="point" and event.get("point") is Vector2 and event.point.is_finite():
+				command.net_events.append({"kind":"point","point":event.point.clamp(Vector2.ZERO,Vector2(640,360))})
+			else: continue
+			remote_gesture=gid
 	received_input_seq=packet.seq
 	last_input_rx=now()
 	remote_queue.append({"command":command,"seq":packet.seq,"seen_tick":packet.seen_tick,"qte_id":packet.qte_id,"check_kind":packet.get("check_kind","regular")})

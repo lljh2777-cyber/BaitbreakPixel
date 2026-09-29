@@ -118,7 +118,7 @@ func step_tackle_feedback(game: Node2D, delta: float) -> void:
 				surface_x=clampf(surface_x,20,620); surface_velocity=0
 	var speed:=feedback_reel_speed(game)
 	var desired := 0
-	if not net_held and absf(speed)>0.5:
+	if not game.Net.busy(game) and absf(speed)>0.5:
 		desired=-1 if speed<0 else 1
 	# Integrate phase, not elapsed*speed: slowing, reversing and pausing never
 	# teleport the handle or make the left hand jump to another point on its orbit.
@@ -142,7 +142,7 @@ func available_bait(game: Node2D) -> int:
 	return -1
 
 func deploy(game: Node2D) -> bool:
-	if game.hooked!=game.HookState.FREE or game.net_blocks_hooks() or net_held or casting or cast_cooldown>0: return false
+	if game.hooked!=game.HookState.FREE or game.net_active() or game.net_action.observing or net_held or casting or cast_cooldown>0: return false
 	for bait in game.baits:
 		if bait.hook and bait.active and not bait.removed and game._remaining(bait,true):
 			game.notice="钩饵已在水中 · W 收线 / S 放线，收至岸边可取回"
@@ -152,7 +152,7 @@ func deploy(game: Node2D) -> bool:
 	return cast(game,anchor()+Vector2(0,game.rule("cast_depth")))
 
 func cast(game: Node2D, point: Vector2) -> bool:
-	if game.hooked!=game.HookState.FREE or game.net_blocks_hooks() or casting or cast_cooldown>0: return false
+	if game.hooked!=game.HookState.FREE or game.net_active() or casting or cast_cooldown>0: return false
 	var index := available_bait(game)
 	if index<0: return false
 	for bait in game.baits:
@@ -173,14 +173,6 @@ func suspend_controls(game: Node2D) -> void:
 	spool=0
 	game.cancel_manual_net()
 
-func steer_net(game: Node2D, point: Vector2) -> void:
-	if needs_neutral or casting or game.match_paused or game.match_over or game.landing or game.hooked==game.HookState.MOUTH: return
-	cursor=point.clamp(Vector2(30,80),Vector2(610,294))
-	if game.manual_net and game.net_state in ["prepare","warning","sweep"]:
-		game.record_manual_net_point(cursor)
-	elif net_cooldown<=0 and game.net_state in ["wait","rest"] and Rect2(0,80,640,233).has_point(point):
-		if game.begin_manual_net(cursor): net_cooldown=game.rule("net_cooldown")
-
 func update(game: Node2D, delta: float, command: Dictionary) -> void:
 	auto_reel=command.get("auto_reel",false)
 	auto_net=command.get("auto_net",false)
@@ -200,20 +192,11 @@ func update(game: Node2D, delta: float, command: Dictionary) -> void:
 	if game.hooked==game.HookState.MOUTH or game.landing or game.net_state=="caught": spool=0
 	if needs_neutral:
 		if not command.get("net_hold",false) and not command.get("drag",false): needs_neutral=false
-		net_held=false
-		dragging=false
 	else:
-		net_held=command.get("net_hold",false)
-		dragging=net_held and command.get("drag",false)
-	for event in command.get("net_events",[]):
-		match event.kind:
-			"point": steer_net(game,event.point)
-			"cancel": game.cancel_manual_net()
-			"suspend": suspend_controls(game)
-	if not net_held or not dragging:
-		game.cancel_manual_net()
-	else:
-		steer_net(game,raw_cursor)
+		game.Net.command(game,command.get("net_events",[]))
+	net_held=game.Net.busy(game)
+	dragging=false
+	if net_held: spool=0
 	if command.get("deploy",false): deploy(game)
 	if not casting: return
 	cast_age+=delta

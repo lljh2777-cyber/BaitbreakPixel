@@ -72,7 +72,12 @@ func sample(now: float) -> Node2D:
 	if changed_check: world.simulation_tick=b.simulation_tick; world.qte_age=b.qte_age
 	if changed_check:
 		for role in ["fish","angler"]: world.effort_checks[role].age=b.effort_checks[role].age
-	# Net position remains on its authoritative polyline; never lerp across a corner.
+	if a.net_action.observing and b.net_action.observing:
+		world.net_action.age=lerpf(a.net_action.age,b.net_action.age,ratio)
+	# A committed sweep is a single segment; interpolation remains on that exact lane.
+	# Retraction may contain obstacle corners, so it retains authoritative positions.
+	if a.net_state=="sweep" and b.net_state=="sweep": world.net_pos=Vector2(a.net_pos).lerp(b.net_pos,ratio)
+	if a.net_state==b.net_state: world.net_age=lerpf(a.net_age,b.net_age,ratio)
 	if world.hooked==world.HookState.HOOKED: world._rebuild_rope()
 	return world
 

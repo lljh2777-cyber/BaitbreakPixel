@@ -4,6 +4,7 @@ const Art = preload("res://scripts/pixel_art.gd")
 const Layout = preload("res://scripts/pond_layout.gd")
 const Gauge = preload("res://scripts/hook_gauge.gd")
 const AnglerVisual = preload("res://scripts/angler_visual.gd")
+const Observation = preload("res://scripts/net_observation.gd")
 const Shore = preload("res://scripts/shore_view.gd")
 const LineMotion = preload("res://scripts/line_motion.gd")
 const FishWinding = preload("res://scripts/fish_winding.gd")
@@ -55,7 +56,8 @@ func _draw() -> void:
 	var t: float = world.elapsed
 	line_frame=line_motion.sample(world)
 	if game.player_role=="angler":
-		shore.draw(self,world,t)
+		if world.net_action.observing: Observation.draw(self,world,t)
+		else: shore.draw(self,world,t)
 		_hud(t)
 		_network_badge()
 		return
@@ -264,39 +266,18 @@ func _angler(t: float) -> void:
 		draw_rect(Rect2(ball-Vector2(2,2),Vector2(5,4)),Color("a26c3f"))
 		draw_rect(Rect2(ball-Vector2(2,2),Vector2(3,2)),GOLD)
 		draw_line(ball,ball+Vector2(0,4),CREAM,1)
-	if game.player_role!="angler" or game.menu.visible or not world.angler.net_held: return
-	var cursor: Vector2=world.angler.cursor.round()
-	var color := MINT if world.angler.net_cooldown<=0 else Color("7ca9a0")
-	for side in [-1,1]:
-		draw_line(cursor+Vector2(side*5,0),cursor+Vector2(side*9,0),color,1)
-		draw_line(cursor+Vector2(0,side*5),cursor+Vector2(0,side*9),color,1)
-	if world.angler.net_held and not world.net_blocks_hooks():
-		var start: Vector2=world.manual_net_target(cursor)
-		var blocked: bool=world.manual_net_blocked(start)
-		var preview := RED if blocked else MINT
-		draw_arc(start,world.net_rim().y+2,0,TAU,32,Color(preview,0.5),1)
-		label_at(start+Vector2(-30,-38),"木石挡网" if blocked else "从这里下网",10,preview)
-	if world.manual_net and world.net_state in ["prepare","warning","sweep"]:
-		var path: PackedVector2Array=world.manual_net_pending_path()
-		if path.size()>1:
-			draw_polyline(path,Color(MINT,0.7),1)
-			var direction: Vector2=(path[-1]-path[-2]).normalized()
-			draw_line(path[-1]-direction*7+direction.orthogonal()*4,path[-1],MINT,1)
-			draw_line(path[-1]-direction*7-direction.orthogonal()*4,path[-1],MINT,1)
-	if world.hooked==world.HookState.FREE and not world.angler.casting:
-		draw_rect(Rect2(cursor-Vector2(1,1),Vector2(2,2)),GOLD)
 
 func _angler_hud(_t: float) -> void:
 	draw_rect(Rect2(0,0,640,29),INK)
-	label_at(Vector2(12,19),"岸边 · 钓鱼人",13,GOLD)
+	label_at(Vector2(12,19),"水下 · 抄网观察" if world.net_action.observing else "岸边 · 钓鱼人",13,GOLD)
 	var rig := "挂鱼 · 留意张力" if world.hooked==world.HookState.HOOKED else "浮漂下顿" if world.hooked==world.HookState.MOUTH else "钩饵在水中" if Shore.rig_index(world)>=0 else "Q 下钩 / 补饵"
 	label_at(Vector2(140,19),rig,12,CREAM)
-	label_at(Vector2(360,19),"抄网 %.1fs" % world.angler.net_cooldown if world.angler.net_cooldown>0 else "E + 拖动 抄网",11,MINT)
+	label_at(Vector2(360,19),"抄网 %.1fs" % world.angler.net_cooldown if world.angler.net_cooldown>0 else "E 观察 / 抄网",11,MINT)
 	var remaining := maxi(0,int(ceil(world.rule("time_limit")-world.clock)))
 	label_at(Vector2(529,20),"%02d:%02d" % [remaining/60,remaining%60] if world.challenge and world.rules.timer_enabled else ("不限时" if world.challenge else "练习 · F2"),14,CREAM)
 	draw_rect(Rect2(0,327,640,33),INK)
 	label_at(Vector2(12,341),game.angler_hint(),11,GOLD)
-	label_at(Vector2(12,355),"A/D 左右移竿   W/S 收放线   Q 下钩 / 补饵   F 解缠   E + 左键拖网",10,Color("9cbbb4"))
+	label_at(Vector2(12,355),"A/D 左右移竿   W/S 收放线   Q 下钩 / 补饵   F 解缠   E 观察 · 左键 A/B",10,Color("9cbbb4"))
 	label_at(Vector2(584,350),"H 帮助",10,CREAM)
 	# Opponent checks remain autonomous; never invite the angler to press a fish QTE.
 	panel(Rect2(10,65,151,50))
@@ -319,8 +300,8 @@ func _angler_hud(_t: float) -> void:
 				for grain in bait.grains:
 					if not grain.eaten and not grain.free: remaining_bait+=1
 		label_at(Vector2(18,100),"钩饵 %d 粒 · Q 下钩" % remaining_bait,11,CREAM)
-	if world.net_blocks_hooks():
-		var names := {"prepare":"抄网入水","warning":"准备扫网…","sweep":"沿轨迹扫网 · 松 E 取消","miss":"被木石挡住" if world.net_blocked else "扑空了","withdraw":"撤网中","caught":"收拢提网…"}
+	if world.net_active():
+		var names := {"prepare":"抄网入水","warning":"准备扫网…","sweep":"路线已锁定 · 扫网中","miss":"被木石挡住" if world.net_blocked else "扑空了","withdraw":"撤网中","caught":"收拢提网…"}
 		panel(Rect2(445,65,182,26))
 		label_at(Vector2(454,83),names.get(world.net_state,"抄网中"),12,RED)
 
@@ -533,10 +514,10 @@ func _net_draw_position() -> Vector2:
 	return p.round()
 
 func _net_back(t: float) -> void:
-	if world.net_blocks_hooks(): _draw_landing_net(_net_draw_position(),t,false)
+	if world.net_active(): _draw_landing_net(_net_draw_position(),t,false)
 
 func _net(t: float) -> void:
-	if not world.net_blocks_hooks(): return
+	if not world.net_active(): return
 	var from: Vector2=world.net_from
 	var to: Vector2=world.net_to
 	var direction := Vector2.from_angle(world.net_angle)
@@ -549,17 +530,15 @@ func _net(t: float) -> void:
 		var arrow := Vector2(from.x,73) if world.net_kind=="drop" else Vector2(16 if direction.x>0 else 624,from.y)
 		draw_colored_polygon(PackedVector2Array([arrow+direction*8,arrow-direction*5+direction.orthogonal()*5,arrow-direction*5-direction.orthogonal()*5]),RED)
 	if world.net_state in ["prepare","warning"]:
-		if world.manual_net:
-			draw_arc(from,world.net_catch().y,0,TAU,40,Color(RED,0.5),1)
-		else:
-			var danger: PackedVector2Array=world.net_warning_outline()
-			draw_colored_polygon(danger,Color(RED,0.04 if world.net_state=="prepare" else 0.10))
-			for index in range(1,danger.size()):
-				if index%2==0: draw_line(danger[index-1],danger[index],Color(RED,0.7),1)
-			for index in range(1,5):
-				var arrow := from.lerp(to,index/5.0)
-				draw_line(arrow-direction*4+direction.orthogonal()*3,arrow,Color(RED,0.5),1)
-				draw_line(arrow-direction*4-direction.orthogonal()*3,arrow,Color(RED,0.5),1)
+		# Both sides see the actual committed lane during the warning.
+		var danger: PackedVector2Array=world.net_warning_outline()
+		draw_colored_polygon(danger,Color(RED,0.04 if world.net_state=="prepare" else 0.10))
+		for index in range(1,danger.size()):
+			if index%2==0: draw_line(danger[index-1],danger[index],Color(RED,0.7),1)
+		for index in range(1,5):
+			var arrow := from.lerp(to,index/5.0)
+			draw_line(arrow-direction*4+direction.orthogonal()*3,arrow,Color(RED,0.5),1)
+			draw_line(arrow-direction*4-direction.orthogonal()*3,arrow,Color(RED,0.5),1)
 		if world.net_state=="warning":
 			var remaining: float=1-world.net_age/world.net_warning_seconds()
 			draw_arc(from,9,-PI/2,-PI/2+TAU*remaining,24,RED,2)
@@ -595,7 +574,7 @@ func _net(t: float) -> void:
 		else: draw_arc(origin,6+life*16,0,TAU,24,Color(MINT,(1-life)*0.6),1)
 
 func _draw_landing_net(p: Vector2, t: float, front: bool) -> void:
-	var opening: float=lerpf(0.25,1,smoothstep(0,1,world.net_age/world.rule("net_prepare"))) if world.manual_net and world.net_state=="prepare" else 1.0
+	var opening: float=lerpf(0.25,1,smoothstep(0,1,world.net_age/world.net_warning_seconds())) if world.net_state in ["prepare","warning"] else 1.0
 	var rim: Vector2=world.net_rim()*opening
 	var angle: float=world.net_angle
 	var caught: bool=world.net_state=="caught"

@@ -127,7 +127,7 @@ func _title(frame: Control) -> void:
 	button(frame,"设置",274,func(): open("settings"),false,124)
 	var quit := button(frame,"退出",274,func(): get_tree().quit(),false,124)
 	quit.position.x = 150
-	text(content,"0.19.0 · 自定义玩法规则",Vector2(341,280),10,Color("91afa7"))
+	text(content,"0.20.0 · 主动抄网 · 两点预判",Vector2(341,280),10,Color("91afa7"))
 	text(content,"小鱼 · 吃饵脱身",Vector2(391,119),18,GOLD)
 	text(content,"人类 · 收线抄网",Vector2(391,159),18,GOLD)
 	text(content,"独自练习 · 双人对战",Vector2(375,199),16,GOLD)
@@ -172,7 +172,7 @@ func _help(frame: Control) -> void:
 			"F 解缠 · W/S 保持张力 %d–%d%%" % [game.rule("untangle_min")*100,game.rule("untangle_max")*100],
 			"持续过紧会断线 · 过松会给鱼脱钩机会",
 			"听音准备 · 空格判定，解缠成功退开一圈",
-			"E + 左键在近水区画网路，松开即可取消",
+			"E 观察，左键选 A/B；再按 E 取消并冷却",
 			"保持网口接触直到收拢 · 疲惫的鱼更易捞",
 			"规定时间内提鱼出水获胜；F3 查看玩法规则",
 			"鱼吃满目标回巢则失败 · R 重开 / Esc 暂停"

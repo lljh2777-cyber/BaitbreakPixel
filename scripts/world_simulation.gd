@@ -5,6 +5,9 @@ var rules := Rules.defaults()
 var qte_timing := Rules.qte(Rules.defaults(),"entry")
 
 const Effort = preload("res://scripts/effort_check.gd")
+const Net = preload("res://scripts/net_simulation.gd")
+var net_action := Net.fresh()
+
 const Stats = preload("res://scripts/round_stats.gd")
 const Rope = preload("res://scripts/rope.gd")
 const Layout = preload("res://scripts/pond_layout.gd")
@@ -16,8 +19,8 @@ const TIME_LIMIT := 360.0
 const SOLIDS: Array = Layout.SOLIDS
 const HOOK_SCALE := 0.70
 const BITE_RADIUS := 7.0
-const NET_RIM := Vector2(23,31)
-const NET_CATCH := Vector2(30,36)
+const NET_RIM := Vector2(8,24)
+const NET_CATCH := Vector2(8,24)
 const NET_PREPARE := 0.8
 const NET_WARNING := 2.2
 const NET_SWEEP := 1.6
@@ -222,7 +225,7 @@ func _tick_efforts(delta: float, fish_input: Dictionary, angler_input: Dictionar
 		return
 	var target := line_anchor(bound_bait) if wraps.is_empty() else Vector2(wraps[-1].entry)
 	var opposing: float=-Vector2(fish_input.move).dot((target-mouth()).normalized())
-	var attempts := {"fish":opposing>0.25 and stamina>0,"angler":angler.spool<0 or (angler.auto_reel and reel_speed< -0.5)}
+	var attempts := {"fish":opposing>0.25 and stamina>0,"angler":angler.spool<0 or (angler.auto_reel and not Net.busy(self) and reel_speed< -0.5)}
 	for role in ["fish","angler"]:
 		var state: Dictionary=effort_checks[role]
 		state.effect_age=maxf(0,state.effect_age-delta)
@@ -396,12 +399,6 @@ func effort_tuning(role: String = "fish", kind: String = "effort") -> Dictionary
 		tuning[field]=rule(role+"_effort_"+field)
 	return tuning
 
-func net_capture_seconds() -> float:
-	# Deep, energetic fish need longer contact; tired fish hauled near the surface are vulnerable.
-	var tired := 1.0-clampf(stamina_ratio(),0,1)
-	var hauled := clampf((180-fish.y)/90,0,1) if hooked==HookState.HOOKED else 0.0
-	return clampf(rule("net_capture_base")-tired*rule("net_fatigue")-hauled*rule("net_surface"),rule("net_capture_min"),rule("net_capture_base"))
-
 func tug_status() -> String:
 	if hooked!=HookState.HOOKED: return ""
 	if tension<rule("tension_low"): return "松线机会"
@@ -426,6 +423,7 @@ func reset_world(config: Dictionary = {}) -> void:
 	untangle_cooldown=0.0
 	round_stats=Stats.fresh()
 	net_capture=0.0
+	net_action=Net.fresh()
 	qte_grace_seconds=clampf(Commands.number(config.get("qte_grace"),0),0,0.25)
 	match_over=false
 	winner_role=""
@@ -531,7 +529,7 @@ func reset_world(config: Dictionary = {}) -> void:
 		started=true
 	notice = "鼠标朝向决定吸食方向 · 先试试右侧无钩饵"
 	notice_age = 5
-	if uses_mobile_tackle(): notice="Q 下钩 · W 收线 / S 放线 · 按住 E + 左键拖动抄网"
+	if uses_mobile_tackle(): notice="Q 下钩 · W 收线 / S 放线 · E 观察 · 左键选择 A/B 抄网"
 
 func line_anchor(index: int) -> Vector2:
 	return angler.anchor() if uses_mobile_tackle() else Vector2(baits[index].home.x,53)
@@ -782,8 +780,9 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 		if hooked==HookState.HOOKED:
 			speed *= fatigue_factor()*effort_multiplier("fish")
 			if feeding: speed *= rule("feeding_speed")
+		speed *= rule("net_slow_factor") if net_action.slow_age>0 else 1.0
 		velocity = velocity.move_toward(movement.limit_length(1)*speed,delta*(rule("sprint_accel") if sprinting else rule("swim_accel")))
-		move_fish((velocity*vegetation_drag(fish)+water_velocity(fish)+pull)*delta)
+		move_fish((velocity*vegetation_drag(fish)+water_velocity(fish)+pull+net_action.impulse)*delta)
 	else: velocity = Vector2.ZERO
 	if not sprinting and stamina_delay<=0: stamina = minf(rule("stamina_max"),stamina+delta*rule("stamina_recovery"))
 	_update_contacts(delta)
@@ -826,7 +825,7 @@ func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2) -> 
 				var gain := strength(_tip(index)) * power
 				target = target.move_toward(mouth(),gain*26*rule("hook_suction"))
 			bait.pos = Vector2(bait.pos).move_toward(target, delta * 44)
-		if bait.active and bait.hook and not bait.removed and hooked == HookState.FREE and hook_cooldown <= 0 and not net_blocks_hooks():
+		if bait.active and bait.hook and not bait.removed and hooked == HookState.FREE and hook_cooldown <= 0 and net_state!="caught":
 			var relative := _tip(index) - mouth() - aim * 3
 			var before := old_tip - old_mouth - aim * 3
 			if _segment_distance(before, relative, Vector2.ZERO) < rule("bite_radius"):
@@ -932,6 +931,7 @@ func _step_line(delta: float, qte_pressed: bool, judged_age: float = -1) -> void
 	if angler.auto_reel and untangle_phase in ["check","unwind"]:
 		# The AI uses the same spool actuator; no direct tension/line-length edits.
 		desired_speed=clampf((raw_tension-lerpf(rule("untangle_min"),rule("untangle_max"),0.5))*170,-rule("reel_speed"),rule("release_speed"))*tuning.y
+	if Net.busy(self): desired_speed=0
 	if desired_speed<0: desired_speed*=force_gain
 	if tuning.y<=0: reel_speed=0
 	elif not angler.auto_reel: reel_speed=angler.manual_spool_speed(reel_speed,delta*tuning.x*maxf(1,tuning.y),force_gain,rules)
@@ -948,6 +948,7 @@ func _step_line(delta: float, qte_pressed: bool, judged_age: float = -1) -> void
 	if not latched and fish.y < 91 and absf(fish.x - anchor.x) < 30 and tension >= rule("tension_low"):
 		landing_age += delta
 		if landing_age >= rule("landing_hold"):
+			Net.cancel_manual_net(self)
 			landing = true
 			for role in effort_checks: Effort.reset(effort_checks[role])
 			landing_from = fish
@@ -1075,392 +1076,73 @@ func _step_supply(delta: float) -> void:
 			cycle_slot = -1
 
 func net_warning_seconds() -> float:
-	return rule("net_manual_warning") if manual_net else rule("net_auto_warning")
-
-func manual_net_target(point: Vector2) -> Vector2:
-	return point.clamp(Vector2(30,85),Vector2(610,280))
+	return Net.net_warning_seconds(self)
 
 func record_manual_net_point(point: Vector2) -> void:
-	if not manual_net or not net_state in ["prepare","warning","sweep"]: return
-	var target := manual_net_target(point)
-	net_aim=target
-	if net_route.is_empty() or net_route[-1].distance_to(target)>=0.1:
-		net_route.append(target)
-	net_to=manual_net_goal()
-
-func manual_net_goal() -> Vector2:
-	return net_route[net_route_next] if net_route_next<net_route.size() else net_pos
-
-func manual_net_pending_path() -> PackedVector2Array:
-	var path := PackedVector2Array([net_pos])
-	for index in range(net_route_next,net_route.size()): path.append(net_route[index])
-	return path
+	Net.record_manual_net_point(self, point)
 
 func manual_net_blocked(point: Vector2) -> bool:
-	for solid in SOLIDS:
-		if Layout.touches(point,net_rim().y+2,PackedVector2Array(solid.points)): return true
-	return false
+	return Net.manual_net_blocked(self, point)
 
 func _manual_net_exit(point: Vector2) -> PackedVector2Array:
-	var surface := Vector2(point.x,5)
-	if _manual_net_lane_clear(point,surface): return PackedVector2Array([point,surface])
-	# Inflate the obstacles by the turnable rim, then find a clear lift to the surface.
-	var expanded: Array=[]
-	for solid in SOLIDS:
-		for polygon in Geometry2D.offset_polygon(PackedVector2Array(solid.points),net_rim().y+2,Geometry2D.JOIN_MITER):
-			expanded.append({"points":Array(polygon)})
-	var path := Rope.solve(surface,point,expanded)
-	path.reverse()
-	for index in range(1,path.size()):
-		if not _manual_net_lane_clear(path[index-1],path[index]): return PackedVector2Array()
-	return path
+	return Net._manual_net_exit(self, point)
 
 func _manual_net_lane_clear(a: Vector2, b: Vector2) -> bool:
-	var steps := maxi(1,ceili(a.distance_to(b)))
-	for step in range(steps+1):
-		if manual_net_blocked(a.lerp(b,float(step)/steps)): return false
-	return true
+	return Net._manual_net_lane_clear(self, a, b)
 
 func begin_manual_net(point: Vector2) -> bool:
-	if not uses_mobile_tackle() or match_over or landing or hooked==HookState.MOUTH or not net_state in ["wait","rest"]: return false
-	var start := manual_net_target(point)
-	if manual_net_blocked(start):
-		notice="这里放不下网口 · 移到木石旁的空水域"
-		notice_age=2
-		return false
-	var exit_path := _manual_net_exit(start)
-	if exit_path.is_empty():
-		notice="这里无法提网 · 移到木石旁的空水域"
-		notice_age=2
-		return false
-	manual_net=true
-	net_capture=0.0
-	net_queued=false
-	net_aim=start
-	net_kind="drop"
-	net_from=start
-	net_park=exit_path[-1]
-	net_exit_path=exit_path
-	net_pos=start
-	net_last_position=start
-	net_to=start
-	net_angle=PI/2
-	net_state="prepare"
-	net_age=0
-	net_motion=Vector2.ZERO
-	net_blocked=false
-	net_trail=PackedVector2Array([net_from])
-	net_route=PackedVector2Array([start])
-	net_route_next=1
-	net_return_path.clear()
-	net_warning_shape=_make_net_warning_outline()
-	play_feedback("warn")
-	_net_splash(start)
-	return true
+	return Net.begin_manual_net(self, point)
 
 func _prepare_manual_return() -> void:
-	net_return_path=PackedVector2Array([net_pos])
-	# Retrace the drag before taking the collision-cleared lift from the chosen start.
-	for index in range(net_trail.size()-1,-1,-1):
-		if net_return_path[-1].distance_to(net_trail[index])>0.01: net_return_path.append(net_trail[index])
-	for point in net_exit_path:
-		if net_return_path[-1].distance_to(point)>0.01: net_return_path.append(point)
+	Net._prepare_manual_return(self)
 
 func cancel_manual_net() -> void:
-	if not manual_net or not net_state in ["prepare","warning","sweep"]: return
-	net_capture=0.0
-	_prepare_manual_return()
-	net_state="withdraw"
-	net_age=0
-	net_return_from=net_pos
-	net_retract_duration=maxf(0.25,_net_retract_length()/250)
-	notice="已放弃抄网 · 正在撤回"
-	notice_age=2
+	Net.cancel_manual_net(self)
 
 func request_net() -> void:
-	if match_over: return
-	if uses_mobile_tackle() and (landing or hooked==HookState.MOUTH): return
-	if net_state in ["wait","rest"]:
-		net_state="wait"
-		net_queued=true
-		notice="抄网练习已准备 · 脱钩后开始" if hooked!=HookState.FREE else "抄网即将入水 · 留意红光"
-		notice_age=3
-		if uses_mobile_tackle(): notice="抄网路线已锁定 · 收线把鱼引入网口"
+	Net.request_net(self)
 
-func net_blocks_hooks() -> bool:
-	return net_state in ["prepare", "warning", "sweep", "miss", "withdraw", "caught"]
+func net_active() -> bool:
+	return Net.net_active(self)
 
 func _net_contact(point: Vector2, angle: float = NAN) -> bool:
-	if manual_net:
-		return manual_net_blocked(point)
-	if is_nan(angle): angle=net_angle
-	var net_scale := net_rim()+Vector2(2,2) # Include the drawn rim, not just its centerline.
-	for solid in SOLIDS:
-		var scaled := PackedVector2Array()
-		for vertex in solid.points: scaled.append((vertex-point).rotated(-angle)/net_scale)
-		if Layout.touches(Vector2.ZERO,1.0,scaled): return true
-	return false
+	return Net._net_contact(self, point, angle)
 
 func _plan_net() -> void:
-	# The rim stops at solid cover; its telegraph shows only the reachable sweep lane.
-	net_kind="sweep" if net_count%2==0 else "drop"
-	var y := clampf(fish.y,112,278)
-	net_from = Vector2(620 if fish.x > 337 else 20,y)
-	net_angle=PI if fish.x>337 else 0.0
-	# A low attack must enter above bank-side rocks, never spawn with its rim inside one.
-	if net_kind=="sweep":
-		for attempt in range(48):
-			if not _net_contact(net_from): break
-			net_from.y-=2
-		y=net_from.y
-	var destination := Vector2(36 if fish.x > 337 else 604,y)
-	if net_kind=="drop":
-		net_from=Vector2(clampf(fish.x+(72 if fish.x<320 else -72),38,602),67)
-		destination=Vector2(fish.x,clampf(fish.y+40,120,278))
-	if uses_mobile_tackle():
-		net_kind="drop"
-		net_from=Vector2(angler.anchor().x,67)
-		destination=net_from+(net_aim.clamp(Vector2(30,100),Vector2(610,278))-net_from).limit_length(230)
-	net_angle=(destination-net_from).angle()
-	net_to = net_from
-	net_blocked=false
-	var steps := ceili(net_from.distance_to(destination)/2)
-	for step in range(1,steps+1):
-		var candidate := net_from.lerp(destination,float(step)/steps)
-		if _net_contact(candidate): net_blocked=true; break
-		net_to = candidate
-	net_park=Vector2(net_from.x,5)
-	net_pos=net_park
-	net_last_position=net_pos
-	net_motion=Vector2.ZERO
-	net_warning_shape=_make_net_warning_outline()
+	Net._plan_net(self)
 
 func net_warning_outline() -> PackedVector2Array:
-	return net_warning_shape
+	return Net.net_warning_outline(self)
 
 func _make_net_warning_outline() -> PackedVector2Array:
-	var points := PackedVector2Array()
-	for endpoint in [net_pos if manual_net and net_state=="sweep" else net_from,net_to]:
-		for index in range(48): points.append(endpoint+(Vector2.from_angle(index*TAU/48)*net_catch()*1.01).rotated(net_angle))
-	return Geometry2D.convex_hull(points)
+	return Net._make_net_warning_outline(self)
 
 func _catch_in_net() -> void:
-	net_capture=1.0
-	qte=""
-	qte_result_age=0
-	wrap_target=-1
-	for role in effort_checks: Effort.reset(effort_checks[role])
-	net_state="caught"
-	net_age=0
-	net_return_from=net_pos
-	net_catch_offset=fish-net_pos
-	if manual_net: _prepare_manual_return()
-	net_retract_duration=maxf(NET_LIFT,_net_retract_length()/240)
-	net_catches+=1
-	velocity=Vector2.ZERO
-	sprinting=false
-	feeding=false
-	resisting=false
-	returning=false
-	home_age=0
-	play_feedback("fail")
-	_net_splash(net_pos)
+	Net._catch_in_net(self)
 
 func _net_splash(point: Vector2) -> void:
-	net_splash=0.6
-	net_splash_at=point
-	play_feedback("splash")
+	Net._net_splash(self, point)
 
 func _net_retract_length() -> float:
-	if manual_net and net_return_path.size()>1: return Rope.length_of(net_return_path)
-	return net_return_from.distance_to(net_from)+net_from.distance_to(net_park)
+	return Net._net_retract_length(self)
 
 func _net_retract_point(progress: float) -> Vector2:
-	if manual_net and net_return_path.size()>1:
-		var distance := _net_retract_length()*smoothstep(0,1,progress)
-		for index in range(1,net_return_path.size()):
-			var span := net_return_path[index-1].distance_to(net_return_path[index])
-			if distance<=span: return net_return_path[index-1].lerp(net_return_path[index],distance/maxf(span,0.001))
-			distance-=span
-		return net_return_path[-1]
-	# Retrace the collision-cleared route before lifting at the bank, away from wood and rocks.
-	var first := net_return_from.distance_to(net_from)
-	var distance := _net_retract_length()*smoothstep(0,1,progress)
-	if first>0.001 and distance<first: return net_return_from.lerp(net_from,distance/first)
-	var second := net_from.distance_to(net_park)
-	return net_from.lerp(net_park,clampf((distance-first)/maxf(0.001,second),0,1))
+	return Net._net_retract_point(self, progress)
 
 func net_bag_offset() -> Vector2:
-	var back := -Vector2.from_angle(net_angle)*22+Vector2(0,6)
-	if net_state=="caught":
-		return back.lerp(Vector2(0,17),smoothstep(0,1,net_age/NET_SETTLE))
-	return back+Vector2(0,sin(elapsed*5)*2)
+	return Net.net_bag_offset(self)
 
 func _net_reaches_fish(point: Vector2, center: Vector2) -> bool:
-	# The small body allowance around the rim must not reach through cover.
-	for solid in SOLIDS:
-		var polygon := PackedVector2Array(solid.points)
-		if Geometry2D.is_point_in_polygon(point,polygon): return false
-		for index in polygon.size():
-			if Geometry2D.segment_intersects_segment(center,point,polygon[index],polygon[(index+1)%polygon.size()])!=null: return false
-	return true
-
-static func _net_hit_fraction(a: Vector2, b: Vector2) -> float:
-	if a.length_squared()<=1: return 0
-	var motion := b-a
-	var aa := motion.length_squared()
-	if aa<0.000001: return -1
-	var bb := 2*a.dot(motion)
-	var cc := a.length_squared()-1
-	var discriminant := bb*bb-4*aa*cc
-	if discriminant<0: return -1
-	var hit := (-bb-sqrt(discriminant))/(2*aa)
-	return hit if hit>=0 and hit<=1 else -1
+	return Net._net_reaches_fish(self, point, center)
 
 func _finish_net_recovery() -> void:
-	net_capture=0.0
-	manual_net=false
-	net_trail.clear()
-	net_return_path.clear()
-	net_exit_path.clear()
-	net_route.clear()
-	net_route_next=1
-	net_state="rest"
-	net_age=0
-	net_wait=0
-	net_recovery=2
+	Net._finish_net_recovery(self)
 
 func _step_net(delta: float) -> void:
-	net_splash=maxf(0,net_splash-delta)
-	net_last_position=net_pos
-	if net_state in ["prepare","warning","sweep","miss","withdraw","caught"]:
-		var frame_from := fish_before
-		var frame_to := fish
-		# Substeps resolve relative fish/net motion and preserve the actual first impact position.
-		var advanced := 0.0
-		while advanced<delta-0.0000001:
-			var span := minf(1.0/120,delta-advanced)
-			if manual_net and net_state=="sweep" and net_route_next<net_route.size():
-				var distance := net_pos.distance_to(manual_net_goal())
-				if distance<0.0001:
-					net_route_next+=1
-					continue
-				# End exactly at each turn; consume the remaining time on the next leg.
-				span=minf(span,distance/rule("net_manual_speed"))
-			_advance_net(span,frame_from.lerp(frame_to,advanced/delta),frame_from.lerp(frame_to,(advanced+span)/delta))
-			advanced+=span
-			if match_over or net_state=="rest": break
-		if manual_net and net_state in ["prepare","warning","sweep"]:
-			net_to=manual_net_goal()
-			net_warning_shape=_make_net_warning_outline()
-		net_motion=(net_pos-net_last_position)/maxf(delta,0.001)
-		return
-	if net_state == "rest":
-		net_age += delta
-		if net_age >= 10: net_state = "wait"; net_wait = 0
-		return
-	if hooked != HookState.FREE and not uses_mobile_tackle():
-		net_recovery = 4
-		return
-	if not uses_mobile_tackle() and (not cycle_phase.is_empty() or net_recovery > 0): return
-	if net_state == "wait":
-		if challenge and started and angler.auto_net: net_wait += delta
-		if net_queued or (angler.auto_net and net_wait >= (rule("net_first") if net_count==0 else rule("net_interval"))):
-			net_capture=0.0
-			net_state = "prepare"
-			net_age = 0
-			net_queued = false
-			_plan_net()
-			play_feedback("warn")
+	Net._step_net(self, delta)
 
 func _advance_net(delta: float, frame_from: Vector2, frame_to: Vector2) -> void:
-	var old_pos := net_pos
-	net_age+=delta
-	if net_state=="caught":
-		var settle := smoothstep(0,1,net_age/NET_SETTLE)
-		var ratio := clampf((net_age-NET_SETTLE)/net_retract_duration,0,1)
-		net_pos=_net_retract_point(ratio)
-		fish=net_pos+net_catch_offset.lerp(net_bag_offset(),settle)
-		_rebuild_rope()
-		if ratio>=1:
-			if challenge: finish(false,"net")
-			else:
-				_clear_hook()
-				fish=HOME+Vector2(0,-14)
-				fish_before=fish
-				hook_cooldown=2
-				notice="被抄中了 · 已回到巢边，按 N 再试"
-				notice_age=4
-				_finish_net_recovery()
-	elif net_state=="miss":
-		if net_age>=NET_MISS:
-			net_state="withdraw"
-			net_age=0
-			net_return_from=net_pos
-			if manual_net: _prepare_manual_return()
-			net_retract_duration=maxf(NET_WITHDRAW,_net_retract_length()/350)
-	elif net_state=="withdraw":
-		net_pos=_net_retract_point(clampf(net_age/net_retract_duration,0,1))
-		if net_age>=net_retract_duration: _finish_net_recovery()
-	elif net_state=="prepare":
-		net_pos=net_from if manual_net else net_park.lerp(net_from,smoothstep(0,1,net_age/rule("net_prepare")))
-		if net_age>=rule("net_prepare"):
-			net_state="warning"; net_age=0; net_pos=net_from; play_feedback("warn")
-	elif net_state == "warning":
-		if net_age >= net_warning_seconds():
-			net_state = "sweep"; net_age = 0; net_count += 1
-			_net_splash(net_pos)
-	elif net_state == "sweep":
-		var old_net := net_pos
-		if manual_net:
-			var goal := manual_net_goal()
-			var shift := goal-net_pos
-			if shift.length()>0.0001:
-				net_angle=shift.angle()
-				var candidate := net_pos.move_toward(goal,rule("net_manual_speed")*delta)
-				if _net_contact(candidate):
-					net_blocked=true
-					net_state="miss"
-					net_age=0
-					play_feedback("tap")
-				else: net_pos=candidate
-			net_to=goal
-		else: net_pos = net_from.lerp(net_to, smoothstep(0,1,net_age / rule("net_auto_sweep")))
-		var scale := net_catch()
-		var hit := _net_hit_fraction((frame_from-old_net).rotated(-net_angle)/scale,(frame_to-net_pos).rotated(-net_angle)/scale)
-		var contact_time := 0.0
-		if hit>=0 and net_state=="sweep":
-			var hit_fish := frame_from.lerp(frame_to,hit)
-			var hit_net := old_net.lerp(net_pos,hit)
-			if _net_reaches_fish(hit_fish,hit_net):
-				if uses_mobile_tackle():
-					# Integrate only the part of this substep spent inside the moving rim.
-					var reverse_hit := _net_hit_fraction((frame_to-net_pos).rotated(-net_angle)/scale,(frame_from-old_net).rotated(-net_angle)/scale)
-					var leave := 1.0-reverse_hit if reverse_hit>=0 else 1.0
-					contact_time=maxf(0,leave-hit)*delta
-					var previous_capture := net_capture
-					net_capture=minf(1,net_capture+contact_time/net_capture_seconds())
-					if net_capture>=1:
-						var at := clampf(hit+(1-previous_capture)*net_capture_seconds()/delta,hit,leave)
-						net_pos=old_net.lerp(net_pos,at)
-						fish=frame_from.lerp(frame_to,at)
-						_catch_in_net()
-				else:
-					net_pos=hit_net
-					fish=hit_fish
-					_catch_in_net()
-		if uses_mobile_tackle() and net_state!="caught": net_capture=maxf(0,net_capture-(delta-contact_time)*3.0)
-		if manual_net and net_state=="sweep":
-			if net_trail.is_empty() or net_trail[-1].distance_to(net_pos)>0.0001: net_trail.append(net_pos)
-			if net_route_next<net_route.size() and net_pos.distance_to(manual_net_goal())<0.0001: net_route_next+=1
-			net_to=manual_net_goal()
-		if net_state=="sweep" and net_age >= (rule("net_manual_time") if manual_net else rule("net_auto_sweep")):
-			net_state="miss"; net_age=0
-			net_dodges+=1
-			notice=("网口被木石挡住" if net_blocked else "这一网扑空了") if uses_mobile_tackle() else ("木石挡住了网口 · 可以继续觅食" if net_blocked else "躲过抄网！继续觅食。")
-			notice_age=3
-			if net_blocked: play_feedback("tap")
-	if (old_pos.y-57)*(net_pos.y-57)<0: _net_splash(Vector2(net_pos.x,57))
+	Net._advance_net(self, delta, frame_from, frame_to)
 
 static func _segment_distance(a: Vector2, b: Vector2, point: Vector2) -> float:
 	var length_squared := a.distance_squared_to(b)
@@ -1473,6 +1155,7 @@ func can_home() -> bool:
 func finish(success: bool, why: String) -> void:
 	if match_over: return
 	for role in effort_checks: Effort.reset(effort_checks[role])
+	Net.cancel_manual_net(self)
 	match_over=true
 	winner_role="fish" if success else "angler"
 	reason=why

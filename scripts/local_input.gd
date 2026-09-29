@@ -19,11 +19,9 @@ func suspend() -> void:
 func handle(event: InputEvent, role: String, point: Vector2) -> void:
 	if needs_neutral: return
 	if role=="angler":
-		if event.is_action_released("use") or (event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT and not event.pressed):
-			net_events.append({"kind":"cancel"})
-		elif event is InputEventMouseMotion or (event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT and event.pressed):
-			if Input.is_action_pressed("use") and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-				net_events.append({"kind":"point","point":point})
+		if event.is_action_pressed("use") and not event.is_echo(): net_events.append({"kind":"toggle"})
+		elif event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT and event.pressed:
+			net_events.append({"kind":"point","point":point})
 	elif event is InputEventMouseButton and event.pressed:
 		if event.button_index==MOUSE_BUTTON_WHEEL_UP: power_steps+=1
 		elif event.button_index==MOUSE_BUTTON_WHEEL_DOWN: power_steps-=1

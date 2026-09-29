@@ -56,7 +56,7 @@ func command(game: Node2D, delta: float) -> Dictionary:
 	if game.landing or game.net_state=="caught": state="被捕获"; return result
 	result.qte=_judge(game)
 	if game.hooked==game.HookState.MOUTH: state="尝试吐钩"; return result
-	var net_alert: bool=game.net_state=="sweep" or (game.net_state=="warning" and game.net_age>0.45)
+	var net_alert: bool=game.net_state=="sweep" or (game.net_state=="warning" and game.net_age>minf(0.15,game.net_warning_seconds()*0.3))
 	if net_alert and (Geometry2D.is_point_in_polygon(game.fish,game.net_warning_outline()) or game.fish.distance_to(game.net_pos)<65): evade_memory=0.8
 	else: evade_memory=maxf(0,evade_memory-delta)
 	if net_alert and evade_memory>0:
