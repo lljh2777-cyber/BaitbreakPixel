@@ -1,15 +1,15 @@
 {
-  "version": "0.9",
-  "pack_sha256": "667149c1dc0adc0cb23bf6bb4cd945c642dcd329f23a2456975897565e7c33c5",
+  "version": "0.10",
+  "pack_sha256": "bdf5ac11755c16fd9f132f6379a45b2b370d0c353e8533b7c2eb7b2157d3eec2",
   "script_sha256": {
-    "scripts/angler_controller.gd": "6d38e6155dbc9dd05d739c9ad0e903181f90a270f6ab9cfc95d3e73a27aa8d3a",
-    "scripts/fish_brain.gd": "c0c8784485db6ce220443a621c77f7cb055249fe9b93ac7bc737d0b486c0ff63",
+    "scripts/angler_controller.gd": "fe391d47d15ed0daccc193d18a3c672b058e5c0523bc3ed959e2310f69db936d",
+    "scripts/fish_brain.gd": "e48a0425a01f205f72a17360dca8f98d10845a4d64634b13127d3c71c02cd79c",
     "scripts/hook_gauge.gd": "4fe42c7690fa40f42e970af97eb26915793ec166c01b06da3ea21eb1fb692593",
-    "scripts/menu.gd": "aae988c5f2547e0a12a00a4a0c2b850ee2d35c761420909452f1bab718da2bfb",
+    "scripts/menu.gd": "beaf0c0b569bcc83fbf7baf81145b36567ad8f19c7822c7374c97360f72b0370",
     "scripts/pixel_art.gd": "888fc105bd231fcbd7cee637cb515d3aa254aebf23af05a6730c974f21eb5c4a",
-    "scripts/pond.gd": "0e244ed09730658c434521d306157ae340667f5d37d0860a0aa2f518786648e0",
+    "scripts/pond.gd": "50620b6aba6c53516f217c923ce9847e81a5492269cc9bc40e47756ff2281ced",
     "scripts/pond_layout.gd": "516f4fbbead3281ebc09e921fbebc77917c1e611a698a217a5b083f14c7678fe",
-    "scripts/pond_view.gd": "c1a3c6795596a7e36c5b2b07bcf23818d8e1f5dd53edc5db4c5c09af5d4b94ec",
+    "scripts/pond_view.gd": "a175066c8e13a6bfbcbd855daf1820dbf2164bdab915f94e761e9ed243e657af",
     "scripts/rope.gd": "2e30152e65b00f39fe25324b992afd39925acfadd80b64dce385df865d69fe42",
     "scripts/sound.gd": "105f1b9854c725f76332add962a0e0f5790719bc3b525630007ca62b604629ba"
   },

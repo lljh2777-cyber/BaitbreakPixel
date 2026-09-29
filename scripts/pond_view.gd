@@ -171,7 +171,7 @@ func _baits(t: float) -> void:
 				for segment in range(17):
 					var ratio := segment/16.0
 					var point: Vector2 = game.line_anchor(index).lerp(eye,ratio)
-					point.x += sin(ratio*PI)*sin(t*0.75+ratio*2)*2.5*game.water_strength
+					point.x += sin(ratio*PI)*(game.angler.line_sway if game.player_role=="angler" else sin(t*0.75+ratio*2)*2.5*game.water_strength)
 					filament.append(point.round())
 				draw_polyline(filament,Color("b9d5bf"),1)
 			var hook := PackedVector2Array([Vector2(-5,-10),Vector2(-5,4),Vector2(-3,7),Vector2(1,7),Vector2(3,5),Vector2(3,1),Vector2.ZERO])
@@ -219,12 +219,21 @@ func _angler(t: float) -> void:
 		draw_rect(Rect2(ball-Vector2(2,2),Vector2(5,4)),Color("a26c3f"))
 		draw_rect(Rect2(ball-Vector2(2,2),Vector2(3,2)),GOLD)
 		draw_line(ball,ball+Vector2(0,4),CREAM,1)
-	if game.menu.visible: return
+	if game.menu.visible or not game.angler.net_held: return
 	var cursor: Vector2=game.angler.cursor.round()
 	var color := MINT if game.angler.net_cooldown<=0 else Color("7ca9a0")
 	for side in [-1,1]:
 		draw_line(cursor+Vector2(side*5,0),cursor+Vector2(side*9,0),color,1)
 		draw_line(cursor+Vector2(0,side*5),cursor+Vector2(0,side*9),color,1)
+	if game.angler.net_held and not game.net_blocks_hooks():
+		draw_arc(cursor,15,0,TAU,24,Color(MINT,0.5),1)
+		label_at(cursor+Vector2(-28,-22),"左键拖动",10,MINT)
+	if game.manual_net and game.net_state in ["prepare","warning","sweep"]:
+		var target: Vector2=game.manual_net_target(game.angler.cursor)
+		var direction: Vector2=(target-game.net_pos).normalized()
+		draw_line(game.net_pos,target,Color(MINT,0.4),1)
+		draw_line(target-direction*7+direction.orthogonal()*4,target,MINT,1)
+		draw_line(target-direction*7-direction.orthogonal()*4,target,MINT,1)
 	if game.hooked==game.HookState.FREE and not game.angler.casting:
 		draw_rect(Rect2(cursor-Vector2(1,1),Vector2(2,2)),GOLD)
 
@@ -235,12 +244,12 @@ func _angler_hud(_t: float) -> void:
 	label_at(Vector2(237,19),"鱼体力",11,CREAM)
 	draw_rect(Rect2(281,11,62,6),Color("335762"))
 	draw_rect(Rect2(281,11,62*game.stamina/100,6),MINT)
-	label_at(Vector2(360,19),"抄网 %.1fs" % game.angler.net_cooldown if game.angler.net_cooldown>0 else "空格 抄网",11,MINT)
+	label_at(Vector2(360,19),"抄网 %.1fs" % game.angler.net_cooldown if game.angler.net_cooldown>0 else "E + 拖动 抄网",11,MINT)
 	var remaining := maxi(0,int(ceil(game.TIME_LIMIT-game.clock)))
 	label_at(Vector2(529,20),"%02d:%02d" % [remaining/60,remaining%60],14,CREAM)
 	draw_rect(Rect2(0,327,640,33),INK)
 	label_at(Vector2(12,341),game.angler_hint(),11,GOLD)
-	label_at(Vector2(12,355),"A/D 钓位   左键 投饵 / 放线   右键 收线   空格 抄网   E 收饵",10,Color("9cbbb4"))
+	label_at(Vector2(12,355),"A/D 钓位   W/S 收放线   Q 下钩 / 补饵   E + 左键拖网   F3 时间",10,Color("9cbbb4"))
 	label_at(Vector2(584,350),"H 帮助",10,CREAM)
 	# Opponent checks remain autonomous; never invite the angler to press a fish QTE.
 	panel(Rect2(10,65,151,50))
@@ -250,7 +259,7 @@ func _angler_hud(_t: float) -> void:
 		label_at(Vector2(18,96),"张力 %d%% · %s" % [int(game.tension*100),spool],11,RED if game.tension>=0.88 else CREAM)
 		draw_rect(Rect2(18,103,134,5),Color("335762"))
 		draw_rect(Rect2(18,103,134*game.tension,5),MINT.lerp(RED,game.tension))
-		if game.high_age>0: label_at(Vector2(18,129),"断线风险 %.1f / 3s" % game.high_age,10,RED)
+		if game.high_age>0: label_at(Vector2(18,129),"断线风险 %.1f / %.1fs" % [game.high_age,game.break_hold_seconds],10,RED)
 	elif game.hooked==game.HookState.MOUTH:
 		label_at(Vector2(18,100),"钩尖入口 · 等待挂牢",11,GOLD)
 	else:
@@ -259,16 +268,25 @@ func _angler_hud(_t: float) -> void:
 			if bait.hook and not bait.removed:
 				for grain in bait.grains:
 					if not grain.eaten and not grain.free: remaining_bait+=1
-		label_at(Vector2(18,100),"钩饵余量 %d 粒" % remaining_bait,11,CREAM)
+		label_at(Vector2(18,100),"钩饵 %d 粒 · Q 下钩" % remaining_bait,11,CREAM)
 	if game.net_blocks_hooks():
-		var names := {"prepare":"抄网入水","warning":"锁定落点…","sweep":"扫网中","miss":"被木石挡住" if game.net_blocked else "扑空了","withdraw":"撤网中","caught":"收拢提网…"}
+		var names := {"prepare":"抄网入水","warning":"准备扫网…","sweep":"拖动扫网 · 松 E 取消","miss":"被木石挡住" if game.net_blocked else "扑空了","withdraw":"撤网中","caught":"收拢提网…"}
 		panel(Rect2(445,65,182,26))
 		label_at(Vector2(454,83),names.get(game.net_state,"抄网中"),12,RED)
 
+func _sway_line(start: Vector2, end: Vector2, sway: float) -> PackedVector2Array:
+	var points := PackedVector2Array()
+	for index in 17:
+		var ratio := index/16.0
+		points.append(start.lerp(end,ratio)+Vector2(sin(PI*ratio)*sway,0))
+	return points
+
 func _line_back() -> void:
 	if game.hooked == game.HookState.HOOKED and game.rope_path.size() >= 2:
-		draw_polyline(game.rope_path,INK,3)
-		draw_polyline(game.rope_path,Color("91b8ab"),1)
+		var points: PackedVector2Array=game.rope_path
+		if game.player_role=="angler" and game.wraps.is_empty(): points=_sway_line(points[0],points[-1],game.angler.line_sway*(1-game.tension)*0.5)
+		draw_polyline(points,INK,3)
+		draw_polyline(points,Color("91b8ab"),1)
 
 func _line() -> void:
 	if game.hooked==game.HookState.HOOKED:
@@ -379,7 +397,7 @@ func _net(t: float) -> void:
 			draw_line(arrow-direction*4+direction.orthogonal()*3,arrow,Color(RED,0.5),1)
 			draw_line(arrow-direction*4-direction.orthogonal()*3,arrow,Color(RED,0.5),1)
 		if game.net_state=="warning":
-			var remaining: float=1-game.net_age/game.NET_WARNING
+			var remaining: float=1-game.net_age/game.net_warning_seconds()
 			draw_arc(from,9,-PI/2,-PI/2+TAU*remaining,24,RED,2)
 	_draw_landing_net(_net_draw_position(),t,true)
 	if game.net_state=="sweep":
@@ -429,7 +447,7 @@ func _draw_landing_net(p: Vector2, t: float, front: bool) -> void:
 		bag.append((back+bag_shape).round())
 		if rim_point.y<joint.y: joint=rim_point
 	if not front:
-		var pole_top := Vector2(game.net_from.x+(-18 if game.net_from.x<320 else 18),40)
+		var pole_top: Vector2=Vector2(game.angler.x+7,45) if game.manual_net else Vector2(game.net_from.x+(-18 if game.net_from.x<320 else 18),40)
 		var pole := PackedVector2Array([pole_top,pole_top.lerp(joint,0.52)+Vector2(sin(t*3)*1.5,0),joint])
 		draw_polyline(pole,INK,7)
 		draw_polyline(pole,Color("957044"),5)
@@ -483,7 +501,7 @@ func _hud(t: float) -> void:
 		panel(Rect2(230,63,180,26))
 		var phase := "横向扫网" if game.net_kind=="sweep" else "上方下探"
 		if game.net_state=="prepare": phase+=" · 准备"
-		elif game.net_state=="warning": phase+=" · %.1f 秒" % maxf(0,game.NET_WARNING-game.net_age)
+		elif game.net_state=="warning": phase+=" · %.1f 秒" % maxf(0,game.net_warning_seconds()-game.net_age)
 		elif game.net_state=="caught": phase="网袋收拢…" if game.net_age<game.NET_SETTLE else "正在提网…"
 		elif game.net_state=="miss": phase="网口被挡住" if game.net_blocked else "抄网扑空"
 		elif game.net_state=="withdraw": phase="抄网撤回 · 继续觅食"
@@ -497,7 +515,7 @@ func _hud(t: float) -> void:
 		var spool := "放线 ↓" if game.reel_speed>0.5 else ("收线 ↑" if game.reel_speed < -0.5 else "稳线")
 		label_at(Vector2(254,100), spool+(" · 缠绕减力" if game.latched else " · 向水面牵引"), 9, Color("9cbbb4"))
 		if game.high_age > 0:
-			draw_rect(Rect2(246,108,148*minf(1,game.high_age/3),3), RED)
+			draw_rect(Rect2(246,108,148*minf(1,game.high_age/game.break_hold_seconds),3), RED)
 	if not game.qte.is_empty() or game.qte_result_age>0: _qte(t)
 
 func _qte(t: float) -> void:
@@ -505,7 +523,8 @@ func _qte(t: float) -> void:
 	var kind: String = game.qte_result_kind if showing_result else game.qte
 	var zone_start: float = game.qte_result_zone if showing_result else game.qte_zone
 	var progress: float = game.qte_result_progress if showing_result else game.qte_progress()
-	var success_zone: bool = progress>=zone_start and progress<=zone_start+0.2
+	var zone_width: float=game.qte_result_width if showing_result else game.qte_width
+	var success_zone: bool = progress>=zone_start and progress<=zone_start+zone_width
 	var effect: float = 1-game.qte_result_age/0.7
 	var intro: float = clampf(game.qte_age/0.3,0,1) if not showing_result else 1.0
 	var origin: Vector2 = game.qte_origin+Vector2(0,roundf(10*pow(1-intro,3)))
@@ -528,13 +547,13 @@ func _qte(t: float) -> void:
 		var ratio := tick/10.0
 		draw_line((origin+Gauge.point(ratio,37)).round(),(origin+Gauge.point(ratio,43)).round(),Color("081724"),4)
 		draw_line((origin+Gauge.point(ratio,37)).round(),(origin+Gauge.point(ratio,43)).round(),Color("b5c0c1"),2)
-	var zone: PackedVector2Array = Gauge.section(zone_start,zone_start+0.2)
+	var zone: PackedVector2Array = Gauge.section(zone_start,zone_start+zone_width)
 	for index in zone.size(): zone[index]+=origin
 	var green := Color("63ed4d") if success_zone else Color("2fbe44")
 	draw_polyline(zone,Color("082818"),10)
 	draw_polyline(zone,Color("157432"),8)
 	draw_polyline(zone,green,5)
-	for ratio in [zone_start,zone_start+0.2]:
+	for ratio in [zone_start,zone_start+zone_width]:
 		draw_line((origin+Gauge.point(ratio,43)).round(),(origin+Gauge.point(ratio,55)).round(),Color("081724"),4)
 		draw_line((origin+Gauge.point(ratio,44)).round(),(origin+Gauge.point(ratio,54)).round(),CREAM,2)
 	var marker: Vector2 = (origin+Gauge.point(progress)).round()

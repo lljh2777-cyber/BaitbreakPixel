@@ -43,7 +43,7 @@ func _judge(game: Node2D) -> bool:
 		qte_kind=game.qte
 		qte_fired=false
 		var skill := 0.42 if qte_kind=="entry" else 0.68
-		qte_press_at=game.qte_zone+(rng.randf_range(0.035,0.15) if rng.randf()<skill else -rng.randf_range(0.06,0.13))
+		qte_press_at=game.qte_zone+(rng.randf_range(game.qte_width*0.18,game.qte_width*0.72) if rng.randf()<skill else -rng.randf_range(0.06,0.13))
 	qte_last_age=game.qte_age
 	if not qte_fired and game.qte_progress()>=qte_press_at:
 		qte_fired=true

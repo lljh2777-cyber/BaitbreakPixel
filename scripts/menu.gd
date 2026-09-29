@@ -3,6 +3,7 @@ extends Control
 var game: Node2D
 var screen := "title"
 var previous := "title"
+var timing_previous := "pause"
 var content: Control
 var first_button: Button
 const CREAM := Color("fff0cd")
@@ -30,8 +31,10 @@ func style(color: Color, border: Color) -> StyleBoxFlat:
 	return result
 
 func open(which: String) -> void:
+	if which=="timing": timing_previous=screen if visible else "pause"
+	if game.player_role=="angler" and which!="result": game.angler.suspend_controls(game)
 	if which=="practice" and game.challenge: return
-	if which in ["help","settings","practice"] and (not visible or not screen in ["help","settings","practice"]):
+	if which in ["help","settings","practice","timing"] and (not visible or not screen in ["help","settings","practice","timing"]):
 		previous = screen if visible else "pause"
 	screen = which
 	game.paused = true
@@ -58,6 +61,7 @@ func open(which: String) -> void:
 		"help": _help(frame)
 		"settings": _settings(frame)
 		"practice": _practice(frame)
+		"timing": _timing(frame)
 		"result": _result(frame)
 	if first_button: first_button.grab_focus()
 
@@ -104,7 +108,7 @@ func _title(frame: Control) -> void:
 	button(frame,"设置",240,func(): open("settings"),false,124)
 	var quit := button(frame,"退出",240,func(): get_tree().quit(),false,124)
 	quit.position.x = 150
-	text(content,"0.9 · 单人双视角",Vector2(391,280),10,Color("91afa7"))
+	text(content,"0.10 · 惯性钓组 / 手动抄网",Vector2(391,280),10,Color("91afa7"))
 	text(content,"小鱼 · 吃饵脱身",Vector2(391,119),18,GOLD)
 	text(content,"人类 · 收线抄网",Vector2(391,159),18,GOLD)
 	text(content,"另一方由 AI 控制",Vector2(391,199),18,GOLD)
@@ -135,22 +139,22 @@ func _help(frame: Control) -> void:
 		"所有 QTE：浮漂到绿色判定区按空格",
 		"上钩会被拉向水面 · 吸食时游速降低",
 		"接触草木石按空格，边游抗拉、绿区再按",
-		"缠线后松线按空格脱钩 · 拉紧 3 秒断线",
+		"缠线后松线按空格脱钩 · 持续拉紧可断线",
 		"抄网：红区锁定后躲开 · 木石能挡住网口",
 		"吃够食物后回左下巢穴，按 E 停留 2 秒",
-		"R 重开 · Esc 暂停 · F11 全屏 · 练习 N 试网"
+		"R 重开 · Esc 暂停 · F3 时间 · 练习 N 试网"
 	]
 	if human:
 		lines=[
-			"A / D 沿岸移动 · 鼠标选择投饵 / 抄网位置",
-			"未上钩：左键投饵 · E 收回并重新选落点",
-			"上钩后：按住右键收线 · 按住左键放线",
-			"松开鼠标保持线长 · 留意张力和鱼的体力",
+			"A / D 沿岸移动 · 饵钩随线惯性摆动",
+			"Q 下钩；饵用完 / 断线后 Q 重新挂饵",
+			"W 收线 · S 放线，未咬钩时也能调整深度",
+			"W 收至岸边取回钓组 · 松开 W/S 保持线长",
 			"持续过紧会断线 · 过松会给鱼脱钩机会",
 			"鱼会借草木石缠线；移动钓位改变拉力方向",
-			"空格向鼠标位置抄网 · 冷却 12 秒",
-			"抄网有准备时间，木石挡网，预判鱼的去向",
-			"钩饵有限；6 分钟内提鱼出水或抄中即胜利",
+			"按住 E 持网，左键在水中拖动控制网口",
+			"松开 E 或左键会放弃并撤网 · 木石挡网",
+			"6 分钟内提鱼出水获胜；F3 调节逃脱时间",
 			"鱼吃满 60 回巢则失败 · R 重开 / Esc 暂停"
 		]
 	for index in lines.size(): text(frame,lines[index],Vector2(20,50+index*19),12,CREAM)
@@ -173,8 +177,40 @@ func _settings(frame: Control) -> void:
 		volume_label.text = "音量 %d%%" % int(value)
 	)
 	button(frame,"切换全屏 / 窗口",155,func(): game.fullscreen = not game.fullscreen; game.apply_settings())
-	text(frame,"画面按整数倍缩放，保留清晰像素。",Vector2(20,201),12,Color("91afa7"))
+	button(frame,"时间窗口调节 · F3",199,func(): open("timing"))
 	button(frame,"保存并返回",251,func(): game.save_profile(); open(previous),true)
+
+func _timing(frame: Control) -> void:
+	text(frame,"逃脱时间窗口",Vector2(20,15),22)
+	text(frame,"双方与练习通用 · QTE 宽度从下一次判定生效",Vector2(20,48),11,Color("91afa7"))
+	var rows := [
+		["SlackHold","低张力等待","slack_hold_seconds",0.1,3.0,0.1],
+		["MouthWindow","松口 QTE 成功窗口","mouth_window_seconds",0.12,1.0,0.02],
+		["BreakHold","持续高张力断线","break_hold_seconds",0.5,10.0,0.1]
+	]
+	var sliders: Array[HSlider]=[]
+	for index in rows.size():
+		var row: Array=rows[index]
+		var y := 70+index*57
+		var caption := text(frame,"%s  %.2f 秒" % [row[1],game.get(row[2])],Vector2(20,y),13,GOLD)
+		var slider := HSlider.new()
+		slider.name=row[0]
+		slider.min_value=row[3]
+		slider.max_value=row[4]
+		slider.step=row[5]
+		slider.value=game.get(row[2])
+		slider.position=Vector2(20,y+25)
+		slider.size=Vector2(326,16)
+		frame.add_child(slider)
+		sliders.append(slider)
+		slider.value_changed.connect(func(value: float):
+			game.set(row[2],value)
+			caption.text="%s  %.2f 秒" % [row[1],value]
+		)
+	text(frame,"松口窗口：入口吐钩和低张力脱钩的绿色成功区",Vector2(20,231),10,Color("91afa7"))
+	button(frame,"恢复默认",257,func(): sliders[0].value=0.5; sliders[1].value=0.4; sliders[2].value=3.0,false,100)
+	var back := button(frame,"保存并返回",257,func(): game.save_profile(); open(timing_previous),true,216)
+	back.position.x=130
 
 func _practice(frame: Control) -> void:
 	text(frame,"练习 · 收放线调节",Vector2(20,17),22)
@@ -233,8 +269,8 @@ func _result(frame: Control) -> void:
 func _input(event: InputEvent) -> void:
 	if not visible or not event is InputEventKey or not event.pressed or event.echo: return
 	if event.physical_keycode == KEY_ESCAPE:
-		if screen in ["help","settings","practice"]:
-			if screen in ["settings","practice"]: game.save_profile()
-			open(previous)
+		if screen in ["help","settings","practice","timing"]:
+			if screen in ["settings","practice","timing"]: game.save_profile()
+			open(timing_previous if screen=="timing" else previous)
 		elif screen == "pause": close()
 		get_viewport().set_input_as_handled()
