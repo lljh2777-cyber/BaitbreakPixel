@@ -427,12 +427,12 @@ func _qte(t: float) -> void:
 	draw_arc(marker+Vector2(0,3),10+sin(t*4),0,TAU,16,Color(MINT,0.25),1)
 	draw_texture(bobber_texture,marker-Vector2(8,8))
 	var key_center := center+Vector2(1,-1)
-	var key_size := Vector2(40,22) if kind=="wrap" else Vector2(24,22)
+	var key_size := Vector2(40,22)
 	var key_rect := Rect2((key_center-key_size*0.5).round(),key_size)
 	draw_rect(Rect2(key_rect.position+Vector2(0,2),key_size),Color("091f29"))
 	draw_rect(key_rect,Color("22473e") if success_zone else Color("10354a"))
 	draw_rect(key_rect,green if success_zone else Color("547c85"),false,1)
-	label_at(key_rect.position+Vector2(8,16),"空格" if kind=="wrap" else "E",12,CREAM)
+	label_at(key_rect.position+Vector2(8,16),"空格",12,CREAM)
 	if showing_result:
 		label_at(origin+Vector2(14,187),game.qte_result,14,accent)
 		label_at(origin+Vector2(14,204),"线圈保留 · 准备松线" if game.qte_result_good and kind=="wrap" else ("继续游动" if game.qte_result_good else "调整后可以再试"),10,CREAM)
@@ -442,9 +442,9 @@ func _qte(t: float) -> void:
 				var p := center+Vector2.from_angle(spark*TAU/10)*(57+effect*15)
 				draw_rect(Rect2(p.round(),Vector2(2,2)),Color(accent,1-effect))
 	else:
-		var instruction := "浮漂进入绿区时按键"
+		var instruction := "浮漂进入绿区时按空格"
 		if game.qte_age<0.4: instruction="准备…"
-		elif success_zone: instruction="现在按空格" if kind=="wrap" else "现在按 E"
+		elif success_zone: instruction="现在按空格"
 		label_at(origin+Vector2(14,187),instruction,12,green if success_zone else CREAM)
 		var detail := "边游动抗拉，边保持接触" if kind=="wrap" else ("移动保持低张力" if kind=="slack" else "抓住机会吐出鱼钩")
 		label_at(origin+Vector2(14,204),detail,10,Color("9cbbb4"))

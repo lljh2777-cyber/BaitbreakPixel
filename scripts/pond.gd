@@ -142,10 +142,10 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | side-view | 640x360 | v0.7")
+	print("PIXEL_READY | side-view | 640x360 | v0.7.1")
 
 func _register_inputs() -> void:
-	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[KEY_SHIFT], "use":[KEY_E], "slow":[KEY_Q], "wrap":[KEY_SPACE]}
+	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[], "use":[KEY_E], "slow":[KEY_Q], "qte":[KEY_SPACE]}
 	for action in mapping:
 		if not InputMap.has_action(action): InputMap.add_action(action)
 		InputMap.action_erase_events(action)
@@ -153,6 +153,9 @@ func _register_inputs() -> void:
 			var event := InputEventKey.new()
 			event.physical_keycode = code
 			InputMap.action_add_event(action, event)
+	var sprint_button := InputEventMouseButton.new()
+	sprint_button.button_index = MOUSE_BUTTON_RIGHT
+	InputMap.action_add_event("dash",sprint_button)
 
 func _load_profile() -> void:
 	var file := ConfigFile.new()
@@ -371,7 +374,7 @@ func _finish_qte_visual(good: bool, message: String = "") -> void:
 
 func _begin_wrap() -> bool:
 	if hooked!=HookState.HOOKED or wrap_retry>0 or winding() or not touching_target(contact_target): return false
-	if target_is_wrapped(contact_target) or not qte in ["","slack"]: return false
+	if target_is_wrapped(contact_target) or not qte.is_empty(): return false
 	wrap_target = contact_target
 	_open_qte("wrap")
 	low_age = 0
@@ -432,9 +435,9 @@ func _physics_process(delta: float) -> void:
 		var pointing := get_global_mouse_position() - fish
 		if pointing.length() > 4: aim = pointing.normalized()
 	var movement := Input.get_vector("left", "right", "up", "down")
-	step(delta, movement, Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT), Input.is_action_just_pressed("use"), Input.is_action_pressed("dash"), Input.is_action_pressed("slow"),Input.is_action_just_pressed("wrap"))
+	step(delta, movement, Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT), Input.is_action_just_pressed("use"), Input.is_action_pressed("dash"), Input.is_action_pressed("slow"),Input.is_action_just_pressed("qte"))
 
-func step(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: bool = false, slow: bool = false, wrap_pressed: bool = false) -> void:
+func step(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: bool = false, slow: bool = false, qte_pressed: bool = false) -> void:
 	if paused or won or lost: return
 	elapsed += delta
 	if fish.distance_to(HOME) > 34: started = true
@@ -453,7 +456,8 @@ func step(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: 
 		return
 	_update_contacts(delta)
 	var began_wrap := false
-	if wrap_pressed and qte!="wrap": began_wrap = _begin_wrap()
+	# An active check owns Space. Its judgment must never start or replace another check.
+	if qte_pressed and qte.is_empty(): began_wrap = _begin_wrap()
 	sprinting = false
 	resisting = false
 	feeding = sucking and hooked!=HookState.MOUTH and net_state!="caught"
@@ -481,9 +485,9 @@ func step(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: 
 	if lost or net_state=="caught": return
 	var was_free := hooked == HookState.FREE
 	if hooked == HookState.MOUTH:
-		_step_qte(delta, interact)
+		_step_qte(delta, qte_pressed)
 	elif hooked == HookState.HOOKED:
-		_step_line(delta, interact,wrap_pressed and not began_wrap)
+		_step_line(delta, qte_pressed and not began_wrap)
 	if lost or landing: return
 	for index in baits.size(): _step_bait(index, delta, feeding and hooked!=HookState.MOUTH, previous_mouth)
 	if hooked != HookState.FREE: returning = false
@@ -570,12 +574,12 @@ func _attach_hook() -> void:
 	_rebuild_rope()
 	rope_length = Rope.length_of(rope_path)
 
-func _step_qte(delta: float, interact: bool) -> void:
+func _step_qte(delta: float, qte_pressed: bool) -> void:
 	if qte.is_empty(): return
 	qte_age += delta
 	var progress := qte_progress()
-	if interact or qte_age >= 2.4:
-		var success := interact and qte_age >= 0.4 and progress >= qte_zone and progress <= qte_zone + 0.20
+	if qte_pressed or qte_age >= 2.4:
+		var success := qte_pressed and qte_age >= 0.4 and progress >= qte_zone and progress <= qte_zone + 0.20
 		result_flash = 0.7
 		result_good = success
 		if qte=="wrap":
@@ -596,7 +600,7 @@ func _step_qte(delta: float, interact: bool) -> void:
 func qte_progress() -> float:
 	return clampf((qte_age - 0.4) / 2.0, 0, 1)
 
-func _step_line(delta: float, interact: bool, wrap_pressed: bool = false) -> void:
+func _step_line(delta: float, qte_pressed: bool) -> void:
 	var anchor := Vector2(baits[bound_bait].home.x, 53)
 	var animating := winding()
 	if animating: wraps[-1].progress = minf(1,wraps[-1].progress+delta/WIND_SECONDS)
@@ -636,7 +640,7 @@ func _step_line(delta: float, interact: bool, wrap_pressed: bool = false) -> voi
 	else: landing_age = 0
 	if qte=="wrap":
 		if not touching_target(wrap_target): _fail_wrap()
-		else: _step_qte(delta,wrap_pressed)
+		else: _step_qte(delta,qte_pressed)
 		return
 	if animating: return
 	if qte == "slack":
@@ -648,7 +652,7 @@ func _step_line(delta: float, interact: bool, wrap_pressed: bool = false) -> voi
 			result_flash = 0.7
 			result_good = false
 			sound.play("fail")
-		else: _step_qte(delta, interact)
+		else: _step_qte(delta, qte_pressed)
 	else:
 		low_age = low_age + delta if tension < 0.25 and retry_age <= 0 else 0.0
 		if low_age >= 0.5:
@@ -884,14 +888,14 @@ func finish(success: bool, why: String) -> void:
 func hint() -> String:
 	if landing: return "被拉出水了……" if challenge else "被拉出水了 · 正在送回巢边"
 	if net_state=="caught": return "被抄网捞起……" if challenge else "被抄中了 · 正在送回巢边"
-	if hooked == HookState.MOUTH: return "暂时不能移动 · 浮漂进入绿区时按 E"
+	if hooked == HookState.MOUTH: return "暂时不能移动 · 浮漂进入绿区时按空格"
 	if hooked == HookState.HOOKED:
 		if qte=="wrap": return "游动抗拉，保持接触 · 浮漂到绿区按空格"
 		if winding(): return "正在缠绕 · 可继续游动，靠近线圈制造松线"
-		if qte == "slack": return "保持松线，同时在绿区按 E"
+		if qte == "slack": return "保持松线，同时在绿区按空格"
 		if contact_target>=0 and wrap_retry<=0: return "接触%s · 按空格开始缠线判定" % targets[contact_target].name
 		if high_age > 0: return "持续拉紧 %.1f / 3.0 秒可断线" % high_age
-		if latched: return "已缠线 · 靠近线圈保持低张力，浮漂到绿区按 E"
+		if latched: return "已缠线 · 靠近线圈保持低张力，浮漂到绿区按空格"
 		if stamina<20: return "体力不足 · 缠线减轻拉力，或顺线游动恢复"
 		return "正在被拉向水面 · 逆线游动抗拉，接触草木石后空格缠线"
 	if net_state == "prepare": return "抄网准备入水 · 留意红光方向"
@@ -903,7 +907,7 @@ func hint() -> String:
 	if cycle_phase == "warning": return "闪烁的饵即将收回，剩余颗粒下次继续"
 	if cycle_phase == "refill": return "正在补饵，可前往另一侧取食"
 	if vegetation_drag(fish) < 1: return "浓密水草中 · 游动稍慢，向上游出草丛"
-	return "左键吸食 · 滚轮调吸力 · Q 慢游 · 长按 Shift 加速"
+	return "左键吸食 · 滚轮调吸力 · Q 慢游 · 按住右键加速"
 
 func _unhandled_input(event: InputEvent) -> void:
 	if menu.visible: return
