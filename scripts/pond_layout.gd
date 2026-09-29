@@ -1,7 +1,7 @@
 extends RefCounted
 
-# Convex clockwise silhouettes are shared by rendering, fish collision and rope routing.
-# Wood pieces may overlap where branches join; floor-connected props have no under-floor route.
+# Silhouettes now describe pass-through cover and Space-QTE contact, not fish blockers.
+# Net rims still respect wood and stone cover.
 const SOLIDS: Array = [
 	{"kind":"wood", "seed":1, "points":[Vector2(326,174),Vector2(339,168),Vector2(348,176),Vector2(360,315),Vector2(315,315)]},
 	{"kind":"stone", "seed":2, "points":[Vector2(165,313),Vector2(167,303),Vector2(179,293),Vector2(196,291),Vector2(213,300),Vector2(219,313)]},
@@ -53,3 +53,36 @@ static func nearest_boundary(point: Vector2, polygon: PackedVector2Array) -> Vec
 
 static func touches(point: Vector2, radius: float, polygon: PackedVector2Array) -> bool:
 	return Geometry2D.is_point_in_polygon(point,polygon) or nearest_boundary(point,polygon).distance_squared_to(point) < radius*radius
+
+static func interaction_targets() -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	for index in SOLIDS.size():
+		var solid: Dictionary = SOLIDS[index]
+		var polygon := PackedVector2Array(solid.points)
+		var bounds := Rect2(polygon[0],Vector2.ZERO)
+		for point in polygon: bounds = bounds.expand(point)
+		result.append({"name":"石头" if solid.kind=="stone" else ("木根" if index==0 else "木枝"),"kind":solid.kind,"polygon":polygon,"bounds":bounds})
+	for plant in PLANTS:
+		var bounds := Rect2(plant.x-plant.width*0.5-3,314-plant.height,plant.width+6,plant.height)
+		var polygon := PackedVector2Array([bounds.position,Vector2(bounds.end.x,bounds.position.y),bounds.end,Vector2(bounds.position.x,bounds.end.y)])
+		result.append({"name":"水草","kind":"grass","polygon":polygon,"bounds":bounds})
+	return result
+
+static func coil_at(target: Dictionary, contact: Vector2) -> Dictionary:
+	var bounds: Rect2 = target.bounds
+	var y := clampf(contact.y,bounds.position.y+4,bounds.end.y-4)
+	var polygon: PackedVector2Array = target.polygon
+	var crossings: Array[float] = []
+	for index in polygon.size():
+		var a := polygon[index]
+		var b := polygon[(index+1)%polygon.size()]
+		if absf(b.y-a.y)<0.001: continue
+		if y>=minf(a.y,b.y) and y<maxf(a.y,b.y): crossings.append(a.x+(y-a.y)*(b.x-a.x)/(b.y-a.y))
+	crossings.sort()
+	var left := bounds.position.x if crossings.is_empty() else crossings[0]
+	var right := bounds.end.x if crossings.is_empty() else crossings[-1]
+	var center := Vector2((left+right)*0.5,y)
+	var radii := Vector2(maxf(7,(right-left)*0.5+4),6 if target.kind=="wood" else 7)
+	var loop := PackedVector2Array()
+	for index in range(65): loop.append(center+Vector2(cos(-PI/2+TAU*index/64.0),sin(-PI/2+TAU*index/64.0))*radii)
+	return {"center":center,"radii":radii,"loop":loop,"entry":loop[0],"progress":0.0}

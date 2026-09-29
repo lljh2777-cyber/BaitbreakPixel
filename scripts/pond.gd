@@ -33,6 +33,14 @@ var landing_age := 0.0
 var qte := ""
 var qte_age := 0.0
 var qte_zone := 0.60
+var targets: Array[Dictionary] = []
+var target_opacity: Array[float] = []
+var contact_target := -1
+var wrap_target := -1
+var wrap_retry := 0.0
+var wraps: Array[Dictionary] = []
+var fish_line_length := 0.0
+const WIND_SECONDS := 0.85
 var result_flash := 0.0
 var result_good := false
 var baits: Array[Dictionary] = []
@@ -82,6 +90,7 @@ var capture_frame := 0
 func _ready() -> void:
 	Engine.max_fps = 60
 	rng.seed = 2649
+	targets = Layout.interaction_targets()
 	_register_inputs()
 	if "--test-profile" in OS.get_cmdline_user_args(): save_path = "user://pixel-test.cfg"
 	else: _load_profile()
@@ -99,12 +108,13 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | side-view | 640x360 | v0.2")
+	print("PIXEL_READY | side-view | 640x360 | v0.3")
 
 func _register_inputs() -> void:
-	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP, KEY_SPACE], "down":[KEY_S, KEY_DOWN, KEY_CTRL], "dash":[KEY_SHIFT], "use":[KEY_E], "slow":[KEY_Q]}
+	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[KEY_SHIFT], "use":[KEY_E], "slow":[KEY_Q], "wrap":[KEY_SPACE]}
 	for action in mapping:
 		if not InputMap.has_action(action): InputMap.add_action(action)
+		InputMap.action_erase_events(action)
 		for code in mapping[action]:
 			var event := InputEventKey.new()
 			event.physical_keycode = code
@@ -145,6 +155,13 @@ func reset(is_challenge: bool) -> void:
 	hook_cooldown = 0
 	qte = ""
 	qte_age = 0
+	wrap_target = -1
+	wrap_retry = 0
+	wraps.clear()
+	fish_line_length = 0
+	contact_target = -1
+	target_opacity.clear()
+	for target in targets: target_opacity.append(1.0)
 	result_flash = 0
 	tension = 0
 	latched = false
@@ -211,7 +228,6 @@ func strength(point: Vector2) -> float:
 	var depth := local.dot(aim)
 	var side := absf(local.cross(aim))
 	if depth < 0 or depth > 44 or side > 4 + depth * 0.53: return 0
-	if not Rope.clear(mouth(), point, SOLIDS): return 0
 	return (0.6 + 0.4 * (1 - depth / 44)) * (1 - 0.2 * side / (4 + depth * 0.53))
 
 func _collision(point: Vector2, radius: float) -> bool:
@@ -226,24 +242,107 @@ func vegetation_drag(point: Vector2) -> float:
 
 func move_fish(motion: Vector2) -> void:
 	var radius := 17.0 if hooked == HookState.HOOKED else 12.0
-	var slices := maxi(1, ceili(motion.length() / 2.0))
-	var part := motion / slices
-	for index in slices:
-		for axis in range(2):
-			var point := fish
-			point[axis] += part[axis]
-			point = point.clamp(Vector2(radius + 8, 68 + radius), Vector2(632 - radius, 311 - radius))
-			if not _collision(point, radius): fish = point
+	fish = (fish+motion).clamp(Vector2(radius+8,68+radius),Vector2(632-radius,311-radius))
+
+func touching_target(index: int) -> bool:
+	return index>=0 and index<targets.size() and Layout.touches(fish,12,targets[index].polygon)
+
+func target_is_wrapped(index: int) -> bool:
+	for wrap in wraps:
+		if wrap.target==index: return true
+	return false
+
+func _update_contacts(delta: float) -> void:
+	for index in targets.size():
+		var opacity := 0.30 if touching_target(index) else 1.0
+		target_opacity[index] = move_toward(target_opacity[index],opacity,delta*4)
+	if qte=="wrap":
+		contact_target = wrap_target
+		return
+	if touching_target(contact_target) and not target_is_wrapped(contact_target): return
+	contact_target = -1
+	var nearest := INF
+	for index in targets.size():
+		if not touching_target(index) or target_is_wrapped(index): continue
+		var bounds: Rect2 = targets[index].bounds
+		var distance := fish.distance_squared_to(bounds.get_center())
+		if distance<nearest:
+			nearest = distance
+			contact_target = index
+
+func winding() -> bool:
+	return not wraps.is_empty() and wraps[-1].progress<1.0
+
+func movement_locked() -> bool:
+	return hooked==HookState.MOUTH or qte=="wrap" or winding()
+
+func _begin_wrap() -> bool:
+	if hooked!=HookState.HOOKED or wrap_retry>0 or winding() or not touching_target(contact_target): return false
+	if target_is_wrapped(contact_target) or not qte in ["","slack"]: return false
+	wrap_target = contact_target
+	qte = "wrap"
+	qte_age = 0
+	qte_zone = rng.randf_range(0.57,0.65)
+	velocity = Vector2.ZERO
+	dash_age = 0
+	low_age = 0
+	sound.play("warn")
+	return true
+
+func _fail_wrap() -> void:
+	qte = ""
+	wrap_target = -1
+	wrap_retry = 1.2
+	result_flash = 0.7
+	result_good = false
+	notice = "缠线失败 · 仍然上钩，可稍后再试"
+	notice_age = 2
+	sound.play("fail")
+
+func _commit_wrap() -> void:
+	if not touching_target(wrap_target) or target_is_wrapped(wrap_target): _fail_wrap(); return
+	var coil := Layout.coil_at(targets[wrap_target],fish)
+	coil.target = wrap_target
+	wraps.append(coil)
+	# Only this successful skill check creates an attachment. The coil stays after swimming away.
+	fish_line_length = mouth().distance_to(coil.entry)+5.0
+	tension = 0.03
+	latched = true
+	high_age = 0
+	low_age = 0
+	retry_age = 0
+	qte = ""
+	wrap_target = -1
+	wrap_retry = 0.8
+	result_flash = 0.7
+	result_good = true
+	sound.play("success")
+	_rebuild_rope()
+
+func visible_coil(wrap: Dictionary) -> PackedVector2Array:
+	var loop: PackedVector2Array = wrap.loop
+	var progress: float = clampf(wrap.progress,0,1)*(loop.size()-1)
+	var last := int(progress)
+	var points := loop.slice(0,last+1)
+	if last<loop.size()-1: points.append(loop[last].lerp(loop[last+1],progress-last))
+	return points
+
+func _rebuild_rope() -> void:
+	if hooked!=HookState.HOOKED: return
+	rope_path = PackedVector2Array([Vector2(baits[bound_bait].home.x,53)])
+	for wrap in wraps:
+		rope_path.append_array(visible_coil(wrap))
+	rope_path.append(mouth())
 
 func _physics_process(delta: float) -> void:
 	if menu.visible or paused or won or lost: return
-	if hooked != HookState.MOUTH:
+	if not movement_locked():
 		var pointing := get_global_mouse_position() - fish
 		if pointing.length() > 4: aim = pointing.normalized()
 	var movement := Input.get_vector("left", "right", "up", "down")
-	step(delta, movement, Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT), Input.is_action_just_pressed("use"), Input.is_action_just_pressed("dash"), Input.is_action_pressed("slow"))
+	step(delta, movement, Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT), Input.is_action_just_pressed("use"), Input.is_action_just_pressed("dash"), Input.is_action_pressed("slow"),Input.is_action_just_pressed("wrap"))
 
-func step(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: bool = false, slow: bool = false) -> void:
+func step(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: bool = false, slow: bool = false, wrap_pressed: bool = false) -> void:
 	if paused or won or lost: return
 	elapsed += delta
 	if fish.distance_to(HOME) > 34: started = true
@@ -252,10 +351,14 @@ func step(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: 
 	result_flash = maxf(0, result_flash - delta)
 	hook_cooldown = maxf(0, hook_cooldown - delta)
 	retry_age = maxf(0, retry_age - delta)
+	wrap_retry = maxf(0,wrap_retry-delta)
 	net_recovery = maxf(0, net_recovery - delta)
 	fish_before = fish
 	var previous_mouth := mouth()
-	if hooked != HookState.MOUTH:
+	_update_contacts(delta)
+	var began_wrap := false
+	if wrap_pressed and qte!="wrap": began_wrap = _begin_wrap()
+	if not movement_locked():
 		if dash and stamina >= 25 and dash_age <= 0:
 			dash_dir = movement.normalized() if movement.length() > 0.01 else aim
 			dash_age = 0.27
@@ -268,13 +371,14 @@ func step(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: 
 			velocity = velocity.move_toward(movement.limit_length(1) * (26 if slow else 70), delta * 330)
 		move_fish(velocity * delta * vegetation_drag(fish))
 	else: velocity = Vector2.ZERO
+	_update_contacts(delta)
 	_step_net(delta)
 	if lost: return
 	var was_free := hooked == HookState.FREE
 	if hooked == HookState.MOUTH:
 		_step_qte(delta, interact)
 	elif hooked == HookState.HOOKED:
-		_step_line(delta, interact)
+		_step_line(delta, interact,wrap_pressed and not began_wrap)
 	if lost: return
 	for index in baits.size(): _step_bait(index, delta, sucking and hooked == HookState.FREE, previous_mouth)
 	if hooked != HookState.FREE: returning = false
@@ -304,7 +408,7 @@ func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2) -> 
 		if bait.hook and not bait.removed and hooked == HookState.FREE and hook_cooldown <= 0 and not net_blocks_hooks():
 			var relative := _tip(index) - mouth() - aim * 3
 			var before := old_tip - old_mouth - aim * 3
-			if _segment_distance(before, relative, Vector2.ZERO) < 5 and Rope.clear(mouth(), _tip(index), SOLIDS):
+			if _segment_distance(before, relative, Vector2.ZERO) < 5:
 				_enter_hook(index)
 				sucking = false
 	var layer := 3
@@ -351,19 +455,11 @@ func _attach_hook() -> void:
 	high_age = 0
 	low_age = 0
 	landing_age = 0
-	# The larger hooked body must also respect the floor after it is separated from a prop.
+	# Props are pass-through cover; only the pond perimeter constrains swimming.
 	fish = fish.clamp(Vector2(25,85),Vector2(615,294))
-	for iteration in range(20):
-		if not _collision(fish, 17): break
-		for solid in SOLIDS:
-			var polygon := PackedVector2Array(solid.points)
-			var nearest := Layout.nearest_boundary(fish,polygon)
-			var away := fish - nearest
-			if Geometry2D.is_point_in_polygon(fish,polygon):
-				fish = nearest - away.normalized()*17.01
-			elif away.length() > 0.001 and away.length() < 17: fish += away.normalized() * (17.01 - away.length())
-		fish = fish.clamp(Vector2(25,85),Vector2(615,294))
-	rope_path = Rope.solve(Vector2(baits[bound_bait].home.x, 53), mouth(), SOLIDS)
+	wraps.clear()
+	wrap_target = -1
+	_rebuild_rope()
 	rope_length = Rope.length_of(rope_path)
 
 func _step_qte(delta: float, interact: bool) -> void:
@@ -374,6 +470,10 @@ func _step_qte(delta: float, interact: bool) -> void:
 		var success := interact and qte_age >= 0.4 and progress >= qte_zone and progress <= qte_zone + 0.20
 		result_flash = 0.7
 		result_good = success
+		if qte=="wrap":
+			if success: _commit_wrap()
+			else: _fail_wrap()
+			return
 		if success:
 			_release_hook(false)
 		else:
@@ -387,18 +487,23 @@ func _step_qte(delta: float, interact: bool) -> void:
 func qte_progress() -> float:
 	return clampf((qte_age - 0.4) / 2.0, 0, 1)
 
-func _step_line(delta: float, interact: bool) -> void:
+func _step_line(delta: float, interact: bool, wrap_pressed: bool = false) -> void:
 	var anchor := Vector2(baits[bound_bait].home.x, 53)
-	var solved := Rope.solve(anchor, mouth(), SOLIDS)
-	if not solved.is_empty(): rope_path = solved
-	latched = rope_path.size() > 2
-	var length_now := Rope.length_of(rope_path)
-	var base := 0.38 if latched else 0.5
-	tension = clampf(base + (length_now - rope_length) / 32, 0, 1)
-	if tension > 0.75: rope_length += delta * 2.0
-	elif tension < 0.35: rope_length -= delta * 3.0
-	else: rope_length -= delta * 2.0
-	tension = clampf(base + (length_now - rope_length) / 32, 0, 1)
+	var animating := winding()
+	if animating: wraps[-1].progress = minf(1,wraps[-1].progress+delta/WIND_SECONDS)
+	_rebuild_rope()
+	latched = not wraps.is_empty()
+	var length_now := anchor.distance_to(mouth()) if not latched else Vector2(wraps[-1].entry).distance_to(mouth())
+	var base := 0.18 if latched else 0.5
+	var available := fish_line_length if latched else rope_length
+	tension = clampf(base+(length_now-available)/32,0,1)
+	if tension>0.75: available += delta*2
+	elif tension<0.35: available -= delta*3
+	else: available -= delta*2
+	available = maxf(0,available)
+	if latched: fish_line_length = available
+	else: rope_length = available
+	tension = clampf(base+(length_now-available)/32,0,1)
 	high_age = high_age + delta if tension >= 0.9 else 0.0
 	if high_age >= 3:
 		_release_hook(true)
@@ -407,6 +512,11 @@ func _step_line(delta: float, interact: bool) -> void:
 		landing_age += delta
 		if landing_age >= 1: finish(false, "landed"); return
 	else: landing_age = 0
+	if qte=="wrap":
+		if not touching_target(wrap_target): _fail_wrap()
+		else: _step_qte(delta,wrap_pressed)
+		return
+	if animating: return
 	if qte == "slack":
 		if tension >= 0.25:
 			qte = ""
@@ -428,6 +538,10 @@ func _release_hook(broken: bool) -> void:
 	hooked = HookState.FREE
 	bound_bait = -1
 	qte = ""
+	wrap_target = -1
+	wraps.clear()
+	fish_line_length = 0
+	wrap_retry = 0
 	hook_cooldown = 1.8
 	net_recovery = 4
 	latched = false
@@ -562,9 +676,13 @@ func finish(success: bool, why: String) -> void:
 func hint() -> String:
 	if hooked == HookState.MOUTH: return "暂时不能移动 · 白区内按 E 吐钩"
 	if hooked == HookState.HOOKED:
+		if qte=="wrap": return "缠线判定 · 白区内再按一次空格"
+		if winding(): return "正在自动缠绕一圈……"
 		if qte == "slack": return "保持松线，同时在白区按 E"
+		if contact_target>=0 and wrap_retry<=0: return "接触%s · 按空格开始缠线判定" % targets[contact_target].name
 		if high_age > 0: return "持续拉紧 %.1f / 3.0 秒可断线" % high_age
-		return "靠近线的接触点制造松线；或远游持续拉紧断线"
+		if latched: return "已缠线 · 靠近线圈保持低张力，圆环白区按 E"
+		return "游入水草、木枝或石头 · 空格缠线；也可持续拉紧断线"
 	if net_state == "prepare": return "钓鱼者正收竿，准备抄网……"
 	if net_state in ["warning", "sweep"]: return "红光是抄网来向 · 游离红框，或升降躲避"
 	if returning: return "正在回巢 %.1f / 2.0 秒" % home_age
@@ -586,7 +704,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			KEY_N:
 				if not challenge: request_net()
 			KEY_F11: fullscreen = not fullscreen; apply_settings(); save_profile()
-	elif event is InputEventMouseMotion and hooked != HookState.MOUTH:
+	elif event is InputEventMouseMotion and not movement_locked():
 		var direction := get_global_mouse_position() - fish
 		if direction.length() > 4: aim = direction.normalized()
 	elif event is InputEventMouseButton and event.pressed:

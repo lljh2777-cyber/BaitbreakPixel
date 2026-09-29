@@ -11,15 +11,15 @@ var game: Node2D
 var fish_texture: Texture2D
 var font: SystemFont
 var props: Array[Dictionary] = []
-var back_plants: Array[Texture2D] = []
-var front_plants: Array[Texture2D] = []
+var plant_frames: Array = []
 
 func _ready() -> void:
 	fish_texture = Art.fish()
 	for solid in Layout.SOLIDS: props.append(Art.prop(solid))
-	for frame in range(8):
-		back_plants.append(_make_plant_layer(frame*TAU/12.0,true))
-		front_plants.append(_make_plant_layer(frame*TAU/12.0,false))
+	for index in Layout.PLANTS.size():
+		var frames: Array[Dictionary] = []
+		for frame in range(8): frames.append(_make_plant_layer(frame*TAU/12.0,index))
+		plant_frames.append(frames)
 	font = SystemFont.new()
 	font.font_names = PackedStringArray(["Microsoft YaHei", "Noto Sans CJK SC", "sans-serif"])
 	font.antialiasing = TextServer.FONT_ANTIALIASING_NONE
@@ -74,7 +74,10 @@ func _world(t: float) -> void:
 		var x := (index * 73) % 638
 		var y := 319 + index * 19 % 38
 		draw_rect(Rect2(x, y, 3, 2), Color("506b66") if index % 2 else Color("8d9b78"))
-	for prop in props: draw_texture(prop.texture,prop.position)
+	_line_back()
+	for index in props.size():
+		var prop: Dictionary = props[index]
+		draw_texture(prop.texture,prop.position,Color(1,1,1,game.target_opacity[index]))
 	# Small gravel lies below the swimming floor and never creates invisible blockers.
 	for index in range(42):
 		var x := (index*83+11)%636
@@ -96,14 +99,18 @@ func _world(t: float) -> void:
 
 func _plants(t: float, background: bool) -> void:
 	var frame := posmod(int(t*12.0/TAU),8)
-	draw_texture(back_plants[frame] if background else front_plants[frame],Vector2(0,205))
+	for index in Layout.PLANTS.size():
+		if Layout.PLANTS[index].back!=background: continue
+		var sprite: Dictionary = plant_frames[index][frame]
+		draw_texture(sprite.texture,sprite.position,Color(1,1,1,game.target_opacity[Layout.SOLIDS.size()+index]))
 
-func _make_plant_layer(t: float, background: bool) -> Texture2D:
-	# Bake eight pixel animation frames once: two draw calls replace hundreds of leaf draws.
+func _make_plant_layer(t: float, plant_index: int) -> Dictionary:
+	# Crop cached frames per clump so only the contacted plants fade.
 	var canvas := Image.create(640,112,false,Image.FORMAT_RGBA8)
 	canvas.fill(Color.TRANSPARENT)
-	for plant in Layout.PLANTS:
-		if plant.back != background: continue
+	for index in range(plant_index,plant_index+1):
+		var plant: Dictionary = Layout.PLANTS[index]
+		var background: bool = plant.back
 		var base_color := Color("3c8174") if background else Color("70a678")
 		var light := Color("4b8979") if background else Color("a4c486")
 		var shade := Color("2c6867") if background else Color("45846a")
@@ -135,7 +142,10 @@ func _make_plant_layer(t: float, background: bool) -> Texture2D:
 				if plant.kind == "reed":
 					canvas.fill_rect(Rect2i(Vector2i(path[8])-Vector2i(1,6),Vector2i(3,7)),Color("657e66") if background else Color("aeaa73"))
 					canvas.fill_rect(Rect2i(Vector2i(path[8])-Vector2i(1,6),Vector2i(1,5)),light)
-	return ImageTexture.create_from_image(canvas)
+	var plant: Dictionary = Layout.PLANTS[plant_index]
+	var region := Rect2i(int(plant.x-plant.width*0.5-14),int(109-plant.height-8),int(plant.width+29),int(plant.height+12))
+	region = region.intersection(Rect2i(0,0,640,112))
+	return {"texture":ImageTexture.create_from_image(canvas.get_region(region)),"position":Vector2(region.position)+Vector2(0,205)}
 
 func _baits(t: float) -> void:
 	for index in game.baits.size():
@@ -165,14 +175,35 @@ func _baits(t: float) -> void:
 			var label := "有钩饵" if bait.hook and not bait.removed else "散饵"
 			label_at(Vector2(bait.pos) + Vector2(-17, -14), label, 10, Color("bdd4be"))
 
-func _line() -> void:
+func _line_back() -> void:
 	if game.hooked == game.HookState.HOOKED and game.rope_path.size() >= 2:
-		var points: PackedVector2Array = game.rope_path
-		var color := MINT.lerp(RED, game.tension)
-		draw_polyline(points, INK, 3)
-		draw_polyline(points, color, 1)
-		for index in range(1, points.size() - 1):
-			draw_rect(Rect2(points[index].round() - Vector2(2,2), Vector2(4,4)), MINT)
+		draw_polyline(game.rope_path,INK,3)
+		draw_polyline(game.rope_path,Color("91b8ab"),1)
+
+func _line() -> void:
+	if game.hooked==game.HookState.HOOKED:
+		for wrap in game.wraps:
+			var points: PackedVector2Array = game.visible_coil(wrap)
+			for index in range(1,points.size()):
+				# Rear half is below the prop; the front half draws over it to read as a full turn.
+				if points[index].y>=wrap.center.y and points[index-1].y>=wrap.center.y:
+					draw_line(points[index-1],points[index],INK,3)
+					draw_line(points[index-1],points[index],GOLD if wrap.progress<1 else MINT,1)
+			if wrap.progress<1:
+				var head: Vector2 = points[-1].round()
+				draw_rect(Rect2(head-Vector2(2,1),Vector2(5,3)),GOLD)
+				draw_rect(Rect2(head-Vector2(1,2),Vector2(3,5)),CREAM)
+		if not game.wraps.is_empty():
+			var coil: PackedVector2Array = game.visible_coil(game.wraps[-1])
+			var start: Vector2 = coil[-1]
+			var points := PackedVector2Array([start,start.lerp(game.mouth(),0.5)+Vector2(0,(1-game.tension)*3),game.mouth()])
+			draw_polyline(points,INK,3)
+			draw_polyline(points,MINT.lerp(RED,game.tension),1)
+		if game.contact_target>=0 and not game.winding() and not game.menu.visible:
+			var target: Dictionary = game.targets[game.contact_target]
+			var outline: PackedVector2Array = target.polygon.duplicate()
+			outline.append(outline[0])
+			draw_polyline(outline,Color(MINT,0.65 if game.qte=="wrap" else 0.32),1)
 	elif game.hooked == game.HookState.MOUTH:
 		draw_line(Vector2(game.baits[game.bound_bait].home.x, 53), game.mouth(), RED, 1)
 
@@ -262,7 +293,7 @@ func _hud(t: float) -> void:
 	if game.hooked == game.HookState.HOOKED:
 		panel(Rect2(246,62,148,43))
 		label_at(Vector2(254,76), "张力 %d%%" % int(game.tension*100), 11, CREAM)
-		label_at(Vector2(325,76), "绕根" if game.latched else "上钩", 11, MINT if game.latched else RED)
+		label_at(Vector2(325,76), "缠线 ×%d" % game.wraps.size() if game.latched else "上钩", 10, MINT if game.latched else RED)
 		draw_rect(Rect2(254,83,132,6), Color("335762"))
 		draw_rect(Rect2(254,83,132*game.tension,6), MINT.lerp(RED,game.tension))
 		label_at(Vector2(254,100), "自动收放线 · 缓慢", 9, Color("9cbbb4"))
@@ -273,7 +304,8 @@ func _hud(t: float) -> void:
 func _qte(_t: float) -> void:
 	var origin := Vector2(471,95) if game.fish.x < 320 else Vector2(19,95)
 	panel(Rect2(origin,Vector2(150,159)))
-	label_at(origin+Vector2(13,22), "吐钩判定" if game.qte == "entry" else "松线脱钩", 14, GOLD)
+	var title := "吐钩判定" if game.qte=="entry" else ("缠线判定" if game.qte=="wrap" else "松线脱钩")
+	label_at(origin+Vector2(13,22),title,14,GOLD)
 	var path := PackedVector2Array()
 	# Entry follows a J-shaped metal hook; slack uses a full circular timing track.
 	for index in range(101):
@@ -298,5 +330,6 @@ func _qte(_t: float) -> void:
 		draw_rect(Rect2(marker-Vector2.ONE,Vector2(3,3)), CREAM)
 	else:
 		label_at(origin+Vector2(106,64), "准备", 10, GOLD)
-	label_at(origin+Vector2(18,138), "白区内按 E", 12)
+	label_at(origin+Vector2(18,138),"白区内按空格" if game.qte=="wrap" else "白区内按 E",12)
+	if game.qte=="wrap": label_at(origin+Vector2(18,152),"成功自动缠绕一圈",10,MINT)
 	if game.qte == "slack": label_at(origin+Vector2(18,152), "同时移动，保持低张力", 10, MINT)
