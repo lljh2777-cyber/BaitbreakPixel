@@ -8,7 +8,6 @@ const SIZE := 136.0
 const WRIST := Vector2(0.70,0.56)
 const SOCKET := Vector2(0.093,0.075)
 const FOREARM_ROOT := Vector2(1.0,1.0)
-const ELBOW := Vector2(612,356)
 var pixel_texture: ViewportTexture
 
 func prepare(view: Node2D) -> void:
@@ -36,19 +35,14 @@ func prepare(view: Node2D) -> void:
 	pixel_view.add_child(art)
 	pixel_texture=pixel_view.get_texture()
 
-static func pose(tip: Vector2, time: float, reel_speed: float) -> Dictionary:
-	# A single rigid forearm pivots below the play area. Solve its angle so the
-	# rod's axis continues from the ferrule towards the target without a wrist twist.
+static func pose(horizontal: float, time: float, reel_speed: float) -> Dictionary:
+	# One horizontal control drives a rigid arm sweep. The rod tip is an output,
+	# never a target that can compress the shaft between a fixed elbow and tip.
+	var travel := clampf(horizontal,0,1)
 	var axis := (SOCKET-WRIST).normalized()
-	var socket_offset := (SOCKET-FOREARM_ROOT)*SIZE
-	var target := tip-ELBOW
-	var cross_offset := socket_offset.dot(axis.orthogonal())
-	var length_on_axis := sqrt(maxf(0,target.length_squared()-cross_offset*cross_offset))
-	var shaft_length := maxf(1,length_on_axis-socket_offset.dot(axis))
-	var angle := target.angle()-(socket_offset+axis*shaft_length).angle()
-	# Wind through the elbow, not by bending the wrist; keep this secondary motion small.
+	var angle := lerpf(-0.10,0.68,travel)
 	angle+=sin(time*7)*0.002*minf(absf(reel_speed)/36,1)
-	var wrist := ELBOW+((WRIST-FOREARM_ROOT)*SIZE).rotated(angle)
+	var wrist := Vector2(lerpf(450,573,travel),lerpf(302,315,travel))
 	return {"wrist":wrist,"angle":angle,"socket":point(SOCKET,wrist,angle),"axis":axis.rotated(angle)}
 
 static func point(uv: Vector2, wrist: Vector2, angle: float) -> Vector2:

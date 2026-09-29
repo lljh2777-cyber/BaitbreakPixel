@@ -12,6 +12,8 @@ const CREAM := Color("ffe5bc")
 const INK := Color("122b38")
 const MINT := Color("8de0bd")
 const GOLD := Color("ffd379")
+const SHAFT_LENGTH := 180.0
+const SHAFT_SEGMENTS := 32
 
 static func to_screen(point: Vector2) -> Vector2:
 	return ORIGIN+Vector2(point.x,point.y-WATER_LEVEL)*SCALE
@@ -25,9 +27,15 @@ static func projected(path: PackedVector2Array) -> PackedVector2Array:
 	return result
 
 static func rod_tip(world: Node2D, t: float) -> Vector2:
-	var x: float=to_screen(world.angler.anchor()).x
-	var load: float=world.tension if world.hooked==world.HookState.HOOKED else 0
-	return Vector2(clampf(x+64,80,614),130+load*9+sin(t*2)*0.5)
+	return tackle_pose(world,t).tip
+
+static func tackle_pose(world: Node2D, t: float) -> Dictionary:
+	var hooked: bool=world.hooked==world.HookState.HOOKED
+	var load: float=world.tension if hooked else 0
+	var reel_speed: float=world.reel_speed if hooked else world.angler.free_reel_speed
+	var pose := Hand.pose(inverse_lerp(18,588,world.angler.x),t,reel_speed)
+	var rod := rod_points(pose,load,world.effort_multiplier("angler"),float_position(world,t))
+	return {"hand":pose,"rod":rod,"tip":rod[-1],"load":load,"reel_speed":reel_speed}
 
 static func rig_index(world: Node2D) -> int:
 	if world.bound_bait>=0: return world.bound_bait
@@ -54,12 +62,18 @@ static func ellipse(center: Vector2, radii: Vector2, count: int=32) -> PackedVec
 	for index in count+1: path.append((center+Vector2.from_angle(index*TAU/float(count))*radii).round())
 	return path
 
-static func rod_controls(pose: Dictionary, tip: Vector2, load: float, strength: float) -> PackedVector2Array:
-	var grip: Vector2=pose.socket
-	var length := grip.distance_to(tip)
-	var bend := minf(26,length*0.16)*load*clampf(1-(strength-1)*0.2,0.8,1.15)
-	# Leave the rigid handle along its own axis, and flex only the upper shaft.
-	return PackedVector2Array([grip,grip+pose.axis*length*0.35,grip.lerp(tip,0.76)+Vector2(0,-bend),tip])
+static func rod_points(pose: Dictionary, load: float, strength: float, pull_target: Vector2) -> PackedVector2Array:
+	var axis: Vector2=pose.axis
+	var straight_tip: Vector2=pose.socket+axis*SHAFT_LENGTH
+	var pull := (pull_target-straight_tip).normalized()
+	var bend := axis.cross(pull)*0.38*clampf(load,0,1)*clampf(1-(strength-1)*0.2,0.8,1.15)
+	var points := PackedVector2Array([pose.socket])
+	# Equal material lengths: load changes curvature, never the size of the rod.
+	# The first segment remains exactly tangent to the rigid handle ferrule.
+	for part in SHAFT_SEGMENTS:
+		var ratio := part/float(SHAFT_SEGMENTS-1)
+		points.append(points[-1]+axis.rotated(bend*ratio*ratio)*(SHAFT_LENGTH/SHAFT_SEGMENTS))
+	return points
 
 func draw(view: Node2D, world: Node2D, t: float) -> void:
 	view.draw_texture_rect(Lake,Rect2(0,0,640,360),false)
@@ -120,15 +134,15 @@ func _water(view: Node2D, world: Node2D, t: float) -> void:
 			view.draw_polyline(ellipse(p,Vector2(9+life*21,2+life*5)),Color(CREAM,(1-life)*0.26),1)
 
 func _tackle(view: Node2D, world: Node2D, t: float) -> void:
-	var tip := rod_tip(world,t)
+	var tackle := tackle_pose(world,t)
+	var tip: Vector2=tackle.tip
 	var float_at := float_position(world,t)
 	var index := rig_index(world)
-	var load: float=world.tension if world.hooked==world.HookState.HOOKED else 0
-	var reel_speed: float=world.reel_speed if world.hooked==world.HookState.HOOKED else world.angler.free_reel_speed
-	var pose := Hand.pose(tip,t,reel_speed)
+	var load: float=tackle.load
+	var reel_speed: float=tackle.reel_speed
+	var pose: Dictionary=tackle.hand
 	var wrist: Vector2=pose.wrist
 	var hand_angle: float=pose.angle
-	var grip: Vector2=pose.socket
 	var strength: float=world.effort_multiplier("angler")
 	var line_end := float_at
 	if world.angler.casting:
@@ -153,9 +167,8 @@ func _tackle(view: Node2D, world: Node2D, t: float) -> void:
 		view.draw_rect(Rect2(-3,-1,7,3),CREAM)
 		view.draw_rect(Rect2(-2,2,5,2),Color("3d6e7c"))
 		view.draw_set_transform(Vector2.ZERO)
-	var rod := PackedVector2Array()
-	var controls := rod_controls(pose,tip,load,strength)
-	for part in 33: rod.append(grip.bezier_interpolate(controls[1],controls[2],tip,part/32.0).round())
+	var rod: PackedVector2Array=tackle.rod
+	for part in rod.size(): rod[part]=rod[part].round()
 	for part in range(1,rod.size()):
 		var width := lerpf(4.5,1.2,part/32.0)
 		view.draw_line(rod[part-1],rod[part],Color("13222b"),width+2)
