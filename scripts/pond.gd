@@ -114,7 +114,7 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.15.7 | close-first-person-framing")
+	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.15.8 | reference-pixel-tackle")
 
 func _register_inputs() -> void:
 	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[], "use":[KEY_E], "slow":[KEY_Q], "qte":[KEY_SPACE]}
@@ -197,7 +197,7 @@ func network_settings() -> Dictionary:
 	return {"slack_hold":slack_hold_seconds,"mouth_window":mouth_window_seconds,"break_hold":break_hold_seconds,"water_strength":water_strength}
 
 func screen_to_game(point: Vector2) -> Vector2:
-	return View.Shore.to_world(point) if player_role=="angler" else point
+	return View.Shore.to_world(point,self) if player_role=="angler" else point
 
 func _network_command() -> Dictionary:
 	var role: String=network.local_role

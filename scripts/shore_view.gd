@@ -12,18 +12,24 @@ const CREAM := Color("ffe5bc")
 const INK := Color("122b38")
 const MINT := Color("8de0bd")
 const GOLD := Color("ffd379")
-const SHAFT_LENGTH := 160.0
+const SHAFT_LENGTH := 109.58981932643195
 const SHAFT_SEGMENTS := 32
 
-static func to_screen(point: Vector2) -> Vector2:
-	return ORIGIN+Vector2(point.x,point.y-WATER_LEVEL)*SCALE
+static func view_offset(world: Node2D) -> Vector2:
+	if world==null: return Vector2.ZERO
+	# Water objects and net input share the same first-person framing offset.
+	var travel := clampf(inverse_lerp(18,588,world.angler.x),0,1)
+	return Vector2(lerpf(384,430,travel)-(ORIGIN.x+world.angler.anchor().x*SCALE.x),0)
 
-static func to_world(point: Vector2) -> Vector2:
-	return (point-ORIGIN)/SCALE+Vector2(0,WATER_LEVEL)
+static func to_screen(point: Vector2, world: Node2D=null) -> Vector2:
+	return ORIGIN+Vector2(point.x,point.y-WATER_LEVEL)*SCALE+view_offset(world)
 
-static func projected(path: PackedVector2Array) -> PackedVector2Array:
+static func to_world(point: Vector2, world: Node2D=null) -> Vector2:
+	return (point-ORIGIN-view_offset(world))/SCALE+Vector2(0,WATER_LEVEL)
+
+static func projected(path: PackedVector2Array, world: Node2D=null) -> PackedVector2Array:
 	var result := PackedVector2Array()
-	for point in path: result.append(to_screen(point))
+	for point in path: result.append(to_screen(point,world))
 	return result
 
 static func rod_tip(world: Node2D, t: float) -> Vector2:
@@ -33,7 +39,10 @@ static func tackle_pose(world: Node2D, t: float) -> Dictionary:
 	var hooked: bool=world.hooked==world.HookState.HOOKED
 	var load: float=world.tension if hooked else 0
 	var reel_speed: float=world.reel_speed if hooked else world.angler.free_reel_speed
-	var pose := Hand.pose(inverse_lerp(18,588,world.angler.x),t,reel_speed)
+	var surface := float_position(world,t)
+	if world.landing or (world.net_state=="caught" and world.fish.y<WATER_LEVEL):
+		surface=to_screen(Vector2(world.angler.anchor().x,WATER_LEVEL),world)
+	var pose := Hand.pose(inverse_lerp(18,588,world.angler.x),t,reel_speed,surface)
 	var rod := rod_points(pose,load,world.effort_multiplier("angler"),float_position(world,t))
 	return {"hand":pose,"rod":rod,"tip":rod[-1],"load":load,"reel_speed":reel_speed}
 
@@ -45,7 +54,7 @@ static func rig_index(world: Node2D) -> int:
 
 static func float_position(world: Node2D, t: float) -> Vector2:
 	if world.landing or (world.net_state=="caught" and world.fish.y<WATER_LEVEL):
-		return to_screen(world.mouth())+Vector2(0,-3)
+		return to_screen(world.mouth(),world)+Vector2(0,-3)
 	var anchor: Vector2=world.angler.anchor()
 	var index := rig_index(world)
 	var target := anchor+Vector2(0,150)
@@ -55,7 +64,7 @@ static func float_position(world: Node2D, t: float) -> Vector2:
 	var x := anchor.lerp(target,ratio).x
 	var dip: float=world.tension*1.7 if world.hooked==world.HookState.HOOKED else 0.0
 	if world.hooked==world.HookState.MOUTH: dip=3.5
-	return Vector2(to_screen(Vector2(x,WATER_LEVEL)).x,ORIGIN.y+sin(t*2.2)*0.6+dip)
+	return Vector2(to_screen(Vector2(x,WATER_LEVEL),world).x,ORIGIN.y+sin(t*2.2)*0.6+dip)
 
 static func ellipse(center: Vector2, radii: Vector2, count: int=32) -> PackedVector2Array:
 	var path := PackedVector2Array()
@@ -91,24 +100,24 @@ func _ghost(view: Node2D, path: PackedVector2Array, opacity: float, color: Color
 
 func _underwater(view: Node2D, world: Node2D, t: float) -> void:
 	for solid in Layout.SOLIDS:
-		_ghost(view,projected(PackedVector2Array(solid.points)),0.18 if solid.kind=="wood" else 0.14)
+		_ghost(view,projected(PackedVector2Array(solid.points),world),0.18 if solid.kind=="wood" else 0.14)
 	for index in Layout.PLANTS.size():
 		var plant: Dictionary=Layout.PLANTS[index]
 		for stem in 3:
 			var x: float=plant.x+(stem-1)*5
-			var p := to_screen(Vector2(x,312))
-			var top := to_screen(Vector2(x+sin(t*1.5+index+stem)*4,312-plant.height*0.7))
+			var p := to_screen(Vector2(x,312),world)
+			var top := to_screen(Vector2(x+sin(t*1.5+index+stem)*4,312-plant.height*0.7),world)
 			view.draw_polyline(PackedVector2Array([p,p.lerp(top,0.5)+Vector2(2,0),top]),Color(0.06,0.21,0.24,0.20),3)
 	var float_at := float_position(world,t)
 	if world.hooked==world.HookState.HOOKED and world.rope_path.size()>1:
-		var path := projected(world.rope_path)
+		var path := projected(world.rope_path,world)
 		path[0]=float_at
 		view.draw_polyline(path,Color(0.51,0.66,0.65,0.10),1)
 	for bait in world.baits:
 		if not bait.active or bait.removed: continue
-		var p := to_screen(bait.pos)
+		var p := to_screen(bait.pos,world)
 		view.draw_circle(p,2.5,Color(0.65,0.64,0.41,0.11))
-	var position := to_screen(world.fish)+Vector2(sin(t*1.3)*1.2,cos(t*1.7)*0.5)
+	var position := to_screen(world.fish,world)+Vector2(sin(t*1.3)*1.2,cos(t*1.7)*0.5)
 	var direction: Vector2=(world.aim*SCALE).normalized()
 	var fish_shape := PackedVector2Array([Vector2(12,0),Vector2(5,-4),Vector2(-5,-4),Vector2(-9,-2),Vector2(-15,-5),Vector2(-13,0),Vector2(-15,5),Vector2(-9,2),Vector2(-5,4),Vector2(5,4)])
 	for index in fish_shape.size(): fish_shape[index]=position+fish_shape[index].rotated(direction.angle())
@@ -141,7 +150,6 @@ func _tackle(view: Node2D, world: Node2D, t: float) -> void:
 	var load: float=tackle.load
 	var reel_speed: float=tackle.reel_speed
 	var pose: Dictionary=tackle.hand
-	var strength: float=world.effort_multiplier("angler")
 	var line_end := float_at
 	if world.angler.casting:
 		var ratio: float=clampf(world.angler.cast_age/world.angler.CAST_SECONDS,0,1)
@@ -165,27 +173,17 @@ func _tackle(view: Node2D, world: Node2D, t: float) -> void:
 		view.draw_rect(Rect2(-3,-1,7,3),CREAM)
 		view.draw_rect(Rect2(-2,2,5,2),Color("3d6e7c"))
 		view.draw_set_transform(Vector2.ZERO)
-	var rod: PackedVector2Array=tackle.rod
-	for part in rod.size(): rod[part]=rod[part].round()
-	for part in range(1,rod.size()):
-		var width := lerpf(4.5,1.2,part/32.0)
-		view.draw_line(rod[part-1],rod[part],Color("13222b"),width+2)
-		view.draw_line(rod[part-1],rod[part],Color("3c4b4f") if part<14 else Color("554c3e"),width)
-		view.draw_line(rod[part-1]-Vector2(1,0),rod[part]-Vector2(1,0),Color("d4b176") if strength>=1 else Color("758a87"),1)
-	for ratio in [0.24,0.48,0.7,0.9,1.0]:
-		var p := rod[roundi(ratio*32)]
-		view.draw_circle(p+Vector2(1,1),2,INK)
-		view.draw_circle(p,1,CREAM)
+	hand.draw_rod(view,tackle.rod)
 	hand.draw(view,pose,t,reel_speed)
 
 func _net(view: Node2D, world: Node2D, _t: float) -> void:
 	if world.manual_net and world.net_state in ["prepare","warning","sweep","miss","withdraw","caught"]:
-		var p := to_screen(world.net_pos)
+		var p := to_screen(world.net_pos,world)
 		var opening: float=smoothstep(0,1,world.net_age/world.NET_PREPARE) if world.net_state=="prepare" else 1.0
 		var rim := PackedVector2Array()
 		for index in 41:
 			var point: Vector2=world.net_pos+(Vector2.from_angle(index*TAU/40)*world.NET_RIM*maxf(0.2,opening)).rotated(world.net_angle)
-			rim.append(to_screen(point).round())
+			rim.append(to_screen(point,world).round())
 		var handle := PackedVector2Array([Vector2(602,357),Vector2(565,320),p+Vector2(8,5)])
 		view.draw_polyline(handle,INK,7)
 		view.draw_polyline(handle,Color("ae8751"),4)
@@ -197,14 +195,14 @@ func _net(view: Node2D, world: Node2D, _t: float) -> void:
 			view.label_at(p+Vector2(-24,-21),"收拢 %d%%" % roundi(world.net_capture*100),10,GOLD)
 	if not world.angler.net_held or view.game.menu.visible: return
 	var target: Vector2=world.manual_net_target(world.angler.cursor)
-	var center := to_screen(target)
+	var center := to_screen(target,world)
 	var blocked: bool=world.manual_net_blocked(target)
 	var color := Color("f58375") if blocked or world.angler.net_cooldown>0 else MINT
 	if not world.net_blocks_hooks():
 		view.draw_polyline(ellipse(center,Vector2(world.NET_RIM.y+2,world.NET_RIM.y+2)*SCALE),Color(color,0.65),1)
 		view.label_at(center+Vector2(-28,-18),"木石挡网" if blocked else "从这里下网",10,color)
 	if world.manual_net and world.net_state in ["prepare","warning","sweep"]:
-		var pending := projected(world.manual_net_pending_path())
+		var pending := projected(world.manual_net_pending_path(),world)
 		if pending.size()>1: view.draw_polyline(pending,Color(MINT,0.7),1)
-	var water_rect := Rect2(to_screen(Vector2(0,80)),Vector2(640,214)*SCALE)
+	var water_rect := Rect2(to_screen(Vector2(0,80),world),Vector2(640,214)*SCALE)
 	view.draw_rect(water_rect,Color(MINT,0.12),false,1)

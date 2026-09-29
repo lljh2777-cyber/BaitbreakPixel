@@ -1,105 +1,64 @@
 extends RefCounted
 
-const Sprite = preload("res://assets/first_person/angler_hand_forearm.png")
-const PaletteShader = preload("res://scripts/hand_palette.gdshader")
-const PIXEL_SIZE := 112
-const PALETTE := ["10263b","ffd49a","f2b777","d58f53","a85e38","edb951","bd8739","865c2b","8b9256","536650","314b43","24383c","dce7de","9cabb4","5c6c80","344758"]
-const SIZE := 152.0
-const WRIST := Vector2(0.49,0.42)
-const SOCKET := Vector2(0.077,0.065)
-const ROD_AXIS := Vector2(-0.70710678,-0.70710678)
-const FOREARM_ROOT := Vector2(1.0,1.0)
-const UPPER_ORIGIN := Vector2(0.60,0.55)
-const SHOULDER := Vector2(440,500)
-const UPPER_LENGTH := 220.0
-const FOREARM_LENGTH := 110.0
-const WRIST_HEIGHT := 300.0
-const HAND_UVS := [Vector2(0,0),Vector2(1,0),Vector2(1,0.10),Vector2(0.10,1),Vector2(0,1)]
-const SLEEVE_UVS := [Vector2(0.02,1),Vector2(1,0.02),Vector2(1,1)]
+# Source coordinates identify the supplied reference's actual wrist, ferrule and tip.
+const Sprite = preload("res://assets/first_person/reference_tackle_v0158.png")
+const CANVAS := Vector2(1448,1086)
+const WRIST := Vector2(1190,983)
+const SOCKET := Vector2(1066,794)
+const TIP := Vector2(872,462)
+const ROD_AXIS := Vector2(-0.5045176672416012,-0.8634013686815031)
+const SIZE := 0.285
+const PIXEL_SIZE := Vector2i(362,272)
 var pixel_texture: ViewportTexture
 
 func prepare(view: Node2D) -> void:
-	# Render this foreground layer once at its native pixel resolution and palette.
-	# The source artwork is redrawn pixel art; this also prevents fine texture from leaking in.
-	var pixel_view := SubViewport.new()
-	pixel_view.name="HandPixels"
-	pixel_view.size=Vector2i(PIXEL_SIZE,PIXEL_SIZE)
-	pixel_view.transparent_bg=true
-	pixel_view.disable_3d=true
-	pixel_view.canvas_item_default_texture_filter=Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST
-	pixel_view.render_target_update_mode=SubViewport.UPDATE_ONCE
-	view.add_child(pixel_view)
+	var pixels := SubViewport.new()
+	pixels.name="ReferenceTacklePixels"
+	pixels.size=PIXEL_SIZE
+	pixels.transparent_bg=true
+	pixels.disable_3d=true
+	pixels.canvas_item_default_texture_filter=Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST
+	pixels.render_target_update_mode=SubViewport.UPDATE_ONCE
+	view.add_child(pixels)
 	var art := TextureRect.new()
 	art.texture=Sprite
 	art.expand_mode=TextureRect.EXPAND_IGNORE_SIZE
-	art.size=Vector2(PIXEL_SIZE,PIXEL_SIZE)
+	art.size=Vector2(PIXEL_SIZE)
 	art.texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST
-	var material := ShaderMaterial.new()
-	material.shader=PaletteShader
-	var colors := PackedColorArray()
-	for hex in PALETTE: colors.append(Color(hex))
-	material.set_shader_parameter("palette",colors)
-	art.material=material
-	pixel_view.add_child(art)
-	pixel_texture=pixel_view.get_texture()
+	# Retain reference colors, only removing translucent cutout edge pixels.
+	var shader := Shader.new()
+	shader.code="shader_type canvas_item; render_mode unshaded; void fragment(){vec4 c=texture(TEXTURE,UV); COLOR=vec4(c.rgb,step(0.5,c.a));}"
+	var material := ShaderMaterial.new(); material.shader=shader; art.material=material
+	pixels.add_child(art)
+	pixel_texture=pixels.get_texture()
 
-static func pose(horizontal: float, time: float, reel_speed: float) -> Dictionary:
-	# The hand, forearm and upper arm have separate rigid transforms. Solve the
-	# elbow on a fixed-length upper-arm circle, rather than sliding the whole art.
-	var travel := clampf(horizontal,0,1)
-	var angle := deg_to_rad(lerpf(-8,7,travel))
-	angle+=sin(time*7)*0.002*minf(absf(reel_speed)/36,1)
-	var source_arm := FOREARM_ROOT-WRIST
-	var forearm_angle := source_arm.angle()+angle+deg_to_rad(lerpf(-4,4,travel))
-	var forearm := Vector2.from_angle(forearm_angle)*FOREARM_LENGTH
-	# Frame the grip in the lower-right corner. The articulated elbow stays
-	# below the play area, so only the hand and a short cuff enter the picture.
-	var wrist_y := WRIST_HEIGHT
-	var elbow_y := wrist_y+forearm.y
-	var shoulder_dy := elbow_y-SHOULDER.y
-	var elbow := Vector2(SHOULDER.x+sqrt(maxf(0,UPPER_LENGTH*UPPER_LENGTH-shoulder_dy*shoulder_dy)),elbow_y)
-	var wrist := elbow-forearm
-	return {"wrist":wrist,"angle":angle,"socket":point(SOCKET,wrist,angle),"axis":ROD_AXIS.rotated(angle),
-		"elbow":elbow,"shoulder":SHOULDER,"forearm_angle":forearm_angle-source_arm.angle(),
-		"upper_angle":(SHOULDER-elbow).angle()-(FOREARM_ROOT-UPPER_ORIGIN).angle(),
-		"forearm_scale":FOREARM_LENGTH/source_arm.length(),"upper_scale":UPPER_LENGTH/source_arm.length()}
+static func pose(horizontal: float, time: float, reel_speed: float, float_at: Vector2=Vector2(410,213)) -> Dictionary:
+	var angle := deg_to_rad(lerpf(-6,6,clampf(horizontal,0,1)))
+	angle+=sin(time*7)*0.0015*minf(absf(reel_speed)/36,1)
+	# Both line endpoints share this framing, preserving the reference V at both limits.
+	var tip := Vector2(float_at.x+24,159)
+	var wrist := tip-((TIP-WRIST)*SIZE).rotated(angle)
+	return {"wrist":wrist,"angle":angle,"socket":point(SOCKET,wrist,angle),"axis":ROD_AXIS.rotated(angle)}
 
-static func point(uv: Vector2, wrist: Vector2, angle: float) -> Vector2:
-	return wrist+((uv-WRIST)*SIZE).rotated(angle)
+static func point(source: Vector2, wrist: Vector2, angle: float) -> Vector2:
+	return wrist+((source-WRIST)*SIZE).rotated(angle)
 
-func draw(view: Node2D, pose: Dictionary, time: float, reel_speed: float) -> void:
+func draw(view: Node2D, pose: Dictionary, _time: float, _reel_speed: float) -> void:
 	if pixel_texture==null: return
-	# Cuff overlap and a textured elbow cover the joints; no vertices are warped
-	# between bones and no part of the hand is stretched or folded.
-	_piece(view,pose.elbow,pose.upper_angle,pose.upper_scale,SLEEVE_UVS,UPPER_ORIGIN)
-	_piece(view,pose.wrist,pose.forearm_angle,pose.forearm_scale,SLEEVE_UVS)
-	_elbow(view,pose.elbow,pose.forearm_angle)
-	_piece(view,pose.wrist,pose.angle,SIZE,HAND_UVS)
-	var wrist: Vector2=pose.wrist
-	var angle: float=pose.angle
-	if absf(reel_speed)<0.5: return
-	# Light travels around the metal spool in the actual winding direction.
-	for glint in 2:
-		var arc := PackedVector2Array()
-		var phase := time*7*signf(reel_speed)+glint*PI
-		for step in 5:
-			var local := Vector2.from_angle(phase+step*0.09)*Vector2(0.052,0.028)
-			arc.append(point(Vector2(0.144,0.390)+local.rotated(-0.8),wrist,angle).round())
-		view.draw_polyline(arc,Color("dce7de"),1)
+	var corners := [Vector2(970,786),Vector2(1448,786),CANVAS,Vector2(970,1086)]
+	var vertices := PackedVector2Array(); var uv := PackedVector2Array()
+	for source: Vector2 in corners:
+		vertices.append(point(source,pose.wrist,pose.angle))
+		uv.append(source/CANVAS)
+	view.draw_polygon(vertices,PackedColorArray([Color.WHITE]),uv,pixel_texture)
 
-func _piece(view: Node2D, origin: Vector2, angle: float, size: float, region: Array, uv_origin: Vector2=WRIST) -> void:
-	var vertices := PackedVector2Array()
-	var uvs := PackedVector2Array()
-	for uv: Vector2 in region:
-		vertices.append(origin+((uv-uv_origin)*size).rotated(angle))
-		uvs.append(uv)
-	view.draw_polygon(vertices,PackedColorArray([Color.WHITE]),uvs,pixel_texture)
-
-func _elbow(view: Node2D, center: Vector2, angle: float) -> void:
-	var vertices := PackedVector2Array()
-	var uvs := PackedVector2Array()
-	for step in 16:
-		var radial := Vector2.from_angle(step*TAU/16.0)
-		vertices.append(center+(radial*17).rotated(angle))
-		uvs.append(Vector2(0.80,0.76)+radial*0.11)
-	view.draw_polygon(vertices,PackedColorArray([Color.WHITE]),uvs,pixel_texture)
+func draw_rod(view: Node2D, points: PackedVector2Array) -> void:
+	if pixel_texture==null: return
+	var side := Vector2(-ROD_AXIS.y,ROD_AXIS.x)
+	# Sample the same reference shaft in material-length strips; load curves it.
+	for part in range(1,points.size()):
+		var a := (part-1)/float(points.size()-1); var b := part/float(points.size()-1)
+		var normal := Vector2(-(points[part]-points[part-1]).normalized().y,(points[part]-points[part-1]).normalized().x)
+		var vertices := PackedVector2Array([points[part-1]+normal*6,points[part]+normal*6,points[part]-normal*6,points[part-1]-normal*6])
+		var uv := PackedVector2Array([(SOCKET.lerp(TIP,a)+side*(6/SIZE))/CANVAS,(SOCKET.lerp(TIP,b)+side*(6/SIZE))/CANVAS,(SOCKET.lerp(TIP,b)-side*(6/SIZE))/CANVAS,(SOCKET.lerp(TIP,a)-side*(6/SIZE))/CANVAS])
+		view.draw_polygon(vertices,PackedColorArray([Color.WHITE]),uv,pixel_texture)

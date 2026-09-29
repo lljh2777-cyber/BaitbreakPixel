@@ -1,10 +1,10 @@
 {
-  "version": "0.15.7",
-  "pack_sha256": "6aaaa55843d83924db4b7d2beb98ed6147d487ba9068e110b8d69500db6fd9ce",
+  "version": "0.15.8",
+  "pack_sha256": "9598c0bb04d524cefe3e04814d8aa3c090e1a9f32923b125c7be2b05c781fc94",
   "script_sha256": {
     "scripts/angler_brain.gd": "08c3ae512e055f28269e6df51eeb1cb1584ffed8d5152521f1f3ca8304ac38b2",
     "scripts/angler_controller.gd": "cf870f0d5277403a54ee51ee6e7e5b8f1dee032241636046e505974567136a7a",
-    "scripts/angler_hand.gd": "aab30b883729f8a363dc2d2182d62d1d8f8e7e9de3fefaede5ac06f5be6c0e67",
+    "scripts/angler_hand.gd": "3c3f5e8c50aec6ab08f4a3b347f58fe7f1efae8422e1da4ed173117a05d246af",
     "scripts/angler_rig.gd": "7ac227ff1abb88e30a714933b731962155cff5bc27af15803df69f5a81921b09",
     "scripts/angler_visual.gd": "220f2896ef24c9342bfc7b5b5cbc76c0b2169b78e2d20dae8acae559ff612529",
     "scripts/effort_check.gd": "b9f9f6b825d8f85197b63c3c8357f091d3754cbd6e437bdf0b89050d5b70c3b4",
@@ -13,17 +13,17 @@
     "scripts/hand_palette.gdshader": "821a1a18ea07e9fc77ce72aca698253e79a43b16f4a0c1c30c91416edb944211",
     "scripts/hook_gauge.gd": "4fe42c7690fa40f42e970af97eb26915793ec166c01b06da3ea21eb1fb692593",
     "scripts/local_input.gd": "03c863d16d7d984a0debb3b25dc5176acf92046ba8d27ec33600a16793b2a454",
-    "scripts/menu.gd": "43f5cf13a10bb3134b7c6a4916a80d6f0c21708be61871eba9e912324338b2c1",
+    "scripts/menu.gd": "9bd579c7ceb3cf28dcee9155155f20ba38125cf2b7c1e616b4d1d3938deee1a5",
     "scripts/network_presentation.gd": "ab78468473adb4bdafad6fccef744b8b625f8c4bdf41763a59ced305f9aa854c",
     "scripts/network_protocol.gd": "b6e3df1eaa8e245f4fc4be9a670488b986070d730607790526b42ce65622f83f",
     "scripts/network_session.gd": "c8e3472c60baa2a441f37cd94ecfb95df7a0490b5af5bf7c771b4c2b4c2714c2",
     "scripts/pixel_art.gd": "888fc105bd231fcbd7cee637cb515d3aa254aebf23af05a6730c974f21eb5c4a",
-    "scripts/pond.gd": "1ba03121f6daf06ab09950a32ed02c5f40f74bc2e136bd23d544a1116e168c9b",
+    "scripts/pond.gd": "8cde37bfd4d15c988141d0be5e9d045208c56037abaa9c1480bd7a4d16377091",
     "scripts/pond_layout.gd": "516f4fbbead3281ebc09e921fbebc77917c1e611a698a217a5b083f14c7678fe",
     "scripts/pond_view.gd": "a1503a6457836ffd226cf707b1920a41a351232e31591229c288c70682d6b68a",
     "scripts/rope.gd": "2e30152e65b00f39fe25324b992afd39925acfadd80b64dce385df865d69fe42",
     "scripts/round_stats.gd": "0b288ab7b53e40604e685ee962943fb5e44705d30e9035a780e04b207d4bfd9a",
-    "scripts/shore_view.gd": "3170b83ddefc05855839d66c88029781fbf8a16646d791c13d57364226c295b7",
+    "scripts/shore_view.gd": "3c448b52e38d3561c8a129c8e2bf670ace1b5c893deafad71983f4be36277ba3",
     "scripts/sound.gd": "284a28068b134f48c78e641e5edcb9d43448f4a19212ce90cf327d3ecdf564da",
     "scripts/world_simulation.gd": "bcc22f4657f1e5f0c1a87dedb2e6570c693586554f627cee9e4f20e608251345",
     "scripts/world_snapshot.gd": "99fb84008a7682413849852c6852b46dd65f591982132916be5b399afe334127"
@@ -32,7 +32,8 @@
     "assets/first_person/angler_hand.png": "c8cbaa67ce2b6bfd676962a37622d69bf45642705353b0ceb3482dd4ccff4d56",
     "assets/first_person/angler_hand_forearm.png": "9c7a67fe7427fc908cf2a3d500b6d049eec34cb9a881fc8092f4e1bac8632638",
     "assets/first_person/angler_hand_pixel.png": "5ed02376f9320ac28088a98a75775820783fb4353075ca4a51e3ea55c4710e5e",
+    "assets/first_person/reference_tackle_v0158.png": "02d429847472aa4a7152cfbc84832249060174b2a361aa5b3844816d19eab4c4",
     "assets/first_person/sunset_lake.png": "1284feae9dec7733199166d38cd54847e4cebca2b27d64daf71cdd10ae4c3b9f"
   },
-  "exported_resources": 38
+  "exported_resources": 40
 }
