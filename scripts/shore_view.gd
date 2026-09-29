@@ -33,7 +33,7 @@ static func tackle_pose(world: Node2D, t: float) -> Dictionary:
 	var hooked: bool=world.hooked==world.HookState.HOOKED
 	var load: float=world.tension if hooked else 0
 	var reel_speed: float=world.reel_speed if hooked else world.angler.free_reel_speed
-	var pose := Hand.pose(inverse_lerp(18,588,world.angler.x),t,reel_speed)
+	var pose := Hand.pose(inverse_lerp(18,588,world.angler.x),t,reel_speed,SHAFT_LENGTH)
 	var rod := rod_points(pose,load,world.effort_multiplier("angler"),float_position(world,t))
 	return {"hand":pose,"rod":rod,"tip":rod[-1],"load":load,"reel_speed":reel_speed}
 
@@ -141,8 +141,6 @@ func _tackle(view: Node2D, world: Node2D, t: float) -> void:
 	var load: float=tackle.load
 	var reel_speed: float=tackle.reel_speed
 	var pose: Dictionary=tackle.hand
-	var wrist: Vector2=pose.wrist
-	var hand_angle: float=pose.angle
 	var strength: float=world.effort_multiplier("angler")
 	var line_end := float_at
 	if world.angler.casting:
@@ -178,7 +176,7 @@ func _tackle(view: Node2D, world: Node2D, t: float) -> void:
 		var p := rod[roundi(ratio*32)]
 		view.draw_circle(p+Vector2(1,1),2,INK)
 		view.draw_circle(p,1,CREAM)
-	hand.draw(view,wrist,hand_angle,t,reel_speed)
+	hand.draw(view,pose,t,reel_speed)
 
 func _net(view: Node2D, world: Node2D, _t: float) -> void:
 	if world.manual_net and world.net_state in ["prepare","warning","sweep","miss","withdraw","caught"]:
