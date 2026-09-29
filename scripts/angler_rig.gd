@@ -161,7 +161,7 @@ func step_free_hook(game: Node2D, index: int, delta: float, sucking: bool) -> vo
 	var count := maxi(1,ceili(delta*120))
 	for part in count:
 		var dt := delta/count
-		free_reel_speed=move_toward(free_reel_speed,spool_target(0,Vector2.ONE,true),180*dt)
+		free_reel_speed=manual_spool_speed(free_reel_speed,dt)
 		free_line_length=clampf(free_line_length+free_reel_speed*dt,45,520)
 		var attachment := previous_anchor.lerp(anchor(),float(part+1)/count)
 		var force := Vector2(0,150)+Vector2(game.water_velocity(position))*2-hook_velocity*1.0
@@ -193,3 +193,12 @@ func step_free_hook(game: Node2D, index: int, delta: float, sucking: bool) -> vo
 func spool_target(raw_tension: float, tuning: Vector2, manual: bool) -> float:
 	if manual: return spool*(90.0 if spool>0 else 36.0)
 	return clampf(-24*tuning.y+(raw_tension-0.5)*100*tuning.x,-36*tuning.y,24*tuning.y)
+
+func manual_spool_speed(current: float, delta: float) -> float:
+	var target := spool_target(0,Vector2.ONE,true)
+	# Brake promptly on release/reversal; accelerating the new direction stays smooth.
+	if current*target<0:
+		var brake_time := absf(current)/720.0
+		if delta<=brake_time: return move_toward(current,0,delta*720)
+		return move_toward(0,target,(delta-brake_time)*180)
+	return move_toward(current,target,delta*(720 if is_zero_approx(target) else 180))

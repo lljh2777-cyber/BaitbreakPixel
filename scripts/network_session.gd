@@ -197,7 +197,7 @@ func _send(packet: Dictionary, reliable: bool, channel: int) -> void:
 
 func _handle(packet: Dictionary) -> void:
 	if packet.get("v")!=Protocol.VERSION:
-		fail("联机协议不兼容，请双方使用 0.12 系列版本"); return
+		fail("联机协议不兼容，请双方使用 0.12.2 版"); return
 	var kind: String=packet.get("kind","") if packet.get("kind","") is String else ""
 	last_rx=now()
 	if kind=="ping" and packet.get("token") is int:
@@ -207,11 +207,11 @@ func _handle(packet: Dictionary) -> void:
 		ping_tokens.erase(packet.token); return
 	if kind=="hello" and is_host and status=="waiting":
 		if packet.get("build")!=Protocol.BUILD:
-			_send({"kind":"reject","reason":"版本不同，请双方使用 0.12 系列版本"},true,2); return
+			_send({"kind":"reject","reason":"版本不同，请双方使用 0.12.2 版"},true,2); return
 		_send({"kind":"welcome","session":session_id,"role":remote_role,"config":config,"build":Protocol.BUILD,"ready":local_ready},true,2)
 		message="玩家已连接，双方准备后开始"
 		changed.emit(); return
-	if kind=="reject" and not is_host: fail("版本不同，请双方使用 0.12 系列版本"); return
+	if kind=="reject" and not is_host: fail("版本不同，请双方使用 0.12.2 版"); return
 	if kind=="welcome" and not is_host and status=="connecting":
 		if packet.get("build")!=Protocol.BUILD or not packet.get("role") in ["fish","angler"] or not packet.get("config") is Dictionary or not packet.get("session") is String: fail("房间信息无效"); return
 		session_id=packet.session

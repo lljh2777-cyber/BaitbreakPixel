@@ -19,6 +19,8 @@ const NET_WITHDRAW := 1.0
 const NET_LIFT := 1.15
 const NET_SETTLE := 0.32
 const NET_MISS := 0.22
+const LINE_ELASTIC_PIXELS := 32.0
+const MAX_LINE_LENGTH := 720.0
 
 var fish := Vector2(66, 265)
 var angler := AnglerController.new()
@@ -368,6 +370,16 @@ func vegetation_drag(point: Vector2) -> float:
 func move_fish(motion: Vector2) -> void:
 	var radius := 17.0 if hooked == HookState.HOOKED else 12.0
 	fish = (fish+motion).clamp(Vector2(radius+8,68+radius),Vector2(632-radius,311-radius))
+	if not uses_mobile_tackle() or hooked!=HookState.HOOKED or landing or line_tuning().y<=0: return
+	var contact := line_anchor(bound_bait) if wraps.is_empty() else Vector2(wraps[-1].entry)
+	var available := rope_length if wraps.is_empty() else fish_line_length
+	var base := 0.5 if wraps.is_empty() else 0.18
+	# Mobile, player-controlled tackle cannot stretch invisibly past the red gauge.
+	# Resolve this before swept net capture, so the net sees the actual fish motion.
+	var reach := maxf(0,available)+LINE_ELASTIC_PIXELS*(1-base)
+	var radial := mouth()-contact
+	if radial.length()>reach:
+		fish=(contact+radial.normalized()*reach-aim*10).clamp(Vector2(radius+8,68+radius),Vector2(632-radius,311-radius))
 
 func touching_target(index: int) -> bool:
 	return index>=0 and index<targets.size() and Layout.touches(fish,12,targets[index].polygon)
@@ -670,15 +682,17 @@ func _step_line(delta: float, qte_pressed: bool, judged_age: float = -1) -> void
 	var length_now := anchor.distance_to(mouth()) if not latched else Vector2(wraps[-1].entry).distance_to(mouth())
 	var base := 0.18 if latched else 0.5
 	var available := fish_line_length if latched else rope_length
-	var raw_tension := base+(length_now-available)/32
+	var raw_tension := base+(length_now-available)/LINE_ELASTIC_PIXELS
 	var tuning := line_tuning()
 	# Reeling is the objective. Tension feedback only tempers it or pays out under heavy load.
 	var desired_speed := angler.spool_target(raw_tension,tuning,not angler.auto_reel)
-	reel_speed = move_toward(reel_speed,desired_speed,delta*(180 if not angler.auto_reel else 60)*tuning.x*maxf(1,tuning.y)) if tuning.y>0 else 0.0
-	available = maxf(0,available+reel_speed*delta*(0.22 if latched else 1.0))
+	if tuning.y<=0: reel_speed=0
+	elif not angler.auto_reel: reel_speed=angler.manual_spool_speed(reel_speed,delta*tuning.x*maxf(1,tuning.y))
+	else: reel_speed=move_toward(reel_speed,desired_speed,delta*60*tuning.x*maxf(1,tuning.y))
+	available = clampf(available+reel_speed*delta*(0.22 if latched else 1.0),0,MAX_LINE_LENGTH)
 	if latched: fish_line_length = available
 	else: rope_length = available
-	tension = clampf(base+(length_now-available)/32,0,1)
+	tension = clampf(base+(length_now-available)/LINE_ELASTIC_PIXELS,0,1)
 	high_age = high_age + delta if tension >= 0.9 else 0.0
 	if high_age >= break_hold_seconds:
 		_release_hook(true)

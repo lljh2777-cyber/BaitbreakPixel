@@ -264,13 +264,13 @@ func _angler_hud(_t: float) -> void:
 	panel(Rect2(10,65,151,50))
 	label_at(Vector2(18,81),"小鱼 · "+("玩家操控" if game.shared_session else game.fish_brain.state),11,MINT)
 	if world.hooked==world.HookState.HOOKED:
-		var spool := "放线" if world.reel_speed>0.5 else ("收线" if world.reel_speed< -0.5 else "稳线")
+		var spool := "S 放线" if world.angler.spool>0 else ("W 收线" if world.angler.spool<0 else "稳线")
 		label_at(Vector2(18,96),"张力 %d%% · %s" % [int(world.tension*100),spool],11,RED if world.tension>=0.88 else CREAM)
 		draw_rect(Rect2(18,103,134,5),Color("335762"))
 		draw_rect(Rect2(18,103,134*world.tension,5),MINT.lerp(RED,world.tension))
 		if world.high_age>0: label_at(Vector2(18,129),"断线风险 %.1f / %.1fs" % [world.high_age,world.break_hold_seconds],10,RED)
 	elif world.hooked==world.HookState.MOUTH:
-		label_at(Vector2(18,100),"钩尖入口 · 等待挂牢",11,GOLD)
+		label_at(Vector2(18,100),"吐钩判定中 · 暂缓收放",10,GOLD)
 	else:
 		var remaining_bait := 0
 		for bait in world.baits:
@@ -283,19 +283,24 @@ func _angler_hud(_t: float) -> void:
 		panel(Rect2(445,65,182,26))
 		label_at(Vector2(454,83),names.get(world.net_state,"抄网中"),12,RED)
 
-func _sway_line(start: Vector2, end: Vector2, sway: float) -> PackedVector2Array:
+func _slack_line(start: Vector2, end: Vector2, available: float, sway: float = 0.0) -> PackedVector2Array:
+	var chord := start.distance_to(end)
+	var excess := maxf(0,available-chord)
+	var bow := minf(46,sqrt(excess*(2*chord+excess))*0.40)
+	var normal := (end-start).normalized().orthogonal()
 	var points := PackedVector2Array()
-	for index in 17:
-		var ratio := index/16.0
-		points.append(start.lerp(end,ratio)+Vector2(sin(PI*ratio)*sway,0))
+	for index in 25:
+		var ratio := index/24.0
+		var offset := normal*bow+Vector2(sway,0)
+		points.append((start.lerp(end,ratio)+offset*sin(PI*ratio)).round())
 	return points
 
 func _line_back() -> void:
 	if world.hooked == world.HookState.HOOKED and world.rope_path.size() >= 2:
 		var points: PackedVector2Array=world.rope_path
-		if world.uses_mobile_tackle() and world.wraps.is_empty(): points=_sway_line(points[0],points[-1],world.angler.line_sway*(1-world.tension)*0.5)
+		if world.wraps.is_empty(): points=_slack_line(points[0],points[-1],world.rope_length,world.angler.line_sway*(1-world.tension)*0.5 if world.uses_mobile_tackle() else 0.0)
 		draw_polyline(points,INK,3)
-		draw_polyline(points,Color("91b8ab"),1)
+		draw_polyline(points,MINT.lerp(RED,world.tension),1)
 
 func _line() -> void:
 	if world.hooked==world.HookState.HOOKED:
@@ -313,7 +318,7 @@ func _line() -> void:
 		if not world.wraps.is_empty():
 			var coil: PackedVector2Array = world.visible_coil(world.wraps[-1])
 			var start: Vector2 = coil[-1]
-			var points := PackedVector2Array([start,start.lerp(world.mouth(),0.5)+Vector2(0,(1-world.tension)*3),world.mouth()])
+			var points := _slack_line(start,world.mouth(),world.fish_line_length)
 			draw_polyline(points,INK,3)
 			draw_polyline(points,MINT.lerp(RED,world.tension),1)
 		if world.contact_target>=0 and not world.winding() and not game.menu.visible:

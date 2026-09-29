@@ -1,8 +1,8 @@
 extends RefCounted
 
 const VERSION := 1
-# Wire compatibility generation; cosmetic 0.12.1 keeps the same protocol.
-const BUILD := "0.12"
+# Peers must share the finite-tether/reeling rules introduced in 0.12.2.
+const BUILD := "0.12.2"
 const DEFAULT_PORT := 24712
 const MAX_PACKET := 196608
 const MAX_STATE := 1048576
