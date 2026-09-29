@@ -1,6 +1,7 @@
 extends RefCounted
 
 const VERSION := 1
+# Wire compatibility generation; cosmetic 0.12.1 keeps the same protocol.
 const BUILD := "0.12"
 const DEFAULT_PORT := 24712
 const MAX_PACKET := 196608

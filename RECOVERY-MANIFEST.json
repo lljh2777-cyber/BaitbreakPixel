@@ -1,27 +1,28 @@
 {
-  "version": "0.12",
-  "pack_sha256": "4afbd569a1af9b6ad67e9452440a296e835b8e8e900752dafc3a5291bff42117",
+  "version": "0.12.1",
+  "pack_sha256": "d4fbee43184f93b689c1a03a38ae92858e2f1e34bbbe270650f015ff1f1f9574",
   "script_sha256": {
     "scripts/angler_brain.gd": "0737eee46ac3e756a7d719d6316963bf0526572a598f612fc5270cdd387474ce",
     "scripts/angler_controller.gd": "cf870f0d5277403a54ee51ee6e7e5b8f1dee032241636046e505974567136a7a",
     "scripts/angler_rig.gd": "bbff8dc9c7b0aa91ea6eb1f8c4ed39cb00307c5304f3856b2e374585ff9c93a7",
+    "scripts/angler_visual.gd": "7c1deb6fda71540e94bb0c3f657b45733813f82bb113cb923dd312baefe43511",
     "scripts/fish_brain.gd": "78a00fd0820054266de81ce7b58a65dcafd84be48302f43dd20b3a0e830a2769",
     "scripts/game_commands.gd": "b55a0a6bd7bc601613b7bf586a735473f8635eedcaf2485c0e43b3b347c0fcce",
     "scripts/hook_gauge.gd": "4fe42c7690fa40f42e970af97eb26915793ec166c01b06da3ea21eb1fb692593",
     "scripts/local_input.gd": "d3405c59f053c1abbd79454b4c417ff1cbf86764c9b386c50116e58ae61cadfa",
-    "scripts/menu.gd": "936675c1071bbd94b69484aa8ace4e6ad1f1df59f2c5ce3456f5c8e8ec56f1b4",
+    "scripts/menu.gd": "b96adae31d0525fbe974474956f6294dc60cfc732809aed096045a8a330e49c6",
     "scripts/network_presentation.gd": "4da3cdba4927b2fb35587ea94dc29d434de3b57120050ab6217b424d889c82f5",
-    "scripts/network_protocol.gd": "39af90a96ab6aee2afc2921f64b83c3ed215325a6ae55889f7e85fa5168c9c77",
-    "scripts/network_session.gd": "274e5a1000a0ec84518bd42873300ae21e26c8b40091d7292349b27ea6b8cb0b",
+    "scripts/network_protocol.gd": "f8cd0184f599a75e15474a3d61ed50d0f54f78f18b46a37f57696adc960fa791",
+    "scripts/network_session.gd": "a6be380a5b93715268a67a45eafc54ac76fe91c70a8ac78c2b02502cf1fa2970",
     "scripts/pixel_art.gd": "888fc105bd231fcbd7cee637cb515d3aa254aebf23af05a6730c974f21eb5c4a",
-    "scripts/pond.gd": "3c1a45ec3c16f46008a16c75b3d524959dc3f3e3678260b1928e82c862304488",
+    "scripts/pond.gd": "124be3d2d8f3cbc1e98043fd7cf7cca4d7df6f9e9544b5e96fae332efe203194",
     "scripts/pond_layout.gd": "516f4fbbead3281ebc09e921fbebc77917c1e611a698a217a5b083f14c7678fe",
-    "scripts/pond_view.gd": "94e393a5974124d1873e4661c12dab40b39f8712cf3666b934bfefe8fe883ebe",
+    "scripts/pond_view.gd": "2a152946ee44bfdd0d5398c38a1a7e8c5850bf03870ffee6422f9e089761e3f4",
     "scripts/rope.gd": "2e30152e65b00f39fe25324b992afd39925acfadd80b64dce385df865d69fe42",
     "scripts/sound.gd": "105f1b9854c725f76332add962a0e0f5790719bc3b525630007ca62b604629ba",
     "scripts/world_simulation.gd": "57d7c4cafa6cb6a11d3ff6ece839630f4a1d155ac6ee507dc6d66a0f4a8d2662",
     "scripts/world_snapshot.gd": "6e5e910d35cc9063e1c596c6e3da519835459fa564f9b6de302d496fdbfa8234"
   },
   "decoded_texture_sha256": {},
-  "exported_resources": 24
+  "exported_resources": 25
 }

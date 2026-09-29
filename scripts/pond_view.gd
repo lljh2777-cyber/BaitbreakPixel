@@ -3,6 +3,7 @@ extends Node2D
 const Art = preload("res://scripts/pixel_art.gd")
 const Layout = preload("res://scripts/pond_layout.gd")
 const Gauge = preload("res://scripts/hook_gauge.gd")
+const AnglerVisual = preload("res://scripts/angler_visual.gd")
 const INK := Color("142e39")
 const CREAM := Color("fff0cd")
 const MINT := Color("8de0bd")
@@ -10,6 +11,7 @@ const GOLD := Color("ffd379")
 const RED := Color("f58375")
 var game: Node2D
 var world: Node2D
+var angler_visual := AnglerVisual.new()
 var fish_texture: Texture2D
 var gauge_texture: Texture2D
 var bobber_texture: Texture2D
@@ -64,6 +66,18 @@ func _world(t: float) -> void:
 	for band in range(8):
 		var shade := Color("317e82").lerp(Color("174a5a"), band / 7.0)
 		draw_rect(Rect2(0, 55 + band * 33, 640, 33), shade)
+	if world.uses_mobile_tackle():
+		# A narrow bank walkway leaves room for the full character below either HUD.
+		draw_rect(Rect2(0,56,640,8),Color("253e42"))
+		for plank in range(40):
+			var x := plank*16
+			draw_rect(Rect2(x,57,15,5),Color("8d8665") if plank%3 else Color("9e9470"))
+			draw_rect(Rect2(x+1,57,13,1),Color("c9bb87"))
+			draw_rect(Rect2(x+4,59,7,1),Color("736f57"))
+			draw_rect(Rect2(x+2,58,1,1),Color("405450"))
+		for post in range(8):
+			draw_rect(Rect2(post*88+23,63,4,7),Color("344f50"))
+			draw_rect(Rect2(post*88+23,63,1,5),Color("717d62"))
 	for shaft in range(5):
 		for step in range(6):
 			draw_rect(Rect2(shaft * 149 + step * 7 + 21, 55 + step * 43, 16 + step * 3, 43), Color(0.63, 0.89, 0.74, 0.025))
@@ -174,7 +188,7 @@ func _baits(t: float) -> void:
 				for segment in range(17):
 					var ratio := segment/16.0
 					var point: Vector2 = world.line_anchor(index).lerp(eye,ratio)
-					point.x += sin(ratio*PI)*(world.angler.line_sway if game.player_role=="angler" else sin(t*0.75+ratio*2)*2.5*world.water_strength)
+					point.x += sin(ratio*PI)*(world.angler.line_sway if world.uses_mobile_tackle() else sin(t*0.75+ratio*2)*2.5*world.water_strength)
 					filament.append(point.round())
 				draw_polyline(filament,Color("b9d5bf"),1)
 			var hook := PackedVector2Array([Vector2(-5,-10),Vector2(-5,4),Vector2(-3,7),Vector2(1,7),Vector2(3,5),Vector2(3,1),Vector2.ZERO])
@@ -202,27 +216,15 @@ func _baits(t: float) -> void:
 			draw_rect(Rect2(world._tip(index).round(),Vector2.ONE),RED if world.bound_bait==index else CREAM)
 
 func _angler(t: float) -> void:
-	if game.player_role!="angler": return
-	var p := Vector2(roundf(world.angler.x),43)
-	var flex: float=world.tension*3 if world.hooked==world.HookState.HOOKED else sin(t*1.4)
-	draw_rect(Rect2(p+Vector2(-5,-8),Vector2(8,8)),Color("ecc695"))
-	draw_rect(Rect2(p+Vector2(-7,-11),Vector2(12,4)),Color("be9056"))
-	draw_rect(Rect2(p+Vector2(-4,-14),Vector2(7,4)),Color("dfbd78"))
-	draw_rect(Rect2(p+Vector2(2,-6),Vector2(1,2)),INK)
-	draw_rect(Rect2(p+Vector2(-5,0),Vector2(9,7)),Color("34495a"))
-	draw_rect(Rect2(p+Vector2(-5,7),Vector2(3,4)),Color("102f3f"))
-	draw_rect(Rect2(p+Vector2(1,7),Vector2(3,4)),Color("102f3f"))
-	draw_line(p+Vector2(3,1),p+Vector2(10,3),Color("ecc695"),3)
-	var rod := PackedVector2Array([p+Vector2(8,4),p+Vector2(18,-8-flex),p+Vector2(25,-4-flex),world.angler.anchor()])
-	draw_polyline(rod,INK,3)
-	draw_polyline(rod,GOLD,1)
+	if not world.uses_mobile_tackle(): return
+	angler_visual.draw(self,world,t)
 	if world.angler.casting:
 		var ball: Vector2=world.angler.projectile().round()
 		draw_line(world.angler.anchor(),ball,Color("b9d5bf"),1)
 		draw_rect(Rect2(ball-Vector2(2,2),Vector2(5,4)),Color("a26c3f"))
 		draw_rect(Rect2(ball-Vector2(2,2),Vector2(3,2)),GOLD)
 		draw_line(ball,ball+Vector2(0,4),CREAM,1)
-	if game.menu.visible or not world.angler.net_held: return
+	if game.player_role!="angler" or game.menu.visible or not world.angler.net_held: return
 	var cursor: Vector2=world.angler.cursor.round()
 	var color := MINT if world.angler.net_cooldown<=0 else Color("7ca9a0")
 	for side in [-1,1]:
@@ -291,7 +293,7 @@ func _sway_line(start: Vector2, end: Vector2, sway: float) -> PackedVector2Array
 func _line_back() -> void:
 	if world.hooked == world.HookState.HOOKED and world.rope_path.size() >= 2:
 		var points: PackedVector2Array=world.rope_path
-		if game.player_role=="angler" and world.wraps.is_empty(): points=_sway_line(points[0],points[-1],world.angler.line_sway*(1-world.tension)*0.5)
+		if world.uses_mobile_tackle() and world.wraps.is_empty(): points=_sway_line(points[0],points[-1],world.angler.line_sway*(1-world.tension)*0.5)
 		draw_polyline(points,INK,3)
 		draw_polyline(points,Color("91b8ab"),1)
 
@@ -458,7 +460,7 @@ func _draw_landing_net(p: Vector2, t: float, front: bool) -> void:
 		bag.append((back+bag_shape).round())
 		if rim_point.y<joint.y: joint=rim_point
 	if not front:
-		var pole_top: Vector2=Vector2(world.angler.x+7,45) if world.manual_net else Vector2(world.net_from.x+(-18 if world.net_from.x<320 else 18),40)
+		var pole_top: Vector2=Vector2(world.angler.x+7,50) if world.manual_net else Vector2(world.net_from.x+(-18 if world.net_from.x<320 else 18),40)
 		var pole := PackedVector2Array([pole_top,pole_top.lerp(joint,0.52)+Vector2(sin(t*3)*1.5,0),joint])
 		draw_polyline(pole,INK,7)
 		draw_polyline(pole,Color("957044"),5)
@@ -613,5 +615,6 @@ func _network_badge() -> void:
 		panel(Rect2(216,146,208,56))
 		label_at(Vector2(235,180),line,21,GOLD)
 	else:
-		panel(Rect2(450,39,180,19))
-		label_at(Vector2(456,53),line,10,MINT)
+		# Keep the bank clear so the walking opponent is visible at every fishing spot.
+		panel(Rect2(450,304,180,19))
+		label_at(Vector2(456,318),line,10,MINT)
