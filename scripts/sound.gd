@@ -11,8 +11,8 @@ func _ready() -> void:
 		voice.volume_db = -16
 		add_child(voice)
 		voices.append(voice)
-	for name in ["eat", "warn", "success", "fail", "break", "win", "splash"]:
-		var notes: Array = {"eat":[660.0, 880.0], "warn":[330.0, 220.0], "success":[440.0, 660.0, 880.0], "fail":[220.0, 165.0], "break":[880.0, 220.0], "win":[440.0, 554.0, 660.0, 880.0], "splash":[170.0,130.0,85.0]}[name]
+	for name in ["eat", "warn", "success", "fail", "break", "win", "splash", "tap"]:
+		var notes: Array = {"eat":[660.0, 880.0], "warn":[330.0, 220.0], "success":[440.0, 660.0, 880.0], "fail":[220.0, 165.0], "break":[880.0, 220.0], "win":[440.0, 554.0, 660.0, 880.0], "splash":[170.0,130.0,85.0], "tap":[145.0]}[name]
 		var bytes := PackedByteArray()
 		var duration := 0.075 if name == "eat" else 0.13
 		var count := int(22050 * duration * notes.size())
@@ -23,6 +23,7 @@ func _ready() -> void:
 			var phase := fmod(time, duration) / duration
 			var wave := (1.0 if sin(TAU * frequency * time) > 0 else -1.0) * 0.16 * sin(PI * phase)
 			if name=="splash": wave=sin(sample*78.233+sin(sample*0.7)*12)*0.23*exp(-time*8)
+			elif name=="tap": wave=(sin(TAU*frequency*time)+sin(TAU*frequency*2.3*time)*0.4)*exp(-time*45)*0.3
 			bytes.encode_s16(sample * 2, int(wave * 32767))
 		var stream := AudioStreamWAV.new()
 		stream.mix_rate = 22050

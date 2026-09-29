@@ -17,8 +17,10 @@ const NET_CATCH := Vector2(30,36)
 const NET_PREPARE := 0.8
 const NET_WARNING := 2.2
 const NET_SWEEP := 1.6
-const NET_WITHDRAW := 0.7
+const NET_WITHDRAW := 1.0
 const NET_LIFT := 1.15
+const NET_SETTLE := 0.32
+const NET_MISS := 0.22
 
 var fish := Vector2(66, 265)
 var velocity := Vector2.ZERO
@@ -107,6 +109,14 @@ var net_return_from := Vector2.ZERO
 var net_catch_offset := Vector2.ZERO
 var net_dodges := 0
 var net_catches := 0
+var net_angle := 0.0
+var net_park := Vector2.ZERO
+var net_retract_duration := 1.0
+var net_splash := 0.0
+var net_splash_at := Vector2.ZERO
+var net_last_position := Vector2.ZERO
+var net_motion := Vector2.ZERO
+var net_warning_shape := PackedVector2Array()
 var paused := false
 var view: Node2D
 var menu: Control
@@ -142,7 +152,7 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | side-view | 640x360 | v0.7.1")
+	print("PIXEL_READY | side-view | 640x360 | v0.8")
 
 func _register_inputs() -> void:
 	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[], "use":[KEY_E], "slow":[KEY_Q], "qte":[KEY_SPACE]}
@@ -251,6 +261,12 @@ func reset(is_challenge: bool) -> void:
 	net_catch_offset = Vector2.ZERO
 	net_dodges = 0
 	net_catches = 0
+	net_angle = 0
+	net_park = Vector2.ZERO
+	net_retract_duration = 1
+	net_splash = 0
+	net_motion = Vector2.ZERO
+	net_warning_shape.clear()
 	cycle_phase = ""
 	cycle_slot = -1
 	cycle_age = 0
@@ -747,14 +763,15 @@ func request_net() -> void:
 		notice_age=3
 
 func net_blocks_hooks() -> bool:
-	return net_state in ["prepare", "warning", "sweep", "withdraw", "caught"]
+	return net_state in ["prepare", "warning", "sweep", "miss", "withdraw", "caught"]
 
-func _net_contact(point: Vector2) -> bool:
-	var net_scale := NET_RIM
+func _net_contact(point: Vector2, angle: float = NAN) -> bool:
+	if is_nan(angle): angle=net_angle
+	var net_scale := NET_RIM+Vector2(2,2) # Include the drawn rim, not just its centerline.
 	for solid in SOLIDS:
 		var scaled := PackedVector2Array()
-		for vertex in solid.points: scaled.append(vertex/net_scale)
-		if Layout.touches(point/net_scale,1.0,scaled): return true
+		for vertex in solid.points: scaled.append((vertex-point).rotated(-angle)/net_scale)
+		if Layout.touches(Vector2.ZERO,1.0,scaled): return true
 	return false
 
 func _plan_net() -> void:
@@ -762,6 +779,7 @@ func _plan_net() -> void:
 	net_kind="sweep" if net_count%2==0 else "drop"
 	var y := clampf(fish.y,112,278)
 	net_from = Vector2(620 if fish.x > 337 else 20,y)
+	net_angle=PI if fish.x>337 else 0.0
 	# A low attack must enter above bank-side rocks, never spawn with its rim inside one.
 	if net_kind=="sweep":
 		for attempt in range(48):
@@ -772,6 +790,7 @@ func _plan_net() -> void:
 	if net_kind=="drop":
 		net_from=Vector2(clampf(fish.x+(72 if fish.x<320 else -72),38,602),67)
 		destination=Vector2(fish.x,clampf(fish.y+40,120,278))
+	net_angle=(destination-net_from).angle()
 	net_to = net_from
 	net_blocked=false
 	var steps := ceili(net_from.distance_to(destination)/2)
@@ -779,12 +798,19 @@ func _plan_net() -> void:
 		var candidate := net_from.lerp(destination,float(step)/steps)
 		if _net_contact(candidate): net_blocked=true; break
 		net_to = candidate
-	net_pos = net_from
+	net_park=Vector2(net_from.x,5)
+	net_pos=net_park
+	net_last_position=net_pos
+	net_motion=Vector2.ZERO
+	net_warning_shape=_make_net_warning_outline()
 
 func net_warning_outline() -> PackedVector2Array:
+	return net_warning_shape
+
+func _make_net_warning_outline() -> PackedVector2Array:
 	var points := PackedVector2Array()
 	for endpoint in [net_from,net_to]:
-		for index in range(32): points.append(endpoint+Vector2.from_angle(index*TAU/32)*NET_CATCH)
+		for index in range(48): points.append(endpoint+(Vector2.from_angle(index*TAU/48)*NET_CATCH*1.01).rotated(net_angle))
 	return Geometry2D.convex_hull(points)
 
 func _catch_in_net() -> void:
@@ -792,12 +818,59 @@ func _catch_in_net() -> void:
 	net_age=0
 	net_return_from=net_pos
 	net_catch_offset=fish-net_pos
+	net_retract_duration=maxf(NET_LIFT,_net_retract_length()/240)
 	net_catches+=1
 	velocity=Vector2.ZERO
 	sprinting=false
+	feeding=false
+	resisting=false
 	returning=false
 	home_age=0
 	sound.play("fail")
+	_net_splash(net_pos)
+
+func _net_splash(point: Vector2) -> void:
+	net_splash=0.6
+	net_splash_at=point
+	sound.play("splash")
+
+func _net_retract_length() -> float:
+	return net_return_from.distance_to(net_from)+net_from.distance_to(net_park)
+
+func _net_retract_point(progress: float) -> Vector2:
+	# Retrace the collision-cleared route before lifting at the bank, away from wood and rocks.
+	var first := net_return_from.distance_to(net_from)
+	var distance := _net_retract_length()*smoothstep(0,1,progress)
+	if first>0.001 and distance<first: return net_return_from.lerp(net_from,distance/first)
+	var second := net_from.distance_to(net_park)
+	return net_from.lerp(net_park,clampf((distance-first)/maxf(0.001,second),0,1))
+
+func net_bag_offset() -> Vector2:
+	var back := -Vector2.from_angle(net_angle)*22+Vector2(0,6)
+	if net_state=="caught":
+		return back.lerp(Vector2(0,17),smoothstep(0,1,net_age/NET_SETTLE))
+	return back+Vector2(0,sin(elapsed*5)*2)
+
+func _net_reaches_fish(point: Vector2, center: Vector2) -> bool:
+	# The small body allowance around the rim must not reach through cover.
+	for solid in SOLIDS:
+		var polygon := PackedVector2Array(solid.points)
+		if Geometry2D.is_point_in_polygon(point,polygon): return false
+		for index in polygon.size():
+			if Geometry2D.segment_intersects_segment(center,point,polygon[index],polygon[(index+1)%polygon.size()])!=null: return false
+	return true
+
+static func _net_hit_fraction(a: Vector2, b: Vector2) -> float:
+	if a.length_squared()<=1: return 0
+	var motion := b-a
+	var aa := motion.length_squared()
+	if aa<0.000001: return -1
+	var bb := 2*a.dot(motion)
+	var cc := a.length_squared()-1
+	var discriminant := bb*bb-4*aa*cc
+	if discriminant<0: return -1
+	var hit := (-bb-sqrt(discriminant))/(2*aa)
+	return hit if hit>=0 and hit<=1 else -1
 
 func _finish_net_recovery() -> void:
 	net_state="rest"
@@ -806,25 +879,17 @@ func _finish_net_recovery() -> void:
 	net_recovery=2
 
 func _step_net(delta: float) -> void:
-	if net_state=="caught":
-		net_age+=delta
-		var ratio := clampf(net_age/NET_LIFT,0,1)
-		net_pos=net_return_from.lerp(Vector2(net_return_from.x,47),ratio*ratio)
-		fish=net_pos+net_catch_offset*(1-ratio)
-		if net_age>=NET_LIFT:
-			if challenge: finish(false,"net")
-			else:
-				fish=HOME+Vector2(0,-14)
-				fish_before=fish
-				hook_cooldown=2
-				notice="被抄中了 · 已回到巢边，按 N 再试"
-				notice_age=4
-				_finish_net_recovery()
-		return
-	if net_state=="withdraw":
-		net_age+=delta
-		net_pos=net_return_from.lerp(net_from,clampf(net_age/NET_WITHDRAW,0,1))
-		if net_age>=NET_WITHDRAW: _finish_net_recovery()
+	net_splash=maxf(0,net_splash-delta)
+	net_last_position=net_pos
+	if net_state in ["prepare","warning","sweep","miss","withdraw","caught"]:
+		var frame_from := fish_before
+		var frame_to := fish
+		# Substeps resolve relative fish/net motion and preserve the actual first impact position.
+		var count := maxi(1,ceili(delta*120))
+		for part in count:
+			_advance_net(delta/count,frame_from.lerp(frame_to,float(part)/count),frame_from.lerp(frame_to,float(part+1)/count))
+			if lost or net_state=="rest": break
+		net_motion=(net_pos-net_last_position)/maxf(delta,0.001)
 		return
 	if net_state == "rest":
 		net_age += delta
@@ -832,7 +897,6 @@ func _step_net(delta: float) -> void:
 		return
 	if hooked != HookState.FREE:
 		net_recovery = 4
-		if net_state == "prepare": net_state = "wait"; net_queued = true
 		return
 	if not cycle_phase.is_empty() or net_recovery > 0: return
 	if net_state == "wait":
@@ -843,25 +907,60 @@ func _step_net(delta: float) -> void:
 			net_queued = false
 			_plan_net()
 			sound.play("warn")
-		return
-	net_age += delta
-	if net_state == "prepare" and net_age >= NET_PREPARE:
-		net_state = "warning"; net_age = 0; sound.play("warn")
+
+func _advance_net(delta: float, frame_from: Vector2, frame_to: Vector2) -> void:
+	var old_pos := net_pos
+	net_age+=delta
+	if net_state=="caught":
+		var settle := smoothstep(0,1,net_age/NET_SETTLE)
+		var ratio := clampf((net_age-NET_SETTLE)/net_retract_duration,0,1)
+		net_pos=_net_retract_point(ratio)
+		fish=net_pos+net_catch_offset.lerp(net_bag_offset(),settle)
+		if ratio>=1:
+			if challenge: finish(false,"net")
+			else:
+				fish=HOME+Vector2(0,-14)
+				fish_before=fish
+				hook_cooldown=2
+				notice="被抄中了 · 已回到巢边，按 N 再试"
+				notice_age=4
+				_finish_net_recovery()
+	elif net_state=="miss":
+		if net_age>=NET_MISS:
+			net_state="withdraw"
+			net_age=0
+			net_return_from=net_pos
+			net_retract_duration=maxf(NET_WITHDRAW,_net_retract_length()/350)
+	elif net_state=="withdraw":
+		net_pos=_net_retract_point(clampf(net_age/net_retract_duration,0,1))
+		if net_age>=net_retract_duration: _finish_net_recovery()
+	elif net_state=="prepare":
+		net_pos=net_park.lerp(net_from,smoothstep(0,1,net_age/NET_PREPARE))
+		if net_age>=NET_PREPARE:
+			net_state="warning"; net_age=0; net_pos=net_from; sound.play("warn")
 	elif net_state == "warning":
 		if net_age >= NET_WARNING:
 			net_state = "sweep"; net_age = 0; net_count += 1
-			sound.play("splash")
+			_net_splash(net_pos)
 	elif net_state == "sweep":
 		var old_net := net_pos
-		net_pos = net_from.lerp(net_to, clampf(net_age / NET_SWEEP, 0, 1))
+		net_pos = net_from.lerp(net_to, smoothstep(0,1,net_age / NET_SWEEP))
 		var scale := NET_CATCH
-		if _segment_distance((fish_before - old_net) / scale, (fish - net_pos) / scale, Vector2.ZERO) <= 1:
-			_catch_in_net()
-		elif net_age >= NET_SWEEP:
-			net_state="withdraw"; net_age=0; net_return_from=net_pos
+		var hit := _net_hit_fraction((frame_from-old_net).rotated(-net_angle)/scale,(frame_to-net_pos).rotated(-net_angle)/scale)
+		if hit>=0:
+			var hit_fish := frame_from.lerp(frame_to,hit)
+			var hit_net := old_net.lerp(net_pos,hit)
+			if _net_reaches_fish(hit_fish,hit_net):
+				net_pos=hit_net
+				fish=hit_fish
+				_catch_in_net()
+		if net_state=="sweep" and net_age >= NET_SWEEP:
+			net_state="miss"; net_age=0
 			net_dodges+=1
 			notice="木石挡住了网口 · 可以继续觅食" if net_blocked else "躲过抄网！继续觅食。"
 			notice_age=3
+			if net_blocked: sound.play("tap")
+	if (old_pos.y-57)*(net_pos.y-57)<0: _net_splash(Vector2(net_pos.x,57))
 
 static func _segment_distance(a: Vector2, b: Vector2, point: Vector2) -> float:
 	var length_squared := a.distance_squared_to(b)

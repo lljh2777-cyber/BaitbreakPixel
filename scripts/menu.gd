@@ -103,7 +103,7 @@ func _title(frame: Control) -> void:
 	button(frame,"设置",215,func(): open("settings"),false,124)
 	var quit := button(frame,"退出",215,func(): get_tree().quit(),false,124)
 	quit.position.x = 150
-	text(frame,"2D MVP 0.7.1  ·  空格判定 / 右键加速",Vector2(20,253),10,Color("91afa7"))
+	text(frame,"2D MVP 0.8  ·  入水 / 扫网 / 收拢提网",Vector2(20,253),10,Color("91afa7"))
 	text(content,"01  吃饵",Vector2(391,119),18,GOLD)
 	text(content,"02  脱钩",Vector2(391,159),18,GOLD)
 	text(content,"03  躲网，回巢",Vector2(391,199),18,GOLD)
@@ -134,7 +134,7 @@ func _help(frame: Control) -> void:
 		"上钩会被拉向水面 · 吸食时游速降低",
 		"接触草木石按空格，边游抗拉、绿区再按",
 		"缠线后松线按空格脱钩 · 拉紧 3 秒断线",
-		"抄网：红光预警，游离红色扫网 / 下探区域",
+		"抄网：红区锁定后躲开 · 木石能挡住网口",
 		"吃够食物后回左下巢穴，按 E 停留 2 秒",
 		"R 重开 · Esc 暂停 · F11 全屏 · 练习 N 试网"
 	]
