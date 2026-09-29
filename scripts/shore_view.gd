@@ -138,14 +138,22 @@ func _underwater(view: Node2D, world: Node2D, t: float) -> void:
 		var path := projected(view.line_frame.path,world)
 		path[0]=float_at
 		view.draw_polyline(path,Color(0.51,0.66,0.65,0.10),1)
-	for bait in world.baits:
+	for bait_index in world.baits.size():
+		var bait: Dictionary=world.baits[bait_index]
 		if not bait.active or bait.removed: continue
-		var p := to_screen(bait.pos,world)
+		var p := to_screen(view._bait_point(bait_index,bait.pos),world)
 		view.draw_circle(p,2.5,Color(0.65,0.64,0.41,0.11))
 	var position := to_screen(world.fish,world)+Vector2(sin(t*1.3)*1.2,cos(t*1.7)*0.5)
 	var direction: Vector2=(to_screen(world.fish+world.aim)-to_screen(world.fish)).normalized()
 	var fish_shape := PackedVector2Array([Vector2(12,0),Vector2(5,-4),Vector2(-5,-4),Vector2(-9,-2),Vector2(-15,-5),Vector2(-13,0),Vector2(-15,5),Vector2(-9,2),Vector2(-5,4),Vector2(5,4)])
-	for index in fish_shape.size(): fish_shape[index]=position+fish_shape[index].rotated(direction.angle())
+	var fish_pose: Dictionary=view.line_frame.fish
+	if fish_pose.active:
+		position=to_screen(fish_pose.position,world)
+		var axis_x: Vector2=(to_screen(Vector2(fish_pose.position)+Vector2(fish_pose.axis_x),world)-position)
+		var axis_y: Vector2=(to_screen(Vector2(fish_pose.position)+Vector2(fish_pose.axis_y),world)-position)
+		for index in fish_shape.size(): fish_shape[index]=position+axis_x*fish_shape[index].x+axis_y*fish_shape[index].y
+	else:
+		for index in fish_shape.size(): fish_shape[index]=position+fish_shape[index].rotated(direction.angle())
 	if world.net_state=="caught" or world.landing:
 		view.draw_set_transform(position,direction.angle())
 		view.draw_texture(view.fish_texture,Vector2(-12,-6))

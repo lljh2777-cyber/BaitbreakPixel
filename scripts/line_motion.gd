@@ -4,6 +4,7 @@ extends RefCounted
 # authoritative; both views draw these same continuous segments.
 const STEPS := 28
 const COIL_STEPS := 64
+const FishWinding=preload("res://scripts/fish_winding.gd")
 var last_time := -1.0
 var last_target := -1
 var last_progress := 1.0
@@ -31,8 +32,10 @@ func sample(world: Node2D) -> Dictionary:
 			motion={"active":true,"unwind":true,"progress":1-p,"strength":pow(sin(PI*p),2)}
 		else: return_target=-1
 	else: return_target=-1
-	var frame := build(world,overrides)
+	var fish_pose:=FishWinding.pose(world)
+	var frame := build(world,overrides,fish_pose)
 	frame.action=motion
+	frame.fish=fish_pose
 	last_time=world.elapsed; last_target=target; last_progress=progress; last_unwind=unwind
 	return frame
 
@@ -117,11 +120,13 @@ static func point_at(points: PackedVector2Array, distances: PackedFloat32Array, 
 	var end := clampi(distances.bsearch(distance),1,points.size()-1)
 	return points[end-1].lerp(points[end],clampf((distance-distances[end-1])/maxf(0.0001,distances[end]-distances[end-1]),0,1))
 
-static func build(world: Node2D, override: Dictionary={}) -> Dictionary:
+static func build(world: Node2D, override: Dictionary={}, fish_pose: Dictionary={}) -> Dictionary:
 	var data := {"path":PackedVector2Array(),"front":[],"effects":[],"tail":PackedVector2Array()}
 	if world.hooked!=world.HookState.HOOKED or world.bound_bait<0: return data
 	var previous: Vector2=world.line_anchor(world.bound_bait)
 	var mouth: Vector2=world.mouth()
+	var fish_orbit: bool=fish_pose.get("active",false)
+	if fish_orbit: mouth=fish_pose.mouth
 	if world.wraps.is_empty():
 		data.tail=strand(world,previous,mouth,world.rope_length)
 		append_piece(data,data.tail,false)
@@ -143,7 +148,7 @@ static func build(world: Node2D, override: Dictionary={}) -> Dictionary:
 		var tail: PackedVector2Array=PackedVector2Array()
 		if last:
 			tail=strand(world,ring[-1],mouth,world.fish_line_length,geometry.tangent)
-			append_piece(local,tail,true)
+			append_piece(local,tail,fish_pose.front if fish_orbit else true)
 			if moving:
 				var offset: float=world.fish_line_length-Vector2(wrap.entry).distance_to(mouth)
 				var released: float=previous.distance_to(mouth)+offset+(0.32*world.LINE_ELASTIC_PIXELS if index==0 else 0.0)

@@ -6,6 +6,7 @@ const Gauge = preload("res://scripts/hook_gauge.gd")
 const AnglerVisual = preload("res://scripts/angler_visual.gd")
 const Shore = preload("res://scripts/shore_view.gd")
 const LineMotion = preload("res://scripts/line_motion.gd")
+const FishWinding = preload("res://scripts/fish_winding.gd")
 var line_frame: Dictionary={}
 var line_motion := LineMotion.new()
 const INK := Color("142e39")
@@ -110,6 +111,9 @@ func _world(t: float) -> void:
 		var x := index*47-16
 		var height := 12 + index*17%29
 		draw_colored_polygon(PackedVector2Array([Vector2(x,315),Vector2(x+5,313-height),Vector2(x+22,306-height),Vector2(x+42,315-height/2),Vector2(x+52,320)]),Color("275963"))
+	# The far half of the lap is genuinely behind wood, rocks and both weed layers.
+	_winding_fish(t,false)
+	_baits(t,true)
 	_plants(t,true)
 	draw_rect(Rect2(0, 313, 640, 47), Color("697f70"))
 	for x in range(0,640,4):
@@ -191,9 +195,15 @@ func _make_plant_layer(t: float, plant_index: int) -> Dictionary:
 	region = region.intersection(Rect2i(0,0,640,112))
 	return {"texture":ImageTexture.create_from_image(canvas.get_region(region)),"position":Vector2(region.position)+Vector2(0,205)}
 
-func _baits(t: float) -> void:
+func _bait_point(index: int, point: Vector2) -> Vector2:
+	if index!=world.bound_bait: return point
+	return FishWinding.attached_point(world,line_frame.fish,point)
+
+func _baits(t: float, behind: bool=false) -> void:
 	for index in world.baits.size():
 		var bait: Dictionary = world.baits[index]
+		var orbit: bool=line_frame.fish.active and index==world.bound_bait
+		if behind!=(orbit and not line_frame.fish.front): continue
 		# Net activity suppresses new bites, not the physical hook or its hanging line.
 		if bait.active and bait.hook and not bait.removed:
 			if world.bound_bait != index:
@@ -206,7 +216,7 @@ func _baits(t: float) -> void:
 					filament.append(point.round())
 				draw_polyline(filament,Color("b9d5bf"),1)
 			var hook := PackedVector2Array([Vector2(-5,-10),Vector2(-5,4),Vector2(-3,7),Vector2(1,7),Vector2(3,5),Vector2(3,1),Vector2.ZERO])
-			for point in hook.size(): hook[point] = world.hook_point(index,hook[point]).round()
+			for point in hook.size(): hook[point] = _bait_point(index,world.hook_point(index,hook[point])).round()
 			draw_polyline(hook, RED if world.bound_bait == index else Color("e1e3ce"), 1)
 		var flashing: bool = world.cycle_phase == "warning" and world.cycle_slot == index and int(t * 6) % 2 == 0
 		for grain in bait.grains:
@@ -217,17 +227,18 @@ func _baits(t: float) -> void:
 			if grain.fleck == 0: color = color.lightened(0.13)
 			if flashing and not grain.free: color = RED
 			var p: Vector2 = Vector2(grain.pos).round()
+			if not grain.free: p=_bait_point(index,grain.pos).round()
 			if grain.free:
 				draw_rect(Rect2(p,Vector2.ONE),color.lightened(0.15))
 			else:
 				draw_rect(Rect2(p,Vector2(2,2) if grain.layer<2 else Vector2.ONE),color.darkened(0.18))
 				draw_rect(Rect2(p,Vector2(2 if grain.fleck%2 else 1,1)),color)
-		if bait.active and not game.menu.visible:
+		if bait.active and not game.menu.visible and not orbit:
 			var label := "有钩饵" if bait.hook and not bait.removed else "散饵"
 			label_at(Vector2(bait.pos) + Vector2(-17, -14), label, 10, Color("bdd4be"))
 		# A tiny glint remains at the actual tip after the grains are drawn over the hook.
 		if bait.active and bait.hook and not bait.removed:
-			draw_rect(Rect2(world._tip(index).round(),Vector2.ONE),RED if world.bound_bait==index else CREAM)
+			draw_rect(Rect2(_bait_point(index,world._tip(index)).round(),Vector2.ONE),RED if world.bound_bait==index else CREAM)
 
 func _angler(t: float) -> void:
 	if not world.uses_mobile_tackle(): return
@@ -396,7 +407,39 @@ func _line() -> void:
 	elif world.hooked == world.HookState.MOUTH:
 		draw_line(world.line_anchor(world.bound_bait), world.mouth(), RED, 1)
 
+func _winding_fish(t: float, front: bool) -> void:
+	var pose: Dictionary=line_frame.fish
+	if not pose.active or pose.front!=front: return
+	var transform:=Transform2D(pose.axis_x,pose.axis_y,Vector2(pose.position).round())
+	var tint:=Color.WHITE.darkened(1.0-float(pose.shade))
+	# Keep the head/mouth rigid; animate the tail around its attachment point.
+	var tail:=Transform2D(sin(t*38)*0.28*float(pose.blend),Vector2(-4,0))
+	draw_set_transform_matrix(transform*tail)
+	draw_texture_rect_region(fish_texture,Rect2(-8,-6,8,12),Rect2(0,0,8,12),tint)
+	draw_set_transform_matrix(transform)
+	draw_texture_rect_region(fish_texture,Rect2(-4,-6,16,12),Rect2(8,0,16,12),tint)
+	draw_set_transform(Vector2.ZERO)
+	# A tiny end-on pose preserves body volume at the two tight turns. It
+	# replaces the wafer-thin profile with a face / tail in the same palette.
+	if pose.end_on>0.15:
+		var p: Vector2=Vector2(pose.position).round()
+		var half:=maxi(1,roundi(float(pose.end_on)*3))
+		draw_rect(Rect2(p+Vector2(-half,-4),Vector2(half*2+1,8)),Color("985436"))
+		draw_rect(Rect2(p+Vector2(-half+1,-4),Vector2(half*2-1,8)),Color("e6a448"))
+		draw_rect(Rect2(p+Vector2(-half+1,-5),Vector2(half*2-1,1)),Color("985436"))
+		draw_rect(Rect2(p+Vector2(-half+1,4),Vector2(half*2-1,1)),Color("985436"))
+		if pose.toward_camera and half>=2:
+			for side in [-1,1]:
+				draw_rect(Rect2(p+Vector2(side*(half-1)-1,-2),Vector2(2,2)),CREAM)
+				draw_rect(Rect2(p+Vector2(side*(half-1),-1),Vector2.ONE),INK)
+			draw_rect(Rect2(Vector2(pose.mouth).round(),Vector2.ONE),Color("985436"))
+		elif half>=2:
+			draw_line(p+Vector2(0,-3),p+Vector2(sin(t*38),3),Color("ffd879"),1)
+
 func _player(t: float) -> void:
+	if line_frame.fish.active:
+		_winding_fish(t,true)
+		return
 	var mouth: Vector2 = world.mouth()
 	var direction: Vector2 = world.aim
 	if world.hooked == world.HookState.FREE and not game.menu.visible and (game.player_role=="fish" or world.feeding):

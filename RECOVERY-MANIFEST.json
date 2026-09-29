@@ -1,6 +1,6 @@
 {
-  "version": "0.18.1",
-  "pack_sha256": "741e98a3b17d13ae316e038754292e1818a1698409d779ebb5131d972e84e045",
+  "version": "0.18.2",
+  "pack_sha256": "1c25ae65a39e09cb739b2d74c955b77326cf3b2e98888c4a306d6d4f206b97b7",
   "script_sha256": {
     "scripts/angler_brain.gd": "fc11a008e3af864723438870cc3b074b2a0cae31ec1c5112f1749ef449508e87",
     "scripts/angler_controller.gd": "cf870f0d5277403a54ee51ee6e7e5b8f1dee032241636046e505974567136a7a",
@@ -9,23 +9,24 @@
     "scripts/angler_visual.gd": "220f2896ef24c9342bfc7b5b5cbc76c0b2169b78e2d20dae8acae559ff612529",
     "scripts/effort_check.gd": "e9c97e89ee095167d17c89fa19d24bc09e08406f832ab736c5e71631ba0b7bb1",
     "scripts/fish_brain.gd": "6bf5734d68ee1a78d720190e001efe98c5bd3ba702c019b9a83990bf192f5629",
+    "scripts/fish_winding.gd": "e2758db5fc192263751fb3ee45d6297778dd6071150a90088a650c6dd464e0d0",
     "scripts/game_commands.gd": "c295b59cf13725e09e1235b14d04ca737628dc23feefd5d70f46e7754f808f52",
     "scripts/hand_palette.gdshader": "821a1a18ea07e9fc77ce72aca698253e79a43b16f4a0c1c30c91416edb944211",
     "scripts/hook_gauge.gd": "4fe42c7690fa40f42e970af97eb26915793ec166c01b06da3ea21eb1fb692593",
-    "scripts/line_motion.gd": "00f4e9837b06e3c0730f18071ea600d7a9c9b333c41d3827b9264f01ade2e47a",
+    "scripts/line_motion.gd": "6fb7e4bee052dc2e54d87fb6f0973433b8353ef3ef7ecb3b306608c8922fbb68",
     "scripts/local_input.gd": "023a88c192da7743289354e6755c0d3686b7720a49968af88d2110854369899f",
-    "scripts/menu.gd": "5cf23c0a34e6dfd9e943a3002a5a225d4228b50c9ebc893f9ae631a86214674c",
+    "scripts/menu.gd": "92074d28b94246057edbce72c61d5ee44c3efa9064c6d25fe314468e56b58c6b",
     "scripts/network_presentation.gd": "f46cae1147ad30a00d2d6b82db281ac75f52667d50e853d091d88804ca97e545",
     "scripts/network_protocol.gd": "27baeea5c090aa696ff3c8e4d10ea214d38c60414899e88c89328b42fe88b2c3",
     "scripts/network_session.gd": "957b3b9a64f88a784fc0990f55a3a30f96298de82d881189e1052fe3fe1f3e2f",
     "scripts/pixel_art.gd": "888fc105bd231fcbd7cee637cb515d3aa254aebf23af05a6730c974f21eb5c4a",
-    "scripts/pond.gd": "1876032737e70060a4de4ccf1cb38e710dc64f2417b433f85b07cd34f78d756d",
+    "scripts/pond.gd": "7bea4586224e46c3b462af4db7e767fbfe2a9dc42a2fdcc24594cb7f543da072",
     "scripts/pond_layout.gd": "516f4fbbead3281ebc09e921fbebc77917c1e611a698a217a5b083f14c7678fe",
-    "scripts/pond_view.gd": "c8f4c8d3d698a46b733125df3592d36ac473e25a4d6f4bc4ae0faceefffc3d5e",
+    "scripts/pond_view.gd": "704d410457ed6f4951a90afd63e9dd5b92cd4d25449bc036b4a4d224cfdd79f9",
     "scripts/reel_hand.gd": "839b66825a8ab2f76ff76a7e6eec6d3581e13bd374c02155dc5f229377ccc93d",
     "scripts/rope.gd": "2e30152e65b00f39fe25324b992afd39925acfadd80b64dce385df865d69fe42",
     "scripts/round_stats.gd": "26e661c82bcdcea08f970e4d639d57d47c39a6febdbd8612a6e5a1a253e6fd5c",
-    "scripts/shore_view.gd": "de046c6878a073d65e557b508de5fb3fac2e0f163d2a78a907490838c178775a",
+    "scripts/shore_view.gd": "09f91ee65fa36f009c8e4f4d19458cf7795b98576481ae5dae3f4c55268c311e",
     "scripts/sound.gd": "284a28068b134f48c78e641e5edcb9d43448f4a19212ce90cf327d3ecdf564da",
     "scripts/world_simulation.gd": "6fb34a6b905f732d6237e6c6106b529ffdff65bf4d68ac1342417b1bb1133192",
     "scripts/world_snapshot.gd": "9502fed2f5bb0cbb3c07df6ceddc7240ffd924f02664e743048aa472be8e551a"
@@ -38,5 +39,5 @@
     "assets/first_person/reference_tackle_v0158.png": "02d429847472aa4a7152cfbc84832249060174b2a361aa5b3844816d19eab4c4",
     "assets/first_person/sunset_lake.png": "1284feae9dec7733199166d38cd54847e4cebca2b27d64daf71cdd10ae4c3b9f"
   },
-  "exported_resources": 44
+  "exported_resources": 45
 }
