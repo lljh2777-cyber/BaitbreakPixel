@@ -199,7 +199,7 @@ func _send(packet: Dictionary, reliable: bool, channel: int) -> void:
 
 func _handle(packet: Dictionary) -> void:
 	if packet.get("v")!=Protocol.VERSION:
-		fail("联机协议不兼容，请双方使用 0.13 版"); return
+		fail("联机协议不兼容，请双方使用 0.14 版"); return
 	var kind: String=packet.get("kind","") if packet.get("kind","") is String else ""
 	last_rx=now()
 	if kind=="ping" and packet.get("token") is int:
@@ -209,11 +209,11 @@ func _handle(packet: Dictionary) -> void:
 		ping_tokens.erase(packet.token); return
 	if kind=="hello" and is_host and status=="waiting":
 		if packet.get("build")!=Protocol.BUILD:
-			_send({"kind":"reject","reason":"版本不同，请双方使用 0.13 版"},true,2); return
+			_send({"kind":"reject","reason":"版本不同，请双方使用 0.14 版"},true,2); return
 		_send({"kind":"welcome","session":session_id,"role":remote_role,"config":config,"build":Protocol.BUILD,"ready":local_ready},true,2)
 		message="玩家已连接，双方准备后开始"
 		changed.emit(); return
-	if kind=="reject" and not is_host: fail("版本不同，请双方使用 0.13 版"); return
+	if kind=="reject" and not is_host: fail("版本不同，请双方使用 0.14 版"); return
 	if kind=="welcome" and not is_host and status=="connecting":
 		if packet.get("build")!=Protocol.BUILD or not packet.get("role") in ["fish","angler"] or not packet.get("config") is Dictionary or not packet.get("session") is String: fail("房间信息无效"); return
 		session_id=packet.session
@@ -332,7 +332,7 @@ func tick(delta: float, local_command: Dictionary) -> void:
 			_phase("finished")
 			_send_state(true)
 		elif before!=_check_identity(): _send_state(true)
-		elif not game.qte.is_empty() or game.qte_result_age>0 or game.effort_checks.fish.active or game.effort_checks.angler.active or game.effort_checks.fish.effect_age>0 or game.effort_checks.angler.effect_age>0:
+		elif not game.qte.is_empty() or game.qte_result_age>0 or game.effort_checks.fish.active or game.effort_checks.angler.active or game.effort_checks.fish.effect_age>0 or game.effort_checks.angler.effect_age>0 or game.net_state in ["prepare","warning","sweep","caught"]:
 			# A missing fragment must not hide a short skill window. While a check
 			# is active, send complete reliable states at 10 Hz, with interpolation.
 			if game.simulation_tick-last_snapshot_tick>=6: _send_state(true)
@@ -347,7 +347,7 @@ func tick(delta: float, local_command: Dictionary) -> void:
 			"seen_tick":displayed.simulation_tick,"qte_id":check.id if check.kind=="effort" and check.active else displayed.qte_id,"check_kind":"effort" if check.kind=="effort" and check.active else "regular","events":events,"gesture":gesture_id},true,1)
 
 func _check_identity() -> Array:
-	return [game.qte_id,game.qte,game.qte_result_age>0,game.effort_checks.fish.id,game.effort_checks.fish.active,game.effort_checks.fish.effect_age>0,game.effort_checks.angler.id,game.effort_checks.angler.active,game.effort_checks.angler.effect_age>0]
+	return [game.qte_id,game.qte,game.qte_result_age>0,game.effort_checks.fish.id,game.effort_checks.fish.active,game.effort_checks.fish.effect_age>0,game.effort_checks.angler.id,game.effort_checks.angler.active,game.effort_checks.angler.effect_age>0,game.net_state,game.net_capture>0]
 
 func _tag_events(command: Dictionary) -> Array[Dictionary]:
 	var result: Array[Dictionary]=[]

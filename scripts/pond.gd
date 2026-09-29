@@ -45,8 +45,9 @@ func reset(is_challenge: bool, role: String = "fish") -> void:
 	fish_source="ai" if player_role=="angler" else "local"
 	angler_source="local" if player_role=="angler" else "ai"
 	var brain_seed := rng.randi()
-	reset_world({"ruleset":"duel" if player_role=="angler" else "survival","challenge":is_challenge or player_role=="angler","seed":rng.randi(),
+	reset_world({"ruleset":"duel" if player_role=="angler" else "survival","challenge":is_challenge,"seed":rng.randi(),
 		"slack_hold":slack_hold_seconds,"mouth_window":mouth_window_seconds,"break_hold":break_hold_seconds,
+		"effort_frequency":practice_effort_frequency,"effort_window":practice_effort_window,"effort_boost":practice_effort_boost,"effort_weak":practice_effort_weak,
 		"line_sensitivity":practice_line_sensitivity,"line_force":practice_line_force,"water_strength":water_strength})
 	fish_brain.reset(brain_seed)
 	local_input.reset()
@@ -56,7 +57,7 @@ func reset(is_challenge: bool, role: String = "fish") -> void:
 
 func start_shared_session(local_role: String, config: Dictionary) -> void:
 	if not shared_session:
-		for key in ["slack_hold_seconds","mouth_window_seconds","break_hold_seconds","practice_line_sensitivity","practice_line_force","water_strength"]:
+		for key in ["slack_hold_seconds","mouth_window_seconds","break_hold_seconds","practice_line_sensitivity","practice_line_force","water_strength","practice_effort_frequency","practice_effort_window","practice_effort_boost","practice_effort_weak"]:
 			offline_rules[key]=get(key)
 	player_role="angler" if local_role=="angler" else "fish"
 	shared_session=true
@@ -113,7 +114,7 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | side-view | 640x360 | v0.13.1 | left-qte")
+	print("PIXEL_READY | side-view | 640x360 | v0.14 | tug-feedback-and-net-closure")
 
 func _register_inputs() -> void:
 	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[], "use":[KEY_E], "slow":[KEY_Q], "qte":[KEY_SPACE]}
@@ -148,6 +149,7 @@ func _load_profile() -> void:
 		wins = maxi(0, int(file.get_value("record", "wins", 0)))
 		angler_wins=maxi(0,int(file.get_value("record","angler_wins",0)))
 		set_practice_line_tuning(float(file.get_value("practice", "line_sensitivity", 1.0)),float(file.get_value("practice", "line_force", 1.0)))
+		set_practice_effort_tuning(float(file.get_value("practice","effort_frequency",1.0)),float(file.get_value("practice","effort_window",0.2)),float(file.get_value("practice","effort_boost",1.35)),float(file.get_value("practice","effort_weak",0.6)))
 		var window := float(file.get_value("timing","mouth_window",0.24))
 		if file.has_section_key("timing","mouth_window") and int(file.get_value("timing","qte_revision",0))<1: window*=0.6
 		set_escape_timing(float(file.get_value("timing","slack_hold",0.5)),window,float(file.get_value("timing","break_hold",3.0)))
@@ -161,6 +163,8 @@ func save_profile() -> void:
 	file.set_value("record","angler_wins",angler_wins)
 	file.set_value("practice", "line_sensitivity", offline_rules.get("practice_line_sensitivity",practice_line_sensitivity))
 	file.set_value("practice", "line_force", offline_rules.get("practice_line_force",practice_line_force))
+	for key in ["effort_frequency","effort_window","effort_boost","effort_weak"]:
+		file.set_value("practice",key,offline_rules.get("practice_"+key,get("practice_"+key)))
 	file.set_value("timing","slack_hold",offline_rules.get("slack_hold_seconds",slack_hold_seconds))
 	file.set_value("timing","mouth_window",offline_rules.get("mouth_window_seconds",mouth_window_seconds))
 	file.set_value("timing","qte_revision",1)
@@ -224,6 +228,7 @@ func controlled_step(delta: float, angler_command: Dictionary = {}) -> void:
 
 func hint() -> String:
 	if player_role=="angler": return angler_hint()
+	if net_state=="sweep" and net_capture>0: return "网袋正在收拢！趁现在游出网口，右键冲刺会消耗体力"
 	if landing: return "被拉出水了……" if challenge else "被拉出水了 · 正在送回巢边"
 	if net_state=="caught": return "被抄网捞起……" if challenge else "被抄中了 · 正在送回巢边"
 	if hooked == HookState.MOUTH: return "暂时不能移动 · 浮漂进入绿区时按空格"
@@ -254,7 +259,7 @@ func angler_hint() -> String:
 	if landing or net_state=="caught": return "鱼已被控制 · 正在提出水面"
 	if effort_checks.angler.active: return "保持 W 收线 · 发力浮漂到绿区按空格"
 	if manual_net and net_state in ["prepare","warning"]: return "抄网展开中 · 保持 E + 左键画路线，转弯会被保留"
-	if manual_net and net_state=="sweep": return "网口沿所画路线前进 · 保持 E + 左键；W/S 仍可收放线"
+	if manual_net and net_state=="sweep": return "保持网口接触直到收拢 · 疲惫、接近水面的上钩鱼更易捕获"
 	if angler.net_held and not net_blocks_hooks(): return "持网中 · 在水中按住左键拖动；松开 E 取消"
 	if angler.casting: return "正在下钩…"
 	if hooked==HookState.MOUTH: return "鱼正在尝试松口 · 挂牢后 W/S 收放线"

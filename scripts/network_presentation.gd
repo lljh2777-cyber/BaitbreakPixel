@@ -30,6 +30,8 @@ func sample(now: float) -> Node2D:
 		world.fish=Vector2(a.fish).lerp(b.fish,ratio)
 		world.aim=Vector2(a.aim).slerp(b.aim,ratio)
 	else: world.fish=b.fish; world.aim=b.aim
+	world.fish_before=world.fish-(Vector2(b.fish)-Vector2(b.fish_before))
+	world.net_capture=lerpf(a.net_capture,b.net_capture,ratio) if a.net_state=="sweep" and b.net_state=="sweep" else b.net_capture
 	world.angler.x=lerpf(previous.rig.x,current.rig.x,ratio)
 	for index in world.baits.size():
 		var old: Dictionary=a.baits[index]

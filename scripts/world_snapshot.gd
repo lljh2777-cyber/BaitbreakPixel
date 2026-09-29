@@ -1,7 +1,7 @@
 extends RefCounted
 
 # Explicit, versioned value schema. Local views, input sources and profiles are excluded.
-const SCHEMA := 3
+const SCHEMA := 4
 const MAP_ID := "pond_v1"
 const WORLD_FIELDS: Array[String] = [
 	"fish",
@@ -114,6 +114,12 @@ const WORLD_FIELDS: Array[String] = [
 	"qte_id",
 	"qte_grace_seconds",
 	"effort_checks",
+	"practice_effort_frequency",
+	"practice_effort_window",
+	"practice_effort_boost",
+	"practice_effort_weak",
+	"round_stats",
+	"net_capture",
 ]
 const RIG_FIELDS: Array[String] = [
 	"x",
@@ -191,6 +197,9 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 	if state.qte_id<0 or not state.qte in ["","entry","slack","wrap"]: return false
 	for role in ["fish","angler"]:
 		if not world.Effort.valid(state.effort_checks.get(role)): return false
+	if not world.Stats.valid(state.round_stats) or state.net_capture<0 or state.net_capture>1: return false
+	if state.practice_effort_frequency<0.5 or state.practice_effort_frequency>2 or state.practice_effort_window<0.12 or state.practice_effort_window>0.5: return false
+	if state.practice_effort_boost<1.1 or state.practice_effort_boost>1.8 or state.practice_effort_weak<0.3 or state.practice_effort_weak>0.9: return false
 	if not state.net_state in ["wait","rest","prepare","warning","sweep","miss","withdraw","caught"]: return false
 	if state.wrap_target < -1 or state.wrap_target>=world.targets.size(): return false
 	if state.contact_target < -1 or state.contact_target>=world.targets.size(): return false

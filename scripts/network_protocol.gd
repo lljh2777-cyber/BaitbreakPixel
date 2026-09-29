@@ -1,8 +1,8 @@
 extends RefCounted
 
 const VERSION := 1
-# Peers must share the random skill-check and exertion rules introduced in 0.13.
-const BUILD := "0.13"
+# Peers must share capture timing and the round-statistics snapshot schema.
+const BUILD := "0.14"
 const DEFAULT_PORT := 24712
 const MAX_PACKET := 196608
 const MAX_STATE := 1048576

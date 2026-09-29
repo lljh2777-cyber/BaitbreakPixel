@@ -250,13 +250,13 @@ func _angler(t: float) -> void:
 func _angler_hud(_t: float) -> void:
 	draw_rect(Rect2(0,0,640,29),INK)
 	label_at(Vector2(12,19),"钓鱼人",13,GOLD)
-	label_at(Vector2(94,19),"鱼的食物 %02d / 60" % int(world.score),12,CREAM)
+	label_at(Vector2(94,19),"鱼的食物 %02d / %d" % [int(world.score),60 if world.challenge else 18],12,CREAM)
 	label_at(Vector2(237,19),"鱼体力",11,CREAM)
 	draw_rect(Rect2(281,11,62,6),Color("335762"))
 	draw_rect(Rect2(281,11,62*world.stamina/100,6),MINT)
 	label_at(Vector2(360,19),"抄网 %.1fs" % world.angler.net_cooldown if world.angler.net_cooldown>0 else "E + 拖动 抄网",11,MINT)
 	var remaining := maxi(0,int(ceil(world.TIME_LIMIT-world.clock)))
-	label_at(Vector2(529,20),"%02d:%02d" % [remaining/60,remaining%60],14,CREAM)
+	label_at(Vector2(529,20),"%02d:%02d" % [remaining/60,remaining%60] if world.challenge else "练习 · F2",14,CREAM)
 	draw_rect(Rect2(0,327,640,33),INK)
 	label_at(Vector2(12,341),game.angler_hint(),11,GOLD)
 	label_at(Vector2(12,355),"A/D 钓位   W/S 收放线   Q 下钩 / 补饵   E + 左键拖网   F3 时间",10,Color("9cbbb4"))
@@ -268,7 +268,7 @@ func _angler_hud(_t: float) -> void:
 		label_at(Vector2(18,81),"张力 %d%% · %s" % [int(world.tension*100),spool],11,RED if world.tension>=0.88 else CREAM)
 		draw_rect(Rect2(18,88,134,5),Color("335762"))
 		draw_rect(Rect2(18,88,134*world.tension,5),MINT.lerp(RED,world.tension))
-		label_at(Vector2(18,108),"断线风险 %.1f / %.1fs" % [world.high_age,world.break_hold_seconds] if world.high_age>0 else "小鱼 · "+("玩家操控" if game.shared_session else game.fish_brain.state),10,RED if world.high_age>0 else MINT)
+		label_at(Vector2(18,108),"断线风险 %.1f / %.1fs" % [world.high_age,world.break_hold_seconds] if world.high_age>0 else world.tug_status(),10,RED if world.high_age>0 else MINT)
 	elif world.hooked==world.HookState.MOUTH:
 		label_at(Vector2(18,81),"小鱼 · "+("玩家操控" if game.shared_session else game.fish_brain.state),11,MINT)
 		label_at(Vector2(18,100),"吐钩判定中 · 暂缓收放",10,GOLD)
@@ -301,8 +301,33 @@ func _line_back() -> void:
 	if world.hooked == world.HookState.HOOKED and world.rope_path.size() >= 2:
 		var points: PackedVector2Array=world.rope_path
 		if world.wraps.is_empty(): points=_slack_line(points[0],points[-1],world.rope_length,world.angler.line_sway*(1-world.tension)*0.5 if world.uses_mobile_tackle() else 0.0)
+		if world.wraps.is_empty(): points=_line_vibration(points)
 		draw_polyline(points,INK,3)
 		draw_polyline(points,MINT.lerp(RED,world.tension),1)
+		if world.wraps.is_empty(): _line_force_marks(points)
+
+func _line_vibration(path: PackedVector2Array) -> PackedVector2Array:
+	var points := path.duplicate()
+	var force: float=absf(world.effort_multiplier("angler")-1)+absf(world.effort_multiplier("fish")-1)
+	var amplitude: float=world.tension*minf(1.5,0.4+force*2)
+	var normal := (points[-1]-points[0]).normalized().orthogonal()
+	for index in range(1,points.size()-1):
+		var ratio := index/float(points.size()-1)
+		points[index]+=normal*sin(ratio*PI)*sin(world.elapsed*28-ratio*18)*amplitude
+	return points
+
+func _line_force_marks(path: PackedVector2Array) -> void:
+	if world.tension<0.25 or path.size()<2: return
+	var human: float=world.effort_multiplier("angler")
+	var fish_force: float=world.effort_multiplier("fish")
+	if is_equal_approx(human,fish_force): return
+	var color := GOLD if human>fish_force else MINT
+	for index in 3:
+		var progress := fmod(world.elapsed*0.8+index/3.0,1)
+		if human>fish_force: progress=1-progress
+		var p := _track_point(path,progress)
+		var neighbor := _track_point(path,clampf(progress+(0.04 if human>fish_force else -0.04),0,1))
+		draw_line(neighbor,p,color,2)
 
 func _line() -> void:
 	if world.hooked==world.HookState.HOOKED:
@@ -321,8 +346,10 @@ func _line() -> void:
 			var coil: PackedVector2Array = world.visible_coil(world.wraps[-1])
 			var start: Vector2 = coil[-1]
 			var points := _slack_line(start,world.mouth(),world.fish_line_length)
+			points=_line_vibration(points)
 			draw_polyline(points,INK,3)
 			draw_polyline(points,MINT.lerp(RED,world.tension),1)
+			_line_force_marks(points)
 		if world.contact_target>=0 and not world.winding() and not game.menu.visible:
 			var target: Dictionary = world.targets[world.contact_target]
 			var outline: PackedVector2Array = target.polygon.duplicate()
@@ -357,13 +384,21 @@ func _player(t: float) -> void:
 		position.y += int(sin(t * 32) * 1.5)
 	elif world.velocity.length() > 5:
 		position.y += int(sin(t * 18))
+	var effort: float=world.effort_multiplier("fish")
+	if world.hooked==world.HookState.HOOKED and not world.landing:
+		tilt+=sin(t*(30 if effort>1 else 10))*0.08*world.tension
+		if effort<1: tilt+=0.13*flip
 	if world.sprinting:
 		for index in range(7):
 			var life := fmod(t*2.8+index/7.0,1)
 			var wake: Vector2 = position-direction*(13+life*27)+direction.orthogonal()*sin(index*2.7)*5
 			draw_rect(Rect2(wake.round(),Vector2(3,1)),Color(MINT,(1-life)*0.65))
 	draw_set_transform(position, tilt, Vector2(flip, 1))
-	draw_texture(fish_texture, Vector2(-12,-6))
+	if world.resisting or effort>1:
+		var tail := Vector2(-13,sin(t*(32 if effort>1 else 20))*3)
+		draw_line(Vector2(-7,0),tail+Vector2(-4,-3),GOLD if effort>1 else MINT,2)
+		draw_line(Vector2(-7,0),tail+Vector2(-4,3),GOLD if effort>1 else MINT,2)
+	draw_texture(fish_texture, Vector2(-12,-6),Color("b8c3c6") if effort<1 else Color.WHITE)
 	draw_set_transform(Vector2.ZERO)
 	if world.hooked==world.HookState.HOOKED and not world.landing:
 		var pull: Vector2 = world.line_pull_velocity()
@@ -455,6 +490,7 @@ func _draw_landing_net(p: Vector2, t: float, front: bool) -> void:
 	var angle: float=world.net_angle
 	var caught: bool=world.net_state=="caught"
 	var settling: float=smoothstep(0,1,world.net_age/world.NET_SETTLE) if caught else 0.0
+	if not caught and world.net_state=="sweep": settling=world.net_capture*0.45
 	var outline := PackedVector2Array()
 	var bag := PackedVector2Array()
 	var back: Vector2=p+world.net_bag_offset()*opening
@@ -495,6 +531,9 @@ func _draw_landing_net(p: Vector2, t: float, front: bool) -> void:
 		if outline[index].y<p.y: draw_line(outline[index-1],outline[index],CREAM,1)
 		else: draw_line(outline[index-1],outline[index],Color("8dbeac"),1)
 	draw_rect(Rect2(joint-Vector2(3,3),Vector2(7,6)),Color("8cabad"))
+	if world.net_state=="sweep" and world.net_capture>0:
+		draw_arc(p,37,-PI/2,-PI/2+TAU*world.net_capture,40,GOLD,2)
+		label_at(p+Vector2(-26,-43),"收拢 %d%%" % int(world.net_capture*100),10,GOLD)
 
 func _hud(t: float) -> void:
 	if game.menu.visible: return
@@ -535,7 +574,7 @@ func _hud(t: float) -> void:
 		draw_rect(Rect2(18,86,132,6), Color("335762"))
 		draw_rect(Rect2(18,86,132*world.tension,6), MINT.lerp(RED,world.tension))
 		var spool := "放线 ↓" if world.reel_speed>0.5 else ("收线 ↑" if world.reel_speed < -0.5 else "稳线")
-		label_at(Vector2(18,105), spool+(" · 缠绕减力" if world.latched else " · 向水面牵引"), 9, Color("9cbbb4"))
+		label_at(Vector2(18,105),spool+" · "+world.tug_status(),9,Color("9cbbb4"))
 		if world.high_age > 0:
 			draw_rect(Rect2(10,112,148*minf(1,world.high_age/world.break_hold_seconds),3), RED)
 	_skill_hud(t)
@@ -548,7 +587,7 @@ func _skill_hud(t: float) -> void:
 		var color := MINT if state.multiplier>1 else RED
 		var p := SKILL_ORIGIN
 		panel(Rect2(p,Vector2(180,20)))
-		label_at(p+Vector2(8,14),("加力" if state.multiplier>1 else "脱力")+" · %.1f 秒" % state.effect_age,11,color)
+		label_at(p+Vector2(8,14),("加力" if state.multiplier>1 else "脱力")+" %d%% · %.1f 秒" % [roundi(state.multiplier*100),state.effect_age],11,color)
 
 func _qte(t: float, check: Dictionary) -> void:
 	var showing_result: bool = not check.active

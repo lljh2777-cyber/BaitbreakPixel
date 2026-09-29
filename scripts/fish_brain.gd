@@ -31,7 +31,7 @@ func reset(seed_value: int = 2719) -> void:
 	evade_memory=0
 
 func hold(game: Node2D, point: Vector2) -> Vector2:
-	var speed: float = 70.0*lerpf(0.4,1.0,clampf(game.stamina/20,0,1))*game.vegetation_drag(game.fish)
+	var speed: float = 70.0*lerpf(0.4,1.0,clampf(game.stamina/20,0,1))*game.vegetation_drag(game.fish)*game.effort_multiplier("fish")
 	return ((point-game.fish)*4-game.line_pull_velocity()-game.water_velocity(game.fish))/maxf(1,speed)
 
 func _judge(game: Node2D) -> bool:
@@ -118,7 +118,7 @@ func command(game: Node2D, delta: float) -> Dictionary:
 				result.move=(destination-Vector2(game.fish)).normalized()*0.72
 				state="游向掩体"
 		return result
-	if game.score>=game.TARGET-0.001:
+	if game.score>=(game.TARGET if game.challenge else 18)-0.001:
 		result.move=(game.HOME-Vector2(game.fish)).normalized() if game.fish.distance_to(game.HOME)>8 else Vector2.ZERO
 		result.home=game.can_home() and not game.returning
 		state="带食物回巢"

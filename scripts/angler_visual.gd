@@ -60,9 +60,11 @@ func draw(view: Node2D, world: Node2D, t: float) -> void:
 		stride+=distance*0.30
 	last_x=x; last_time=t
 	var load: float = world.tension if world.hooked==world.HookState.HOOKED else 0.0
+	var strength: float=world.effort_multiplier("angler")
+	var effort := strength-1.0
 	var cast: float = sin(clampf(world.angler.cast_age/world.angler.CAST_SECONDS,0,1)*PI) if world.angler.casting else 0.0
 	var bob := roundf(absf(sin(stride))*walking)
-	var p := Vector2(roundf(x-7-load*2),50-bob)
+	var p := Vector2(roundf(x-7-load*(2+effort*7)),50-bob+roundf(maxf(0,-effort)*3))
 	var swing := sin(stride)*3*walking
 	# Boots stay on the boardwalk, with alternating heel lifts while walking.
 	view.draw_rect(Rect2(Vector2(roundf(x-15),61),Vector2(22,2)),Color(0.03,0.10,0.12,0.40))
@@ -79,13 +81,13 @@ func draw(view: Node2D, world: Node2D, t: float) -> void:
 	var butt := grip+Vector2(-7,5)
 	var tip: Vector2 = world.angler.anchor()
 	var breathe := sin(t*1.8)*0.6*(1-load)
-	var first := grip+Vector2(9,-4-load*12-cast*6+breathe)
-	var second := tip+Vector2(-8+world.angler.line_sway*0.025,-2-load*8-cast*3)
+	var first := grip+Vector2(9,-4-load*(12+effort*10)-cast*6+breathe)
+	var second := tip+Vector2(-8+world.angler.line_sway*0.025,-2-load*(8+effort*6)-cast*3+sin(t*28)*load*absf(effort))
 	var rod := PackedVector2Array()
 	for index in 29: rod.append(_rod_point(grip,first,second,tip,index/28.0).round())
 	# Dark silhouette, graphite blank, gold ferrules and actual eye at the tip.
 	view.draw_polyline(rod,OUTLINE,3)
-	view.draw_polyline(rod,Color("afc4b0"),1)
+	view.draw_polyline(rod,Color("f3d48b") if strength>1 else Color("78969b") if strength<1 else Color("afc4b0"),1)
 	_limb(view,PackedVector2Array([butt,grip]),Color("b98249"),3)
 	view.draw_line(butt+Vector2(0,-1),grip+Vector2(0,-1),Color("e4bc78"),1)
 	for ratio in [0.18,0.46,0.72]:

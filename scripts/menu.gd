@@ -38,11 +38,11 @@ func style(color: Color, border: Color) -> StyleBoxFlat:
 	return result
 
 func open(which: String) -> void:
-	if game.shared_session and which in ["practice","timing"]: return
+	if game.shared_session and which in ["practice","timing","effort"]: return
 	if which=="timing": timing_previous=screen if visible else "pause"
 	if game.player_role=="angler" and which!="result": game.suspend_local_controls()
-	if which=="practice" and game.challenge: return
-	if which in ["help","settings","practice","timing"] and (not visible or not screen in ["help","settings","practice","timing"]):
+	if which in ["practice","effort"] and game.challenge: return
+	if which in ["help","settings","practice","timing","effort"] and (not visible or not screen in ["help","settings","practice","timing","effort"]):
 		previous = screen if visible else "pause"
 	screen = which
 	game.paused = true
@@ -71,6 +71,7 @@ func open(which: String) -> void:
 		"help": _help(frame)
 		"settings": _settings(frame)
 		"practice": _practice(frame)
+		"effort": _effort(frame)
 		"timing": _timing(frame)
 		"result": _result(frame)
 		"network": _network(frame)
@@ -115,13 +116,13 @@ func _title(frame: Control) -> void:
 	text(frame,"一座池塘 · 两种立场",Vector2(21,80),13,Color("b4c8bc"))
 	button(frame,"小鱼挑战   ·   对抗钓鱼人 AI",104,func(): game.reset(true),true,254)
 	button(frame,"钓鱼人挑战   ·   对抗小鱼 AI",138,func(): game.reset(true,"angler"),false,254)
-	button(frame,"自由练习   ·   小鱼 / 调节鱼线",172,func(): game.reset(false),false,254)
+	button(frame,"自由练习   ·   双角色 / 调节参数",172,func(): game.reset(false),false,254)
 	button(frame,"双人联机   ·   局域网 / 本机",206,func(): open("network"),false,254)
 	button(frame,"操作说明",240,func(): open("help"),false,254)
 	button(frame,"设置",274,func(): open("settings"),false,124)
 	var quit := button(frame,"退出",274,func(): get_tree().quit(),false,124)
 	quit.position.x = 150
-	text(content,"0.13.1 · 像素池塘",Vector2(391,280),10,Color("91afa7"))
+	text(content,"0.14 · 像素池塘",Vector2(391,280),10,Color("91afa7"))
 	text(content,"小鱼 · 吃饵脱身",Vector2(391,119),18,GOLD)
 	text(content,"人类 · 收线抄网",Vector2(391,159),18,GOLD)
 	text(content,"独自练习 · 双人对战",Vector2(375,199),16,GOLD)
@@ -154,7 +155,7 @@ func _help(frame: Control) -> void:
 		"上钩抗拉会触发发力：成功加力，失败脱力",
 		"接触草木石按空格，边游抗拉、绿区再按",
 		"缠线后松线按空格脱钩 · 持续拉紧可断线",
-		"抄网：红区锁定后躲开 · 木石能挡住网口",
+		"对手抄网：收拢前游出网口 · 木石能挡网",
 		"吃够食物后回左下巢穴，按 E 停留 2 秒",
 		"R 重开 · Esc 暂停 · F3 时间 · 练习 N 试网"
 	]
@@ -167,7 +168,7 @@ func _help(frame: Control) -> void:
 			"持续过紧会断线 · 过松会给鱼脱钩机会",
 			"收线发力先听音 · 空格判定，加力或脱力",
 			"按住 E + 左键画路线，网口依次跟随",
-			"松开 E 或左键会放弃并撤网 · 木石挡网",
+			"保持网口接触直到收拢 · 疲惫的鱼更易捞",
 			"6 分钟内提鱼出水获胜；F3 调节逃脱时间",
 			"鱼吃满 60 回巢则失败 · R 重开 / Esc 暂停"
 		]
@@ -231,7 +232,9 @@ func _timing(frame: Control) -> void:
 	back.position.x=130
 
 func _practice(frame: Control) -> void:
-	text(frame,"练习 · 收放线调节",Vector2(20,17),22)
+	text(frame,"练习调节",Vector2(20,17),22)
+	var switch_role := button(frame,"改练小鱼" if game.player_role=="angler" else "改练钓鱼人",17,func(): game.reset(false,"fish" if game.player_role=="angler" else "angler"); open("practice"),false,126)
+	switch_role.position.x=220
 	text(frame,"只影响自由练习，调整后继续当前这局。",Vector2(20,52),12,Color("91afa7"))
 	var sensitivity_label := text(frame,"灵敏度 %d%%" % roundi(game.practice_line_sensitivity*100),Vector2(20,78),15,GOLD)
 	var sensitivity := HSlider.new()
@@ -263,8 +266,32 @@ func _practice(frame: Control) -> void:
 		game.set_practice_line_tuning(game.practice_line_sensitivity,value/100)
 		force_label.text="力度 %d%%" % roundi(value)
 	)
+	button(frame,"发力 QTE · 频率 / 难度 / 力量",217,func(): open("effort"))
 	button(frame,"恢复默认",251,func(): sensitivity.value=100; force.value=100,false,100)
 	var back := button(frame,"保存并返回",251,func(): game.save_profile(); open(previous),true,216)
+	back.position.x=130
+
+func _effort(frame: Control) -> void:
+	text(frame,"练习 · 发力判定",Vector2(20,14),22)
+	text(frame,"双方共用 · 下一次判定生效 · 挑战使用默认值",Vector2(20,45),11,Color("91afa7"))
+	var rows := [
+		["EffortFrequency","触发频率","practice_effort_frequency",0.5,2.0,0.1,"%.1f 倍"],
+		["EffortWindow","成功窗口","practice_effort_window",0.12,0.5,0.02,"%.2f 秒"],
+		["EffortBoost","成功力量","practice_effort_boost",1.1,1.8,0.05,"%.2f 倍"],
+		["EffortWeak","失败力量","practice_effort_weak",0.3,0.9,0.05,"%.2f 倍"]]
+	var sliders: Array[HSlider]=[]
+	for index in rows.size():
+		var row: Array=rows[index]
+		var y := 67+index*42
+		var caption := text(frame,row[1]+"  "+row[6] % game.get(row[2]),Vector2(20,y),12,GOLD)
+		var slider := HSlider.new()
+		slider.name=row[0]; slider.min_value=row[3]; slider.max_value=row[4]; slider.step=row[5]
+		slider.value=game.get(row[2]); slider.position=Vector2(20,y+21); slider.size=Vector2(326,14)
+		frame.add_child(slider); sliders.append(slider)
+		slider.value_changed.connect(func(value: float): game.set(row[2],value); caption.text=row[1]+"  "+row[6] % value)
+	text(frame,"成功加力 2 秒 · 失败脱力 1.5 秒",Vector2(20,237),11,Color("91afa7"))
+	button(frame,"恢复默认",257,func(): sliders[0].value=1; sliders[1].value=0.2; sliders[2].value=1.35; sliders[3].value=0.6,false,100)
+	var back := button(frame,"保存并返回",257,func(): game.save_profile(); open("practice"),true,216)
 	back.position.x=130
 
 func _result(frame: Control) -> void:
@@ -280,18 +307,21 @@ func _result(frame: Control) -> void:
 	if human:
 		why="收拢网袋，把鱼带出了水面。" if game.reason=="net" else ("成功收线，将鱼提离水面。" if game.reason=="landed" else ("小鱼吃够食物，抢先返回了巢穴。" if game.reason=="home" else "时间到了，小鱼仍然自由。"))
 	text(frame,why,Vector2(20,62),12)
-	text(frame,("鱼吃到的食物   %.1f" if human else "带回食物   %.1f") % game.score,Vector2(20,102),16,GOLD)
-	text(frame,"用时 %02d:%02d   ·   上钩 %d 次 / 逃脱 %d 次" % [int(game.elapsed)/60,int(game.elapsed)%60,game.hook_count,game.escape_count],Vector2(20,134),12)
-	text(frame,"钓鱼成功 %d 次" % game.angler_wins if human else "挑战成功 %d 次   ·   最佳收获 %.1f" % [game.wins,game.best_score],Vector2(20,160),12,Color("91afa7"))
-	ready_button=button(frame,"准备下一局" if game.shared_session else "再来一局",207,func(): game.restart_round(),true)
-	button(frame,"离开房间" if game.shared_session else "返回标题",245,func(): game.return_to_title())
+	text(frame,"食物 %.1f   ·   用时 %02d:%02d" % [game.score,int(game.elapsed)/60,int(game.elapsed)%60],Vector2(20,87),14,GOLD)
+	text(frame,"上钩 %d 次 · 吐钩 %d 次 · 断线逃脱 %d 次" % [game.hook_count,game.round_stats.slips,game.round_stats.breaks],Vector2(20,115),12)
+	text(frame,"小鱼 QTE   "+game.Stats.rate(game.round_stats,"fish"),Vector2(20,137),12,MINT)
+	text(frame,"人类 QTE   "+game.Stats.rate(game.round_stats,"angler"),Vector2(20,157),12,GOLD)
+	text(frame,"危险张力 %.1fs / 拉扯 %.1fs" % [game.round_stats.danger_seconds,game.round_stats.hooked_seconds],Vector2(20,179),12)
+	text(frame,"缠线成功 %d 次 · 下网 %d 次 / 捕获 %d 次" % [game.round_stats.wrap_good,game.net_count,game.net_catches],Vector2(20,199),12,Color("91afa7"))
+	ready_button=button(frame,"准备下一局" if game.shared_session else "再来一局",227,func(): game.restart_round(),true)
+	button(frame,"离开房间" if game.shared_session else "返回标题",261,func(): game.return_to_title())
 
 func _input(event: InputEvent) -> void:
 	if not visible or not event is InputEventKey or not event.pressed or event.echo: return
 	if event.physical_keycode == KEY_ESCAPE:
-		if screen in ["help","settings","practice","timing"]:
-			if screen in ["settings","practice","timing"]: game.save_profile()
-			open(timing_previous if screen=="timing" else previous)
+		if screen in ["help","settings","practice","timing","effort"]:
+			if screen in ["settings","practice","timing","effort"]: game.save_profile()
+			open("practice" if screen=="effort" else timing_previous if screen=="timing" else previous)
 		elif screen == "pause": close()
 		elif screen=="network": open("title")
 		get_viewport().set_input_as_handled()
