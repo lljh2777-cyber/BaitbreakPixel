@@ -23,6 +23,7 @@ var props: Array[Dictionary] = []
 var plant_frames: Array = []
 
 func _ready() -> void:
+	shore.hand.prepare(self)
 	fish_texture = Art.fish()
 	gauge_texture = Gauge.metal_texture()
 	bobber_texture = Gauge.bobber_texture()

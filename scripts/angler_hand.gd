@@ -1,13 +1,42 @@
 extends RefCounted
 
-const Sprite = preload("res://assets/first_person/angler_hand.png")
+const Sprite = preload("res://assets/first_person/angler_hand_pixel.png")
+const PaletteShader = preload("res://scripts/hand_palette.gdshader")
+const PIXEL_SIZE := 80
+const PALETTE := ["10263b","ffd49a","f2b777","d58f53","a85e38","edb951","bd8739","865c2b","8b9256","536650","314b43","24383c","dce7de","9cabb4","5c6c80","344758"]
 const SIZE := 136.0
 const WRIST := Vector2(0.70,0.56)
-const SOCKET := Vector2(0.102,0.094)
+const SOCKET := Vector2(0.093,0.075)
 const GRID := 18
 var mesh := ArrayMesh.new()
 var uvs := PackedVector2Array()
 var indices := PackedInt32Array()
+var pixel_texture: ViewportTexture
+
+func prepare(view: Node2D) -> void:
+	# Render this foreground layer once at its native pixel resolution and palette.
+	# The source artwork is redrawn pixel art; this also prevents fine texture from leaking in.
+	var pixel_view := SubViewport.new()
+	pixel_view.name="HandPixels"
+	pixel_view.size=Vector2i(PIXEL_SIZE,PIXEL_SIZE)
+	pixel_view.transparent_bg=true
+	pixel_view.disable_3d=true
+	pixel_view.canvas_item_default_texture_filter=Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST
+	pixel_view.render_target_update_mode=SubViewport.UPDATE_ONCE
+	view.add_child(pixel_view)
+	var art := TextureRect.new()
+	art.texture=Sprite
+	art.expand_mode=TextureRect.EXPAND_IGNORE_SIZE
+	art.size=Vector2(PIXEL_SIZE,PIXEL_SIZE)
+	art.texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST
+	var material := ShaderMaterial.new()
+	material.shader=PaletteShader
+	var colors := PackedColorArray()
+	for hex in PALETTE: colors.append(Color(hex))
+	material.set_shader_parameter("palette",colors)
+	art.material=material
+	pixel_view.add_child(art)
+	pixel_texture=pixel_view.get_texture()
 
 func _init() -> void:
 	for row in GRID+1:
@@ -41,7 +70,8 @@ func draw(view: Node2D, wrist: Vector2, angle: float, time: float, reel_speed: f
 	arrays[Mesh.ARRAY_INDEX]=indices
 	mesh.clear_surfaces()
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,arrays)
-	view.draw_mesh(mesh,Sprite)
+	if pixel_texture==null: return
+	view.draw_mesh(mesh,pixel_texture)
 	if absf(reel_speed)<0.5: return
 	# Light travels around the metal spool in the actual winding direction.
 	for glint in 2:
@@ -50,4 +80,4 @@ func draw(view: Node2D, wrist: Vector2, angle: float, time: float, reel_speed: f
 		for step in 5:
 			var local := Vector2.from_angle(phase+step*0.09)*Vector2(0.078,0.040)
 			arc.append(point(Vector2(0.158,0.486)+local.rotated(-0.8),wrist,angle).round())
-		view.draw_polyline(arc,Color(1.0,0.91,0.70,0.52),1)
+		view.draw_polyline(arc,Color("dce7de"),1)
