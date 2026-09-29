@@ -226,8 +226,11 @@ func _angler(t: float) -> void:
 		draw_line(cursor+Vector2(side*5,0),cursor+Vector2(side*9,0),color,1)
 		draw_line(cursor+Vector2(0,side*5),cursor+Vector2(0,side*9),color,1)
 	if game.angler.net_held and not game.net_blocks_hooks():
-		draw_arc(cursor,15,0,TAU,24,Color(MINT,0.5),1)
-		label_at(cursor+Vector2(-28,-22),"左键拖动",10,MINT)
+		var start: Vector2=game.manual_net_target(cursor)
+		var blocked: bool=game.manual_net_blocked(start)
+		var preview := RED if blocked else MINT
+		draw_arc(start,game.NET_RIM.y+2,0,TAU,32,Color(preview,0.5),1)
+		label_at(start+Vector2(-30,-38),"木石挡网" if blocked else "从这里下网",10,preview)
 	if game.manual_net and game.net_state in ["prepare","warning","sweep"]:
 		var target: Vector2=game.manual_net_target(game.angler.cursor)
 		var direction: Vector2=(target-game.net_pos).normalized()
@@ -380,7 +383,7 @@ func _net(t: float) -> void:
 	var to: Vector2=game.net_to
 	var direction := Vector2.from_angle(game.net_angle)
 	var alpha := 0.18+0.12*sin(t*9)
-	if game.net_state in ["prepare","warning","sweep"]:
+	if game.net_state in ["prepare","warning","sweep"] and not game.manual_net:
 		if game.net_kind=="drop":
 			draw_rect(Rect2(clampf(from.x-50,0,540),55,100,7),Color(RED,alpha+0.1))
 		else:
@@ -431,13 +434,14 @@ func _net(t: float) -> void:
 		else: draw_arc(origin,6+life*16,0,TAU,24,Color(MINT,(1-life)*0.6),1)
 
 func _draw_landing_net(p: Vector2, t: float, front: bool) -> void:
-	var rim: Vector2=game.NET_RIM
+	var opening: float=lerpf(0.25,1,smoothstep(0,1,game.net_age/game.NET_PREPARE)) if game.manual_net and game.net_state=="prepare" else 1.0
+	var rim: Vector2=game.NET_RIM*opening
 	var angle: float=game.net_angle
 	var caught: bool=game.net_state=="caught"
 	var settling: float=smoothstep(0,1,game.net_age/game.NET_SETTLE) if caught else 0.0
 	var outline := PackedVector2Array()
 	var bag := PackedVector2Array()
-	var back: Vector2=p+game.net_bag_offset()
+	var back: Vector2=p+game.net_bag_offset()*opening
 	var joint := p
 	for index in range(33):
 		var circle := Vector2.from_angle(index*TAU/32)

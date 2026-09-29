@@ -32,6 +32,7 @@ var net_aim := Vector2.ZERO
 var manual_net := false
 var net_trail := PackedVector2Array()
 var net_return_path := PackedVector2Array()
+var net_exit_path := PackedVector2Array()
 const MANUAL_NET_WARNING := 0.55
 const MANUAL_NET_SECONDS := 5.0
 const MANUAL_NET_SPEED := 160.0
@@ -171,7 +172,7 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | side-view | 640x360 | v0.10 | inertial-rig")
+	print("PIXEL_READY | side-view | 640x360 | v0.10.1 | underwater-net-start")
 
 func _register_inputs() -> void:
 	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[], "use":[KEY_E], "slow":[KEY_Q], "qte":[KEY_SPACE]}
@@ -243,6 +244,7 @@ func reset(is_challenge: bool, role: String = "fish") -> void:
 	manual_net=false
 	net_trail.clear()
 	net_return_path.clear()
+	net_exit_path.clear()
 	bait_batch=0
 	challenge = is_challenge
 	if player_role=="angler": challenge=true
@@ -851,19 +853,56 @@ func net_warning_seconds() -> float:
 	return MANUAL_NET_WARNING if manual_net else NET_WARNING
 
 func manual_net_target(point: Vector2) -> Vector2:
-	return net_from+(point.clamp(Vector2(30,85),Vector2(610,280))-net_from).limit_length(230)
+	return point.clamp(Vector2(30,85),Vector2(610,280))
 
-func begin_manual_net(point: Vector2) -> void:
-	if player_role!="angler" or won or lost or landing or hooked==HookState.MOUTH or not net_state in ["wait","rest"]: return
+func manual_net_blocked(point: Vector2) -> bool:
+	for solid in SOLIDS:
+		if Layout.touches(point,NET_RIM.y+2,PackedVector2Array(solid.points)): return true
+	return false
+
+func _manual_net_exit(point: Vector2) -> PackedVector2Array:
+	var surface := Vector2(point.x,5)
+	if _manual_net_lane_clear(point,surface): return PackedVector2Array([point,surface])
+	# Inflate the obstacles by the turnable rim, then find a clear lift to the surface.
+	var expanded: Array=[]
+	for solid in SOLIDS:
+		for polygon in Geometry2D.offset_polygon(PackedVector2Array(solid.points),NET_RIM.y+2,Geometry2D.JOIN_MITER):
+			expanded.append({"points":Array(polygon)})
+	var path := Rope.solve(surface,point,expanded)
+	path.reverse()
+	for index in range(1,path.size()):
+		if not _manual_net_lane_clear(path[index-1],path[index]): return PackedVector2Array()
+	return path
+
+func _manual_net_lane_clear(a: Vector2, b: Vector2) -> bool:
+	var steps := maxi(1,ceili(a.distance_to(b)))
+	for step in range(steps+1):
+		if manual_net_blocked(a.lerp(b,float(step)/steps)): return false
+	return true
+
+func begin_manual_net(point: Vector2) -> bool:
+	if player_role!="angler" or won or lost or landing or hooked==HookState.MOUTH or not net_state in ["wait","rest"]: return false
+	var start := manual_net_target(point)
+	if manual_net_blocked(start):
+		notice="这里放不下网口 · 移到木石旁的空水域"
+		notice_age=2
+		return false
+	var exit_path := _manual_net_exit(start)
+	if exit_path.is_empty():
+		notice="这里无法提网 · 移到木石旁的空水域"
+		notice_age=2
+		return false
 	manual_net=true
 	net_queued=false
-	net_aim=point
+	net_aim=start
 	net_kind="drop"
-	net_from=Vector2(angler.anchor().x,67)
-	net_park=Vector2(net_from.x,5)
-	net_pos=net_park
-	net_to=manual_net_target(point)
-	net_angle=(net_to-net_from).angle()
+	net_from=start
+	net_park=exit_path[-1]
+	net_exit_path=exit_path
+	net_pos=start
+	net_last_position=start
+	net_to=start
+	net_angle=PI/2
 	net_state="prepare"
 	net_age=0
 	net_motion=Vector2.ZERO
@@ -872,14 +911,16 @@ func begin_manual_net(point: Vector2) -> void:
 	net_return_path.clear()
 	net_warning_shape=_make_net_warning_outline()
 	sound.play("warn")
+	_net_splash(start)
+	return true
 
 func _prepare_manual_return() -> void:
 	net_return_path=PackedVector2Array([net_pos])
-	# Preparation is still above the surface; never dip down when cancelling it.
-	if net_pos.y>=net_from.y-0.01:
-		for index in range(net_trail.size()-1,-1,-1):
-			if net_return_path[-1].distance_to(net_trail[index])>0.01: net_return_path.append(net_trail[index])
-	if net_return_path[-1].distance_to(net_park)>0.01: net_return_path.append(net_park)
+	# Retrace the drag before taking the collision-cleared lift from the chosen start.
+	for index in range(net_trail.size()-1,-1,-1):
+		if net_return_path[-1].distance_to(net_trail[index])>0.01: net_return_path.append(net_trail[index])
+	for point in net_exit_path:
+		if net_return_path[-1].distance_to(point)>0.01: net_return_path.append(point)
 
 func cancel_manual_net() -> void:
 	if not manual_net or not net_state in ["prepare","warning","sweep"]: return
@@ -906,9 +947,7 @@ func net_blocks_hooks() -> bool:
 
 func _net_contact(point: Vector2, angle: float = NAN) -> bool:
 	if manual_net:
-		for solid in SOLIDS:
-			if Layout.touches(point,NET_RIM.y+2,PackedVector2Array(solid.points)): return true
-		return false
+		return manual_net_blocked(point)
 	if is_nan(angle): angle=net_angle
 	var net_scale := NET_RIM+Vector2(2,2) # Include the drawn rim, not just its centerline.
 	for solid in SOLIDS:
@@ -1032,6 +1071,7 @@ func _finish_net_recovery() -> void:
 	manual_net=false
 	net_trail.clear()
 	net_return_path.clear()
+	net_exit_path.clear()
 	net_state="rest"
 	net_age=0
 	net_wait=0
@@ -1096,7 +1136,7 @@ func _advance_net(delta: float, frame_from: Vector2, frame_to: Vector2) -> void:
 		net_pos=_net_retract_point(clampf(net_age/net_retract_duration,0,1))
 		if net_age>=net_retract_duration: _finish_net_recovery()
 	elif net_state=="prepare":
-		net_pos=net_park.lerp(net_from,smoothstep(0,1,net_age/NET_PREPARE))
+		net_pos=net_from if manual_net else net_park.lerp(net_from,smoothstep(0,1,net_age/NET_PREPARE))
 		if net_age>=NET_PREPARE:
 			net_state="warning"; net_age=0; net_pos=net_from; sound.play("warn")
 	elif net_state == "warning":

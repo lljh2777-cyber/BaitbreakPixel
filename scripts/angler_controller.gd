@@ -117,8 +117,7 @@ func update(game: Node2D, delta: float, command: Dictionary) -> void:
 			game.net_to=game.manual_net_target(cursor)
 			game.net_warning_shape=game._make_net_warning_outline()
 		elif net_cooldown<=0 and game.net_state in ["wait","rest"] and Rect2(0,80,640,233).has_point(raw_cursor):
-			game.begin_manual_net(cursor)
-			net_cooldown=12
+			if game.begin_manual_net(cursor): net_cooldown=12
 	if command.get("deploy",false): deploy(game)
 	if not casting: return
 	cast_age+=delta
