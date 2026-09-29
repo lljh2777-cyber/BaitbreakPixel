@@ -9,6 +9,7 @@ const CREAM := Color("fff0cd")
 const MINT := Color("8de0bd")
 const GOLD := Color("ffd379")
 const RED := Color("f58375")
+const SKILL_ORIGIN := Vector2(10,122)
 var game: Node2D
 var world: Node2D
 var angler_visual := AnglerVisual.new()
@@ -262,16 +263,17 @@ func _angler_hud(_t: float) -> void:
 	label_at(Vector2(584,350),"H 帮助",10,CREAM)
 	# Opponent checks remain autonomous; never invite the angler to press a fish QTE.
 	panel(Rect2(10,65,151,50))
-	label_at(Vector2(18,81),"小鱼 · "+("玩家操控" if game.shared_session else game.fish_brain.state),11,MINT)
 	if world.hooked==world.HookState.HOOKED:
 		var spool := "S 放线" if world.angler.spool>0 else ("W 收线" if world.angler.spool<0 else "稳线")
-		label_at(Vector2(18,96),"张力 %d%% · %s" % [int(world.tension*100),spool],11,RED if world.tension>=0.88 else CREAM)
-		draw_rect(Rect2(18,103,134,5),Color("335762"))
-		draw_rect(Rect2(18,103,134*world.tension,5),MINT.lerp(RED,world.tension))
-		if world.high_age>0: label_at(Vector2(18,129),"断线风险 %.1f / %.1fs" % [world.high_age,world.break_hold_seconds],10,RED)
+		label_at(Vector2(18,81),"张力 %d%% · %s" % [int(world.tension*100),spool],11,RED if world.tension>=0.88 else CREAM)
+		draw_rect(Rect2(18,88,134,5),Color("335762"))
+		draw_rect(Rect2(18,88,134*world.tension,5),MINT.lerp(RED,world.tension))
+		label_at(Vector2(18,108),"断线风险 %.1f / %.1fs" % [world.high_age,world.break_hold_seconds] if world.high_age>0 else "小鱼 · "+("玩家操控" if game.shared_session else game.fish_brain.state),10,RED if world.high_age>0 else MINT)
 	elif world.hooked==world.HookState.MOUTH:
+		label_at(Vector2(18,81),"小鱼 · "+("玩家操控" if game.shared_session else game.fish_brain.state),11,MINT)
 		label_at(Vector2(18,100),"吐钩判定中 · 暂缓收放",10,GOLD)
 	else:
+		label_at(Vector2(18,81),"小鱼 · "+("玩家操控" if game.shared_session else game.fish_brain.state),11,MINT)
 		var remaining_bait := 0
 		for bait in world.baits:
 			if bait.hook and not bait.removed:
@@ -527,15 +529,15 @@ func _hud(t: float) -> void:
 		elif world.net_state=="withdraw": phase="抄网撤回 · 继续觅食"
 		label_at(Vector2(240,81),phase,12,RED)
 	if world.hooked == world.HookState.HOOKED:
-		panel(Rect2(246,62,148,43))
-		label_at(Vector2(254,76), "张力 %d%%" % int(world.tension*100), 11, CREAM)
-		label_at(Vector2(325,76), "缠线 ×%d" % world.wraps.size() if world.latched else ("提离水面" if world.landing else "收鱼中"), 10, MINT if world.latched else RED)
-		draw_rect(Rect2(254,83,132,6), Color("335762"))
-		draw_rect(Rect2(254,83,132*world.tension,6), MINT.lerp(RED,world.tension))
+		panel(Rect2(10,65,148,50))
+		label_at(Vector2(18,79), "张力 %d%%" % int(world.tension*100), 11, CREAM)
+		label_at(Vector2(89,79), "缠线 ×%d" % world.wraps.size() if world.latched else ("提离水面" if world.landing else "收鱼中"), 10, MINT if world.latched else RED)
+		draw_rect(Rect2(18,86,132,6), Color("335762"))
+		draw_rect(Rect2(18,86,132*world.tension,6), MINT.lerp(RED,world.tension))
 		var spool := "放线 ↓" if world.reel_speed>0.5 else ("收线 ↑" if world.reel_speed < -0.5 else "稳线")
-		label_at(Vector2(254,100), spool+(" · 缠绕减力" if world.latched else " · 向水面牵引"), 9, Color("9cbbb4"))
+		label_at(Vector2(18,105), spool+(" · 缠绕减力" if world.latched else " · 向水面牵引"), 9, Color("9cbbb4"))
 		if world.high_age > 0:
-			draw_rect(Rect2(246,108,148*minf(1,world.high_age/world.break_hold_seconds),3), RED)
+			draw_rect(Rect2(10,112,148*minf(1,world.high_age/world.break_hold_seconds),3), RED)
 	_skill_hud(t)
 
 func _skill_hud(t: float) -> void:
@@ -544,7 +546,7 @@ func _skill_hud(t: float) -> void:
 	var state: Dictionary=world.effort_checks[game.player_role]
 	if state.effect_age>0 and not check.active and check.result_age<=0:
 		var color := MINT if state.multiplier>1 else RED
-		var p := Vector2(450,278)
+		var p := SKILL_ORIGIN
 		panel(Rect2(p,Vector2(180,20)))
 		label_at(p+Vector2(8,14),("加力" if state.multiplier>1 else "脱力")+" · %.1f 秒" % state.effect_age,11,color)
 
@@ -555,17 +557,17 @@ func _qte(t: float, check: Dictionary) -> void:
 	var progress: float = check.progress
 	var zone_width: float = check.width
 	if check.active and check.age<0.4:
-		panel(Rect2(check.origin,Vector2(176,34)),Color("103e57"))
-		label_at(check.origin+Vector2(12,22),"注意 · 即将判定",13,GOLD)
+		panel(Rect2(SKILL_ORIGIN,Vector2(176,34)),Color("103e57"))
+		label_at(SKILL_ORIGIN+Vector2(12,22),"注意 · 即将判定",13,GOLD)
 		return
 	var success_zone: bool = progress>=zone_start and progress<=zone_start+zone_width
 	var effect: float = 1-check.result_age/0.7
 	var intro: float = clampf(check.age/0.3,0,1) if not showing_result else 1.0
-	var origin: Vector2 = check.origin+Vector2(0,roundf(10*pow(1-intro,3)))
+	var origin: Vector2 = SKILL_ORIGIN+Vector2(0,roundf(10*pow(1-intro,3)))
 	if showing_result and not check.good: origin.x += roundf(sin(effect*42)*(1-effect)*3)
 	var accent := MINT if kind=="slack" else GOLD
 	if showing_result: accent = MINT if check.good else RED
-	panel(Rect2(origin,Vector2(176,216)),Color("103e57"))
+	panel(Rect2(origin,Vector2(176,200)),Color("103e57"))
 	# Muted water ripples echo the reference without obscuring the metal and green zone.
 	for wave in range(15):
 		var base := origin+Vector2(8+posmod(wave*67,148),32+posmod(wave*29,133))
@@ -573,27 +575,29 @@ func _qte(t: float, check: Dictionary) -> void:
 		for part in range(6): points.append((base+Vector2(part*3,sin(part*0.7+t*0.8+wave)*2)).round())
 		draw_polyline(points,Color(0.12,0.47,0.64,0.25),1)
 	var title := ("收线发力" if game.player_role=="angler" else "抗拉发力") if kind=="effort" else "吐钩判定" if kind=="entry" else ("缠线判定" if kind=="wrap" else "松线脱钩")
-	label_at(origin+Vector2(14,23),title,14,accent)
-	var center := origin+Gauge.CENTER
+	label_at(origin+Vector2(14,20),title,14,accent)
+	# Keep the hook at native pixel size; remove only vertical card padding.
+	var gauge_origin := origin+Vector2(0,-12)
+	var center := gauge_origin+Gauge.CENTER
 	draw_arc(center,69,0,TAU,48,Color(0.22,0.66,0.76,0.13),1)
-	draw_texture(gauge_texture,origin)
+	draw_texture(gauge_texture,gauge_origin)
 	for tick in range(1,9):
 		var ratio := tick/10.0
-		draw_line((origin+Gauge.point(ratio,37)).round(),(origin+Gauge.point(ratio,43)).round(),Color("081724"),4)
-		draw_line((origin+Gauge.point(ratio,37)).round(),(origin+Gauge.point(ratio,43)).round(),Color("b5c0c1"),2)
+		draw_line((gauge_origin+Gauge.point(ratio,37)).round(),(gauge_origin+Gauge.point(ratio,43)).round(),Color("081724"),4)
+		draw_line((gauge_origin+Gauge.point(ratio,37)).round(),(gauge_origin+Gauge.point(ratio,43)).round(),Color("b5c0c1"),2)
 	var zone: PackedVector2Array = Gauge.section(zone_start,zone_start+zone_width)
-	for index in zone.size(): zone[index]+=origin
+	for index in zone.size(): zone[index]+=gauge_origin
 	var green := Color("63ed4d") if success_zone else Color("2fbe44")
 	draw_polyline(zone,Color("082818"),10)
 	draw_polyline(zone,Color("157432"),8)
 	draw_polyline(zone,green,5)
 	for ratio in [zone_start,zone_start+zone_width]:
-		draw_line((origin+Gauge.point(ratio,43)).round(),(origin+Gauge.point(ratio,55)).round(),Color("081724"),4)
-		draw_line((origin+Gauge.point(ratio,44)).round(),(origin+Gauge.point(ratio,54)).round(),CREAM,2)
-	var marker: Vector2 = (origin+Gauge.point(progress)).round()
+		draw_line((gauge_origin+Gauge.point(ratio,43)).round(),(gauge_origin+Gauge.point(ratio,55)).round(),Color("081724"),4)
+		draw_line((gauge_origin+Gauge.point(ratio,44)).round(),(gauge_origin+Gauge.point(ratio,54)).round(),CREAM,2)
+	var marker: Vector2 = (gauge_origin+Gauge.point(progress)).round()
 	if check.age>=0.4 or showing_result:
 		for trail in range(1,6):
-			var p: Vector2 = origin+Gauge.point(maxf(0,progress-trail*0.018))
+			var p: Vector2 = gauge_origin+Gauge.point(maxf(0,progress-trail*0.018))
 			draw_rect(Rect2(p.round(),Vector2(2,2)),Color(CREAM,(1-trail/6.0)*0.35))
 	else:
 		draw_arc(center,69,-PI/2,-PI/2+TAU*check.age/0.4,40,Color(MINT,0.5),1)
@@ -607,8 +611,8 @@ func _qte(t: float, check: Dictionary) -> void:
 	draw_rect(key_rect,green if success_zone else Color("547c85"),false,1)
 	label_at(key_rect.position+Vector2(8,16),"空格",12,CREAM)
 	if showing_result:
-		label_at(origin+Vector2(14,187),check.result,14,accent)
-		label_at(origin+Vector2(14,204),("力量提升 · 持续 2 秒" if check.good else "力量减弱 · 持续 1.5 秒") if kind=="effort" else "线圈保留 · 准备松线" if check.good and kind=="wrap" else ("继续游动" if check.good else "调整后可以再试"),10,CREAM)
+		label_at(origin+Vector2(14,180),check.result,14,accent)
+		label_at(origin+Vector2(14,195),("力量提升 · 持续 2 秒" if check.good else "力量减弱 · 持续 1.5 秒") if kind=="effort" else "线圈保留 · 准备松线" if check.good and kind=="wrap" else ("继续游动" if check.good else "调整后可以再试"),10,CREAM)
 		if check.good:
 			draw_arc(center,57+effect*13,0,TAU,48,Color(accent,(1-effect)*0.6),1)
 			for spark in range(10):
@@ -618,9 +622,9 @@ func _qte(t: float, check: Dictionary) -> void:
 		var instruction := "浮漂进入绿区时按空格"
 		if check.age<0.4: instruction="准备…"
 		elif success_zone: instruction="现在按空格"
-		label_at(origin+Vector2(14,187),instruction,12,green if success_zone else CREAM)
+		label_at(origin+Vector2(14,180),instruction,12,green if success_zone else CREAM)
 		var detail := ("保持 W 收线 · 空格判定" if game.player_role=="angler" else "继续游动抗拉 · 空格判定") if kind=="effort" else "边游动抗拉，边保持接触" if kind=="wrap" else ("移动保持低张力" if kind=="slack" else "抓住机会吐出鱼钩")
-		label_at(origin+Vector2(14,204),detail,10,Color("9cbbb4"))
+		label_at(origin+Vector2(14,195),detail,10,Color("9cbbb4"))
 
 func _track_point(path: PackedVector2Array, progress: float) -> Vector2:
 	var index := clampf(progress,0,1)*(path.size()-1)
