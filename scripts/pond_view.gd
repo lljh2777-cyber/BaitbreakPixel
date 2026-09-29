@@ -5,6 +5,9 @@ const Layout = preload("res://scripts/pond_layout.gd")
 const Gauge = preload("res://scripts/hook_gauge.gd")
 const AnglerVisual = preload("res://scripts/angler_visual.gd")
 const Shore = preload("res://scripts/shore_view.gd")
+const LineMotion = preload("res://scripts/line_motion.gd")
+var line_frame: Dictionary={}
+var line_motion := LineMotion.new()
 const INK := Color("142e39")
 const CREAM := Color("fff0cd")
 const MINT := Color("8de0bd")
@@ -49,6 +52,7 @@ func _draw() -> void:
 	if not is_instance_valid(game): return
 	world=game.network.display_world() if is_instance_valid(game.network) and game.network.active() and game.shared_session else game
 	var t: float = world.elapsed
+	line_frame=line_motion.sample(world)
 	if game.player_role=="angler":
 		shore.draw(self,world,t)
 		_hud(t)
@@ -306,14 +310,45 @@ func _slack_line(start: Vector2, end: Vector2, available: float, sway: float = 0
 		points.append((start.lerp(end,ratio)+offset*sin(PI*ratio)).round())
 	return points
 
+func _line_pixels(points: PackedVector2Array) -> PackedVector2Array:
+	var pixels := PackedVector2Array()
+	for p in points:
+		var pixel := p.round()
+		if pixels.is_empty() or pixel!=pixels[-1]: pixels.append(pixel)
+	return pixels
+
+func _draw_strand(points: PackedVector2Array, color: Color) -> void:
+	var pixels := _line_pixels(points)
+	if pixels.size()<2: return
+	draw_polyline(pixels,Color(INK,0.82),3)
+	draw_polyline(pixels,color,1)
+
 func _line_back() -> void:
-	if world.hooked == world.HookState.HOOKED and world.rope_path.size() >= 2:
-		var points: PackedVector2Array=world.rope_path
-		if world.wraps.is_empty(): points=_slack_line(points[0],points[-1],world.rope_length,world.angler.line_sway*(1-world.tension)*0.5 if world.uses_mobile_tackle() else 0.0)
-		if world.wraps.is_empty(): points=_line_vibration(points)
-		draw_polyline(points,INK,3)
-		draw_polyline(points,MINT.lerp(RED,world.tension),1)
-		if world.wraps.is_empty(): _line_force_marks(points)
+	if line_frame.get("path",PackedVector2Array()).size()<2: return
+	_draw_strand(line_frame.path,MINT.lerp(RED,world.tension))
+	_line_details(false)
+	if world.wraps.is_empty(): _line_force_marks(line_frame.path)
+
+func _line_details(foreground: bool) -> void:
+	for effect: Dictionary in line_frame.get("effects",[]):
+		var accent := Color("b8e3de") if effect.unwind else GOLD
+		var strength: float=effect.strength
+		if strength<=0.025: continue
+		if foreground==effect.head_front:
+			var trail: PackedVector2Array=_line_pixels(effect.trail)
+			if trail.size()>1: draw_polyline(trail,Color(accent,strength*0.8),1)
+			var p: Vector2=effect.point.round()
+			draw_rect(Rect2(p-Vector2(1,0),Vector2(3,1)),Color(accent,strength))
+			draw_rect(Rect2(p,Vector2.ONE),Color(CREAM,strength))
+		if not foreground: continue
+		# A few small underwater bubbles replace the large cross-shaped marker.
+		for bubble in 4:
+			var age: float=effect.progress-(0.08+bubble*0.16)
+			if age<0 or age>0.46: continue
+			var origin: Vector2=effect.center+Vector2(cos(bubble*1.7)*effect.radii.x,sin(bubble*1.7)*effect.radii.y)
+			var p: Vector2=(origin+Vector2(sin(bubble+age*5)*2,-age*24)).round()
+			var color := Color(accent,(1-age/0.46)*strength*0.48)
+			draw_rect(Rect2(p,Vector2(2,2)),color,false,1)
 
 func _line_vibration(path: PackedVector2Array) -> PackedVector2Array:
 	var points := path.duplicate()
@@ -340,25 +375,19 @@ func _line_force_marks(path: PackedVector2Array) -> void:
 
 func _line() -> void:
 	if world.hooked==world.HookState.HOOKED:
-		for wrap in world.wraps:
-			var points: PackedVector2Array = world.visible_coil(wrap)
-			for index in range(1,points.size()):
-				# Rear half is below the prop; the front half draws over it to read as a full turn.
-				if points[index].y>=wrap.center.y and points[index-1].y>=wrap.center.y:
-					draw_line(points[index-1],points[index],INK,3)
-					draw_line(points[index-1],points[index],GOLD if wrap.progress<1 else MINT,1)
-			if wrap.progress<1:
-				var head: Vector2 = points[-1].round()
-				draw_rect(Rect2(head-Vector2(2,1),Vector2(5,3)),GOLD)
-				draw_rect(Rect2(head-Vector2(1,2),Vector2(3,5)),CREAM)
-		if not world.wraps.is_empty():
-			var coil: PackedVector2Array = world.visible_coil(world.wraps[-1])
-			var start: Vector2 = coil[-1]
-			var points := _slack_line(start,world.mouth(),world.fish_line_length)
-			points=_line_vibration(points)
-			draw_polyline(points,INK,3)
-			draw_polyline(points,MINT.lerp(RED,world.tension),1)
-			_line_force_marks(points)
+		# Repaint only the near-side portions using the exact same geometry as
+		# the back layer. This preserves depth without ghost/double fish lines.
+		var front := PackedVector2Array()
+		for i in line_frame.front.size():
+			if line_frame.front[i]:
+				if front.is_empty(): front.append(line_frame.path[i])
+				front.append(line_frame.path[i+1])
+			else:
+				_draw_strand(front,MINT.lerp(RED,world.tension))
+				front.clear()
+		_draw_strand(front,MINT.lerp(RED,world.tension))
+		_line_details(true)
+		if not world.wraps.is_empty() and line_frame.tail.size()>1: _line_force_marks(line_frame.tail)
 		if world.contact_target>=0 and not world.winding() and not game.menu.visible:
 			var target: Dictionary = world.targets[world.contact_target]
 			var outline: PackedVector2Array = target.polygon.duplicate()
@@ -418,7 +447,7 @@ func _player(t: float) -> void:
 			draw_line(pointer-direction_to_line*4-direction_to_line.orthogonal()*3,pointer,RED,1)
 		if not world.latched and position.y<125:
 			draw_rect(Rect2(world.line_anchor(world.bound_bait).x-35,57,70,4),Color(RED,0.4+0.2*sin(t*9)))
-	if world.result_flash > 0:
+	if world.result_flash > 0 and not (world.qte_result_kind=="wrap" and world.result_good):
 		var radius: float = (0.7 - world.result_flash) * 25 + 12
 		draw_arc(position, radius, 0, TAU, 16, MINT if world.result_good else RED, 1)
 	if world.returning:

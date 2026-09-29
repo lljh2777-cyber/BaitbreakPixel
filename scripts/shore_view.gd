@@ -2,6 +2,7 @@ extends RefCounted
 
 # A local presentation of the same 2D pond. The simulation and net routes stay in world coordinates.
 const Lake = preload("res://assets/first_person/sunset_lake.png")
+const LineMotion = preload("res://scripts/line_motion.gd")
 const Layout = preload("res://scripts/pond_layout.gd")
 const Hand = preload("res://scripts/angler_hand.gd")
 const ReelHand = preload("res://scripts/reel_hand.gd")
@@ -40,18 +41,19 @@ static func projected(path: PackedVector2Array, world: Node2D=null) -> PackedVec
 static func rod_tip(world: Node2D, t: float) -> Vector2:
 	return tackle_pose(world,t).tip
 
-static func tackle_pose(world: Node2D, t: float) -> Dictionary:
+static func tackle_pose(world: Node2D, t: float, motion: Dictionary={}) -> Dictionary:
 	var load:float=world.angler.rod_load
 	var reel_speed: float=world.angler.feedback_reel_speed(world)
 	# The existing replicated sway gives the held rig a small, damped follow-through.
 	var held_x: float=world.angler.x+world.angler.line_sway*0.2
-	# A small wrist/arm sweep uses the same articulated pose as normal steering.
-	# Ease in/out within the unwind so hands, reel, rod and line stay attached.
-	if world.untangle_phase=="unwind":
-		var unwind:float=clampf(world.untangle_age/world.UNWIND_SECONDS,0,1)
-		held_x+=sin(unwind*TAU)*sin(unwind*PI)*22.0
-	var pose := Hand.pose(inverse_lerp(18,588,held_x),t,reel_speed,world.angler.rod_lift)
-	var rod := rod_points(pose,load,world.effort_multiplier("angler"),float_position(world,t))
+	if motion.is_empty(): motion=LineMotion.action(world)
+	var brace: float=world.angler.rod_lift
+	if motion.active:
+		var sweep: float=sin(TAU*LineMotion.smooth(motion.progress))*motion.strength
+		held_x+=sweep*(22.0 if motion.unwind else -9.0)
+		brace=clampf(brace+motion.strength*(0.13 if motion.unwind else 0.055),0,1)
+	var pose := Hand.pose(inverse_lerp(18,588,held_x),t,reel_speed,brace)
+	var rod := rod_points(pose,load,world.effort_multiplier("angler"),float_position(world,t,motion))
 	return {"hand":pose,"rod":rod,"tip":rod[-1],"load":load,"reel_speed":reel_speed}
 
 static func rig_index(world: Node2D) -> int:
@@ -60,7 +62,7 @@ static func rig_index(world: Node2D) -> int:
 		if world.baits[index].hook and world.baits[index].active and not world.baits[index].removed: return index
 	return -1
 
-static func float_position(world: Node2D, t: float) -> Vector2:
+static func float_position(world: Node2D, t: float, motion: Dictionary={}) -> Vector2:
 	if world.landing or (world.net_state=="caught" and world.fish.y<WATER_LEVEL):
 		return to_screen(world.mouth(),world)+Vector2(0,-3)
 	var anchor: Vector2=world.angler.anchor()
@@ -71,6 +73,8 @@ static func float_position(world: Node2D, t: float) -> Vector2:
 	var x:float=world.angler.surface_x if world.angler.surface_live else target.x
 	var dip: float=world.tension*1.7 if world.hooked==world.HookState.HOOKED else 0.0
 	if world.hooked==world.HookState.MOUTH: dip=3.5
+	if motion.is_empty(): motion=LineMotion.action(world)
+	if motion.active: dip+=sin(motion.progress*TAU)*motion.strength*(0.7 if motion.unwind else 1.25)
 	return Vector2(to_screen(Vector2(x,WATER_LEVEL),world).x,ORIGIN.y+sin(t*2.2)*0.6+dip)
 
 static func ellipse(center: Vector2, radii: Vector2, count: int=32) -> PackedVector2Array:
@@ -129,9 +133,9 @@ func _underwater(view: Node2D, world: Node2D, t: float) -> void:
 			var p := to_screen(Vector2(x,312),world)
 			var top := to_screen(Vector2(x+sin(t*1.5+index+stem)*4,312-plant.height*0.7),world)
 			view.draw_polyline(PackedVector2Array([p,p.lerp(top,0.5)+Vector2(2,0),top]),Color(0.06,0.21,0.24,0.20),3)
-	var float_at := float_position(world,t)
+	var float_at := float_position(world,t,view.line_frame.action)
 	if world.hooked==world.HookState.HOOKED and world.rope_path.size()>1:
-		var path := projected(world.rope_path,world)
+		var path := projected(view.line_frame.path,world)
 		path[0]=float_at
 		view.draw_polyline(path,Color(0.51,0.66,0.65,0.10),1)
 	for bait in world.baits:
@@ -158,15 +162,15 @@ func _water(view: Node2D, world: Node2D, t: float) -> void:
 		var width := 3+posmod(index*17,15)
 		view.draw_rect(Rect2(roundf(x),y,width,1),Color(0.37,0.65,0.66,0.06+0.025*sin(t+index)))
 	if world.hooked==world.HookState.HOOKED and world.resisting:
-		var p := float_position(world,t)
+		var p := float_position(world,t,view.line_frame.action)
 		for index in 3:
 			var life := fmod(t*1.5+index/3.0,1)
 			view.draw_polyline(ellipse(p,Vector2(9+life*21,2+life*5)),Color(CREAM,(1-life)*0.26),1)
 
 func _tackle(view: Node2D, world: Node2D, t: float) -> void:
-	var tackle := tackle_pose(world,t)
+	var tackle := tackle_pose(world,t,view.line_frame.action)
 	var tip: Vector2=tackle.tip
-	var float_at := float_position(world,t)
+	var float_at := float_position(world,t,view.line_frame.action)
 	var index := rig_index(world)
 	var load: float=tackle.load
 	var reel_speed: float=tackle.reel_speed
@@ -183,7 +187,13 @@ func _tackle(view: Node2D, world: Node2D, t: float) -> void:
 			for ring in 2:
 				var age := fmod(t*0.6+ring*0.5,1)
 				view.draw_polyline(ellipse(float_at,Vector2(8+age*12,2+age*3)),Color(CREAM,(1-age)*0.44),1)
+		var motion: Dictionary=view.line_frame.action
+		if motion.active:
+			for ring in 2:
+				var life: float=clampf((motion.progress-ring*0.16)/0.84,0,1)
+				view.draw_polyline(ellipse(float_at,Vector2(9+life*21,2+life*6)),Color(CREAM,motion.strength*(1-life)*0.38),1)
 		var angle := clampf(world.angler.surface_velocity*0.006,-0.32,0.32)+sin(t*2.2)*0.035
+		if motion.active: angle+=sin(TAU*motion.progress)*motion.strength*0.08
 		view.draw_set_transform(line_end.round(),angle)
 		view.draw_line(Vector2(0,-13),Vector2(0,-5),INK,3)
 		view.draw_line(Vector2(0,-12),Vector2(0,-6),GOLD,1)
