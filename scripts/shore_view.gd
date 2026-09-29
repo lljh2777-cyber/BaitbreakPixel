@@ -3,6 +3,8 @@ extends RefCounted
 # A local presentation of the same 2D pond. The simulation and net routes stay in world coordinates.
 const Lake = preload("res://assets/first_person/sunset_lake.png")
 const Layout = preload("res://scripts/pond_layout.gd")
+const Hand = preload("res://scripts/angler_hand.gd")
+var hand := Hand.new()
 const SCALE := Vector2(0.925,0.35)
 const ORIGIN := Vector2(24,213)
 const WATER_LEVEL := 55.0
@@ -115,7 +117,10 @@ func _tackle(view: Node2D, world: Node2D, t: float) -> void:
 	var float_at := float_position(world,t)
 	var index := rig_index(world)
 	var load: float=world.tension if world.hooked==world.HookState.HOOKED else 0
-	var grip := Vector2(517+clampf((world.angler.x-300)/300,-1,1)*9,290)
+	var reel_speed: float=world.reel_speed if world.hooked==world.HookState.HOOKED else world.angler.free_reel_speed
+	var wrist := Hand.wrist_position(world.angler.x)
+	var hand_angle := Hand.grip_angle(wrist,tip,t,reel_speed)
+	var grip := Hand.point(Hand.SOCKET,wrist,hand_angle)
 	var strength: float=world.effort_multiplier("angler")
 	var line_end := float_at
 	if world.angler.casting:
@@ -145,39 +150,15 @@ func _tackle(view: Node2D, world: Node2D, t: float) -> void:
 	var second := grip.lerp(tip,0.76)+Vector2(0,-load*26+(strength-1)*7)
 	for part in 33: rod.append(grip.bezier_interpolate(first,second,tip,part/32.0).round())
 	for part in range(1,rod.size()):
-		var width := lerpf(7,1.5,part/32.0)
+		var width := lerpf(4.5,1.2,part/32.0)
 		view.draw_line(rod[part-1],rod[part],Color("13222b"),width+2)
-		view.draw_line(rod[part-1],rod[part],Color("967042") if part<14 else Color("554c3e"),width)
+		view.draw_line(rod[part-1],rod[part],Color("3c4b4f") if part<14 else Color("554c3e"),width)
 		view.draw_line(rod[part-1]-Vector2(1,0),rod[part]-Vector2(1,0),Color("d4b176") if strength>=1 else Color("758a87"),1)
 	for ratio in [0.24,0.48,0.7,0.9,1.0]:
 		var p := rod[roundi(ratio*32)]
 		view.draw_circle(p+Vector2(1,1),2,INK)
 		view.draw_circle(p,1,CREAM)
-	_hand(view,grip,t,world.reel_speed if world.hooked==world.HookState.HOOKED else world.angler.free_reel_speed)
-
-func _hand(view: Node2D, grip: Vector2, t: float, reel_speed: float) -> void:
-	# Pixel silhouettes for the sleeve, palm, fingers and spool, anchored to a stationary camera.
-	var sleeve := PackedVector2Array([grip+Vector2(1,14),grip+Vector2(27,3),grip+Vector2(88,70),grip+Vector2(30,70)])
-	view.draw_colored_polygon(sleeve,Color("1e2b2b"))
-	view.draw_colored_polygon(PackedVector2Array([grip+Vector2(6,19),grip+Vector2(28,11),grip+Vector2(78,70),grip+Vector2(37,70)]),Color("485443"))
-	view.draw_colored_polygon(PackedVector2Array([grip+Vector2(1,4),grip+Vector2(10,-16),grip+Vector2(22,-13),grip+Vector2(26,8),grip+Vector2(16,20),grip+Vector2(6,19)]),Color("a0633f"))
-	view.draw_colored_polygon(PackedVector2Array([grip+Vector2(4,1),grip+Vector2(12,-12),grip+Vector2(20,-10),grip+Vector2(21,8),grip+Vector2(13,15),grip+Vector2(7,12)]),Color("e2ab77"))
-	view.draw_line(grip+Vector2(-4,-13),grip+Vector2(11,17),Color("4c3428"),10)
-	view.draw_line(grip+Vector2(-5,-14),grip+Vector2(10,16),Color("ac7543"),6)
-	for finger in 3:
-		view.draw_rect(Rect2((grip+Vector2(-6+finger*3,-10+finger*6)).round(),Vector2(15,5)),Color("edb785"))
-		view.draw_rect(Rect2((grip+Vector2(-5+finger*3,-10+finger*6)).round(),Vector2(9,1)),Color("ffdaad"))
-	var reel := grip+Vector2(-17,8)
-	view.draw_line(grip,reel,INK,5)
-	view.draw_circle(reel,12,INK)
-	view.draw_circle(reel,9,Color("68767b"))
-	view.draw_circle(reel,6,Color("273c48"))
-	for spoke in 4:
-		var angle := spoke*PI/2+(t*8*signf(reel_speed) if absf(reel_speed)>0.5 else 0.0)
-		view.draw_line(reel+Vector2.from_angle(angle)*4,reel+Vector2.from_angle(angle)*9,Color("c1b89b"),2)
-	var crank := reel+Vector2(-12,5)+Vector2.from_angle(t*8 if absf(reel_speed)>0.5 else 0)*4
-	view.draw_line(reel,crank,CREAM,2)
-	view.draw_rect(Rect2(crank-Vector2(2,2),Vector2(5,5)),Color("2a3b3c"))
+	hand.draw(view,wrist,hand_angle,t,reel_speed)
 
 func _net(view: Node2D, world: Node2D, _t: float) -> void:
 	if world.manual_net and world.net_state in ["prepare","warning","sweep","miss","withdraw","caught"]:
