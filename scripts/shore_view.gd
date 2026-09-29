@@ -217,10 +217,10 @@ func _tackle(view: Node2D, world: Node2D, t: float) -> void:
 func _net(view: Node2D, world: Node2D, _t: float) -> void:
 	if world.manual_net and world.net_state in ["prepare","warning","sweep","miss","withdraw","caught"]:
 		var p := to_screen(world.net_pos,world)
-		var opening: float=smoothstep(0,1,world.net_age/world.NET_PREPARE) if world.net_state=="prepare" else 1.0
+		var opening: float=smoothstep(0,1,world.net_age/world.rule("net_prepare")) if world.net_state=="prepare" else 1.0
 		var rim := PackedVector2Array()
 		for index in 41:
-			var point: Vector2=world.net_pos+(Vector2.from_angle(index*TAU/40)*world.NET_RIM*maxf(0.2,opening)).rotated(world.net_angle)
+			var point: Vector2=world.net_pos+(Vector2.from_angle(index*TAU/40)*world.net_rim()*maxf(0.2,opening)).rotated(world.net_angle)
 			rim.append(to_screen(point,world).round())
 		var handle := PackedVector2Array([Vector2(602,357),Vector2(565,320),p+Vector2(8,5)])
 		view.draw_polyline(handle,INK,7)
@@ -237,7 +237,7 @@ func _net(view: Node2D, world: Node2D, _t: float) -> void:
 	var blocked: bool=world.manual_net_blocked(target)
 	var color := Color("f58375") if blocked or world.angler.net_cooldown>0 else MINT
 	if not world.net_blocks_hooks():
-		view.draw_polyline(projected(ellipse(target,Vector2.ONE*(world.NET_RIM.y+2))),Color(color,0.65),1)
+		view.draw_polyline(projected(ellipse(target,Vector2.ONE*(world.net_rim().y+2))),Color(color,0.65),1)
 		view.label_at(center+Vector2(-28,-18),"木石挡网" if blocked else "从这里下网",10,color)
 	if world.manual_net and world.net_state in ["prepare","warning","sweep"]:
 		var pending := projected(world.manual_net_pending_path(),world)

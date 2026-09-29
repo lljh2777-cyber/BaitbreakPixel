@@ -1,6 +1,7 @@
 extends Node
 
 signal changed
+const Rules=preload("res://scripts/game_rules.gd")
 const Protocol=preload("res://scripts/network_protocol.gd")
 const Presentation=preload("res://scripts/network_presentation.gd")
 const QTE_HISTORY_TICKS := 15
@@ -71,7 +72,7 @@ func host_game(role: String, requested_port: int, settings: Dictionary) -> Error
 	remote_role=other_role(local_role)
 	port=requested_port
 	if port<1024 or port>65535: _phase("failed","端口应为 1024—65535"); return ERR_INVALID_PARAMETER
-	config=settings.duplicate(true)
+	config={"rules":Rules.legacy(settings)}
 	config.ruleset="duel"
 	config.challenge=true
 	config.qte_grace=0.25
@@ -199,7 +200,7 @@ func _send(packet: Dictionary, reliable: bool, channel: int) -> void:
 
 func _handle(packet: Dictionary) -> void:
 	if packet.get("v")!=Protocol.VERSION:
-		fail("联机协议不兼容，请双方使用 0.15 版"); return
+		fail("联机协议不兼容，请双方使用 0.19 版"); return
 	var kind: String=packet.get("kind","") if packet.get("kind","") is String else ""
 	last_rx=now()
 	if kind=="ping" and packet.get("token") is int:
@@ -209,14 +210,15 @@ func _handle(packet: Dictionary) -> void:
 		ping_tokens.erase(packet.token); return
 	if kind=="hello" and is_host and status=="waiting":
 		if packet.get("build")!=Protocol.BUILD:
-			_send({"kind":"reject","reason":"版本不同，请双方使用 0.15 版"},true,2); return
+			_send({"kind":"reject","reason":"版本不同，请双方使用 0.19 版"},true,2); return
 		_send({"kind":"welcome","session":session_id,"role":remote_role,"config":config,"build":Protocol.BUILD,"ready":local_ready},true,2)
 		message="玩家已连接，双方准备后开始"
 		changed.emit(); return
-	if kind=="reject" and not is_host: fail("版本不同，请双方使用 0.15 版"); return
+	if kind=="reject" and not is_host: fail("版本不同，请双方使用 0.19 版"); return
 	if kind=="welcome" and not is_host and status=="connecting":
 		if packet.get("build")!=Protocol.BUILD or not packet.get("role") in ["fish","angler"] or not packet.get("config") is Dictionary or not packet.get("session") is String: fail("房间信息无效"); return
 		session_id=packet.session
+		if not Rules.valid(packet.config.get("rules")): fail("房主玩法规则无效"); return
 		config=packet.config
 		local_role=packet.role
 		remote_role=other_role(local_role)
@@ -276,7 +278,7 @@ func _reset_round() -> void:
 	gesture_open=false
 	remote_gesture=0
 	closed_gesture=0
-	local_power=0.35
+	local_power=float(config.get("rules",Rules.defaults()).suction_initial)
 	last_input_rx=now()
 	last_snapshot_tick=-1
 	presentation.clear()
@@ -296,6 +298,7 @@ func _start_round() -> void:
 func _receive_start(packet: Dictionary) -> void:
 	if not packet.get("round") is int or packet.round<=round_id or not packet.get("config") is Dictionary or packet.get("role")!=local_role: return
 	if not packet.get("snapshot") is Dictionary: return
+	if not Rules.valid(packet.config.get("rules")): fail("开局规则无效"); return
 	var snapshot := Protocol.unpack_state(packet.snapshot)
 	if snapshot.is_empty(): fail("初始世界数据无效"); return
 	round_id=packet.round
@@ -441,7 +444,7 @@ func _remember_qte() -> void:
 		effort_history[role][game.simulation_tick]={"id":state.id,"kind":state.kind,"age":state.age,"active":state.active,"valid":state.kind!="untangle" or game.untangle_tension_valid()}
 		for tick_id in effort_history[role].keys():
 			if tick_id<game.simulation_tick-QTE_HISTORY_TICKS: effort_history[role].erase(tick_id)
-	qte_history[game.simulation_tick]={"id":game.qte_id,"kind":game.qte,"age":game.qte_age,"valid":game.qte!="slack" or game.tension<0.25}
+	qte_history[game.simulation_tick]={"id":game.qte_id,"kind":game.qte,"age":game.qte_age,"valid":game.qte!="slack" or game.tension<game.rule("tension_low")}
 	for tick_id in qte_history.keys():
 		if tick_id<game.simulation_tick-QTE_HISTORY_TICKS: qte_history.erase(tick_id)
 

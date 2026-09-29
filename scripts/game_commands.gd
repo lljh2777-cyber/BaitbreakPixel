@@ -1,5 +1,7 @@
 extends RefCounted
 
+const Rules = preload("res://scripts/game_rules.gd")
+
 # Value-only commands shared by local input, AI and future network input.
 static func vector(value: Variant, fallback: Vector2) -> Vector2:
 	return value if value is Vector2 and value.is_finite() else fallback
@@ -17,7 +19,7 @@ static func fish(command: Dictionary, previous_aim: Vector2, previous_power: flo
 		"power":clampf(number(command.get("power"),previous_power),0.1,1),
 		"suck":flag(command,"suck"),"dash":flag(command,"dash"),
 		"slow":flag(command,"slow"),"qte":flag(command,"qte"),"home":flag(command,"home"),
-		"qte_at_age":clampf(number(command.get("qte_at_age"),-1),-1,2.4)
+		"qte_at_age":clampf(number(command.get("qte_at_age"),-1),-1,Rules.MAX_QTE_AGE)
 	}
 
 static func angler(command: Dictionary, previous_cursor: Vector2) -> Dictionary:
@@ -37,5 +39,5 @@ static func angler(command: Dictionary, previous_cursor: Vector2) -> Dictionary:
 		"qte_condition_valid":command.get("qte_condition_valid",true)==true,
 		"net_hold":flag(command,"net_hold"),"drag":flag(command,"drag"),"net_events":events,
 		"auto_reel":flag(command,"auto_reel"),"auto_net":flag(command,"auto_net"),
-		"qte":flag(command,"qte"),"qte_at_age":clampf(number(command.get("qte_at_age"),-1),-1,2.4)
+		"qte":flag(command,"qte"),"qte_at_age":clampf(number(command.get("qte_at_age"),-1),-1,Rules.MAX_QTE_AGE)
 	}

@@ -32,6 +32,7 @@ var reel_hand_mode := 0
 var reel_hand_amount := 0.0
 var rod_load := 0.0
 var rod_lift := 0.0
+const Rules = preload("res://scripts/game_rules.gd")
 const CAST_SECONDS := 0.7
 
 func reset() -> void:
@@ -81,7 +82,7 @@ func feedback_reel_speed(game: Node2D) -> float:
 	if game.hooked!=game.HookState.FREE: return 0.0
 	# Free tackle has a separate spool. Ignore its cached speed after retrieval
 	# or a broken line, and stop the animation at the physical line limits.
-	if (free_reel_speed>0 and free_line_length>=520) or (free_reel_speed<0 and free_line_length<=45): return 0.0
+	if (free_reel_speed>0 and free_line_length>=game.rule("line_free_max")) or (free_reel_speed<0 and free_line_length<=45): return 0.0
 	for bait in game.baits:
 		if bait.hook and bait.active and not bait.removed: return free_reel_speed
 	return 0.0
@@ -148,7 +149,7 @@ func deploy(game: Node2D) -> bool:
 			game.notice_age=2
 			return false
 	if available_bait(game)<0: game.refill_hook_bait(0)
-	return cast(game,anchor()+Vector2(0,132))
+	return cast(game,anchor()+Vector2(0,game.rule("cast_depth")))
 
 func cast(game: Node2D, point: Vector2) -> bool:
 	if game.hooked!=game.HookState.FREE or game.net_blocks_hooks() or casting or cast_cooldown>0: return false
@@ -178,7 +179,7 @@ func steer_net(game: Node2D, point: Vector2) -> void:
 	if game.manual_net and game.net_state in ["prepare","warning","sweep"]:
 		game.record_manual_net_point(cursor)
 	elif net_cooldown<=0 and game.net_state in ["wait","rest"] and Rect2(0,80,640,233).has_point(point):
-		if game.begin_manual_net(cursor): net_cooldown=12
+		if game.begin_manual_net(cursor): net_cooldown=game.rule("net_cooldown")
 
 func update(game: Node2D, delta: float, command: Dictionary) -> void:
 	auto_reel=command.get("auto_reel",false)
@@ -188,7 +189,7 @@ func update(game: Node2D, delta: float, command: Dictionary) -> void:
 	var raw_cursor := Vector2(command.get("target",cursor))
 	cursor=raw_cursor.clamp(Vector2(30,80),Vector2(610,294))
 	anchor_before=anchor()
-	if not game.landing and game.net_state!="caught": x=clampf(x+clampf(float(command.get("walk",0)),-1,1)*72*delta,18,588)
+	if not game.landing and game.net_state!="caught": x=clampf(x+clampf(float(command.get("walk",0)),-1,1)*game.rule("angler_speed")*delta,18,588)
 	var bank_speed := (anchor().x-anchor_before.x)/maxf(delta,0.001)
 	var count := maxi(1,ceili(delta*120))
 	for part in count:
@@ -240,12 +241,12 @@ func step_free_hook(game: Node2D, index: int, delta: float, sucking: bool) -> vo
 	var count := maxi(1,ceili(delta*120))
 	for part in count:
 		var dt := delta/count
-		free_reel_speed=manual_spool_speed(free_reel_speed,dt)
-		free_line_length=clampf(free_line_length+free_reel_speed*dt,45,520)
+		free_reel_speed=manual_spool_speed(free_reel_speed,dt*game.rule("line_response"),1.0,game.rules)
+		free_line_length=clampf(free_line_length+free_reel_speed*dt,45,game.rule("line_free_max"))
 		var attachment := previous_anchor.lerp(anchor(),float(part+1)/count)
 		var force := Vector2(0,150)+Vector2(game.water_velocity(position))*2-hook_velocity*1.0
 		if sucking:
-			force+=(game.mouth()-position).normalized()*game.strength(position)*game.power*480
+			force+=(game.mouth()-position).normalized()*game.strength(position)*game.power*480*game.rule("hook_suction")
 		hook_velocity+=force*dt
 		position+=hook_velocity*dt
 		var radial := position-attachment
@@ -269,12 +270,12 @@ func step_free_hook(game: Node2D, index: int, delta: float, sucking: bool) -> vo
 		game.notice="钩饵已收回 · Q 重新下钩"
 		game.notice_age=2
 
-func spool_target(raw_tension: float, tuning: Vector2, manual: bool) -> float:
-	if manual: return spool*(90.0 if spool>0 else 36.0)
-	return clampf(-24*tuning.y+(raw_tension-0.5)*100*tuning.x,-36*tuning.y,24*tuning.y)
+func spool_target(raw_tension: float, tuning: Vector2, manual: bool, values: Dictionary = {}) -> float:
+	if manual: return spool*(float(values.get("release_speed",90.0)) if spool>0 else float(values.get("reel_speed",36.0)))
+	return clampf(-float(values.get("auto_reel",24))*tuning.y+(raw_tension-float(values.get("auto_tension",0.5)))*float(values.get("auto_gain",100))*tuning.x,-float(values.get("reel_speed",36))*tuning.y,float(values.get("auto_release",24))*tuning.y)
 
-func manual_spool_speed(current: float, delta: float, force_gain: float = 1.0) -> float:
-	var target := spool_target(0,Vector2.ONE,true)
+func manual_spool_speed(current: float, delta: float, force_gain: float = 1.0, values: Dictionary = {}) -> float:
+	var target := spool_target(0,Vector2.ONE,true,values)
 	if target<0: target*=force_gain
 	# Brake promptly on release/reversal; accelerating the new direction stays smooth.
 	if current*target<0:

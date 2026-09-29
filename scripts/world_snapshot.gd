@@ -1,9 +1,12 @@
 extends RefCounted
 
 # Explicit, versioned value schema. Local views, input sources and profiles are excluded.
-const SCHEMA := 7
+const Rules = preload("res://scripts/game_rules.gd")
+const SCHEMA := 8
 const MAP_ID := "pond_v1"
 const WORLD_FIELDS: Array[String] = [
+	"rules",
+	"qte_timing",
 	"fish",
 	"net_aim",
 	"manual_net",
@@ -19,7 +22,6 @@ const WORLD_FIELDS: Array[String] = [
 	"sprinting",
 	"sprint_exhausted",
 	"stamina_delay",
-	"water_strength",
 	"fish_before",
 	"hooked",
 	"bound_bait",
@@ -28,11 +30,6 @@ const WORLD_FIELDS: Array[String] = [
 	"rope_length",
 	"tension",
 	"reel_speed",
-	"practice_line_sensitivity",
-	"practice_line_force",
-	"slack_hold_seconds",
-	"mouth_window_seconds",
-	"break_hold_seconds",
 	"qte_width",
 	"qte_result_width",
 	"bait_batch",
@@ -118,10 +115,6 @@ const WORLD_FIELDS: Array[String] = [
 	"qte_id",
 	"qte_grace_seconds",
 	"effort_checks",
-	"practice_effort_frequency",
-	"practice_effort_window",
-	"practice_effort_boost",
-	"practice_effort_weak",
 	"round_stats",
 	"net_capture",
 ]
@@ -200,7 +193,12 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 	if not snapshot.get("state") is Dictionary or not snapshot.get("rig") is Dictionary: return false
 	if not snapshot.get("rng_seed") is int or not snapshot.get("rng_state") is int: return false
 	var state: Dictionary=snapshot.state
+	if not Rules.valid(state.get("rules")): return false
+	if not state.get("qte_timing") is Dictionary or not record_matches(state.qte_timing,Rules.qte(Rules.defaults(),"entry")): return false
+	if state.qte_timing.window<0.04 or state.qte_timing.window>2.0 or state.qte_timing.window>state.qte_timing.sweep*0.8+0.000001 or state.qte_timing.zone<0.099 or state.qte_timing.zone>0.9: return false
+	if state.qte_timing.lead<0 or state.qte_timing.lead>2 or state.qte_timing.sweep<0.5 or state.qte_timing.sweep>8: return false
 	if not fields_match(world,state,WORLD_FIELDS) or not fields_match(world.angler,snapshot.rig,RIG_FIELDS): return false
+	if state.stamina<0 or state.stamina>state.rules.stamina_max: return false
 	if snapshot.rig.surface_x<0 or snapshot.rig.surface_x>640 or absf(snapshot.rig.surface_velocity)>10000: return false
 	if not snapshot.rig.reel_hand_mode in [-1,0,1] or snapshot.rig.reel_hand_amount<0 or snapshot.rig.reel_hand_amount>1: return false
 	if snapshot.rig.reel_phase<0 or snapshot.rig.reel_phase>=TAU or snapshot.rig.release_phase<0 or snapshot.rig.release_phase>=TAU: return false
@@ -215,13 +213,11 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 	for role in ["fish","angler"]:
 		if not world.Effort.valid(state.effort_checks.get(role)): return false
 	if not world.Stats.valid(state.round_stats) or state.net_capture<0 or state.net_capture>1: return false
-	if state.practice_effort_frequency<0.5 or state.practice_effort_frequency>2 or state.practice_effort_window<0.12 or state.practice_effort_window>0.5: return false
-	if state.practice_effort_boost<1.1 or state.practice_effort_boost>1.8 or state.practice_effort_weak<0.3 or state.practice_effort_weak>0.9: return false
 	if not state.net_state in ["wait","rest","prepare","warning","sweep","miss","withdraw","caught"]: return false
 	if state.wrap_target < -1 or state.wrap_target>=world.targets.size(): return false
 	if state.contact_target < -1 or state.contact_target>=world.targets.size(): return false
 	if state.wraps.size()>world.targets.size() or state.baits.size()!=4: return false
-	if not state.untangle_phase in ["","check","unwind","recover"] or state.untangle_age<0 or state.untangle_age>3.0 or state.untangle_cooldown<0 or state.untangle_cooldown>world.UNTANGLE_COOLDOWN: return false
+	if not state.untangle_phase in ["","check","unwind","recover"] or state.untangle_age<0 or state.untangle_age>10.3 or state.untangle_cooldown<0 or state.untangle_cooldown>maxf(float(state.rules.untangle_cooldown),float(state.rules.wrap_seconds)+0.5): return false
 	if state.untangle_target < -1 or state.untangle_target>=world.targets.size(): return false
 	if state.untangle_phase in ["check","unwind"]:
 		if state.hooked!=2 or state.wraps.is_empty() or not state.wraps[-1] is Dictionary or state.wraps[-1].get("target")!=state.untangle_target: return false

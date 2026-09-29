@@ -142,7 +142,7 @@ func _world(t: float) -> void:
 	draw_rect(Rect2(34, 306, 52, 5), Color("86b49a"))
 	draw_rect(Rect2(42, 304, 35, 2), MINT)
 	label_at(Vector2(46, 322), "巢穴", 10, MINT)
-	if world.score >= (world.TARGET if world.challenge else 18):
+	if world.score >= (world.food_target()):
 		var bounce := int(sin(t * 4) * 2)
 		draw_colored_polygon(PackedVector2Array([Vector2(55, 267 + bounce), Vector2(65, 267 + bounce), Vector2(60, 272 + bounce)]), MINT)
 
@@ -274,7 +274,7 @@ func _angler(t: float) -> void:
 		var start: Vector2=world.manual_net_target(cursor)
 		var blocked: bool=world.manual_net_blocked(start)
 		var preview := RED if blocked else MINT
-		draw_arc(start,world.NET_RIM.y+2,0,TAU,32,Color(preview,0.5),1)
+		draw_arc(start,world.net_rim().y+2,0,TAU,32,Color(preview,0.5),1)
 		label_at(start+Vector2(-30,-38),"木石挡网" if blocked else "从这里下网",10,preview)
 	if world.manual_net and world.net_state in ["prepare","warning","sweep"]:
 		var path: PackedVector2Array=world.manual_net_pending_path()
@@ -292,8 +292,8 @@ func _angler_hud(_t: float) -> void:
 	var rig := "挂鱼 · 留意张力" if world.hooked==world.HookState.HOOKED else "浮漂下顿" if world.hooked==world.HookState.MOUTH else "钩饵在水中" if Shore.rig_index(world)>=0 else "Q 下钩 / 补饵"
 	label_at(Vector2(140,19),rig,12,CREAM)
 	label_at(Vector2(360,19),"抄网 %.1fs" % world.angler.net_cooldown if world.angler.net_cooldown>0 else "E + 拖动 抄网",11,MINT)
-	var remaining := maxi(0,int(ceil(world.TIME_LIMIT-world.clock)))
-	label_at(Vector2(529,20),"%02d:%02d" % [remaining/60,remaining%60] if world.challenge else "练习 · F2",14,CREAM)
+	var remaining := maxi(0,int(ceil(world.rule("time_limit")-world.clock)))
+	label_at(Vector2(529,20),"%02d:%02d" % [remaining/60,remaining%60] if world.challenge and world.rules.timer_enabled else ("不限时" if world.challenge else "练习 · F2"),14,CREAM)
 	draw_rect(Rect2(0,327,640,33),INK)
 	label_at(Vector2(12,341),game.angler_hint(),11,GOLD)
 	label_at(Vector2(12,355),"A/D 左右移竿   W/S 收放线   Q 下钩 / 补饵   F 解缠   E + 左键拖网",10,Color("9cbbb4"))
@@ -302,12 +302,12 @@ func _angler_hud(_t: float) -> void:
 	panel(Rect2(10,65,151,50))
 	if world.hooked==world.HookState.HOOKED:
 		var spool := "S 放线" if world.angler.spool>0 else ("W 收线" if world.angler.spool<0 else "稳线")
-		label_at(Vector2(18,81),"张力 %d%% · %s" % [int(world.tension*100),spool],11,RED if world.tension>=0.88 else CREAM)
+		label_at(Vector2(18,81),"张力 %d%% · %s" % [int(world.tension*100),spool],11,RED if world.tension>=world.rule("tension_high")-0.02 else CREAM)
 		draw_rect(Rect2(18,88,134,5),Color("335762"))
 		draw_rect(Rect2(18,88,134*world.tension,5),MINT.lerp(RED,world.tension))
 		if world.untangle_phase=="check":
-			draw_rect(Rect2(18+134*world.UNTANGLE_MIN,86,134*(world.UNTANGLE_MAX-world.UNTANGLE_MIN),9),GOLD,false,1)
-		label_at(Vector2(18,108),"断线风险 %.1f / %.1fs" % [world.high_age,world.break_hold_seconds] if world.high_age>0 else ("正在退线" if world.untangle_phase=="unwind" else "解缠 · 张力 25–55%" if world.untangle_phase=="check" else "鱼线受阻 · F 解缠" if world.latched else world.tug_status()),10,RED if world.high_age>0 else MINT)
+			draw_rect(Rect2(18+134*world.rule("untangle_min"),86,134*(world.rule("untangle_max")-world.rule("untangle_min")),9),GOLD,false,1)
+		label_at(Vector2(18,108),"断线风险 %.1f / %.1fs" % [world.high_age,world.break_hold_seconds] if world.high_age>0 else ("正在退线" if world.untangle_phase=="unwind" else ("解缠 · 张力 %d–%d%%" % [world.rule("untangle_min")*100,world.rule("untangle_max")*100]) if world.untangle_phase=="check" else "鱼线受阻 · F 解缠" if world.latched else world.tug_status()),10,RED if world.high_age>0 else MINT)
 	elif world.hooked==world.HookState.MOUTH:
 		label_at(Vector2(18,81),"浮漂正在下顿",11,MINT)
 		label_at(Vector2(18,100),"吐钩判定中 · 暂缓收放",10,GOLD)
@@ -408,7 +408,7 @@ func _line_vibration(path: PackedVector2Array) -> PackedVector2Array:
 	return points
 
 func _line_force_marks(path: PackedVector2Array) -> void:
-	if world.tension<0.25 or path.size()<2: return
+	if world.tension<world.rule("tension_low") or path.size()<2: return
 	var human: float=world.effort_multiplier("angler")
 	var fish_force: float=world.effort_multiplier("fish")
 	if is_equal_approx(human,fish_force): return
@@ -472,8 +472,8 @@ func _player(t: float) -> void:
 	var mouth: Vector2 = world.mouth()
 	var direction: Vector2 = world.aim
 	if world.hooked == world.HookState.FREE and not game.menu.visible and (game.player_role=="fish" or world.feeding):
-		var side := direction.orthogonal() * 27
-		var far := mouth + direction * 44
+		var side: Vector2 = direction.orthogonal() * (world.rule("suction_mouth")+world.rule("suction_range")*world.rule("suction_spread"))
+		var far: Vector2 = mouth + direction * world.rule("suction_range")
 		var pulling: bool=world.feeding
 		var fade := 0.17 if pulling else 0.045
 		draw_colored_polygon(PackedVector2Array([mouth, far+side, far-side]), Color(0.67,0.94,0.81,fade))
@@ -524,7 +524,7 @@ func _player(t: float) -> void:
 		draw_arc(position, radius, 0, TAU, 16, MINT if world.result_good else RED, 1)
 	if world.returning:
 		draw_rect(Rect2(38, 276, 44, 2), INK)
-		draw_rect(Rect2(38, 276, 44 * world.home_age / 2, 2), MINT)
+		draw_rect(Rect2(38, 276, 44 * world.home_age / world.rule("home_hold"), 2), MINT)
 
 func _net_draw_position() -> Vector2:
 	var p: Vector2=world.net_pos
@@ -550,7 +550,7 @@ func _net(t: float) -> void:
 		draw_colored_polygon(PackedVector2Array([arrow+direction*8,arrow-direction*5+direction.orthogonal()*5,arrow-direction*5-direction.orthogonal()*5]),RED)
 	if world.net_state in ["prepare","warning"]:
 		if world.manual_net:
-			draw_arc(from,world.NET_CATCH.y,0,TAU,40,Color(RED,0.5),1)
+			draw_arc(from,world.net_catch().y,0,TAU,40,Color(RED,0.5),1)
 		else:
 			var danger: PackedVector2Array=world.net_warning_outline()
 			draw_colored_polygon(danger,Color(RED,0.04 if world.net_state=="prepare" else 0.10))
@@ -574,7 +574,7 @@ func _net(t: float) -> void:
 		var progress: float=world.net_age/world.NET_MISS
 		for index in range(5):
 			var normal := direction.rotated((index-2)*0.3)
-			var at: Vector2=to+direction*world.NET_RIM.x+normal*(2+progress*8)
+			var at: Vector2=to+direction*world.net_rim().x+normal*(2+progress*8)
 			draw_line(at,at+normal*4,Color(GOLD,1-progress),1)
 	if world.net_state in ["caught","withdraw"] and world.net_pos.y<95:
 		for index in range(7):
@@ -595,8 +595,8 @@ func _net(t: float) -> void:
 		else: draw_arc(origin,6+life*16,0,TAU,24,Color(MINT,(1-life)*0.6),1)
 
 func _draw_landing_net(p: Vector2, t: float, front: bool) -> void:
-	var opening: float=lerpf(0.25,1,smoothstep(0,1,world.net_age/world.NET_PREPARE)) if world.manual_net and world.net_state=="prepare" else 1.0
-	var rim: Vector2=world.NET_RIM*opening
+	var opening: float=lerpf(0.25,1,smoothstep(0,1,world.net_age/world.rule("net_prepare"))) if world.manual_net and world.net_state=="prepare" else 1.0
+	var rim: Vector2=world.net_rim()*opening
 	var angle: float=world.net_angle
 	var caught: bool=world.net_state=="caught"
 	var settling: float=smoothstep(0,1,world.net_age/world.NET_SETTLE) if caught else 0.0
@@ -654,16 +654,16 @@ func _hud(t: float) -> void:
 	draw_rect(Rect2(0,0,640,35), INK)
 	label_at(Vector2(12,15), "像素池塘", 12, GOLD)
 	label_at(Vector2(12,28), "双人对战" if game.shared_session else ("限时挑战" if world.challenge else "练习 · F2 调节"), 10, MINT)
-	var target: float = world.TARGET if world.challenge else 18
+	var target: float = world.food_target()
 	label_at(Vector2(111,22), "食物 %02d / %d" % [int(world.score),int(target)], 15)
 	label_at(Vector2(272,15), "吸力 %d%%" % int(world.power*100), 11, CREAM)
 	draw_rect(Rect2(272,22,68,3), Color("335762"))
 	draw_rect(Rect2(272,22,68*world.power,3), GOLD)
-	label_at(Vector2(366,15), "加速" if world.sprinting else ("抗拉" if world.resisting else ("乏力" if world.stamina<20 else "体力")), 11, GOLD if world.sprinting or world.resisting else CREAM)
+	label_at(Vector2(366,15), "加速" if world.sprinting else ("抗拉" if world.resisting else ("乏力" if world.stamina_ratio()<world.rule("fatigue_threshold") else "体力")), 11, GOLD if world.sprinting or world.resisting else CREAM)
 	draw_rect(Rect2(366,22,70,3), Color("335762"))
-	draw_rect(Rect2(366,22,70*world.stamina/100,3), GOLD if world.sprinting else (RED if world.sprint_exhausted else MINT))
-	var remaining := maxi(0, int(ceil(world.TIME_LIMIT-world.clock)))
-	label_at(Vector2(515,23), "%02d:%02d" % [remaining/60,remaining%60] if world.challenge else "N 抄网练习", 14, RED if remaining < 60 else CREAM)
+	draw_rect(Rect2(366,22,70*world.stamina_ratio(),3), GOLD if world.sprinting else (RED if world.sprint_exhausted else MINT))
+	var remaining := maxi(0, int(ceil(world.rule("time_limit")-world.clock)))
+	label_at(Vector2(515,23), "%02d:%02d" % [remaining/60,remaining%60] if world.challenge and world.rules.timer_enabled else ("不限时" if world.challenge else "N 抄网练习"), 14, RED if remaining < 60 else CREAM)
 	draw_rect(Rect2(0,333,640,27), INK)
 	label_at(Vector2(12,350), game.hint(), 12)
 	label_at(Vector2(584,350), "H 帮助", 10, Color("9cbbb4"))
@@ -705,7 +705,7 @@ func _qte(t: float, check: Dictionary) -> void:
 	var zone_start: float = check.zone
 	var progress: float = check.progress
 	var zone_width: float = check.width
-	if check.active and check.age<0.4:
+	if check.active and check.age<check.lead:
 		panel(Rect2(SKILL_ORIGIN,Vector2(176,34)),Color("103e57"))
 		label_at(SKILL_ORIGIN+Vector2(12,22),"注意 · 即将判定",13,GOLD)
 		return
@@ -746,12 +746,12 @@ func _qte(t: float, check: Dictionary) -> void:
 		draw_line((gauge_origin+Gauge.point(ratio,43)).round(),(gauge_origin+Gauge.point(ratio,55)).round(),Color("081724"),4)
 		draw_line((gauge_origin+Gauge.point(ratio,44)).round(),(gauge_origin+Gauge.point(ratio,54)).round(),CREAM,2)
 	var marker: Vector2 = (gauge_origin+Gauge.point(progress)).round()
-	if check.age>=0.4 or showing_result:
+	if check.age>=check.lead or showing_result:
 		for trail in range(1,6):
 			var p: Vector2 = gauge_origin+Gauge.point(maxf(0,progress-trail*0.018))
 			draw_rect(Rect2(p.round(),Vector2(2,2)),Color(CREAM,(1-trail/6.0)*0.35))
 	else:
-		draw_arc(center,69,-PI/2,-PI/2+TAU*check.age/0.4,40,Color(MINT,0.5),1)
+		draw_arc(center,69,-PI/2,-PI/2+TAU*check.age/maxf(0.001,check.lead),40,Color(MINT,0.5),1)
 	draw_arc(marker+Vector2(0,3),10+sin(t*4),0,TAU,16,Color(MINT,0.25),1)
 	draw_texture(bobber_texture,marker-Vector2(8,8))
 	var key_center := center+Vector2(1,-1)
@@ -763,7 +763,7 @@ func _qte(t: float, check: Dictionary) -> void:
 	label_at(key_rect.position+Vector2(8,16),"空格",12,CREAM)
 	if showing_result:
 		label_at(origin+Vector2(14,180),check.result,14,accent)
-		label_at(origin+Vector2(14,195),("正在退线 · 仍需控线" if check.good else "线圈保留 · 短暂恢复") if kind=="untangle" else ("力量提升 · 持续 2 秒" if check.good else "力量减弱 · 持续 1.5 秒") if kind=="effort" else "线圈保留 · 准备松线" if check.good and kind=="wrap" else ("继续游动" if check.good else "调整后可以再试"),10,CREAM)
+		label_at(origin+Vector2(14,195),("正在退线 · 仍需控线" if check.good else "线圈保留 · 短暂恢复") if kind=="untangle" else ("力量提升 · 留意效果倒计时" if check.good else "力量减弱 · 留意效果倒计时") if kind=="effort" else "线圈保留 · 准备松线" if check.good and kind=="wrap" else ("继续游动" if check.good else "调整后可以再试"),10,CREAM)
 		if check.good:
 			draw_arc(center,57+effect*13,0,TAU,48,Color(accent,(1-effect)*0.6),1)
 			for spark in range(10):
@@ -771,11 +771,11 @@ func _qte(t: float, check: Dictionary) -> void:
 				draw_rect(Rect2(p.round(),Vector2(2,2)),Color(accent,1-effect))
 	else:
 		var instruction := "浮漂进入绿区时按空格"
-		if check.age<0.4: instruction="准备…"
-		elif not ready: instruction="张力过低 · 按 W" if world.tension<world.UNTANGLE_MIN else "张力过高 · 按 S"
+		if check.age<check.lead: instruction="准备…"
+		elif not ready: instruction="张力过低 · 按 W" if world.tension<world.rule("untangle_min") else "张力过高 · 按 S"
 		elif success_zone: instruction="现在按空格"
 		label_at(origin+Vector2(14,180),instruction,12,green if success_zone else CREAM)
-		var detail := "W/S 保持张力 25–55%" if kind=="untangle" else ("保持 W 收线 · 空格判定" if game.player_role=="angler" else "继续游动抗拉 · 空格判定") if kind=="effort" else "边游动抗拉，边保持接触" if kind=="wrap" else ("移动保持低张力" if kind=="slack" else "抓住机会吐出鱼钩")
+		var detail := ("W/S 保持张力 %d–%d%%" % [world.rule("untangle_min")*100,world.rule("untangle_max")*100]) if kind=="untangle" else ("保持 W 收线 · 空格判定" if game.player_role=="angler" else "继续游动抗拉 · 空格判定") if kind=="effort" else "边游动抗拉，边保持接触" if kind=="wrap" else ("移动保持低张力" if kind=="slack" else "抓住机会吐出鱼钩")
 		label_at(origin+Vector2(14,195),detail,10,Color("9cbbb4"))
 
 func _track_point(path: PackedVector2Array, progress: float) -> Vector2:

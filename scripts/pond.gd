@@ -1,6 +1,9 @@
 extends "res://scripts/world_simulation.gd"
 
 # Local application adapter. The base simulation has no input, menus, audio or profile I/O.
+const RulesStore = preload("res://scripts/rules_store.gd")
+var saved_rules := Rules.defaults()
+
 const View = preload("res://scripts/pond_view.gd")
 const Menus = preload("res://scripts/menu.gd")
 const Sound = preload("res://scripts/sound.gd")
@@ -33,22 +36,15 @@ var save_path := "user://pixel.cfg"
 var save_error := OK
 var capture_mode := ""
 var capture_frame := 0
-var offline_rules: Dictionary={}
 
 func reset(is_challenge: bool, role: String = "fish") -> void:
 	if is_instance_valid(network) and network.active(): network.close(true)
-	if shared_session and not offline_rules.is_empty():
-		for key in offline_rules: set(key,offline_rules[key])
-		offline_rules.clear()
 	player_role="angler" if role=="angler" else "fish"
 	shared_session=false
 	fish_source="ai" if player_role=="angler" else "local"
 	angler_source="local" if player_role=="angler" else "ai"
 	var brain_seed := rng.randi()
-	reset_world({"ruleset":"duel" if player_role=="angler" else "survival","challenge":is_challenge,"seed":rng.randi(),
-		"slack_hold":slack_hold_seconds,"mouth_window":mouth_window_seconds,"break_hold":break_hold_seconds,
-		"effort_frequency":practice_effort_frequency,"effort_window":practice_effort_window,"effort_boost":practice_effort_boost,"effort_weak":practice_effort_weak,
-		"line_sensitivity":practice_line_sensitivity,"line_force":practice_line_force,"water_strength":water_strength})
+	reset_world({"ruleset":"duel" if player_role=="angler" else "survival","challenge":is_challenge,"seed":rng.randi(),"rules":saved_rules})
 	fish_brain.reset(brain_seed)
 	local_input.reset()
 	Input.use_accumulated_input=player_role!="angler"
@@ -56,9 +52,6 @@ func reset(is_challenge: bool, role: String = "fish") -> void:
 	menu.close()
 
 func start_shared_session(local_role: String, config: Dictionary) -> void:
-	if not shared_session:
-		for key in ["slack_hold_seconds","mouth_window_seconds","break_hold_seconds","practice_line_sensitivity","practice_line_force","water_strength","practice_effort_frequency","practice_effort_window","practice_effort_boost","practice_effort_weak"]:
-			offline_rules[key]=get(key)
 	player_role="angler" if local_role=="angler" else "fish"
 	shared_session=true
 	fish_source="external"
@@ -114,7 +107,7 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.18.3 | grass-stem-binding")
+	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.19.0 | configurable-game-rules")
 
 func _register_inputs() -> void:
 	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[], "use":[KEY_E], "slow":[KEY_Q], "qte":[KEY_SPACE], "untangle":[KEY_F]}
@@ -148,11 +141,7 @@ func _load_profile() -> void:
 		best_score = maxf(0, float(file.get_value("record", "best", 0)))
 		wins = maxi(0, int(file.get_value("record", "wins", 0)))
 		angler_wins=maxi(0,int(file.get_value("record","angler_wins",0)))
-		set_practice_line_tuning(float(file.get_value("practice", "line_sensitivity", 1.0)),float(file.get_value("practice", "line_force", 1.0)))
-		set_practice_effort_tuning(float(file.get_value("practice","effort_frequency",1.0)),float(file.get_value("practice","effort_window",0.2)),float(file.get_value("practice","effort_boost",1.35)),float(file.get_value("practice","effort_weak",0.6)))
-		var window := float(file.get_value("timing","mouth_window",0.24))
-		if file.has_section_key("timing","mouth_window") and int(file.get_value("timing","qte_revision",0))<1: window*=0.6
-		set_escape_timing(float(file.get_value("timing","slack_hold",0.5)),window,float(file.get_value("timing","break_hold",3.0)))
+		saved_rules=RulesStore.load_profile(file)
 
 func save_profile() -> void:
 	var file := ConfigFile.new()
@@ -161,14 +150,7 @@ func save_profile() -> void:
 	file.set_value("record", "best", best_score)
 	file.set_value("record", "wins", wins)
 	file.set_value("record","angler_wins",angler_wins)
-	file.set_value("practice", "line_sensitivity", offline_rules.get("practice_line_sensitivity",practice_line_sensitivity))
-	file.set_value("practice", "line_force", offline_rules.get("practice_line_force",practice_line_force))
-	for key in ["effort_frequency","effort_window","effort_boost","effort_weak"]:
-		file.set_value("practice",key,offline_rules.get("practice_"+key,get("practice_"+key)))
-	file.set_value("timing","slack_hold",offline_rules.get("slack_hold_seconds",slack_hold_seconds))
-	file.set_value("timing","mouth_window",offline_rules.get("mouth_window_seconds",mouth_window_seconds))
-	file.set_value("timing","qte_revision",1)
-	file.set_value("timing","break_hold",offline_rules.get("break_hold_seconds",break_hold_seconds))
+	RulesStore.save_profile(file,saved_rules)
 	save_error = file.save(save_path)
 
 func apply_settings() -> void:
@@ -194,7 +176,10 @@ func _network_changed() -> void:
 	elif network.status in ["starting","countdown"]: menu.close()
 
 func network_settings() -> Dictionary:
-	return {"slack_hold":slack_hold_seconds,"mouth_window":mouth_window_seconds,"break_hold":break_hold_seconds,"water_strength":water_strength}
+	return {"rules":Rules.normalize(saved_rules)}
+
+func rules_preset_path() -> String:
+	return "user://rules-presets-test" if "--test-profile" in OS.get_cmdline_user_args() else "user://rules-presets"
 
 func screen_to_game(point: Vector2) -> Vector2:
 	return View.Shore.to_world(point,self) if player_role=="angler" else point
@@ -245,15 +230,15 @@ func hint() -> String:
 		if contact_target>=0 and wrap_retry<=0: return "接触%s · 按空格开始缠线判定" % targets[contact_target].name
 		if high_age > 0: return "持续拉紧 %.1f / %.1f 秒可断线" % [high_age,break_hold_seconds]
 		if latched: return "已缠线 · 靠近线圈保持低张力，浮漂到绿区按空格"
-		if stamina<20: return "体力不足 · 缠线减轻拉力，或顺线游动恢复"
+		if stamina_ratio()<rule("fatigue_threshold"): return "体力不足 · 缠线减轻拉力，或顺线游动恢复"
 		return "正在被拉向水面 · 逆线游动抗拉，接触草木石后空格缠线"
 	if manual_net and net_state in ["prepare","warning"]: return "对方正在展开抄网 · 留意网口，游开一段距离"
 	if manual_net and net_state=="sweep": return "远离正在移动的网口 · 木石可以挡住抄网"
 	if net_state == "prepare": return "抄网准备入水 · 留意红光方向"
 	if net_state in ["warning", "sweep"]: return "上方下探 · 横向游离红色区域" if net_kind=="drop" else "横向扫网 · 向上或向下游离红色区域"
-	if returning: return "正在回巢 %.1f / 2.0 秒" % home_age
-	if can_home(): return "按 E 并停留 2 秒回巢"
-	if score >= (TARGET if challenge else 18) - 0.001: return "食物够了！回左下角薄荷色巢穴按 E"
+	if returning: return "正在回巢 %.1f / %.1f 秒" % [home_age,rule("home_hold")]
+	if can_home(): return "按 E 并停留 %.1f 秒回巢" % rule("home_hold")
+	if score >= food_target() - 0.001: return "食物够了！回左下角薄荷色巢穴按 E"
 	if notice_age > 0 and not uses_mobile_tackle(): return notice
 	if cycle_phase == "warning": return "闪烁的饵即将收回，剩余颗粒下次继续"
 	if cycle_phase == "refill": return "正在补饵，可前往另一侧取食"
@@ -262,7 +247,7 @@ func hint() -> String:
 
 func angler_hint() -> String:
 	if landing or net_state=="caught": return "鱼已被控制 · 正在提出水面"
-	if untangle_phase=="check": return "W/S 保持张力 25–55% · 浮漂进入绿区按空格解缠"
+	if untangle_phase=="check": return "W/S 保持张力 %d–%d%% · 绿区按空格解缠" % [rule("untangle_min")*100,rule("untangle_max")*100]
 	if untangle_phase=="unwind": return "正在退开一圈 · 可继续 W/S 控线，鱼仍可能逃脱"
 	if untangle_phase=="recover": return "解缠失败 · 线圈保留，短暂恢复中"
 	if effort_checks.angler.active: return "保持 W 收线 · 发力浮漂到绿区按空格"
@@ -273,12 +258,12 @@ func angler_hint() -> String:
 	if hooked==HookState.MOUTH: return "鱼正在尝试松口 · 挂牢后 W/S 收放线"
 	if hooked==HookState.HOOKED:
 		if tension>=0.88: return "张力过高！按 S 放线，避免持续高张力断线"
-		if tension<0.25: return "鱼正在找机会松口 · 按 W 收线"
+		if tension<rule("tension_low"): return "鱼正在找机会松口 · 按 W 收线"
 		if latched:
 			return "鱼线缠住 · 解缠恢复 %.1fs，W/S 保持控制" % untangle_cooldown if untangle_cooldown>0 else "鱼线缠住 · F 解缠，W/S 保持张力并按空格判定"
 		return "W 收线 · S 放线 · A/D 左右移竿 · E + 左键在近水区拖网"
 	if notice_age>0: return notice
-	return "Q 下钩 / 补饵 · W/S 收放线 · E + 左键拖动抄网" if shared_session else "Q 下钩 / 补饵 · W 收线 / S 放线 · E + 左键拖动抄网 · F3 时间设置"
+	return "Q 下钩 / 补饵 · W/S 收放线 · E + 左键拖动抄网" if shared_session else "Q 下钩 / 补饵 · W 收线 / S 放线 · E + 左键拖动抄网 · F3 玩法规则"
 
 func _unhandled_input(event: InputEvent) -> void:
 	if menu.visible: return
@@ -289,9 +274,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		match event.physical_keycode:
 			KEY_ESCAPE: paused = true; menu.open("pause")
 			KEY_H: paused = true; menu.open("help")
-			KEY_F3: menu.open("timing")
-			KEY_F2:
-				if not challenge: menu.open("practice")
+			KEY_F3: menu.open("rules")
+			KEY_F2: menu.open("rules")
 			KEY_R: restart_round()
 			KEY_N:
 				if not shared_session and not challenge: request_net()

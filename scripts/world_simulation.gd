@@ -1,5 +1,9 @@
 extends Node2D
 
+const Rules = preload("res://scripts/game_rules.gd")
+var rules := Rules.defaults()
+var qte_timing := Rules.qte(Rules.defaults(),"entry")
+
 const Effort = preload("res://scripts/effort_check.gd")
 const Stats = preload("res://scripts/round_stats.gd")
 const Rope = preload("res://scripts/rope.gd")
@@ -45,7 +49,9 @@ var sprint_exhausted := false
 var stamina_delay := 0.0
 const SPRINT_SPEED := 140.0
 const SPRINT_DRAIN := 28.0
-var water_strength := 1.0
+var water_strength: float:
+	get: return rule("water_strength")
+	set(value): rules["water_strength"]=value
 var fish_before := Vector2.ZERO
 var hooked := HookState.FREE
 var bound_bait := -1
@@ -54,17 +60,35 @@ var rope_path := PackedVector2Array()
 var rope_length := 0.0
 var tension := 0.0
 var reel_speed := 0.0
-var practice_line_sensitivity := 1.0
-var practice_line_force := 1.0
-var practice_effort_frequency := 1.0
-var practice_effort_window := 0.2
-var practice_effort_boost := 1.35
-var practice_effort_weak := 0.6
+var practice_line_sensitivity: float:
+	get: return rule("line_response")
+	set(value): rules["line_response"]=value
+var practice_line_force: float:
+	get: return rule("line_force")
+	set(value): rules["line_force"]=value
+var practice_effort_frequency: float:
+	get: return rule("fish_effort_frequency")
+	set(value): rules["fish_effort_frequency"]=value
+var practice_effort_window: float:
+	get: return rule("qte_fish_effort_window")
+	set(value): rules["qte_fish_effort_window"]=value
+var practice_effort_boost: float:
+	get: return rule("fish_effort_boost")
+	set(value): rules["fish_effort_boost"]=value
+var practice_effort_weak: float:
+	get: return rule("fish_effort_weak")
+	set(value): rules["fish_effort_weak"]=value
 var round_stats := Stats.fresh()
 var net_capture := 0.0
-var slack_hold_seconds := 0.5
-var mouth_window_seconds := 0.24
-var break_hold_seconds := 3.0
+var slack_hold_seconds: float:
+	get: return rule("slack_hold")
+	set(value): rules["slack_hold"]=value
+var mouth_window_seconds: float:
+	get: return rule("qte_entry_window")
+	set(value): rules["qte_entry_window"]=value
+var break_hold_seconds: float:
+	get: return rule("break_hold")
+	set(value): rules["break_hold"]=value
 var qte_width := 0.2
 var qte_result_width := 0.2
 var bait_batch := 0
@@ -167,13 +191,21 @@ var effort_checks := {"fish":Effort.fresh(),"angler":Effort.fresh()}
 func _init() -> void:
 	targets=Layout.interaction_targets()
 
+# Compatibility properties above are aliases only; no duplicate tuning state.
+func rule(key: String) -> float: return float(rules[key])
+func stamina_ratio() -> float: return clampf(stamina/rule("stamina_max"),0,1)
+func fatigue_factor() -> float: return lerpf(rule("fatigue_speed"),1.0,clampf(stamina_ratio()/rule("fatigue_threshold"),0,1))
+func food_target() -> float: return rule("food_goal") if challenge else rule("practice_goal")
+func net_rim() -> Vector2: return NET_RIM*rule("net_scale")
+func net_catch() -> Vector2: return NET_CATCH*rule("net_scale")
+
 func uses_mobile_tackle() -> bool: return ruleset=="duel"
 
 func play_feedback(cue: String) -> void: feedback_requested.emit(cue)
 
 func effort_multiplier(role: String) -> float:
 	if role=="angler" and hooked==HookState.HOOKED and not landing and net_state!="caught":
-		if untangle_phase in ["check","unwind"]: return 0.55
+		if untangle_phase in ["check","unwind"]: return rule("untangle_force")
 		if untangle_phase=="recover": return 0.60
 	return float(effort_checks[role].multiplier) if hooked==HookState.HOOKED and not landing and net_state!="caught" and effort_checks[role].effect_age>0 else 1.0
 
@@ -203,20 +235,20 @@ func _tick_efforts(delta: float, fish_input: Dictionary, angler_input: Dictionar
 			state.age+=delta
 			var pressed: bool=command.qte
 			command.qte=false # One Space judges one check; never also starts wrapping.
-			if pressed or state.age>=Effort.LEAD+Effort.SWEEP+qte_grace_seconds:
+			if pressed or state.age>=float(state.lead)+float(state.sweep)+qte_grace_seconds:
 				var good := Effort.finish(state,pressed,command.get("qte_at_age",-1.0),rng)
 				Stats.record(round_stats,role,good)
 				play_feedback(("effort_good_" if good else "effort_bad_")+role)
 		elif state.effect_age<=0 and state.result_age<=0 and attempts[role] and not command.qte:
-			state.wait=maxf(0,state.wait-delta*float(effort_tuning().frequency))
+			state.wait=maxf(0,state.wait-delta*float(effort_tuning(role).frequency))
 			if state.wait<=0:
-				Effort.open(state,rng,effort_tuning())
+				Effort.open(state,rng,effort_tuning(role))
 				play_feedback("qte_"+role)
 
 func effort_ai_press(role: String) -> bool:
 	var state: Dictionary=effort_checks[role]
 	if not state.active: return false
-	var skilled: bool=posmod(state.id*37+int(rng.seed)%100+(19 if role=="angler" else 0),100)<72
+	var skilled: bool=posmod(state.id*37+int(rng.seed)%100+(19 if role=="angler" else 0),100)<rule("ai_effort_skill")*100
 	var threshold: float=state.zone+state.width*0.5 if skilled else maxf(0.01,state.zone-0.06)
 	return Effort.progress(state)>=threshold
 
@@ -224,14 +256,14 @@ func skill_check(role: String) -> Dictionary:
 	var state: Dictionary=effort_checks[role]
 	if role=="fish" and (not qte.is_empty() or (qte_result_age>0 and not state.active)):
 		return {"active":not qte.is_empty(),"id":qte_id,"kind":qte if not qte.is_empty() else qte_result_kind,
-			"age":qte_age,"zone":qte_zone if not qte.is_empty() else qte_result_zone,"width":qte_width if not qte.is_empty() else qte_result_width,
+			"age":qte_age,"lead":qte_timing.lead,"zone":qte_zone if not qte.is_empty() else qte_result_zone,"width":qte_width if not qte.is_empty() else qte_result_width,
 			"progress":qte_progress() if not qte.is_empty() else qte_result_progress,"result_age":qte_result_age,"good":qte_result_good,"result":qte_result,"origin":qte_origin}
-	return {"active":state.active,"id":state.id,"kind":state.kind,"age":state.age,"zone":state.zone,"width":state.width,
+	return {"active":state.active,"id":state.id,"kind":state.kind,"age":state.age,"lead":state.lead,"zone":state.zone,"width":state.width,
 		"progress":Effort.progress(state) if state.active else state.progress,"result_age":state.result_age,"good":state.good,
 		"result":state.message if state.kind=="untangle" else ("发力成功" if state.good else "短暂脱力"),"origin":Vector2(452,83) if fish.x<320 else Vector2(12,83)}
 
 func untangle_tension_valid() -> bool:
-	return tension>=UNTANGLE_MIN and tension<=UNTANGLE_MAX
+	return tension>=rule("untangle_min") and tension<=rule("untangle_max")
 
 func can_untangle() -> bool:
 	var state: Dictionary=effort_checks.angler
@@ -242,7 +274,7 @@ func _begin_untangle() -> bool:
 	untangle_phase="check"
 	untangle_target=wraps[-1].target
 	untangle_age=0.0
-	Effort.open(effort_checks.angler,rng,effort_tuning())
+	Effort.open(effort_checks.angler,rng,effort_tuning("angler","untangle"))
 	effort_checks.angler.kind="untangle"
 	play_feedback("qte_angler")
 	return true
@@ -269,7 +301,7 @@ func _judge_untangle(pressed: bool, judged_age: float = -1.0, failure: String = 
 	Stats.record(round_stats,"angler",good)
 	untangle_phase="unwind" if good else "recover"
 	untangle_age=0.0
-	untangle_cooldown=UNTANGLE_COOLDOWN
+	untangle_cooldown=rule("untangle_cooldown")
 	play_feedback(("effort_good_" if good else "effort_bad_")+"angler")
 
 func _tick_untangle(delta: float, command: Dictionary) -> void:
@@ -278,12 +310,12 @@ func _tick_untangle(delta: float, command: Dictionary) -> void:
 	if hooked!=HookState.HOOKED or landing or match_over or net_state!="wait" and net_state!="rest" or angler.net_held:
 		if not untangle_phase.is_empty():
 			_reset_untangle()
-			untangle_cooldown=maxf(untangle_cooldown,UNTANGLE_COOLDOWN)
+			untangle_cooldown=maxf(untangle_cooldown,rule("untangle_cooldown"))
 		return
 	if untangle_phase.is_empty(): return
 	untangle_age+=delta
 	if untangle_phase=="recover":
-		if untangle_age>=0.75: _reset_untangle()
+		if untangle_age>=rule("untangle_recover"): _reset_untangle()
 		return
 	if wraps.is_empty() or wraps[-1].target!=untangle_target:
 		if untangle_phase=="check": _judge_untangle(false,-1,"鱼再次缠线")
@@ -292,18 +324,18 @@ func _tick_untangle(delta: float, command: Dictionary) -> void:
 	if untangle_phase=="check":
 		var state: Dictionary=effort_checks.angler
 		state.age+=delta
-		if command.qte or state.age>=Effort.LEAD+Effort.SWEEP+qte_grace_seconds:
+		if command.qte or state.age>=float(state.lead)+float(state.sweep)+qte_grace_seconds:
 			_judge_untangle(command.qte,command.qte_at_age,"张力不合适" if not command.qte_condition_valid else "")
 	elif untangle_phase=="unwind":
-		wraps[-1].progress=maxf(0.0,1.0-untangle_age/UNWIND_SECONDS)
-		if untangle_age>=UNWIND_SECONDS:
+		wraps[-1].progress=maxf(0.0,1.0-untangle_age/rule("unwind_seconds"))
+		if untangle_age>=rule("unwind_seconds"):
 			# Preserve elastic extension, including excess slack. Changing the
 			# attachment must never teleport the fish or introduce a force spike.
 			var offset: float=fish_line_length-Vector2(wraps[-1].entry).distance_to(mouth())
 			wraps.pop_back()
 			latched=not wraps.is_empty()
 			var target := Vector2(wraps[-1].entry) if latched else line_anchor(bound_bait)
-			var available := clampf(target.distance_to(mouth())+offset+(0.0 if latched else 0.32*LINE_ELASTIC_PIXELS),0,MAX_LINE_LENGTH)
+			var available := clampf(target.distance_to(mouth())+offset+(0.0 if latched else 0.32*rule("line_elastic")),0,rule("line_max"))
 			if latched: fish_line_length=available
 			else: rope_length=available; fish_line_length=0.0
 			round_stats.unwrap_good+=1
@@ -336,36 +368,43 @@ func capture_snapshot() -> Dictionary: return Snapshot.capture(self)
 func restore_snapshot(snapshot: Dictionary) -> bool: return Snapshot.restore(self,snapshot)
 
 func set_escape_timing(slack: float, window: float, breaking: float) -> void:
-	slack_hold_seconds=clampf(slack,0.1,3.0) if is_finite(slack) else 0.5
-	mouth_window_seconds=clampf(window,0.12,1.0) if is_finite(window) else 0.24
-	break_hold_seconds=clampf(breaking,0.5,10.0) if is_finite(breaking) else 3.0
+	var changes := rules.duplicate()
+	changes.merge({"slack_hold":slack,"qte_entry_window":window,"qte_slack_window":window,"break_hold":breaking},true)
+	rules=Rules.normalize(changes)
 
 func set_practice_line_tuning(sensitivity: float, force: float) -> void:
-	practice_line_sensitivity = clampf(sensitivity,0.25,2.5) if is_finite(sensitivity) else 1.0
-	practice_line_force = clampf(force,0,2.5) if is_finite(force) else 1.0
-	reel_speed = 0
+	var changes := rules.duplicate()
+	changes.merge({"line_response":sensitivity,"line_force":force},true)
+	rules=Rules.normalize(changes)
+	reel_speed=0
 
 func line_tuning() -> Vector2:
-	return Vector2.ONE if challenge else Vector2(practice_line_sensitivity,practice_line_force)
+	return Vector2(rule("line_response"),rule("line_force"))
 
 func set_practice_effort_tuning(frequency: float, window: float, boost: float, weak: float) -> void:
-	practice_effort_frequency=clampf(frequency,0.5,2.0) if is_finite(frequency) else 1.0
-	practice_effort_window=clampf(window,0.12,0.5) if is_finite(window) else 0.2
-	practice_effort_boost=clampf(boost,1.1,1.8) if is_finite(boost) else 1.35
-	practice_effort_weak=clampf(weak,0.3,0.9) if is_finite(weak) else 0.6
+	var changes := rules.duplicate()
+	for role in ["fish","angler"]:
+		changes[role+"_effort_frequency"]=frequency
+		changes["qte_"+role+"_effort_window"]=window
+		changes[role+"_effort_boost"]=boost
+		changes[role+"_effort_weak"]=weak
+	rules=Rules.normalize(changes)
 
-func effort_tuning() -> Dictionary:
-	return {"frequency":1.0,"window":0.2,"boost":1.35,"weak":0.6} if challenge else {"frequency":practice_effort_frequency,"window":practice_effort_window,"boost":practice_effort_boost,"weak":practice_effort_weak}
+func effort_tuning(role: String = "fish", kind: String = "effort") -> Dictionary:
+	var tuning := Rules.qte(rules,"untangle" if kind=="untangle" else role+"_effort")
+	for field in ["frequency","boost","weak","boost_seconds","weak_seconds"]:
+		tuning[field]=rule(role+"_effort_"+field)
+	return tuning
 
 func net_capture_seconds() -> float:
 	# Deep, energetic fish need longer contact; tired fish hauled near the surface are vulnerable.
-	var tired := 1.0-clampf(stamina/100,0,1)
+	var tired := 1.0-clampf(stamina_ratio(),0,1)
 	var hauled := clampf((180-fish.y)/90,0,1) if hooked==HookState.HOOKED else 0.0
-	return clampf(0.60-tired*0.30-hauled*0.12,0.18,0.60)
+	return clampf(rule("net_capture_base")-tired*rule("net_fatigue")-hauled*rule("net_surface"),rule("net_capture_min"),rule("net_capture_base"))
 
 func tug_status() -> String:
 	if hooked!=HookState.HOOKED: return ""
-	if tension<0.25: return "松线机会"
+	if tension<rule("tension_low"): return "松线机会"
 	var target := line_anchor(bound_bait) if wraps.is_empty() else Vector2(wraps[-1].entry)
 	var approach := (fish-fish_before).dot((target-fish).normalized())
 	if approach>0.12: return "正在被收近"
@@ -373,6 +412,8 @@ func tug_status() -> String:
 	return "拉扯僵持"
 
 func reset_world(config: Dictionary = {}) -> void:
+	rules=Rules.legacy(config)
+	qte_timing=Rules.qte(rules,"entry")
 	ruleset="duel" if config.get("ruleset","survival")=="duel" else "survival"
 	rng.seed=int(config.get("seed",2649))
 	angler.reset()
@@ -389,10 +430,6 @@ func reset_world(config: Dictionary = {}) -> void:
 	match_over=false
 	winner_role=""
 	match_paused=false
-	set_escape_timing(Commands.number(config.get("slack_hold"),0.5),Commands.number(config.get("mouth_window"),0.24),Commands.number(config.get("break_hold"),3.0))
-	set_practice_line_tuning(Commands.number(config.get("line_sensitivity"),1.0),Commands.number(config.get("line_force"),1.0))
-	set_practice_effort_tuning(Commands.number(config.get("effort_frequency"),1.0),Commands.number(config.get("effort_window"),0.2),Commands.number(config.get("effort_boost"),1.35),Commands.number(config.get("effort_weak"),0.6))
-	water_strength=maxf(0,Commands.number(config.get("water_strength"),1.0))
 	net_aim=Vector2.ZERO
 	manual_net=false
 	net_trail.clear()
@@ -403,7 +440,7 @@ func reset_world(config: Dictionary = {}) -> void:
 	bait_batch=0
 	challenge = bool(config.get("challenge",false))
 	fish = Vector2(66, 265)
-	power=0.35
+	power=rule("suction_initial")
 	rope_length=0
 	landing_from=Vector2.ZERO
 	qte_width=0.2
@@ -422,7 +459,7 @@ func reset_world(config: Dictionary = {}) -> void:
 	velocity = Vector2.ZERO
 	aim = Vector2.RIGHT
 	fish_before = fish
-	stamina = 100
+	stamina = rule("stamina_max")*rule("stamina_initial")
 	sprinting = false
 	sprint_exhausted = false
 	stamina_delay = 0
@@ -516,7 +553,7 @@ func _make_bait(index: int, batch: int = 0) -> Dictionary:
 			var angle: float = TAU * float(particle) / counts[layer] + layer * 0.37 + grain_rng.randf_range(-0.12,0.12)
 			var radius: float = radii[layer] - grain_rng.randf_range(0,1.7 if layer < 2 else 1.0)
 			var offset := (Vector2.from_angle(angle) * radius * Vector2(1,0.88)).round()
-			bait.grains.append({"id":("%d_%d" % [index, serial] if batch==0 else "%d_%d_%d" % [index,batch,serial]), "offset":offset, "pos":home + offset, "layer":layer, "fleck":serial%5, "free":false, "eaten":false, "progress":0.0, "points":18.0 / 24 if layer == 0 else 12.0 / 20})
+			bait.grains.append({"id":("%d_%d" % [index, serial] if batch==0 else "%d_%d_%d" % [index,batch,serial]), "offset":offset, "pos":home + offset, "layer":layer, "fleck":serial%5, "free":false, "eaten":false, "progress":0.0, "points":rule("bait_points")*(0.6 / 24 if layer == 0 else 0.4 / 20)})
 			serial += 1
 	return bait
 
@@ -536,7 +573,7 @@ func _tip(index: int) -> Vector2:
 	return mouth() if bound_bait == index and hooked != HookState.FREE else Vector2(baits[index].pos) + Vector2(2, 1).rotated(baits[index].angle)
 
 func hook_point(index: int, local: Vector2) -> Vector2:
-	return _tip(index)+(local*HOOK_SCALE).rotated(baits[index].angle)
+	return _tip(index)+(local*rule("hook_scale")).rotated(baits[index].angle)
 
 func water_offset(point: Vector2) -> Vector2:
 	return Vector2(sin(elapsed*0.75+point.y*0.007)*5+sin(elapsed*1.25+point.x*0.005),sin(elapsed*0.95+point.x*0.008)*2.5)*water_strength
@@ -549,8 +586,8 @@ func strength(point: Vector2) -> float:
 	var local := point - mouth()
 	var depth := local.dot(aim)
 	var side := absf(local.cross(aim))
-	if depth < 0 or depth > 44 or side > 4 + depth * 0.53: return 0
-	return (0.6 + 0.4 * (1 - depth / 44)) * (1 - 0.2 * side / (4 + depth * 0.53))
+	if depth < 0 or depth > rule("suction_range") or side > rule("suction_mouth") + depth * rule("suction_spread"): return 0
+	return (0.6 + 0.4 * (1 - depth / rule("suction_range"))) * (1 - 0.2 * side / (rule("suction_mouth") + depth * rule("suction_spread")))
 
 func _collision(point: Vector2, radius: float) -> bool:
 	for solid in SOLIDS:
@@ -559,7 +596,7 @@ func _collision(point: Vector2, radius: float) -> bool:
 
 func vegetation_drag(point: Vector2) -> float:
 	for patch in Layout.GRASS:
-		if patch.has_point(point): return 0.68
+		if patch.has_point(point): return rule("vegetation_speed")
 	return 1.0
 
 func move_fish(motion: Vector2) -> void:
@@ -571,7 +608,7 @@ func move_fish(motion: Vector2) -> void:
 	var base := 0.5 if wraps.is_empty() else 0.18
 	# Mobile, player-controlled tackle cannot stretch invisibly past the red gauge.
 	# Resolve this before swept net capture, so the net sees the actual fish motion.
-	var reach := maxf(0,available)+LINE_ELASTIC_PIXELS*(1-base)
+	var reach := maxf(0,available)+rule("line_elastic")*(1-base)
 	var radial := mouth()-contact
 	if radial.length()>reach:
 		fish=(contact+radial.normalized()*reach-aim*10).clamp(Vector2(radius+8,68+radius),Vector2(632-radius,311-radius))
@@ -586,7 +623,7 @@ func target_is_wrapped(index: int) -> bool:
 
 func _update_contacts(delta: float) -> void:
 	for index in targets.size():
-		var opacity := 0.68 if touching_target(index) else 1.0
+		var opacity := rule("cover_opacity") if touching_target(index) else 1.0
 		target_opacity[index] = move_toward(target_opacity[index],opacity,delta*4)
 	if qte=="wrap":
 		contact_target = wrap_target
@@ -613,14 +650,15 @@ func line_pull_velocity() -> Vector2:
 	var target := line_anchor(bound_bait) if wraps.is_empty() else Vector2(wraps[-1].entry)
 	var load := clampf((tension-0.12)/0.88,0,1)
 	# A taut line transmits a real force toward its last contact; slack does not push the fish.
-	return (target-mouth()).normalized()*65*load*sqrt(line_tuning().y)*effort_multiplier("angler")/effort_multiplier("fish")*(1.0 if wraps.is_empty() else 0.5)
+	return (target-mouth()).normalized()*rule("line_pull")*load*sqrt(line_tuning().y)*effort_multiplier("angler")/effort_multiplier("fish")*(1.0 if wraps.is_empty() else rule("wrap_pull"))
 
 func _open_qte(kind: String) -> void:
 	qte_id+=1
 	qte = kind
 	qte_age = 0
-	qte_width=0.12 if kind=="wrap" else mouth_window_seconds/2.0
-	qte_zone=rng.randf_range(0.10,0.90-qte_width)
+	qte_timing=Rules.qte(rules,kind)
+	qte_width=float(qte_timing.window)/float(qte_timing.sweep)
+	qte_zone=rng.randf_range(0.10,0.90-qte_width) if qte_timing.random else float(qte_timing.zone)
 	qte_origin = Vector2(452,83) if fish.x<320 else Vector2(12,83)
 	qte_result_age = 0
 	_cancel_effort("fish")
@@ -652,7 +690,7 @@ func _fail_wrap() -> void:
 	_finish_qte_visual(false)
 	qte = ""
 	wrap_target = -1
-	wrap_retry = 1.2
+	wrap_retry = rule("wrap_retry")
 	result_flash = 0.7
 	result_good = false
 	notice = "缠线失败 · 仍然上钩，可稍后再试"
@@ -664,9 +702,9 @@ func _commit_wrap() -> void:
 	var coil := Layout.coil_at(targets[wrap_target],fish)
 	coil.target = wrap_target
 	wraps.append(coil)
-	untangle_cooldown=maxf(untangle_cooldown,WIND_SECONDS+0.5)
+	untangle_cooldown=maxf(untangle_cooldown,rule("wrap_seconds")+0.5)
 	# Only this successful skill check creates an attachment. The coil stays after swimming away.
-	fish_line_length = mouth().distance_to(coil.entry)+9.0
+	fish_line_length = mouth().distance_to(coil.entry)+rule("wrap_slack")
 	reel_speed = 0
 	tension = 0.03
 	latched = true
@@ -709,7 +747,7 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 	elapsed += delta
 	if hooked==HookState.HOOKED and not landing and net_state!="caught": round_stats.hooked_seconds+=delta
 	if fish.distance_to(HOME) > 34: started = true
-	if challenge and started: clock = minf(TIME_LIMIT, clock + delta)
+	if challenge and rules.timer_enabled and started: clock = minf(rule("time_limit"), clock + delta)
 	notice_age = maxf(0, notice_age - delta)
 	result_flash = maxf(0, result_flash - delta)
 	qte_result_age = maxf(0,qte_result_age-delta)
@@ -730,24 +768,24 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 	resisting = false
 	feeding = sucking and hooked!=HookState.MOUTH and net_state!="caught"
 	stamina_delay = maxf(0,stamina_delay-delta)
-	if not dash and stamina>=20: sprint_exhausted = false
+	if not dash and stamina_ratio()>=rule("sprint_restart"): sprint_exhausted = false
 	if not movement_locked():
 		var pull := line_pull_velocity()
 		var opposition := maxf(0,-movement.limit_length(1).dot(pull.normalized()))
 		resisting = opposition>0.1 and pull.length()>2
 		sprinting = dash and movement.length()>0.01 and stamina>0 and not sprint_exhausted
 		if sprinting or resisting:
-			stamina = maxf(0,stamina-delta*(SPRINT_DRAIN if sprinting else opposition*11))
-			stamina_delay = 0.55
+			stamina = maxf(0,stamina-delta*(rule("sprint_drain") if sprinting else opposition*rule("resist_drain")))
+			stamina_delay = rule("stamina_delay")
 			if stamina<=0 and sprinting: sprint_exhausted = true
-		var speed := SPRINT_SPEED if sprinting else (26.0 if slow else 70.0)
+		var speed := rule("sprint_speed") if sprinting else (rule("slow_speed") if slow else rule("swim_speed"))
 		if hooked==HookState.HOOKED:
-			speed *= lerpf(0.4,1.0,clampf(stamina/20,0,1))*effort_multiplier("fish")
-			if feeding: speed *= 0.68
-		velocity = velocity.move_toward(movement.limit_length(1)*speed,delta*(650 if sprinting else 330))
+			speed *= fatigue_factor()*effort_multiplier("fish")
+			if feeding: speed *= rule("feeding_speed")
+		velocity = velocity.move_toward(movement.limit_length(1)*speed,delta*(rule("sprint_accel") if sprinting else rule("swim_accel")))
 		move_fish((velocity*vegetation_drag(fish)+water_velocity(fish)+pull)*delta)
 	else: velocity = Vector2.ZERO
-	if not sprinting and stamina_delay<=0: stamina = minf(100,stamina+delta*18)
+	if not sprinting and stamina_delay<=0: stamina = minf(rule("stamina_max"),stamina+delta*rule("stamina_recovery"))
 	_update_contacts(delta)
 	_step_net(delta)
 	if match_over or net_state=="caught": return
@@ -762,12 +800,12 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 	if interact and was_free and hooked == HookState.FREE and can_home(): returning = not returning
 	if returning and can_home():
 		home_age += delta
-		if home_age >= 2.0: finish(true, "home")
+		if home_age >= rule("home_hold"): finish(true, "home")
 	else:
 		returning = false
 		home_age = 0
 	if match_over: return
-	if challenge and clock >= TIME_LIMIT:
+	if challenge and rules.timer_enabled and clock >= rule("time_limit"):
 		finish(uses_mobile_tackle(), "timeout")
 		return
 	_step_supply(delta)
@@ -786,18 +824,18 @@ func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2) -> 
 			bait.angle = sin(elapsed*0.75+bait.home.y*0.007)*0.16*water_strength
 			if bait.hook and not bait.removed and bound_bait != index and sucking:
 				var gain := strength(_tip(index)) * power
-				target = target.move_toward(mouth(),gain*26)
+				target = target.move_toward(mouth(),gain*26*rule("hook_suction"))
 			bait.pos = Vector2(bait.pos).move_toward(target, delta * 44)
 		if bait.active and bait.hook and not bait.removed and hooked == HookState.FREE and hook_cooldown <= 0 and not net_blocks_hooks():
 			var relative := _tip(index) - mouth() - aim * 3
 			var before := old_tip - old_mouth - aim * 3
-			if _segment_distance(before, relative, Vector2.ZERO) < BITE_RADIUS:
+			if _segment_distance(before, relative, Vector2.ZERO) < rule("bite_radius"):
 				_enter_hook(index)
 				sucking = false
 	var layer := 3
 	for grain in bait.grains:
 		if not grain.eaten and not grain.free: layer = mini(layer, grain.layer)
-	bait.budget = minf(2, float(bait.budget) + delta * (8 + 20 * power)) if sucking else 0.0
+	bait.budget = minf(2, float(bait.budget) + delta * (8 + 20 * power)*rule("pellet_rate")/28.0) if sucking else 0.0
 	for grain in bait.grains:
 		if grain.eaten: continue
 		if not grain.free: grain.pos = Vector2(bait.pos) + Vector2(grain.offset).rotated(bait.angle)
@@ -806,16 +844,16 @@ func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2) -> 
 		var pull := strength(grain.pos)
 		if pull <= 0: continue
 		if grain.free:
-			grain.pos = Vector2(grain.pos).move_toward(mouth(), delta * 95)
+			grain.pos = Vector2(grain.pos).move_toward(mouth(), delta * rule("pellet_speed"))
 			if Vector2(grain.pos).distance_to(mouth()) < 4:
 				grain.eaten = true
 				if not counted.has(grain.id):
 					counted[grain.id] = true
 					score += float(grain.points)
-					stamina = minf(100,stamina+float(grain.points)*4)
+					stamina = minf(rule("stamina_max"),stamina+float(grain.points)*rule("food_recovery"))
 					play_feedback("eat")
 		elif grain.layer == layer:
-			grain.progress += delta * pull * power * 4.5
+			grain.progress += delta * pull * power * rule("pellet_detach")
 			if grain.progress >= 1 and bait.budget >= 1:
 				grain.free = true
 				bait.budget -= 1
@@ -852,9 +890,9 @@ func _step_qte(delta: float, qte_pressed: bool, judged_age: float = -1) -> void:
 	qte_age += delta
 	# Only the authority can supply an age verified against its own QTE history.
 	var age := judged_age if judged_age>=0 else qte_age
-	var progress := clampf((age-0.4)/2.0,0,1)
-	if qte_pressed or qte_age >= 2.4+qte_grace_seconds:
-		var success := qte_pressed and age>=0.4 and age<=2.4 and progress>=qte_zone and progress<=qte_zone+qte_width
+	var progress := clampf((age-float(qte_timing.lead))/float(qte_timing.sweep),0,1)
+	if qte_pressed or qte_age >= float(qte_timing.lead)+float(qte_timing.sweep)+qte_grace_seconds:
+		var success := qte_pressed and age>=float(qte_timing.lead) and age<=float(qte_timing.lead)+float(qte_timing.sweep) and progress>=qte_zone and progress<=qte_zone+qte_width
 		result_flash = 0.7
 		result_good = success
 		if qte=="wrap":
@@ -870,46 +908,46 @@ func _step_qte(delta: float, qte_pressed: bool, judged_age: float = -1) -> void:
 			if qte == "entry": _attach_hook()
 			else:
 				qte = ""
-				retry_age = 1.2
+				retry_age = rule("slack_retry")
 				low_age = 0
 			play_feedback("fail")
 
 func qte_progress() -> float:
-	return clampf((qte_age - 0.4) / 2.0, 0, 1)
+	return clampf((qte_age - float(qte_timing.lead)) / float(qte_timing.sweep), 0, 1)
 
 func _step_line(delta: float, qte_pressed: bool, judged_age: float = -1) -> void:
 	var anchor := line_anchor(bound_bait)
 	var animating := winding()
-	if animating: wraps[-1].progress = minf(1,wraps[-1].progress+delta/WIND_SECONDS)
+	if animating: wraps[-1].progress = minf(1,wraps[-1].progress+delta/rule("wrap_seconds"))
 	_rebuild_rope()
 	latched = not wraps.is_empty()
 	var length_now := anchor.distance_to(mouth()) if not latched else Vector2(wraps[-1].entry).distance_to(mouth())
 	var base := 0.18 if latched else 0.5
 	var available := fish_line_length if latched else rope_length
-	var raw_tension := base+(length_now-available)/LINE_ELASTIC_PIXELS
+	var raw_tension := base+(length_now-available)/rule("line_elastic")
 	var tuning := line_tuning()
 	# Reeling is the objective. Tension feedback only tempers it or pays out under heavy load.
 	var force_gain := effort_multiplier("angler")/effort_multiplier("fish")
-	var desired_speed := angler.spool_target(raw_tension,tuning,not angler.auto_reel)
+	var desired_speed := angler.spool_target(raw_tension,tuning,not angler.auto_reel,rules)
 	if angler.auto_reel and untangle_phase in ["check","unwind"]:
 		# The AI uses the same spool actuator; no direct tension/line-length edits.
-		desired_speed=clampf((raw_tension-0.40)*170,-36,90)*tuning.y
+		desired_speed=clampf((raw_tension-lerpf(rule("untangle_min"),rule("untangle_max"),0.5))*170,-rule("reel_speed"),rule("release_speed"))*tuning.y
 	if desired_speed<0: desired_speed*=force_gain
 	if tuning.y<=0: reel_speed=0
-	elif not angler.auto_reel: reel_speed=angler.manual_spool_speed(reel_speed,delta*tuning.x*maxf(1,tuning.y),force_gain)
+	elif not angler.auto_reel: reel_speed=angler.manual_spool_speed(reel_speed,delta*tuning.x*maxf(1,tuning.y),force_gain,rules)
 	else: reel_speed=move_toward(reel_speed,desired_speed,delta*60*tuning.x*maxf(1,tuning.y))
-	available = clampf(available+reel_speed*delta*(0.22 if latched else 1.0),0,MAX_LINE_LENGTH)
+	available = clampf(available+reel_speed*delta*(rule("wrap_spool") if latched else 1.0),0,rule("line_max"))
 	if latched: fish_line_length = available
 	else: rope_length = available
-	tension = clampf(base+(length_now-available)/LINE_ELASTIC_PIXELS,0,1)
-	if tension>=0.9: round_stats.danger_seconds+=delta
-	high_age = high_age + delta if tension >= 0.9 else 0.0
+	tension = clampf(base+(length_now-available)/rule("line_elastic"),0,1)
+	if tension>=rule("tension_high"): round_stats.danger_seconds+=delta
+	high_age = high_age + delta if tension >= rule("tension_high") else 0.0
 	if high_age >= break_hold_seconds:
 		_release_hook(true)
 		return
-	if not latched and fish.y < 91 and absf(fish.x - anchor.x) < 30 and tension >= 0.25:
+	if not latched and fish.y < 91 and absf(fish.x - anchor.x) < 30 and tension >= rule("tension_low"):
 		landing_age += delta
-		if landing_age >= 0.65:
+		if landing_age >= rule("landing_hold"):
 			landing = true
 			for role in effort_checks: Effort.reset(effort_checks[role])
 			landing_from = fish
@@ -930,23 +968,23 @@ func _step_line(delta: float, qte_pressed: bool, judged_age: float = -1) -> void
 		return
 	if animating: return
 	if qte == "slack":
-		if tension >= 0.25:
+		if tension >= rule("tension_low"):
 			_finish_qte_visual(false,"张力回升")
 			qte = ""
-			retry_age = 1.2
+			retry_age = rule("slack_retry")
 			low_age = 0
 			result_flash = 0.7
 			result_good = false
 			play_feedback("fail")
 		else: _step_qte(delta, qte_pressed,judged_age)
 	else:
-		low_age = low_age + delta if tension < 0.25 and retry_age <= 0 else 0.0
+		low_age = low_age + delta if tension < rule("tension_low") and retry_age <= 0 else 0.0
 		if low_age >= slack_hold_seconds:
 			_open_qte("slack")
 
 func _step_landing(delta: float) -> void:
 	landing_age += delta
-	var ratio := clampf(landing_age/1.05,0,1)
+	var ratio := clampf(landing_age/rule("landing_lift"),0,1)
 	fish = landing_from.lerp(Vector2(line_anchor(bound_bait).x,39),ratio*ratio)
 	_rebuild_rope()
 	if ratio<1: return
@@ -969,7 +1007,7 @@ func _clear_hook() -> void:
 	wraps.clear()
 	fish_line_length = 0
 	wrap_retry = 0
-	hook_cooldown = 1.8
+	hook_cooldown = rule("hook_immunity")
 	net_recovery = 4
 	latched = false
 	tension = 0
@@ -1011,7 +1049,7 @@ func _step_supply(delta: float) -> void:
 	if cycle_phase.is_empty():
 		for index in baits.size():
 			if uses_mobile_tackle() and baits[index].hook: continue
-			if baits[index].active and (baits[index].age >= 30 or not _remaining(baits[index])):
+			if baits[index].active and (baits[index].age >= rule("bait_cycle") or not _remaining(baits[index])):
 				cycle_slot = index
 				cycle_phase = "warning"
 				cycle_age = 0
@@ -1022,7 +1060,7 @@ func _step_supply(delta: float) -> void:
 			baits[cycle_slot].active = false
 			cycle_phase = "refill"
 			cycle_age = 0
-		elif cycle_phase == "refill" and cycle_age >= 5:
+		elif cycle_phase == "refill" and cycle_age >= rule("bait_refill"):
 			if _remaining(baits[cycle_slot], true): supply_queue.append(cycle_slot)
 			var next := -1
 			for candidate in supply_queue:
@@ -1037,7 +1075,7 @@ func _step_supply(delta: float) -> void:
 			cycle_slot = -1
 
 func net_warning_seconds() -> float:
-	return MANUAL_NET_WARNING if manual_net else NET_WARNING
+	return rule("net_manual_warning") if manual_net else rule("net_auto_warning")
 
 func manual_net_target(point: Vector2) -> Vector2:
 	return point.clamp(Vector2(30,85),Vector2(610,280))
@@ -1060,7 +1098,7 @@ func manual_net_pending_path() -> PackedVector2Array:
 
 func manual_net_blocked(point: Vector2) -> bool:
 	for solid in SOLIDS:
-		if Layout.touches(point,NET_RIM.y+2,PackedVector2Array(solid.points)): return true
+		if Layout.touches(point,net_rim().y+2,PackedVector2Array(solid.points)): return true
 	return false
 
 func _manual_net_exit(point: Vector2) -> PackedVector2Array:
@@ -1069,7 +1107,7 @@ func _manual_net_exit(point: Vector2) -> PackedVector2Array:
 	# Inflate the obstacles by the turnable rim, then find a clear lift to the surface.
 	var expanded: Array=[]
 	for solid in SOLIDS:
-		for polygon in Geometry2D.offset_polygon(PackedVector2Array(solid.points),NET_RIM.y+2,Geometry2D.JOIN_MITER):
+		for polygon in Geometry2D.offset_polygon(PackedVector2Array(solid.points),net_rim().y+2,Geometry2D.JOIN_MITER):
 			expanded.append({"points":Array(polygon)})
 	var path := Rope.solve(surface,point,expanded)
 	path.reverse()
@@ -1156,7 +1194,7 @@ func _net_contact(point: Vector2, angle: float = NAN) -> bool:
 	if manual_net:
 		return manual_net_blocked(point)
 	if is_nan(angle): angle=net_angle
-	var net_scale := NET_RIM+Vector2(2,2) # Include the drawn rim, not just its centerline.
+	var net_scale := net_rim()+Vector2(2,2) # Include the drawn rim, not just its centerline.
 	for solid in SOLIDS:
 		var scaled := PackedVector2Array()
 		for vertex in solid.points: scaled.append((vertex-point).rotated(-angle)/net_scale)
@@ -1203,7 +1241,7 @@ func net_warning_outline() -> PackedVector2Array:
 func _make_net_warning_outline() -> PackedVector2Array:
 	var points := PackedVector2Array()
 	for endpoint in [net_pos if manual_net and net_state=="sweep" else net_from,net_to]:
-		for index in range(48): points.append(endpoint+(Vector2.from_angle(index*TAU/48)*NET_CATCH*1.01).rotated(net_angle))
+		for index in range(48): points.append(endpoint+(Vector2.from_angle(index*TAU/48)*net_catch()*1.01).rotated(net_angle))
 	return Geometry2D.convex_hull(points)
 
 func _catch_in_net() -> void:
@@ -1308,7 +1346,7 @@ func _step_net(delta: float) -> void:
 					net_route_next+=1
 					continue
 				# End exactly at each turn; consume the remaining time on the next leg.
-				span=minf(span,distance/MANUAL_NET_SPEED)
+				span=minf(span,distance/rule("net_manual_speed"))
 			_advance_net(span,frame_from.lerp(frame_to,advanced/delta),frame_from.lerp(frame_to,(advanced+span)/delta))
 			advanced+=span
 			if match_over or net_state=="rest": break
@@ -1327,7 +1365,7 @@ func _step_net(delta: float) -> void:
 	if not uses_mobile_tackle() and (not cycle_phase.is_empty() or net_recovery > 0): return
 	if net_state == "wait":
 		if challenge and started and angler.auto_net: net_wait += delta
-		if net_queued or (angler.auto_net and net_wait >= (18 if net_count==0 else 35)):
+		if net_queued or (angler.auto_net and net_wait >= (rule("net_first") if net_count==0 else rule("net_interval"))):
 			net_capture=0.0
 			net_state = "prepare"
 			net_age = 0
@@ -1365,8 +1403,8 @@ func _advance_net(delta: float, frame_from: Vector2, frame_to: Vector2) -> void:
 		net_pos=_net_retract_point(clampf(net_age/net_retract_duration,0,1))
 		if net_age>=net_retract_duration: _finish_net_recovery()
 	elif net_state=="prepare":
-		net_pos=net_from if manual_net else net_park.lerp(net_from,smoothstep(0,1,net_age/NET_PREPARE))
-		if net_age>=NET_PREPARE:
+		net_pos=net_from if manual_net else net_park.lerp(net_from,smoothstep(0,1,net_age/rule("net_prepare")))
+		if net_age>=rule("net_prepare"):
 			net_state="warning"; net_age=0; net_pos=net_from; play_feedback("warn")
 	elif net_state == "warning":
 		if net_age >= net_warning_seconds():
@@ -1379,7 +1417,7 @@ func _advance_net(delta: float, frame_from: Vector2, frame_to: Vector2) -> void:
 			var shift := goal-net_pos
 			if shift.length()>0.0001:
 				net_angle=shift.angle()
-				var candidate := net_pos.move_toward(goal,MANUAL_NET_SPEED*delta)
+				var candidate := net_pos.move_toward(goal,rule("net_manual_speed")*delta)
 				if _net_contact(candidate):
 					net_blocked=true
 					net_state="miss"
@@ -1387,8 +1425,8 @@ func _advance_net(delta: float, frame_from: Vector2, frame_to: Vector2) -> void:
 					play_feedback("tap")
 				else: net_pos=candidate
 			net_to=goal
-		else: net_pos = net_from.lerp(net_to, smoothstep(0,1,net_age / NET_SWEEP))
-		var scale := NET_CATCH
+		else: net_pos = net_from.lerp(net_to, smoothstep(0,1,net_age / rule("net_auto_sweep")))
+		var scale := net_catch()
 		var hit := _net_hit_fraction((frame_from-old_net).rotated(-net_angle)/scale,(frame_to-net_pos).rotated(-net_angle)/scale)
 		var contact_time := 0.0
 		if hit>=0 and net_state=="sweep":
@@ -1416,7 +1454,7 @@ func _advance_net(delta: float, frame_from: Vector2, frame_to: Vector2) -> void:
 			if net_trail.is_empty() or net_trail[-1].distance_to(net_pos)>0.0001: net_trail.append(net_pos)
 			if net_route_next<net_route.size() and net_pos.distance_to(manual_net_goal())<0.0001: net_route_next+=1
 			net_to=manual_net_goal()
-		if net_state=="sweep" and net_age >= (MANUAL_NET_SECONDS if manual_net else NET_SWEEP):
+		if net_state=="sweep" and net_age >= (rule("net_manual_time") if manual_net else rule("net_auto_sweep")):
 			net_state="miss"; net_age=0
 			net_dodges+=1
 			notice=("网口被木石挡住" if net_blocked else "这一网扑空了") if uses_mobile_tackle() else ("木石挡住了网口 · 可以继续觅食" if net_blocked else "躲过抄网！继续觅食。")
@@ -1430,7 +1468,7 @@ static func _segment_distance(a: Vector2, b: Vector2, point: Vector2) -> float:
 	return point.distance_to(a.lerp(b, factor))
 
 func can_home() -> bool:
-	return hooked == HookState.FREE and score >= (TARGET if challenge else 18) - 0.001 and fish.distance_to(HOME) < 29
+	return hooked == HookState.FREE and score >= food_target() - 0.001 and fish.distance_to(HOME) < 29
 
 func finish(success: bool, why: String) -> void:
 	if match_over: return

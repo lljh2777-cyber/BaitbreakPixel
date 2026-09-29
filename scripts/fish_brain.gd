@@ -31,7 +31,7 @@ func reset(seed_value: int = 2719) -> void:
 	evade_memory=0
 
 func hold(game: Node2D, point: Vector2) -> Vector2:
-	var speed: float = 70.0*lerpf(0.4,1.0,clampf(game.stamina/20,0,1))*game.vegetation_drag(game.fish)*game.effort_multiplier("fish")
+	var speed: float = game.rule("swim_speed")*game.fatigue_factor()*game.vegetation_drag(game.fish)*game.effort_multiplier("fish")
 	return ((point-game.fish)*4-game.line_pull_velocity()-game.water_velocity(game.fish))/maxf(1,speed)
 
 func _judge(game: Node2D) -> bool:
@@ -43,7 +43,7 @@ func _judge(game: Node2D) -> bool:
 	if game.qte!=qte_kind or game.qte_age<qte_last_age:
 		qte_kind=game.qte
 		qte_fired=false
-		var skill := 0.42 if qte_kind=="entry" else 0.68
+		var skill: float = game.rule("ai_entry_skill") if qte_kind=="entry" else game.rule("ai_escape_skill")
 		qte_press_at=game.qte_zone+(rng.randf_range(game.qte_width*0.18,game.qte_width*0.72) if rng.randf()<skill else -rng.randf_range(0.06,0.13))
 	qte_last_age=game.qte_age
 	if not qte_fired and game.qte_progress()>=qte_press_at:
@@ -52,7 +52,7 @@ func _judge(game: Node2D) -> bool:
 	return false
 
 func command(game: Node2D, delta: float) -> Dictionary:
-	var result := {"move":Vector2.ZERO,"aim":game.aim,"power":0.35,"suck":false,"dash":false,"slow":false,"qte":false,"home":false}
+	var result := {"move":Vector2.ZERO,"aim":game.aim,"power":game.rule("suction_initial"),"suck":false,"dash":false,"slow":false,"qte":false,"home":false}
 	if game.landing or game.net_state=="caught": state="被捕获"; return result
 	result.qte=_judge(game)
 	if game.hooked==game.HookState.MOUTH: state="尝试吐钩"; return result
@@ -70,14 +70,14 @@ func command(game: Node2D, delta: float) -> Dictionary:
 		var safe := projection+normal*sign_side*85
 		if safe.y<83 or safe.y>290 or safe.x<28 or safe.x>612: safe=projection-normal*sign_side*85
 		result.move=(safe-Vector2(game.fish)).normalized() if game.fish.distance_to(safe)>7 else Vector2.ZERO
-		result.dash=game.stamina>45 and game.net_state=="sweep"
+		result.dash=game.stamina_ratio()>0.45 and game.net_state=="sweep"
 		state="躲避抄网"
 		return result
 	if game.hooked!=game.HookState.HOOKED: was_hooked=false
 	if game.hooked==game.HookState.HOOKED:
 		if not was_hooked:
 			was_hooked=true
-			hook_reaction=0.85
+			hook_reaction=game.rule("ai_reaction")
 		hook_reaction=maxf(0,hook_reaction-delta)
 		if hook_reaction>0:
 			state="察觉拉力"
@@ -96,7 +96,7 @@ func command(game: Node2D, delta: float) -> Dictionary:
 			result.qte=true
 			result.move=hold(game,hold_point).limit_length(1)
 			state="寻找缠线机会"
-		elif game.stamina<18:
+		elif game.stamina_ratio()<0.18:
 			result.move=game.line_pull_velocity().normalized()*0.12
 			state="恢复体力"
 		else:
@@ -109,7 +109,7 @@ func command(game: Node2D, delta: float) -> Dictionary:
 					var point: Vector2=game.targets[index].bounds.get_center().clamp(Vector2(28,90),Vector2(610,288))
 					var candidate: float=game.fish.distance_squared_to(point)
 					if candidate<distance: distance=candidate; escape_target=index
-			if game.tension>0.88 and game.stamina>45:
+			if game.tension>game.rule("tension_high")-0.02 and game.stamina_ratio()>0.45:
 				result.move=-game.line_pull_velocity().normalized()
 				result.dash=true
 				state="挣扎拉线"
@@ -118,7 +118,7 @@ func command(game: Node2D, delta: float) -> Dictionary:
 				result.move=(destination-Vector2(game.fish)).normalized()*0.72
 				state="游向掩体"
 		return result
-	if game.score>=(game.TARGET if game.challenge else 18)-0.001:
+	if game.score>=game.food_target()-0.001:
 		result.move=(game.HOME-Vector2(game.fish)).normalized() if game.fish.distance_to(game.HOME)>8 else Vector2.ZERO
 		result.home=game.can_home() and not game.returning
 		state="带食物回巢"
@@ -138,15 +138,15 @@ func command(game: Node2D, delta: float) -> Dictionary:
 	if food_target<0: state="等待食物"; return result
 	var bait_position := food_position(game,food_target)
 	var attached: bool=game.baits[food_target].active and game._remaining(game.baits[food_target],true)
-	var approach_distance := 22.0 if game.baits[food_target].hook and not game.baits[food_target].removed else 28.0
+	var approach_distance := minf(22.0,game.rule("suction_range")*0.5) if game.baits[food_target].hook and not game.baits[food_target].removed else minf(28.0,game.rule("suction_range")*0.63)
 	var destination := bait_position+Vector2(approach_side*approach_distance,0)
 	# Once a loose grain is in range, hold position instead of backing away from
 	# the very grain being pulled towards the mouth.
-	if not attached and game.fish.distance_to(bait_position)<44:
+	if not attached and game.fish.distance_to(bait_position)<game.rule("suction_range"):
 		destination=game.fish
 		if game.fish.distance_to(bait_position)<12: destination=game.fish-(bait_position-Vector2(game.fish)).normalized()*4
 	var difference := destination-Vector2(game.fish)
-	result.move=(difference*3-game.water_velocity(game.fish))/70/game.vegetation_drag(game.fish)
+	result.move=(difference*3-game.water_velocity(game.fish))/game.rule("swim_speed")/game.vegetation_drag(game.fish)
 	result.move=Vector2(result.move).limit_length(1)
 	result.aim=(bait_position-Vector2(game.fish)).normalized()
 	result.suck=game.fish.distance_to(destination)<12

@@ -58,7 +58,7 @@ static func action(world: Node2D) -> Dictionary:
 		return {"active":false,"unwind":false,"progress":0.0,"strength":0.0}
 	var unwind: bool=world.untangle_phase=="unwind"
 	var active: bool=unwind or world.winding()
-	var p: float=clampf(world.untangle_age/world.UNWIND_SECONDS if unwind else world.wraps[-1].progress,0,1)
+	var p: float=clampf(world.untangle_age/world.rule("unwind_seconds") if unwind else world.wraps[-1].progress,0,1)
 	return {"active":active,"unwind":unwind,"progress":p,"strength":pow(sin(PI*p),2) if active else 0.0}
 
 static func strand(world: Node2D, start: Vector2, end: Vector2, available: float, start_tangent: Vector2=Vector2.ZERO, end_tangent: Vector2=Vector2.ZERO) -> PackedVector2Array:
@@ -166,7 +166,7 @@ static func build(world: Node2D, override: Dictionary={}, fish_pose: Dictionary=
 			append_piece(local,tail,fish_pose.front if fish_orbit else true)
 			if moving:
 				var offset: float=world.fish_line_length-Vector2(wrap.entry).distance_to(mouth)
-				var released: float=previous.distance_to(mouth)+offset+(0.32*world.LINE_ELASTIC_PIXELS if index==0 else 0.0)
+				var released: float=previous.distance_to(mouth)+offset+(0.32*world.rule("line_elastic") if index==0 else 0.0)
 				if not unwind and index==0: released=world.rope_length
 				var plain := strand(world,previous,mouth,released)
 				var route_lengths := lengths(local.path)
