@@ -4,6 +4,7 @@ const Art = preload("res://scripts/pixel_art.gd")
 const Layout = preload("res://scripts/pond_layout.gd")
 const Gauge = preload("res://scripts/hook_gauge.gd")
 const AnglerVisual = preload("res://scripts/angler_visual.gd")
+const Shore = preload("res://scripts/shore_view.gd")
 const INK := Color("142e39")
 const CREAM := Color("fff0cd")
 const MINT := Color("8de0bd")
@@ -13,6 +14,7 @@ const SKILL_ORIGIN := Vector2(10,122)
 var game: Node2D
 var world: Node2D
 var angler_visual := AnglerVisual.new()
+var shore := Shore.new()
 var fish_texture: Texture2D
 var gauge_texture: Texture2D
 var bobber_texture: Texture2D
@@ -45,6 +47,11 @@ func _draw() -> void:
 	if not is_instance_valid(game): return
 	world=game.network.display_world() if is_instance_valid(game.network) and game.network.active() and game.shared_session else game
 	var t: float = world.elapsed
+	if game.player_role=="angler":
+		shore.draw(self,world,t)
+		_hud(t)
+		_network_badge()
+		return
 	_world(t)
 	_baits(t)
 	_angler(t)
@@ -249,17 +256,15 @@ func _angler(t: float) -> void:
 
 func _angler_hud(_t: float) -> void:
 	draw_rect(Rect2(0,0,640,29),INK)
-	label_at(Vector2(12,19),"钓鱼人",13,GOLD)
-	label_at(Vector2(94,19),"鱼的食物 %02d / %d" % [int(world.score),60 if world.challenge else 18],12,CREAM)
-	label_at(Vector2(237,19),"鱼体力",11,CREAM)
-	draw_rect(Rect2(281,11,62,6),Color("335762"))
-	draw_rect(Rect2(281,11,62*world.stamina/100,6),MINT)
+	label_at(Vector2(12,19),"岸边 · 钓鱼人",13,GOLD)
+	var rig := "挂鱼 · 留意张力" if world.hooked==world.HookState.HOOKED else "浮漂下顿" if world.hooked==world.HookState.MOUTH else "钩饵在水中" if Shore.rig_index(world)>=0 else "Q 下钩 / 补饵"
+	label_at(Vector2(140,19),rig,12,CREAM)
 	label_at(Vector2(360,19),"抄网 %.1fs" % world.angler.net_cooldown if world.angler.net_cooldown>0 else "E + 拖动 抄网",11,MINT)
 	var remaining := maxi(0,int(ceil(world.TIME_LIMIT-world.clock)))
 	label_at(Vector2(529,20),"%02d:%02d" % [remaining/60,remaining%60] if world.challenge else "练习 · F2",14,CREAM)
 	draw_rect(Rect2(0,327,640,33),INK)
 	label_at(Vector2(12,341),game.angler_hint(),11,GOLD)
-	label_at(Vector2(12,355),"A/D 钓位   W/S 收放线   Q 下钩 / 补饵   E + 左键拖网   F3 时间",10,Color("9cbbb4"))
+	label_at(Vector2(12,355),"A/D 左右移竿   W/S 收放线   Q 下钩 / 补饵   E + 左键拖网",10,Color("9cbbb4"))
 	label_at(Vector2(584,350),"H 帮助",10,CREAM)
 	# Opponent checks remain autonomous; never invite the angler to press a fish QTE.
 	panel(Rect2(10,65,151,50))
@@ -270,10 +275,10 @@ func _angler_hud(_t: float) -> void:
 		draw_rect(Rect2(18,88,134*world.tension,5),MINT.lerp(RED,world.tension))
 		label_at(Vector2(18,108),"断线风险 %.1f / %.1fs" % [world.high_age,world.break_hold_seconds] if world.high_age>0 else world.tug_status(),10,RED if world.high_age>0 else MINT)
 	elif world.hooked==world.HookState.MOUTH:
-		label_at(Vector2(18,81),"小鱼 · "+("玩家操控" if game.shared_session else game.fish_brain.state),11,MINT)
+		label_at(Vector2(18,81),"浮漂正在下顿",11,MINT)
 		label_at(Vector2(18,100),"吐钩判定中 · 暂缓收放",10,GOLD)
 	else:
-		label_at(Vector2(18,81),"小鱼 · "+("玩家操控" if game.shared_session else game.fish_brain.state),11,MINT)
+		label_at(Vector2(18,81),"观察浮漂与水面",11,MINT)
 		var remaining_bait := 0
 		for bait in world.baits:
 			if bait.hook and not bait.removed:
@@ -678,6 +683,7 @@ func _network_badge() -> void:
 		panel(Rect2(216,146,208,56))
 		label_at(Vector2(235,180),line,21,GOLD)
 	else:
-		# Keep the bank clear so the walking opponent is visible at every fishing spot.
-		panel(Rect2(450,304,180,19))
-		label_at(Vector2(456,318),line,10,MINT)
+		# Leave the first-person hand visible; in fish view leave the opponent's bank clear.
+		var origin := Vector2(450,34) if game.player_role=="angler" else Vector2(450,304)
+		panel(Rect2(origin,Vector2(180,19)))
+		label_at(origin+Vector2(6,14),line,10,MINT)

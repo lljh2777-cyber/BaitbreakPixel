@@ -114,7 +114,7 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | side-view | 640x360 | v0.14 | tug-feedback-and-net-closure")
+	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.15 | first-person-angler")
 
 func _register_inputs() -> void:
 	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[], "use":[KEY_E], "slow":[KEY_Q], "qte":[KEY_SPACE]}
@@ -196,6 +196,9 @@ func _network_changed() -> void:
 func network_settings() -> Dictionary:
 	return {"slack_hold":slack_hold_seconds,"mouth_window":mouth_window_seconds,"break_hold":break_hold_seconds,"water_strength":water_strength}
 
+func screen_to_game(point: Vector2) -> Vector2:
+	return View.Shore.to_world(point) if player_role=="angler" else point
+
 func _network_command() -> Dictionary:
 	var role: String=network.local_role
 	if menu.visible:
@@ -205,7 +208,7 @@ func _network_command() -> Dictionary:
 			local_input.net_events.clear()
 		return neutral
 	var pointer := get_global_mouse_position()
-	if role=="angler": return local_input.angler_command(self,pointer)
+	if role=="angler": return local_input.angler_command(self,screen_to_game(pointer))
 	network.local_power=clampf(network.local_power+local_input.power_steps*0.1,0.1,1)
 	var command := local_input.fish_command(network.display_world(),pointer)
 	command.power=network.local_power
@@ -219,7 +222,7 @@ func _physics_process(_delta: float) -> void:
 	if shared_session or menu.visible or paused or match_over: return
 	var pointer := get_global_mouse_position()
 	var fish_command: Dictionary=fish_brain.command(self,TICK_SECONDS) if fish_source=="ai" else local_input.fish_command(self,pointer)
-	var angler_command: Dictionary=angler_brain.command(self,TICK_SECONDS) if angler_source=="ai" else local_input.angler_command(self,pointer)
+	var angler_command: Dictionary=angler_brain.command(self,TICK_SECONDS) if angler_source=="ai" else local_input.angler_command(self,screen_to_game(pointer))
 	advance_tick(fish_command,angler_command)
 
 func controlled_step(delta: float, angler_command: Dictionary = {}) -> void:
@@ -267,14 +270,14 @@ func angler_hint() -> String:
 		if tension>=0.88: return "张力过高！按 S 放线，避免持续高张力断线"
 		if tension<0.25: return "鱼正在找机会松口 · 按 W 收线"
 		if latched: return "鱼线已缠住 · W 收线压缩松口机会，E + 左键拖动抄网"
-		return "W 收线 · S 放线 · A/D 移动钓位 · 按住 E + 左键拖动抄网"
+		return "W 收线 · S 放线 · A/D 左右移竿 · E + 左键在近水区拖网"
 	if notice_age>0: return notice
 	return "Q 下钩 / 补饵 · W/S 收放线 · E + 左键拖动抄网" if shared_session else "Q 下钩 / 补饵 · W 收线 / S 放线 · E + 左键拖动抄网 · F3 时间设置"
 
 func _unhandled_input(event: InputEvent) -> void:
 	if menu.visible: return
 	var point := Vector2.ZERO
-	if event is InputEventMouse: point=get_global_transform_with_canvas().affine_inverse()*event.position
+	if event is InputEventMouse: point=screen_to_game(get_global_transform_with_canvas().affine_inverse()*event.position)
 	local_input.handle(event,player_role,point)
 	if event is InputEventKey and event.pressed and not event.echo:
 		match event.physical_keycode:

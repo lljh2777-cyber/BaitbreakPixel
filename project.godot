@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="吃饵，不上钩 · 像素池塘"
-config/version="0.14"
+config/version="0.15"
 run/main_scene="res://scenes/main.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="BaitbreakPixel"

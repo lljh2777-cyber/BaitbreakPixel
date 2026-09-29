@@ -122,7 +122,7 @@ func _title(frame: Control) -> void:
 	button(frame,"设置",274,func(): open("settings"),false,124)
 	var quit := button(frame,"退出",274,func(): get_tree().quit(),false,124)
 	quit.position.x = 150
-	text(content,"0.14 · 像素池塘",Vector2(391,280),10,Color("91afa7"))
+	text(content,"0.15 · 岸边第一人称",Vector2(351,280),10,Color("91afa7"))
 	text(content,"小鱼 · 吃饵脱身",Vector2(391,119),18,GOLD)
 	text(content,"人类 · 收线抄网",Vector2(391,159),18,GOLD)
 	text(content,"独自练习 · 双人对战",Vector2(375,199),16,GOLD)
@@ -161,13 +161,13 @@ func _help(frame: Control) -> void:
 	]
 	if human:
 		lines=[
-			"A / D 沿岸移动 · 饵钩随线惯性摆动",
+			"A / D 左右移竿 · 浮漂沿横向水域移动",
 			"Q 下钩；饵用完 / 断线后 Q 重新挂饵",
 			"W 收线 · S 放线，未咬钩时也能调整深度",
-			"W 收至岸边取回钓组 · 松开 W/S 保持线长",
+			"观察浮漂下顿、摆动和水中模糊虚影",
 			"持续过紧会断线 · 过松会给鱼脱钩机会",
 			"收线发力先听音 · 空格判定，加力或脱力",
-			"按住 E + 左键画路线，网口依次跟随",
+			"E + 左键在近水区画网路，松开即可取消",
 			"保持网口接触直到收拢 · 疲惫的鱼更易捞",
 			"6 分钟内提鱼出水获胜；F3 调节逃脱时间",
 			"鱼吃满 60 回巢则失败 · R 重开 / Esc 暂停"

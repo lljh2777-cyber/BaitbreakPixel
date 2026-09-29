@@ -1,0 +1,211 @@
+extends RefCounted
+
+# A local presentation of the same 2D pond. The simulation and net routes stay in world coordinates.
+const Lake = preload("res://assets/first_person/sunset_lake.png")
+const Layout = preload("res://scripts/pond_layout.gd")
+const SCALE := Vector2(0.925,0.35)
+const ORIGIN := Vector2(24,213)
+const WATER_LEVEL := 55.0
+const CREAM := Color("ffe5bc")
+const INK := Color("122b38")
+const MINT := Color("8de0bd")
+const GOLD := Color("ffd379")
+
+static func to_screen(point: Vector2) -> Vector2:
+	return ORIGIN+Vector2(point.x,point.y-WATER_LEVEL)*SCALE
+
+static func to_world(point: Vector2) -> Vector2:
+	return (point-ORIGIN)/SCALE+Vector2(0,WATER_LEVEL)
+
+static func projected(path: PackedVector2Array) -> PackedVector2Array:
+	var result := PackedVector2Array()
+	for point in path: result.append(to_screen(point))
+	return result
+
+static func rod_tip(world: Node2D, t: float) -> Vector2:
+	var x: float=to_screen(world.angler.anchor()).x
+	var load: float=world.tension if world.hooked==world.HookState.HOOKED else 0
+	return Vector2(clampf(x+64,80,614),167+load*9+sin(t*2)*0.5)
+
+static func rig_index(world: Node2D) -> int:
+	if world.bound_bait>=0: return world.bound_bait
+	for index in world.baits.size():
+		if world.baits[index].hook and world.baits[index].active and not world.baits[index].removed: return index
+	return -1
+
+static func float_position(world: Node2D, t: float) -> Vector2:
+	if world.landing or (world.net_state=="caught" and world.fish.y<WATER_LEVEL):
+		return to_screen(world.mouth())+Vector2(0,-3)
+	var anchor: Vector2=world.angler.anchor()
+	var index := rig_index(world)
+	var target := anchor+Vector2(0,150)
+	if index>=0: target=world.mouth() if world.bound_bait==index else Vector2(world.baits[index].pos)
+	if world.hooked==world.HookState.HOOKED and world.rope_path.size()>2: target=world.rope_path[1]
+	var ratio := clampf((WATER_LEVEL-anchor.y)/maxf(1,target.y-anchor.y),0,1)
+	var x := anchor.lerp(target,ratio).x
+	var dip: float=world.tension*1.7 if world.hooked==world.HookState.HOOKED else 0.0
+	if world.hooked==world.HookState.MOUTH: dip=3.5
+	return Vector2(to_screen(Vector2(x,WATER_LEVEL)).x,ORIGIN.y+sin(t*2.2)*0.6+dip)
+
+static func ellipse(center: Vector2, radii: Vector2, count: int=32) -> PackedVector2Array:
+	var path := PackedVector2Array()
+	for index in count+1: path.append((center+Vector2.from_angle(index*TAU/float(count))*radii).round())
+	return path
+
+func draw(view: Node2D, world: Node2D, t: float) -> void:
+	view.draw_texture_rect(Lake,Rect2(0,0,640,360),false)
+	_underwater(view,world,t)
+	_water(view,world,t)
+	_net(view,world,t)
+	_tackle(view,world,t)
+
+func _ghost(view: Node2D, path: PackedVector2Array, opacity: float, color: Color=Color("0b3242")) -> void:
+	for offset in [Vector2(-2,0),Vector2(2,1)]:
+		var soft := path.duplicate()
+		for index in soft.size(): soft[index]+=offset
+		view.draw_colored_polygon(soft,Color(color,opacity*0.20))
+	view.draw_colored_polygon(path,Color(color,opacity))
+
+func _underwater(view: Node2D, world: Node2D, t: float) -> void:
+	for solid in Layout.SOLIDS:
+		_ghost(view,projected(PackedVector2Array(solid.points)),0.18 if solid.kind=="wood" else 0.14)
+	for index in Layout.PLANTS.size():
+		var plant: Dictionary=Layout.PLANTS[index]
+		for stem in 3:
+			var x: float=plant.x+(stem-1)*5
+			var p := to_screen(Vector2(x,312))
+			var top := to_screen(Vector2(x+sin(t*1.5+index+stem)*4,312-plant.height*0.7))
+			view.draw_polyline(PackedVector2Array([p,p.lerp(top,0.5)+Vector2(2,0),top]),Color(0.06,0.21,0.24,0.20),3)
+	var float_at := float_position(world,t)
+	if world.hooked==world.HookState.HOOKED and world.rope_path.size()>1:
+		var path := projected(world.rope_path)
+		path[0]=float_at
+		view.draw_polyline(path,Color(0.51,0.66,0.65,0.10),1)
+	for bait in world.baits:
+		if not bait.active or bait.removed: continue
+		var p := to_screen(bait.pos)
+		view.draw_circle(p,2.5,Color(0.65,0.64,0.41,0.11))
+	var position := to_screen(world.fish)+Vector2(sin(t*1.3)*1.2,cos(t*1.7)*0.5)
+	var direction: Vector2=(world.aim*SCALE).normalized()
+	var fish_shape := PackedVector2Array([Vector2(12,0),Vector2(5,-4),Vector2(-5,-4),Vector2(-9,-2),Vector2(-15,-5),Vector2(-13,0),Vector2(-15,5),Vector2(-9,2),Vector2(-5,4),Vector2(5,4)])
+	for index in fish_shape.size(): fish_shape[index]=position+fish_shape[index].rotated(direction.angle())
+	if world.net_state=="caught" or world.landing:
+		view.draw_set_transform(position,direction.angle())
+		view.draw_texture(view.fish_texture,Vector2(-12,-6))
+		view.draw_set_transform(Vector2.ZERO)
+	else:
+		var depth := clampf((world.fish.y-80)/220,0,1)
+		_ghost(view,fish_shape,lerpf(0.44,0.17,depth)*(0.86+sin(t*1.6)*0.14))
+	# No eyes, hook-tip markers, bait particles, nest markers or exact opponent status above water.
+
+func _water(view: Node2D, world: Node2D, t: float) -> void:
+	for index in 95:
+		var y := 138+posmod(index*29,184)
+		var x := fposmod(index*113+sin(t*0.6+index)*7,636)
+		var width := 3+posmod(index*17,15)
+		view.draw_rect(Rect2(roundf(x),y,width,1),Color(0.37,0.65,0.66,0.06+0.025*sin(t+index)))
+	if world.hooked==world.HookState.HOOKED and world.resisting:
+		var p := float_position(world,t)
+		for index in 3:
+			var life := fmod(t*1.5+index/3.0,1)
+			view.draw_polyline(ellipse(p,Vector2(9+life*21,2+life*5)),Color(CREAM,(1-life)*0.26),1)
+
+func _tackle(view: Node2D, world: Node2D, t: float) -> void:
+	var tip := rod_tip(world,t)
+	var float_at := float_position(world,t)
+	var index := rig_index(world)
+	var load: float=world.tension if world.hooked==world.HookState.HOOKED else 0
+	var grip := Vector2(517+clampf((world.angler.x-300)/300,-1,1)*9,290)
+	var strength: float=world.effort_multiplier("angler")
+	var line_end := float_at
+	if world.angler.casting:
+		var ratio: float=clampf(world.angler.cast_age/world.angler.CAST_SECONDS,0,1)
+		line_end=tip.lerp(float_at,ratio)-Vector2(0,sin(ratio*PI)*17)
+	if index>=0 or world.angler.casting:
+		var line := PackedVector2Array()
+		for part in 25:
+			var ratio := part/24.0
+			line.append((tip.lerp(line_end,ratio)+Vector2(sin(ratio*PI)*(1-load)*(2+world.angler.line_sway*0.16),ratio*(1-ratio)*(1-load)*10)).round())
+		view.draw_polyline(line,Color(CREAM,0.85),1)
+		if not world.angler.casting and not world.landing and not (world.net_state=="caught" and world.fish.y<WATER_LEVEL):
+			for ring in 2:
+				var age := fmod(t*0.6+ring*0.5,1)
+				view.draw_polyline(ellipse(float_at,Vector2(8+age*12,2+age*3)),Color(CREAM,(1-age)*0.44),1)
+		var angle := sin(t*(9 if world.hooked!=world.HookState.FREE else 2))*0.13
+		view.draw_set_transform(line_end.round(),angle)
+		view.draw_line(Vector2(0,-13),Vector2(0,-5),INK,3)
+		view.draw_line(Vector2(0,-12),Vector2(0,-6),GOLD,1)
+		view.draw_rect(Rect2(-3,-6,7,5),Color("e24d35"))
+		view.draw_rect(Rect2(-2,-7,4,2),Color("ff9670"))
+		view.draw_rect(Rect2(-3,-1,7,3),CREAM)
+		view.draw_rect(Rect2(-2,2,5,2),Color("3d6e7c"))
+		view.draw_set_transform(Vector2.ZERO)
+	var rod := PackedVector2Array()
+	var first := grip.lerp(tip,0.35)+Vector2(-load*5,-load*11)
+	var second := grip.lerp(tip,0.76)+Vector2(0,-load*26+(strength-1)*7)
+	for part in 33: rod.append(grip.bezier_interpolate(first,second,tip,part/32.0).round())
+	for part in range(1,rod.size()):
+		var width := lerpf(7,1.5,part/32.0)
+		view.draw_line(rod[part-1],rod[part],Color("13222b"),width+2)
+		view.draw_line(rod[part-1],rod[part],Color("967042") if part<14 else Color("554c3e"),width)
+		view.draw_line(rod[part-1]-Vector2(1,0),rod[part]-Vector2(1,0),Color("d4b176") if strength>=1 else Color("758a87"),1)
+	for ratio in [0.24,0.48,0.7,0.9,1.0]:
+		var p := rod[roundi(ratio*32)]
+		view.draw_circle(p+Vector2(1,1),2,INK)
+		view.draw_circle(p,1,CREAM)
+	_hand(view,grip,t,world.reel_speed if world.hooked==world.HookState.HOOKED else world.angler.free_reel_speed)
+
+func _hand(view: Node2D, grip: Vector2, t: float, reel_speed: float) -> void:
+	# Pixel silhouettes for the sleeve, palm, fingers and spool, anchored to a stationary camera.
+	var sleeve := PackedVector2Array([grip+Vector2(1,14),grip+Vector2(27,3),grip+Vector2(88,70),grip+Vector2(30,70)])
+	view.draw_colored_polygon(sleeve,Color("1e2b2b"))
+	view.draw_colored_polygon(PackedVector2Array([grip+Vector2(6,19),grip+Vector2(28,11),grip+Vector2(78,70),grip+Vector2(37,70)]),Color("485443"))
+	view.draw_colored_polygon(PackedVector2Array([grip+Vector2(1,4),grip+Vector2(10,-16),grip+Vector2(22,-13),grip+Vector2(26,8),grip+Vector2(16,20),grip+Vector2(6,19)]),Color("a0633f"))
+	view.draw_colored_polygon(PackedVector2Array([grip+Vector2(4,1),grip+Vector2(12,-12),grip+Vector2(20,-10),grip+Vector2(21,8),grip+Vector2(13,15),grip+Vector2(7,12)]),Color("e2ab77"))
+	view.draw_line(grip+Vector2(-4,-13),grip+Vector2(11,17),Color("4c3428"),10)
+	view.draw_line(grip+Vector2(-5,-14),grip+Vector2(10,16),Color("ac7543"),6)
+	for finger in 3:
+		view.draw_rect(Rect2((grip+Vector2(-6+finger*3,-10+finger*6)).round(),Vector2(15,5)),Color("edb785"))
+		view.draw_rect(Rect2((grip+Vector2(-5+finger*3,-10+finger*6)).round(),Vector2(9,1)),Color("ffdaad"))
+	var reel := grip+Vector2(-17,8)
+	view.draw_line(grip,reel,INK,5)
+	view.draw_circle(reel,12,INK)
+	view.draw_circle(reel,9,Color("68767b"))
+	view.draw_circle(reel,6,Color("273c48"))
+	for spoke in 4:
+		var angle := spoke*PI/2+(t*8*signf(reel_speed) if absf(reel_speed)>0.5 else 0.0)
+		view.draw_line(reel+Vector2.from_angle(angle)*4,reel+Vector2.from_angle(angle)*9,Color("c1b89b"),2)
+	var crank := reel+Vector2(-12,5)+Vector2.from_angle(t*8 if absf(reel_speed)>0.5 else 0)*4
+	view.draw_line(reel,crank,CREAM,2)
+	view.draw_rect(Rect2(crank-Vector2(2,2),Vector2(5,5)),Color("2a3b3c"))
+
+func _net(view: Node2D, world: Node2D, _t: float) -> void:
+	if world.manual_net and world.net_state in ["prepare","warning","sweep","miss","withdraw","caught"]:
+		var p := to_screen(world.net_pos)
+		var opening: float=smoothstep(0,1,world.net_age/world.NET_PREPARE) if world.net_state=="prepare" else 1.0
+		var rim := PackedVector2Array()
+		for index in 41:
+			var point: Vector2=world.net_pos+(Vector2.from_angle(index*TAU/40)*world.NET_RIM*maxf(0.2,opening)).rotated(world.net_angle)
+			rim.append(to_screen(point).round())
+		var handle := PackedVector2Array([Vector2(602,357),Vector2(565,320),p+Vector2(8,5)])
+		view.draw_polyline(handle,INK,7)
+		view.draw_polyline(handle,Color("ae8751"),4)
+		view.draw_colored_polygon(rim,Color(0.46,0.62,0.56,0.12+world.net_capture*0.16))
+		for index in range(0,20,3): view.draw_line(rim[index],rim[40-index],Color(0.62,0.72,0.64,0.5),1)
+		view.draw_polyline(rim,INK,4); view.draw_polyline(rim,Color("e1c18c"),2)
+		if world.net_capture>0 and world.net_state=="sweep":
+			view.draw_polyline(ellipse(p,Vector2(37,16)).slice(0,maxi(2,int(world.net_capture*32)+1)),GOLD,2)
+			view.label_at(p+Vector2(-24,-21),"收拢 %d%%" % roundi(world.net_capture*100),10,GOLD)
+	if not world.angler.net_held or view.game.menu.visible: return
+	var target: Vector2=world.manual_net_target(world.angler.cursor)
+	var center := to_screen(target)
+	var blocked: bool=world.manual_net_blocked(target)
+	var color := Color("f58375") if blocked or world.angler.net_cooldown>0 else MINT
+	if not world.net_blocks_hooks():
+		view.draw_polyline(ellipse(center,Vector2(world.NET_RIM.y+2,world.NET_RIM.y+2)*SCALE),Color(color,0.65),1)
+		view.label_at(center+Vector2(-28,-18),"木石挡网" if blocked else "从这里下网",10,color)
+	if world.manual_net and world.net_state in ["prepare","warning","sweep"]:
+		var pending := projected(world.manual_net_pending_path())
+		if pending.size()>1: view.draw_polyline(pending,Color(MINT,0.7),1)
+	var water_rect := Rect2(to_screen(Vector2(0,80)),Vector2(640,214)*SCALE)
+	view.draw_rect(water_rect,Color(MINT,0.12),false,1)
