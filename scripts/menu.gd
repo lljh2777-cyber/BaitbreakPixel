@@ -31,8 +31,9 @@ func style(color: Color, border: Color) -> StyleBoxFlat:
 	return result
 
 func open(which: String) -> void:
+	if game.shared_session and which in ["practice","timing"]: return
 	if which=="timing": timing_previous=screen if visible else "pause"
-	if game.player_role=="angler" and which!="result": game.angler.suspend_controls(game)
+	if game.player_role=="angler" and which!="result": game.suspend_local_controls()
 	if which=="practice" and game.challenge: return
 	if which in ["help","settings","practice","timing"] and (not visible or not screen in ["help","settings","practice","timing"]):
 		previous = screen if visible else "pause"
@@ -108,7 +109,7 @@ func _title(frame: Control) -> void:
 	button(frame,"设置",240,func(): open("settings"),false,124)
 	var quit := button(frame,"退出",240,func(): get_tree().quit(),false,124)
 	quit.position.x = 150
-	text(content,"0.10.2 · 抄网轨迹修复",Vector2(391,280),10,Color("91afa7"))
+	text(content,"0.11 · 像素池塘",Vector2(391,280),10,Color("91afa7"))
 	text(content,"小鱼 · 吃饵脱身",Vector2(391,119),18,GOLD)
 	text(content,"人类 · 收线抄网",Vector2(391,159),18,GOLD)
 	text(content,"另一方由 AI 控制",Vector2(391,199),18,GOLD)
@@ -119,7 +120,7 @@ func _pause(frame: Control) -> void:
 	button(frame,"继续本局",57,close,true)
 	button(frame,"重新开始本局",89,func(): game.restart_round())
 	var offset := 0
-	if not game.challenge:
+	if not game.challenge and not game.shared_session:
 		button(frame,"练习调节 · 收放线",121,func(): open("practice"),false,158)
 		var net_button := button(frame,"抄网练习 · N",121,func(): close(); game.request_net(),false,158)
 		net_button.position.x=188

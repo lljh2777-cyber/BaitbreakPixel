@@ -51,7 +51,7 @@ func _judge(game: Node2D) -> bool:
 	return false
 
 func command(game: Node2D, delta: float) -> Dictionary:
-	var result := {"move":Vector2.ZERO,"aim":game.aim,"suck":false,"dash":false,"slow":false,"qte":false,"home":false}
+	var result := {"move":Vector2.ZERO,"aim":game.aim,"power":0.35,"suck":false,"dash":false,"slow":false,"qte":false,"home":false}
 	if game.landing or game.net_state=="caught": state="被捕获"; return result
 	result.qte=_judge(game)
 	if game.hooked==game.HookState.MOUTH: state="尝试吐钩"; return result

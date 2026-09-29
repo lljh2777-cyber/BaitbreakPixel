@@ -1,18 +1,24 @@
 {
-  "version": "0.10.2",
-  "pack_sha256": "b1bad97d1158489faecf00bfbefda4902f799051b45a9594b16e2521877f78a1",
+  "version": "0.11",
+  "pack_sha256": "769b91401e8b3bc58bfbc15b7698ff10cb721e70bbfb099bd00cc286c8e73010",
   "script_sha256": {
-    "scripts/angler_controller.gd": "b928bf438a22448bb626c2fe2d077a1fe5e83b26d84e8c4e2bc8729d1752c432",
-    "scripts/fish_brain.gd": "1c46c9ab095b7876c1d54d4e10710092169e34bd0d760a187cb360a86d0b2bde",
+    "scripts/angler_brain.gd": "0737eee46ac3e756a7d719d6316963bf0526572a598f612fc5270cdd387474ce",
+    "scripts/angler_controller.gd": "cf870f0d5277403a54ee51ee6e7e5b8f1dee032241636046e505974567136a7a",
+    "scripts/angler_rig.gd": "bbff8dc9c7b0aa91ea6eb1f8c4ed39cb00307c5304f3856b2e374585ff9c93a7",
+    "scripts/fish_brain.gd": "78a00fd0820054266de81ce7b58a65dcafd84be48302f43dd20b3a0e830a2769",
+    "scripts/game_commands.gd": "2d6ecc5af226390d87061c8ba09b0395ab87738b9e95b518038d8478953fccf9",
     "scripts/hook_gauge.gd": "4fe42c7690fa40f42e970af97eb26915793ec166c01b06da3ea21eb1fb692593",
-    "scripts/menu.gd": "9e09d17e632d3bd52bd7ab47057ee8a04684dd4416b28bf5e4fa08b21ee2d396",
+    "scripts/local_input.gd": "d3405c59f053c1abbd79454b4c417ff1cbf86764c9b386c50116e58ae61cadfa",
+    "scripts/menu.gd": "e9d6146a384b211f5f21b375a6d724345f2d57661536de9b74df82dbac3ef28b",
     "scripts/pixel_art.gd": "888fc105bd231fcbd7cee637cb515d3aa254aebf23af05a6730c974f21eb5c4a",
-    "scripts/pond.gd": "9b956e435d0b19730a3312f1256a0ba642694b1a7bc8d4798df0198906404d7b",
+    "scripts/pond.gd": "0792f5e38757bd8634c32fd78fb68119fe07ca66d7c4770db226b607b6224eb8",
     "scripts/pond_layout.gd": "516f4fbbead3281ebc09e921fbebc77917c1e611a698a217a5b083f14c7678fe",
     "scripts/pond_view.gd": "c0b2b6ddb3312a73cc48117d4c0235579f21f46f3210233f96421da1a2306889",
     "scripts/rope.gd": "2e30152e65b00f39fe25324b992afd39925acfadd80b64dce385df865d69fe42",
-    "scripts/sound.gd": "105f1b9854c725f76332add962a0e0f5790719bc3b525630007ca62b604629ba"
+    "scripts/sound.gd": "105f1b9854c725f76332add962a0e0f5790719bc3b525630007ca62b604629ba",
+    "scripts/world_simulation.gd": "0a6e99b08e055c7aca05c20a451e3f43a21212649aeea6d697c2076008e48f92",
+    "scripts/world_snapshot.gd": "7144ebb36b83c88871d5c446dfe0006bb584c3bfa2ff7621c32830eb5fa225e6"
   },
   "decoded_texture_sha256": {},
-  "exported_resources": 15
+  "exported_resources": 21
 }
