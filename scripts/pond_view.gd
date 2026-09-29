@@ -1,6 +1,7 @@
 extends Node2D
 
 const Art = preload("res://scripts/pixel_art.gd")
+const Layout = preload("res://scripts/pond_layout.gd")
 const INK := Color("142e39")
 const CREAM := Color("fff0cd")
 const MINT := Color("8de0bd")
@@ -8,12 +9,17 @@ const GOLD := Color("ffd379")
 const RED := Color("f58375")
 var game: Node2D
 var fish_texture: Texture2D
-var reed_texture: Texture2D
 var font: SystemFont
+var props: Array[Dictionary] = []
+var back_plants: Array[Texture2D] = []
+var front_plants: Array[Texture2D] = []
 
 func _ready() -> void:
 	fish_texture = Art.fish()
-	reed_texture = Art.reed()
+	for solid in Layout.SOLIDS: props.append(Art.prop(solid))
+	for frame in range(8):
+		back_plants.append(_make_plant_layer(frame*TAU/12.0,true))
+		front_plants.append(_make_plant_layer(frame*TAU/12.0,false))
 	font = SystemFont.new()
 	font.font_names = PackedStringArray(["Microsoft YaHei", "Noto Sans CJK SC", "sans-serif"])
 	font.antialiasing = TextServer.FONT_ANTIALIASING_NONE
@@ -55,29 +61,28 @@ func _world(t: float) -> void:
 		var x := posmod(index * 61 + int(t * 2), 632) + 4
 		var y := 65 + posmod(index * 47 - int(t * (2 + index % 3)), 234)
 		draw_rect(Rect2(x, y, 1 + index % 2, 1), Color(0.65, 0.86, 0.75, 0.35))
-	# Background plants remain decorative; every solid foreground shape matches physics.
-	for index in range(22):
-		var x := (index * 89 + 29) % 625
-		var tall := 16 + (index * 13) % 40
-		draw_texture_rect(reed_texture, Rect2(x, 315 - tall, 16, tall), false, Color("376e71"))
+	# Distant silhouettes are muted; detailed foreground silhouettes share collision data.
+	for index in range(15):
+		var x := index*47-16
+		var height := 12 + index*17%29
+		draw_colored_polygon(PackedVector2Array([Vector2(x,315),Vector2(x+5,313-height),Vector2(x+22,306-height),Vector2(x+42,315-height/2),Vector2(x+52,320)]),Color("275963"))
+	_plants(t,true)
 	draw_rect(Rect2(0, 313, 640, 47), Color("697f70"))
-	draw_rect(Rect2(0, 313, 640, 3), Color("9faa7b"))
+	for x in range(0,640,4):
+		draw_rect(Rect2(x,313,4,2+(x*13)%3),Color("9faa7b"))
 	for index in range(71):
 		var x := (index * 73) % 638
 		var y := 319 + index * 19 % 38
 		draw_rect(Rect2(x, y, 3, 2), Color("506b66") if index % 2 else Color("8d9b78"))
-	for index in range(1, game.SOLIDS.size()):
-		var rock: Rect2 = game.SOLIDS[index]
-		draw_rect(rock, Color("465f64"))
-		draw_rect(Rect2(rock.position, Vector2(rock.size.x, 3)), Color("90a18c"))
-		draw_rect(Rect2(rock.position + Vector2(6, 6), Vector2(rock.size.x - 14, 4)), Color("647c77"))
-	var root: Rect2 = game.SOLIDS[0]
-	draw_rect(root, Color("796a50"))
-	draw_rect(Rect2(root.position, Vector2(4, root.size.y)), Color("a08b61"))
-	draw_rect(Rect2(root.position + Vector2(17, 0), Vector2(5, root.size.y)), Color("4a594e"))
-	draw_rect(Rect2(326, 172, 22, 4), Color("c1a979"))
-	for index in range(9):
-		draw_rect(Rect2(333 + index % 3 * 3, 182 + index * 15, 2, 8), Color("5f624e"))
+	for prop in props: draw_texture(prop.texture,prop.position)
+	# Small gravel lies below the swimming floor and never creates invisible blockers.
+	for index in range(42):
+		var x := (index*83+11)%636
+		var y := 314+index*7%13
+		var width := 2+index%5
+		draw_rect(Rect2(x,y,width,2),Color("506d69"))
+		draw_rect(Rect2(x+1,y-1,width-1,1),Color("bcc09a") if index%3 else Color("819a85"))
+	_plants(t,false)
 	# A mint nest is the single return destination.
 	draw_rect(Rect2(37, 280, 46, 28), Color("123b42"))
 	draw_rect(Rect2(34, 280, 5, 27), Color("86b49a"))
@@ -88,10 +93,49 @@ func _world(t: float) -> void:
 	if game.score >= (game.TARGET if game.challenge else 18):
 		var bounce := int(sin(t * 4) * 2)
 		draw_colored_polygon(PackedVector2Array([Vector2(55, 267 + bounce), Vector2(65, 267 + bounce), Vector2(60, 272 + bounce)]), MINT)
-	for index in range(12):
-		var x := 96 + index * 45
-		if abs(x - 336) < 23: continue
-		draw_texture(reed_texture, Vector2(x, 298))
+
+func _plants(t: float, background: bool) -> void:
+	var frame := posmod(int(t*12.0/TAU),8)
+	draw_texture(back_plants[frame] if background else front_plants[frame],Vector2(0,205))
+
+func _make_plant_layer(t: float, background: bool) -> Texture2D:
+	# Bake eight pixel animation frames once: two draw calls replace hundreds of leaf draws.
+	var canvas := Image.create(640,112,false,Image.FORMAT_RGBA8)
+	canvas.fill(Color.TRANSPARENT)
+	for plant in Layout.PLANTS:
+		if plant.back != background: continue
+		var base_color := Color("3c8174") if background else Color("70a678")
+		var light := Color("4b8979") if background else Color("a4c486")
+		var shade := Color("2c6867") if background else Color("45846a")
+		for stem in range(plant.stems):
+			var fraction := float(stem)/maxi(1,plant.stems-1)
+			var base := Vector2(plant.x+(fraction-0.5)*plant.width,109)
+			var height: float = plant.height * (0.67+0.33*sin(stem*2.37+1.2))
+			if stem == plant.stems/2: height = plant.height
+			var lean: float = (fraction-0.5)*plant.width*0.38
+			var phase: float = plant.x*0.13+stem*0.7
+			var path := PackedVector2Array()
+			for step in range(9):
+				var growth := step/8.0
+				var sway := sin(t*1.5+phase+growth*2.1)*growth*2
+				path.append((base+Vector2(lean*growth+sway,-height*growth)).round())
+			if plant.kind == "ribbon":
+				var blade := PackedVector2Array(path)
+				for step in range(8,-1,-1): blade.append(path[step]+Vector2(1 if step==8 else 2,0))
+				Art.paint_polygon(canvas,blade,base_color if stem%2 else shade)
+				for segment in range(1,path.size()): Art.paint_line(canvas,path[segment-1],path[segment],light if stem%3==0 else base_color)
+			else:
+				for segment in range(1,path.size()): Art.paint_line(canvas,path[segment-1],path[segment],shade)
+				for step in range(2,8):
+					var anchor: Vector2 = path[step]
+					var leaf_length := 3.0+(8-step)*0.7 if plant.kind == "fern" else 4.0
+					for side in [-1,1]:
+						var tip := anchor+Vector2(side*leaf_length,-3)
+						Art.paint_polygon(canvas,PackedVector2Array([anchor,tip,tip+Vector2(-side*2,3),anchor+Vector2(0,2)]),base_color if side==1 else light)
+				if plant.kind == "reed":
+					canvas.fill_rect(Rect2i(Vector2i(path[8])-Vector2i(1,6),Vector2i(3,7)),Color("657e66") if background else Color("aeaa73"))
+					canvas.fill_rect(Rect2i(Vector2i(path[8])-Vector2i(1,6),Vector2i(1,5)),light)
+	return ImageTexture.create_from_image(canvas)
 
 func _baits(t: float) -> void:
 	for index in game.baits.size():
@@ -106,14 +150,20 @@ func _baits(t: float) -> void:
 		var flashing: bool = game.cycle_phase == "warning" and game.cycle_slot == index and int(t * 6) % 2 == 0
 		for grain in bait.grains:
 			if grain.eaten or (not grain.free and not bait.active): continue
-			var color := GOLD if grain.layer == 0 else Color("e4a45b")
+			var offset: Vector2 = grain.offset
+			var shade: float = clampf(0.48-(offset.x+offset.y)/22.0,0,1)
+			var color := Color("a26c3f").lerp(Color("f1d798"),shade)
+			if grain.fleck == 0: color = color.lightened(0.13)
 			if flashing and not grain.free: color = RED
 			var p: Vector2 = Vector2(grain.pos).round()
-			draw_rect(Rect2(p - Vector2.ONE, Vector2(3, 3)), color)
-			if not grain.free: draw_rect(Rect2(p - Vector2.ONE, Vector2.ONE), CREAM)
+			if grain.free:
+				draw_rect(Rect2(p,Vector2.ONE),color.lightened(0.15))
+			else:
+				draw_rect(Rect2(p,Vector2(2,2) if grain.layer<2 else Vector2.ONE),color.darkened(0.18))
+				draw_rect(Rect2(p,Vector2(2 if grain.fleck%2 else 1,1)),color)
 		if bait.active and not game.menu.visible:
 			var label := "有钩饵" if bait.hook and not bait.removed else "散饵"
-			label_at(Vector2(bait.pos) + Vector2(-17, -19), label, 10, Color("bdd4be"))
+			label_at(Vector2(bait.pos) + Vector2(-17, -14), label, 10, Color("bdd4be"))
 
 func _line() -> void:
 	if game.hooked == game.HookState.HOOKED and game.rope_path.size() >= 2:

@@ -4,11 +4,12 @@ const Rope = preload("res://scripts/rope.gd")
 const View = preload("res://scripts/pond_view.gd")
 const Menus = preload("res://scripts/menu.gd")
 const Sound = preload("res://scripts/sound.gd")
+const Layout = preload("res://scripts/pond_layout.gd")
 enum HookState { FREE, MOUTH, HOOKED }
 const HOME := Vector2(60, 281)
 const TARGET := 60.0
 const TIME_LIMIT := 360.0
-const SOLIDS: Array[Rect2] = [Rect2(326, 172, 22, 151), Rect2(168, 299, 46, 25), Rect2(440, 300, 40, 24)]
+const SOLIDS: Array = Layout.SOLIDS
 
 var fish := Vector2(66, 265)
 var velocity := Vector2.ZERO
@@ -98,7 +99,7 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | side-view | 640x360 | v0.1")
+	print("PIXEL_READY | side-view | 640x360 | v0.2")
 
 func _register_inputs() -> void:
 	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP, KEY_SPACE], "down":[KEY_S, KEY_DOWN, KEY_CTRL], "dash":[KEY_SHIFT], "use":[KEY_E], "slow":[KEY_Q]}
@@ -186,13 +187,16 @@ func _create_bait(index: int) -> void:
 	var home := Vector2(232, 153) if hooked_bait else Vector2(532, 216)
 	var bait := {"id":index, "home":home, "pos":home, "hook":hooked_bait, "removed":false, "active":index < 2, "age":0.0, "budget":0.0, "grains":[], "tip_before":home + Vector2(5, 10)}
 	var counts := [24, 14, 6]
-	var radii := [11.0, 7.0, 3.0]
+	var radii := [7.0, 4.4, 1.9]
+	var grain_rng := RandomNumberGenerator.new()
+	grain_rng.seed = 3901 + index*97
 	var serial := 0
 	for layer in range(3):
 		for particle in range(counts[layer]):
-			var angle: float = TAU * float(particle) / counts[layer] + layer * 0.37
-			var offset: Vector2 = Vector2.from_angle(angle) * radii[layer]
-			bait.grains.append({"id":"%d_%d" % [index, serial], "offset":offset, "pos":home + offset, "layer":layer, "free":false, "eaten":false, "progress":0.0, "points":18.0 / 24 if layer == 0 else 12.0 / 20})
+			var angle: float = TAU * float(particle) / counts[layer] + layer * 0.37 + grain_rng.randf_range(-0.12,0.12)
+			var radius: float = radii[layer] - grain_rng.randf_range(0,1.7 if layer < 2 else 1.0)
+			var offset := (Vector2.from_angle(angle) * radius * Vector2(1,0.88)).round()
+			bait.grains.append({"id":"%d_%d" % [index, serial], "offset":offset, "pos":home + offset, "layer":layer, "fleck":serial%5, "free":false, "eaten":false, "progress":0.0, "points":18.0 / 24 if layer == 0 else 12.0 / 20})
 			serial += 1
 	baits.append(bait)
 
@@ -212,9 +216,13 @@ func strength(point: Vector2) -> float:
 
 func _collision(point: Vector2, radius: float) -> bool:
 	for solid in SOLIDS:
-		var nearest := point.clamp(solid.position, solid.end)
-		if nearest.distance_squared_to(point) < radius * radius: return true
+		if Layout.touches(point,radius,PackedVector2Array(solid.points)): return true
 	return false
+
+func vegetation_drag(point: Vector2) -> float:
+	for patch in Layout.GRASS:
+		if patch.has_point(point): return 0.68
+	return 1.0
 
 func move_fish(motion: Vector2) -> void:
 	var radius := 17.0 if hooked == HookState.HOOKED else 12.0
@@ -258,7 +266,7 @@ func step(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: 
 		else:
 			stamina = minf(100, stamina + delta * 11)
 			velocity = velocity.move_toward(movement.limit_length(1) * (26 if slow else 70), delta * 330)
-		move_fish(velocity * delta)
+		move_fish(velocity * delta * vegetation_drag(fish))
 	else: velocity = Vector2.ZERO
 	_step_net(delta)
 	if lost: return
@@ -339,19 +347,24 @@ func _enter_hook(index: int) -> void:
 func _attach_hook() -> void:
 	hooked = HookState.HOOKED
 	qte = ""
-	rope_path = Rope.solve(Vector2(baits[bound_bait].home.x, 53), mouth(), SOLIDS)
-	rope_length = Rope.length_of(rope_path)
 	tension = 0.5
 	high_age = 0
 	low_age = 0
 	landing_age = 0
-	# The metal hook needs its own clearance when turning beside the pillar.
+	# The larger hooked body must also respect the floor after it is separated from a prop.
+	fish = fish.clamp(Vector2(25,85),Vector2(615,294))
 	for iteration in range(20):
 		if not _collision(fish, 17): break
 		for solid in SOLIDS:
-			var nearest := fish.clamp(solid.position, solid.end)
+			var polygon := PackedVector2Array(solid.points)
+			var nearest := Layout.nearest_boundary(fish,polygon)
 			var away := fish - nearest
-			if away.length() > 0.001 and away.length() < 17: fish += away.normalized() * (17.01 - away.length())
+			if Geometry2D.is_point_in_polygon(fish,polygon):
+				fish = nearest - away.normalized()*17.01
+			elif away.length() > 0.001 and away.length() < 17: fish += away.normalized() * (17.01 - away.length())
+		fish = fish.clamp(Vector2(25,85),Vector2(615,294))
+	rope_path = Rope.solve(Vector2(baits[bound_bait].home.x, 53), mouth(), SOLIDS)
+	rope_length = Rope.length_of(rope_path)
 
 func _step_qte(delta: float, interact: bool) -> void:
 	if qte.is_empty(): return
@@ -469,6 +482,27 @@ func request_net() -> void:
 func net_blocks_hooks() -> bool:
 	return net_state in ["prepare", "warning", "sweep"]
 
+func _net_contact(point: Vector2) -> bool:
+	var net_scale := Vector2(22,33)
+	for solid in SOLIDS:
+		var scaled := PackedVector2Array()
+		for vertex in solid.points: scaled.append(vertex/net_scale)
+		if Layout.touches(point/net_scale,1.0,scaled): return true
+	return false
+
+func _plan_net() -> void:
+	# The rim stops at solid cover; its telegraph shows only the reachable sweep lane.
+	var y := clampf(fish.y,112,245)
+	net_from = Vector2(620 if fish.x > 337 else 20,y)
+	var destination := Vector2(366 if fish.x > 337 else 307,y)
+	net_to = net_from
+	var steps := ceili(net_from.distance_to(destination)/2)
+	for step in range(1,steps+1):
+		var candidate := net_from.lerp(destination,float(step)/steps)
+		if _net_contact(candidate): break
+		net_to = candidate
+	net_pos = net_from
+
 func _step_net(delta: float) -> void:
 	if net_state == "rest":
 		net_age += delta
@@ -485,10 +519,7 @@ func _step_net(delta: float) -> void:
 			net_state = "prepare"
 			net_age = 0
 			net_queued = false
-			var y := clampf(fish.y, 112, 264)
-			net_from = Vector2(620 if fish.x > 337 else 20, y)
-			net_to = Vector2(366 if fish.x > 337 else 307, y)
-			net_pos = net_from
+			_plan_net()
 		return
 	net_age += delta
 	if net_state == "prepare" and net_age >= 1.5:
@@ -542,6 +573,7 @@ func hint() -> String:
 	if notice_age > 0: return notice
 	if cycle_phase == "warning": return "闪烁的饵即将收回，剩余颗粒下次继续"
 	if cycle_phase == "refill": return "正在补饵，可前往另一侧取食"
+	if vegetation_drag(fish) < 1: return "浓密水草中 · 游动稍慢，向上游出草丛"
 	return "左键吸食 · 滚轮调吸力 · Q 慢游 · Shift 冲刺"
 
 func _unhandled_input(event: InputEvent) -> void:

@@ -101,7 +101,7 @@ func _title(frame: Control) -> void:
 	button(frame,"设置",215,func(): open("settings"),false,124)
 	var quit := button(frame,"退出",215,func(): get_tree().quit(),false,124)
 	quit.position.x = 150
-	text(frame,"2D MVP 0.1  ·  原创像素 / 轻量运行",Vector2(20,253),10,Color("91afa7"))
+	text(frame,"2D MVP 0.2  ·  原创像素 / 轻量运行",Vector2(20,253),10,Color("91afa7"))
 	text(content,"01  吃饵",Vector2(391,119),18,GOLD)
 	text(content,"02  脱钩",Vector2(391,159),18,GOLD)
 	text(content,"03  躲网，回巢",Vector2(391,199),18,GOLD)
