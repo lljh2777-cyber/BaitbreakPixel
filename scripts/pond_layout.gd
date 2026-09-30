@@ -1,44 +1,65 @@
 extends RefCounted
 
-# Silhouettes now describe pass-through cover and Space-QTE contact, not fish blockers.
-# Net rims still respect wood and stone cover.
+# One authoritative map, independent of the 640x360 viewport.
+const SIZE := Vector2(1280,480)
+const FLOOR := 433.0
+const HOME := Vector2(60,401)
+const SPAWN := Vector2(66,385)
+const WATER := Rect2(8,68,1264,363)
+const NET_AREA := Rect2(30,85,1220,315)
+const BAIT_SITES: Array[Vector2] = [Vector2(220,170),Vector2(450,230),Vector2(680,175),Vector2(880,255),Vector2(1070,190),Vector2(1160,315)]
+
+# Root snag / fallen timber / stone shoal / reed margin, with open water between.
+# Fish pass through cover; the same silhouettes stop the net and anchor coils.
 const SOLIDS: Array = [
-	{"kind":"wood", "seed":1, "points":[Vector2(326,174),Vector2(339,168),Vector2(348,176),Vector2(360,315),Vector2(315,315)]},
-	{"kind":"stone", "seed":2, "points":[Vector2(165,313),Vector2(167,303),Vector2(179,293),Vector2(196,291),Vector2(213,300),Vector2(219,313)]},
-	{"kind":"stone", "seed":3, "points":[Vector2(433,313),Vector2(437,297),Vector2(451,284),Vector2(469,288),Vector2(481,305),Vector2(478,314)]},
-	{"kind":"wood", "seed":4, "points":[Vector2(260,313),Vector2(256,255),Vector2(262,247),Vector2(268,251),Vector2(276,313)]},
-	{"kind":"wood", "seed":5, "points":[Vector2(578,313),Vector2(548,245),Vector2(549,235),Vector2(558,234),Vector2(593,313)]},
-	{"kind":"wood", "seed":6, "points":[Vector2(120,313),Vector2(112,258),Vector2(116,251),Vector2(123,253),Vector2(135,313)]},
-	{"kind":"wood", "seed":7, "points":[Vector2(380,311),Vector2(384,301),Vector2(416,286),Vector2(425,291),Vector2(429,306),Vector2(413,314)]},
-	{"kind":"stone", "seed":8, "points":[Vector2(5,315),Vector2(6,292),Vector2(18,282),Vector2(30,293),Vector2(34,313)]},
-	{"kind":"stone", "seed":9, "points":[Vector2(221,314),Vector2(226,304),Vector2(239,301),Vector2(247,312)]},
-	{"kind":"stone", "seed":10, "points":[Vector2(598,314),Vector2(604,301),Vector2(616,293),Vector2(630,298),Vector2(637,313)]},
-	{"kind":"wood", "seed":11, "points":[Vector2(302,213),Vector2(305,207),Vector2(334,225),Vector2(330,235)]},
-	{"kind":"wood", "seed":12, "points":[Vector2(343,253),Vector2(368,225),Vector2(374,225),Vector2(373,233),Vector2(351,264)]}
+	{"kind":"wood","seed":1,"name":"枯木","points":[Vector2(326,174),Vector2(339,168),Vector2(348,176),Vector2(350,239),Vector2(365,317),Vector2(385,396),Vector2(379,433),Vector2(329,433),Vector2(322,378),Vector2(326,301),Vector2(321,237)]},
+	{"kind":"stone","seed":2,"points":[Vector2(163,433),Vector2(169,416),Vector2(188,404),Vector2(210,408),Vector2(227,421),Vector2(231,433)]},
+	{"kind":"stone","seed":3,"points":[Vector2(696,433),Vector2(689,410),Vector2(703,382),Vector2(731,367),Vector2(754,375),Vector2(771,407),Vector2(767,433)]},
+	{"kind":"wood","seed":4,"points":[Vector2(335,318),Vector2(286,267),Vector2(270,255),Vector2(263,245),Vector2(268,242),Vector2(291,253),Vector2(347,299)]},
+	{"kind":"wood","seed":5,"points":[Vector2(350,271),Vector2(391,231),Vector2(409,218),Vector2(418,220),Vector2(410,232),Vector2(360,290)]},
+	{"kind":"wood","seed":6,"points":[Vector2(344,432),Vector2(314,405),Vector2(279,405),Vector2(255,426),Vector2(244,431),Vector2(253,410),Vector2(278,393),Vector2(319,392),Vector2(365,433)]},
+	{"kind":"wood","seed":7,"name":"倒木","points":[Vector2(480,430),Vector2(487,412),Vector2(508,402),Vector2(636,358),Vector2(657,363),Vector2(667,378),Vector2(648,393),Vector2(523,430)]},
+	{"kind":"stone","seed":8,"points":[Vector2(6,433),Vector2(8,413),Vector2(25,401),Vector2(45,410),Vector2(51,433)]},
+	{"kind":"stone","seed":9,"points":[Vector2(755,430),Vector2(764,413),Vector2(784,405),Vector2(806,414),Vector2(815,433)]},
+	{"kind":"stone","seed":10,"points":[Vector2(830,433),Vector2(821,407),Vector2(832,382),Vector2(854,371),Vector2(879,379),Vector2(893,407),Vector2(889,433)]},
+	{"kind":"wood","seed":11,"points":[Vector2(302,213),Vector2(305,207),Vector2(334,225),Vector2(330,235)]},
+	{"kind":"wood","seed":12,"points":[Vector2(343,253),Vector2(368,225),Vector2(374,225),Vector2(373,233),Vector2(351,264)]},
+	{"kind":"stone","seed":13,"points":[Vector2(778,413),Vector2(783,395),Vector2(798,385),Vector2(817,391),Vector2(823,407),Vector2(816,417)]},
+	{"kind":"stone","seed":14,"points":[Vector2(874,433),Vector2(892,420),Vector2(920,419),Vector2(936,431)]},
+	{"kind":"wood","seed":15,"name":"断枝","points":[Vector2(602,382),Vector2(583,345),Vector2(580,314),Vector2(585,310),Vector2(591,335),Vector2(617,375)]},
+	{"kind":"stone","seed":16,"points":[Vector2(1040,433),Vector2(1049,422),Vector2(1068,419),Vector2(1085,425),Vector2(1090,433)]},
+	{"kind":"wood","seed":17,"points":[Vector2(1192,433),Vector2(1211,391),Vector2(1217,363),Vector2(1226,359),Vector2(1230,367),Vector2(1227,400),Vector2(1210,433)]},
+	{"kind":"wood","seed":18,"points":[Vector2(1214,409),Vector2(1186,390),Vector2(1170,365),Vector2(1174,360),Vector2(1194,379),Vector2(1221,391)]}
 ]
 
-# The brightest dense weed patches form soft obstacles, separate from solid wood/stone.
-const GRASS: Array[Rect2] = [Rect2(140,253,24,60),Rect2(480,249,22,64),Rect2(598,251,26,62)]
+const GRASS: Array[Rect2] = [Rect2(135,363,30,70),Rect2(951,346,34,87),Rect2(1118,337,42,96)]
 const PLANTS: Array = [
-	{"x":17,"height":65,"width":17,"kind":"ribbon","stems":5,"back":true},
-	{"x":100,"height":82,"width":26,"kind":"reed","stems":6,"back":true},
-	{"x":148,"height":95,"width":35,"kind":"fern","stems":7,"back":true},
-	{"x":213,"height":47,"width":29,"kind":"ribbon","stems":6,"back":true},
-	{"x":287,"height":68,"width":22,"kind":"reed","stems":4,"back":true},
-	{"x":374,"height":82,"width":33,"kind":"ribbon","stems":6,"back":true},
-	{"x":472,"height":86,"width":37,"kind":"fern","stems":7,"back":true},
-	{"x":571,"height":89,"width":26,"kind":"reed","stems":5,"back":true},
-	{"x":622,"height":96,"width":31,"kind":"ribbon","stems":7,"back":true},
-	{"x":151,"height":62,"width":24,"kind":"fern","stems":7,"back":false},
-	{"x":491,"height":66,"width":22,"kind":"ribbon","stems":7,"back":false},
-	{"x":611,"height":64,"width":26,"kind":"fern","stems":7,"back":false},
-	{"x":92,"height":23,"width":15,"kind":"ribbon","stems":5,"back":false},
-	{"x":248,"height":27,"width":17,"kind":"fern","stems":4,"back":false},
-	{"x":288,"height":39,"width":12,"kind":"reed","stems":3,"back":false},
-	{"x":357,"height":22,"width":20,"kind":"ribbon","stems":5,"back":false},
-	{"x":519,"height":24,"width":21,"kind":"ribbon","stems":5,"back":false},
-	{"x":567,"height":19,"width":20,"kind":"fern","stems":4,"back":false}
+	{"x":100,"y":433,"height":75,"width":24,"kind":"ribbon","stems":5,"back":true},
+	{"x":150,"y":433,"height":70,"width":30,"kind":"fern","stems":6,"back":false},
+	{"x":244,"y":433,"height":31,"width":19,"kind":"ribbon","stems":4,"back":false},
+	{"x":287,"y":433,"height":46,"width":18,"kind":"fern","stems":4,"back":true},
+	{"x":377,"y":433,"height":49,"width":27,"kind":"ribbon","stems":5,"back":true},
+	{"x":414,"y":433,"height":32,"width":17,"kind":"fern","stems":4,"back":false},
+	{"x":521,"y":411,"height":25,"width":20,"kind":"fern","stems":4,"back":false},
+	{"x":618,"y":375,"height":28,"width":16,"kind":"ribbon","stems":4,"back":true},
+	{"x":674,"y":433,"height":43,"width":21,"kind":"ribbon","stems":5,"back":false},
+	{"x":739,"y":379,"height":25,"width":14,"kind":"fern","stems":3,"back":true},
+	{"x":809,"y":433,"height":28,"width":16,"kind":"fern","stems":3,"back":false},
+	{"x":856,"y":382,"height":20,"width":15,"kind":"ribbon","stems":3,"back":false},
+	{"x":910,"y":433,"height":55,"width":28,"kind":"fern","stems":6,"back":true},
+	{"x":950,"y":433,"height":108,"width":32,"kind":"ribbon","stems":6,"back":true},
+	{"x":967,"y":433,"height":87,"width":34,"kind":"fern","stems":7,"back":false},
+	{"x":1001,"y":433,"height":69,"width":25,"kind":"ribbon","stems":5,"back":true},
+	{"x":1050,"y":433,"height":46,"width":26,"kind":"fern","stems":5,"back":false},
+	{"x":1104,"y":433,"height":103,"width":32,"kind":"ribbon","stems":6,"back":true},
+	{"x":1138,"y":433,"height":96,"width":42,"kind":"fern","stems":8,"back":false},
+	{"x":1182,"y":433,"height":74,"width":26,"kind":"ribbon","stems":5,"back":true},
+	{"x":1238,"y":433,"height":115,"width":29,"kind":"ribbon","stems":6,"back":true},
+	{"x":1254,"y":433,"height":55,"width":23,"kind":"fern","stems":5,"back":false}
 ]
+
+static func fish_bounds(radius: float) -> Rect2:
+	return WATER.grow(-radius)
 
 static func nearest_boundary(point: Vector2, polygon: PackedVector2Array) -> Vector2:
 	var nearest := polygon[0]
@@ -61,9 +82,9 @@ static func interaction_targets() -> Array[Dictionary]:
 		var polygon := PackedVector2Array(solid.points)
 		var bounds := Rect2(polygon[0],Vector2.ZERO)
 		for point in polygon: bounds = bounds.expand(point)
-		result.append({"name":"石头" if solid.kind=="stone" else ("木根" if index==0 else "木枝"),"kind":solid.kind,"polygon":polygon,"bounds":bounds})
+		result.append({"name":solid.get("name","石头" if solid.kind=="stone" else "木枝"),"kind":solid.kind,"polygon":polygon,"bounds":bounds})
 	for plant in PLANTS:
-		var bounds := Rect2(plant.x-plant.width*0.5-3,314-plant.height,plant.width+6,plant.height)
+		var bounds := Rect2(plant.x-plant.width*0.5-3,plant.y-plant.height,plant.width+6,plant.height)
 		var polygon := PackedVector2Array([bounds.position,Vector2(bounds.end.x,bounds.position.y),bounds.end,Vector2(bounds.position.x,bounds.end.y)])
 		result.append({"name":"水草","kind":"grass","polygon":polygon,"bounds":bounds})
 	return result

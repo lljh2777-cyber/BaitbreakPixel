@@ -107,7 +107,7 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.20.1 | flowing-net-animation")
+	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.21.0 | expanded-pond-hidden-hooks")
 
 func _register_inputs() -> void:
 	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[], "use":[KEY_E], "slow":[KEY_Q], "qte":[KEY_SPACE], "untangle":[KEY_F]}
@@ -183,7 +183,7 @@ func rules_preset_path() -> String:
 
 func screen_to_game(point: Vector2) -> Vector2:
 	var shown: Node2D=network.display_world() if is_instance_valid(network) and network.active() and shared_session else self
-	return View.Shore.to_world(point,shown) if player_role=="angler" and not shown.net_action.observing else point
+	return View.Shore.to_world(point,shown) if player_role=="angler" and not shown.net_action.observing else View.Camera.to_world(point,shown,player_role)
 
 func _network_command() -> Dictionary:
 	var role: String=network.local_role
@@ -196,7 +196,7 @@ func _network_command() -> Dictionary:
 	var pointer := get_global_mouse_position()
 	if role=="angler": return local_input.angler_command(self,screen_to_game(pointer))
 	network.local_power=clampf(network.local_power+local_input.power_steps*0.1,0.1,1)
-	var command := local_input.fish_command(network.display_world(),pointer)
+	var command := local_input.fish_command(network.display_world(),screen_to_game(pointer))
 	command.power=network.local_power
 	return command
 
@@ -207,7 +207,7 @@ func _physics_process(_delta: float) -> void:
 		return
 	if shared_session or menu.visible or paused or match_over: return
 	var pointer := get_global_mouse_position()
-	var fish_command: Dictionary=fish_brain.command(self,TICK_SECONDS) if fish_source=="ai" else local_input.fish_command(self,pointer)
+	var fish_command: Dictionary=fish_brain.command(self,TICK_SECONDS) if fish_source=="ai" else local_input.fish_command(self,screen_to_game(pointer))
 	var angler_command: Dictionary=angler_brain.command(self,TICK_SECONDS) if angler_source=="ai" else local_input.angler_command(self,screen_to_game(pointer))
 	advance_tick(fish_command,angler_command)
 
@@ -239,7 +239,7 @@ func hint() -> String:
 	if net_state in ["warning", "sweep"]: return "上方下探 · 横向游离红色区域" if net_kind=="drop" else "横向扫网 · 向上或向下游离红色区域"
 	if returning: return "正在回巢 %.1f / %.1f 秒" % [home_age,rule("home_hold")]
 	if can_home(): return "按 E 并停留 %.1f 秒回巢" % rule("home_hold")
-	if score >= food_target() - 0.001: return "食物够了！回左下角薄荷色巢穴按 E"
+	if score >= food_target() - 0.001: return "食物够了！沿巢穴方向返回，按 E"
 	if notice_age > 0 and not uses_mobile_tackle(): return notice
 	if cycle_phase == "warning": return "闪烁的饵即将收回，剩余颗粒下次继续"
 	if cycle_phase == "refill": return "正在补饵，可前往另一侧取食"
@@ -272,7 +272,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouse: point=screen_to_game(get_global_transform_with_canvas().affine_inverse()*event.position)
 	if player_role=="angler" and event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_LEFT:
 		var shown: Node2D=network.display_world() if is_instance_valid(network) and network.active() and shared_session else self
-		if not shown.net_action.observing or not View.Observation.interactive(view,shown,point): return
+		if not shown.net_action.observing or not View.Observation.interactive(view,shown,View.Camera.to_screen(point,shown,"angler")): return
 	local_input.handle(event,player_role,point)
 	if event is InputEventKey and event.pressed and not event.echo:
 		match event.physical_keycode:

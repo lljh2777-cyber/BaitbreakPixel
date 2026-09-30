@@ -1,4 +1,5 @@
 extends RefCounted
+const Layout=preload("res://scripts/pond_layout.gd")
 
 # Presentation geometry only. Physics, coil ownership and QTE timings remain
 # authoritative; both views draw these same continuous segments.
@@ -70,7 +71,7 @@ static func strand(world: Node2D, start: Vector2, end: Vector2, available: float
 	if not end_tangent.is_zero_approx(): b=end-end_tangent.normalized()*minf(9,chord*0.25)
 	var excess := maxf(0,available-chord)
 	var bow := minf(30,sqrt(excess*(2*chord+excess))*0.30)
-	bow=minf(bow,maxf(0.0,312.0-maxf(start.y,end.y)))
+	bow=minf(bow,maxf(0.0,Layout.FLOOR-1-maxf(start.y,end.y)))
 	var normal := direction.orthogonal()
 	# A slack strand hangs down rather than flipping to the other side when a
 	# moving fish crosses the contact. Anchors stay exact, including at zero length.

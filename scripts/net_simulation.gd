@@ -279,7 +279,7 @@ static func command(g: Node2D, events: Array) -> void:
 			"cancel", "suspend": cancel_manual_net(g)
 
 static func reachable(g: Node2D, point: Vector2) -> bool:
-	return Rect2(30,85,580,195).has_point(point) and point.distance_to(g.angler.anchor())<=g.rule("net_reach")
+	return g.Layout.NET_AREA.has_point(point) and point.distance_to(g.angler.anchor())<=g.rule("net_reach")
 
 static func visibility(g: Node2D, point: Vector2) -> float:
 	var distance := point.distance_to(g.angler.anchor())

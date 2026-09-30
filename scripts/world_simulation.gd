@@ -13,7 +13,7 @@ const Rope = preload("res://scripts/rope.gd")
 const Layout = preload("res://scripts/pond_layout.gd")
 const AnglerController = preload("res://scripts/angler_rig.gd")
 enum HookState { FREE, MOUTH, HOOKED }
-const HOME := Vector2(60, 281)
+const HOME := Layout.HOME
 const TARGET := 60.0
 const TIME_LIMIT := 360.0
 const SOLIDS: Array = Layout.SOLIDS
@@ -31,7 +31,7 @@ const NET_MISS := 0.22
 const LINE_ELASTIC_PIXELS := 32.0
 const MAX_LINE_LENGTH := 720.0
 
-var fish := Vector2(66, 265)
+var fish := Layout.SPAWN
 var angler := AnglerController.new()
 var net_aim := Vector2.ZERO
 var manual_net := false
@@ -437,7 +437,7 @@ func reset_world(config: Dictionary = {}) -> void:
 	net_route_next=1
 	bait_batch=0
 	challenge = bool(config.get("challenge",false))
-	fish = Vector2(66, 265)
+	fish = Layout.SPAWN
 	power=rule("suction_initial")
 	rope_length=0
 	landing_from=Vector2.ZERO
@@ -521,13 +521,22 @@ func reset_world(config: Dictionary = {}) -> void:
 	cycle_phase = ""
 	cycle_slot = -1
 	cycle_age = 0
-	supply_queue.assign([2, 3])
+	supply_queue.assign([2])
 	baits.clear()
-	for index in range(4): _create_bait(index)
+	var sites: Array[Vector2]=Layout.BAIT_SITES.duplicate()
+	for index in range(sites.size()-1,0,-1):
+		var other:=rng.randi_range(0,index)
+		var swap:=sites[index]; sites[index]=sites[other]; sites[other]=swap
+	for index in range(4):
+		_create_bait(index)
+		baits[index].home=sites[index]
+		baits[index].pos=sites[index]
+		baits[index].tip_before=sites[index]+Vector2(2,1)
+		for grain in baits[index].grains: grain.pos=sites[index]+Vector2(grain.offset)
 	if uses_mobile_tackle():
 		baits[0].active=false
 		started=true
-	notice = "鼠标朝向决定吸食方向 · 先试试右侧无钩饵"
+	notice = "寻找饵团 · 鼠标朝向，左键吸食 · 饵中可能藏有鱼钩"
 	notice_age = 5
 	if uses_mobile_tackle(): notice="Q 下钩 · W 收线 / S 放线 · E 观察 · 左键选择 A/B 抄网"
 
@@ -540,11 +549,12 @@ func _create_bait(index: int) -> void:
 func _make_bait(index: int, batch: int = 0) -> Dictionary:
 	var hooked_bait := index % 2 == 0
 	var home := Vector2(232, 153) if hooked_bait else Vector2(532, 216)
-	var bait := {"id":index, "home":home, "pos":home, "angle":0.0, "hook":hooked_bait, "removed":false, "active":index < 2, "age":0.0, "budget":0.0, "grains":[], "tip_before":home + Vector2(2, 1)}
+	var bait := {"id":index, "home":home, "pos":home, "angle":0.0, "hook":hooked_bait, "removed":false, "active":index != 2, "age":0.0, "budget":0.0, "grains":[], "tip_before":home + Vector2(2, 1)}
 	var counts := [24, 14, 6]
 	var radii := [7.0, 4.4, 1.9]
 	var grain_rng := RandomNumberGenerator.new()
-	grain_rng.seed = 3901 + index*97
+	# Share the same pellet silhouette; a stable slot-specific shape could identify hook bait.
+	grain_rng.seed = 3901
 	var serial := 0
 	for layer in range(3):
 		for particle in range(counts[layer]):
@@ -599,7 +609,7 @@ func vegetation_drag(point: Vector2) -> float:
 
 func move_fish(motion: Vector2) -> void:
 	var radius := 17.0 if hooked == HookState.HOOKED else 12.0
-	fish = (fish+motion).clamp(Vector2(radius+8,68+radius),Vector2(632-radius,311-radius))
+	fish = (fish+motion).clamp(Layout.fish_bounds(radius).position,Layout.fish_bounds(radius).end)
 	if not uses_mobile_tackle() or hooked!=HookState.HOOKED or landing or line_tuning().y<=0: return
 	var contact := line_anchor(bound_bait) if wraps.is_empty() else Vector2(wraps[-1].entry)
 	var available := rope_length if wraps.is_empty() else fish_line_length
@@ -609,7 +619,7 @@ func move_fish(motion: Vector2) -> void:
 	var reach := maxf(0,available)+rule("line_elastic")*(1-base)
 	var radial := mouth()-contact
 	if radial.length()>reach:
-		fish=(contact+radial.normalized()*reach-aim*10).clamp(Vector2(radius+8,68+radius),Vector2(632-radius,311-radius))
+		fish=(contact+radial.normalized()*reach-aim*10).clamp(Layout.fish_bounds(radius).position,Layout.fish_bounds(radius).end)
 
 func touching_target(index: int) -> bool:
 	return index>=0 and index<targets.size() and Layout.touches(fish,12,targets[index].polygon)
@@ -878,7 +888,7 @@ func _attach_hook() -> void:
 	landing_age = 0
 	landing = false
 	# Props are pass-through cover; only the pond perimeter constrains swimming.
-	fish = fish.clamp(Vector2(25,85),Vector2(615,294))
+	fish = fish.clamp(Layout.fish_bounds(17).position,Layout.fish_bounds(17).end)
 	wraps.clear()
 	wrap_target = -1
 	_rebuild_rope()
@@ -1065,7 +1075,7 @@ func _step_supply(delta: float) -> void:
 			if _remaining(baits[cycle_slot], true): supply_queue.append(cycle_slot)
 			var next := -1
 			for candidate in supply_queue:
-				if candidate % 2 == cycle_slot % 2:
+				if candidate % 2 == cycle_slot % 2 and not baits[candidate].active:
 					next = candidate
 					break
 			if next >= 0:

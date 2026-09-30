@@ -32,6 +32,7 @@ var reel_hand_mode := 0
 var reel_hand_amount := 0.0
 var rod_load := 0.0
 var rod_lift := 0.0
+const Layout = preload("res://scripts/pond_layout.gd")
 const Rules = preload("res://scripts/game_rules.gd")
 const CAST_SECONDS := 0.7
 
@@ -114,8 +115,8 @@ func step_tackle_feedback(game: Node2D, delta: float) -> void:
 			var drag := relative*(4.5+absf(relative)*0.025)
 			surface_velocity+=((goal-surface_x)*(4.5+load*13)-drag)*dt
 			surface_x+=surface_velocity*dt
-			if surface_x<20 or surface_x>620:
-				surface_x=clampf(surface_x,20,620); surface_velocity=0
+			if surface_x<20 or surface_x>Layout.SIZE.x-20:
+				surface_x=clampf(surface_x,20,Layout.SIZE.x-20); surface_velocity=0
 	var speed:=feedback_reel_speed(game)
 	var desired := 0
 	if not game.Net.busy(game) and absf(speed)>0.5:
@@ -159,7 +160,7 @@ func cast(game: Node2D, point: Vector2) -> bool:
 		if bait.hook: bait.active=false
 	cast_index=index
 	cast_from=anchor()
-	cast_to=point.clamp(Vector2(38,100),Vector2(602,284))
+	cast_to=point.clamp(Vector2(38,100),Vector2(Layout.SIZE.x-38,Layout.FLOOR-29))
 	cast_age=0
 	casting=true
 	cast_cooldown=1.2
@@ -179,9 +180,9 @@ func update(game: Node2D, delta: float, command: Dictionary) -> void:
 	cast_cooldown=maxf(0,cast_cooldown-delta)
 	net_cooldown=maxf(0,net_cooldown-delta)
 	var raw_cursor := Vector2(command.get("target",cursor))
-	cursor=raw_cursor.clamp(Vector2(30,80),Vector2(610,294))
+	cursor=raw_cursor.clamp(Vector2(30,80),Vector2(Layout.SIZE.x-30,Layout.FLOOR-19))
 	anchor_before=anchor()
-	if not game.landing and game.net_state!="caught": x=clampf(x+clampf(float(command.get("walk",0)),-1,1)*game.rule("angler_speed")*delta,18,588)
+	if not game.landing and game.net_state!="caught": x=clampf(x+clampf(float(command.get("walk",0)),-1,1)*game.rule("angler_speed")*delta,18,Layout.SIZE.x-52)
 	var bank_speed := (anchor().x-anchor_before.x)/maxf(delta,0.001)
 	var count := maxi(1,ceili(delta*120))
 	for part in count:
@@ -238,7 +239,7 @@ func step_free_hook(game: Node2D, index: int, delta: float, sucking: bool) -> vo
 			position=attachment+normal*free_line_length
 			var outward := (hook_velocity-bank_velocity).dot(normal)-free_reel_speed
 			if outward>0: hook_velocity-=normal*outward
-		var bounded := position.clamp(Vector2(20,79),Vector2(620,299))
+		var bounded := position.clamp(Vector2(20,79),Vector2(Layout.SIZE.x-20,Layout.FLOOR-14))
 		if not is_equal_approx(bounded.x,position.x): hook_velocity.x=0
 		if not is_equal_approx(bounded.y,position.y): hook_velocity.y=0
 		position=bounded

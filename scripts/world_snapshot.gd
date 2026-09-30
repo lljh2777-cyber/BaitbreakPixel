@@ -2,8 +2,8 @@ extends RefCounted
 
 # Explicit, versioned value schema. Local views, input sources and profiles are excluded.
 const Rules = preload("res://scripts/game_rules.gd")
-const SCHEMA := 9
-const MAP_ID := "pond_v1"
+const SCHEMA := 10
+const MAP_ID := "pond_v2"
 const WORLD_FIELDS: Array[String] = [
 	"rules",
 	"net_action",
@@ -202,7 +202,7 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 	if not state.get("net_action") is Dictionary or not record_matches(state.net_action,world.Net.fresh()): return false
 	if state.net_action.age<0 or state.net_action.slow_age<0 or state.net_action.impulse.length()>1000: return false
 	if state.stamina<0 or state.stamina>state.rules.stamina_max: return false
-	if snapshot.rig.surface_x<0 or snapshot.rig.surface_x>640 or absf(snapshot.rig.surface_velocity)>10000: return false
+	if snapshot.rig.surface_x<0 or snapshot.rig.surface_x>world.Layout.SIZE.x or absf(snapshot.rig.surface_velocity)>10000: return false
 	if not snapshot.rig.reel_hand_mode in [-1,0,1] or snapshot.rig.reel_hand_amount<0 or snapshot.rig.reel_hand_amount>1: return false
 	if snapshot.rig.reel_phase<0 or snapshot.rig.reel_phase>=TAU or snapshot.rig.release_phase<0 or snapshot.rig.release_phase>=TAU: return false
 	if snapshot.rig.rod_load<0 or snapshot.rig.rod_load>1 or snapshot.rig.rod_lift<0 or snapshot.rig.rod_lift>1: return false

@@ -378,7 +378,7 @@ func receive_input(packet: Dictionary) -> void:
 			if event.get("kind") in ["toggle","cancel","suspend"]:
 				command.net_events.append({"kind":event.kind})
 			elif event.get("kind")=="point" and event.get("point") is Vector2 and event.point.is_finite():
-				command.net_events.append({"kind":"point","point":event.point.clamp(Vector2.ZERO,Vector2(640,360))})
+				command.net_events.append({"kind":"point","point":event.point.clamp(Vector2.ZERO,game.Layout.SIZE)})
 			else: continue
 			remote_gesture=gid
 	received_input_seq=packet.seq

@@ -21,17 +21,17 @@ const SHAFT_SEGMENTS := 48
 static func projection_at(y: float) -> Vector2:
 	# Fixed perspective: the distant float lane is narrower than near water.
 	# This depends only on world depth, never on the angler, hand or line.
-	var near := clampf((y-WATER_LEVEL)/(312-WATER_LEVEL),0,1)
-	return Vector2(lerpf(225,ORIGIN.x,near),lerpf(0.44,SCALE.x,near))
+	var near := clampf((y-WATER_LEVEL)/(Layout.FLOOR-1-WATER_LEVEL),0,1)
+	return Vector2(lerpf(243,ORIGIN.x,near),lerpf(0.44,SCALE.x,near))
 
 static func to_screen(point: Vector2, _world: Node2D=null) -> Vector2:
 	var projection := projection_at(point.y)
-	return Vector2(projection.x+point.x*projection.y,ORIGIN.y+(point.y-WATER_LEVEL)*SCALE.y)
+	return Vector2(projection.x+point.x*(640.0/Layout.SIZE.x)*projection.y,ORIGIN.y+(point.y-WATER_LEVEL)*(257.0/(Layout.FLOOR-1-WATER_LEVEL))*SCALE.y)
 
 static func to_world(point: Vector2, _world: Node2D=null) -> Vector2:
-	var y := (point.y-ORIGIN.y)/SCALE.y+WATER_LEVEL
+	var y := (point.y-ORIGIN.y)/(SCALE.y*257.0/(Layout.FLOOR-1-WATER_LEVEL))+WATER_LEVEL
 	var projection := projection_at(y)
-	return Vector2((point.x-projection.x)/projection.y,y)
+	return Vector2((point.x-projection.x)/projection.y*(Layout.SIZE.x/640.0),y)
 
 static func projected(path: PackedVector2Array, world: Node2D=null) -> PackedVector2Array:
 	var result := PackedVector2Array()
@@ -52,7 +52,7 @@ static func tackle_pose(world: Node2D, t: float, motion: Dictionary={}) -> Dicti
 		var sweep: float=sin(TAU*LineMotion.smooth(motion.progress))*motion.strength
 		held_x+=sweep*(22.0 if motion.unwind else -9.0)
 		brace=clampf(brace+motion.strength*(0.13 if motion.unwind else 0.055),0,1)
-	var pose := Hand.pose(inverse_lerp(18,588,held_x),t,reel_speed,brace)
+	var pose := Hand.pose(inverse_lerp(18,Layout.SIZE.x-52,held_x),t,reel_speed,brace)
 	var rod := rod_points(pose,load,world.effort_multiplier("angler"),float_position(world,t,motion))
 	return {"hand":pose,"rod":rod,"tip":rod[-1],"load":load,"reel_speed":reel_speed}
 
@@ -130,8 +130,8 @@ func _underwater(view: Node2D, world: Node2D, t: float) -> void:
 		var plant: Dictionary=Layout.PLANTS[index]
 		for stem in 3:
 			var x: float=plant.x+(stem-1)*5
-			var p := to_screen(Vector2(x,312),world)
-			var top := to_screen(Vector2(x+sin(t*1.5+index+stem)*4,312-plant.height*0.7),world)
+			var p := to_screen(Vector2(x,plant.y),world)
+			var top := to_screen(Vector2(x+sin(t*1.5+index+stem)*4,plant.y-plant.height*0.7),world)
 			view.draw_polyline(PackedVector2Array([p,p.lerp(top,0.5)+Vector2(2,0),top]),Color(0.06,0.21,0.24,0.20),3)
 	var float_at := float_position(world,t,view.line_frame.action)
 	if world.hooked==world.HookState.HOOKED and world.rope_path.size()>1:

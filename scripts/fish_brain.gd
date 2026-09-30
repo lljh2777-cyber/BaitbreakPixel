@@ -1,4 +1,5 @@
 extends RefCounted
+const Layout=preload("res://scripts/pond_layout.gd")
 
 # Outputs the same movement/suction/QTE commands as keyboard and mouse input.
 # It never writes fish position, stamina, score, hook state or QTE results.
@@ -68,7 +69,7 @@ func command(game: Node2D, delta: float) -> Dictionary:
 		var sign_side := signf((game.fish-projection).dot(normal))
 		if sign_side==0: sign_side=-1
 		var safe := projection+normal*sign_side*85
-		if safe.y<83 or safe.y>290 or safe.x<28 or safe.x>612: safe=projection-normal*sign_side*85
+		if safe.y<83 or safe.y>Layout.FLOOR-23 or safe.x<28 or safe.x>Layout.SIZE.x-28: safe=projection-normal*sign_side*85
 		result.move=(safe-Vector2(game.fish)).normalized() if game.fish.distance_to(safe)>7 else Vector2.ZERO
 		result.dash=game.stamina_ratio()>0.45 and game.net_state=="sweep"
 		state="躲避抄网"
@@ -106,7 +107,7 @@ func command(game: Node2D, delta: float) -> Dictionary:
 				var distance := INF
 				for index in game.targets.size():
 					if game.target_is_wrapped(index): continue
-					var point: Vector2=game.targets[index].bounds.get_center().clamp(Vector2(28,90),Vector2(610,288))
+					var point: Vector2=game.targets[index].bounds.get_center().clamp(Vector2(28,90),Vector2(Layout.SIZE.x-30,Layout.FLOOR-25))
 					var candidate: float=game.fish.distance_squared_to(point)
 					if candidate<distance: distance=candidate; escape_target=index
 			if game.tension>game.rule("tension_high")-0.02 and game.stamina_ratio()>0.45:
@@ -114,7 +115,7 @@ func command(game: Node2D, delta: float) -> Dictionary:
 				result.dash=true
 				state="挣扎拉线"
 			elif escape_target>=0:
-				var destination: Vector2=game.targets[escape_target].bounds.get_center().clamp(Vector2(28,90),Vector2(610,288))
+				var destination: Vector2=game.targets[escape_target].bounds.get_center().clamp(Vector2(28,90),Vector2(Layout.SIZE.x-30,Layout.FLOOR-25))
 				result.move=(destination-Vector2(game.fish)).normalized()*0.72
 				state="游向掩体"
 		return result
@@ -131,14 +132,14 @@ func command(game: Node2D, delta: float) -> Dictionary:
 		for index in game.baits.size():
 			var point := food_position(game,index)
 			if not point.is_finite(): continue
-			var value: float=game.fish.distance_to(point)+(14 if game.baits[index].hook and not game.baits[index].removed else 0)
+			var value: float=game.fish.distance_to(point)
 			if value<best: best=value; selected=index
 		if selected!=food_target and selected>=0: approach_side=-1 if game.fish.x<food_position(game,selected).x else 1
 		food_target=selected
 	if food_target<0: state="等待食物"; return result
 	var bait_position := food_position(game,food_target)
 	var attached: bool=game.baits[food_target].active and game._remaining(game.baits[food_target],true)
-	var approach_distance := minf(22.0,game.rule("suction_range")*0.5) if game.baits[food_target].hook and not game.baits[food_target].removed else minf(28.0,game.rule("suction_range")*0.63)
+	var approach_distance := minf(22.0,game.rule("suction_range")*0.5)
 	var destination := bait_position+Vector2(approach_side*approach_distance,0)
 	# Once a loose grain is in range, hold position instead of backing away from
 	# the very grain being pulled towards the mouth.
@@ -160,7 +161,7 @@ func food_position(game: Node2D, index: int) -> Vector2:
 	var best := INF
 	for grain in bait.grains:
 		if grain.eaten or not grain.free: continue
-		if not Rect2(12,70,616,239).has_point(grain.pos): continue
+		if not Layout.WATER.has_point(grain.pos): continue
 		var distance: float=game.fish.distance_squared_to(grain.pos)
 		if distance<best: best=distance; nearest=grain.pos
 	return nearest

@@ -66,8 +66,16 @@ static func prop(obstacle: Dictionary) -> Dictionary:
 	canvas.fill(Color.TRANSPARENT)
 	var seed: int = obstacle.seed
 	var wood: bool = obstacle.kind == "wood"
+	var grain_normal := Vector2.RIGHT
+	if wood:
+		var longest := 0.0
+		for index in polygon.size():
+			var edge := polygon[(index+1)%polygon.size()]-polygon[index]
+			if edge.length_squared()>longest:
+				longest=edge.length_squared()
+				grain_normal=edge.normalized().orthogonal()
 	var colors := [Color("485f62"),Color("637b79"),Color("80928a"),Color("acb29a")]
-	if wood: colors = [Color("44514a"),Color("786949"),Color("a48a59"),Color("cbb37c")]
+	if wood: colors = [Color("3b4b46"),Color("726b50"),Color("938967"),Color("bab48a")]
 	for y in canvas.get_height():
 		for x in canvas.get_width():
 			var point := bounds.position + Vector2(x+0.5,y+0.5)
@@ -77,10 +85,10 @@ static func prop(obstacle: Dictionary) -> Dictionary:
 			var noise := posmod(x*31+y*17+seed*43,97)
 			var tone := 1
 			if wood:
-				var grain := posmod(x+int(y*(0.13 if seed%2 else -0.14))+seed,9)
-				if seed == 7: grain = posmod(y+int(x*0.43),8)
+				# Grain runs along each piece, including diagonal roots and fallen logs.
+				var grain := posmod(roundi(Vector2(x,y).dot(grain_normal))+seed,13)
 				tone = 2 if grain < 2 or u < 0.20 else 1
-				if grain == 5 and noise < 75: tone = 0
+				if grain == 7 and posmod(y+seed,17)<13: tone = 0
 				if v < 0.035: tone = 3 if noise>28 else 2
 				var knot := Vector2((u-0.53)*bounds.size.x/3.0,(v-0.42)*bounds.size.y/5.0).length()
 				if knot > 0.7 and knot < 1.05: tone = 0
@@ -89,10 +97,10 @@ static func prop(obstacle: Dictionary) -> Dictionary:
 				if v > 0.9-u*0.3 or u > 0.88: tone = 0
 				if v < 0.19 and u < 0.6: tone = 3
 				if absf(u-0.35-v*0.24) < 0.027 and v>0.27: tone = 0
-				if noise < 5: tone = maxi(0,tone-1)
+				if posmod(int(x/4)*31+int(y/3)*17+seed*43,97)<8: tone = maxi(0,tone-1)
 			var color: Color = colors[tone]
 			var top_edge := not Geometry2D.is_point_in_polygon(point-Vector2(0,2),polygon)
-			if top_edge and noise%5 != 0 and (not wood or v>0.05): color = Color("8da879") if noise%3 else Color("577d64")
+			if top_edge and posmod(int(x/5)+seed,7)<5 and v>0.08: color = Color("729579") if int(x/5)%3 else Color("466e61")
 			if not Geometry2D.is_point_in_polygon(point+Vector2(1,1),polygon): color = colors[0]
 			canvas.set_pixel(x,y,color)
 	return {"texture":ImageTexture.create_from_image(canvas),"position":bounds.position}

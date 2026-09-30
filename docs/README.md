@@ -13,12 +13,13 @@
 
 - [模拟、输入、AI 与显示分层](architecture/ARCHITECTURE.md)
 - [玩法规则系统](architecture/RULES-ARCHITECTURE.md)
+- [扩大水域、镜头与隐藏鱼钩](architecture/POND-ARCHITECTURE.md)
 - [主动抄网与动画模块](architecture/NET-ARCHITECTURE.md)
 
 ## 验证与历史
 
 - [各版本测试报告](test-reports/README.md)
-- [0.20.1 动画验证](test-reports/TEST-REPORT-0.20.1.md)
+- [0.21.0 水域与饵料验证](test-reports/TEST-REPORT-0.21.0.md)
 - [开发历史与旧版说明](history/CHANGELOG.md)
 - [Git 历史恢复说明](history/HISTORY-RECOVERY.md)
 - [发行包校验记录](../history/releases.json)

@@ -1,5 +1,9 @@
 extends Node2D
 
+const Camera = preload("res://scripts/pond_camera.gd")
+const Scenery = preload("res://scripts/pond_scenery.gd")
+var camera_offset := Vector2.ZERO
+
 const Art = preload("res://scripts/pixel_art.gd")
 const Layout = preload("res://scripts/pond_layout.gd")
 const Gauge = preload("res://scripts/hook_gauge.gd")
@@ -66,6 +70,8 @@ func _draw() -> void:
 		_hud(t)
 		_network_badge()
 		return
+	camera_offset=Camera.offset(world,"fish")
+	draw_set_transform(-camera_offset)
 	_world(t)
 	_baits(t)
 	_angler(t)
@@ -73,85 +79,34 @@ func _draw() -> void:
 	_net_back(t)
 	_player(t)
 	_net(t)
+	draw_set_transform(Vector2.ZERO)
+	_navigation()
 	_hud(t)
 	_network_badge()
 
 func _world(t: float) -> void:
-	draw_rect(Rect2(0, 0, 640, 360), Color("193c48"))
-	draw_rect(Rect2(0, 35, 640, 19), Color("c2c5a4"))
-	for index in range(20):
-		var x := index * 34
-		var height := 8 + (index * 7) % 16
-		draw_rect(Rect2(x, 53 - height, 24, height), Color("668e83"))
-		draw_rect(Rect2(x + 5, 48 - height, 13, 5), Color("668e83"))
-	draw_rect(Rect2(0, 53, 640, 2), MINT)
-	for band in range(8):
-		var shade := Color("317e82").lerp(Color("174a5a"), band / 7.0)
-		draw_rect(Rect2(0, 55 + band * 33, 640, 33), shade)
-	if world.uses_mobile_tackle():
-		# A narrow bank walkway leaves room for the full character below either HUD.
-		draw_rect(Rect2(0,56,640,8),Color("253e42"))
-		for plank in range(40):
-			var x := plank*16
-			draw_rect(Rect2(x,57,15,5),Color("8d8665") if plank%3 else Color("9e9470"))
-			draw_rect(Rect2(x+1,57,13,1),Color("c9bb87"))
-			draw_rect(Rect2(x+4,59,7,1),Color("736f57"))
-			draw_rect(Rect2(x+2,58,1,1),Color("405450"))
-		for post in range(8):
-			draw_rect(Rect2(post*88+23,63,4,7),Color("344f50"))
-			draw_rect(Rect2(post*88+23,63,1,5),Color("717d62"))
-	for shaft in range(5):
-		for step in range(6):
-			draw_rect(Rect2(shaft * 149 + step * 7 + 21, 55 + step * 43, 16 + step * 3, 43), Color(0.63, 0.89, 0.74, 0.025))
-	for index in range(31):
-		var base := Vector2(4+posmod(index*61,632),65+posmod(index*47,234))
-		var drifting: Vector2 = (base+world.water_offset(base)*2).round()
-		draw_rect(Rect2(drifting,Vector2(1+index%2,1)),Color(0.65,0.86,0.75,0.35))
-	for index in range(16):
-		var base := Vector2(30+posmod(index*97,580),77+posmod(index*53,220))
-		var drifting: Vector2 = base+world.water_offset(base)*2
-		var flow: Vector2 = world.water_velocity(base)
-		var alpha: float = (0.09+0.055*sin(t*1.3+index))*world.water_strength
-		draw_line(drifting.round(),(drifting-flow*2.4).round(),Color(0.68,0.91,0.85,alpha),1)
-	# Distant silhouettes are muted; detailed foreground silhouettes share collision data.
-	for index in range(15):
-		var x := index*47-16
-		var height := 12 + index*17%29
-		draw_colored_polygon(PackedVector2Array([Vector2(x,315),Vector2(x+5,313-height),Vector2(x+22,306-height),Vector2(x+42,315-height/2),Vector2(x+52,320)]),Color("275963"))
-	# The far half of the lap is genuinely behind wood, rocks and both weed layers.
+	Scenery.background(self,world,t)
 	_winding_fish(t,false)
 	_baits(t,true)
 	if not line_frame.grass.is_empty(): _line_back()
 	_plants(t,true)
-	draw_rect(Rect2(0, 313, 640, 47), Color("697f70"))
-	for x in range(0,640,4):
-		draw_rect(Rect2(x,313,4,2+(x*13)%3),Color("9faa7b"))
-	for index in range(71):
-		var x := (index * 73) % 638
-		var y := 319 + index * 19 % 38
-		draw_rect(Rect2(x, y, 3, 2), Color("506b66") if index % 2 else Color("8d9b78"))
+	Scenery.floor_layer(self)
 	if line_frame.grass.is_empty(): _line_back()
 	for index in props.size():
-		var prop: Dictionary = props[index]
+		var prop: Dictionary=props[index]
 		draw_texture(prop.texture,prop.position,Color(1,1,1,world.target_opacity[index]))
-	# Small gravel lies below the swimming floor and never creates invisible blockers.
-	for index in range(42):
-		var x := (index*83+11)%636
-		var y := 314+index*7%13
-		var width := 2+index%5
-		draw_rect(Rect2(x,y,width,2),Color("506d69"))
-		draw_rect(Rect2(x+1,y-1,width-1,1),Color("bcc09a") if index%3 else Color("819a85"))
 	_plants(t,false)
-	# A mint nest is the single return destination.
-	draw_rect(Rect2(37, 280, 46, 28), Color("123b42"))
-	draw_rect(Rect2(34, 280, 5, 27), Color("86b49a"))
-	draw_rect(Rect2(81, 280, 5, 27), Color("86b49a"))
-	draw_rect(Rect2(34, 306, 52, 5), Color("86b49a"))
-	draw_rect(Rect2(42, 304, 35, 2), MINT)
-	label_at(Vector2(46, 322), "巢穴", 10, MINT)
-	if world.score >= (world.food_target()):
-		var bounce := int(sin(t * 4) * 2)
-		draw_colored_polygon(PackedVector2Array([Vector2(55, 267 + bounce), Vector2(65, 267 + bounce), Vector2(60, 272 + bounce)]), MINT)
+	Scenery.nest(self,world,t)
+
+func _navigation() -> void:
+	if game.menu.visible: return
+	var p:=Camera.to_screen(Layout.HOME,world,"fish")
+	if Rect2(32,65,576,242).has_point(p): return
+	var center:=Vector2(320,193)
+	var dir:=(p-center).normalized()
+	var at:=center+dir*minf(268/maxf(absf(dir.x),0.01),115/maxf(absf(dir.y),0.01))
+	draw_colored_polygon(PackedVector2Array([at+dir*6,at-dir*4+dir.orthogonal()*4,at-dir*4-dir.orthogonal()*4]),MINT)
+	label_at(at+Vector2(-12,-9),"巢穴",10,MINT)
 
 func _plants(t: float, background: bool) -> void:
 	var frame := posmod(int(t*12.0/TAU),8)
@@ -176,7 +131,7 @@ func _plants(t: float, background: bool) -> void:
 
 func _make_plant_layer(t: float, plant_index: int) -> Dictionary:
 	# Crop cached frames per clump so only the contacted plants fade.
-	var canvas := Image.create(640,112,false,Image.FORMAT_RGBA8)
+	var canvas := Image.create(int(Layout.SIZE.x),132,false,Image.FORMAT_RGBA8)
 	canvas.fill(Color.TRANSPARENT)
 	for index in range(plant_index,plant_index+1):
 		var plant: Dictionary = Layout.PLANTS[index]
@@ -186,7 +141,7 @@ func _make_plant_layer(t: float, plant_index: int) -> Dictionary:
 		var shade := Color("2c6867") if background else Color("45846a")
 		for stem in range(plant.stems):
 			var fraction := float(stem)/maxi(1,plant.stems-1)
-			var base := Vector2(plant.x+(fraction-0.5)*plant.width,109)
+			var base := Vector2(plant.x+(fraction-0.5)*plant.width,129)
 			var height: float = plant.height * (0.67+0.33*sin(stem*2.37+1.2))
 			if stem == int(plant.stems)/2: height = plant.height
 			var lean: float = (fraction-0.5)*plant.width*0.38
@@ -213,9 +168,9 @@ func _make_plant_layer(t: float, plant_index: int) -> Dictionary:
 					canvas.fill_rect(Rect2i(Vector2i(path[8])-Vector2i(1,6),Vector2i(3,7)),Color("657e66") if background else Color("aeaa73"))
 					canvas.fill_rect(Rect2i(Vector2i(path[8])-Vector2i(1,6),Vector2i(1,5)),light)
 	var plant: Dictionary = Layout.PLANTS[plant_index]
-	var region := Rect2i(int(plant.x-plant.width*0.5-14),int(109-plant.height-8),int(plant.width+29),int(plant.height+12))
-	region = region.intersection(Rect2i(0,0,640,112))
-	return {"texture":ImageTexture.create_from_image(canvas.get_region(region)),"position":Vector2(region.position)+Vector2(0,205)}
+	var region := Rect2i(int(plant.x-plant.width*0.5-14),int(129-plant.height-8),int(plant.width+29),int(plant.height+12))
+	region = region.intersection(Rect2i(0,0,int(Layout.SIZE.x),132))
+	return {"texture":ImageTexture.create_from_image(canvas.get_region(region)),"position":Vector2(region.position)+Vector2(0,plant.y-129)}
 
 func _bait_point(index: int, point: Vector2) -> Vector2:
 	if index!=world.bound_bait: return point
@@ -226,20 +181,6 @@ func _baits(t: float, behind: bool=false) -> void:
 		var bait: Dictionary = world.baits[index]
 		var orbit: bool=line_frame.fish.active and index==world.bound_bait
 		if behind!=(orbit and not line_frame.fish.front): continue
-		# Net activity suppresses new bites, not the physical hook or its hanging line.
-		if bait.active and bait.hook and not bait.removed:
-			if world.bound_bait != index:
-				var filament := PackedVector2Array()
-				var eye: Vector2 = world.hook_point(index,Vector2(-5,-10))
-				for segment in range(17):
-					var ratio := segment/16.0
-					var point: Vector2 = world.line_anchor(index).lerp(eye,ratio)
-					point.x += sin(ratio*PI)*(world.angler.line_sway if world.uses_mobile_tackle() else sin(t*0.75+ratio*2)*2.5*world.water_strength)
-					filament.append(point.round())
-				draw_polyline(filament,Color("b9d5bf"),1)
-			var hook := PackedVector2Array([Vector2(-5,-10),Vector2(-5,4),Vector2(-3,7),Vector2(1,7),Vector2(3,5),Vector2(3,1),Vector2.ZERO])
-			for point in hook.size(): hook[point] = _bait_point(index,world.hook_point(index,hook[point])).round()
-			draw_polyline(hook, RED if world.bound_bait == index else Color("e1e3ce"), 1)
 		var flashing: bool = world.cycle_phase == "warning" and world.cycle_slot == index and int(t * 6) % 2 == 0
 		for grain in bait.grains:
 			if grain.eaten or (not grain.free and not bait.active): continue
@@ -255,22 +196,14 @@ func _baits(t: float, behind: bool=false) -> void:
 			else:
 				draw_rect(Rect2(p,Vector2(2,2) if grain.layer<2 else Vector2.ONE),color.darkened(0.18))
 				draw_rect(Rect2(p,Vector2(2 if grain.fleck%2 else 1,1)),color)
-		if bait.active and not game.menu.visible and not orbit and (index!=world.bound_bait or line_frame.grass.is_empty()):
-			var label := "有钩饵" if bait.hook and not bait.removed else "散饵"
-			label_at(Vector2(bait.pos) + Vector2(-17, -14), label, 10, Color("bdd4be"))
-		# A tiny glint remains at the actual tip after the grains are drawn over the hook.
-		if bait.active and bait.hook and not bait.removed:
-			draw_rect(Rect2(_bait_point(index,world._tip(index)).round(),Vector2.ONE),RED if world.bound_bait==index else CREAM)
 
 func _angler(t: float) -> void:
 	if not world.uses_mobile_tackle(): return
 	angler_visual.draw(self,world,t)
 	if world.angler.casting:
 		var ball: Vector2=world.angler.projectile().round()
-		draw_line(world.angler.anchor(),ball,Color("b9d5bf"),1)
 		draw_rect(Rect2(ball-Vector2(2,2),Vector2(5,4)),Color("a26c3f"))
 		draw_rect(Rect2(ball-Vector2(2,2),Vector2(3,2)),GOLD)
-		draw_line(ball,ball+Vector2(0,4),CREAM,1)
 
 func _angler_hud(_t: float) -> void:
 	draw_rect(Rect2(0,0,640,29),INK)
@@ -429,11 +362,11 @@ func _winding_fish(t: float, front: bool) -> void:
 	var tint:=Color.WHITE.darkened(1.0-float(pose.shade))
 	# Keep the head/mouth rigid; animate the tail around its attachment point.
 	var tail:=Transform2D(sin(t*38)*0.28*float(pose.blend),Vector2(-4,0))
-	draw_set_transform_matrix(transform*tail)
+	draw_set_transform_matrix(Transform2D(0,-camera_offset)*transform*tail)
 	draw_texture_rect_region(fish_texture,Rect2(-8,-6,8,12),Rect2(0,0,8,12),tint)
-	draw_set_transform_matrix(transform)
+	draw_set_transform_matrix(Transform2D(0,-camera_offset)*transform)
 	draw_texture_rect_region(fish_texture,Rect2(-4,-6,16,12),Rect2(8,0,16,12),tint)
-	draw_set_transform(Vector2.ZERO)
+	draw_set_transform(-camera_offset)
 	# A tiny end-on pose preserves body volume at the two tight turns. It
 	# replaces the wafer-thin profile with a face / tail in the same palette.
 	if pose.end_on>0.15:
@@ -489,13 +422,13 @@ func _player(t: float) -> void:
 			var life := fmod(t*2.8+index/7.0,1)
 			var wake: Vector2 = position-direction*(13+life*27)+direction.orthogonal()*sin(index*2.7)*5
 			draw_rect(Rect2(wake.round(),Vector2(3,1)),Color(MINT,(1-life)*0.65))
-	draw_set_transform(position, tilt, Vector2(flip, 1))
+	draw_set_transform(position-camera_offset, tilt, Vector2(flip, 1))
 	if world.resisting or effort>1:
 		var tail := Vector2(-13,sin(t*(32 if effort>1 else 20))*3)
 		draw_line(Vector2(-7,0),tail+Vector2(-4,-3),GOLD if effort>1 else MINT,2)
 		draw_line(Vector2(-7,0),tail+Vector2(-4,3),GOLD if effort>1 else MINT,2)
 	draw_texture(fish_texture, Vector2(-12,-6),Color("b8c3c6") if effort<1 else Color.WHITE)
-	draw_set_transform(Vector2.ZERO)
+	draw_set_transform(-camera_offset)
 	if world.hooked==world.HookState.HOOKED and not world.landing:
 		var pull: Vector2 = world.line_pull_velocity()
 		if pull.length()>2:
@@ -509,8 +442,8 @@ func _player(t: float) -> void:
 		var radius: float = (0.7 - world.result_flash) * 25 + 12
 		draw_arc(position, radius, 0, TAU, 16, MINT if world.result_good else RED, 1)
 	if world.returning:
-		draw_rect(Rect2(38, 276, 44, 2), INK)
-		draw_rect(Rect2(38, 276, 44 * world.home_age / world.rule("home_hold"), 2), MINT)
+		draw_rect(Rect2(Layout.HOME+Vector2(-22,-5),Vector2(44,2)), INK)
+		draw_rect(Rect2(Layout.HOME+Vector2(-22,-5),Vector2(44*world.home_age/world.rule("home_hold"),2)), MINT)
 
 func _net_back(_t: float) -> void:
 	if net_frame.active: NetVisual.back(self,NetMotion.fish_pose(world,net_frame))

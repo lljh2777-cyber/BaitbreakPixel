@@ -1,8 +1,9 @@
 extends RefCounted
 
 const VERSION := 1
+const Layout=preload("res://scripts/pond_layout.gd")
 # Peers must share capture timing and the round-statistics snapshot schema.
-const BUILD := "0.20"
+const BUILD := "0.21"
 const DEFAULT_PORT := 24712
 const MAX_PACKET := 196608
 const MAX_STATE := 1048576
@@ -61,7 +62,7 @@ static func input(role: String, raw: Dictionary) -> Dictionary:
 	clean.qte_condition_valid=true # Authority derives conditions from its own history.
 	clean.auto_reel=false
 	clean.auto_net=false
-	clean.target=clean.target.clamp(Vector2(0,0),Vector2(640,360))
+	clean.target=clean.target.clamp(Vector2(0,0),Layout.SIZE)
 	if clean.net_events.size()>MAX_EVENTS: clean.net_events.resize(MAX_EVENTS)
 	return clean
 
