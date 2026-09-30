@@ -2,13 +2,13 @@
 
 一个 2D 像素风格的人鱼对抗游戏：小鱼在水下觅食、缠线和逃脱，钓鱼人在岸边控竿、收放线与抄网。支持单机挑战、自由练习和一人对一鱼的局域网联机。
 
-**当前开发与本地试玩版本：0.21.0** · Windows x64 · Godot 4.7.2
+**当前开发与本地试玩版本：0.21.1** · Windows x64 · Godot 4.7.2
 
 ## 下载试玩
 
 从 [最新版 Releases](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/latest) 下载已发布的 `BaitbreakPixel-0.20.1.zip`，解压后运行 `BaitbreakPixel.exe`。EXE 和同目录的 PCK 需要放在一起，玩家无需安装 Godot。
 
-本次 0.21.0 的 Windows 试玩包位于本地相邻 `Releases/BaitbreakPixel-0.21.0`；公开发行页仍为 0.20.1。0.21 扩大水域并加入跟随镜头，完善草木石环境，鱼视角隐藏钩体、吊线及饵料身份。
+本次 0.21.1 的 Windows 试玩包位于本地相邻 `Releases/BaitbreakPixel-0.21.1`；公开发行页仍为 0.20.1。0.21 扩大水域并加入跟随镜头，完善草木石环境，鱼视角隐藏钩体、吊线及饵料身份，钩饵与散饵统一按饵粒吸入，取消钩饵整团额外前移。
 
 完整操作见 [试玩说明](docs/gameplay/PLAY.txt)，双人连接方法见 [联机指南](docs/gameplay/NETWORK.md)。
 
@@ -40,7 +40,7 @@
 .\Build-Pixel.ps1 -GodotDirectory 'D:\Tools\Godot_v4.7.2-stable_win64.exe'
 ```
 
-该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.21.0` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
+该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.21.1` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
 
 核心抄网逻辑检查示例（替换为本机引擎路径）：
 
@@ -48,7 +48,7 @@
 & 'D:\Tools\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe' --headless --path . --script res://tests/net_v021.gd -- --test-profile
 ```
 
-测试使用独立配置。其他检查与运行要求见 [0.21.0 测试报告](docs/test-reports/TEST-REPORT-0.21.0.md)；带原生画面截图的脚本需要图形窗口，不使用 `--headless`。
+测试使用独立配置。其他检查与运行要求见 [0.21.1 测试报告](docs/test-reports/TEST-REPORT-0.21.1.md)；带原生画面截图的脚本需要图形窗口，不使用 `--headless`。
 
 ## 项目结构与文档
 

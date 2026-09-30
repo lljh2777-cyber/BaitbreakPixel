@@ -825,15 +825,12 @@ func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2) -> 
 	if bait.active:
 		bait.age += delta
 		if uses_mobile_tackle() and bait.hook and not bait.removed and bound_bait!=index:
-			angler.step_free_hook(self,index,delta,sucking)
+			angler.step_free_hook(self,index,delta)
 		elif bound_bait==index and hooked!=HookState.FREE:
 			bait.pos=mouth()-Vector2(2,1).rotated(bait.angle)
 		else:
 			var target: Vector2 = bait.home + water_offset(bait.home)
 			bait.angle = sin(elapsed*0.75+bait.home.y*0.007)*0.16*water_strength
-			if bait.hook and not bait.removed and bound_bait != index and sucking:
-				var gain := strength(_tip(index)) * power
-				target = target.move_toward(mouth(),gain*26*rule("hook_suction"))
 			bait.pos = Vector2(bait.pos).move_toward(target, delta * 44)
 		if bait.active and bait.hook and not bait.removed and hooked == HookState.FREE and hook_cooldown <= 0 and net_state!="caught":
 			var relative := _tip(index) - mouth() - aim * 3
@@ -853,7 +850,7 @@ func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2) -> 
 		var pull := strength(grain.pos)
 		if pull <= 0: continue
 		if grain.free:
-			grain.pos = Vector2(grain.pos).move_toward(mouth(), delta * rule("pellet_speed"))
+			grain.pos = Vector2(grain.pos).move_toward(mouth(), delta * rule("pellet_speed") * rule("hook_suction"))
 			if Vector2(grain.pos).distance_to(mouth()) < 4:
 				grain.eaten = true
 				if not counted.has(grain.id):

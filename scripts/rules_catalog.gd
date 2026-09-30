@@ -32,7 +32,7 @@ const ITEMS := [
 	{"group":"饵与吸食","id":"bait_points","label":"每团饵食物量","value":30.0,"min":5.0,"max":100.0,"step":1.0,"unit":"点","help":"只改变收益，保留精细的小颗粒造型。"},
 	{"group":"饵与吸食","id":"hook_scale","label":"鱼钩外观尺寸","value":0.7,"min":0.35,"max":1.2,"step":0.05,"unit":"倍","help":"调整鱼钩绘制大小；咬钩接触范围单独调整。"},
 	{"group":"饵与吸食","id":"bite_radius","label":"咬钩接触半径","value":7.0,"min":2.0,"max":15.0,"step":0.5,"unit":"像素","help":"钩尖靠近鱼嘴到此距离，会进入吐钩 QTE。"},
-	{"group":"饵与吸食","id":"hook_suction","label":"吸动鱼钩倍率","value":1.0,"min":0.0,"max":3.0,"step":0.1,"unit":"倍","help":"固定钩和人操控的鱼钩都受影响。"},
+	{"group":"饵与吸食","id":"hook_suction","label":"饵粒吸入倍率","value":1.0,"min":0.0,"max":3.0,"step":0.1,"unit":"倍","help":"所有脱落饵粒共用的吸入速度倍率；饵团不会因吸食整体移动。"},
 	{"group":"饵与吸食","id":"hook_immunity","label":"脱钩后保护时间","value":1.8,"min":0.1,"max":8.0,"step":0.1,"unit":"秒","help":"避免刚脱钩立即再次咬钩。"},
 	{"group":"饵与吸食","id":"bait_cycle","label":"换饵等待","value":30.0,"min":5.0,"max":120.0,"step":1.0,"unit":"秒","help":"单人挑战中固定饵料的轮换等待。"},
 	{"group":"饵与吸食","id":"bait_refill","label":"换饵间隔","value":5.0,"min":0.5,"max":30.0,"step":0.5,"unit":"秒","help":"收走饵料后，下一团饵投入前的等待。"},

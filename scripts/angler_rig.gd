@@ -218,7 +218,7 @@ func update(game: Node2D, delta: float, command: Dictionary) -> void:
 		if not grain.eaten and not grain.free: grain.pos=cast_to+Vector2(grain.offset)
 	game.play_feedback("splash")
 
-func step_free_hook(game: Node2D, index: int, delta: float, sucking: bool) -> void:
+func step_free_hook(game: Node2D, index: int, delta: float) -> void:
 	var bait: Dictionary=game.baits[index]
 	var position: Vector2=bait.pos
 	var bank_velocity := (anchor()-previous_anchor)/maxf(delta,0.001)
@@ -229,8 +229,6 @@ func step_free_hook(game: Node2D, index: int, delta: float, sucking: bool) -> vo
 		free_line_length=clampf(free_line_length+free_reel_speed*dt,45,game.rule("line_free_max"))
 		var attachment := previous_anchor.lerp(anchor(),float(part+1)/count)
 		var force := Vector2(0,150)+Vector2(game.water_velocity(position))*2-hook_velocity*1.0
-		if sucking:
-			force+=(game.mouth()-position).normalized()*game.strength(position)*game.power*480*game.rule("hook_suction")
 		hook_velocity+=force*dt
 		position+=hook_velocity*dt
 		var radial := position-attachment

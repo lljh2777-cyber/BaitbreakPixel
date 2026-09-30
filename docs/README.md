@@ -19,6 +19,7 @@
 ## 验证与历史
 
 - [各版本测试报告](test-reports/README.md)
+- [0.21.1 吸食表现统一验证](test-reports/TEST-REPORT-0.21.1.md)
 - [0.21.0 水域与饵料验证](test-reports/TEST-REPORT-0.21.0.md)
 - [开发历史与旧版说明](history/CHANGELOG.md)
 - [Git 历史恢复说明](history/HISTORY-RECOVERY.md)
