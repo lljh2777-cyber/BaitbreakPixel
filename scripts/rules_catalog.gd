@@ -21,7 +21,7 @@ const ITEMS := [
 	{"group":"游动","id":"sprint_speed","label":"冲刺速度","value":140.0,"min":30.0,"max":280.0,"step":5.0,"unit":"像素/秒","help":"按住鼠标右键冲刺的速度。"},
 	{"group":"游动","id":"swim_accel","label":"游动加速度","value":330.0,"min":50.0,"max":1200.0,"step":10.0,"unit":"像素/秒²","help":"越大越快达到目标速度。"},
 	{"group":"游动","id":"sprint_accel","label":"冲刺加速度","value":650.0,"min":50.0,"max":1800.0,"step":10.0,"unit":"像素/秒²","help":"冲刺起步的响应。"},
-	{"group":"游动","id":"feeding_speed","label":"上钩进食速度倍率","value":0.68,"min":0.1,"max":1.0,"step":0.01,"unit":"倍","help":"上钩时一边吸食一边游动的减速。"},
+	{"group":"游动","id":"feeding_speed","label":"吸食游速倍率","value":0.68,"min":0.1,"max":1.0,"step":0.01,"unit":"倍","help":"吸食时的游速比例，慢游和冲刺同样生效；松开吸食后恢复。"},
 	{"group":"饵与吸食","id":"suction_range","label":"吸食距离","value":44.0,"min":12.0,"max":90.0,"step":1.0,"unit":"像素","help":"锥形吸食区域的前向长度。"},
 	{"group":"饵与吸食","id":"suction_mouth","label":"锥体近端半宽","value":4.0,"min":1.0,"max":12.0,"step":0.5,"unit":"像素","help":"鱼嘴前吸食区域的起始半宽。"},
 	{"group":"饵与吸食","id":"suction_spread","label":"锥体扩张率","value":0.53,"min":0.1,"max":1.0,"step":0.01,"unit":"倍","help":"每向前一像素，半宽增加的像素数。"},

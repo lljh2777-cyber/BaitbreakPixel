@@ -792,7 +792,7 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 		var speed := rule("sprint_speed") if sprinting else (rule("slow_speed") if slow else rule("swim_speed"))
 		if hooked==HookState.HOOKED:
 			speed *= fatigue_factor()*effort_multiplier("fish")
-			if feeding: speed *= rule("feeding_speed")
+		if feeding: speed *= rule("feeding_speed")
 		speed *= rule("net_slow_factor") if net_action.slow_age>0 else 1.0
 		velocity = velocity.move_toward(movement.limit_length(1)*speed,delta*(rule("sprint_accel") if sprinting else rule("swim_accel")))
 		move_fish((velocity*vegetation_drag(fish)+water_velocity(fish)+pull+net_action.impulse)*delta)
