@@ -2,7 +2,7 @@ extends RefCounted
 
 # Explicit, versioned value schema. Local views, input sources and profiles are excluded.
 const Rules = preload("res://scripts/game_rules.gd")
-const SCHEMA := 10
+const SCHEMA := 11
 const MAP_ID := "pond_v2"
 const WORLD_FIELDS: Array[String] = [
 	"rules",
@@ -228,7 +228,7 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 	var bait_reference: Dictionary=world._make_bait(0)
 	for bait in state.baits:
 		if not bait is Dictionary or not bait.get("grains") is Array or bait.grains.size()>2048: return false
-		if not record_matches(bait,bait_reference,"grains"): return false
+		if not record_matches(bait,bait_reference,"grains") or bait.suction_offset.length()>78.001: return false
 		for grain in bait.grains:
 			if not grain is Dictionary or not record_matches(grain,bait_reference.grains[0]): return false
 			if not grain.id is String or grain.id.is_empty() or grain.id.length()>64: return false

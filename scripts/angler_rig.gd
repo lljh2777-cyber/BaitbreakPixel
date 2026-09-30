@@ -206,6 +206,7 @@ func update(game: Node2D, delta: float, command: Dictionary) -> void:
 	var bait: Dictionary=game.baits[cast_index]
 	bait.home=cast_to
 	bait.pos=cast_to
+	bait.suction_offset=Vector2.ZERO
 	bait.angle=0
 	bait.age=0
 	bait.active=true
