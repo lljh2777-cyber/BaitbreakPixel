@@ -181,6 +181,8 @@ func _baits(t: float, behind: bool=false) -> void:
 		var bait: Dictionary = world.baits[index]
 		var orbit: bool=line_frame.fish.active and index==world.bound_bait
 		if behind!=(orbit and not line_frame.fish.front): continue
+		var pull_direction: Vector2=Vector2(bait.suction_offset).normalized()
+		var gain: float=minf(Vector2(bait.suction_offset).length()/20,1) if index!=world.bound_bait else 0.0
 		var flashing: bool = world.cycle_phase == "warning" and world.cycle_slot == index and int(t * 6) % 2 == 0
 		for grain in bait.grains:
 			if grain.eaten or (not grain.free and not bait.active): continue
@@ -190,8 +192,13 @@ func _baits(t: float, behind: bool=false) -> void:
 			if grain.fleck == 0: color = color.lightened(0.13)
 			if flashing and not grain.free: color = RED
 			var p: Vector2 = Vector2(grain.pos).round()
-			if not grain.free: p=_bait_point(index,grain.pos).round()
+			if not grain.free:
+				var local: Vector2=Vector2(grain.offset).rotated(bait.angle)
+				p=_bait_point(index,Vector2(grain.pos)+world.Suction.deform(local,pull_direction,gain)-local).round()
 			if grain.free:
+				if world.feeding and world.strength(grain.pos)>0:
+					var direction: Vector2=(world.mouth()-Vector2(grain.pos)).normalized()
+					draw_line((p-direction*(1+world.power*4)).round(),p,Color(color,0.25+world.power*0.35),1)
 				draw_rect(Rect2(p,Vector2.ONE),color.lightened(0.15))
 			else:
 				draw_rect(Rect2(p,Vector2(2,2) if grain.layer<2 else Vector2.ONE),color.darkened(0.18))
@@ -394,14 +401,22 @@ func _player(t: float) -> void:
 		var side: Vector2 = direction.orthogonal() * (world.rule("suction_mouth")+world.rule("suction_range")*world.rule("suction_spread"))
 		var far: Vector2 = mouth + direction * world.rule("suction_range")
 		var pulling: bool=world.feeding
-		var fade := 0.17 if pulling else 0.045
+		var fade: float=0.07+world.power*0.13 if pulling else 0.035
 		draw_colored_polygon(PackedVector2Array([mouth, far+side, far-side]), Color(0.67,0.94,0.81,fade))
 		if pulling:
-			for index in range(5):
-				var ratio := fmod(t * 1.7 + index * 0.2, 1)
+			var count:=3+int(world.power*6)
+			for index in range(count):
+				var ratio: float=fmod(t*(0.8+world.power*2.4)+float(index)/count,1)
 				var start := far + side * sin(index * 3.8) * 0.7
 				var p := start.lerp(mouth, ratio).round()
-				draw_rect(Rect2(p, Vector2(2,1)), MINT)
+				var length: float=1+world.power*3
+				draw_line((p+direction*length).round(),p,Color(MINT,0.35+world.power*0.4),1)
+	var intake_age: float=world.elapsed-world.last_eat_at
+	if intake_age>=0 and intake_age<0.16:
+		var glow: float=1-intake_age/0.16
+		for side in [-1,0,1]:
+			var spark: Vector2=mouth+direction*(2+intake_age*16)+direction.orthogonal()*side*(1+intake_age*10)
+			draw_rect(Rect2(spark.round(),Vector2.ONE),Color(GOLD,glow))
 	var position: Vector2 = world.fish.round()
 	var tilt: float = direction.angle()+world.water_velocity(world.fish).x*0.009
 	var flip := 1.0
@@ -494,8 +509,9 @@ func _hud(t: float) -> void:
 	label_at(Vector2(12,15), "像素池塘", 12, GOLD)
 	label_at(Vector2(12,28), "双人对战" if game.shared_session else ("限时挑战" if world.challenge else "练习 · F2 调节"), 10, MINT)
 	var target: float = world.food_target()
-	label_at(Vector2(111,22), "食物 %02d / %d" % [int(world.score),int(target)], 15)
-	label_at(Vector2(272,15), "吸力 %d%%" % int(world.power*100), 11, CREAM)
+	var food_age: float=world.elapsed-world.last_eat_at
+	label_at(Vector2(111,22), "食物 %02d / %d" % [int(world.score),int(target)], 15, GOLD if food_age>=0 and food_age<0.18 else CREAM)
+	label_at(Vector2(272,15), "%s %d%%" % [world.Suction.mode_name(world.power),int(world.power*100)], 11, CREAM)
 	draw_rect(Rect2(272,22,68,3), Color("335762"))
 	draw_rect(Rect2(272,22,68*world.power,3), GOLD)
 	label_at(Vector2(366,15), "加速" if world.sprinting else ("抗拉" if world.resisting else ("乏力" if world.stamina_ratio()<world.rule("fatigue_threshold") else "体力")), 11, GOLD if world.sprinting or world.resisting else CREAM)

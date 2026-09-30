@@ -107,7 +107,7 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.21.2 | expanded-pond-unified-suction")
+	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.22.0 | expanded-pond-unified-suction")
 
 func _register_inputs() -> void:
 	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[], "use":[KEY_E], "slow":[KEY_Q], "qte":[KEY_SPACE], "untangle":[KEY_F]}
@@ -244,7 +244,7 @@ func hint() -> String:
 	if cycle_phase == "warning": return "闪烁的饵即将收回，剩余颗粒下次继续"
 	if cycle_phase == "refill": return "正在补饵，可前往另一侧取食"
 	if vegetation_drag(fish) < 1: return "浓密水草中 · 游动稍慢，向上游出草丛"
-	return "左键吸食 · 滚轮调吸力 · Q 慢游 · 按住右键加速"
+	return "左键吸食 · 滚轮轻吸/猛吸 · Q 慢游 · 按住右键加速"
 
 func angler_hint() -> String:
 	if landing or net_state=="caught": return "鱼已被控制 · 正在提出水面"

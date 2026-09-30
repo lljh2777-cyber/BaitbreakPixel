@@ -25,6 +25,7 @@ func sample(now: float) -> Node2D:
 	var b: Dictionary=current.state
 	var ratio := clampf((now-received_at)/interval,0,1)
 	world.elapsed=lerpf(a.elapsed,b.elapsed,ratio)
+	world.power=lerpf(a.power,b.power,ratio)
 	world.simulation_tick=roundi(lerpf(a.simulation_tick,b.simulation_tick,ratio))
 	if a.hooked==b.hooked and a.net_state==b.net_state and not b.net_state=="caught" and not b.landing:
 		world.fish=Vector2(a.fish).lerp(b.fish,ratio)
@@ -52,6 +53,7 @@ func sample(now: float) -> Node2D:
 		if old.id!=latest.id or old.active!=latest.active: continue
 		world.baits[index].pos=Vector2(old.pos).lerp(latest.pos,ratio)
 		world.baits[index].angle=lerp_angle(old.angle,latest.angle,ratio)
+		world.baits[index].suction_offset=Vector2(old.suction_offset).lerp(latest.suction_offset,ratio)
 		if old.grains.size()!=latest.grains.size(): continue
 		for grain in latest.grains.size():
 			if old.grains[grain].id==latest.grains[grain].id:

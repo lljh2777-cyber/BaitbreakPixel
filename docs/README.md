@@ -19,6 +19,7 @@
 ## 验证与历史
 
 - [各版本测试报告](test-reports/README.md)
+- [0.22.0 吸食取舍与反馈验证](test-reports/TEST-REPORT-0.22.0.md)
 - [0.21.2 两类饵团均可吸动验证](test-reports/TEST-REPORT-0.21.2.md)
 - [0.21.1 吸食表现统一验证](test-reports/TEST-REPORT-0.21.1.md)
 - [0.21.0 水域与饵料验证](test-reports/TEST-REPORT-0.21.0.md)

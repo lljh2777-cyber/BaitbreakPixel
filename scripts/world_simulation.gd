@@ -1,6 +1,7 @@
 extends Node2D
 
 const Rules = preload("res://scripts/game_rules.gd")
+const Suction = preload("res://scripts/suction_feel.gd")
 var rules := Rules.defaults()
 var qte_timing := Rules.qte(Rules.defaults(),"entry")
 
@@ -139,6 +140,7 @@ var cycle_slot := -1
 var cycle_age := 0.0
 var cycle_phase := ""
 var score := 0.0
+var last_eat_at := -10.0
 var counted: Dictionary = {}
 var clock := 0.0
 var elapsed := 0.0
@@ -490,6 +492,7 @@ func reset_world(config: Dictionary = {}) -> void:
 	line_catches = 0
 	rope_path.clear()
 	score = 0
+	last_eat_at = -10.0
 	counted.clear()
 	clock = 0
 	elapsed = 0
@@ -855,16 +858,17 @@ func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2) -> 
 		var pull := strength(grain.pos)
 		if pull <= 0: continue
 		if grain.free:
-			grain.pos = Vector2(grain.pos).move_toward(mouth(), delta * rule("pellet_speed"))
+			grain.pos = Vector2(grain.pos).move_toward(mouth(), delta * rule("pellet_speed") * Suction.pellet_gain(power))
 			if Vector2(grain.pos).distance_to(mouth()) < 4:
 				grain.eaten = true
 				if not counted.has(grain.id):
 					counted[grain.id] = true
 					score += float(grain.points)
+					last_eat_at = elapsed
 					stamina = minf(rule("stamina_max"),stamina+float(grain.points)*rule("food_recovery"))
 					play_feedback("eat")
 		elif grain.layer == layer:
-			grain.progress += delta * pull * power * rule("pellet_detach")
+			grain.progress += delta * pull * Suction.peel_gain(power,grain.layer) * rule("pellet_detach")
 			if grain.progress >= 1 and bait.budget >= 1:
 				grain.free = true
 				bait.budget -= 1
@@ -875,9 +879,9 @@ func _step_bait_suction(bait: Dictionary, delta: float, sucking: bool) -> void:
 	var base: Vector2=bait.pos
 	var target:=Vector2.ZERO
 	if sucking and _remaining(bait,true):
-		var reach:=strength(base)*power*26*rule("hook_suction")
+		var reach:=strength(base)*Suction.body_gain(power)*26*rule("hook_suction")
 		target=base.move_toward(mouth(),reach)-base
-	bait.suction_offset=Vector2(bait.suction_offset).move_toward(target,delta*44)
+	bait.suction_offset=Vector2(bait.suction_offset).move_toward(target,delta*(Suction.body_speed(power) if sucking else 38))
 	var bounds:=Layout.WATER.grow(-7)
 	bait.pos=(base+Vector2(bait.suction_offset)).clamp(bounds.position,bounds.end)
 	bait.suction_offset=Vector2(bait.pos)-base
