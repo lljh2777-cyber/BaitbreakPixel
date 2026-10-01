@@ -130,44 +130,11 @@ func _plants(t: float, background: bool) -> void:
 				draw_texture_rect_region(sprite.texture,Rect2(a.round(),Vector2(roundf(b.x-a.x),height)),Rect2(0,row,size.x,height),tint)
 
 func _make_plant_layer(t: float, plant_index: int) -> Dictionary:
-	# Crop cached frames per clump so only the contacted plants fade.
+	# Keep each cached clump's original crop and anchor for fading / grass binding.
 	var canvas := Image.create(int(Layout.SIZE.x),132,false,Image.FORMAT_RGBA8)
 	canvas.fill(Color.TRANSPARENT)
-	for index in range(plant_index,plant_index+1):
-		var plant: Dictionary = Layout.PLANTS[index]
-		var background: bool = plant.back
-		var base_color := Color("3c8174") if background else Color("70a678")
-		var light := Color("4b8979") if background else Color("a4c486")
-		var shade := Color("2c6867") if background else Color("45846a")
-		for stem in range(plant.stems):
-			var fraction := float(stem)/maxi(1,plant.stems-1)
-			var base := Vector2(plant.x+(fraction-0.5)*plant.width,129)
-			var height: float = plant.height * (0.67+0.33*sin(stem*2.37+1.2))
-			if stem == int(plant.stems)/2: height = plant.height
-			var lean: float = (fraction-0.5)*plant.width*0.38
-			var phase: float = plant.x*0.13+stem*0.7
-			var path := PackedVector2Array()
-			for step in range(9):
-				var growth := step/8.0
-				var sway := sin(t*1.5+phase+growth*2.1)*growth*2
-				path.append((base+Vector2(lean*growth+sway,-height*growth)).round())
-			if plant.kind == "ribbon":
-				var blade := PackedVector2Array(path)
-				for step in range(8,-1,-1): blade.append(path[step]+Vector2(1 if step==8 else 2,0))
-				Art.paint_polygon(canvas,blade,base_color if stem%2 else shade)
-				for segment in range(1,path.size()): Art.paint_line(canvas,path[segment-1],path[segment],light if stem%3==0 else base_color)
-			else:
-				for segment in range(1,path.size()): Art.paint_line(canvas,path[segment-1],path[segment],shade)
-				for step in range(2,8):
-					var anchor: Vector2 = path[step]
-					var leaf_length := 3.0+(8-step)*0.7 if plant.kind == "fern" else 4.0
-					for side in [-1,1]:
-						var tip := anchor+Vector2(side*leaf_length,-3)
-						Art.paint_polygon(canvas,PackedVector2Array([anchor,tip,tip+Vector2(-side*2,3),anchor+Vector2(0,2)]),base_color if side==1 else light)
-				if plant.kind == "reed":
-					canvas.fill_rect(Rect2i(Vector2i(path[8])-Vector2i(1,6),Vector2i(3,7)),Color("657e66") if background else Color("aeaa73"))
-					canvas.fill_rect(Rect2i(Vector2i(path[8])-Vector2i(1,6),Vector2i(1,5)),light)
 	var plant: Dictionary = Layout.PLANTS[plant_index]
+	preload("res://scripts/pond_plant_art.gd").paint(canvas,plant,t)
 	var region := Rect2i(int(plant.x-plant.width*0.5-14),int(129-plant.height-8),int(plant.width+29),int(plant.height+12))
 	region = region.intersection(Rect2i(0,0,int(Layout.SIZE.x),132))
 	return {"texture":ImageTexture.create_from_image(canvas.get_region(region)),"position":Vector2(region.position)+Vector2(0,plant.y-129)}

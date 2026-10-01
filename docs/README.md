@@ -19,6 +19,7 @@
 ## 验证与历史
 
 - [各版本测试报告](test-reports/README.md)
+- [水底障碍物外观验证](test-reports/TEST-REPORT-OBSTACLE-ART.md)
 - [0.22.1 吸食减速验证](test-reports/TEST-REPORT-0.22.1.md)
 - [0.22.0 吸食取舍与反馈验证](test-reports/TEST-REPORT-0.22.0.md)
 - [0.21.2 两类饵团均可吸动验证](test-reports/TEST-REPORT-0.21.2.md)
