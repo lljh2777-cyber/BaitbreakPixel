@@ -52,3 +52,5 @@
 - 包内截图：`artifacts/water-depth-pack-water_scenery_native/`、`artifacts/water-depth-pack-pond_native_v021/`。
 
 此前的 `BaitbreakPixel-0.22.1-improve-20261001` 包保持不变。本次创建本地试玩包，未发布 GitHub Releases；没有重新进行广域网联机压力验证。
+
+后续发行说明：当前试玩目录已更名并重打包为 `BaitbreakPixel-0.22.2`，原长名称 ZIP 保留上述历史验证包。当前版本与包信息见 [0.22.2 发行验证](TEST-REPORT-0.22.2.md)。
