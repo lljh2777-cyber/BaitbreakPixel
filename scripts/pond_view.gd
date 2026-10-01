@@ -98,6 +98,7 @@ func _world(t: float) -> void:
 		var prop: Dictionary=props[index]
 		draw_texture(prop.texture,prop.position,Color(1,1,1,world.target_opacity[index]))
 	_plants(t,false)
+	Scenery.foreground(self)
 	Scenery.nest(self,world,t)
 
 func _navigation() -> void:

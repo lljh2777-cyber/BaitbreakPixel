@@ -43,7 +43,7 @@ func run() -> void:
 	var hidden:=await render("hidden-hook")
 	game.baits[0].hook=not game.baits[0].hook; game.baits[1].hook=not game.baits[1].hook
 	check(hidden.get_data()==(await render()).get_data(),"new background never reveals hidden hook identity")
-	check(game.view.water_layers==cache,"resets and camera movement reuse the two prepared textures")
+	check(game.view.water_layers==cache and cache.size()==6,"resets and camera movement reuse all six prepared depth textures")
 	var point:=Vector2(414,192); var world_point: Vector2=game.screen_to_game(point)
 	check(game.view.Camera.to_screen(world_point,game,"fish")==point,"far-layer parallax never changes gameplay pointer coordinates")
 	fixture(game.HOME); game.score=game.food_target()-1

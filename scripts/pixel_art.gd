@@ -101,26 +101,29 @@ static func prop_image(obstacle: Dictionary) -> Image:
 static func _stone_color(point: Vector2, size: Vector2, seed: int) -> Color:
 	var u:=point.x/size.x
 	var v:=point.y/size.y
-	var palette: Array[Color]=[Color("36535a"),Color("4d6d70"),Color("69857f"),Color("879b8c"),Color("a4af97")]
-	# Broad uneven masses describe rounded weathered stone. Each rock gets a
-	# different ridge instead of the same diagonal division and tiled speckles.
-	var ridge:=0.27+sin(u*6.5+seed)*0.07+sin(u*16+seed)*0.024
-	var light:=0.94-v*0.43-u*0.20+sin(u*8+v*5+seed)*0.055
-	var tone:=1 if light<0.44 else (2 if light<0.66 else 3)
-	if v<ridge and u<0.78: tone=4 if u<0.52 else 3
-	if v>0.83-sin(u*4+seed)*0.055 or u>0.90-v*0.13: tone=maxi(0,tone-1)
-	var color: Color=palette[tone]
-	var mineral:=sin(point.x*0.19+point.y*0.087+seed)*sin(point.y*0.22-seed*0.7)
+	var palette: Array[Color]=[Color("2c464a"),Color("39565a"),Color("4b6666"),Color("5b7670"),Color("6b8277"),Color("7b8f7f"),Color("8e9c89"),Color("a2ac96")]
+	# Curved light rolls around the front face into a broad right-hand shadow.
+	var dome:=sqrt(maxf(0,1-pow((u-0.47)/0.55,2)))
+	var light:=0.28+dome*0.39-u*0.20-v*0.21
+	var crown:=0.27+sin(u*5.4+seed)*0.075+sin(u*13+seed)*0.018
+	if v<crown and u<0.72: light+=0.19*(1-u*0.6)
+	if u>0.64+sin(v*5+seed)*0.05: light-=0.12
+	if v>0.77+sin(u*5+seed)*0.045: light-=0.10
+	light+=sin(point.x*0.19+point.y*0.087+seed)*sin(point.y*0.22-seed*0.7)*0.048
+	var tone:=clampi(roundi(light*10),0,7)
 	var fleck:=posmod(int(point.x)*17+int(point.y)*29+seed*31,53)
-	if mineral>0.52 and fleck<6: color=palette[maxi(1,tone-1)]
-	elif mineral< -0.63 and fleck>48: color=palette[mini(4,tone+1)]
-	# Sparse short hairline fractures follow the weathered faces; small pebbles
-	# stay simple. Break the line and vary its route to avoid a repeated icon.
+	if fleck<5: tone=maxi(0,tone-1)
+	elif fleck>48: tone=mini(7,tone+1)
+	var color: Color=palette[tone]
+	# Hairline cracks and weathered pits sit in the shaded faces, without a
+	# diagonal flat fill slicing every rock into the same two triangles.
 	if size.y>35:
 		var crack_x:=size.x*(0.29+posmod(seed,4)*0.09)+point.y*(0.15 if seed%2 else -0.17)+sin(point.y*0.18+seed)*1.6
-		if v>ridge+0.08 and v<0.71 and absf(point.x-crack_x)<0.6 and posmod(int(point.y)+seed,19)<16:
-			color=palette[maxi(0,tone-1)]
-		if v>0.45 and v<0.66 and absf(point.x-crack_x-(point.y-size.y*0.45)*0.8)<0.55:
-			color=palette[maxi(1,tone-1)]
-	if v>0.89+sin(u*14+seed)*0.026: color=color.lerp(Color("526f65"),0.40)
+		if v>crown+0.08 and v<0.74 and absf(point.x-crack_x)<0.6 and posmod(int(point.y)+seed,19)<16:
+			color=palette[maxi(0,tone-2)]
+		var pit:=Vector2((u-0.63)/0.12,(v-0.51)/0.10).length()
+		if pit<1.0 and sin(point.x*0.9+seed)>0.2: color=palette[maxi(0,tone-1)]
+	var moss:=sin(point.x*0.21+seed)+sin(point.y*0.27+point.x*0.047)
+	if v<crown+0.09 and moss>1.22: color=color.lerp(Color("78865e"),0.43)
+	if v>0.91+sin(u*14+seed)*0.026: color=color.lerp(Color("3b5a50"),0.48)
 	return color

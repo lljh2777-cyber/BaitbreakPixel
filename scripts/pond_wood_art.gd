@@ -3,7 +3,7 @@ extends RefCounted
 # collision masks and opacity targets, but overlapping pixels are identical.
 const Layout=preload("res://scripts/pond_layout.gd")
 const GROUPS: Array = [[1,4,5,6,11,12],[7,15],[17,18]]
-const PALETTE: Array[Color] = [Color("334d46"),Color("50604e"),Color("737b5e"),Color("979779")]
+const PALETTE: Array[Color] = [Color("293f3b"),Color("424f40"),Color("666b4f"),Color("8c8b67")]
 const SHAPES: Dictionary = {
 	1:[[Vector2(337,171),Vector2(335,237),Vector2(343,299),Vector2(353,368),Vector2(355,434)],[8.0,14.0,18.0,26.0,25.0]],
 	4:[[Vector2(266,246),Vector2(286,260),Vector2(310,282),Vector2(329,304),Vector2(342,331)],[4.0,7.0,8.0,11.0,15.0]],
@@ -117,8 +117,8 @@ static func color_at(point: Vector2, tree: Dictionary) -> Color:
 		normal=Vector2(base.normal).lerp(sample.normal,weight).normalized()
 		if weight>0.5: tip=branch; tip_along=sample.along
 	var side:=clampf(across/radius,-1,1)
-	var light:=0.43+sqrt(maxf(0,1-side*side))*0.34+side*normal.dot(Vector2(-0.8,-0.6))*0.18
-	var tone:=0 if light<0.40 else (1 if light<0.58 else (2 if light<0.75 else 3))
+	var light:=0.33+sqrt(maxf(0,1-side*side))*0.34+side*normal.dot(Vector2(-0.8,-0.6))*0.21
+	var tone:=0 if light<0.34 else (1 if light<0.49 else (2 if light<0.64 else 3))
 	var color: Color=PALETTE[tone]
 	var seed_value: int=tree.seed
 	var wave:=across+sin(along*0.047+seed_value)*1.35+sin(along*0.117+seed_value*2.3)*0.55

@@ -15,6 +15,18 @@ func run() -> void:
 	check(water.get_size()==Vector2i(1280,480) and distance.get_size()==water.get_size(),"layers cover the entire scrolling pond at native pixel resolution")
 	check(water.get_data()==Water.water_image().get_data(),"water gradients, feathered shafts and grain are deterministic")
 	check(distance.get_data()==Water.distant_image().get_data(),"distant shelves, plants and branches are deterministic")
+	var terrain:=Water.Depth.middle_image(); var bed:=Water.Depth.floor_image()
+	var surface:=Water.Depth.surface_image(); var foreground:=Water.Depth.foreground_image()
+	check(terrain.get_size()==water.get_size() and bed.get_size()==water.get_size() and surface.get_size()==water.get_size() and foreground.get_size()==water.get_size(),"all depth planes cover the scrolling pond without cropped edges")
+	check(terrain.get_data()==Water.Depth.middle_image().get_data() and bed.get_data()==Water.Depth.floor_image().get_data() and surface.get_data()==Water.Depth.surface_image().get_data() and foreground.get_data()==Water.Depth.foreground_image().get_data(),"new depth planes are deterministic and independent of simulation RNG")
+	var bed_opaque:=true; var bed_seam:=0.0; var clear_foreground:=true
+	for x in bed.get_width():
+		for y in range(433,480): bed_opaque=bed_opaque and bed.get_pixel(x,y).a==1
+		var above:=bed.get_pixel(x,432); var below:=bed.get_pixel(x,433)
+		bed_seam+=absf(above.r-below.r)+absf(above.g-below.g)+absf(above.b-below.b)
+		for y in range(68,300): clear_foreground=clear_foreground and foreground.get_pixel(x,y).a==0
+	check(bed_opaque and bed_seam/bed.get_width()<0.05,"near bed stays opaque with no straight alpha/color seam at the gameplay floor")
+	check(clear_foreground,"near-edge decoration leaves the upper and central swimming area uncovered")
 	var largest_step:=0.0; var opaque:=true; var palette: Dictionary={}
 	for y in range(80,420):
 		var row_step:=0.0

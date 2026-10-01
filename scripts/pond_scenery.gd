@@ -22,8 +22,11 @@ static func background(view: Node2D, world: Node2D, t: float) -> void:
 			view.draw_rect(Rect2(x+1,57,13,1),Color("c9bb87"))
 			view.draw_rect(Rect2(x+4,59,7,1),Color("736f57"))
 	# Far silhouettes scroll slightly slower than the real interaction geometry.
-	var distance_offset: Vector2=(view.camera_offset*Vector2(0.10,0.04)).round()
+	var distance_offset: Vector2=(view.camera_offset*Vector2(0.22,0.08)).round()
 	view.draw_texture(view.water_layers.distance,distance_offset)
+	view.draw_texture(view.water_layers.surface,(view.camera_offset*Vector2(0.13,0.03)).round())
+	view.draw_texture(view.water_layers.floor,Vector2.ZERO)
+	view.draw_texture(view.water_layers.terrain,(view.camera_offset*Vector2(0.06,0.02)).round())
 	for index in 58:
 		var base:=Water.mote(index)
 		var p: Vector2=(base+world.water_offset(base)*2).round()
@@ -36,19 +39,8 @@ static func background(view: Node2D, world: Node2D, t: float) -> void:
 
 static func floor_layer(view: Node2D) -> void:
 	var floor:=Layout.FLOOR
-	view.draw_rect(Rect2(0,floor,Layout.SIZE.x,Layout.SIZE.y-floor),Color("496760"))
-	# Low sand/silt patches and a broken lip soften the near bed without moving it.
-	for patch: Array in [[94,155,17],[391,201,29],[605,99,13],[934,163,23],[1132,132,19]]:
-		var x: float=patch[0]; var width: float=patch[1]; var depth: float=patch[2]
-		view.draw_colored_polygon(PackedVector2Array([Vector2(x,floor+2),Vector2(x+width*0.34,floor-1),Vector2(x+width,floor+5),Vector2(x+width*0.83,floor+depth),Vector2(x+width*0.23,floor+depth+3)]),Color("627c69"))
-	for x in range(0,int(Layout.SIZE.x),2):
-		var rise: float=1+sin(x*0.017)*1.4+sin(x*0.061+1)*0.7
-		var tint:=Color("7f9273") if sin(x*0.013)>0.3 else Color("5e7c68")
-		if posmod(x*17,29)>5: view.draw_rect(Rect2(x,floor-roundf(rise),2,2),tint)
-	for index in 155:
-		var x:=posmod(index*73+index*index*3,1278)
-		var y:=floor+4+posmod(index*19,40)
-		view.draw_rect(Rect2(x,y,2+index%3,1),Color("365b56") if index%3 else Color("8b9c7c"))
+	view.draw_rect(Rect2(0,floor,Layout.SIZE.x,Layout.SIZE.y-floor),Color("365751"))
+	view.draw_texture_rect_region(view.water_layers.floor,Rect2(0,floor,Layout.SIZE.x,Layout.SIZE.y-floor),Rect2(0,floor,Layout.SIZE.x,Layout.SIZE.y-floor))
 	# Contact shadows sit under grounded solids, behind their unchanged sprites.
 	for solid: Dictionary in Layout.SOLIDS:
 		var bounds:=Water.Art.prop_bounds(solid)
@@ -60,6 +52,9 @@ static func floor_layer(view: Node2D) -> void:
 		var x:=18+posmod(index*157+index*index*11,1240)
 		var y:=floor+2+index%8
 		view.draw_colored_polygon(PackedVector2Array([Vector2(x,y),Vector2(x+3,y-1),Vector2(x+7,y+1),Vector2(x+2,y+2)]),Color("65785c") if index%2 else Color("58674e"))
+
+static func foreground(view: Node2D) -> void:
+	view.draw_texture(view.water_layers.foreground,(-view.camera_offset*Vector2(0.045,0.0)).round())
 
 static func nest(view: Node2D, world: Node2D, t: float) -> void:
 	var p:=Layout.HOME
