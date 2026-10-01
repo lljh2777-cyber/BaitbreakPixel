@@ -1,5 +1,7 @@
 extends RefCounted
 
+const Wood=preload("res://scripts/pond_wood_art.gd")
+
 static func paint_line(canvas: Image, a: Vector2, b: Vector2, color: Color) -> void:
 	var start := Vector2i(a.round())
 	var end := Vector2i(b.round())
@@ -75,12 +77,15 @@ static func prop_image(obstacle: Dictionary) -> Image:
 	var canvas := Image.create(int(bounds.size.x)+1,int(bounds.size.y)+1,false,Image.FORMAT_RGBA8)
 	canvas.fill(Color.TRANSPARENT)
 	var wood: bool=obstacle.kind=="wood"
-	var grain := _wood_shape(int(obstacle.seed),polygon) if wood else {}
+	var grain := Wood.context(obstacle) if wood else {}
 	for y in canvas.get_height():
 		for x in canvas.get_width():
 			var point := bounds.position+Vector2(x+0.5,y+0.5)
 			if not Geometry2D.is_point_in_polygon(point,polygon): continue
-			var color := _wood_color(point,grain,int(obstacle.seed)) if wood else _stone_color(Vector2(x,y),bounds.size,int(obstacle.seed))
+			if wood:
+				canvas.set_pixel(x,y,Wood.color_at(point,grain))
+				continue
+			var color := _stone_color(Vector2(x,y),bounds.size,int(obstacle.seed))
 			var top_edge := not Geometry2D.is_point_in_polygon(point-Vector2(0,2),polygon)
 			var lower_edge := not Geometry2D.is_point_in_polygon(point+Vector2(1,1),polygon)
 			# Broken, quiet algae patches settle on upper-facing ledges, rather
@@ -88,93 +93,10 @@ static func prop_image(obstacle: Dictionary) -> Image:
 			var algae := sin(point.x*0.19+obstacle.seed*1.7)+sin(point.x*0.071-point.y*0.08)
 			if top_edge and algae>0.9 and y>5:
 				color=Color("748769") if algae>1.55 else Color("526d58")
-			elif lower_edge and (not wood or int(obstacle.seed) in [1,7] or point.distance_to(grain.path[-1])>float(grain.radii[-1])*1.6):
-				color=Color("344b43") if wood else Color("36545a")
+			elif lower_edge:
+				color=Color("36545a")
 			canvas.set_pixel(x,y,color)
 	return canvas
-
-static func _wood_shape(seed: int, polygon: PackedVector2Array) -> Dictionary:
-	# These are art-only grain spines through the existing bent trunks/roots.
-	# Matching their curvature makes a fallen branch read as timber, not a plank.
-	var shapes := {
-		1:[[Vector2(337,171),Vector2(335,237),Vector2(344,299),Vector2(354,368),Vector2(355,434)],[8.0,14.0,18.0,25.0,25.0]],
-		4:[[Vector2(266,246),Vector2(286,260),Vector2(311,284),Vector2(342,309)],[4.0,7.0,8.0,11.0]],
-		5:[[Vector2(415,222),Vector2(394,238),Vector2(354,281)],[4.0,7.0,10.0]],
-		6:[[Vector2(247,430),Vector2(260,415),Vector2(281,399),Vector2(315,399),Vector2(351,432)],[3.0,6.0,7.0,7.0,12.0]],
-		7:[[Vector2(487,422),Vector2(530,411),Vector2(590,390),Vector2(647,374),Vector2(663,374)],[9.0,17.0,17.0,17.0,7.0]],
-		11:[[Vector2(303,210),Vector2(333,231)],[3.0,6.0]],
-		12:[[Vector2(372,227),Vector2(361,241),Vector2(347,259)],[4.0,5.0,7.0]],
-		15:[[Vector2(583,312),Vector2(587,340),Vector2(610,379)],[3.0,5.0,9.0]],
-		17:[[Vector2(1224,363),Vector2(1218,399),Vector2(1202,433)],[6.0,8.0,9.0]],
-		18:[[Vector2(1172,363),Vector2(1190,385),Vector2(1217,400)],[3.0,6.0,8.0]]
-	}
-	var shape: Array=shapes.get(seed,[[polygon[0],polygon[polygon.size()/2]],[6.0,6.0]])
-	var length:=0.0
-	for i in range(1,shape[0].size()): length+=Vector2(shape[0][i]).distance_to(shape[0][i-1])
-	return {"path":shape[0],"radii":shape[1],"length":length}
-
-static func _wood_color(point: Vector2, shape: Dictionary, seed: int) -> Color:
-	var distance:=INF
-	var along:=0.0
-	var across:=0.0
-	var radius:=1.0
-	var normal:=Vector2.RIGHT
-	var travelled:=0.0
-	for i in range(1,shape.path.size()):
-		var a: Vector2=shape.path[i-1]
-		var b: Vector2=shape.path[i]
-		var edge:=b-a
-		var ratio:=clampf((point-a).dot(edge)/edge.length_squared(),0,1)
-		var delta:=point-a.lerp(b,ratio)
-		if delta.length_squared()<distance:
-			distance=delta.length_squared()
-			normal=edge.normalized().orthogonal()
-			across=delta.dot(normal)
-			along=travelled+edge.length()*ratio
-			radius=lerpf(shape.radii[i-1],shape.radii[i],ratio)
-		travelled+=edge.length()
-	var side:=clampf(across/radius,-1,1)
-	var light:=0.43+sqrt(maxf(0,1-side*side))*0.34+side*normal.dot(Vector2(-0.8,-0.6))*0.18
-	var palette: Array[Color]=[Color("334d46"),Color("50604e"),Color("737b5e"),Color("979779")]
-	var tone:=0 if light<0.40 else (1 if light<0.58 else (2 if light<0.75 else 3))
-	var color: Color=palette[tone]
-	var wave:=across+sin(along*0.047+seed)*1.35+sin(along*0.117+seed*2.3)*0.55
-	var groove:=sin(wave*0.87+seed)
-	var broken:=sin(along*0.093+wave*0.31)+sin(along*0.037-seed)
-	# Interrupted, curving bark furrows and occasional exposed wood fibres.
-	if groove>0.83 and broken> -0.25: color=palette[maxi(0,tone-1)]
-	elif groove< -0.93 and broken>0.55 and tone>0: color=palette[mini(3,tone+1)]
-	var scar:=sin(along*0.031+seed)+sin(across*0.35+along*0.019)
-	if scar>1.55 and absf(side)<0.65: color=palette[mini(3,tone+1)]
-	# Water-darkened remnants of bark break up the pale exposed heartwood.
-	var bark:=sin(along*0.026+seed*2.1)+sin(wave*0.28+seed*0.7)
-	if bark>1.17 and absf(side)>0.24:
-		color=palette[maxi(0,tone-1)]
-		if groove>0.83: color=palette[0]
-	# A few end-grain splinters remain pale; most cut faces are water-darkened.
-	if along<3.4+sin(across*1.1+seed)*1.4:
-		color=Color("a5a080") if posmod(floori(across*1.5)+seed,5)<3 else Color("757858")
-	# Only the old trunk and large fallen log carry large knots, not every twig.
-	if seed in [1,7]:
-		var knot:=Vector2((across-radius*0.13)/4.0,(along-shape.length*(0.39 if seed==1 else 0.65))/7.0)
-		var ring:=knot.length()+sin(knot.angle()*3+seed)*0.09
-		if ring<0.45: color=Color("3b5149")
-		elif ring<0.70 or (ring>0.96 and ring<1.15): color=palette[tone if knot.y<0 else mini(3,tone+1)]
-		elif ring<0.94: color=palette[0]
-	if seed==7:
-		# The snapped end is an irregular, partially hollow cross-section. Its
-		# restrained rings differ from the lengthwise grain and do not look sawn.
-		var end:=Vector2((point.x-657)/8.0,(point.y-375)/13.0)
-		var ring:=end.length()+sin(end.angle()*5)*0.09
-		if ring<1:
-			color=Color("8c9070") if end.x<0 else Color("67765d")
-			if ring>0.65 and ring<0.80: color=Color("586950")
-			if ring<0.34: color=Color("304e47")
-			if end.y>0.1 and absf(end.x+end.y*0.2)<0.10: color=Color("425b49")
-	# Buried timber takes on silt and algae near the bed, with no separate halo.
-	if point.y>422+sin(point.x*0.14+seed)*3:
-		color=color.lerp(Color("4d685b"),0.45)
-	return color
 
 static func _stone_color(point: Vector2, size: Vector2, seed: int) -> Color:
 	var u:=point.x/size.x
