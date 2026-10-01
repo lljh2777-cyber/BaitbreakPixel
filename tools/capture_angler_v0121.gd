@@ -5,7 +5,12 @@ const Main = preload("res://scenes/main.tscn")
 var game: Node2D
 const OUTPUT := "res://artifacts/"
 
-func _initialize() -> void: call_deferred("run")
+func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This capture needs a renderer; rerun without --headless.")
+		quit(2)
+		return
+	call_deferred("run")
 
 func capture(tag: String) -> void:
 	game.view.queue_redraw()

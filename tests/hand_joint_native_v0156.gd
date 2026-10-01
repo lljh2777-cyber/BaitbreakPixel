@@ -10,7 +10,12 @@ class RigLayer extends Node2D:
 			hand.draw_rod(self,Shore.rod_points(pose,pose.brace,1,Vector2(410,213)))
 			hand.draw(self,pose,0,0)
 
-func _initialize() -> void: call_deferred("run")
+func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This check needs a renderer; rerun without --headless.")
+		quit(2)
+		return
+	call_deferred("run")
 
 func connected_to_edge(picture: Image, seed_at: Vector2, checkpoints: Array) -> bool:
 	picture.convert(Image.FORMAT_RGBA8)

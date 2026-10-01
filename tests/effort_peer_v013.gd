@@ -12,7 +12,12 @@ var pressed_id:=-1
 var release_at:=0
 var completed_at:=0
 var observed: Dictionary={"fish":false,"angler":false}
-func _initialize() -> void: call_deferred("run")
+func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This check needs a renderer; rerun without --headless.")
+		quit(2)
+		return
+	call_deferred("run")
 func check(ok: bool, description: String) -> void:
 	if ok: checks+=1; print("EFFORT_PEER_PASS | ",hosting," | ",description)
 	else: failures+=1; push_error("EFFORT_PEER_FAIL | "+description)

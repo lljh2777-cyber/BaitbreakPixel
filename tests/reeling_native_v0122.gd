@@ -3,7 +3,12 @@ const Main=preload("res://scenes/main.tscn")
 var game: Node2D
 var checks:=0
 var failures:=0
-func _initialize() -> void: call_deferred("run")
+func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This check needs a renderer; rerun without --headless.")
+		quit(2)
+		return
+	call_deferred("run")
 func check(ok: bool, description: String) -> void:
 	if ok: checks+=1; print("REEL_NATIVE_PASS | ",description)
 	else: failures+=1; push_error("REEL_NATIVE_FAIL | "+description)

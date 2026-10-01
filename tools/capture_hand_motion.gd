@@ -4,7 +4,12 @@ var game: Node2D
 var frame := 0
 var done := false
 
-func _initialize() -> void: call_deferred("setup")
+func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This capture needs a renderer; rerun without --headless.")
+		quit(2)
+		return
+	call_deferred("setup")
 func setup() -> void:
 	DirAccess.make_dir_recursive_absolute("res://artifacts")
 	game=Main.instantiate(); root.add_child(game)

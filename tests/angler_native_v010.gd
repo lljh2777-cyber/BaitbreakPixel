@@ -5,7 +5,12 @@ var checks:=0
 var original_mouse:=Vector2i.ZERO
 var output:="res://artifacts"
 
-func _initialize() -> void: call_deferred("run")
+func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This check needs a renderer; rerun without --headless.")
+		quit(2)
+		return
+	call_deferred("run")
 func require(ok: bool, message: String) -> bool:
 	if ok: checks+=1; print("RIG_NATIVE_PASS | ",message)
 	else: push_error("RIG_NATIVE_FAIL | "+message); DisplayServer.warp_mouse(original_mouse); quit(1)

@@ -3,7 +3,12 @@ const Main=preload("res://scenes/main.tscn")
 var game: Node2D
 var passed:=0
 var failed:=0
-func _initialize() -> void: call_deferred("run")
+func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This check needs a renderer; rerun without --headless.")
+		quit(2)
+		return
+	call_deferred("run")
 func check(ok: bool, text: String) -> void:
 	if ok: passed+=1; print("NET_NATIVE_PASS | ",text)
 	else: failed+=1; push_error("NET_NATIVE_FAIL | "+text)

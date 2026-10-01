@@ -4,7 +4,12 @@ const Main=preload("res://scenes/main.tscn")
 var game: Node2D
 const DIRECTORY="res://artifacts/net-animation-v0201"
 
-func _initialize() -> void: call_deferred("run")
+func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This check needs a renderer; rerun without --headless.")
+		quit(2)
+		return
+	call_deferred("run")
 
 func frame(path: String) -> void:
 	game.view.queue_redraw()

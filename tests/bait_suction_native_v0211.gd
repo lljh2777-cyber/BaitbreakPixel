@@ -4,7 +4,12 @@ var game: Node2D
 var passed:=0
 var failed:=0
 var output:="res://artifacts/bait-suction-v0211"
-func _initialize() -> void: call_deferred("run")
+func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This check needs a renderer; rerun without --headless.")
+		quit(2)
+		return
+	call_deferred("run")
 func check(ok: bool, title: String) -> void:
 	if ok: passed+=1; print("BAIT_NATIVE_PASS | ",title)
 	else: failed+=1; push_error("BAIT_NATIVE_FAIL | "+title)

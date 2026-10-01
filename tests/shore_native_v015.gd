@@ -4,7 +4,12 @@ const Shore=preload("res://scripts/shore_view.gd")
 var game: Node2D
 var passed:=0
 var failed:=0
-func _initialize() -> void: call_deferred("run")
+func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This check needs a renderer; rerun without --headless.")
+		quit(2)
+		return
+	call_deferred("run")
 func check(ok: bool, message: String) -> void:
 	if ok: passed+=1; print("SHORE_NATIVE_PASS | ",message)
 	else: failed+=1; push_error("SHORE_NATIVE_FAIL | "+message)

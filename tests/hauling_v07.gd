@@ -6,6 +6,10 @@ var output := "res://artifacts"
 var checks := 0
 
 func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This check needs a renderer; rerun without --headless.")
+		quit(2)
+		return
 	call_deferred("run")
 
 func require(ok: bool, message: String) -> bool:

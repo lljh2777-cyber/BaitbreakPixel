@@ -1,7 +1,12 @@
 extends SceneTree
 const Main=preload("res://scenes/main.tscn")
 var game:Node2D
-func _initialize() -> void: call_deferred("run")
+func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This capture needs a renderer; rerun without --headless.")
+		quit(2)
+		return
+	call_deferred("run")
 func prepare(role:String,target:int=0) -> void:
 	game.reset(false,"angler"); game.player_role=role
 	game.reset_world({"ruleset":"duel","challenge":false,"water_strength":0.0,"line_force":0,"seed":2649})

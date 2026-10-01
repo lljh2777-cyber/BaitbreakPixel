@@ -6,7 +6,12 @@ var frame:=0
 var done:=false
 var capture_tag:="v016"
 var free_spool_preview:=false
-func _initialize() -> void: call_deferred("setup")
+func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This capture needs a renderer; rerun without --headless.")
+		quit(2)
+		return
+	call_deferred("setup")
 func setup() -> void:
 	DirAccess.make_dir_recursive_absolute("res://artifacts")
 	for argument in OS.get_cmdline_user_args():
