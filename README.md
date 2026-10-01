@@ -8,7 +8,9 @@
 
 从 [最新版 Releases](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/latest) 下载已发布的 `BaitbreakPixel-0.20.1.zip`，解压后运行 `BaitbreakPixel.exe`。EXE 和同目录的 PCK 需要放在一起，玩家无需安装 Godot。
 
-本次 0.22.1 的 Windows 试玩包位于本地相邻 `Releases/BaitbreakPixel-0.22.1`；公开发行页仍为 0.20.1。0.21 扩大水域并加入跟随镜头，完善草木石环境，鱼视角隐藏钩体、吊线及饵料身份，钩饵与散饵整团都随吸食向鱼嘴移动。0.22 加入轻吸剥外层、猛吸快速拉近的取舍，以及饵团拉伸、流线、拖尾和入口反馈。0.22.1 让鱼吸食时减速，默认游速为当前游动模式的 68%，松开后恢复。
+本分支的 Windows 试玩包位于本地相邻 `Releases/BaitbreakPixel-0.22.1-water-depth-20261001`；公开发行页仍为 0.20.1。0.21 扩大水域并加入跟随镜头，完善草木石环境，鱼视角隐藏钩体、吊线及饵料身份，钩饵与散饵整团都随吸食向鱼嘴移动。0.22 加入轻吸剥外层、猛吸快速拉近的取舍，以及饵团拉伸、流线、拖尾和入口反馈。0.22.1 让鱼吸食时减速，默认游速为当前游动模式的 68%，松开后恢复。本分支继续完善水体渐变、柔和透光、远景草木与视差，并加入沙泥水底、接地阴影和树根巢穴。
+
+本分支场景更新与 Windows 包验证见 [水体层次测试报告](docs/test-reports/TEST-REPORT-WATER-DEPTH.md)。
 
 完整操作见 [试玩说明](docs/gameplay/PLAY.txt)，双人连接方法见 [联机指南](docs/gameplay/NETWORK.md)。
 

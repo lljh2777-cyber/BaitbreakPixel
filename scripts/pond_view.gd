@@ -3,6 +3,7 @@ extends Node2D
 const Camera = preload("res://scripts/pond_camera.gd")
 const Scenery = preload("res://scripts/pond_scenery.gd")
 var camera_offset := Vector2.ZERO
+var water_layers: Dictionary = {}
 
 const Art = preload("res://scripts/pixel_art.gd")
 const Layout = preload("res://scripts/pond_layout.gd")
@@ -36,6 +37,7 @@ var props: Array[Dictionary] = []
 var plant_frames: Array = []
 
 func _ready() -> void:
+	water_layers = Scenery.Water.layers()
 	shore.hand.prepare(self)
 	shore.reel_hand.prepare(self)
 	fish_texture = Art.fish()

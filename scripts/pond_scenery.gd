@@ -2,69 +2,78 @@ extends RefCounted
 
 # Native pixel scenery. Cover geometry comes exclusively from PondLayout.
 const Layout = preload("res://scripts/pond_layout.gd")
+const Water = preload("res://scripts/pond_water_art.gd")
 
 static func background(view: Node2D, world: Node2D, t: float) -> void:
-	view.draw_rect(Rect2(Vector2.ZERO,Layout.SIZE),Color("163f4d"))
-	view.draw_rect(Rect2(0,35,Layout.SIZE.x,19),Color("c2c5a4"))
-	for i in range(39):
-		var x := i*35
-		var h := 8+i*7%16
-		view.draw_rect(Rect2(x,53-h,24,h),Color("668e83"))
-		view.draw_rect(Rect2(x+5,48-h,13,5),Color("668e83"))
-	view.draw_rect(Rect2(0,53,Layout.SIZE.x,2),Color("8de0bd"))
-	for band in range(14):
-		view.draw_rect(Rect2(0,55+band*28,Layout.SIZE.x,28),Color("317e82").lerp(Color("123e50"),band/13.0))
+	view.draw_texture(view.water_layers.water,Vector2.ZERO)
+	# A quiet irregular far bank above the waterline, rather than repeated blocks.
+	view.draw_rect(Rect2(0,0,Layout.SIZE.x,55),Color("a9b8a3"))
+	var bank:=PackedVector2Array([Vector2(0,55)])
+	for x in range(0,int(Layout.SIZE.x)+8,8):
+		var height: float=9+sin(x*0.010)*4+sin(x*0.031+1.2)*2+sin(x*0.067)*0.8
+		bank.append(Vector2(x,53-roundf(height)))
+	bank.append(Vector2(Layout.SIZE.x,55))
+	view.draw_colored_polygon(bank,Color("6c9287"))
+	view.draw_rect(Rect2(0,53,Layout.SIZE.x,2),Color("6faaa0"))
 	if world.uses_mobile_tackle():
 		view.draw_rect(Rect2(0,56,Layout.SIZE.x,8),Color("253e42"))
 		for x in range(0,int(Layout.SIZE.x),16):
 			view.draw_rect(Rect2(x,57,15,5),Color("8d8665"))
 			view.draw_rect(Rect2(x+1,57,13,1),Color("c9bb87"))
 			view.draw_rect(Rect2(x+4,59,7,1),Color("736f57"))
-	for shaft in 9:
-		for step in 9:
-			view.draw_rect(Rect2(shaft*149+step*7+21,55+step*43,16+step*3,43),Color(0.63,0.89,0.74,0.023))
-	for i in 75:
-		var base := Vector2(4+posmod(i*61,1272),65+posmod(i*47,354))
-		var p: Vector2 = (base+world.water_offset(base)*2).round()
-		view.draw_rect(Rect2(p,Vector2(1+i%2,1)),Color(0.65,0.86,0.75,0.28))
-	for i in 32:
-		var base := Vector2(30+posmod(i*97,1220),77+posmod(i*53,330))
-		var p: Vector2 = base+world.water_offset(base)*2
-		view.draw_line(p.round(),(p-world.water_velocity(base)*2.4).round(),Color(0.68,0.91,0.85,(0.08+0.04*sin(t*1.3+i))*world.water_strength),1)
-	# Distant low-contrast rocks and reeds add depth without creating hidden targets.
-	for i in 25:
-		var x := i*53-16
-		var h := 12+i*17%38
-		view.draw_colored_polygon(PackedVector2Array([Vector2(x,435),Vector2(x+8,431-h),Vector2(x+28,425-h),Vector2(x+52,435-h/2),Vector2(x+64,440)]),Color("20515c"))
-		for stem in 3:
-			var p := Vector2(x+stem*8,432)
-			view.draw_polyline(PackedVector2Array([p,p+Vector2(3,-h),p+Vector2(-2,-h*1.7)]),Color("285f64"),2)
+	# Far silhouettes scroll slightly slower than the real interaction geometry.
+	var distance_offset: Vector2=(view.camera_offset*Vector2(0.10,0.04)).round()
+	view.draw_texture(view.water_layers.distance,distance_offset)
+	for index in 58:
+		var base:=Water.mote(index)
+		var p: Vector2=(base+world.water_offset(base)*2).round()
+		var alpha: float=0.12+0.04*sin(index*2.1)
+		view.draw_rect(Rect2(p,Vector2.ONE),Color(0.64,0.84,0.75,alpha))
+	for index in 24:
+		var base:=Water.mote(index+71)
+		var p: Vector2=base+world.water_offset(base)*2
+		view.draw_line(p.round(),(p-world.water_velocity(base)*2.0).round(),Color(0.68,0.91,0.85,(0.05+0.02*sin(t*1.3+index))*world.water_strength),1)
 
 static func floor_layer(view: Node2D) -> void:
-	view.draw_rect(Rect2(0,Layout.FLOOR,Layout.SIZE.x,Layout.SIZE.y-Layout.FLOOR),Color("516f69"))
-	for x in range(0,int(Layout.SIZE.x),4):
-		var h := 2+int(2+sin(x*0.018)*2)
-		view.draw_rect(Rect2(x,Layout.FLOOR-1,4,h),Color("8b9c78"))
-	for i in 145:
-		var x := posmod(i*73,1278)
-		var y := int(Layout.FLOOR)+6+i*19%39
-		view.draw_rect(Rect2(x,y,3+i%3,2),Color("3f615f") if i%2 else Color("7e9273"))
-	for i in 89:
-		var x := posmod(i*83+11,1276)
-		var y := int(Layout.FLOOR)+i*7%13
-		var w := 2+i%5
-		view.draw_rect(Rect2(x,y,w,2),Color("3e615f"))
-		view.draw_rect(Rect2(x+1,y-1,w-1,1),Color("aab695") if i%3 else Color("719180"))
+	var floor:=Layout.FLOOR
+	view.draw_rect(Rect2(0,floor,Layout.SIZE.x,Layout.SIZE.y-floor),Color("496760"))
+	# Low sand/silt patches and a broken lip soften the near bed without moving it.
+	for patch: Array in [[94,155,17],[391,201,29],[605,99,13],[934,163,23],[1132,132,19]]:
+		var x: float=patch[0]; var width: float=patch[1]; var depth: float=patch[2]
+		view.draw_colored_polygon(PackedVector2Array([Vector2(x,floor+2),Vector2(x+width*0.34,floor-1),Vector2(x+width,floor+5),Vector2(x+width*0.83,floor+depth),Vector2(x+width*0.23,floor+depth+3)]),Color("627c69"))
+	for x in range(0,int(Layout.SIZE.x),2):
+		var rise: float=1+sin(x*0.017)*1.4+sin(x*0.061+1)*0.7
+		var tint:=Color("7f9273") if sin(x*0.013)>0.3 else Color("5e7c68")
+		if posmod(x*17,29)>5: view.draw_rect(Rect2(x,floor-roundf(rise),2,2),tint)
+	for index in 155:
+		var x:=posmod(index*73+index*index*3,1278)
+		var y:=floor+4+posmod(index*19,40)
+		view.draw_rect(Rect2(x,y,2+index%3,1),Color("365b56") if index%3 else Color("8b9c7c"))
+	# Contact shadows sit under grounded solids, behind their unchanged sprites.
+	for solid: Dictionary in Layout.SOLIDS:
+		var bounds:=Water.Art.prop_bounds(solid)
+		if bounds.end.y<430: continue
+		var x: float=bounds.position.x+bounds.size.x*0.5
+		var radius: float=bounds.size.x*0.42
+		view.draw_colored_polygon(PackedVector2Array([Vector2(x-radius,floor+1),Vector2(x-radius*0.52,floor-2),Vector2(x+radius*0.58,floor-1),Vector2(x+radius,floor+2),Vector2(x+radius*0.48,floor+6),Vector2(x-radius*0.49,floor+5)]),Color(0.10,0.20,0.18,0.28))
+	for index in 17:
+		var x:=18+posmod(index*157+index*index*11,1240)
+		var y:=floor+2+index%8
+		view.draw_colored_polygon(PackedVector2Array([Vector2(x,y),Vector2(x+3,y-1),Vector2(x+7,y+1),Vector2(x+2,y+2)]),Color("65785c") if index%2 else Color("58674e"))
 
 static func nest(view: Node2D, world: Node2D, t: float) -> void:
-	var p := Layout.HOME
-	# A small root hollow, with moss marking its only gameplay destination.
-	view.draw_rect(Rect2(p+Vector2(-24,-4),Vector2(48,27)),Color("123b42"))
-	view.draw_rect(Rect2(p+Vector2(-28,-4),Vector2(5,28)),Color("698571"))
-	view.draw_rect(Rect2(p+Vector2(23,-4),Vector2(5,28)),Color("698571"))
-	view.draw_rect(Rect2(p+Vector2(-28,22),Vector2(56,5)),Color("86b49a"))
-	view.draw_rect(Rect2(p+Vector2(-20,20),Vector2(40,2)),Color("8de0bd"))
+	var p:=Layout.HOME
+	# An irregular root arch surrounds the same destination and entrance.
+	view.draw_colored_polygon(PackedVector2Array([p+Vector2(-22,25),p+Vector2(-22,8),p+Vector2(-12,-1),p+Vector2(8,-3),p+Vector2(23,8),p+Vector2(23,25)]),Color("10363c"))
+	view.draw_colored_polygon(PackedVector2Array([p+Vector2(-29,24),p+Vector2(-28,3),p+Vector2(-21,-6),p+Vector2(-7,-12),p+Vector2(9,-10),p+Vector2(24,-3),p+Vector2(29,9),p+Vector2(27,25),p+Vector2(17,26),p+Vector2(20,13),p+Vector2(14,4),p+Vector2(2,1),p+Vector2(-10,4),p+Vector2(-17,12),p+Vector2(-17,25)]),Color("526b58"))
+	view.draw_polyline(PackedVector2Array([p+Vector2(-25,16),p+Vector2(-24,3),p+Vector2(-14,-4),p+Vector2(1,-8),p+Vector2(17,-3),p+Vector2(24,6)]),Color("82917a"),1)
+	view.draw_polyline(PackedVector2Array([p+Vector2(-26,22),p+Vector2(-22,8),p+Vector2(-16,4)]),Color("344f49"),2)
+	view.draw_polyline(PackedVector2Array([p+Vector2(22,24),p+Vector2(25,12),p+Vector2(21,6)]),Color("344f49"),2)
+	for moss: Array in [[-18,-5,6],[-6,-10,8],[14,-5,5],[-24,10,3]]:
+		view.draw_rect(Rect2(p+Vector2(moss[0],moss[1]),Vector2(moss[2],2)),Color("86a483"))
+	view.draw_colored_polygon(PackedVector2Array([p+Vector2(-24,26),p+Vector2(-17,21),p+Vector2(12,22),p+Vector2(26,27),p+Vector2(13,30),p+Vector2(-14,30)]),Color("5e7966"))
 	view.label_at(p+Vector2(-14,39),"巢穴",10,Color("8de0bd"))
 	if world.score>=world.food_target():
-		var y := int(sin(t*4)*2)-17
+		view.draw_rect(Rect2(p+Vector2(-15,23),Vector2(29,1)),Color("8de0bd"))
+		var y:=int(sin(t*4)*2)-17
 		view.draw_colored_polygon(PackedVector2Array([p+Vector2(-5,y),p+Vector2(5,y),p+Vector2(0,y+5)]),Color("8de0bd"))
