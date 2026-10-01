@@ -43,7 +43,7 @@ func _ready() -> void:
 	fish_texture = Art.fish()
 	gauge_texture = Gauge.metal_texture()
 	bobber_texture = Gauge.bobber_texture()
-	for solid in Layout.SOLIDS: props.append(Art.prop(solid))
+	props=Art.scene_props()
 	for index in Layout.PLANTS.size():
 		var frames: Array[Dictionary] = []
 		for frame in range(8): frames.append(_make_plant_layer(frame*TAU/12.0,index))
@@ -94,9 +94,10 @@ func _world(t: float) -> void:
 	_plants(t,true)
 	Scenery.floor_layer(self)
 	if line_frame.grass.is_empty(): _line_back()
-	for index in props.size():
-		var prop: Dictionary=props[index]
-		draw_texture(prop.texture,prop.position,Color(1,1,1,world.target_opacity[index]))
+	for prop: Dictionary in props:
+		var opacity:=1.0
+		for index: int in prop.targets: opacity=minf(opacity,world.target_opacity[index])
+		draw_texture(prop.texture,prop.position,Color(1,1,1,opacity))
 	_plants(t,false)
 	Scenery.foreground(self)
 	Scenery.nest(self,world,t)

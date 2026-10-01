@@ -65,6 +65,33 @@ static func prop(obstacle: Dictionary) -> Dictionary:
 	var bounds := prop_bounds(obstacle)
 	return {"texture":ImageTexture.create_from_image(prop_image(obstacle)),"position":bounds.position}
 
+# Assemble connected masks while fully opaque, then tint the whole tree once.
+# Blending separately faded branches would darken their overlap pixels.
+static func scene_props() -> Array[Dictionary]:
+	var result: Array[Dictionary]=[]
+	var consumed: Dictionary={}
+	for index in Wood.Layout.SOLIDS.size():
+		if consumed.has(index): continue
+		var group:=Wood.Layout.solid_fade_group(index)
+		var members: Array[int]=[]
+		var images: Array[Dictionary]=[]
+		var bounds:=Rect2i()
+		for candidate in Wood.Layout.SOLIDS.size():
+			if Wood.Layout.solid_fade_group(candidate)!=group: continue
+			consumed[candidate]=true; members.append(candidate)
+			var solid: Dictionary=Wood.Layout.SOLIDS[candidate]
+			var image:=prop_image(solid)
+			var at:=Vector2i(prop_bounds(solid).position)
+			var region:=Rect2i(at,image.get_size())
+			bounds=region if images.is_empty() else bounds.merge(region)
+			images.append({"image":image,"at":at})
+		var canvas:=Image.create(bounds.size.x,bounds.size.y,false,Image.FORMAT_RGBA8)
+		canvas.fill(Color.TRANSPARENT)
+		for layer: Dictionary in images:
+			canvas.blend_rect(layer.image,Rect2i(Vector2i.ZERO,layer.image.get_size()),layer.at-bounds.position)
+		result.append({"texture":ImageTexture.create_from_image(canvas),"position":Vector2(bounds.position),"targets":members})
+	return result
+
 static func prop_bounds(obstacle: Dictionary) -> Rect2:
 	var polygon := PackedVector2Array(obstacle.points)
 	var bounds := Rect2(polygon[0],Vector2.ZERO)

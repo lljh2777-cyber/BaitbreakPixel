@@ -19,6 +19,7 @@
 ## 验证与历史
 
 - [各版本测试报告](test-reports/README.md)
+- [0.22.4 整木透明效果验证](test-reports/TEST-REPORT-0.22.4.md)
 - [0.22.3 场景纵深与原生画面验证](test-reports/TEST-REPORT-0.22.3.md)
 - [0.22.2 版本命名与发行验证](test-reports/TEST-REPORT-0.22.2.md)
 - [水体层次与自然巢穴验证](test-reports/TEST-REPORT-WATER-DEPTH.md)

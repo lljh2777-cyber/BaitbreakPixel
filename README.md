@@ -2,15 +2,15 @@
 
 一个 2D 像素风格的人鱼对抗游戏：小鱼在水下觅食、缠线和逃脱，钓鱼人在岸边控竿、收放线与抄网。支持单机挑战、自由练习和一人对一鱼的局域网联机。
 
-**当前开发与本地试玩版本：0.22.3** · Windows x64 · Godot 4.7.2
+**当前开发与本地试玩版本：0.22.4** · Windows x64 · Godot 4.7.2
 
 ## 下载试玩
 
 从 [最新版 Releases](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/latest) 下载已发布的 `BaitbreakPixel-0.20.1.zip`，解压后运行 `BaitbreakPixel.exe`。EXE 和同目录的 PCK 需要放在一起，玩家无需安装 Godot。
 
-本分支的 Windows 试玩包位于本地相邻 `Releases/BaitbreakPixel-0.22.3`；公开发行页仍为 0.20.1。0.21 扩大水域并加入跟随镜头，完善草木石环境，鱼视角隐藏钩体、吊线及饵料身份，钩饵与散饵整团都随吸食向鱼嘴移动。0.22 加入轻吸剥外层、猛吸快速拉近的取舍，以及饵团拉伸、流线、拖尾和入口反馈。0.22.1 让鱼吸食时减速，默认游速为当前游动模式的 68%，松开后恢复。0.22.2 完善水体渐变、柔和透光、远景草木与视差，并加入沙泥水底、接地阴影和树根巢穴。0.22.3 参考自然池塘的岩坡、长茎荷叶和垂根，增加远中近景视差、收窄的沙砾通道、深色前景和木石体积明暗。
+本分支的 Windows 试玩包位于本地相邻 `Releases/BaitbreakPixel-0.22.4`；公开发行页仍为 0.20.1。0.21 扩大水域并加入跟随镜头，完善草木石环境，鱼视角隐藏钩体、吊线及饵料身份，钩饵与散饵整团都随吸食向鱼嘴移动。0.22 加入轻吸剥外层、猛吸快速拉近的取舍，以及饵团拉伸、流线、拖尾和入口反馈。0.22.1 让鱼吸食时减速，默认游速为当前游动模式的 68%，松开后恢复。0.22.2 完善水体渐变、柔和透光、远景草木与视差，并加入沙泥水底、接地阴影和树根巢穴。0.22.3 参考自然池塘的岩坡、长茎荷叶和垂根，增加远中近景视差、收窄的沙砾通道、深色前景和木石体积明暗。0.22.4 修正木头的透明效果：鱼接触任一相连部分，主干、枝干与根系同步淡出和恢复，连接处不再重复叠加透明度。
 
-本分支场景更新、原生画面与 Windows 包验证见 [0.22.3 场景纵深报告](docs/test-reports/TEST-REPORT-0.22.3.md)。
+本分支场景更新、原生画面与 Windows 包验证见 [0.22.4 整木透明效果验证](docs/test-reports/TEST-REPORT-0.22.4.md)。
 
 完整操作见 [试玩说明](docs/gameplay/PLAY.txt)，双人连接方法见 [联机指南](docs/gameplay/NETWORK.md)。
 
@@ -42,7 +42,7 @@
 .\Build-Pixel.ps1 -GodotDirectory 'D:\Tools\Godot_v4.7.2-stable_win64.exe'
 ```
 
-该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.22.3` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
+该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.22.4` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
 
 核心抄网逻辑检查示例（替换为本机引擎路径）：
 
@@ -50,7 +50,7 @@
 & 'D:\Tools\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe' --headless --path . --script res://tests/net_v021.gd -- --test-profile
 ```
 
-测试使用独立配置。其他检查与运行要求见 [0.22.3 场景纵深验证](docs/test-reports/TEST-REPORT-0.22.3.md)；带原生画面截图的脚本需要图形窗口，不使用 `--headless`。
+测试使用独立配置。其他检查与运行要求见 [0.22.4 整木透明效果验证](docs/test-reports/TEST-REPORT-0.22.4.md)；带原生画面截图的脚本需要图形窗口，不使用 `--headless`。
 
 ## 项目结构与文档
 

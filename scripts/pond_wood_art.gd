@@ -2,7 +2,7 @@ extends RefCounted
 # One material field per connected tree. Individual sprites retain the exact
 # collision masks and opacity targets, but overlapping pixels are identical.
 const Layout=preload("res://scripts/pond_layout.gd")
-const GROUPS: Array = [[1,4,5,6,11,12],[7,15],[17,18]]
+const GROUPS: Array = Layout.WOOD_GROUPS
 const PALETTE: Array[Color] = [Color("293f3b"),Color("424f40"),Color("666b4f"),Color("8c8b67")]
 const SHAPES: Dictionary = {
 	1:[[Vector2(337,171),Vector2(335,237),Vector2(343,299),Vector2(353,368),Vector2(355,434)],[8.0,14.0,18.0,26.0,25.0]],

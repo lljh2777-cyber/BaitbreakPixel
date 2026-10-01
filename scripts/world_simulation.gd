@@ -633,9 +633,19 @@ func target_is_wrapped(index: int) -> bool:
 	return false
 
 func _update_contacts(delta: float) -> void:
+	# Fade connected wood as one object; physical contact/coil selection below
+	# still uses each original target polygon independently.
+	var group_opacity: Dictionary={}
+	var touching_groups: Dictionary={}
 	for index in targets.size():
-		var opacity := rule("cover_opacity") if touching_target(index) else 1.0
-		target_opacity[index] = move_toward(target_opacity[index],opacity,delta*4)
+		var group: int=targets[index].get("fade_group",index)
+		group_opacity[group]=minf(group_opacity.get(group,1.0),target_opacity[index])
+		if touching_target(index): touching_groups[group]=true
+	for group: int in group_opacity:
+		var opacity: float=rule("cover_opacity") if touching_groups.has(group) else 1.0
+		group_opacity[group]=move_toward(group_opacity[group],opacity,delta*4)
+	for index in targets.size():
+		target_opacity[index]=group_opacity[targets[index].get("fade_group",index)]
 	if qte=="wrap":
 		contact_target = wrap_target
 		return

@@ -9,6 +9,9 @@ const WATER := Rect2(8,68,1264,363)
 const NET_AREA := Rect2(30,85,1220,315)
 const BAIT_SITES: Array[Vector2] = [Vector2(220,170),Vector2(450,230),Vector2(680,175),Vector2(880,255),Vector2(1070,190),Vector2(1160,315)]
 
+# Connected wood shares display opacity, while every part keeps its own geometry.
+const WOOD_GROUPS: Array = [[1,4,5,6,11,12],[7,15],[17,18]]
+
 # Root snag / fallen timber / stone shoal / reed margin, with open water between.
 # Fish pass through cover; the same silhouettes stop the net and anchor coils.
 const SOLIDS: Array = [
@@ -75,6 +78,15 @@ static func nearest_boundary(point: Vector2, polygon: PackedVector2Array) -> Vec
 static func touches(point: Vector2, radius: float, polygon: PackedVector2Array) -> bool:
 	return Geometry2D.is_point_in_polygon(point,polygon) or nearest_boundary(point,polygon).distance_squared_to(point) < radius*radius
 
+static func solid_fade_group(index: int) -> int:
+	var solid: Dictionary=SOLIDS[index]
+	if solid.kind=="wood":
+		for group: Array in WOOD_GROUPS:
+			if not int(solid.seed) in group: continue
+			for parent in SOLIDS.size():
+				if SOLIDS[parent].seed==group[0]: return parent
+	return index
+
 static func interaction_targets() -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	for index in SOLIDS.size():
@@ -82,7 +94,7 @@ static func interaction_targets() -> Array[Dictionary]:
 		var polygon := PackedVector2Array(solid.points)
 		var bounds := Rect2(polygon[0],Vector2.ZERO)
 		for point in polygon: bounds = bounds.expand(point)
-		result.append({"name":solid.get("name","石头" if solid.kind=="stone" else "木枝"),"kind":solid.kind,"polygon":polygon,"bounds":bounds})
+		result.append({"name":solid.get("name","石头" if solid.kind=="stone" else "木枝"),"kind":solid.kind,"polygon":polygon,"bounds":bounds,"fade_group":solid_fade_group(index)})
 	for plant in PLANTS:
 		var bounds := Rect2(plant.x-plant.width*0.5-3,plant.y-plant.height,plant.width+6,plant.height)
 		var polygon := PackedVector2Array([bounds.position,Vector2(bounds.end.x,bounds.position.y),bounds.end,Vector2(bounds.position.x,bounds.end.y)])

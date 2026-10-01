@@ -11,6 +11,7 @@ func check(ok: bool, title: String) -> void:
 	else: failed+=1; push_error("WOOD_JUNCTION_FAIL | "+title)
 func run() -> void:
 	var original:=var_to_bytes(Layout.SOLIDS)
+	var assemblies:=Art.scene_props()
 	for group: Array in Wood.GROUPS:
 		var layers: Array[Dictionary]=[]
 		var forward:=Image.create(1280,480,false,Image.FORMAT_RGBA8)
@@ -40,6 +41,13 @@ func run() -> void:
 			reverse.blend_rect(layer.image,Rect2i(Vector2i.ZERO,layer.image.get_size()),layer.at)
 		check(shared>0 and identical,"tree %d has identical bark and lighting in all %d overlap pixels" % [group[0],shared])
 		check(forward.get_data()==reverse.get_data(),"tree %d stays seamless when trunk/branch drawing order reverses" % group[0])
+		for assembly: Dictionary in assemblies:
+			if Layout.SOLIDS[assembly.targets[0]].seed!=group[0]: continue
+			var combined:=Image.create(1280,480,false,Image.FORMAT_RGBA8)
+			combined.fill(Color.TRANSPARENT)
+			var pixels: Image=assembly.texture.get_image()
+			combined.blend_rect(pixels,Rect2i(Vector2i.ZERO,pixels.get_size()),Vector2i(assembly.position))
+			check(combined.get_data()==forward.get_data(),"tree %d cached assembly preserves every original material and union-mask pixel" % group[0])
 		# Shared material never fills open water at a fork or expands a target.
 		var mask_matches:=true
 		var tree:=Wood.context(Layout.SOLIDS[group[0]-1])
