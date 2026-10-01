@@ -3,7 +3,7 @@ const Main=preload("res://scenes/main.tscn")
 var game: Node2D
 var checks:=0
 var original_mouse:=Vector2i.ZERO
-var output:="E:/Fish_catches_people/BaitbreakPixel/artifacts"
+var output:="res://artifacts"
 
 func _initialize() -> void: call_deferred("run")
 func require(ok: bool, message: String) -> bool:
@@ -53,6 +53,7 @@ func click_button(prefix: String) -> bool:
 	return require(false,"missing button "+prefix)
 
 func run() -> void:
+	DirAccess.make_dir_recursive_absolute(output)
 	original_mouse=DisplayServer.mouse_get_position()
 	game=Main.instantiate()
 	root.add_child(game)

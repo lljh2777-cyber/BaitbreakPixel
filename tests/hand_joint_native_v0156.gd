@@ -41,6 +41,7 @@ func connected_to_edge(picture: Image, seed_at: Vector2, checkpoints: Array) -> 
 	return true
 
 func run() -> void:
+	DirAccess.make_dir_recursive_absolute("res://artifacts")
 	var viewport := SubViewport.new(); viewport.size=Vector2i(640,327)
 	viewport.transparent_bg=true; viewport.disable_3d=true
 	viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS
@@ -62,6 +63,6 @@ func run() -> void:
 			if connected_to_edge(picture,seed,checks): passed+=1
 			else:
 				failed+=1; push_error("JOINT_ALPHA_GAP | travel="+str(travel)+" phase="+str(phase))
-				if failed==1: picture.save_png("E:/Fish_catches_people/BaitbreakPixel/artifacts/arm-gap-v0159.png")
+				if failed==1: picture.save_png("res://artifacts/arm-gap-v0159.png")
 	print("ARM_ALPHA_V0159 | continuous_alpha_poses=",passed," | failed=",failed)
 	viewport.queue_free(); await process_frame; quit(1 if failed else 0)

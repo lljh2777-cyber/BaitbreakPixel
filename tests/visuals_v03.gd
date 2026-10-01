@@ -2,7 +2,7 @@ extends SceneTree
 
 const Main = preload("res://scenes/main.tscn")
 var game: Node2D
-var output := "E:/Fish_catches_people/BaitbreakPixel/artifacts"
+var output := "res://artifacts"
 
 func _initialize() -> void:
 	call_deferred("run")
@@ -36,6 +36,7 @@ func require(ok: bool, message: String) -> bool:
 	return ok
 
 func run() -> void:
+	DirAccess.make_dir_recursive_absolute(output)
 	game = Main.instantiate()
 	root.add_child(game)
 	game.capture_mode = "visual-test"

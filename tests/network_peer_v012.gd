@@ -11,7 +11,7 @@ var actions: Dictionary={}
 var quitting := false
 var test_started := 0
 var prefix := "client"
-var output := "E:/Fish_catches_people/BaitbreakPixel/artifacts"
+var output := "res://artifacts"
 
 func _initialize() -> void: call_deferred("run")
 func check(ok: bool, description: String) -> void:
@@ -51,6 +51,7 @@ func once(name: String, when: bool) -> bool:
 	return true
 
 func run() -> void:
+	DirAccess.make_dir_recursive_absolute(output)
 	hosting="--peer-host" in OS.get_cmdline_user_args()
 	prefix="host" if hosting else "client"
 	test_started=Time.get_ticks_msec()

@@ -3,7 +3,7 @@ extends SceneTree
 # Reproducible visual fixtures; these do not modify the player's save or rules.
 const Main = preload("res://scenes/main.tscn")
 var game: Node2D
-const OUTPUT := "E:/Fish_catches_people/BaitbreakPixel/artifacts/"
+const OUTPUT := "res://artifacts/"
 
 func _initialize() -> void: call_deferred("run")
 
@@ -29,6 +29,7 @@ func fresh() -> void:
 	for grain in game.baits[0].grains: grain.pos=game.baits[0].pos+grain.offset
 
 func run() -> void:
+	DirAccess.make_dir_recursive_absolute(OUTPUT)
 	game=Main.instantiate()
 	root.add_child(game)
 	game.capture_mode="visual-angler"

@@ -19,7 +19,7 @@ func tick(frames: int, role: String) -> void:
 		game.advance_tick(fish_input,angler_input)
 func capture(name: String) -> void:
 	game.view.queue_redraw(); await process_frame; await RenderingServer.frame_post_draw
-	check(root.get_texture().get_image().save_png("E:/Fish_catches_people/BaitbreakPixel/artifacts/effort-"+name+"-v013.png")==OK,"capture "+name)
+	check(root.get_texture().get_image().save_png("res://artifacts/effort-"+name+"-v013.png")==OK,"capture "+name)
 func fresh(role: String) -> void:
 	game.reset(true,"angler"); game.player_role=role
 	game.menu.close(); game.set_process(false); game.set_physics_process(false)
@@ -27,6 +27,7 @@ func fresh(role: String) -> void:
 	game.baits[0].active=true; game.water_strength=0
 	game._enter_hook(0); game._attach_hook(); seen.clear()
 func run() -> void:
+	DirAccess.make_dir_recursive_absolute("res://artifacts")
 	game=Main.instantiate(); root.add_child(game)
 	game.capture_mode="effort-test"; game.save_path="user://effort-native-v013.cfg"
 	game.feedback_requested.connect(func(cue: String): seen.append(cue))

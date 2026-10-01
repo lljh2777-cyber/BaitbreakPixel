@@ -3,7 +3,7 @@ extends SceneTree
 const Main = preload("res://scenes/main.tscn")
 var game: Node2D
 var checks := 0
-var output := "E:/Fish_catches_people/BaitbreakPixel/artifacts"
+var output := "res://artifacts"
 
 func _initialize() -> void:
 	call_deferred("run")
@@ -50,6 +50,7 @@ func fresh(point: Vector2) -> void:
 	game.set_physics_process(true)
 
 func run() -> void:
+	DirAccess.make_dir_recursive_absolute(output)
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--visual-output="): output=argument.trim_prefix("--visual-output=")
 	game=Main.instantiate()

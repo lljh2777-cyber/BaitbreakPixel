@@ -8,6 +8,7 @@ var capture_tag:="v016"
 var free_spool_preview:=false
 func _initialize() -> void: call_deferred("setup")
 func setup() -> void:
+	DirAccess.make_dir_recursive_absolute("res://artifacts")
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-tag="): capture_tag=argument.get_slice("=",1)
 		if argument=="--free-spool-preview": free_spool_preview=true
@@ -43,7 +44,7 @@ func _process(_delta:float) -> bool:
 	return false
 func capture(index:int) -> void:
 	await RenderingServer.frame_post_draw
-	var path:="E:/Fish_catches_people/BaitbreakPixel/artifacts/reel-%04d-%s.png" % [index,capture_tag]
+	var path:="res://artifacts/reel-%04d-%s.png" % [index,capture_tag]
 	root.get_texture().get_image().save_png(path)
 	var tip:Vector2=Shore.rod_tip(game,game.elapsed)
 	var bobber:Vector2=Shore.float_position(game,game.elapsed)

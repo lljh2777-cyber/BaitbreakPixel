@@ -9,12 +9,13 @@ func capture(label: String) -> void:
 	game.view.queue_redraw()
 	await process_frame
 	await RenderingServer.frame_post_draw
-	var path := "E:/Fish_catches_people/BaitbreakPixel/artifacts/hand-"+label+"-v0159.png"
+	var path := "res://artifacts/hand-"+label+"-v0159.png"
 	var result := root.get_texture().get_image().save_png(path)
 	print("HAND_CAPTURE | ",label," | ",result)
 	if result!=OK: quit(1)
 
 func run() -> void:
+	DirAccess.make_dir_recursive_absolute("res://artifacts")
 	game=Main.instantiate(); root.add_child(game)
 	game.save_path="user://hand-preview-v0159.cfg"
 	game.capture_mode="hand-preview"; game.set_process(false); game.set_physics_process(false)

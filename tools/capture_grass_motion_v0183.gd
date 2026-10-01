@@ -12,8 +12,9 @@ func prepare(role:String,target:int=18) -> void:
 	game.qte_age=0.4+(game.qte_zone+game.qte_width*0.5)*2-game.TICK_SECONDS
 	game.effort_checks.angler.wait=12.0
 func capture(label:String) -> void:
-	root.get_texture().get_image().save_png("E:/Fish_catches_people/BaitbreakPixel/artifacts/line-"+label+"-v0183.png")
+	root.get_texture().get_image().save_png("res://artifacts/line-"+label+"-v0183.png")
 func run() -> void:
+	DirAccess.make_dir_recursive_absolute("res://artifacts")
 	game=Main.instantiate(); root.add_child(game); game.capture_mode="grass-binding"
 	game.save_path="user://grass-binding-v0183.cfg"; game.set_process(false); game.set_physics_process(false)
 	for role in ["fish","angler"]:

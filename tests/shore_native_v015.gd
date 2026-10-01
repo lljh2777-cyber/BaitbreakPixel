@@ -18,10 +18,11 @@ func mouse(point: Vector2, pressed: bool=false, motion: bool=false) -> void:
 	Input.parse_input_event(event); Input.flush_buffered_events()
 func capture(name: String) -> void:
 	game.view.queue_redraw(); await process_frame; await RenderingServer.frame_post_draw
-	check(root.get_texture().get_image().save_png("E:/Fish_catches_people/BaitbreakPixel/artifacts/shore-"+name+"-v015.png")==OK,"capture "+name)
+	check(root.get_texture().get_image().save_png("res://artifacts/shore-"+name+"-v015.png")==OK,"capture "+name)
 func tick(command: Dictionary, frames: int) -> void:
 	for frame in frames: game.advance_tick({},command)
 func run() -> void:
+	DirAccess.make_dir_recursive_absolute("res://artifacts")
 	game=Main.instantiate(); root.add_child(game); game.capture_mode="shore-test"
 	game.save_path="user://shore-native-v015.cfg"; game.set_process(false); game.set_physics_process(false)
 	game.reset(false,"angler"); game.menu.close(); game.water_strength=0

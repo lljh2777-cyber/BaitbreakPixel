@@ -20,6 +20,7 @@ func key(code: Key, pressed: bool) -> void:
 	var event:=InputEventKey.new(); event.physical_keycode=code; event.keycode=code; event.pressed=pressed
 	Input.parse_input_event(event); Input.flush_buffered_events()
 func run() -> void:
+	DirAccess.make_dir_recursive_absolute("res://artifacts")
 	hosting="--peer-host" in OS.get_cmdline_user_args(); began=Time.get_ticks_msec()
 	game=Main.instantiate(); root.add_child(game)
 	game.capture_mode="effort-peer"; game.set_process(false)
@@ -64,7 +65,7 @@ func _process(_delta: float) -> bool:
 	return false
 func capture() -> void:
 	await RenderingServer.frame_post_draw
-	check(root.get_texture().get_image().save_png("E:/Fish_catches_people/BaitbreakPixel/artifacts/effort-peer-"+("host" if hosting else "client")+"-v013.png")==OK,"capture live dual QTE")
+	check(root.get_texture().get_image().save_png("res://artifacts/effort-peer-"+("host" if hosting else "client")+"-v013.png")==OK,"capture live dual QTE")
 func finish() -> void:
 	if quitting: return
 	quitting=true; key(KEY_S,false); key(KEY_W,false); key(KEY_SPACE,false)

@@ -16,8 +16,9 @@ func capture(label: String) -> void:
 	game.view.queue_redraw()
 	await process_frame
 	await RenderingServer.frame_post_draw
-	check(root.get_texture().get_image().save_png("E:/Fish_catches_people/BaitbreakPixel/artifacts/reeling-"+label+"-v0122.png")==OK,"capture "+label)
+	check(root.get_texture().get_image().save_png("res://artifacts/reeling-"+label+"-v0122.png")==OK,"capture "+label)
 func run() -> void:
+	DirAccess.make_dir_recursive_absolute("res://artifacts")
 	game=Main.instantiate(); root.add_child(game)
 	game.capture_mode="reeling-test"; game.set_process(false)
 	game.save_path="user://reeling-native-v0122.cfg"

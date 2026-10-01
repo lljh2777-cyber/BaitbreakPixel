@@ -22,6 +22,7 @@ func setup(role:String) -> void:
 	game.tension=0.4; game.angler.x=310; game._rebuild_rope()
 	game.effort_checks.angler.wait=12.0
 func run() -> void:
+	DirAccess.make_dir_recursive_absolute("res://artifacts")
 	game=Main.instantiate(); root.add_child(game); game.capture_mode="untangle-native"
 	game.save_path="user://untangle-native-v018.cfg"; game.set_process(false); game.set_physics_process(false)
 	for role in ["angler","fish"]:
@@ -43,9 +44,9 @@ func run() -> void:
 				if first.is_empty(): first=pose
 			game.view.queue_redraw(); await process_frame; await RenderingServer.frame_post_draw
 			if state.active and state.age>0.75 and not captured:
-				root.get_texture().get_image().save_png("E:/Fish_catches_people/BaitbreakPixel/artifacts/untangle-"+role+"-check-v018.png"); captured=true
+				root.get_texture().get_image().save_png("res://artifacts/untangle-"+role+"-check-v018.png"); captured=true
 			if game.untangle_phase=="unwind" and game.untangle_age>0.30 and game.untangle_age<0.32:
-				root.get_texture().get_image().save_png("E:/Fish_catches_people/BaitbreakPixel/artifacts/untangle-"+role+"-unwind-v018.png")
+				root.get_texture().get_image().save_png("res://artifacts/untangle-"+role+"-unwind-v018.png")
 		check(pressed and unwind_seen and game.round_stats.unwrap_good==1,"actual W/S and Space complete one animated counter in "+role+" view")
 		check(not game.movement_locked(),"fish remains mobile after the counter in "+role+" view")
 		key(KEY_W,false); key(KEY_S,false); key(KEY_F,false); key(KEY_SPACE,false)

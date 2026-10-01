@@ -9,7 +9,7 @@ func check(ok: bool, message: String) -> void:
 	else: failed+=1; push_error("BALANCE_NATIVE_FAIL | "+message)
 func capture(name: String) -> void:
 	game.view.queue_redraw(); await process_frame; await RenderingServer.frame_post_draw
-	check(root.get_texture().get_image().save_png("E:/Fish_catches_people/BaitbreakPixel/artifacts/balance-"+name+"-v014.png")==OK,"capture "+name)
+	check(root.get_texture().get_image().save_png("res://artifacts/balance-"+name+"-v014.png")==OK,"capture "+name)
 func press_button(prefix: String) -> void:
 	await process_frame
 	for button in game.menu.content.find_children("*","Button",true,false):
@@ -24,6 +24,7 @@ func attach() -> void:
 	game.fish=Vector2(260,170); game.fish_before=game.fish; game.aim=Vector2.RIGHT
 	game.baits[0].active=true; game._enter_hook(0); game._attach_hook()
 func run() -> void:
+	DirAccess.make_dir_recursive_absolute("res://artifacts")
 	game=Main.instantiate(); root.add_child(game)
 	game.save_path="user://balance-native-v014.cfg"; game.capture_mode="balance-test"
 	game.set_process(false); game.set_physics_process(false)
