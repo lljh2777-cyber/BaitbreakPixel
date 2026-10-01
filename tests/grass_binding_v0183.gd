@@ -11,7 +11,7 @@ func check(ok:bool,label:String) -> void:
 func run() -> void:
 	var w=World.new(); w.reset_world({"ruleset":"duel","challenge":false,"water_strength":0})
 	w.fish=Vector2(150,260); w.baits[0].active=true; w._enter_hook(0); w._attach_hook()
-	for target in range(12,w.targets.size()):
+	for target in range(w.Layout.SOLIDS.size(),w.targets.size()):
 		var bounds:Rect2=w.targets[target].bounds
 		var good_width:=true; var anchored:=true; var connected:=true; var immutable:=true; var reversible:=true
 		for y in [bounds.position.y+4,bounds.get_center().y,306]:
@@ -37,7 +37,8 @@ func run() -> void:
 		check(connected and immutable,"both directions keep a single connected route and unchanged physics: target %d" % target)
 		check(reversible,"one open helical turn has separate entry/exit instead of a floating closed ring: target %d" % target)
 	# The wider leaves must not determine the near-tip binding radius.
-	var c:Dictionary=w.Layout.coil_at(w.targets[14],Vector2(148,224)); c.target=14
+	var clump:int=w.Layout.SOLIDS.size()+2
+	var c:Dictionary=w.Layout.coil_at(w.targets[clump],Vector2(148,224)); c.target=clump
 	var tip:=Grass.profile(w,c,1.0)
 	c.center.y=300
 	var base:=Grass.profile(w,c,1.0)
