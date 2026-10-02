@@ -18,7 +18,9 @@ func render(label: String="") -> Image:
 	for tick in 3: await process_frame
 	await RenderingServer.frame_post_draw
 	var picture:=root.get_texture().get_image()
-	if not label.is_empty(): picture.save_png(output.path_join(label+".png"))
+	if not label.is_empty() and picture.save_png(output.path_join(label+".png")) != OK:
+		failed += 1
+		push_error("CAPTURE_OUTPUT_FAIL | cannot save %s in %s" % [label, output])
 	return picture
 func fixture(point: Vector2) -> void:
 	game.reset(false,"fish"); game.menu.close(); game.set_physics_process(false)
@@ -26,9 +28,9 @@ func fixture(point: Vector2) -> void:
 	game.fish=point; game.fish_before=point; game.aim=Vector2.RIGHT
 	game.elapsed=2; game.notice_age=0
 func run() -> void:
-	for arg in OS.get_cmdline_user_args():
-		if arg.begins_with("--capture-output-directory="): output=arg.trim_prefix("--capture-output-directory=")
-	DirAccess.make_dir_recursive_absolute(output)
+	if not prepare_capture_output():
+		quit(2)
+		return
 	game=Main.instantiate(); root.add_child(game); game.capture_mode="water-depth"
 	game.set_process(false); game.set_physics_process(false)
 	var cache: Dictionary=game.view.water_layers.duplicate()
@@ -58,3 +60,16 @@ func run() -> void:
 	check(game.can_home() and game.HOME==Vector2(60,401),"natural nest preserves the original return-home destination")
 	print("WATER_NATIVE | passed=",passed," | failed=",failed)
 	quit(1 if failed else 0)
+
+func prepare_capture_output() -> bool:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--capture-output-directory="):
+			output = argument.trim_prefix("--capture-output-directory=")
+	if output.strip_edges().is_empty():
+		push_error("CAPTURE_OUTPUT_FAIL | --capture-output-directory must not be empty")
+		return false
+	var error := DirAccess.make_dir_recursive_absolute(output)
+	if error != OK:
+		push_error("CAPTURE_OUTPUT_FAIL | cannot create '%s': %s; choose a writable --capture-output-directory" % [output, error_string(error)])
+		return false
+	return true

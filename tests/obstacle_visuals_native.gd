@@ -27,7 +27,9 @@ func render(name:String="") -> Image:
 	for i in 3: await process_frame
 	await RenderingServer.frame_post_draw
 	var result:=root.get_texture().get_image()
-	if not name.is_empty(): result.save_png(output.path_join(name+".png"))
+	if not name.is_empty() and result.save_png(output.path_join(name+".png")) != OK:
+		failed += 1
+		push_error("CAPTURE_OUTPUT_FAIL | cannot save %s in %s" % [name, output])
 	return result
 func difference(a:Image,b:Image) -> float:
 	var sum:=0.0
@@ -37,9 +39,9 @@ func difference(a:Image,b:Image) -> float:
 			sum+=absf(one.r-two.r)+absf(one.g-two.g)+absf(one.b-two.b)
 	return sum
 func run() -> void:
-	for arg in OS.get_cmdline_user_args():
-		if arg.begins_with("--capture-output-directory="): output=arg.trim_prefix("--capture-output-directory=")
-	DirAccess.make_dir_recursive_absolute(output)
+	if not prepare_capture_output():
+		quit(2)
+		return
 	game=Main.instantiate(); root.add_child(game); game.capture_mode="obstacle-visual-check"
 	game.set_process(false); game.set_physics_process(false)
 	for plant_index in [1,14,18]:
@@ -91,3 +93,16 @@ func run() -> void:
 	check(log_full_delta>1.0 and log_faded_delta>0.01 and log_faded_delta<log_full_delta*0.6,"fallen log material respects whole-target fading (full %.2f, faded %.2f)" % [log_full_delta,log_faded_delta])
 	print("OBSTACLE_VISUAL_CHECK | passed=",passed," | failed=",failed)
 	quit(1 if failed else 0)
+
+func prepare_capture_output() -> bool:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--capture-output-directory="):
+			output = argument.trim_prefix("--capture-output-directory=")
+	if output.strip_edges().is_empty():
+		push_error("CAPTURE_OUTPUT_FAIL | --capture-output-directory must not be empty")
+		return false
+	var error := DirAccess.make_dir_recursive_absolute(output)
+	if error != OK:
+		push_error("CAPTURE_OUTPUT_FAIL | cannot create '%s': %s; choose a writable --capture-output-directory" % [output, error_string(error)])
+		return false
+	return true

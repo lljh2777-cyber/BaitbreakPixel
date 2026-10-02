@@ -29,6 +29,7 @@ const MAX_LINE_LENGTH := 720.0
 
 var fish := Layout.SPAWN
 var angler := AnglerController.new()
+# Compatibility-only state for snapshot schema 12; gameplay uses net_to.
 var net_aim := Vector2.ZERO
 var manual_net := false
 var net_trail := PackedVector2Array()

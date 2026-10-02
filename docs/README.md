@@ -18,12 +18,15 @@
 
 ## 验证与历史
 
+- [测试运行指南与套件状态](../tests/README.md)
 - [各版本测试报告](test-reports/README.md)
+- [0.22.6 开发版修复与测试维护（2026-10-02，未发行）](test-reports/TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md)
 - [0.22.5 测试与打包整理验证](test-reports/TEST-REPORT-0.22.5.md)
 - [0.22.4 整木透明效果验证](test-reports/TEST-REPORT-0.22.4.md)
 - [0.22.3 场景纵深与原生画面验证](test-reports/TEST-REPORT-0.22.3.md)
 - [0.22.2 版本命名与发行验证](test-reports/TEST-REPORT-0.22.2.md)
 - [水体层次与自然巢穴验证](test-reports/TEST-REPORT-WATER-DEPTH.md)
+- [树枝与主干连接验证](test-reports/TEST-REPORT-WOOD-JUNCTIONS.md)
 - [水底障碍物外观验证](test-reports/TEST-REPORT-OBSTACLE-ART.md)
 - [0.22.1 吸食减速验证](test-reports/TEST-REPORT-0.22.1.md)
 - [0.22.0 吸食取舍与反馈验证](test-reports/TEST-REPORT-0.22.0.md)
@@ -32,6 +35,7 @@
 - [0.21.0 水域与饵料验证](test-reports/TEST-REPORT-0.21.0.md)
 - [开发历史与旧版说明](history/CHANGELOG.md)
 - [Git 历史恢复说明](history/HISTORY-RECOVERY.md)
-- [发行包校验记录](../history/releases.json)
+- [版本与包索引维护约定](history/RELEASES.md)
+- [历史恢复与本地试玩包索引](../history/releases.json)
 
 文中的 `scripts/`、`tests/` 和 `assets/` 路径均以仓库根目录为基准。旧报告保留当时的结果和规则，不能作为当前玩法说明；当前操作以试玩说明为准。

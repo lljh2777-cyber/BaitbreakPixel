@@ -1,4 +1,5 @@
 extends SceneTree
+var output := "res://artifacts"
 const Main=preload("res://scenes/main.tscn")
 var game: Node2D
 var checks:=0
@@ -21,9 +22,11 @@ func capture(label: String) -> void:
 	game.view.queue_redraw()
 	await process_frame
 	await RenderingServer.frame_post_draw
-	check(root.get_texture().get_image().save_png("res://artifacts/reeling-"+label+"-v0122.png")==OK,"capture "+label)
+	check(root.get_texture().get_image().save_png(output+"/reeling-"+label+"-v0122.png")==OK,"capture "+label)
 func run() -> void:
-	DirAccess.make_dir_recursive_absolute("res://artifacts")
+	if not prepare_capture_output():
+		quit(2)
+		return
 	game=Main.instantiate(); root.add_child(game)
 	game.capture_mode="reeling-test"; game.set_process(false)
 	game.save_path="user://reeling-native-v0122.cfg"
@@ -58,3 +61,16 @@ func run() -> void:
 	check(is_zero_approx(game.reel_speed),"letting go brakes the spool promptly")
 	print("REEL_NATIVE_V0122_TESTS | passed=",checks," | failed=",failures)
 	game.queue_free(); await process_frame; quit(1 if failures else 0)
+
+func prepare_capture_output() -> bool:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--capture-output-directory="):
+			output = argument.trim_prefix("--capture-output-directory=")
+	if output.strip_edges().is_empty():
+		push_error("CAPTURE_OUTPUT_FAIL | --capture-output-directory must not be empty")
+		return false
+	var error := DirAccess.make_dir_recursive_absolute(output)
+	if error != OK:
+		push_error("CAPTURE_OUTPUT_FAIL | cannot create '%s': %s; choose a writable --capture-output-directory" % [output, error_string(error)])
+		return false
+	return true

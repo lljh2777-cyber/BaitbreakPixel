@@ -9,6 +9,8 @@ const WORLD_FIELDS: Array[String] = [
 	"net_action",
 	"qte_timing",
 	"fish",
+	# Deprecated compatibility field: retain for schema 12 snapshots/replays.
+	# Gameplay targets net_to; remove only with an explicit schema migration.
 	"net_aim",
 	"manual_net",
 	"net_trail",

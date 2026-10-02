@@ -1,4 +1,6 @@
 extends SceneTree
+var failures := 0
+var capture_failed := false
 
 const Main = preload("res://scenes/main.tscn")
 var game: Node2D
@@ -17,6 +19,9 @@ func capture(which: String) -> void:
 	await RenderingServer.frame_post_draw
 	var error := root.get_texture().get_image().save_png(output+"/"+which+"-v06.png")
 	print("VISUAL | ",which," | error=",error)
+	if error != OK:
+		capture_failed = true
+		push_error("CAPTURE_OUTPUT_FAIL | cannot save %s in %s: %s" % [which, output, error_string(error)])
 
 func tick(seconds: float, movement: Vector2=Vector2.ZERO) -> void:
 	for frame in ceili(seconds*60): game.step(1.0/60,movement,false,false)
@@ -49,6 +54,7 @@ func click_at(point: Vector2) -> void:
 func require(ok: bool, message: String) -> bool:
 	if not ok:
 		push_error(message)
+		failures += 1
 		quit(1)
 	return ok
 
@@ -60,7 +66,9 @@ func fresh(point: Vector2, count: int=0) -> void:
 	game.net_count=count
 
 func run() -> void:
-	DirAccess.make_dir_recursive_absolute(output)
+	if not prepare_capture_output():
+		quit(2)
+		return
 	game=Main.instantiate()
 	root.add_child(game)
 	game.capture_mode="net-visual"
@@ -149,4 +157,17 @@ func run() -> void:
 	print("NATIVE_NET_V06_PASS | pause button, N, sweep, descent, warning, dodge, capture, cover and practice recovery")
 	game.queue_free()
 	await create_timer(0.1).timeout
-	quit()
+	quit(1 if failures or capture_failed else 0)
+
+func prepare_capture_output() -> bool:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--capture-output-directory="):
+			output = argument.trim_prefix("--capture-output-directory=")
+	if output.strip_edges().is_empty():
+		push_error("CAPTURE_OUTPUT_FAIL | --capture-output-directory must not be empty")
+		return false
+	var error := DirAccess.make_dir_recursive_absolute(output)
+	if error != OK:
+		push_error("CAPTURE_OUTPUT_FAIL | cannot create '%s': %s; choose a writable --capture-output-directory" % [output, error_string(error)])
+		return false
+	return true

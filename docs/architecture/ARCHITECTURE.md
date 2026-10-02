@@ -1,6 +1,6 @@
 # 当前架构：0.19
 
-世界模拟、输入、AI、显示、联机分层继续保留。0.19 增加独立规则模块；完整职责与修改约束见 [RULES-ARCHITECTURE.md](RULES-ARCHITECTURE.md)。当前协议 0.22.5、快照 schema 12；水域与镜头见 [POND-ARCHITECTURE.md](POND-ARCHITECTURE.md)。以下为早期重构记录。
+世界模拟、输入、AI、显示、联机分层继续保留。0.19 增加独立规则模块；完整职责与修改约束见 [RULES-ARCHITECTURE.md](RULES-ARCHITECTURE.md)。当前协议 0.22.6、快照 schema 12；水域与镜头见 [POND-ARCHITECTURE.md](POND-ARCHITECTURE.md)。以下为早期重构记录。
 
 # 0.11：联机前的最小必要重构
 

@@ -51,7 +51,9 @@ func once(name: String, when: bool) -> bool:
 	return true
 
 func run() -> void:
-	DirAccess.make_dir_recursive_absolute(output)
+	if DisplayServer.get_name() != "headless" and not prepare_capture_output():
+		quit(2)
+		return
 	hosting="--peer-host" in OS.get_cmdline_user_args()
 	prefix="host" if hosting else "client"
 	test_started=Time.get_ticks_msec()
@@ -121,3 +123,16 @@ func finish() -> void:
 	game.queue_free()
 	await process_frame
 	quit(1 if failures else 0)
+
+func prepare_capture_output() -> bool:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--capture-output-directory="):
+			output = argument.trim_prefix("--capture-output-directory=")
+	if output.strip_edges().is_empty():
+		push_error("CAPTURE_OUTPUT_FAIL | --capture-output-directory must not be empty")
+		return false
+	var error := DirAccess.make_dir_recursive_absolute(output)
+	if error != OK:
+		push_error("CAPTURE_OUTPUT_FAIL | cannot create '%s': %s; choose a writable --capture-output-directory" % [output, error_string(error)])
+		return false
+	return true

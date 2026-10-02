@@ -16,3 +16,7 @@ Releases/
 export_credentials.cfg
 Thumbs.db
 .DS_Store
+
+# Python test-runner caches.
+__pycache__/
+*.py[cod]

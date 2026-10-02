@@ -19,7 +19,9 @@ func render(label: String="") -> Image:
 	for tick in 3: await process_frame
 	await RenderingServer.frame_post_draw
 	var image:=root.get_texture().get_image()
-	if not label.is_empty(): image.save_png(output.path_join(label+".png"))
+	if not label.is_empty() and image.save_png(output.path_join(label+".png")) != OK:
+		failed += 1
+		push_error("CAPTURE_OUTPUT_FAIL | cannot save %s in %s" % [label, output])
 	return image
 func set_opacity(group: int, opacity: float) -> void:
 	for index in Layout.SOLIDS.size():
@@ -31,9 +33,9 @@ func blend_matches(opaque: Image, faded: Image, hidden: Image, probe: Vector2, a
 	var contrast:=absf(a.r-b.r)+absf(a.g-b.g)+absf(a.b-b.b)
 	return contrast>0.035 and absf(expected.r-actual.r)<0.018 and absf(expected.g-actual.g)<0.018 and absf(expected.b-actual.b)<0.018
 func run() -> void:
-	for arg in OS.get_cmdline_user_args():
-		if arg.begins_with("--capture-output-directory="): output=arg.trim_prefix("--capture-output-directory=")
-	DirAccess.make_dir_recursive_absolute(output)
+	if not prepare_capture_output():
+		quit(2)
+		return
 	game=Main.instantiate(); root.add_child(game); game.capture_mode="wood-fade-test"
 	game.set_process(false); game.set_physics_process(false)
 	# Probe both solitary branch pixels and pixels shared with their parent.
@@ -68,3 +70,16 @@ func run() -> void:
 	check(default_fade,"normal rule defaults also fade the entire tree uniformly")
 	print("WOOD_FADE_NATIVE | passed=",passed," | failed=",failed)
 	quit(1 if failed else 0)
+
+func prepare_capture_output() -> bool:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--capture-output-directory="):
+			output = argument.trim_prefix("--capture-output-directory=")
+	if output.strip_edges().is_empty():
+		push_error("CAPTURE_OUTPUT_FAIL | --capture-output-directory must not be empty")
+		return false
+	var error := DirAccess.make_dir_recursive_absolute(output)
+	if error != OK:
+		push_error("CAPTURE_OUTPUT_FAIL | cannot create '%s': %s; choose a writable --capture-output-directory" % [output, error_string(error)])
+		return false
+	return true

@@ -18,7 +18,9 @@ func render(name: String="") -> Image:
 	for i in 3: await process_frame
 	await RenderingServer.frame_post_draw
 	var result:=root.get_texture().get_image()
-	if not name.is_empty(): result.save_png(output.path_join(name+".png"))
+	if not name.is_empty() and result.save_png(output.path_join(name+".png")) != OK:
+		failed += 1
+		push_error("CAPTURE_OUTPUT_FAIL | cannot save %s in %s" % [name, output])
 	return result
 func click(point: Vector2) -> void:
 	var event:=InputEventMouseButton.new(); event.button_index=MOUSE_BUTTON_LEFT; event.pressed=true
@@ -27,9 +29,9 @@ func click(point: Vector2) -> void:
 	game.advance_tick({},game.local_input.angler_command(game,game.screen_to_game(point)))
 	event=event.duplicate(); event.pressed=false; Input.parse_input_event(event); await process_frame
 func run() -> void:
-	for arg in OS.get_cmdline_user_args():
-		if arg.begins_with("--capture-output-directory="): output=arg.trim_prefix("--capture-output-directory=")
-	DirAccess.make_dir_recursive_absolute(output)
+	if not prepare_capture_output():
+		quit(2)
+		return
 	game=Main.instantiate(); root.add_child(game); game.capture_mode="pond21"
 	game.set_process(false); game.set_physics_process(false); game.reset(false,"fish"); game.menu.close()
 	game.set_physics_process(false); game.elapsed=2; game.notice_age=0
@@ -86,3 +88,16 @@ func run() -> void:
 	game.player_role="fish"; await render("net-fish-far-bank")
 	print("POND_NATIVE_V021 | passed=",passed," | failed=",failed)
 	quit(1 if failed else 0)
+
+func prepare_capture_output() -> bool:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--capture-output-directory="):
+			output = argument.trim_prefix("--capture-output-directory=")
+	if output.strip_edges().is_empty():
+		push_error("CAPTURE_OUTPUT_FAIL | --capture-output-directory must not be empty")
+		return false
+	var error := DirAccess.make_dir_recursive_absolute(output)
+	if error != OK:
+		push_error("CAPTURE_OUTPUT_FAIL | cannot create '%s': %s; choose a writable --capture-output-directory" % [output, error_string(error)])
+		return false
+	return true

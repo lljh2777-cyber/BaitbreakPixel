@@ -1280,5 +1280,105 @@
       },
       "exported_resources": 54
     }
+  ],
+  "index_notes": "releases preserves the 42 recovered archive manifests; recovery_date, method and validation apply only to that array. local_playtests transcribes subsequent test reports; hashes and sizes were not reverified from package bytes during indexing. Paths are relative to the repository root. See docs/history/RELEASES.md.",
+  "public_release_snapshot": {
+    "checked_on": "2026-10-02",
+    "version": "0.20.1",
+    "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.20.1",
+    "asset_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.20.1/BaitbreakPixel-0.20.1.zip",
+    "source_url": "https://api.github.com/repos/lljh2777-cyber/BaitbreakPixel/releases/latest"
+  },
+  "local_playtests": [
+    {
+      "version": "0.21.0",
+      "source_commit": "a65ad149376aedcc198b8d3788ed4e21e9db1a6b",
+      "report_date": "2026-09-30",
+      "test_report": "docs/test-reports/TEST-REPORT-0.21.0.md",
+      "github_release_published_at_report": false,
+      "pack_sha256": "c1dff8c7ddb1bb110151a1b8e18df40164a2329e57210ce12439201ee1ba8ea7",
+      "pack_bytes": 4007536,
+      "zip_bytes": 91284558
+    },
+    {
+      "version": "0.21.1",
+      "source_commit": "1ab38d018c7a15656f39bfc35afc240144629a4c",
+      "report_date": "2026-09-30",
+      "test_report": "docs/test-reports/TEST-REPORT-0.21.1.md",
+      "github_release_published_at_report": false,
+      "pack_sha256": "16d256959d5b55751469e18b8f7b85baffe0f4e055792cbb597adc7d4029d275",
+      "pack_bytes": 4007264,
+      "zip_bytes": 91284000
+    },
+    {
+      "version": "0.21.2",
+      "source_commit": "662b631649b8769a8fbb083887a13c69cc4f75c1",
+      "report_date": "2026-09-30",
+      "test_report": "docs/test-reports/TEST-REPORT-0.21.2.md",
+      "github_release_published_at_report": false,
+      "pack_sha256": "e4b22be462d3e7541c116c0f62dc0a94e8de73e96ef60aa6f2eca1b1ac53347a",
+      "pack_bytes": 4008272,
+      "zip_bytes": 91284684
+    },
+    {
+      "version": "0.22.0",
+      "source_commit": "da33c39511ed332443692cbde68be76e604a609d",
+      "report_date": "2026-09-30",
+      "test_report": "docs/test-reports/TEST-REPORT-0.22.0.md",
+      "github_release_published_at_report": false,
+      "pack_sha256": "b6cfeaa1ccb2b77d279c2e493c9aa72d76c119ca17b17e10584606b82eb75fbd",
+      "pack_bytes": 4010864,
+      "zip_bytes": 91285512
+    },
+    {
+      "version": "0.22.1",
+      "source_commit": "db215eb0440375ea3a31896aa056367c2ba1e711",
+      "report_date": "2026-09-30",
+      "test_report": "docs/test-reports/TEST-REPORT-0.22.1.md",
+      "github_release_published_at_report": false,
+      "pack_sha256": "d01e436a5fa0ad7d86a436154c84706b1f8f261019cf6bc9f80ecdf2808f91cc",
+      "pack_bytes": 4010896,
+      "zip_bytes": 91285587
+    },
+    {
+      "version": "0.22.2",
+      "source_commit": "cb931f787421ef36f288499502dff4324e799457",
+      "report_date": "2026-10-01",
+      "test_report": "docs/test-reports/TEST-REPORT-0.22.2.md",
+      "github_release_published_at_report": false,
+      "pack_sha256": "8598ce2d4c6af9712ecacb8c53d929f6139505b79e8cc7f7e6765dcf879987d4",
+      "pack_bytes": 4030312,
+      "zip_bytes": 91293665
+    },
+    {
+      "version": "0.22.3",
+      "source_commit": "527143324d8198490cfcc80727added4df448da6",
+      "report_date": "2026-10-01",
+      "test_report": "docs/test-reports/TEST-REPORT-0.22.3.md",
+      "github_release_published_at_report": false,
+      "pack_sha256": "4c3321c402c67d6667e4dc9a913ec3c3ebf05ba8462acb7a757916120c496008",
+      "pack_bytes": 4037548,
+      "zip_bytes": 91295570
+    },
+    {
+      "version": "0.22.4",
+      "source_commit": "b6705d65880f0e70c4d1421645b2a09c88a28487",
+      "report_date": "2026-10-01",
+      "test_report": "docs/test-reports/TEST-REPORT-0.22.4.md",
+      "github_release_published_at_report": false,
+      "pack_sha256": "9482c8ee1d7aa93673a50f55b6f3b7872bacf7772dab05fe709aa085a64d0cac",
+      "pack_bytes": 4039884,
+      "zip_bytes": 91296544
+    },
+    {
+      "version": "0.22.5",
+      "source_commit": "96faf4d57795cb2925339945aceee1182084e8e7",
+      "report_date": "2026-10-02",
+      "test_report": "docs/test-reports/TEST-REPORT-0.22.5.md",
+      "github_release_published_at_report": false,
+      "pack_sha256": "65c98d1367e90c0af4c211661621a0b4d98b6ea97d645bc64ee1683886f94730",
+      "pack_bytes": 2181080,
+      "zip_bytes": 88098452
+    }
   ]
 }

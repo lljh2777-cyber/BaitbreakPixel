@@ -4,11 +4,14 @@
 
 报告按版本由新到旧排列，记录当时的测试环境、范围和结果。旧版玩法断言可能已经退役；复现时请结合对应版本。
 
+- [测试运行指南与套件状态](../../tests/README.md)
+- [0.22.6 开发版修复与测试维护（2026-10-02，未发行）](TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md)
 - [版本 0.22.5](TEST-REPORT-0.22.5.md)
 - [版本 0.22.4](TEST-REPORT-0.22.4.md)
 - [版本 0.22.3](TEST-REPORT-0.22.3.md)
 - [版本 0.22.2](TEST-REPORT-0.22.2.md)
 - [水体层次与自然巢穴（2026-10-01，Windows 分支试玩包）](TEST-REPORT-WATER-DEPTH.md)
+- [树枝与主干连接（2026-10-01，源码验证，未另行发行）](TEST-REPORT-WOOD-JUNCTIONS.md)
 - [水底障碍物外观验证（2026-10-01，未发行）](TEST-REPORT-OBSTACLE-ART.md)
 - [版本 0.22.1](TEST-REPORT-0.22.1.md)
 - [版本 0.22.0](TEST-REPORT-0.22.0.md)

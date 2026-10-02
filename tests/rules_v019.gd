@@ -9,7 +9,12 @@ const Commands=preload("res://scripts/game_commands.gd")
 const Main=preload("res://scenes/main.tscn")
 var passed:=0
 var failed:=0
-func _initialize() -> void: call_deferred("run")
+# Historical source retained for comparison. The current suite covers the same
+# rules and uses fatigue_factor plus the two-point net route introduced in 0.20.
+# Stop before the retired net_capture_seconds() call can abort run() and hang.
+func _initialize() -> void:
+	print("RETIRED_SUITE | rules_v019 | replacement=res://tests/rules_v020.gd")
+	quit(2)
 func check(ok: bool, message: String) -> void:
 	if ok: passed+=1; print("RULE_PASS | ",message)
 	else: failed+=1; push_error("RULE_FAIL | "+message)

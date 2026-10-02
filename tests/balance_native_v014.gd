@@ -1,4 +1,5 @@
 extends SceneTree
+var output := "res://artifacts"
 const Main=preload("res://scenes/main.tscn")
 var game: Node2D
 var passed:=0
@@ -14,7 +15,7 @@ func check(ok: bool, message: String) -> void:
 	else: failed+=1; push_error("BALANCE_NATIVE_FAIL | "+message)
 func capture(name: String) -> void:
 	game.view.queue_redraw(); await process_frame; await RenderingServer.frame_post_draw
-	check(root.get_texture().get_image().save_png("res://artifacts/balance-"+name+"-v014.png")==OK,"capture "+name)
+	check(root.get_texture().get_image().save_png(output+"/balance-"+name+"-v014.png")==OK,"capture "+name)
 func press_button(prefix: String) -> void:
 	await process_frame
 	for button in game.menu.content.find_children("*","Button",true,false):
@@ -29,7 +30,9 @@ func attach() -> void:
 	game.fish=Vector2(260,170); game.fish_before=game.fish; game.aim=Vector2.RIGHT
 	game.baits[0].active=true; game._enter_hook(0); game._attach_hook()
 func run() -> void:
-	DirAccess.make_dir_recursive_absolute("res://artifacts")
+	if not prepare_capture_output():
+		quit(2)
+		return
 	game=Main.instantiate(); root.add_child(game)
 	game.save_path="user://balance-native-v014.cfg"; game.capture_mode="balance-test"
 	game.set_process(false); game.set_physics_process(false)
@@ -80,3 +83,16 @@ func run() -> void:
 	check(game.round_stats==before,"opening and restoring a result does not count it again")
 	print("BALANCE_NATIVE_V014_TESTS | passed=",passed," | failed=",failed)
 	game.queue_free(); await process_frame; quit(1 if failed else 0)
+
+func prepare_capture_output() -> bool:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--capture-output-directory="):
+			output = argument.trim_prefix("--capture-output-directory=")
+	if output.strip_edges().is_empty():
+		push_error("CAPTURE_OUTPUT_FAIL | --capture-output-directory must not be empty")
+		return false
+	var error := DirAccess.make_dir_recursive_absolute(output)
+	if error != OK:
+		push_error("CAPTURE_OUTPUT_FAIL | cannot create '%s': %s; choose a writable --capture-output-directory" % [output, error_string(error)])
+		return false
+	return true

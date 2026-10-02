@@ -22,6 +22,12 @@ static func save_profile(file: ConfigFile, values: Dictionary) -> void:
 
 static func preset_names(directory: String) -> PackedStringArray:
 	var names := PackedStringArray()
+	# A first-use preset folder does not exist until the first save. Confirm
+	# that only the leaf is absent; keep real parent/access/file errors visible.
+	if not DirAccess.dir_exists_absolute(directory):
+		var parent := DirAccess.open(directory.get_base_dir())
+		if parent!=null and not parent.dir_exists(directory.get_file()) and not parent.file_exists(directory.get_file()):
+			return names
 	for filename in DirAccess.get_files_at(directory):
 		if filename.ends_with(".json"): names.append(filename.trim_suffix(".json"))
 	names.sort()

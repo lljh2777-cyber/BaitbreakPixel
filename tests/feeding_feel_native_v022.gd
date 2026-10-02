@@ -18,7 +18,9 @@ func render(name: String="") -> Image:
 	for frame in 2: await process_frame
 	await RenderingServer.frame_post_draw
 	var picture:=root.get_texture().get_image()
-	if not name.is_empty(): picture.save_png(output.path_join(name+".png"))
+	if not name.is_empty() and picture.save_png(output.path_join(name+".png")) != OK:
+		failed += 1
+		push_error("CAPTURE_OUTPUT_FAIL | cannot save %s in %s" % [name, output])
 	return picture
 func fixture(power_value: float, has_hook: bool) -> void:
 	game.reset_world({"ruleset":"survival","seed":42,"rules":{"water_strength":0,"timer_enabled":false}})
@@ -29,9 +31,9 @@ func fixture(power_value: float, has_hook: bool) -> void:
 	bait.active=true; bait.hook=has_hook; bait.pos=game.mouth()+Vector2(26,0); bait.home=bait.pos; bait.angle=0.0
 	for grain in bait.grains: grain.pos=bait.pos+Vector2(grain.offset)
 func run() -> void:
-	for arg in OS.get_cmdline_user_args():
-		if arg.begins_with("--capture-output-directory="): output=arg.trim_prefix("--capture-output-directory=")
-	DirAccess.make_dir_recursive_absolute(output)
+	if not prepare_capture_output():
+		quit(2)
+		return
 	game=Main.instantiate(); root.add_child(game); game.capture_mode="feeding22"
 	game.set_process(false); game.set_physics_process(false); game.reset(false,"fish"); game.menu.close(); game.set_physics_process(false)
 	for power_value in [0.35,1.0]:
@@ -64,3 +66,16 @@ func run() -> void:
 		check(quiet.get_region(Rect2i(328,187,12,14)).get_data()!=intake.get_region(Rect2i(328,187,12,14)).get_data(),"a real intake timestamp lights the mouth, "+prefix)
 	print("FEEDING_FEEL_NATIVE_V022 | passed=",passed," | failed=",failed)
 	quit(1 if failed else 0)
+
+func prepare_capture_output() -> bool:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--capture-output-directory="):
+			output = argument.trim_prefix("--capture-output-directory=")
+	if output.strip_edges().is_empty():
+		push_error("CAPTURE_OUTPUT_FAIL | --capture-output-directory must not be empty")
+		return false
+	var error := DirAccess.make_dir_recursive_absolute(output)
+	if error != OK:
+		push_error("CAPTURE_OUTPUT_FAIL | cannot create '%s': %s; choose a writable --capture-output-directory" % [output, error_string(error)])
+		return false
+	return true
