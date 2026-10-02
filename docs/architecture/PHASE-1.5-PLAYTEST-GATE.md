@@ -169,7 +169,7 @@ CONFIRMED
 状态：
 
 ```text
-IMPLEMENTED
+WAITING_FOR_PLAYTEST
 ```
 
 现象：
@@ -245,7 +245,7 @@ Agent 自动验收：
 状态：
 
 ```text
-IMPLEMENTED
+WAITING_FOR_PLAYTEST
 ```
 
 现象：
@@ -365,7 +365,7 @@ bar width 随 satiety 单调变化
 状态：
 
 ```text
-IMPLEMENTED
+WAITING_FOR_PLAYTEST
 ```
 
 现象：
@@ -438,7 +438,7 @@ active bait state
 状态：
 
 ```text
-IMPLEMENTED
+WAITING_FOR_PLAYTEST
 ```
 
 现象：
@@ -499,7 +499,7 @@ current
 状态：
 
 ```text
-IMPLEMENTED
+WAITING_FOR_PLAYTEST
 ```
 
 现象：
@@ -613,7 +613,7 @@ W 和 S 不能得到同方向结果
 状态：
 
 ```text
-IMPLEMENTED
+WAITING_FOR_PLAYTEST
 ```
 
 现象：
@@ -1131,7 +1131,7 @@ PF-001 + PF-002
 
 来源：2026-10-02 用户的 v0.2 文档。上文保留规格与历史基线；当前开发源码已递增为 0.23.1。
 
-六项当前均为 IMPLEMENTED；待包验证完成后才改为 WAITING_FOR_PLAYTEST。Phase 1.5 仍 OPEN，Phase 2 仍 LOCKED。没有人工 CONFIRMED 项。
+六项代码完成后曾为 IMPLEMENTED；现源码与本地试玩资源包门禁完成，六项均为 WAITING_FOR_PLAYTEST。Phase 1.5 仍 OPEN，Phase 2 仍 LOCKED。没有人工 CONFIRMED 项。
 
 - PF-003：复现不是初始权威状态已部署，而是岸上表现按隐藏 hook 标记选择了环境饵。真实主鱼竿已正确未部署。现改为按 tackle + active + not removed 找自己的部署状态；开局提示“未下钩 · 按 Q”。不改随机钩生命周期，也不采用“仅藏画面”的补丁。
 - PF-005：种子 42、731、2649 均复现 W/S 实际长度可改变（1 秒 W −32.55、紧接 S +62.625），但未下钩假象/错误跟踪对象让操作不可理解。种子 2649 首次下钩为无钩饵，原来仍画环境钩饵。修正为同一物理 tackle，验证键位→本地输入→命令→网络序列化/净化→权威→快照表现一致。
@@ -1141,3 +1141,14 @@ PF-001 + PF-002
 - PF-002：自身许可感知增加 satiety 值；饱食显示为与体力相同 70×3 像素条，不显示数字百分比。网络鱼侧早已允许自身 satiety，未增加隐藏钩信息，snapshot schema 保持 13。
 
 测试、打包信息与明确未覆盖范围见 ../test-reports/PHASE15-VALIDATION.md。人工步骤见 ../gameplay/PLAY.txt 的 0.23.1 节。后续反馈在本文追加 Round 2 / PF-007 等；只有用户明确确认才能标为 CONFIRMED。
+
+## Round 1 打包门禁结果（2026-10-02）
+
+- 稳定代码：82977998f2ce154855d4560522bfc22394c78e75，Godot 4.7.2 官方引擎。
+- 源码 current 无窗口：36 套 / 18,512 断言通过，另有 editor-import 通过；Python runner 28 项通过。
+- 源码 native：17 套 / 381 条断言或日志标记通过，其中本轮 targeted 25 项。
+- PCK 无窗口：34 套 / 18,426 断言通过；net_v021、untangle_v021 因测试继承路径限制明确 BLOCKED，并由源码套件覆盖。
+- PCK native：17 套 / 381 条通过；本轮 17 张 640×360 PNG 与源码逐像素一致。
+- Windows x64 本地包配套官方 4.7.2 runtime，资源包启动和内容已验证。未在真实 Windows 上启动，未验证真实音频或用户手感。
+
+当前等待用户试玩，不代表 Phase 1.5 已结束；Phase 2 保持 LOCKED。

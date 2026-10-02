@@ -2,7 +2,7 @@
 
 日期：2026-10-02。基线：feature/dev 的 ddf790979e0ba5d81c2cda49ff1d44e2c3abb5be（0.23.0）。
 
-状态：IMPLEMENTED，包和原生画面正在验证。Phase 1.5 OPEN；Phase 2 LOCKED。没有任何人工 CONFIRMED。
+状态：WAITING_FOR_PLAYTEST，源码与本地试玩资源包门禁通过。Phase 1.5 OPEN；Phase 2 LOCKED。没有任何人工 CONFIRMED。
 
 ## 复现与范围
 
@@ -14,14 +14,23 @@
 - 钓鱼人收放反馈沿用物理速度/已积累相位，不以键是否按下作为动画触发；加上线方向高亮与实际松弛。上钩、自由线的长度上下限、判定、提鱼、网状态均不得虚假转动。
 - 鱼顶栏49像素，警惕另起11像素文字行，饱食70×3条与体力统一，不加百分比。使用允许的自身 satiety；schema13、不确定钩、鱼信息边界保留。
 
-## 自动验证记录（持续追加）
+## 自动验证结果
 
 - targeted phase15_controls：131项通过（含评审追加的上钩线长极限4项）。
 - Python runner：28项通过。
-- current headless：37套通过；最后补充的4个边界断言由targeted再次通过。
-- native source/packed、Windows包：验证中，尚不能视为通过。
+- 最终代码本地检查点：82977998f2ce154855d4560522bfc22394c78e75；远端同树提交：1a4985441e46e98f674e8482cb97fe9c1cf8d0f1（tree 61dc7d7ff1d7833c6d27b83c58c81df37d8bce3c）。Godot 4.7.2.stable.official.ed1daf0bf；官方引擎下载校验通过。
+- current 源码无窗口：36套、18,512断言通过；另有 editor-import 通过。早期记录中的37包含导入检查，不是37个测试套件。
+- source native：17套、381条断言或日志标记通过，其中 phase15_native 25项。
+- packed 无窗口：34套、18,426断言通过；0失败/超时。net_v021 / untangle_v021 因外部脚本继承 res://tests 限制明确 BLOCKED，已由源码套件覆盖，不算包内通过。
+- packed native：17套、381条断言或日志标记通过；本轮17张640×360截图与源码逐像素一致。
+- 原生视觉复核：未部署/重开无浮漂和部署线，收/放关键帧不同，松键停止；饱食0/5/20/50/100对应0/3/14/35/70像素，HUD不越界/重叠。此为图像检查，不能代替用户视觉与手感确认。
+- 独立真实ENet鱼主机/远端钓鱼人检查：Q首次部署、W/S权威长度及远端反馈、松键停止、D约90通过。
+- 本地Windows x64包使用匹配官方4.7.2运行程序；PCK含58资源，47脚本与代码提交逐一哈希相符，未包含tests/tools/docs/history/artifacts。版本0.23.1，包启动输出PIXEL_READY。
+- PCK SHA256：796a8f1e0512f582e4d42784c6a814eb195824873accc4b8554051557e6c57af。Windows程序实际启动仍需用户测试；没有公开发布GitHub Release。
 - 历史诊断不纳入 current 通过声明；不改已有 historical/retired 分类。
 - 没有改 hook随机逻辑、警惕权重、饱食衰减或本能强度，因此本轮不重新跑1000对策略统计。
+
+详细原生执行证据见 [PHASE15-NATIVE-VERIFICATION.md](PHASE15-NATIVE-VERIFICATION.md)。
 
 ## 人工试玩（5–10分钟）
 

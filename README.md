@@ -14,7 +14,7 @@
 
 ### Phase 1.5：0.23.1 人工试玩修正
 
-本分支源码为 0.23.1，可按下方“开发运行”直接运行或自行构建；包的实际验证状态见 [Phase 1.5 检查记录](docs/test-reports/PHASE15-VALIDATION.md)。既有 Windows 本地试玩包的记录见 [0.22.5 测试与打包报告](docs/test-reports/TEST-REPORT-0.22.5.md)；该包没有发布到 GitHub Releases，也不随源码仓库下载。当前脚本的默认构建输出为仓库相邻的 `Releases/BaitbreakPixel-0.23.1` 目录及 `BaitbreakPixel-0.23.1.zip`；这是输出约定，不表示这些包已存在。
+本分支源码为 0.23.1，可按下方“开发运行”直接运行或自行构建；本地Windows试玩包与源码/打包资源检查均已准备，真实Windows启动仍待人工确认。完整验证状态见 [Phase 1.5 检查记录](docs/test-reports/PHASE15-VALIDATION.md)。既有 Windows 本地试玩包的记录见 [0.22.5 测试与打包报告](docs/test-reports/TEST-REPORT-0.22.5.md)；该包没有发布到 GitHub Releases，也不随源码仓库下载。当前脚本的默认构建输出为仓库相邻的 `Releases/BaitbreakPixel-0.23.1` 目录及 `BaitbreakPixel-0.23.1.zip`；包单独提供，不存入源码仓库，也不发布为GitHub Release。
 
 本轮修复开局部署显示、收放线可见反馈、A/D 默认速度（+25%）和鱼侧 HUD。必须等待用户人工确认，Phase 2 冻结；反馈记录见 [阶段文档](docs/architecture/PHASE-1.5-PLAYTEST-GATE.md)。
 
