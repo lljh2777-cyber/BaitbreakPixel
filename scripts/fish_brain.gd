@@ -1,6 +1,8 @@
 extends RefCounted
 const Suspicion=preload("res://scripts/fish_suspicion.gd")
 var use_caution := false
+# Benchmark control shared by A/B; ordinary legacy AI remains unchanged.
+var commit_meal := false
 var beliefs: Dictionary={}
 var belief_bands: Dictionary={}
 var belief_focus := -1
@@ -138,7 +140,7 @@ func command(game: Node2D, delta: float) -> Dictionary:
 		state="带食物回巢"
 		return result
 	decision_age-=delta
-	if (decision_age<=0 and not (use_caution and game.feeding)) or food_target<0 or not food_position(game,food_target).is_finite():
+	if (decision_age<=0 and not (commit_meal and game.feeding)) or food_target<0 or not food_position(game,food_target).is_finite():
 		decision_age=0.6
 		var best := INF
 		var selected := -1

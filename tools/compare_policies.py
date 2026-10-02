@@ -17,7 +17,7 @@ metrics={'fish_win_rate':lambda row:float(row['winner']=='fish'),
          'hook_event_rate':lambda row:float(row['stats']['hook_events']>0),
          'hook_events_mean':lambda row:float(row['stats']['hook_events']),
          'food_consumed_mean':lambda row:float(row['food_consumed']),
-         'survival_seconds_mean':lambda row:float(row['duration'])}
+         'round_duration_mean':lambda row:float(row['duration'])}
 summary={'paired_seeds':len(seeds),'first_seed':min(seeds),'last_seed':max(seeds),
          'completed_distance':sum(row['completed'] for row in left.values()),
          'completed_cautious':sum(row['completed'] for row in right.values()),

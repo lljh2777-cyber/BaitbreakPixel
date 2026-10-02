@@ -23,5 +23,12 @@ func _initialize() -> void:
 	for bait in other.baits: bait.hook=not bait.hook
 	var comparison:=Brain.new(); comparison.reset(74); comparison.use_caution=true
 	check(comparison.command(other,1.0)==command,"policy command invariant to hidden hook truth")
+	var committed:=Brain.new(); committed.reset(74); committed.commit_meal=true
+	committed.command(world,1.0)
+	var held: int=committed.food_target
+	world.feeding=true; world.baits[1].pos=world.fish+Vector2(5,0)
+	committed.command(world,1.0)
+	check(committed.food_target==held,"shared meal commitment retains a still-edible target")
+	check(not distance.commit_meal,"ordinary legacy policy default remains unchanged")
 	world.free(); other.free()
 	print("POLICY | passed=%d | failed=%d" % [passed,failed]); quit(0 if failed==0 else 1)

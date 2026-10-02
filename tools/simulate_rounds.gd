@@ -29,7 +29,7 @@ func _initialize() -> void:
 		var seed_value:=first_seed+index
 		var world:=World.new()
 		world.reset_world({"seed":seed_value,"challenge":true,"ruleset":"survival"})
-		var brain:=FishBrain.new(); brain.reset(seed_value+100000); brain.use_caution=strategy=="cautious"
+		var brain:=FishBrain.new(); brain.reset(seed_value+100000); brain.use_caution=strategy=="cautious"; brain.commit_meal=strategy!="baseline"
 		var opponent:=AnglerBrain.new()
 		var trace: Array=[]
 		var previous_target:=-1
@@ -41,7 +41,7 @@ func _initialize() -> void:
 				previous_target=brain.food_target; previous_feeding=command.suck
 			world.advance_tick(command,opponent.command(world,World.TICK_SECONDS))
 			if world.match_over: break
-		var row: Dictionary={"seed":seed_value,"strategy":strategy,"duration":world.elapsed,"completed":world.match_over,
+		var row: Dictionary={"seed":seed_value,"strategy":strategy,"meal_commitment":brain.commit_meal,"duration":world.elapsed,"completed":world.match_over,
 			"winner":world.winner_role,"reason":world.reason,"food_consumed":world.score,"hook_contacts":world.hook_count,"hook_events":world.round_stats.get("hook_events",null),"escapes":world.escape_count,
 			"stats":world.round_stats.duplicate(true)}
 		if trace_enabled: row.decision_trace=trace
