@@ -577,13 +577,27 @@ func bait_slot(bait_id: int) -> int:
 
 func _assign_bait_identity(bait: Dictionary, forced_hook: int=-1) -> Dictionary:
 	bait.hook=bool(forced_hook) if forced_hook>=0 else rng.randf()<clampf(rule("bait_hook_probability")*rule("hook_danger"),0,1)
+	var initial_population:=2 if uses_mobile_tackle() else 3
+	var feasible: bool=rule("bait_danger_min")+rule("bait_safe_min")<=initial_population
 	if forced_hook<0:
 		var danger:=0
+		var population:=1
 		for existing in baits:
 			if existing.id==bait.id or not existing.active or not _remaining(existing): continue
+			population+=1
 			danger+=int(existing.hook and not existing.removed)
-		if danger<int(rule("bait_danger_min")): bait.hook=true
-		if danger>=int(rule("bait_danger_max")): bait.hook=false
+		var minimum:=int(rule("bait_danger_min"))
+		var maximum:=mini(int(rule("bait_danger_max")),maxi(0,population-int(rule("bait_safe_min"))))
+		var safe_allowed: bool=danger>=minimum and danger<=maximum
+		var hook_allowed: bool=danger+1>=minimum and danger+1<=maximum
+		feasible=safe_allowed or hook_allowed
+		if safe_allowed and not hook_allowed: bait.hook=false
+		elif hook_allowed and not safe_allowed: bait.hook=true
+		elif not feasible:
+			# Existing lifetimes never flip to repair an impossible configuration.
+			# Prefer a safe new target when the population cannot support both minima.
+			bait.hook=danger<minimum and danger<maximum
+	bait.hook_id=0
 	bait.drift_phase=rng.randf_range(0,TAU)
 	# Overlapping physical flutter distributions: useful evidence, never a label.
 	var flutter_a:=rng.randf_range(0.0,4.0)
@@ -595,22 +609,25 @@ func _assign_bait_identity(bait: Dictionary, forced_hook: int=-1) -> Dictionary:
 	if bait.hook:
 		bait.hook_id=next_hook_id
 		next_hook_id+=1
-	truth_events.append({"event":"BAIT_CREATED","tick":simulation_tick,"bait_id":bait.bait_id,"hooked":bait.hook,"seed":rng.seed})
+	truth_events.append({"event":"BAIT_CREATED","tick":simulation_tick,"bait_id":bait.bait_id,"hooked":bait.hook,"seed":rng.seed,"population_feasible":feasible})
 	if truth_events.size()>2048: truth_events.pop_front()
 	return bait
 
 func _initial_hook_assignments() -> Array[bool]:
 	var result: Array[bool]=[]
 	for index in 4: result.append(rng.randf()<clampf(rule("bait_hook_probability")*rule("hook_danger"),0,1))
-	var active: Array[int]=[0,1,3]
+	var active: Array[int]=[]
+	active.assign([1,3] if uses_mobile_tackle() else [0,1,3])
 	for index in range(active.size()-1,0,-1):
 		var other:=rng.randi_range(0,index)
 		var swap:=active[index]; active[index]=active[other]; active[other]=swap
+	var maximum:=mini(int(rule("bait_danger_max")),maxi(0,active.size()-int(rule("bait_safe_min"))))
+	var minimum:=mini(int(rule("bait_danger_min")),maximum)
 	var danger:=0
 	for index in active: danger+=int(result[index])
 	for index in active:
-		if danger<mini(int(rule("bait_danger_min")),active.size()) and not result[index]: result[index]=true; danger+=1
-		elif danger>mini(int(rule("bait_danger_max")),active.size()) and result[index]: result[index]=false; danger-=1
+		if danger<minimum and not result[index]: result[index]=true; danger+=1
+		elif danger>maximum and result[index]: result[index]=false; danger-=1
 	return result
 
 func _make_bait(index: int, batch: int = 0) -> Dictionary:
@@ -640,6 +657,17 @@ func refill_hook_bait(index: int) -> void:
 	baits[index]=_assign_bait_identity(_make_bait(index,bait_batch))
 	baits[index].active=false
 	baits[index].grains.append_array(loose)
+
+func redeploy_bait(index: int) -> void:
+	# Deployment is a new lifecycle, not a hidden flip of an existing identity.
+	if not _remaining(baits[index],true):
+		refill_hook_bait(index)
+	else:
+		var bait: Dictionary=baits[index].duplicate(true)
+		bait.created_tick=simulation_tick
+		bait.removed=false
+		baits[index]=_assign_bait_identity(bait)
+	baits[index].age=0.0
 
 func mouth() -> Vector2:
 	return fish + aim * 10
@@ -1190,8 +1218,7 @@ func _step_supply(delta: float) -> void:
 			cycle_phase = "refill"
 			cycle_age = 0
 		elif cycle_phase == "refill" and cycle_age >= rule("bait_refill"):
-			if not _remaining(baits[cycle_slot]): refill_hook_bait(cycle_slot)
-			if _remaining(baits[cycle_slot], true): supply_queue.append(cycle_slot)
+			if not cycle_slot in supply_queue: supply_queue.append(cycle_slot)
 			var next := -1
 			for candidate in supply_queue:
 				if not baits[candidate].active and (not uses_mobile_tackle() or not baits[candidate].tackle):
@@ -1199,6 +1226,7 @@ func _step_supply(delta: float) -> void:
 					break
 			if next >= 0:
 				supply_queue.erase(next)
+				redeploy_bait(next)
 				baits[next].active = true
 				baits[next].age = 0
 			cycle_phase = ""

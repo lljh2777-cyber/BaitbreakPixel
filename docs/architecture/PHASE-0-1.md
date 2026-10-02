@@ -88,3 +88,9 @@ Distance-only and cautious bot policies use the same public bait observation; ca
 Paired1000-seed policies (seeds1001–2000) are running from an immutable authority/policy tree with a source hash manifest. Final aggregate/native checks and report follow. Version0.23.0 denotes unreleased source only; no Windows package or GitHub Release has been produced.
 
 Normal local app launches initialize the session seed from entropy; only explicit test-profile/replay seed paths retain deterministic startup. Restarting the app therefore cannot memorize the same first hidden layout. This adapter change does not alter seeded authority batch runs.
+
+## Current-population constraints
+
+Danger/safety minima now apply to currently edible targets, not an undeployed reserve. Duel initialization balances its two ambient targets before the main rod is cast. Deployment/redeployment creates a new bait lifecycle and samples only an allowable new assignment; existing bait identities never flip to repair a population. The developer-only `bait_safe_min` defaults to1. Infeasible custom minima are explicitly marked in authority creation logs and favor a safe new target rather than changing older targets. Reappearing partial bait retains its remaining food; fully exhausted food is refilled.
+
+The original1000-pair policy comparison is retained as a negative result: distance wins87.9%, cautious86.0%; hook-event rates39.1% and40.2%. It does not pass the strategy-value gate. A separate50-pair pilot uses disjoint seeds and tests a limited strategy correction (caution-dependent stand-off plus keeping an active meal target), without altering hidden distributions.

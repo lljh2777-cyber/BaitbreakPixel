@@ -157,7 +157,7 @@ func cast(game: Node2D, point: Vector2) -> bool:
 	if game.hooked!=game.HookState.FREE or game.net_active() or casting or cast_cooldown>0: return false
 	var index := available_bait(game)
 	if index<0: return false
-	if game.baits[index].age>0: game.refill_hook_bait(index)
+	game.redeploy_bait(index)
 	for bait in game.baits:
 		if bait.tackle: bait.active=false
 	cast_index=index

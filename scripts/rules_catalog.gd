@@ -2,6 +2,7 @@ extends RefCounted
 
 # Single source of defaults, UI metadata, bounds and import validation.
 const ITEMS := [
+	{"group":"开发调参","id":"bait_safe_min","label":"bait_safe_min","value":1.0,"min":0.0,"max":3.0,"step":1.0,"unit":"","help":"当前可食用目标的安全数量下限；只有新生命周期可重抽，无法满足时记录诊断而不翻转旧饵。","developer":true},
 	{"group":"生存压力","id":"hook_danger","label":"鱼钩危险度（低 / 标准 / 高）","value":1.0,"min":0.5,"max":1.5,"step":0.5,"unit":"","help":"只在创建或重新挂饵事件决定，单团饵生命周期不变。","developer":false},
 	{"group":"开发调参","id":"bait_hook_probability","label":"bait_hook_probability","value":0.5,"min":0.0,"max":1.0,"step":0.05,"unit":"","help":"只在创建或重新挂饵事件决定，单团饵生命周期不变。","developer":true},
 	{"group":"开发调参","id":"bait_danger_min","label":"bait_danger_min","value":1.0,"min":0.0,"max":3.0,"step":1.0,"unit":"","help":"只在创建或重新挂饵事件决定，单团饵生命周期不变。","developer":true},

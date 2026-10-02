@@ -13,6 +13,18 @@ func _initialize() -> void:
 	var a:=World.new(); var b:=World.new()
 	var patterns: Dictionary={}
 	for seed_value in 100:
+		a.reset_world({"seed":seed_value,"ruleset":"duel"})
+		var danger:=0; var edible:=0
+		for bait in a.baits:
+			if bait.active: edible+=1; danger+=int(bait.hook)
+		check(edible==2 and danger==1,"undeployed duel already offers both safe and dangerous food")
+		var before_ids: Array=[]
+		for bait in a.baits: before_ids.append([bait.bait_id,bait.hook])
+		a.angler.deploy(a)
+		check(a.baits[0].bait_id!=int(before_ids[0][0]),"new cast allocates a new lifecycle")
+		check(a.baits[1].hook==before_ids[1][1] and a.baits[3].hook==before_ids[3][1],"deployment never flips existing targets")
+
+	for seed_value in 100:
 		a.reset_world({"seed":seed_value}); b.reset_world({"seed":seed_value})
 		check(assignments(a)==assignments(b),"reproducible creation events")
 		var danger:=0
@@ -36,5 +48,7 @@ func _initialize() -> void:
 	var invalid: Dictionary=a.capture_snapshot(); invalid.state.truth_events=["invalid"]
 	var unchanged: PackedByteArray=var_to_bytes(b.capture_snapshot())
 	check(not b.restore_snapshot(invalid) and unchanged==var_to_bytes(b.capture_snapshot()),"malformed truth log rejected before any restore mutation")
+	a.reset_world({"ruleset":"duel","rules":{"bait_danger_min":3.0,"bait_danger_max":3.0,"bait_safe_min":3.0}})
+	check(not a.truth_events[0].population_feasible,"impossible population minima are explicitly diagnosed")
 	a.free(); b.free()
 	print("RANDOM_HOOK | passed=%d | failed=%d" % [passed,failed]); quit(0 if failed==0 else 1)
