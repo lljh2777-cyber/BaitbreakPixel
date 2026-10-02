@@ -19,13 +19,15 @@ static func build(world: Node2D, include_visuals: bool = true) -> Dictionary:
 		var distance: float=fish_position.distance_to(Vector2(food) if food is Vector2 else Vector2(facts.pos))
 		var band:=distance_band(distance)
 		var hints:=_hints(facts,band,world.water_velocity(facts.pos))
+		if hints.has("motion"): hints.motion.velocity=Vector2(bait.get("motion_velocity",Vector2.ZERO))
+		if hints.has("disturbances"): hints.disturbances.recent_motion=int(world.simulation_tick)-int(bait.get("last_disturbance_tick",-1000))<=60
 		var entry: Dictionary={"bait_id":int(bait.bait_id),"band":band,"distance":distance,
 			"hints":hints,"has_attached_food":facts.attached,"food_position":food}
 		if include_visuals: entry.visual=_visual(bait,facts)
 		observed.append(entry)
 	return {"tick":int(world.simulation_tick),
 		"self":{"fish_id":int(world.fish_id),"position":fish_position,"mouth":world.mouth(),
-			"aim":Vector2(world.aim),"velocity":Vector2(world.velocity),"stamina":float(world.stamina),"satiety_band":world.satiety_band(),"instinct_drive":float(world.instinct_drive),
+			"aim":Vector2(world.aim),"velocity":Vector2(world.velocity),"stamina":float(world.stamina),"stamina_ratio":world.stamina_ratio(),"caution_state":world.caution_state,"satiety_band":world.satiety_band(),"instinct_drive":float(world.instinct_drive),
 			"score":float(world.score),"power":float(world.power),"feeding":bool(world.feeding)},
 		"perceived_baits":observed}
 

@@ -492,6 +492,11 @@
       "status": "current",
       "mode": "headless",
       "timeout_seconds": 90
+    },
+    "phase01_suspicion": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
     }
   }
 }

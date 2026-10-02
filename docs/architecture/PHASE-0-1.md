@@ -53,3 +53,9 @@ Checks: satiety14, stats11, architecture46, rules186 all pass. This is source de
 Low satiety increases a continuous urge toward the nearest observed edible target. The bias defaults to0.35 and has a hard0.45 cap; unit opposing input retains at least55% directional control. Settings expose low/standard/high intensity, while developer thresholds remain hidden. No suction button is changed; no automatic feeding pulse is implemented. HUD shows a qualitative urge cue.
 
 Focused checks: instinct81 (including72 opposing directions), satiety14 and authority architecture46 pass. Movement feel and any later pulse still require human playtest approval.
+
+## M1.3 — subjective caution
+
+Suspicion is tracked per bait_id and accepts only FishObservation. Measured bait velocity, water-relative motion, recent disturbance and visible suction displacement supply evidence. Hunger changes risk tolerance separately from suspicion. Fast rise/slow recovery plus hysteresis produce CALM/UNEASY/ALARMED; fish-view posture marks and text make the qualitative state readable. Interpretation happens before movement/contact resolution, using information already available at the decision point.
+
+Checks: hidden-hook equivalence, per-target evidence, separate hunger tolerance, smooth rise/slow recovery and hysteresis8; observation22 and architecture46 pass. Cue usefulness/false positives remain the later statistical gate, not established by these unit checks.

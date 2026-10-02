@@ -24,6 +24,7 @@ const WORLD_FIELDS: Array[String] = [
 	"power",
 	"stamina",
 	"satiety", "instinct_drive", "focus_bait_id",
+	"suspicion_by_bait", "caution_by_bait", "risk_tolerance", "caution_state",
 	"sprinting",
 	"sprint_exhausted",
 	"stamina_delay",
@@ -206,6 +207,11 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 	if not fields_match(world,state,WORLD_FIELDS) or not fields_match(world.angler,snapshot.rig,RIG_FIELDS): return false
 	if not state.get("net_action") is Dictionary or not record_matches(state.net_action,world.Net.fresh()): return false
 	if state.net_action.age<0 or state.net_action.slow_age<0 or state.net_action.impulse.length()>1000: return false
+	if not state.caution_state in ["CALM","UNEASY","ALARMED"] or state.risk_tolerance<0 or state.risk_tolerance>1: return false
+	for id in state.suspicion_by_bait:
+		if not id is int or id<=0 or not (state.suspicion_by_bait[id] is float or state.suspicion_by_bait[id] is int) or state.suspicion_by_bait[id]<0 or state.suspicion_by_bait[id]>1: return false
+	for id in state.caution_by_bait:
+		if not id is int or not state.caution_by_bait[id] in ["CALM","UNEASY","ALARMED"]: return false
 	if state.instinct_drive<0 or state.instinct_drive>1 or state.focus_bait_id< -1: return false
 	if state.satiety<0 or state.satiety>100: return false
 	if state.stamina<0 or state.stamina>state.rules.stamina_max: return false

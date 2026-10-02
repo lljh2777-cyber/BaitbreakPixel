@@ -10,6 +10,7 @@ const Net = preload("res://scripts/net_simulation.gd")
 var net_action := Net.fresh()
 
 const Observation=preload("res://scripts/fish_observation.gd")
+const Suspicion=preload("res://scripts/fish_suspicion.gd")
 const Instinct=preload("res://scripts/fish_instinct.gd")
 const Stats = preload("res://scripts/round_stats.gd")
 const Rope = preload("res://scripts/rope.gd")
@@ -47,6 +48,10 @@ var net_route_next := 1
 var velocity := Vector2.ZERO
 var aim := Vector2.RIGHT
 var power := 0.35
+var suspicion_by_bait: Dictionary={}
+var caution_by_bait: Dictionary={}
+var risk_tolerance := 0.0
+var caution_state := "CALM"
 var instinct_drive := 0.0
 var focus_bait_id := -1
 var satiety := 100.0
@@ -464,6 +469,10 @@ func reset_world(config: Dictionary = {}) -> void:
 	fish_before = fish
 	stamina = rule("stamina_max")*rule("stamina_initial")
 	satiety=rule("satiety_start")
+	suspicion_by_bait.clear()
+	caution_by_bait.clear()
+	risk_tolerance=0.0
+	caution_state="CALM"
 	instinct_drive=0.0
 	focus_bait_id=-1
 	sprinting = false
@@ -571,7 +580,7 @@ func _assign_bait_identity(bait: Dictionary) -> Dictionary:
 func _make_bait(index: int, batch: int = 0) -> Dictionary:
 	var hooked_bait := index % 2 == 0
 	var home := Vector2(232, 153) if hooked_bait else Vector2(532, 216)
-	var bait := {"bait_id":0,"hook_id":0,"rod_id":rod_id,"created_tick":simulation_tick,"id":index, "home":home, "pos":home, "angle":0.0, "suction_offset":Vector2.ZERO, "hook":hooked_bait, "removed":false, "active":index != 2, "age":0.0, "budget":0.0, "grains":[], "tip_before":home + Vector2(2, 1)}
+	var bait := {"bait_id":0,"hook_id":0,"rod_id":rod_id,"created_tick":simulation_tick,"motion_velocity":Vector2.ZERO,"last_disturbance_tick":-1000,"id":index, "home":home, "pos":home, "angle":0.0, "suction_offset":Vector2.ZERO, "hook":hooked_bait, "removed":false, "active":index != 2, "age":0.0, "budget":0.0, "grains":[], "tip_before":home + Vector2(2, 1)}
 	var counts := [24, 14, 6]
 	var radii := [7.0, 4.4, 1.9]
 	var grain_rng := RandomNumberGenerator.new()
@@ -788,7 +797,13 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 	simulation_tick+=1
 	elapsed += delta
 	if rules.hunger_enabled: satiety=clampf(satiety-rule("satiety_decay")*delta,0,100)
-	var instinct:=Instinct.sample(Observation.build(self,false),satiety,rules)
+	var perception:=Observation.build(self,false)
+	var interpretation:=Suspicion.update(suspicion_by_bait,caution_by_bait,perception,delta,rules)
+	suspicion_by_bait=interpretation["values"]
+	caution_by_bait=interpretation.bands
+	risk_tolerance=interpretation.risk_tolerance
+	caution_state=interpretation.caution_state
+	var instinct:=Instinct.sample(perception,satiety,rules)
 	instinct_drive=instinct.drive
 	focus_bait_id=instinct.bait_id
 	if not movement_locked(): movement=Instinct.combine(movement,instinct.bias)
@@ -861,6 +876,7 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2) -> void:
 	var bait := baits[index]
 	var old_tip := Vector2(bait.tip_before)
+	var old_position: Vector2=bait.pos
 	if bait.active:
 		bait.age += delta
 		# Advance passive/tackle motion from the base, without accumulating last tick's suction offset.
@@ -909,6 +925,9 @@ func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2) -> 
 			if grain.progress >= 1 and bait.budget >= 1:
 				grain.free = true
 				bait.budget -= 1
+	if delta>0:
+		bait.motion_velocity=(Vector2(bait.pos)-old_position)/delta
+		if (Vector2(bait.motion_velocity)-water_velocity(bait.pos)).length()>8: bait.last_disturbance_tick=simulation_tick
 	bait.tip_before = _tip(index)
 
 func _step_bait_suction(bait: Dictionary, delta: float, sucking: bool) -> void:

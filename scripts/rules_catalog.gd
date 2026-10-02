@@ -2,6 +2,9 @@ extends RefCounted
 
 # Single source of defaults, UI metadata, bounds and import validation.
 const ITEMS := [
+	{"group":"\u5f00\u53d1\u8c03\u53c2","id":"suspicion_decay","label":"suspicion_decay","value":0.18,"min":0.02,"max":2.0,"step":0.01,"unit":"","help":"Observation-only evidence weighting and slow recovery.","developer":true},
+	{"group":"\u5f00\u53d1\u8c03\u53c2","id":"suspicion_motion_weight","label":"suspicion_motion_weight","value":0.8,"min":0.0,"max":1.0,"step":0.05,"unit":"","help":"Observation-only evidence weighting and slow recovery.","developer":true},
+	{"group":"\u5f00\u53d1\u8c03\u53c2","id":"suspicion_disturbance_weight","label":"suspicion_disturbance_weight","value":0.25,"min":0.0,"max":1.0,"step":0.05,"unit":"","help":"Observation-only evidence weighting and slow recovery.","developer":true},
 	{"group":"生存压力","id":"instinct_strength","label":"本能强度（低 / 标准 / 高）","value":1.0,"min":0.5,"max":1.5,"step":0.5,"unit":"倍","help":"0.5 低 / 1 标准 / 1.5 高；只有运动偏移，玩家始终可以反向抵抗。","developer":false},
 	{"group":"开发调参","id":"instinct_start_threshold","label":"instinct_start_threshold","value":35.0,"min":10.0,"max":60.0,"step":1.0,"unit":"倍","help":"0.5 低 / 1 标准 / 1.5 高；只有运动偏移，玩家始终可以反向抵抗。","developer":true},
 	{"group":"开发调参","id":"instinct_max_strength","label":"instinct_max_strength","value":0.35,"min":0.0,"max":0.45,"step":0.01,"unit":"倍","help":"0.5 低 / 1 标准 / 1.5 高；只有运动偏移，玩家始终可以反向抵抗。","developer":true},
