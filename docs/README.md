@@ -18,6 +18,7 @@
 
 ## 验证与历史
 
+- [2026-10-02 GitHub 逐版补发与当前下载](test-reports/GITHUB-RELEASES-2026-10-02.md)
 - [测试运行指南与套件状态](../tests/README.md)
 - [各版本测试报告](test-reports/README.md)
 - [0.22.6 开发版修复与测试维护（2026-10-02，未发行）](test-reports/TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md)

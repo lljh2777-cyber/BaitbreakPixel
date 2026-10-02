@@ -2,21 +2,21 @@
 
 一个 2D 像素风格的人鱼对抗游戏：小鱼在水下觅食、缠线和逃脱，钓鱼人在岸边控竿、收放线与抄网。支持单机挑战、自由练习和一人对一鱼的局域网联机。
 
-**当前开发源码版本：0.24.1（Bite 试玩版源码，非公开发行）** · Windows x64 · Godot 4.7.2
+**当前源码与公开 Windows 试玩版本：0.24.1（自动咬食试玩版）** · Windows x64 · Godot 4.7.2
 
 ## 下载试玩
 
-### 公开发行包：0.20.1
+### 公开 Windows 试玩包：0.24.1
 
-从 [v0.20.1 发行页](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.20.1)下载 [BaitbreakPixel-0.20.1.zip](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.20.1/BaitbreakPixel-0.20.1.zip)，解压后运行 `BaitbreakPixel.exe`。EXE 与同目录 PCK 需要放在一起，玩家无需安装 Godot；发行页的 `Source code` 是源码，不能直接作为游戏运行。
+从 [v0.24.1 发行页](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.24.1)下载 [BaitbreakPixel-0.24.1.zip](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.24.1/BaitbreakPixel-0.24.1.zip)，解压后运行 `BaitbreakPixel.exe`。EXE 与同目录 PCK 保持在一起，玩家无需安装 Godot。小鱼嘴边有食物时自动咬食，左键吸食；完整操作见包内说明。
 
-截至 2026-10-02 核验，GitHub 最新公开发行仍为 0.20.1。该包不包含下面的 0.21 / 0.22 开发改动；包内“开始试玩.txt”对应其自身版本。
+2026-10-02 已逐版补齐 **0.21.0–0.24.1，共 14 个 Release**，每版均附 ZIP 和 `SHA256SUMS.txt`。其他版本见 [全部 Releases](https://github.com/lljh2777-cyber/BaitbreakPixel/releases)，包与源码标签核对结果见 [发布记录](docs/test-reports/GITHUB-RELEASES-2026-10-02.md)。0.24.1 仍用于人工试玩，发布包不代表已经完成人工手感与平衡验收。
 
 ### Phase 2.1：0.24.1 近距咬食人工试玩门
 
 仅在既有饵料上增加自动近距咬食：鱼嘴靠近可食颗粒至 18 px 内，自动摄入最多 4 粒；成功后冷却 0.40 秒，持续靠近会在冷却后再咬。无咬食按键。可咬食时优先于左键吸食，冷却期间仍可吸食，同 tick 不双重摄入。空处或远处不播放咬食反馈。没有自动位移、锁定或额外中钩骰子。当前只推进 P2.0 / P2.1；新饵型和平衡阶段等待用户试玩后再决定。
 
-本次只提交源码，由用户同步后运行；不生成、上传或发布试玩包。版本与构建脚本默认目录同步为 `Releases/BaitbreakPixel-0.24.1`，不表示已有包。见 [实现边界与 schema 14 计划](docs/architecture/PHASE02-BITE.md)、[Bite 验证与人工试玩清单](docs/test-reports/PHASE02-BITE-VALIDATION.md)。Phase 1.5 暂通过推进，后续反馈随时可重新打开；历史记录见 [Phase 1.5 验证](docs/test-reports/PHASE15-VALIDATION.md)。
+对应 Windows ZIP 已生成、核对并公开发布；本地目录为 `Releases/BaitbreakPixel-0.24.1`。见 [实现边界与 schema 14 计划](docs/architecture/PHASE02-BITE.md)、[Bite 验证与人工试玩清单](docs/test-reports/PHASE02-BITE-VALIDATION.md)。Phase 1.5 暂通过推进，后续反馈随时可重新打开；历史记录见 [Phase 1.5 验证](docs/test-reports/PHASE15-VALIDATION.md)。
 
 0.23.0 新增饱食度、可抵抗的本能偏移、基于可见线索的三档警惕，以及按饵生命周期随机决定的隐藏鱼钩。保持一条玩家鱼和现有主鱼竿，没有加入自动吸食、多鱼或长期记忆。实施与验收范围见 [Phase 0–1 检查记录](docs/architecture/PHASE-0-1.md)。当前版本尚需人工试玩确认控制手感与核心博弈，不能将自动统计当作“已经好玩”的证明。
 

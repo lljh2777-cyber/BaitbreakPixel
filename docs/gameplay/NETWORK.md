@@ -1,6 +1,6 @@
 # 0.24.1 双人联机（开发版）
 
-本文对应当前源码；本次仅提交 0.24.1 源码，不生成或提供 Windows 试玩包。既有本地包和公开下载版本见[项目首页](../../README.md)。
+本文对应 0.24.1 源码及公开 Windows 试玩包；双方可从[项目首页](../../README.md)下载同版本 ZIP，解压后启动。
 
 抄网操作、模块及规则迁移见 [NET-ARCHITECTURE.md](../architecture/NET-ARCHITECTURE.md)。
 
