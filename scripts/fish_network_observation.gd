@@ -17,7 +17,8 @@ const STATE_FIELDS := [
 	"stamina","satiety","instinct_drive","caution_state","sprinting","sprint_exhausted",
 	"fish_before","hooked","bound_bait","rope_path","rope_length","tension","reel_speed",
 	"qte_width","qte_result_width","latched","high_age","landing_age","landing","landing_from",
-	"resisting","feeding","line_catches","qte","qte_age","qte_zone","qte_origin",
+	"resisting","feeding",
+	"bite_cooldown", "bite_feedback_age","line_catches","qte","qte_age","qte_zone","qte_origin",
 	"qte_result","qte_result_kind","qte_result_zone","qte_result_progress","qte_result_age","qte_result_good",
 	"target_opacity","contact_target","wrap_target","wrap_retry","wraps","fish_line_length",
 	"untangle_phase","untangle_target","untangle_age","untangle_cooldown","result_flash","result_good",
@@ -129,6 +130,7 @@ static func valid(world: Node2D, snapshot: Dictionary) -> bool:
 	if state.net_action.age<0 or state.net_action.slow_age<0 or state.net_action.impulse.length()>1000: return false
 	if state.fish_id<=0 or state.rod_id<=0 or state.simulation_tick<0: return false
 	if not state.caution_state in ["CALM","UNEASY","ALARMED"] or state.instinct_drive<0 or state.instinct_drive>1: return false
+	if state.bite_cooldown<0 or state.bite_cooldown>state.rules.bite_cooldown+0.000001 or state.bite_feedback_age<0 or state.bite_feedback_age>world.BITE_FEEDBACK_SECONDS+0.000001: return false
 	if state.satiety<0 or state.satiety>100 or state.stamina<0 or state.stamina>state.rules.stamina_max: return false
 	if state.power<0 or state.power>1 or state.tension<0 or state.tension>1: return false
 	if state.elapsed<0 or state.clock<0 or state.last_eat_at < -10 or state.last_eat_at>state.elapsed+0.000001: return false

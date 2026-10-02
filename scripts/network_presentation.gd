@@ -30,6 +30,9 @@ func sample(now: float) -> Node2D:
 	var ratio := clampf((now-received_at)/interval,0,1)
 	world.elapsed=lerpf(a.elapsed,b.elapsed,ratio)
 	world.power=lerpf(a.power,b.power,ratio)
+	# Snap on a new discrete action; only interpolate decay inside that action.
+	world.bite_feedback_age=lerpf(a.bite_feedback_age,b.bite_feedback_age,ratio) if b.bite_feedback_age<=a.bite_feedback_age else b.bite_feedback_age
+	world.bite_cooldown=lerpf(a.bite_cooldown,b.bite_cooldown,ratio) if b.bite_cooldown<=a.bite_cooldown else b.bite_cooldown
 	world.simulation_tick=roundi(lerpf(a.simulation_tick,b.simulation_tick,ratio))
 	if a.hooked==b.hooked and a.net_state==b.net_state and not b.net_state=="caught" and not b.landing:
 		world.fish=Vector2(a.fish).lerp(b.fish,ratio)

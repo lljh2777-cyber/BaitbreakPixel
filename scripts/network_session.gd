@@ -251,7 +251,7 @@ func _handle(packet: Dictionary) -> void:
 			received_effect_seq=packet.seq
 			if packet.get("cues") is Array and packet.cues.size()<=16:
 				for cue in packet.cues:
-					if cue in ["eat","warn","splash","success","fail","break","tap","qte_fish","qte_angler","effort_good_fish","effort_bad_fish","effort_good_angler","effort_bad_angler"]: game.play_feedback(cue)
+					if cue in ["bite","eat","warn","splash","success","fail","break","tap","qte_fish","qte_angler","effort_good_fish","effort_bad_fish","effort_good_angler","effort_bad_angler"]: game.play_feedback(cue)
 
 func set_ready(value: bool = true) -> void:
 	if not active() or remote_id==0 or not status in ["waiting","finished"]: return
@@ -351,7 +351,7 @@ func tick(delta: float, local_command: Dictionary) -> void:
 			"seen_tick":displayed.simulation_tick,"qte_id":check.id if check.kind in ["effort","untangle"] and check.active else displayed.qte_id,"check_kind":"effort" if check.kind in ["effort","untangle"] and check.active else "regular","events":events,"gesture":gesture_id},true,1)
 
 func _check_identity() -> Array:
-	return [game.qte_id,game.qte,game.qte_result_age>0,game.effort_checks.fish.id,game.effort_checks.fish.active,game.effort_checks.fish.effect_age>0,game.effort_checks.angler.id,game.effort_checks.angler.active,game.effort_checks.angler.effect_age>0,game.net_state,game.net_action.observing,game.net_action.has_a,game.net_capture>0,game.untangle_phase,game.wraps.size()]
+	return [game.bite_feedback_age>0,game.qte_id,game.qte,game.qte_result_age>0,game.effort_checks.fish.id,game.effort_checks.fish.active,game.effort_checks.fish.effect_age>0,game.effort_checks.angler.id,game.effort_checks.angler.active,game.effort_checks.angler.effect_age>0,game.net_state,game.net_action.observing,game.net_action.has_a,game.net_capture>0,game.untangle_phase,game.wraps.size()]
 
 func _tag_events(command: Dictionary) -> Array[Dictionary]:
 	var result: Array[Dictionary]=[]
@@ -396,6 +396,7 @@ func _take_remote() -> Dictionary:
 	combined.qte=false
 	combined.qte_at_age=-1.0
 	combined.home=false
+	combined.bite=false
 	combined.deploy=false
 	combined.untangle=false
 	combined.qte_condition_valid=true
@@ -413,6 +414,7 @@ func _take_remote() -> Dictionary:
 			age=effort_history[remote_role][entry.seen_tick].age if entry.get("check_kind")=="effort" else (qte_history[entry.seen_tick].age if not game.qte.is_empty() else -1.0)
 			qte_accepted+=1
 			if entry.get("check_kind")=="effort": condition_valid=effort_history[remote_role][entry.seen_tick].valid
+		var bite: bool=combined.bite or cmd.get("bite",false)
 		var home: bool=combined.home or cmd.get("home",false)
 		var deploy: bool=combined.deploy or cmd.get("deploy",false)
 		var untangle: bool=combined.untangle or cmd.get("untangle",false)
@@ -420,6 +422,7 @@ func _take_remote() -> Dictionary:
 		combined.qte=pressed
 		combined.qte_at_age=age
 		combined.home=home
+		combined.bite=bite
 		combined.deploy=deploy
 		combined.untangle=untangle
 		combined.qte_condition_valid=condition_valid
