@@ -2,6 +2,14 @@ extends RefCounted
 
 # Single source of defaults, UI metadata, bounds and import validation.
 const ITEMS := [
+	{"group":"生存压力","id":"hunger_enabled","label":"饥饿系统","value":true,"help":"不进食会降低饱食度和体力恢复，极饿时产生可抵抗的觅食偏移。"},
+	{"group":"开发调参","id":"satiety_start","label":"satiety_start","value":100.0,"min":0.0,"max":100.0,"step":1.0,"unit":"","help":"Phase 1 physiology tuning; default decay calibrated from 1000-seed median 40.90 seconds.","developer":true},
+	{"group":"开发调参","id":"satiety_decay","label":"satiety_decay","value":2.445,"min":0.0,"max":10.0,"step":0.001,"unit":"","help":"Phase 1 physiology tuning; default decay calibrated from 1000-seed median 40.90 seconds.","developer":true},
+	{"group":"开发调参","id":"satiety_low_threshold","label":"satiety_low_threshold","value":60.0,"min":20.0,"max":90.0,"step":1.0,"unit":"","help":"Phase 1 physiology tuning; default decay calibrated from 1000-seed median 40.90 seconds.","developer":true},
+	{"group":"开发调参","id":"satiety_critical_threshold","label":"satiety_critical_threshold","value":25.0,"min":5.0,"max":50.0,"step":1.0,"unit":"","help":"Phase 1 physiology tuning; default decay calibrated from 1000-seed median 40.90 seconds.","developer":true},
+	{"group":"开发调参","id":"satiety_starving_threshold","label":"satiety_starving_threshold","value":10.0,"min":0.0,"max":20.0,"step":1.0,"unit":"","help":"Phase 1 physiology tuning; default decay calibrated from 1000-seed median 40.90 seconds.","developer":true},
+	{"group":"开发调参","id":"satiety_food_value","label":"satiety_food_value","value":2.0,"min":0.0,"max":10.0,"step":0.1,"unit":"","help":"Phase 1 physiology tuning; default decay calibrated from 1000-seed median 40.90 seconds.","developer":true},
+	{"group":"开发调参","id":"satiety_recovery_min","label":"satiety_recovery_min","value":0.35,"min":0.1,"max":1.0,"step":0.05,"unit":"","help":"Phase 1 physiology tuning; default decay calibrated from 1000-seed median 40.90 seconds.","developer":true},
 	{"group":"回合","id":"food_goal","label":"挑战食物目标","value":60.0,"min":1.0,"max":120.0,"step":1.0,"unit":"点","help":"固定地图共四团饵，总目标不能高于全部饵料收益。"},
 	{"group":"回合","id":"practice_goal","label":"练习食物目标","value":18.0,"min":1.0,"max":120.0,"step":1.0,"unit":"点","help":"练习模式回巢所需食物。"},
 	{"group":"回合","id":"time_limit","label":"挑战时间","value":360.0,"min":30.0,"max":1800.0,"step":10.0,"unit":"秒","help":"对战超时鱼获胜；鱼单人挑战超时失败。"},

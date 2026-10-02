@@ -25,7 +25,7 @@ static func build(world: Node2D, include_visuals: bool = true) -> Dictionary:
 		observed.append(entry)
 	return {"tick":int(world.simulation_tick),
 		"self":{"fish_id":int(world.fish_id),"position":fish_position,"mouth":world.mouth(),
-			"aim":Vector2(world.aim),"velocity":Vector2(world.velocity),"stamina":float(world.stamina),
+			"aim":Vector2(world.aim),"velocity":Vector2(world.velocity),"stamina":float(world.stamina),"satiety_band":world.satiety_band(),
 			"score":float(world.score),"power":float(world.power),"feeding":bool(world.feeding)},
 		"perceived_baits":observed}
 

@@ -7,7 +7,7 @@ func check(ok: bool, label: String) -> void:
 	else: failed+=1; push_error("STATS_FAIL | "+label)
 func _initialize() -> void:
 	var a:=World.new(); var b:=World.new()
-	a.reset_world({"seed":145}); b.reset_world({"seed":145})
+	a.reset_world({"seed":145,"rules":{"hunger_enabled":false}}); b.reset_world({"seed":145,"rules":{"hunger_enabled":false}})
 	for tick in 360:
 		var command: Dictionary={"move":Vector2.RIGHT,"suck":tick%60<30}
 		a.advance_tick(command,{}); b.advance_tick(command,{})

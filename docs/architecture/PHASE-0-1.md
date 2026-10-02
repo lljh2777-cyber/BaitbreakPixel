@@ -39,3 +39,11 @@ Remaining checkpoints: observation boundary, measurement/baseline gate, then seq
 - 1000 immutable-baseline seeds 1–1000 completed, zero censored. Median duration **40.90 seconds**, mean 39.24; food mean 58.27, fish bot win rate 93.8%
 - `docs/test-reports/PHASE0-BASELINE-1000.json` records source and exact harness hash. The older baseline's hook_events column actually meant mouth contacts; corrected summary labels it contacts and leaves unavailable actual attachment totals null
 - Duration/outcomes were unaffected by the accounting corrections. Final Phase0 gate still includes current headless/native regression results
+
+## M1.1 — satiety
+
+Phase0 gate: immutable f083b63 current29 headless + import passed; native15 + import passed, all134 PNGs identical to clean baseline; Python runner28 passed. Historical/manual suites were not included.
+
+Satiety starts at100, decays2.445/s from measured baseline median40.90s. With no food, hungry60 arrives at16.36s (0.40T), critical25 at30.67s (0.75T). Consumed pellets restore satiety, clamp0–100; low satiety reduces only stamina recovery at this checkpoint. The ordinary settings expose a hunger toggle, developer numeric parameters remain hidden from its search/categories. HUD/observation expose qualitative bands, not decimals.
+
+Checks: satiety14, stats11, architecture46, rules186 all pass. This is source development, not a new packaged release.

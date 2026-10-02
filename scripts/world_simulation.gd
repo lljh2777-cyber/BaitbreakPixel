@@ -45,6 +45,7 @@ var net_route_next := 1
 var velocity := Vector2.ZERO
 var aim := Vector2.RIGHT
 var power := 0.35
+var satiety := 100.0
 var stamina := 100.0
 var sprinting := false
 var sprint_exhausted := false
@@ -458,6 +459,7 @@ func reset_world(config: Dictionary = {}) -> void:
 	aim = Vector2.RIGHT
 	fish_before = fish
 	stamina = rule("stamina_max")*rule("stamina_initial")
+	satiety=rule("satiety_start")
 	sprinting = false
 	sprint_exhausted = false
 	stamina_delay = 0
@@ -779,6 +781,7 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 	if match_paused or match_over or not is_finite(delta) or delta<=0: return
 	simulation_tick+=1
 	elapsed += delta
+	if rules.hunger_enabled: satiety=clampf(satiety-rule("satiety_decay")*delta,0,100)
 	if hooked==HookState.HOOKED and not landing and net_state!="caught": round_stats.hooked_seconds+=delta
 	if fish.distance_to(HOME) > 34: started = true
 	if challenge and rules.timer_enabled and started: clock = minf(rule("time_limit"), clock + delta)
@@ -820,7 +823,7 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 		velocity = velocity.move_toward(movement.limit_length(1)*speed,delta*(rule("sprint_accel") if sprinting else rule("swim_accel")))
 		move_fish((velocity*vegetation_drag(fish)+water_velocity(fish)+pull+net_action.impulse)*delta)
 	else: velocity = Vector2.ZERO
-	if not sprinting and stamina_delay<=0: stamina = minf(rule("stamina_max"),stamina+delta*rule("stamina_recovery"))
+	if not sprinting and stamina_delay<=0: stamina = minf(rule("stamina_max"),stamina+delta*rule("stamina_recovery")*satiety_recovery())
 	_update_contacts(delta)
 	_step_net(delta)
 	if match_over or net_state=="caught": return
@@ -887,6 +890,7 @@ func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2) -> 
 				if not counted.has(grain.id):
 					counted[grain.id] = true
 					score += float(grain.points)
+					if rules.hunger_enabled: satiety=clampf(satiety+float(grain.points)*rule("satiety_food_value"),0,100)
 					last_eat_at = elapsed
 					stamina = minf(rule("stamina_max"),stamina+float(grain.points)*rule("food_recovery"))
 					play_feedback("eat")
@@ -1215,3 +1219,13 @@ func finish(success: bool, why: String) -> void:
 	velocity=Vector2.ZERO
 	match_ended.emit(winner_role,reason)
 
+
+func satiety_band() -> String:
+	if satiety<=rule("satiety_starving_threshold"): return "STARVING"
+	if satiety<=rule("satiety_critical_threshold"): return "CRITICAL"
+	if satiety<=rule("satiety_low_threshold"): return "HUNGRY"
+	return "NORMAL"
+
+func satiety_recovery() -> float:
+	if not rules.hunger_enabled: return 1.0
+	return lerpf(rule("satiety_recovery_min"),1.0,clampf(satiety/rule("satiety_low_threshold"),0,1))

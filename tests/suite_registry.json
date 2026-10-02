@@ -482,6 +482,11 @@
       "status": "current",
       "mode": "headless",
       "timeout_seconds": 90
+    },
+    "phase01_satiety": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
     }
   }
 }
