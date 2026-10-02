@@ -431,6 +431,18 @@ func _player(t: float) -> void:
 		draw_line(Vector2(-7,0),tail+Vector2(-4,3),GOLD if effort>1 else MINT,2)
 	draw_texture(fish_texture, Vector2(-12,-6),Color("b8c3c6") if effort<1 else Color.WHITE)
 	draw_set_transform(-camera_offset)
+	if world.bite_feedback_age>0:
+		# Local jaw-only snap: no authority displacement, targeting or danger color.
+		var progress: float=1.0-world.bite_feedback_age/world.BITE_FEEDBACK_SECONDS
+		var opening: float=sin(minf(1.0,progress/0.65)*PI)*3.0
+		var tip: Vector2=mouth+direction*(1.0+opening)
+		var side: Vector2=direction.orthogonal()
+		draw_line((mouth-direction*3-side*2).round(),(tip-side*opening).round(),GOLD,2)
+		draw_line((mouth-direction*3+side*2).round(),(tip+side*opening).round(),GOLD,2)
+		if progress>0.5:
+			for sign in [-1,1]:
+				var spark: Vector2=tip+direction*3+side*sign*(2+progress*3)
+				draw_rect(Rect2(spark.round(),Vector2.ONE),Color(CREAM,1.0-progress))
 	if world.hooked==world.HookState.HOOKED and not world.landing:
 		var pull: Vector2 = world.line_pull_velocity()
 		if pull.length()>2:
@@ -498,6 +510,7 @@ func _hud(t: float) -> void:
 	var target: float = world.food_target()
 	var food_age: float=world.elapsed-world.last_eat_at
 	label_at(Vector2(111,22), "食物 %02d / %d" % [int(world.score),int(target)], 15, GOLD if food_age>=0 and food_age<0.18 else CREAM)
+	label_at(Vector2(272,43),"F 咬食" if world.bite_cooldown<=0 else "咬食 %.1fs" % world.bite_cooldown,10,MINT if world.bite_cooldown<=0 else CREAM)
 	label_at(Vector2(272,15), "%s %d%%" % [world.Suction.mode_name(world.power),int(world.power*100)], 11, CREAM)
 	draw_rect(Rect2(272,22,68,3), Color("335762"))
 	draw_rect(Rect2(272,22,68*world.power,3), GOLD)
