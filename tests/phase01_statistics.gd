@@ -33,5 +33,12 @@ func _initialize() -> void:
 	check(b.round_stats.hook_events==0,"mouth contact is not an attached hook")
 	b._attach_hook()
 	check(b.round_stats.hook_events==1,"actual attachment records hook event")
+	b.reset_world({"rules":{"satiety_start":30.0,"satiety_decay":0.0,"satiety_critical_threshold":40.0}})
+	b.advance_tick({}, {})
+	check(b.round_stats.critical_satiety_seconds>0,"critical occupancy uses configured threshold")
+	b.rules.hunger_enabled=false
+	var critical: float=b.round_stats.critical_satiety_seconds
+	b.advance_tick({}, {})
+	check(b.round_stats.critical_satiety_seconds==critical,"disabled pressure does not accrue critical exposure")
 	a.free(); b.free()
 	print("STATS | passed=%d | failed=%d" % [passed,failed]); quit(0 if failed==0 else 1)

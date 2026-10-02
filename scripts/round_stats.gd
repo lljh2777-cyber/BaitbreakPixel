@@ -53,7 +53,7 @@ static func sample(world: Node2D, previous: Dictionary) -> void:
 	stats.satiety_min=minf(stats.satiety_min,satiety)
 	stats.satiety_integral+=satiety*dt
 	stats.satiety_mean=stats.satiety_integral/maxf(world.elapsed,0.0001)
-	if satiety<=25: stats.critical_satiety_seconds+=dt
+	if world.rules.hunger_enabled and satiety<=world.rule("satiety_critical_threshold"): stats.critical_satiety_seconds+=dt
 	var instinct: float=world.get("instinct_drive") if world.get("instinct_drive")!=null else 0.0
 	if instinct>0:
 		stats.instinct_total_duration+=dt

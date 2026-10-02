@@ -28,5 +28,16 @@ func _initialize() -> void:
 	check(falling["values"][a.baits[0].bait_id]>0.8,"recovery is slow")
 	a.advance_tick({}, {})
 	check(b.restore_snapshot(a.capture_snapshot()),"beliefs and states survive authority snapshot")
+	var absent: Dictionary=oa.duplicate(true); absent.perceived_baits=[]
+	var retained:=Suspicion.update(sa["values"],sa.bands,absent,1.0/60,a.rules)
+	check(retained["values"][a.baits[0].bait_id]>0.8,"brief occlusion does not erase remembered evidence")
+	var stable: Dictionary=oa.duplicate(true)
+	stable.perceived_baits[0].distance=31.0; stable.perceived_baits[1].distance=30.0
+	var focused:=Suspicion.update(sa["values"],sa.bands,stable,1.0/60,a.rules,a.baits[0].bait_id)
+	check(focused.focus_bait_id==a.baits[0].bait_id,"focus hysteresis resists near-equal target jitter")
+	var old_id: int=a.baits[0].bait_id
+	a.suspicion_by_bait[old_id]=0.9
+	a.refill_hook_bait(0); a.advance_tick({}, {})
+	check(not a.suspicion_by_bait.has(old_id),"destroyed lifecycle evidence is pruned")
 	a.free(); b.free()
 	print("SUSPICION | passed=%d | failed=%d" % [passed,failed]); quit(0 if failed==0 else 1)

@@ -23,9 +23,15 @@ static func band(value: float, previous: String) -> String:
 	if previous in ["UNEASY","ALARMED"] and value>=0.12: return "UNEASY"
 	return "UNEASY" if value>=0.22 else "CALM"
 
-static func update(previous: Dictionary, previous_bands: Dictionary, observation: Dictionary, delta: float, rules: Dictionary) -> Dictionary:
+static func update(previous: Dictionary, previous_bands: Dictionary, observation: Dictionary, delta: float, rules: Dictionary, previous_focus: int=-1) -> Dictionary:
 	var values: Dictionary={}
 	var bands: Dictionary={}
+	# Brief within-round evidence fades when occluded; disappearance is not proof of safety.
+	for id in previous:
+		var retained: float=float(previous[id])*exp(-maxf(delta,0)*float(rules.suspicion_decay))
+		if retained>0.005:
+			values[id]=retained
+			bands[id]=band(retained,previous_bands.get(id,"CALM"))
 	var focus:=-1
 	var nearest:=INF
 	var focus_tolerance:=0.0
@@ -39,5 +45,10 @@ static func update(previous: Dictionary, previous_bands: Dictionary, observation
 		bands[id]=band(maxf(0,float(values[id])-risk),previous_bands.get(id,"CALM"))
 		if bait.food_position is Vector2 and float(bait.distance)<nearest:
 			nearest=float(bait.distance); focus=id; focus_tolerance=risk
+	# A small distance margin prevents the displayed target alternating every frame.
+	for bait: Dictionary in observation.perceived_baits:
+		if int(bait.bait_id)==previous_focus and bait.food_position is Vector2 and float(bait.distance)<=nearest+12.0:
+			focus=previous_focus; focus_tolerance=tolerance(observation.self,bait)
+			break
 	return {"values":values,"bands":bands,"focus_bait_id":focus,"risk_tolerance":focus_tolerance,
 		"caution_state":bands.get(focus,"CALM")}

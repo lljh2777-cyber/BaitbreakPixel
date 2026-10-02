@@ -67,3 +67,10 @@ Creation/refill/rehanging allocates a new bait_id and samples hook truth only on
 Physical flutter distributions have identical0–4 support for both truths: max-of-two draws for hooked and min-of-two for safe. Their overlap supplies noisy evidence without any amplitude interval proving hook truth. Interpretation still reads only measured physical motion. Authority-only BAIT_CREATED events record ID/truth/seed; these must be excluded from fish networking in the next gate.
 
 Checks: random hook206, IDs13, suction41, architecture46 and tackle26 pass; final RNG-distribution/counter adjustments rerun random206+architecture46. Native acceptance fixture added for the upcoming final visual gate, not yet executed.
+
+## Phase1 interpretation/accounting review
+
+- Critical-satiety occupancy uses the configured threshold and does not accrue when hunger is disabled
+- Briefly unseen same-ID evidence decays instead of resetting; replaced/destroyed IDs are pruned from authority state
+- Focus switching has a12px margin so nearby competing targets do not make the displayed caution flicker every frame
+- Focused suspicion11, statistics13 and architecture46 pass after these corrections

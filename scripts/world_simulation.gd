@@ -562,7 +562,10 @@ func reset_world(config: Dictionary = {}) -> void:
 	if uses_mobile_tackle(): notice="Q 下钩 · W 收线 / S 放线 · E 观察 · 左键选择 A/B 抄网"
 
 func line_anchor(index: int) -> Vector2:
-	return angler.anchor() if uses_mobile_tackle() else Vector2(baits[index].home.x,53)
+	if uses_mobile_tackle(): return angler.anchor()
+	var bait: Dictionary=baits[index]
+	if bait.has("attachment_anchor"): return Vector2(bait.attachment_anchor)
+	return Vector2(bait.home.x,53)
 
 func _create_bait(index: int, forced_hook: int=-1) -> void:
 	baits.append(_assign_bait_identity(_make_bait(index),forced_hook))
@@ -831,14 +834,18 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 	elapsed += delta
 	if rules.hunger_enabled: satiety=clampf(satiety-rule("satiety_decay")*delta,0,100)
 	var perception:=Observation.build(self,false)
-	var interpretation:=Suspicion.update(suspicion_by_bait,caution_by_bait,perception,delta,rules)
+	var interpretation:=Suspicion.update(suspicion_by_bait,caution_by_bait,perception,delta,rules,focus_bait_id)
 	suspicion_by_bait=interpretation["values"]
 	caution_by_bait=interpretation.bands
+	for id in suspicion_by_bait.keys():
+		if bait_slot(int(id))<0:
+			suspicion_by_bait.erase(id)
+			caution_by_bait.erase(id)
 	risk_tolerance=interpretation.risk_tolerance
 	caution_state=interpretation.caution_state
 	var instinct:=Instinct.sample(perception,satiety,rules)
 	instinct_drive=instinct.drive
-	focus_bait_id=instinct.bait_id
+	focus_bait_id=interpretation.focus_bait_id
 	if not movement_locked(): movement=Instinct.combine(movement,instinct.bias)
 	if hooked==HookState.HOOKED and not landing and net_state!="caught": round_stats.hooked_seconds+=delta
 	if fish.distance_to(HOME) > 34: started = true
@@ -1285,6 +1292,7 @@ func finish(success: bool, why: String) -> void:
 
 
 func satiety_band() -> String:
+	if not rules.hunger_enabled: return "NORMAL"
 	if satiety<=rule("satiety_starving_threshold"): return "STARVING"
 	if satiety<=rule("satiety_critical_threshold"): return "CRITICAL"
 	if satiety<=rule("satiety_low_threshold"): return "HUNGRY"
