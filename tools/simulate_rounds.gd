@@ -10,7 +10,9 @@ func _initialize() -> void:
 	var first_seed:=1
 	var output:="res://artifacts/batch-baseline"
 	var strategy:="baseline"
+	var trace_enabled:=false
 	for arg in OS.get_cmdline_user_args():
+		if arg=="--trace": trace_enabled=true
 		if arg.begins_with("--rounds="): count=int(arg.get_slice("=",1))
 		if arg.begins_with("--seed="): first_seed=int(arg.get_slice("=",1))
 		if arg.begins_with("--output="): output=arg.substr(9)
@@ -29,12 +31,20 @@ func _initialize() -> void:
 		world.reset_world({"seed":seed_value,"challenge":true,"ruleset":"survival"})
 		var brain:=FishBrain.new(); brain.reset(seed_value+100000); brain.use_caution=strategy=="cautious"
 		var opponent:=AnglerBrain.new()
+		var trace: Array=[]
+		var previous_target:=-1
+		var previous_feeding:=false
 		for frame in 22200:
-			world.advance_tick(brain.command(world,World.TICK_SECONDS),opponent.command(world,World.TICK_SECONDS))
+			var command: Dictionary=brain.command(world,World.TICK_SECONDS)
+			if trace_enabled and (brain.food_target!=previous_target or bool(command.suck)!=previous_feeding):
+				trace.append({"time":world.elapsed,"bait_id":brain.food_target,"feeding":command.suck,"food":world.score,"state":brain.state})
+				previous_target=brain.food_target; previous_feeding=command.suck
+			world.advance_tick(command,opponent.command(world,World.TICK_SECONDS))
 			if world.match_over: break
 		var row: Dictionary={"seed":seed_value,"strategy":strategy,"duration":world.elapsed,"completed":world.match_over,
 			"winner":world.winner_role,"reason":world.reason,"food_consumed":world.score,"hook_contacts":world.hook_count,"hook_events":world.round_stats.get("hook_events",null),"escapes":world.escape_count,
 			"stats":world.round_stats.duplicate(true)}
+		if trace_enabled: row.decision_trace=trace
 		rows.append(row); durations.append(world.elapsed)
 		wins+=int(world.winner_role=="fish"); hooks+=world.hook_count; food+=world.score
 		world.free()

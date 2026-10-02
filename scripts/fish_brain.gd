@@ -138,7 +138,7 @@ func command(game: Node2D, delta: float) -> Dictionary:
 		state="带食物回巢"
 		return result
 	decision_age-=delta
-	if decision_age<=0 or food_target<0 or not food_position(game,food_target).is_finite():
+	if (decision_age<=0 and not (use_caution and game.feeding)) or food_target<0 or not food_position(game,food_target).is_finite():
 		decision_age=0.6
 		var best := INF
 		var selected := -1
@@ -156,6 +156,10 @@ func command(game: Node2D, delta: float) -> Dictionary:
 	var bait_position := food_position(game,food_target)
 	var attached: bool=Observation.find(observation,food_target).get("has_attached_food",false)
 	var approach_distance := minf(22.0,game.rule("suction_range")*0.5)
+	if use_caution:
+		var target_observation:=Observation.find(observation,food_target)
+		var effective: float=maxf(0,float(beliefs.get(food_target,0.0))-Suspicion.tolerance(observation.self,target_observation))
+		approach_distance=minf(game.rule("suction_range")*0.78,approach_distance+12.0*effective)
 	var destination := bait_position+Vector2(approach_side*approach_distance,0)
 	# Once a loose grain is in range, hold position instead of backing away from
 	# the very grain being pulled towards the mouth.
