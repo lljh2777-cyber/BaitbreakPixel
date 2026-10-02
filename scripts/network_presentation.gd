@@ -50,7 +50,7 @@ func sample(now: float) -> Node2D:
 	for index in world.baits.size():
 		var old: Dictionary=a.baits[index]
 		var latest: Dictionary=b.baits[index]
-		if old.id!=latest.id or old.active!=latest.active: continue
+		if old.bait_id!=latest.bait_id or old.active!=latest.active: continue
 		world.baits[index].pos=Vector2(old.pos).lerp(latest.pos,ratio)
 		world.baits[index].angle=lerp_angle(old.angle,latest.angle,ratio)
 		world.baits[index].suction_offset=Vector2(old.suction_offset).lerp(latest.suction_offset,ratio)

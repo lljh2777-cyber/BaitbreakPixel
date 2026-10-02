@@ -2,9 +2,10 @@ extends RefCounted
 
 # Explicit, versioned value schema. Local views, input sources and profiles are excluded.
 const Rules = preload("res://scripts/game_rules.gd")
-const SCHEMA := 12
+const SCHEMA := 13
 const MAP_ID := "pond_v2"
 const WORLD_FIELDS: Array[String] = [
+	"fish_id", "rod_id", "next_bait_id", "next_hook_id",
 	"rules",
 	"net_action",
 	"qte_timing",
@@ -230,9 +231,19 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 		if state.hooked!=2 or state.wraps.is_empty() or not state.wraps[-1] is Dictionary or state.wraps[-1].get("target")!=state.untangle_target: return false
 		if state.effort_checks.angler.kind!="untangle" or state.effort_checks.angler.active!=(state.untangle_phase=="check"): return false
 	var bait_reference: Dictionary=world._make_bait(0)
+	var bait_ids: Dictionary={}
+	var hook_ids: Dictionary={}
+	if state.fish_id<=0 or state.rod_id<=0 or state.next_bait_id<=0 or state.next_hook_id<=0: return false
 	for bait in state.baits:
 		if not bait is Dictionary or not bait.get("grains") is Array or bait.grains.size()>2048: return false
 		if not record_matches(bait,bait_reference,"grains") or bait.suction_offset.length()>78.001: return false
+		if bait.bait_id<=0 or bait.bait_id>=state.next_bait_id or bait_ids.has(bait.bait_id): return false
+		bait_ids[bait.bait_id]=true
+		if bait.rod_id!=state.rod_id or bait.created_tick<0 or bait.created_tick>state.simulation_tick: return false
+		if bait.hook_id<0 or bait.hook_id>=state.next_hook_id: return false
+		if bait.hook_id>0:
+			if hook_ids.has(bait.hook_id): return false
+			hook_ids[bait.hook_id]=true
 		for grain in bait.grains:
 			if not grain is Dictionary or not record_matches(grain,bait_reference.grains[0]): return false
 			if not grain.id is String or grain.id.is_empty() or grain.id.length()>64: return false

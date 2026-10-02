@@ -467,6 +467,11 @@
       "status": "current",
       "mode": "headless",
       "timeout_seconds": 90
+    },
+    "phase01_entities": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
     }
   }
 }

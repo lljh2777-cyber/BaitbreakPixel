@@ -27,6 +27,11 @@ const NET_MISS := 0.22
 const LINE_ELASTIC_PIXELS := 32.0
 const MAX_LINE_LENGTH := 720.0
 
+# IDs are stable within a round. Slots remain compatibility implementation details.
+var fish_id := 1
+var rod_id := 1
+var next_bait_id := 1
+var next_hook_id := 1
 var fish := Layout.SPAWN
 var angler := AnglerController.new()
 # Compatibility-only state for snapshot schema 12; gameplay uses net_to.
@@ -425,6 +430,10 @@ func reset_world(config: Dictionary = {}) -> void:
 	net_route.clear()
 	net_route_next=1
 	bait_batch=0
+	fish_id=1
+	rod_id=1
+	next_bait_id=1
+	next_hook_id=1
 	challenge = bool(config.get("challenge",false))
 	fish = Layout.SPAWN
 	power=rule("suction_initial")
@@ -534,12 +543,25 @@ func line_anchor(index: int) -> Vector2:
 	return angler.anchor() if uses_mobile_tackle() else Vector2(baits[index].home.x,53)
 
 func _create_bait(index: int) -> void:
-	baits.append(_make_bait(index))
+	baits.append(_assign_bait_identity(_make_bait(index)))
+
+func bait_slot(bait_id: int) -> int:
+	for index in baits.size():
+		if int(baits[index].bait_id)==bait_id: return index
+	return -1
+
+func _assign_bait_identity(bait: Dictionary) -> Dictionary:
+	bait.bait_id=next_bait_id
+	next_bait_id+=1
+	if bait.hook:
+		bait.hook_id=next_hook_id
+		next_hook_id+=1
+	return bait
 
 func _make_bait(index: int, batch: int = 0) -> Dictionary:
 	var hooked_bait := index % 2 == 0
 	var home := Vector2(232, 153) if hooked_bait else Vector2(532, 216)
-	var bait := {"id":index, "home":home, "pos":home, "angle":0.0, "suction_offset":Vector2.ZERO, "hook":hooked_bait, "removed":false, "active":index != 2, "age":0.0, "budget":0.0, "grains":[], "tip_before":home + Vector2(2, 1)}
+	var bait := {"bait_id":0,"hook_id":0,"rod_id":rod_id,"created_tick":simulation_tick,"id":index, "home":home, "pos":home, "angle":0.0, "suction_offset":Vector2.ZERO, "hook":hooked_bait, "removed":false, "active":index != 2, "age":0.0, "budget":0.0, "grains":[], "tip_before":home + Vector2(2, 1)}
 	var counts := [24, 14, 6]
 	var radii := [7.0, 4.4, 1.9]
 	var grain_rng := RandomNumberGenerator.new()
@@ -560,7 +582,7 @@ func refill_hook_bait(index: int) -> void:
 	var loose: Array=[]
 	for grain in baits[index].grains:
 		if grain.free and not grain.eaten: loose.append(grain)
-	baits[index]=_make_bait(index,bait_batch)
+	baits[index]=_assign_bait_identity(_make_bait(index,bait_batch))
 	baits[index].active=false
 	baits[index].grains.append_array(loose)
 
