@@ -9,6 +9,8 @@ const Effort = preload("res://scripts/effort_check.gd")
 const Net = preload("res://scripts/net_simulation.gd")
 var net_action := Net.fresh()
 
+const Observation=preload("res://scripts/fish_observation.gd")
+const Instinct=preload("res://scripts/fish_instinct.gd")
 const Stats = preload("res://scripts/round_stats.gd")
 const Rope = preload("res://scripts/rope.gd")
 const Layout = preload("res://scripts/pond_layout.gd")
@@ -45,6 +47,8 @@ var net_route_next := 1
 var velocity := Vector2.ZERO
 var aim := Vector2.RIGHT
 var power := 0.35
+var instinct_drive := 0.0
+var focus_bait_id := -1
 var satiety := 100.0
 var stamina := 100.0
 var sprinting := false
@@ -460,6 +464,8 @@ func reset_world(config: Dictionary = {}) -> void:
 	fish_before = fish
 	stamina = rule("stamina_max")*rule("stamina_initial")
 	satiety=rule("satiety_start")
+	instinct_drive=0.0
+	focus_bait_id=-1
 	sprinting = false
 	sprint_exhausted = false
 	stamina_delay = 0
@@ -782,6 +788,10 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 	simulation_tick+=1
 	elapsed += delta
 	if rules.hunger_enabled: satiety=clampf(satiety-rule("satiety_decay")*delta,0,100)
+	var instinct:=Instinct.sample(Observation.build(self,false),satiety,rules)
+	instinct_drive=instinct.drive
+	focus_bait_id=instinct.bait_id
+	if not movement_locked(): movement=Instinct.combine(movement,instinct.bias)
 	if hooked==HookState.HOOKED and not landing and net_state!="caught": round_stats.hooked_seconds+=delta
 	if fish.distance_to(HOME) > 34: started = true
 	if challenge and rules.timer_enabled and started: clock = minf(rule("time_limit"), clock + delta)

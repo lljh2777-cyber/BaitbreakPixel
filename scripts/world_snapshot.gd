@@ -23,7 +23,7 @@ const WORLD_FIELDS: Array[String] = [
 	"aim",
 	"power",
 	"stamina",
-	"satiety",
+	"satiety", "instinct_drive", "focus_bait_id",
 	"sprinting",
 	"sprint_exhausted",
 	"stamina_delay",
@@ -206,6 +206,7 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 	if not fields_match(world,state,WORLD_FIELDS) or not fields_match(world.angler,snapshot.rig,RIG_FIELDS): return false
 	if not state.get("net_action") is Dictionary or not record_matches(state.net_action,world.Net.fresh()): return false
 	if state.net_action.age<0 or state.net_action.slow_age<0 or state.net_action.impulse.length()>1000: return false
+	if state.instinct_drive<0 or state.instinct_drive>1 or state.focus_bait_id< -1: return false
 	if state.satiety<0 or state.satiety>100: return false
 	if state.stamina<0 or state.stamina>state.rules.stamina_max: return false
 	if state.last_eat_at < -10 or state.last_eat_at > state.elapsed+0.000001: return false

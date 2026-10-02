@@ -2,6 +2,9 @@ extends RefCounted
 
 # Single source of defaults, UI metadata, bounds and import validation.
 const ITEMS := [
+	{"group":"生存压力","id":"instinct_strength","label":"本能强度（低 / 标准 / 高）","value":1.0,"min":0.5,"max":1.5,"step":0.5,"unit":"倍","help":"0.5 低 / 1 标准 / 1.5 高；只有运动偏移，玩家始终可以反向抵抗。","developer":false},
+	{"group":"开发调参","id":"instinct_start_threshold","label":"instinct_start_threshold","value":35.0,"min":10.0,"max":60.0,"step":1.0,"unit":"倍","help":"0.5 低 / 1 标准 / 1.5 高；只有运动偏移，玩家始终可以反向抵抗。","developer":true},
+	{"group":"开发调参","id":"instinct_max_strength","label":"instinct_max_strength","value":0.35,"min":0.0,"max":0.45,"step":0.01,"unit":"倍","help":"0.5 低 / 1 标准 / 1.5 高；只有运动偏移，玩家始终可以反向抵抗。","developer":true},
 	{"group":"生存压力","id":"hunger_enabled","label":"饥饿系统","value":true,"help":"不进食会降低饱食度和体力恢复，极饿时产生可抵抗的觅食偏移。"},
 	{"group":"开发调参","id":"satiety_start","label":"satiety_start","value":100.0,"min":0.0,"max":100.0,"step":1.0,"unit":"","help":"Phase 1 physiology tuning; default decay calibrated from 1000-seed median 40.90 seconds.","developer":true},
 	{"group":"开发调参","id":"satiety_decay","label":"satiety_decay","value":2.445,"min":0.0,"max":10.0,"step":0.001,"unit":"","help":"Phase 1 physiology tuning; default decay calibrated from 1000-seed median 40.90 seconds.","developer":true},

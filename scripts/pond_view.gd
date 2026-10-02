@@ -492,6 +492,7 @@ func _hud(t: float) -> void:
 	label_at(Vector2(366,15), "加速" if world.sprinting else ("抗拉" if world.resisting else ("乏力" if world.stamina_ratio()<world.rule("fatigue_threshold") else "体力")), 11, GOLD if world.sprinting or world.resisting else CREAM)
 	draw_rect(Rect2(366,22,70,3), Color("335762"))
 	draw_rect(Rect2(366,22,70*world.stamina_ratio(),3), GOLD if world.sprinting else (RED if world.sprint_exhausted else MINT))
+	if float(fish_observation.self.instinct_drive)>0.05: label_at(Vector2(446,29),"想吃…",9,GOLD)
 	var satiety_state: String=fish_observation.self.satiety_band
 	label_at(Vector2(446,15),{"NORMAL":"饱足","HUNGRY":"饥饿","CRITICAL":"很饿","STARVING":"极饿"}[satiety_state],11,MINT if satiety_state=="NORMAL" else GOLD if satiety_state=="HUNGRY" else RED)
 	var remaining := maxi(0, int(ceil(world.rule("time_limit")-world.clock)))

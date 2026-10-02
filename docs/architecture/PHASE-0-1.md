@@ -47,3 +47,9 @@ Phase0 gate: immutable f083b63 current29 headless + import passed; native15 + im
 Satiety starts at100, decays2.445/s from measured baseline median40.90s. With no food, hungry60 arrives at16.36s (0.40T), critical25 at30.67s (0.75T). Consumed pellets restore satiety, clamp0–100; low satiety reduces only stamina recovery at this checkpoint. The ordinary settings expose a hunger toggle, developer numeric parameters remain hidden from its search/categories. HUD/observation expose qualitative bands, not decimals.
 
 Checks: satiety14, stats11, architecture46, rules186 all pass. This is source development, not a new packaged release.
+
+## M1.2 — movement-only instinct
+
+Low satiety increases a continuous urge toward the nearest observed edible target. The bias defaults to0.35 and has a hard0.45 cap; unit opposing input retains at least55% directional control. Settings expose low/standard/high intensity, while developer thresholds remain hidden. No suction button is changed; no automatic feeding pulse is implemented. HUD shows a qualitative urge cue.
+
+Focused checks: instinct81 (including72 opposing directions), satiety14 and authority architecture46 pass. Movement feel and any later pulse still require human playtest approval.
