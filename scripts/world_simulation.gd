@@ -48,6 +48,7 @@ var net_route_next := 1
 var velocity := Vector2.ZERO
 var aim := Vector2.RIGHT
 var power := 0.35
+var truth_events: Array[Dictionary]=[]
 var suspicion_by_bait: Dictionary={}
 var caution_by_bait: Dictionary={}
 var risk_tolerance := 0.0
@@ -428,6 +429,7 @@ func reset_world(config: Dictionary = {}) -> void:
 	_reset_untangle()
 	untangle_cooldown=0.0
 	round_stats=Stats.fresh()
+	truth_events.clear()
 	net_capture=0.0
 	net_action=Net.fresh()
 	qte_grace_seconds=clampf(Commands.number(config.get("qte_grace"),0),0,0.25)
@@ -545,8 +547,9 @@ func reset_world(config: Dictionary = {}) -> void:
 	for index in range(sites.size()-1,0,-1):
 		var other:=rng.randi_range(0,index)
 		var swap:=sites[index]; sites[index]=sites[other]; sites[other]=swap
+	var assignments:=_initial_hook_assignments()
 	for index in range(4):
-		_create_bait(index)
+		_create_bait(index,int(assignments[index]))
 		baits[index].home=sites[index]
 		baits[index].pos=sites[index]
 		baits[index].tip_before=sites[index]+Vector2(2,1)
@@ -561,26 +564,56 @@ func reset_world(config: Dictionary = {}) -> void:
 func line_anchor(index: int) -> Vector2:
 	return angler.anchor() if uses_mobile_tackle() else Vector2(baits[index].home.x,53)
 
-func _create_bait(index: int) -> void:
-	baits.append(_assign_bait_identity(_make_bait(index)))
+func _create_bait(index: int, forced_hook: int=-1) -> void:
+	baits.append(_assign_bait_identity(_make_bait(index),forced_hook))
 
 func bait_slot(bait_id: int) -> int:
 	for index in baits.size():
 		if int(baits[index].bait_id)==bait_id: return index
 	return -1
 
-func _assign_bait_identity(bait: Dictionary) -> Dictionary:
+func _assign_bait_identity(bait: Dictionary, forced_hook: int=-1) -> Dictionary:
+	bait.hook=bool(forced_hook) if forced_hook>=0 else rng.randf()<clampf(rule("bait_hook_probability")*rule("hook_danger"),0,1)
+	if forced_hook<0:
+		var danger:=0
+		for existing in baits:
+			if existing.id==bait.id or not existing.active or not _remaining(existing): continue
+			danger+=int(existing.hook and not existing.removed)
+		if danger<int(rule("bait_danger_min")): bait.hook=true
+		if danger>=int(rule("bait_danger_max")): bait.hook=false
+	bait.drift_phase=rng.randf_range(0,TAU)
+	# Overlapping physical flutter distributions: useful evidence, never a label.
+	var flutter_a:=rng.randf_range(0.0,4.0)
+	var flutter_b:=rng.randf_range(0.0,4.0)
+	# Both states have the same support: no amplitude range certifies a hook.
+	bait.flutter_amplitude=maxf(flutter_a,flutter_b) if bait.hook else minf(flutter_a,flutter_b)
 	bait.bait_id=next_bait_id
 	next_bait_id+=1
 	if bait.hook:
 		bait.hook_id=next_hook_id
 		next_hook_id+=1
+	truth_events.append({"event":"BAIT_CREATED","tick":simulation_tick,"bait_id":bait.bait_id,"hooked":bait.hook,"seed":rng.seed})
+	if truth_events.size()>2048: truth_events.pop_front()
 	return bait
 
+func _initial_hook_assignments() -> Array[bool]:
+	var result: Array[bool]=[]
+	for index in 4: result.append(rng.randf()<clampf(rule("bait_hook_probability")*rule("hook_danger"),0,1))
+	var active: Array[int]=[0,1,3]
+	for index in range(active.size()-1,0,-1):
+		var other:=rng.randi_range(0,index)
+		var swap:=active[index]; active[index]=active[other]; active[other]=swap
+	var danger:=0
+	for index in active: danger+=int(result[index])
+	for index in active:
+		if danger<mini(int(rule("bait_danger_min")),active.size()) and not result[index]: result[index]=true; danger+=1
+		elif danger>mini(int(rule("bait_danger_max")),active.size()) and result[index]: result[index]=false; danger-=1
+	return result
+
 func _make_bait(index: int, batch: int = 0) -> Dictionary:
-	var hooked_bait := index % 2 == 0
-	var home := Vector2(232, 153) if hooked_bait else Vector2(532, 216)
-	var bait := {"bait_id":0,"hook_id":0,"rod_id":rod_id,"created_tick":simulation_tick,"motion_velocity":Vector2.ZERO,"last_disturbance_tick":-1000,"id":index, "home":home, "pos":home, "angle":0.0, "suction_offset":Vector2.ZERO, "hook":hooked_bait, "removed":false, "active":index != 2, "age":0.0, "budget":0.0, "grains":[], "tip_before":home + Vector2(2, 1)}
+	var hooked_bait := false
+	var home := Vector2(232,153)
+	var bait := {"bait_id":0,"hook_id":0,"rod_id":rod_id,"tackle":index in [0,2],"drift_phase":0.0,"flutter_amplitude":0.0,"created_tick":simulation_tick,"motion_velocity":Vector2.ZERO,"last_disturbance_tick":-1000,"id":index, "home":home, "pos":home, "angle":0.0, "suction_offset":Vector2.ZERO, "hook":hooked_bait, "removed":false, "active":index != 2, "age":0.0, "budget":0.0, "grains":[], "tip_before":home + Vector2(2, 1)}
 	var counts := [24, 14, 6]
 	var radii := [7.0, 4.4, 1.9]
 	var grain_rng := RandomNumberGenerator.new()
@@ -881,13 +914,14 @@ func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2) -> 
 		bait.age += delta
 		# Advance passive/tackle motion from the base, without accumulating last tick's suction offset.
 		bait.pos=Vector2(bait.pos)-Vector2(bait.suction_offset)
-		if uses_mobile_tackle() and bait.hook and not bait.removed and bound_bait!=index:
+		if uses_mobile_tackle() and bait.tackle and not bait.removed and bound_bait!=index:
 			angler.step_free_hook(self,index,delta)
 		elif bound_bait==index and hooked!=HookState.FREE:
 			bait.pos=mouth()-Vector2(2,1).rotated(bait.angle)
 			bait.suction_offset=Vector2.ZERO
 		else:
-			var target: Vector2 = bait.home + water_offset(bait.home)
+			var flutter:=Vector2(sin(elapsed*5.0+float(bait.drift_phase)),cos(elapsed*3.0+float(bait.drift_phase))*0.5)*float(bait.flutter_amplitude)*water_strength
+			var target: Vector2 = bait.home + water_offset(bait.home)+flutter
 			bait.angle = sin(elapsed*0.75+bait.home.y*0.007)*0.16*water_strength
 			bait.pos = Vector2(bait.pos).move_toward(target, delta * 44)
 		if bound_bait!=index or hooked==HookState.FREE:
@@ -1135,7 +1169,7 @@ func _step_supply(delta: float) -> void:
 	if not challenge or hooked != HookState.FREE or not net_state in ["wait", "rest"]: return
 	if cycle_phase.is_empty():
 		for index in baits.size():
-			if uses_mobile_tackle() and baits[index].hook: continue
+			if uses_mobile_tackle() and baits[index].tackle: continue
 			if baits[index].active and (baits[index].age >= rule("bait_cycle") or not _remaining(baits[index])):
 				cycle_slot = index
 				cycle_phase = "warning"
@@ -1148,10 +1182,11 @@ func _step_supply(delta: float) -> void:
 			cycle_phase = "refill"
 			cycle_age = 0
 		elif cycle_phase == "refill" and cycle_age >= rule("bait_refill"):
+			if not _remaining(baits[cycle_slot]): refill_hook_bait(cycle_slot)
 			if _remaining(baits[cycle_slot], true): supply_queue.append(cycle_slot)
 			var next := -1
 			for candidate in supply_queue:
-				if candidate % 2 == cycle_slot % 2 and not baits[candidate].active:
+				if not baits[candidate].active and (not uses_mobile_tackle() or not baits[candidate].tackle):
 					next = candidate
 					break
 			if next >= 0:

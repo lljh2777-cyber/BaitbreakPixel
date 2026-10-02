@@ -497,6 +497,16 @@
       "status": "current",
       "mode": "headless",
       "timeout_seconds": 90
+    },
+    "phase01_random_hooks": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "phase01_native": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 120
     }
   }
 }

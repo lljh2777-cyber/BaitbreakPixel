@@ -2,6 +2,10 @@ extends RefCounted
 
 # Single source of defaults, UI metadata, bounds and import validation.
 const ITEMS := [
+	{"group":"生存压力","id":"hook_danger","label":"鱼钩危险度（低 / 标准 / 高）","value":1.0,"min":0.5,"max":1.5,"step":0.5,"unit":"","help":"只在创建或重新挂饵事件决定，单团饵生命周期不变。","developer":false},
+	{"group":"开发调参","id":"bait_hook_probability","label":"bait_hook_probability","value":0.5,"min":0.0,"max":1.0,"step":0.05,"unit":"","help":"只在创建或重新挂饵事件决定，单团饵生命周期不变。","developer":true},
+	{"group":"开发调参","id":"bait_danger_min","label":"bait_danger_min","value":1.0,"min":0.0,"max":3.0,"step":1.0,"unit":"","help":"只在创建或重新挂饵事件决定，单团饵生命周期不变。","developer":true},
+	{"group":"开发调参","id":"bait_danger_max","label":"bait_danger_max","value":2.0,"min":0.0,"max":4.0,"step":1.0,"unit":"","help":"只在创建或重新挂饵事件决定，单团饵生命周期不变。","developer":true},
 	{"group":"\u5f00\u53d1\u8c03\u53c2","id":"suspicion_decay","label":"suspicion_decay","value":0.18,"min":0.02,"max":2.0,"step":0.01,"unit":"","help":"Observation-only evidence weighting and slow recovery.","developer":true},
 	{"group":"\u5f00\u53d1\u8c03\u53c2","id":"suspicion_motion_weight","label":"suspicion_motion_weight","value":0.8,"min":0.0,"max":1.0,"step":0.05,"unit":"","help":"Observation-only evidence weighting and slow recovery.","developer":true},
 	{"group":"\u5f00\u53d1\u8c03\u53c2","id":"suspicion_disturbance_weight","label":"suspicion_disturbance_weight","value":0.25,"min":0.0,"max":1.0,"step":0.05,"unit":"","help":"Observation-only evidence weighting and slow recovery.","developer":true},

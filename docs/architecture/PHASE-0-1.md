@@ -59,3 +59,11 @@ Focused checks: instinct81 (including72 opposing directions), satiety14 and auth
 Suspicion is tracked per bait_id and accepts only FishObservation. Measured bait velocity, water-relative motion, recent disturbance and visible suction displacement supply evidence. Hunger changes risk tolerance separately from suspicion. Fast rise/slow recovery plus hysteresis produce CALM/UNEASY/ALARMED; fish-view posture marks and text make the qualitative state readable. Interpretation happens before movement/contact resolution, using information already available at the decision point.
 
 Checks: hidden-hook equivalence, per-target evidence, separate hunger tolerance, smooth rise/slow recovery and hysteresis8; observation22 and architecture46 pass. Cue usefulness/false positives remain the later statistical gate, not established by these unit checks.
+
+## M1.4 — event-random hooks
+
+Creation/refill/rehanging allocates a new bait_id and samples hook truth only once using simulation RNG. Active initial food gets configurable danger bounds (default1–2 of3). Hook presence is no longer slot parity. Existing single-rod tackle membership is distinct from internal hook presence, so a safe rolled cast remains deployable; ambient targets also roll danger. Redeploying an already used bait rehangs a fresh lifecycle. No additional rod or dual-tether mechanic is introduced.
+
+Physical flutter distributions have identical0–4 support for both truths: max-of-two draws for hooked and min-of-two for safe. Their overlap supplies noisy evidence without any amplitude interval proving hook truth. Interpretation still reads only measured physical motion. Authority-only BAIT_CREATED events record ID/truth/seed; these must be excluded from fish networking in the next gate.
+
+Checks: random hook206, IDs13, suction41, architecture46 and tackle26 pass; final RNG-distribution/counter adjustments rerun random206+architecture46. Native acceptance fixture added for the upcoming final visual gate, not yet executed.

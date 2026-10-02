@@ -74,7 +74,7 @@ func surface_target(game: Node2D) -> Vector2:
 		if game.rope_path.size()>2: return game.rope_path[1]
 		return game.mouth()
 	for bait in game.baits:
-		if bait.hook and bait.active and not bait.removed: return bait.pos
+		if bait.tackle and bait.active and not bait.removed: return bait.pos
 	return Vector2(INF,INF)
 
 func feedback_reel_speed(game: Node2D) -> float:
@@ -85,7 +85,7 @@ func feedback_reel_speed(game: Node2D) -> float:
 	# or a broken line, and stop the animation at the physical line limits.
 	if (free_reel_speed>0 and free_line_length>=game.rule("line_free_max")) or (free_reel_speed<0 and free_line_length<=45): return 0.0
 	for bait in game.baits:
-		if bait.hook and bait.active and not bait.removed: return free_reel_speed
+		if bait.tackle and bait.active and not bait.removed: return free_reel_speed
 	return 0.0
 
 func step_tackle_feedback(game: Node2D, delta: float) -> void:
@@ -137,15 +137,16 @@ func projectile() -> Vector2:
 	return cast_from.lerp(cast_to,ratio)-Vector2(0,sin(ratio*PI)*28)
 
 func available_bait(game: Node2D) -> int:
-	for index in [0,2]:
+	for index in game.baits.size():
 		var bait: Dictionary=game.baits[index]
+		if not bait.tackle: continue
 		if not bait.removed and game._remaining(bait,true): return index
 	return -1
 
 func deploy(game: Node2D) -> bool:
 	if game.hooked!=game.HookState.FREE or game.net_active() or game.net_action.observing or net_held or casting or cast_cooldown>0: return false
 	for bait in game.baits:
-		if bait.hook and bait.active and not bait.removed and game._remaining(bait,true):
+		if bait.tackle and bait.active and not bait.removed and game._remaining(bait,true):
 			game.notice="钩饵已在水中 · W 收线 / S 放线，收至岸边可取回"
 			game.notice_age=2
 			return false
@@ -156,8 +157,9 @@ func cast(game: Node2D, point: Vector2) -> bool:
 	if game.hooked!=game.HookState.FREE or game.net_active() or casting or cast_cooldown>0: return false
 	var index := available_bait(game)
 	if index<0: return false
+	if game.baits[index].age>0: game.refill_hook_bait(index)
 	for bait in game.baits:
-		if bait.hook: bait.active=false
+		if bait.tackle: bait.active=false
 	cast_index=index
 	cast_from=anchor()
 	cast_to=point.clamp(Vector2(38,100),Vector2(Layout.SIZE.x-38,Layout.FLOOR-29))
