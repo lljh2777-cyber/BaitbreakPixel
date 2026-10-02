@@ -2,7 +2,7 @@ extends RefCounted
 
 # Explicit, versioned value schema. Local views, input sources and profiles are excluded.
 const Rules = preload("res://scripts/game_rules.gd")
-const SCHEMA := 13
+const SCHEMA := 14
 const MAP_ID := "pond_v2"
 const WORLD_FIELDS: Array[String] = [
 	"fish_id", "rod_id", "next_bait_id", "next_hook_id",
@@ -33,6 +33,7 @@ const WORLD_FIELDS: Array[String] = [
 	"hooked",
 	"bound_bait",
 	"hook_cooldown",
+	"bite_cooldown", "bite_feedback_age",
 	"rope_path",
 	"rope_length",
 	"tension",
@@ -219,6 +220,7 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 		if not event is Dictionary or event.get("event")!="BAIT_CREATED": return false
 		if not event.get("tick") is int or event.tick<0 or event.tick>state.simulation_tick: return false
 		if not event.get("bait_id") is int or event.bait_id<=0 or not event.get("hooked") is bool or not event.get("seed") is int: return false
+	if state.bite_cooldown<0 or state.bite_cooldown>state.rules.bite_cooldown+0.000001 or state.bite_feedback_age<0 or state.bite_feedback_age>world.BITE_FEEDBACK_SECONDS+0.000001: return false
 	if state.satiety<0 or state.satiety>100: return false
 	if state.stamina<0 or state.stamina>state.rules.stamina_max: return false
 	if state.last_eat_at < -10 or state.last_eat_at > state.elapsed+0.000001: return false

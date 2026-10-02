@@ -10,14 +10,15 @@ static func number(value: Variant, fallback: float) -> float:
 	return float(value) if (value is float or value is int) and is_finite(float(value)) else fallback
 
 static func flag(command: Dictionary, key: String) -> bool:
-	return command.get(key,false)==true
+	var value: Variant=command.get(key,false)
+	return value is bool and value
 
 static func fish(command: Dictionary, previous_aim: Vector2, previous_power: float) -> Dictionary:
 	return {
 		"move":vector(command.get("move"),Vector2.ZERO).limit_length(1),
 		"aim":vector(command.get("aim"),previous_aim).normalized(),
 		"power":clampf(number(command.get("power"),previous_power),0.1,1),
-		"suck":flag(command,"suck"),"dash":flag(command,"dash"),
+		"bite":flag(command,"bite"),"suck":flag(command,"suck"),"dash":flag(command,"dash"),
 		"slow":flag(command,"slow"),"qte":flag(command,"qte"),"home":flag(command,"home"),
 		"qte_at_age":clampf(number(command.get("qte_at_age"),-1),-1,Rules.MAX_QTE_AGE)
 	}

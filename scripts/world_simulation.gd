@@ -67,6 +67,9 @@ var fish_before := Vector2.ZERO
 var hooked := HookState.FREE
 var bound_bait := -1
 var hook_cooldown := 0.0
+var bite_cooldown := 0.0
+var bite_feedback_age := 0.0
+const BITE_FEEDBACK_SECONDS := 0.18
 var rope_path := PackedVector2Array()
 var rope_length := 0.0
 var tension := 0.0
@@ -366,7 +369,7 @@ func simulate(delta: float, fish_command: Dictionary, angler_command: Dictionary
 	_tick_efforts(delta,fish_input,angler_input)
 	power=fish_input.power
 	if not movement_locked() and fish_input.aim.length()>0.01: aim=fish_input.aim.normalized()
-	_simulate_fish(delta,fish_input.move,fish_input.suck,fish_input.home,fish_input.dash,fish_input.slow,fish_input.qte,fish_input.qte_at_age)
+	_simulate_fish(delta,fish_input.move,fish_input.suck,fish_input.home,fish_input.dash,fish_input.slow,fish_input.qte,fish_input.qte_at_age,fish_input.bite)
 	_tick_untangle(delta,angler_input)
 	angler.step_tackle_feedback(self,delta)
 	Stats.sample(self,stats_before)
@@ -483,6 +486,8 @@ func reset_world(config: Dictionary = {}) -> void:
 	hooked = HookState.FREE
 	bound_bait = -1
 	hook_cooldown = 0
+	bite_cooldown = 0.0
+	bite_feedback_age = 0.0
 	qte = ""
 	qte_age = 0
 	qte_result_age = 0
@@ -856,7 +861,7 @@ func step(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: 
 	angler.step_tackle_feedback(self,delta)
 	Stats.sample(self,stats_before)
 
-func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: bool = false, slow: bool = false, qte_pressed: bool = false, qte_at_age: float = -1) -> void:
+func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: bool = false, slow: bool = false, qte_pressed: bool = false, qte_at_age: float = -1, biting: bool = false) -> void:
 	if match_paused or match_over or not is_finite(delta) or delta<=0: return
 	simulation_tick+=1
 	elapsed += delta
@@ -882,6 +887,8 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 	result_flash = maxf(0, result_flash - delta)
 	qte_result_age = maxf(0,qte_result_age-delta)
 	hook_cooldown = maxf(0, hook_cooldown - delta)
+	bite_cooldown = maxf(0, bite_cooldown - delta)
+	bite_feedback_age = maxf(0, bite_feedback_age - delta)
 	retry_age = maxf(0, retry_age - delta)
 	wrap_retry = maxf(0,wrap_retry-delta)
 	net_recovery = maxf(0, net_recovery - delta)
@@ -896,7 +903,7 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 	if qte_pressed and qte.is_empty(): began_wrap = _begin_wrap()
 	sprinting = false
 	resisting = false
-	feeding = sucking and hooked!=HookState.MOUTH and net_state!="caught"
+	feeding = sucking and not biting and hooked!=HookState.MOUTH and net_state!="caught"
 	stamina_delay = maxf(0,stamina_delay-delta)
 	if not dash and stamina_ratio()>=rule("sprint_restart"): sprint_exhausted = false
 	if not movement_locked():
@@ -927,6 +934,7 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 		_step_line(delta, qte_pressed and not began_wrap,qte_at_age)
 	if match_over or landing: return
 	for index in baits.size(): _step_bait(index, delta, feeding and hooked!=HookState.MOUTH, previous_mouth)
+	if biting: _attempt_bite()
 	if hooked != HookState.FREE: returning = false
 	if interact and was_free and hooked == HookState.FREE and can_home(): returning = not returning
 	if returning and can_home():
@@ -982,14 +990,7 @@ func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2) -> 
 		if grain.free:
 			grain.pos = Vector2(grain.pos).move_toward(mouth(), delta * rule("pellet_speed") * Suction.pellet_gain(power))
 			if Vector2(grain.pos).distance_to(mouth()) < 4:
-				grain.eaten = true
-				if not counted.has(grain.id):
-					counted[grain.id] = true
-					score += float(grain.points)
-					if rules.hunger_enabled: satiety=clampf(satiety+float(grain.points)*rule("satiety_food_value"),0,100)
-					last_eat_at = elapsed
-					stamina = minf(rule("stamina_max"),stamina+float(grain.points)*rule("food_recovery"))
-					play_feedback("eat")
+				_consume_grain(grain)
 		elif grain.layer == layer:
 			grain.progress += delta * pull * Suction.peel_gain(power,grain.layer) * rule("pellet_detach")
 			if grain.progress >= 1 and bait.budget >= 1:
@@ -999,6 +1000,43 @@ func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2) -> 
 		bait.motion_velocity=(Vector2(bait.pos)-Vector2(bait.suction_offset)-old_position)/delta
 		if (Vector2(bait.motion_velocity)-water_velocity(bait.pos)).length()>8: bait.last_disturbance_tick=simulation_tick
 	bait.tip_before = _tip(index)
+
+# Shared accounting preserves Suck's existing per-grain values and de-duplication.
+func _consume_grain(grain: Dictionary, sound: bool = true) -> void:
+	grain.eaten=true
+	if counted.has(grain.id): return
+	counted[grain.id]=true
+	score+=float(grain.points)
+	if rules.hunger_enabled: satiety=clampf(satiety+float(grain.points)*rule("satiety_food_value"),0,100)
+	last_eat_at=elapsed
+	stamina=minf(rule("stamina_max"),stamina+float(grain.points)*rule("food_recovery"))
+	if sound: play_feedback("eat")
+
+func _attempt_bite() -> void:
+	# This gate never inspects hidden hook truth. Real contact was resolved by
+	# the ordinary swept mouth/tip test above, before either feeding action.
+	if match_paused or match_over or landing or returning or net_state=="caught" or hooked==HookState.MOUTH or bite_cooldown>0: return
+	bite_feedback_age=BITE_FEEDBACK_SECONDS
+	play_feedback("bite")
+	var candidates: Array[Dictionary]=[]
+	var origin:=mouth()
+	var radius_squared:=pow(rule("bite_range"),2)
+	for bait in baits:
+		for order in bait.grains.size():
+			var grain: Dictionary=bait.grains[order]
+			if grain.eaten or (not bait.active and not grain.free): continue
+			var distance:=origin.distance_squared_to(Vector2(grain.pos))
+			if distance<=radius_squared:
+				candidates.append({"distance":distance,"bait_id":int(bait.bait_id),"order":order,"grain":grain})
+	candidates.sort_custom(func(a: Dictionary,b: Dictionary) -> bool:
+		if a.distance!=b.distance: return a.distance<b.distance
+		if a.bait_id!=b.bait_id: return a.bait_id<b.bait_id
+		return a.order<b.order)
+	# An empty snap is feedback only, not an accepted feeding commitment.
+	if candidates.is_empty(): return
+	bite_cooldown=rule("bite_cooldown")
+	for index in mini(int(rule("bite_intake")),candidates.size()):
+		_consume_grain(candidates[index].grain,false)
 
 func _step_bait_suction(bait: Dictionary, delta: float, sucking: bool) -> void:
 	# Both kinds of food share whole-cluster displacement and response speed.
