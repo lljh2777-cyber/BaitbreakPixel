@@ -542,6 +542,31 @@
       "status": "current",
       "mode": "renderer",
       "timeout_seconds": 120
+    },
+    "phase02_bait_types": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "phase02_food_profiles": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "phase02_observation": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "phase02_bait_network": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "phase02_bait_native": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 120
     }
   }
 }

@@ -2,6 +2,7 @@ extends Node2D
 
 const Rules = preload("res://scripts/game_rules.gd")
 const Suction = preload("res://scripts/suction_feel.gd")
+const FoodProfile = preload("res://scripts/food_profile.gd")
 var rules := Rules.defaults()
 var qte_timing := Rules.qte(Rules.defaults(),"entry")
 
@@ -553,8 +554,12 @@ func reset_world(config: Dictionary = {}) -> void:
 		var other:=rng.randi_range(0,index)
 		var swap:=sites[index]; sites[index]=sites[other]; sites[other]=swap
 	var assignments:=_initial_hook_assignments()
+	# Independent shuffle after hook constraints; never choose a type from hook truth.
+	var types:=FoodProfile.shuffled(rng)
+	var initial_types: Array[String]=[FoodProfile.roll(rng),types[0],FoodProfile.roll(rng),types[1]]
+	if not uses_mobile_tackle(): initial_types[0]=types[2]
 	for index in range(4):
-		_create_bait(index,int(assignments[index]))
+		_create_bait(index,int(assignments[index]),initial_types[index])
 		baits[index].home=sites[index]
 		baits[index].pos=sites[index]
 		baits[index].tip_before=sites[index]+Vector2(2,1)
@@ -572,8 +577,9 @@ func line_anchor(index: int) -> Vector2:
 	if bait.has("attachment_anchor"): return Vector2(bait.attachment_anchor)
 	return Vector2(bait.home.x,53)
 
-func _create_bait(index: int, forced_hook: int=-1) -> void:
-	baits.append(_assign_bait_identity(_make_bait(index),forced_hook))
+func _create_bait(index: int, forced_hook: int=-1, bait_type: String="") -> void:
+	var kind:=FoodProfile.roll(rng) if bait_type.is_empty() else bait_type
+	baits.append(_assign_bait_identity(_make_bait(index,0,kind),forced_hook))
 
 func bait_slot(bait_id: int) -> int:
 	for index in baits.size():
@@ -635,10 +641,10 @@ func _initial_hook_assignments() -> Array[bool]:
 		elif danger>maximum and result[index]: result[index]=false; danger-=1
 	return result
 
-func _make_bait(index: int, batch: int = 0) -> Dictionary:
+func _make_bait(index: int, batch: int = 0, bait_type: String = "cluster") -> Dictionary:
 	var hooked_bait := false
 	var home := Vector2(232,153)
-	var bait := {"bait_id":0,"hook_id":0,"rod_id":rod_id,"tackle":index in [0,2],"drift_phase":0.0,"flutter_amplitude":0.0,"created_tick":simulation_tick,"motion_velocity":Vector2.ZERO,"last_disturbance_tick":-1000,"id":index, "home":home, "pos":home, "angle":0.0, "suction_offset":Vector2.ZERO, "hook":hooked_bait, "removed":false, "active":index != 2, "age":0.0, "budget":0.0, "grains":[], "tip_before":home + Vector2(2, 1)}
+	var bait := {"bait_type":bait_type,"bait_id":0,"hook_id":0,"rod_id":rod_id,"tackle":index in [0,2],"drift_phase":0.0,"flutter_amplitude":0.0,"created_tick":simulation_tick,"motion_velocity":Vector2.ZERO,"last_disturbance_tick":-1000,"id":index, "home":home, "pos":home, "angle":0.0, "suction_offset":Vector2.ZERO, "hook":hooked_bait, "removed":false, "active":index != 2, "age":0.0, "budget":0.0, "grains":[], "tip_before":home + Vector2(2, 1)}
 	var counts := [24, 14, 6]
 	var radii := [7.0, 4.4, 1.9]
 	var grain_rng := RandomNumberGenerator.new()
@@ -650,7 +656,8 @@ func _make_bait(index: int, batch: int = 0) -> Dictionary:
 			var angle: float = TAU * float(particle) / counts[layer] + layer * 0.37 + grain_rng.randf_range(-0.12,0.12)
 			var radius: float = radii[layer] - grain_rng.randf_range(0,1.7 if layer < 2 else 1.0)
 			var offset := (Vector2.from_angle(angle) * radius * Vector2(1,0.88)).round()
-			bait.grains.append({"id":("%d_%d" % [index, serial] if batch==0 else "%d_%d_%d" % [index,batch,serial]), "offset":offset, "pos":home + offset, "layer":layer, "fleck":serial%5, "free":false, "eaten":false, "progress":0.0, "points":rule("bait_points")*(0.6 / 24 if layer == 0 else 0.4 / 20)})
+			offset=FoodProfile.grain_offset(bait_type,offset,particle,counts[layer],layer)
+			bait.grains.append({"visual_kind":bait_type,"id":("%d_%d" % [index, serial] if batch==0 else "%d_%d_%d" % [index,batch,serial]), "offset":offset, "pos":home + offset, "layer":layer, "fleck":serial%5, "free":false, "eaten":false, "progress":0.0, "points":rule("bait_points")*(0.6 / 24 if layer == 0 else 0.4 / 20)})
 			serial += 1
 	return bait
 
@@ -659,12 +666,14 @@ func refill_hook_bait(index: int) -> void:
 	var loose: Array=[]
 	for grain in baits[index].grains:
 		if grain.free and not grain.eaten: loose.append(grain)
-	baits[index]=_assign_bait_identity(_make_bait(index,bait_batch))
+	baits[index]=_assign_bait_identity(_make_bait(index,bait_batch,FoodProfile.roll(rng)))
 	baits[index].active=false
 	baits[index].grains.append_array(loose)
 
 func redeploy_bait(index: int) -> void:
-	# Deployment is a new lifecycle, not a hidden flip of an existing identity.
+	# Deployment is a new hook lifecycle, not a hidden flip of an existing identity.
+	# Recasting existing food keeps its type/shape; a full rehang rolls fresh food.
+	# Loose grains retain their old visual_kind when mixed into a replacement.
 	if not _remaining(baits[index],true):
 		refill_hook_bait(index)
 	else:

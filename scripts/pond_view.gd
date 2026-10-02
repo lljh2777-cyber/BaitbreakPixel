@@ -165,10 +165,10 @@ func _baits(t: float, behind: bool=false) -> void:
 		var flashing: bool = world.cycle_phase == "warning" and world.cycle_slot == index and int(t * 6) % 2 == 0
 		for grain in bait.grains:
 			if grain.eaten or (not grain.free and not bait.active): continue
-			var offset: Vector2 = grain.offset
-			var shade: float = clampf(0.48-(offset.x+offset.y)/22.0,0,1)
-			var color := Color("a26c3f").lerp(Color("f1d798"),shade)
-			if grain.fleck == 0: color = color.lightened(0.13)
+			# Every fragment carries its own public kind, including old loose food
+			# after the parent bait has been replaced. Never read hook truth here.
+			var kind: String = grain.get("visual_kind","cluster")
+			var color := _food_color(grain,kind)
 			if flashing and not grain.free: color = RED
 			var p: Vector2 = Vector2(grain.pos).round()
 			if not grain.free:
@@ -178,10 +178,32 @@ func _baits(t: float, behind: bool=false) -> void:
 				if world.feeding and world.strength(grain.pos)>0:
 					var direction: Vector2=(world.mouth()-Vector2(grain.pos)).normalized()
 					draw_line((p-direction*(1+world.power*4)).round(),p,Color(color,0.25+world.power*0.35),1)
-				draw_rect(Rect2(p,Vector2.ONE),color.lightened(0.15))
+				var crumb := Vector2(2,1) if kind=="worm" else Vector2(2,2) if kind=="chunk" else Vector2.ONE
+				draw_rect(Rect2(p,crumb),color.lightened(0.15))
 			else:
-				draw_rect(Rect2(p,Vector2(2,2) if grain.layer<2 else Vector2.ONE),color.darkened(0.18))
-				draw_rect(Rect2(p,Vector2(2 if grain.fleck%2 else 1,1)),color)
+				_food_fragment(p,grain,kind,color)
+
+func _food_color(grain: Dictionary, kind: String) -> Color:
+	var offset: Vector2 = grain.offset
+	var shade: float = clampf(0.48-(offset.x+offset.y)/22.0,0,1)
+	var color := Color("a26c3f").lerp(Color("f1d798"),shade)
+	if kind=="worm": color=Color("986137").lerp(Color("d6b375"),shade)
+	elif kind=="chunk": color=Color("aa7137").lerp(Color("efd091"),shade)
+	if grain.fleck==0: color=color.lightened(0.13)
+	return color
+
+func _food_fragment(p: Vector2, grain: Dictionary, kind: String, color: Color) -> void:
+	# Small facets are anchored at real grains. The simulation's public offsets
+	# supply the silhouette, so eaten pieces leave holes rather than a full sprite.
+	if kind=="worm":
+		draw_rect(Rect2(p,Vector2(2,2) if grain.layer<2 else Vector2(2,1)),color.darkened(0.18))
+		draw_rect(Rect2(p,Vector2(1,1)),color)
+	elif kind=="chunk":
+		draw_rect(Rect2(p,Vector2(3,2) if grain.layer<2 else Vector2(2,2)),color.darkened(0.18))
+		draw_rect(Rect2(p,Vector2(2,1)),color)
+	else:
+		draw_rect(Rect2(p,Vector2(2,2) if grain.layer<2 else Vector2.ONE),color.darkened(0.18))
+		draw_rect(Rect2(p,Vector2(2 if grain.fleck%2 else 1,1)),color)
 
 func _angler(t: float) -> void:
 	if not world.uses_mobile_tackle(): return

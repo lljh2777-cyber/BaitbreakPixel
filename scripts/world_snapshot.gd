@@ -2,7 +2,11 @@ extends RefCounted
 
 # Explicit, versioned value schema. Local views, input sources and profiles are excluded.
 const Rules = preload("res://scripts/game_rules.gd")
+const FoodProfile = preload("res://scripts/food_profile.gd")
 const SCHEMA := 14
+# Schema 14 remains the authority contract. This mandatory extension guard rejects
+# pre-archetype snapshots even when no network exact-build handshake is involved.
+const BAIT_PROFILE_VERSION := 1
 const MAP_ID := "pond_v2"
 const WORLD_FIELDS: Array[String] = [
 	"fish_id", "rod_id", "next_bait_id", "next_hook_id",
@@ -167,7 +171,7 @@ static func capture(world: Node2D) -> Dictionary:
 	for key in WORLD_FIELDS: state[key]=world.get(key)
 	for key in RIG_FIELDS: rig[key]=world.angler.get(key)
 	# Variant serialization also detaches packed arrays and nested grain/wrap data.
-	return bytes_to_var(var_to_bytes({"schema":SCHEMA,"map_id":MAP_ID,"state":state,"rig":rig,"rng_seed":world.rng.seed,"rng_state":world.rng.state}))
+	return bytes_to_var(var_to_bytes({"schema":SCHEMA,"bait_profile_version":BAIT_PROFILE_VERSION,"map_id":MAP_ID,"state":state,"rig":rig,"rng_seed":world.rng.seed,"rng_state":world.rng.state}))
 
 static func plain(value: Variant) -> bool:
 	match typeof(value):
@@ -198,6 +202,8 @@ static func record_matches(values: Dictionary, reference: Dictionary, excluded: 
 	return true
 
 static func restore(world: Node2D, snapshot: Dictionary) -> bool:
+	if not snapshot.get("bait_profile_version") is int or snapshot.bait_profile_version!=BAIT_PROFILE_VERSION: return false
+	if snapshot.size()!=7: return false
 	if snapshot.get("schema")!=SCHEMA or snapshot.get("map_id")!=MAP_ID or not plain(snapshot): return false
 	if not snapshot.get("state") is Dictionary or not snapshot.get("rig") is Dictionary: return false
 	if not snapshot.get("rng_seed") is int or not snapshot.get("rng_state") is int: return false
@@ -250,10 +256,12 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 	var bait_reference: Dictionary=world._make_bait(0)
 	var bait_ids: Dictionary={}
 	var hook_ids: Dictionary={}
+	var grain_ids: Dictionary={}
 	if state.fish_id<=0 or state.rod_id<=0 or state.next_bait_id<=0 or state.next_hook_id<=0: return false
 	for bait in state.baits:
 		if not bait is Dictionary or not bait.get("grains") is Array or bait.grains.size()>2048: return false
-		if not record_matches(bait,bait_reference,"grains") or bait.suction_offset.length()>78.001: return false
+		if bait.size()!=bait_reference.size() or not record_matches(bait,bait_reference,"grains") or bait.suction_offset.length()>78.001: return false
+		if not FoodProfile.valid_type(bait.get("bait_type")): return false
 		for identity in ["bait_id","hook_id","rod_id","created_tick"]:
 			if not bait[identity] is int: return false
 		if bait.bait_id<=0 or bait.bait_id>=state.next_bait_id or bait_ids.has(bait.bait_id): return false
@@ -264,8 +272,11 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 			if hook_ids.has(bait.hook_id): return false
 			hook_ids[bait.hook_id]=true
 		for grain in bait.grains:
-			if not grain is Dictionary or not record_matches(grain,bait_reference.grains[0]): return false
-			if not grain.id is String or grain.id.is_empty() or grain.id.length()>64: return false
+			if not grain is Dictionary or grain.size()!=bait_reference.grains[0].size() or not record_matches(grain,bait_reference.grains[0]): return false
+			if not FoodProfile.valid_type(grain.get("visual_kind")): return false
+			if not grain.free and grain.visual_kind!=bait.bait_type: return false
+			if not grain.id is String or grain.id.is_empty() or grain.id.length()>64 or grain_ids.has(grain.id): return false
+			grain_ids[grain.id]=true
 	for wrap in state.wraps:
 		if not wrap is Dictionary: return false
 		if not record_matches(wrap,{"center":Vector2.ZERO,"radii":Vector2.ONE,"entry":Vector2.ZERO,"loop":PackedVector2Array(),"progress":0.0,"target":0}): return false

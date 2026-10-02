@@ -6,10 +6,13 @@ extends RefCounted
 const Rules=preload("res://scripts/game_rules.gd")
 const Protocol=preload("res://scripts/network_protocol.gd")
 const Observation=preload("res://scripts/fish_observation.gd")
+const FoodProfile=preload("res://scripts/food_profile.gd")
 const Effort=preload("res://scripts/effort_check.gd")
 const Stats=preload("res://scripts/round_stats.gd")
 const FORMAT := "fish-presentation"
 const SCHEMA := 1
+# Required extension guard: schema 1 alone predates public bait archetypes.
+const BAIT_PROFILE_VERSION := 1
 const MAP_ID := "pond_v2"
 const STATE_FIELDS := [
 	"fish_id","rod_id","rules","net_action","qte_timing","fish","manual_net",
@@ -47,8 +50,8 @@ const STAT_FIELDS := [
 	"critical_satiety_seconds","caution_low_seconds","caution_medium_seconds","caution_high_seconds",
 ]
 const WRAP_FIELDS := ["center","radii","entry","loop","progress","target"]
-const BAIT_FIELDS := ["bait_id","active","pos","angle","suction_offset","grains","motion_velocity","last_disturbance_tick","attachment_anchor"]
-const GRAIN_FIELDS := ["id","offset","pos","layer","fleck","free","eaten"]
+const BAIT_FIELDS := ["bait_id","active","pos","angle","suction_offset","grains","motion_velocity","last_disturbance_tick","attachment_anchor","visual_kind","shape_hint","smell_hint"]
+const GRAIN_FIELDS := ["id","offset","pos","layer","fleck","free","eaten","visual_kind"]
 const CONFIG_FIELDS := ["rules","ruleset","challenge","qte_grace"]
 
 static func _pick(source: Dictionary, fields: Array) -> Dictionary:
@@ -95,7 +98,7 @@ static func capture(world: Node2D) -> Dictionary:
 		state.baits.append(visual)
 	# The flashing warning is visible; upcoming cycle timing and reserve order are not.
 	state.cycle_slot=world.cycle_slot if world.cycle_phase=="warning" else -1
-	return bytes_to_var(var_to_bytes({"format":FORMAT,"schema":SCHEMA,"map_id":MAP_ID,"role":"fish","state":state,"rig":rig}))
+	return bytes_to_var(var_to_bytes({"format":FORMAT,"schema":SCHEMA,"bait_profile_version":BAIT_PROFILE_VERSION,"map_id":MAP_ID,"role":"fish","state":state,"rig":rig}))
 
 static func _keys(values: Dictionary, fields: Array) -> bool:
 	if values.size()!=fields.size(): return false
@@ -116,7 +119,8 @@ static func _properties(object: Object, values: Dictionary, fields: Array) -> bo
 	return true
 
 static func valid(world: Node2D, snapshot: Dictionary) -> bool:
-	if not _keys(snapshot,["format","schema","map_id","role","state","rig"]): return false
+	if not _keys(snapshot,["format","schema","bait_profile_version","map_id","role","state","rig"]): return false
+	if not snapshot.bait_profile_version is int or snapshot.bait_profile_version!=BAIT_PROFILE_VERSION: return false
 	if snapshot.format!=FORMAT or snapshot.schema!=SCHEMA or snapshot.map_id!=MAP_ID or snapshot.role!="fish" or not Protocol.safe_values(snapshot): return false
 	if not snapshot.state is Dictionary or not snapshot.rig is Dictionary: return false
 	var state: Dictionary=snapshot.state
@@ -169,14 +173,19 @@ static func valid(world: Node2D, snapshot: Dictionary) -> bool:
 	var bait_ids: Dictionary={}
 	var grain_ids: Dictionary={}
 	for bait in state.baits:
-		if not _record(bait,{"bait_id":1,"active":false,"pos":Vector2.ZERO,"angle":0.0,"suction_offset":Vector2.ZERO,"grains":[],"motion_velocity":Vector2.ZERO,"last_disturbance_tick":0,"attachment_anchor":Vector2.ZERO},BAIT_FIELDS): return false
+		if not _record(bait,{"bait_id":1,"active":false,"pos":Vector2.ZERO,"angle":0.0,"suction_offset":Vector2.ZERO,"grains":[],"motion_velocity":Vector2.ZERO,"last_disturbance_tick":0,"attachment_anchor":Vector2.ZERO,"visual_kind":"","shape_hint":"","smell_hint":""},BAIT_FIELDS): return false
 		if bait.bait_id<=0 or bait_ids.has(bait.bait_id) or bait.suction_offset.length()>78.001 or bait.grains.size()>2048 or bait.last_disturbance_tick>state.simulation_tick: return false
 		bait_ids[bait.bait_id]=true
 		for grain in bait.grains:
-			if not _record(grain,{"id":"","offset":Vector2.ZERO,"pos":Vector2.ZERO,"layer":0,"fleck":0,"free":false,"eaten":false},GRAIN_FIELDS): return false
+			if not _record(grain,{"id":"","offset":Vector2.ZERO,"pos":Vector2.ZERO,"layer":0,"fleck":0,"free":false,"eaten":false,"visual_kind":""},GRAIN_FIELDS): return false
 			if grain.id.is_empty() or grain.id.length()>64 or grain_ids.has(grain.id) or grain.layer<0 or grain.layer>2 or grain.fleck<0 or grain.fleck>4: return false
-			if grain.eaten or (not bait.active and not grain.free): return false
+			if grain.eaten or (not bait.active and not grain.free) or not FoodProfile.valid_type(grain.visual_kind): return false
+			if not grain.free and grain.visual_kind!=bait.visual_kind: return false
 			grain_ids[grain.id]=true
+		# Public type/hint strings must match visible grains, never hidden reserves.
+		var facts:=Observation._facts(bait,state.fish)
+		if bait.visual_kind!=facts.visual_kind or bait.shape_hint!=facts.shape_hint or bait.smell_hint!=facts.smell_hint: return false
+		if not bait.grains.is_empty() and not FoodProfile.valid_type(bait.visual_kind): return false
 	if rig.surface_x<0 or rig.surface_x>world.Layout.SIZE.x or absf(rig.surface_velocity)>10000: return false
 	if not rig.reel_hand_mode in [-1,0,1] or rig.reel_hand_amount<0 or rig.reel_hand_amount>1: return false
 	if rig.reel_phase<0 or rig.reel_phase>=TAU or rig.release_phase<0 or rig.release_phase>=TAU: return false

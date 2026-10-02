@@ -4,10 +4,11 @@ extends RefCounted
 # decision hints add detail with proximity without classifying food as safe/dangerous.
 # Never copy whole bait/grain records: new authority fields stay private by default.
 const Layout=preload("res://scripts/pond_layout.gd")
+const FoodProfile=preload("res://scripts/food_profile.gd")
 const NEAR_DISTANCE := 64.0
 const MEDIUM_DISTANCE := 160.0
 const FAR_POSITION_STEP := 16.0
-const VISUAL_GRAIN_FIELDS: Array[String] = ["offset","pos","layer","fleck","free","eaten"]
+const VISUAL_GRAIN_FIELDS: Array[String] = ["offset","pos","layer","fleck","free","eaten","visual_kind"]
 
 static func build(world: Node2D, include_visuals: bool = true) -> Dictionary:
 	var observed: Array[Dictionary]=[]
@@ -56,6 +57,7 @@ static func _visual(bait: Dictionary, facts: Dictionary) -> Dictionary:
 		"pos":Vector2(facts.pos),
 		"angle":float(bait.angle) if bait.active else 0.0,
 		"suction_offset":Vector2(facts.suction_offset),
+		"visual_kind":facts.visual_kind,"shape_hint":facts.shape_hint,"smell_hint":facts.smell_hint,
 		"grains":grains}
 
 static func _facts(bait: Dictionary, fish_position: Vector2) -> Dictionary:
@@ -67,24 +69,35 @@ static func _facts(bait: Dictionary, fish_position: Vector2) -> Dictionary:
 	var extent:=0.0
 	var nearest: Variant=null
 	var best:=INF
+	var attached_kind: String=""
+	var loose_kind: String=""
 	for grain: Dictionary in bait.grains:
 		if grain.eaten or (not grain.free and not bait.active): continue
 		count+=1
 		center+=Vector2(grain.pos)
 		if bait.active: extent=maxf(extent,Vector2(bait.pos).distance_to(grain.pos))
-		if not grain.free: attached=true
+		if not grain.free:
+			attached=true
+			if attached_kind.is_empty(): attached_kind=String(grain.visual_kind)
 		else:
 			loose+=1
+			if loose_kind.is_empty(): loose_kind=String(grain.visual_kind)
 			if Layout.WATER.has_point(grain.pos):
 				var distance: float=fish_position.distance_squared_to(grain.pos)
-				if distance<best: best=distance; nearest=Vector2(grain.pos)
+				if distance<best:
+					best=distance; nearest=Vector2(grain.pos); loose_kind=String(grain.visual_kind)
 	# An inactive bait contributes only its visible loose food, not its hidden home.
 	if bait.active: center=Vector2(bait.pos)
 	elif count>0:
 		center/=count
 		for grain: Dictionary in bait.grains:
 			if not grain.eaten and grain.free: extent=maxf(extent,center.distance_to(grain.pos))
-	return {"visible_count":count,"loose":loose,"attached":attached,"pos":center,"extent":extent,
+	# Derive type cues only from visible food. A replenished hidden reserve may
+	# have a different authority type from the old loose grains still in the water.
+	var visual_kind:=attached_kind if attached else loose_kind
+	var profile:=FoodProfile.get_profile(visual_kind)
+	return {"visual_kind":visual_kind,"shape_hint":String(profile.get("shape_hint","")),"smell_hint":String(profile.get("smell_hint","")),
+		"visible_count":count,"loose":loose,"attached":attached,"pos":center,"extent":extent,
 		"suction_offset":Vector2(bait.suction_offset) if bait.active else Vector2.ZERO,
 		"food_position":Vector2(bait.pos) if attached else nearest}
 
@@ -96,6 +109,8 @@ static func _hints(facts: Dictionary, band: String, water_drift: Vector2) -> Dic
 		hints.shape="grain_cluster" if facts.attached else "loose_grains"
 		# Existing food shares one scent; this is presence, never hook evidence.
 		hints.smell="food"
+		hints.shape_hint=facts.shape_hint
+		hints.smell_hint=facts.smell_hint
 		hints.motion={"water_drift":water_drift,"suction_displacement":Vector2(facts.suction_offset)}
 	if band=="near":
 		hints.disturbances={"displaced":Vector2(facts.suction_offset).length()>0.25,"loose_grains":int(facts.loose)}
