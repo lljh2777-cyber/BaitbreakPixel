@@ -30,3 +30,12 @@ Remaining checkpoints: observation boundary, measurement/baseline gate, then seq
 - Immutable `--project` archives isolate measurements from ongoing edits; `summarize_rounds.py` merges disjoint seed shards, rejects duplicate seeds and marks censored rounds
 - Initial two-round real-simulation probe completed; 1000-seed baseline is in progress and is a required Phase0 gate, not yet acceptance
 - Deterministic replay/counter/freeze checks: 8/8. Current aggregate/native regression and full baseline measurement remain pending
+
+## Phase0 review corrections and baseline evidence
+
+- Feeding abort now means the entire stopped session consumed no food; successful sessions do not become aborts on their final tick
+- Mouth contacts and successful hook attachments are distinct counters
+- Snapshot validation rejects fractional identity fields without changing authority/RNG state
+- 1000 immutable-baseline seeds 1–1000 completed, zero censored. Median duration **40.90 seconds**, mean 39.24; food mean 58.27, fish bot win rate 93.8%
+- `docs/test-reports/PHASE0-BASELINE-1000.json` records source and exact harness hash. The older baseline's hook_events column actually meant mouth contacts; corrected summary labels it contacts and leaves unavailable actual attachment totals null
+- Duration/outcomes were unaffected by the accounting corrections. Final Phase0 gate still includes current headless/native regression results

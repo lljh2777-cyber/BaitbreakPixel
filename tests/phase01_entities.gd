@@ -23,6 +23,11 @@ func _initialize() -> void:
 	var invalid: Dictionary=snapshot.duplicate(true)
 	invalid.state.baits[1].bait_id=invalid.state.baits[0].bait_id
 	check(not copy.restore_snapshot(invalid),"reject duplicate identity")
+	invalid=snapshot.duplicate(true)
+	invalid.state.baits[0].bait_id=1.5
+	var before: Dictionary=copy.capture_snapshot()
+	check(not copy.restore_snapshot(invalid),"reject fractional identity")
+	check(var_to_bytes(before)==var_to_bytes(copy.capture_snapshot()),"rejected identity leaves counters and RNG unchanged")
 	world.reset_world({"seed":731})
 	check(world.baits[0].bait_id==1 and world.next_bait_id==5,"new round resets namespace")
 	world.free(); copy.free()

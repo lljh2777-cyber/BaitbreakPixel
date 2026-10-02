@@ -24,9 +24,10 @@ summary={'source_commit':a.source_commit,'rounds':len(rows),'completed_rounds':l
          'mean_round_duration':statistics.mean(row['duration'] for row in completed) if completed else None,
          'fish_win_rate':sum(row['winner']=='fish' for row in rows)/len(rows),
          'food_consumed_mean':statistics.mean(row['food_consumed'] for row in rows),
-         'hook_event_rate':sum(row['hook_events']>0 for row in rows)/len(rows),
-         'hook_events_mean':statistics.mean(row['hook_events'] for row in rows),
-         'note':'Completed-round duration excludes explicitly censored rows; bot evidence is not human playability acceptance.'}
+         'hook_event_rate':sum(row['stats'].get('hook_events',0)>0 for row in rows)/len(rows) if all('hook_events' in row['stats'] for row in rows) else None,
+         'hook_events_mean':statistics.mean(row['stats']['hook_events'] for row in rows) if all('hook_events' in row['stats'] for row in rows) else None,
+         'hook_contacts_mean':statistics.mean(row.get('hook_contacts',row['hook_events']) for row in rows),
+         'note':'Legacy baseline row hook_events is mouth-contact count; actual attachment totals are unavailable unless present in stats. Completed-round duration excludes explicitly censored rows; bot evidence is not human playability acceptance.'}
 for key in ['instinct_trigger_count','instinct_total_duration','critical_satiety_seconds','satiety_min','satiety_mean','caution_low_seconds','caution_medium_seconds','caution_high_seconds','feeding_attempts','feeding_aborts']:
     values=[row['stats'][key] for row in rows if key in row['stats']]
     summary[key+'_mean']=statistics.mean(values) if len(values)==len(rows) else None

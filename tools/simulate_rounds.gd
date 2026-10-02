@@ -33,7 +33,7 @@ func _initialize() -> void:
 			world.advance_tick(brain.command(world,World.TICK_SECONDS),opponent.command(world,World.TICK_SECONDS))
 			if world.match_over: break
 		var row: Dictionary={"seed":seed_value,"strategy":strategy,"duration":world.elapsed,"completed":world.match_over,
-			"winner":world.winner_role,"reason":world.reason,"food_consumed":world.score,"hook_events":world.hook_count,"escapes":world.escape_count,
+			"winner":world.winner_role,"reason":world.reason,"food_consumed":world.score,"hook_contacts":world.hook_count,"hook_events":world.round_stats.get("hook_events",null),"escapes":world.escape_count,
 			"stats":world.round_stats.duplicate(true)}
 		rows.append(row); durations.append(world.elapsed)
 		wins+=int(world.winner_role=="fish"); hooks+=world.hook_count; food+=world.score
@@ -42,7 +42,7 @@ func _initialize() -> void:
 	durations.sort()
 	var median: float=durations[count/2] if count%2 else (durations[count/2-1]+durations[count/2])/2.0
 	var summary: Dictionary={"rounds":count,"first_seed":first_seed,"strategy":strategy,"tick_seconds":World.TICK_SECONDS,
-		"median_round_duration":median,"fish_win_rate":float(wins)/count,"hook_events_mean":float(hooks)/count,
+		"median_round_duration":median,"fish_win_rate":float(wins)/count,"hook_contacts_mean":float(hooks)/count,
 		"food_consumed_mean":food/count,"wall_seconds":(Time.get_ticks_msec()-started)/1000.0,
 		"note":"Bot strategy evidence, not human playability acceptance. Timed-out incomplete rows are explicitly marked."}
 	var file:=FileAccess.open(output.path_join("summary.json"),FileAccess.WRITE)
@@ -51,9 +51,9 @@ func _initialize() -> void:
 	file=FileAccess.open(output.path_join("rounds.json"),FileAccess.WRITE)
 	file.store_string(JSON.stringify(rows,"\t")); file.close()
 	file=FileAccess.open(output.path_join("rounds.csv"),FileAccess.WRITE)
-	file.store_csv_line(PackedStringArray(["seed","strategy","duration","completed","winner","reason","food_consumed","hook_events","escapes"]))
+	file.store_csv_line(PackedStringArray(["seed","strategy","duration","completed","winner","reason","food_consumed","hook_contacts","hook_events","escapes"]))
 	for row in rows:
-		file.store_csv_line(PackedStringArray([str(row.seed),str(row.strategy),str(row.duration),str(row.completed),row.winner,row.reason,str(row.food_consumed),str(row.hook_events),str(row.escapes)]))
+		file.store_csv_line(PackedStringArray([str(row.seed),str(row.strategy),str(row.duration),str(row.completed),row.winner,row.reason,str(row.food_consumed),str(row.hook_contacts),str(row.hook_events),str(row.escapes)]))
 	file.close()
 	print("BATCH_SUMMARY | ",JSON.stringify(summary))
 	quit()

@@ -920,6 +920,7 @@ func _enter_hook(index: int) -> void:
 	returning = false
 
 func _attach_hook() -> void:
+	round_stats.hook_events+=1
 	for role in effort_checks: Effort.reset(effort_checks[role],rng.randf_range(1.2,2.8))
 	hooked = HookState.HOOKED
 	qte = ""

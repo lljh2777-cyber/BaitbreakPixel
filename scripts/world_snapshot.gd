@@ -237,6 +237,8 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 	for bait in state.baits:
 		if not bait is Dictionary or not bait.get("grains") is Array or bait.grains.size()>2048: return false
 		if not record_matches(bait,bait_reference,"grains") or bait.suction_offset.length()>78.001: return false
+		for identity in ["bait_id","hook_id","rod_id","created_tick"]:
+			if not bait[identity] is int: return false
 		if bait.bait_id<=0 or bait.bait_id>=state.next_bait_id or bait_ids.has(bait.bait_id): return false
 		bait_ids[bait.bait_id]=true
 		if bait.rod_id!=state.rod_id or bait.created_tick<0 or bait.created_tick>state.simulation_tick: return false

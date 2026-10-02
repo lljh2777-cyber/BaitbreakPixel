@@ -22,5 +22,16 @@ func _initialize() -> void:
 	a.match_paused=false; a.finish(true,"test"); a.advance_tick({}, {})
 	check(a.round_stats==stats,"ended match does not accumulate statistics")
 	check(a.Stats.valid(a.round_stats),"expanded stats validate")
+	# Consumption on an earlier tick still makes the feeding session successful.
+	b.reset_world()
+	b.advance_tick({"suck":true},{})
+	b.score=1.0
+	b.advance_tick({"suck":true},{})
+	b.advance_tick({"suck":false},{})
+	check(b.round_stats.feeding_aborts==0,"successful session stop is not an abort")
+	b._enter_hook(0)
+	check(b.round_stats.hook_events==0,"mouth contact is not an attached hook")
+	b._attach_hook()
+	check(b.round_stats.hook_events==1,"actual attachment records hook event")
 	a.free(); b.free()
 	print("STATS | passed=%d | failed=%d" % [passed,failed]); quit(0 if failed==0 else 1)

@@ -4,7 +4,7 @@ static func fresh() -> Dictionary:
 	return {"fish_good":0,"fish_total":0,"angler_good":0,"angler_total":0,
 		"wrap_good":0,"unwrap_good":0,"breaks":0,"slips":0,"danger_seconds":0.0,"hooked_seconds":0.0,
 		"round_duration":0.0,"food_consumed":0.0,"feeding_attempts":0,"feeding_aborts":0,
-		"bait_approaches":0,"bait_retreats":0,"hook_contacts":0,"hook_events":0,"successful_escapes":0,
+		"feeding_session_start":0.0,"bait_approaches":0,"bait_retreats":0,"hook_contacts":0,"hook_events":0,"successful_escapes":0,
 		"instinct_trigger_count":0,"instinct_total_duration":0.0,"satiety_min":100.0,"satiety_mean":100.0,
 		"satiety_integral":0.0,"critical_satiety_seconds":0.0,"caution_low_seconds":0.0,"caution_medium_seconds":0.0,"caution_high_seconds":0.0}
 
@@ -39,10 +39,11 @@ static func sample(world: Node2D, previous: Dictionary) -> void:
 	stats.round_duration=world.elapsed
 	stats.food_consumed=world.score
 	stats.hook_contacts=world.hook_count
-	stats.hook_events=world.hook_count
 	stats.successful_escapes=world.escape_count
-	if world.feeding and not previous.feeding: stats.feeding_attempts+=1
-	if previous.feeding and not world.feeding and world.score==previous.score: stats.feeding_aborts+=1
+	if world.feeding and not previous.feeding:
+		stats.feeding_attempts+=1
+		stats.feeding_session_start=float(previous.score)
+	if previous.feeding and not world.feeding and world.score<=float(stats.feeding_session_start)+0.000001: stats.feeding_aborts+=1
 	var near:=_near_ids(world)
 	for id in near:
 		if not id in previous.near: stats.bait_approaches+=1
