@@ -28,7 +28,7 @@ func fixture(power_value: float, has_hook: bool) -> void:
 	game.hook_cooldown=1000; game.notice_age=0; game.feeding=true
 	for bait in game.baits: bait.active=false
 	var bait: Dictionary=game.baits[0]
-	bait.active=true; bait.hook=has_hook; bait.pos=game.mouth()+Vector2(26,0); bait.home=bait.pos; bait.angle=0.0
+	bait.active=true; bait.hook=has_hook; bait.pos=game.mouth()+Vector2(20,0); bait.home=bait.pos; bait.angle=0.0
 	for grain in bait.grains: grain.pos=bait.pos+Vector2(grain.offset)
 func run() -> void:
 	if not prepare_capture_output():

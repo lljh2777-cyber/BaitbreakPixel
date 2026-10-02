@@ -704,7 +704,8 @@ func strength(point: Vector2) -> float:
 	var depth := local.dot(aim)
 	var side := absf(local.cross(aim))
 	if depth < 0 or depth > rule("suction_range") or side > rule("suction_mouth") + depth * rule("suction_spread"): return 0
-	return (0.6 + 0.4 * (1 - depth / rule("suction_range"))) * (1 - 0.2 * side / (rule("suction_mouth") + depth * rule("suction_spread")))
+	# Smooth longitudinal field: full at mouth, half at midrange, zero at edge.
+	return Suction.distance_gain(depth / rule("suction_range")) * (1 - 0.2 * side / (rule("suction_mouth") + depth * rule("suction_spread")))
 
 func _collision(point: Vector2, radius: float) -> bool:
 	for solid in SOLIDS:
@@ -1005,7 +1006,7 @@ func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2, def
 		var pull := strength(grain.pos)
 		if pull <= 0: continue
 		if grain.free:
-			grain.pos = Vector2(grain.pos).move_toward(mouth(), delta * rule("pellet_speed") * Suction.pellet_gain(power)*float(FoodProfile.get_profile(grain.visual_kind).suction_efficiency))
+			grain.pos = Vector2(grain.pos).move_toward(mouth(), delta * pull * rule("pellet_speed") * Suction.pellet_gain(power)*float(FoodProfile.get_profile(grain.visual_kind).suction_efficiency))
 			if Vector2(grain.pos).distance_to(mouth()) < 4:
 				if defer_intake: pending_intake.append(grain)
 				else: _consume_grain(grain)

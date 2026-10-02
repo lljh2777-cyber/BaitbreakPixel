@@ -77,6 +77,13 @@ func run() -> void:
 	check(far.get_region(Rect2i(350,188,12,12)).get_data()==far_ready.get_region(Rect2i(350,188,12,12)).get_data(),"far automatic tick does not visually remove unreachable food")
 	check(not game.baits[0].grains[0].eaten and game.score==0 and game.bite_cooldown==0 and game.bite_feedback_age==0,"far food is not collected and incurs no accepted cooldown")
 	check(far.get_region(Rect2i(272,31,80,17)).get_data()==far_ready.get_region(Rect2i(272,31,80,17)).get_data(),"far automatic tick leaves ready hint unchanged")
+	# The former 18px range must no longer accept a visually separated grain.
+	setup_fixture(); put_food(Vector2(16,0))
+	var outside_14:=await render("bite-outside-14-ready")
+	game.advance_tick({}, {}); game.elapsed=2.0
+	var outside_14_idle:=await render("bite-outside-14-idle")
+	check(not game.baits[0].grains[0].eaten and game.score==0 and game.bite_cooldown==0 and game.bite_feedback_age==0,"16px grain remains outside the actual 14px automatic Bite range")
+	check(outside_14.get_data()==outside_14_idle.get_data(),"outside-14px automatic tick has no false food disappearance, jaw contact, or HUD success")
 	setup_fixture(); put_food(Vector2(7,0),4)
 	var offered:=await render("bite-food-ready")
 	game.advance_tick({}, {}); game.elapsed=2.0

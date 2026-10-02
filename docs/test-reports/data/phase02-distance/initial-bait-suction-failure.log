@@ -1,0 +1,60 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+BAIT_SUCTION_PASS | power 0.35 / 30 Hz: both whole clusters visibly move toward the mouth at matching positions
+BAIT_SUCTION_PASS | power 0.35 / 30 Hz: identical detachment and pellet trajectories throughout suction
+BAIT_SUCTION_PASS | power 0.35 / 30 Hz: both foods reach the mouth and award identical points
+BAIT_SUCTION_PASS | power 0.35 / 60 Hz: both whole clusters visibly move toward the mouth at matching positions
+BAIT_SUCTION_PASS | power 0.35 / 60 Hz: identical detachment and pellet trajectories throughout suction
+BAIT_SUCTION_PASS | power 0.35 / 60 Hz: both foods reach the mouth and award identical points
+BAIT_SUCTION_PASS | power 0.35 / 120 Hz: both whole clusters visibly move toward the mouth at matching positions
+BAIT_SUCTION_PASS | power 0.35 / 120 Hz: identical detachment and pellet trajectories throughout suction
+BAIT_SUCTION_PASS | power 0.35 / 120 Hz: both foods reach the mouth and award identical points
+BAIT_SUCTION_PASS | power 1.00 / 30 Hz: both whole clusters visibly move toward the mouth at matching positions
+BAIT_SUCTION_PASS | power 1.00 / 30 Hz: identical detachment and pellet trajectories throughout suction
+BAIT_SUCTION_PASS | power 1.00 / 30 Hz: both foods reach the mouth and award identical points
+BAIT_SUCTION_PASS | power 1.00 / 60 Hz: both whole clusters visibly move toward the mouth at matching positions
+BAIT_SUCTION_PASS | power 1.00 / 60 Hz: identical detachment and pellet trajectories throughout suction
+BAIT_SUCTION_PASS | power 1.00 / 60 Hz: both foods reach the mouth and award identical points
+BAIT_SUCTION_PASS | power 1.00 / 120 Hz: both whole clusters visibly move toward the mouth at matching positions
+BAIT_SUCTION_PASS | power 1.00 / 120 Hz: identical detachment and pellet trajectories throughout suction
+BAIT_SUCTION_PASS | power 1.00 / 120 Hz: both foods reach the mouth and award identical points
+BAIT_SUCTION_PASS | higher suction power visibly moves the whole bait farther
+BAIT_SUCTION_PASS | duel hook=true: the whole bait actually moves under suction
+BAIT_SUCTION_PASS | duel hook=true: shared attraction retains passive rig motion without double accumulation
+BAIT_SUCTION_PASS | duel hook=false: the whole bait actually moves under suction
+BAIT_SUCTION_PASS | duel hook=false: shared attraction retains passive rig motion without double accumulation
+BAIT_SUCTION_PASS | shared multiplier 0.0 controls whole-cluster displacement
+BAIT_SUCTION_PASS | releasing suction smoothly restores the cluster at multiplier 0.0
+ERROR: BAIT_SUCTION_FAIL | whole-cluster multiplier does not alter detached pellet speed
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/bait_suction_v0212.gd:8)
+       [1] run (res://tests/bait_suction_v0212.gd:74)
+BAIT_SUCTION_PASS | shared multiplier 1.0 controls whole-cluster displacement
+BAIT_SUCTION_PASS | releasing suction smoothly restores the cluster at multiplier 1.0
+ERROR: BAIT_SUCTION_FAIL | whole-cluster multiplier does not alter detached pellet speed
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/bait_suction_v0212.gd:8)
+       [1] run (res://tests/bait_suction_v0212.gd:74)
+BAIT_SUCTION_PASS | shared multiplier 2.0 controls whole-cluster displacement
+BAIT_SUCTION_PASS | releasing suction smoothly restores the cluster at multiplier 2.0
+ERROR: BAIT_SUCTION_FAIL | whole-cluster multiplier does not alter detached pellet speed
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/bait_suction_v0212.gd:8)
+       [1] run (res://tests/bait_suction_v0212.gd:74)
+BAIT_SUCTION_PASS | food outside the suction cone cannot be pulled
+BAIT_SUCTION_PASS | partly displaced bait restores with its suction offset
+BAIT_SUCTION_PASS | restored suction replays deterministically
+BAIT_SUCTION_PASS | previous schema cannot silently discard whole-cluster motion
+BAIT_SUCTION_PASS | mouth contact hook=true keeps the correct bite result
+BAIT_SUCTION_PASS | mouth contact hook=false keeps the correct bite result
+ERROR: BAIT_SUCTION_FAIL | pulling a whole cluster to the mouth hook=true keeps the real bite result
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/bait_suction_v0212.gd:8)
+       [1] run (res://tests/bait_suction_v0212.gd:99)
+BAIT_SUCTION_PASS | pulling a whole cluster to the mouth hook=false keeps the real bite result
+BAIT_SUCTION_PASS | recasting clears the previous suction displacement
+BAIT_SUCTION_V0212 | passed=37 | failed=4

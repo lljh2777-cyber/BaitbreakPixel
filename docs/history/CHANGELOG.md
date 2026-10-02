@@ -1,3 +1,11 @@
+# 2026-10-02 · v0.24.4 源码手感修正
+
+- 默认自动咬食 18→14 px；旧个人档案旧默认一次性迁移，保留其他规则
+- 保持原锥形几何，纵向吸力改为 smoothstep(1−depth/range)；散粒移动、剥离和整饵位移目标使用同一场
+- schema14，权威 profile guard3 拒绝旧物理重放；鱼端 guard1，联机精确版本0.24.4
+- 没有新 ZIP。人工手感与最终平衡门仍开放；复用旧100种子只作调参比较，不能宣称新留出证明
+- [验证与试玩](../test-reports/PHASE02-DISTANCE-VALIDATION.md)
+
 # 2026-10-02 · v0.24.3 Windows 试玩包发布
 
 已发布 [v0.24.3](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.24.3)，包含三种饵型的吸动/碎散、自动咬食容量及饱食恢复差异。Windows 当前源码回归、针对性独立包画面及 EXE 启动通过；现有策略比较的负面平衡结果保留，Phase 2 最终人工门继续开放，未推进 Phase 3。验证范围与校验值见[发布记录](../test-reports/GITHUB-RELEASE-0.24.3.md)。后文“未打包”保留原开发阶段状态。

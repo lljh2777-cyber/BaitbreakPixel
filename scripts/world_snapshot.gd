@@ -5,8 +5,8 @@ const Rules = preload("res://scripts/game_rules.gd")
 const FoodProfile = preload("res://scripts/food_profile.gd")
 const SCHEMA := 14
 # Schema 14 remains the authority contract. This mandatory extension guard rejects
-# pre-archetype snapshots even when no network exact-build handshake is involved.
-const BAIT_PROFILE_VERSION := 2
+# earlier feeding physics even without a network exact-build handshake.
+const BAIT_PROFILE_VERSION := 3
 const MAP_ID := "pond_v2"
 const WORLD_FIELDS: Array[String] = [
 	"fish_id", "rod_id", "next_bait_id", "next_hook_id",

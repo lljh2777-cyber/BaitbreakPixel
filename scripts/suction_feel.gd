@@ -1,6 +1,10 @@
 extends RefCounted
 
 # One profile for both bait identities, shared by simulation and presentation.
+static func distance_gain(normalized_depth: float) -> float:
+	var near := 1.0-clampf(normalized_depth,0.0,1.0)
+	return near*near*(3.0-2.0*near)
+
 static func body_gain(power: float) -> float:
 	return power*(0.55+0.45*power)
 

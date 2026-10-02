@@ -71,7 +71,7 @@ func run() -> void:
 		var grain: Dictionary=w.baits[0].grains[0]; grain.eaten=false; grain.free=true; grain.pos=w.mouth()+Vector2(24,0)
 		var before: Vector2=grain.pos
 		w._step_bait(0,1.0/60,true,w.mouth())
-		check(absf(before.distance_to(grain.pos)-w.rule("pellet_speed")/60)<0.0001,"whole-cluster multiplier does not alter detached pellet speed")
+		check(absf(before.distance_to(grain.pos)-w.strength(before)*w.rule("pellet_speed")/60)<0.0001,"whole-cluster multiplier does not alter detached pellet speed")
 		w.free()
 	var outside:=fresh(); outside.aim=Vector2.LEFT
 	outside._step_bait(0,1.0/60,true,outside.mouth())
@@ -93,8 +93,10 @@ func run() -> void:
 		w._step_bait(0,1.0/60,true,w.mouth())
 		check(w.hooked==(w.HookState.MOUTH if has_hook else w.HookState.FREE),"mouth contact hook=%s keeps the correct bite result" % has_hook)
 		w.free()
+	# The gradient requires closer approach for real hook contact; 26px is tested separately.
 	for has_hook in [true,false]:
 		w=fresh("survival",has_hook); w.hook_cooldown=0
+		w.baits[0].pos=w.mouth()+Vector2(20,0); w.baits[0].home=w.baits[0].pos; w.baits[0].tip_before=w._tip(0)
 		for frame in 60: w.advance_tick({"aim":Vector2.RIGHT,"power":1.0,"suck":true},{})
 		check(w.hooked!=(w.HookState.FREE) if has_hook else w.hooked==w.HookState.FREE,"pulling a whole cluster to the mouth hook=%s keeps the real bite result" % has_hook)
 		w.free()
