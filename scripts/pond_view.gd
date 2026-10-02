@@ -26,6 +26,8 @@ const GOLD := Color("ffd379")
 const RED := Color("f58375")
 const SKILL_ORIGIN := Vector2(10,122)
 var game: Node2D
+const FishObservation=preload("res://scripts/fish_observation.gd")
+var fish_observation: Dictionary={}
 var world: Node2D
 var angler_visual := AnglerVisual.new()
 var shore := Shore.new()
@@ -72,6 +74,7 @@ func _draw() -> void:
 		_hud(t)
 		_network_badge()
 		return
+	fish_observation=FishObservation.build(world)
 	camera_offset=Camera.offset(world,"fish")
 	draw_set_transform(-camera_offset)
 	_world(t)
@@ -148,8 +151,9 @@ func _bait_point(index: int, point: Vector2) -> Vector2:
 	return FishWinding.attached_point(world,line_frame.fish,point)
 
 func _baits(t: float, behind: bool=false) -> void:
-	for index in world.baits.size():
-		var bait: Dictionary = world.baits[index]
+	for perceived: Dictionary in fish_observation.perceived_baits:
+		var index: int=world.bait_slot(perceived.bait_id)
+		var bait: Dictionary=perceived.visual
 		var orbit: bool=line_frame.fish.active and index==world.bound_bait
 		if behind!=(orbit and not line_frame.fish.front): continue
 		var pull_direction: Vector2=Vector2(bait.suction_offset).normalized()

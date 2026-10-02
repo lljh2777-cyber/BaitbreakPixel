@@ -1,4 +1,6 @@
 extends RefCounted
+const Observation=preload("res://scripts/fish_observation.gd")
+var observation: Dictionary={}
 const Layout=preload("res://scripts/pond_layout.gd")
 
 # Outputs the same movement/suction/QTE commands as keyboard and mouse input.
@@ -19,6 +21,7 @@ var was_hooked := false
 var evade_memory := 0.0
 
 func reset(seed_value: int = 2719) -> void:
+	observation.clear()
 	rng.seed=seed_value
 	food_target=-1
 	escape_target=-1
@@ -53,6 +56,7 @@ func _judge(game: Node2D) -> bool:
 	return false
 
 func command(game: Node2D, delta: float) -> Dictionary:
+	observation=Observation.build(game,false)
 	var result := {"move":Vector2.ZERO,"aim":game.aim,"power":game.rule("suction_initial"),"suck":false,"dash":false,"slow":false,"qte":false,"home":false}
 	if game.landing or game.net_state=="caught": state="被捕获"; return result
 	result.qte=_judge(game)
@@ -129,7 +133,8 @@ func command(game: Node2D, delta: float) -> Dictionary:
 		decision_age=0.6
 		var best := INF
 		var selected := -1
-		for index in game.baits.size():
+		for perceived: Dictionary in observation.perceived_baits:
+			var index: int=perceived.bait_id
 			var point := food_position(game,index)
 			if not point.is_finite(): continue
 			var value: float=game.fish.distance_to(point)
@@ -138,7 +143,7 @@ func command(game: Node2D, delta: float) -> Dictionary:
 		food_target=selected
 	if food_target<0: state="等待食物"; return result
 	var bait_position := food_position(game,food_target)
-	var attached: bool=game.baits[food_target].active and game._remaining(game.baits[food_target],true)
+	var attached: bool=Observation.find(observation,food_target).get("has_attached_food",false)
 	var approach_distance := minf(22.0,game.rule("suction_range")*0.5)
 	var destination := bait_position+Vector2(approach_side*approach_distance,0)
 	# Once a loose grain is in range, hold position instead of backing away from
@@ -154,14 +159,7 @@ func command(game: Node2D, delta: float) -> Dictionary:
 	state="吸食饵料" if result.suck else "寻找食物"
 	return result
 
-func food_position(game: Node2D, index: int) -> Vector2:
-	var bait: Dictionary=game.baits[index]
-	if bait.active and game._remaining(bait,true): return bait.pos
-	var nearest := Vector2(INF,INF)
-	var best := INF
-	for grain in bait.grains:
-		if grain.eaten or not grain.free: continue
-		if not Layout.WATER.has_point(grain.pos): continue
-		var distance: float=game.fish.distance_squared_to(grain.pos)
-		if distance<best: best=distance; nearest=grain.pos
-	return nearest
+func food_position(game: Node2D, bait_id: int) -> Vector2:
+	if observation.is_empty() or observation.tick!=game.simulation_tick:
+		observation=Observation.build(game,false)
+	return Observation.food_position(observation,bait_id)
