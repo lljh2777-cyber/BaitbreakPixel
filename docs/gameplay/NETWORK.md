@@ -1,6 +1,6 @@
 # 0.24.3 双人联机（开发版）
 
-本文对应尚未打包的 0.24.3 源码；公开 Windows 包仍为 0.24.2。双方同步 feature/dev 并用 Godot 4.7.2 运行；不要与旧包混连。
+本文对应 0.24.3 源码及公开 Windows 试玩包。双方从[项目首页](../../README.md)下载同版本 ZIP，解压后运行；不要与旧包混连。
 
 抄网操作、模块及规则迁移见 [NET-ARCHITECTURE.md](../architecture/NET-ARCHITECTURE.md)。
 
