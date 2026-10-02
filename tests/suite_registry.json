@@ -527,6 +527,21 @@
       "status": "current",
       "mode": "renderer",
       "timeout_seconds": 120
+    },
+    "phase02_bite": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "phase02_bite_network": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "phase02_bite_native": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 120
     }
   }
 }

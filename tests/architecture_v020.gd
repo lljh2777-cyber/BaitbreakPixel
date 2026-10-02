@@ -91,12 +91,12 @@ func run() -> void:
 	a.reset_world(config()); a.baits[1].grains[0].free=true; a.baits[1].grains[1].eaten=true; a.score=3.5; a.counted[a.baits[1].grains[1].id]=true
 	roundtrip(a,b,"detached food and score ownership",90)
 	var valid: Dictionary=a.capture_snapshot()
-	# net_aim remains part of the schema-13 wire contract even when the current
+	# net_aim remains part of the schema-14 authority contract (retained from schema 13) even when the current
 	# two-point net action no longer consumes the old drag target.
-	check(Snapshot.SCHEMA==13 and valid.state.has("net_aim"),"schema 13 retains legacy net_aim for same-build snapshot compatibility")
+	check(Snapshot.SCHEMA==14 and valid.state.has("net_aim"),"schema 14 retains legacy net_aim for same-build snapshot compatibility")
 	var legacy_aim: Dictionary=valid.duplicate(true)
 	legacy_aim.state.net_aim=Vector2(418,173)
-	check(b.restore_snapshot(legacy_aim) and b.capture_snapshot().state.net_aim==Vector2(418,173),"schema 13 roundtrips nondefault legacy net_aim without silently dropping it")
+	check(b.restore_snapshot(legacy_aim) and b.capture_snapshot().state.net_aim==Vector2(418,173),"schema 14 roundtrips nondefault legacy net_aim without silently dropping it")
 	b.restore_snapshot(valid)
 	var broken: Dictionary=valid.duplicate(true); broken.schema=999
 	check(not b.restore_snapshot(broken) and same(a,b),"unknown snapshot schema is rejected without partial changes")
