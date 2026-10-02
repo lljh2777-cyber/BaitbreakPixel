@@ -2,7 +2,7 @@
 
 一个 2D 像素风格的人鱼对抗游戏：小鱼在水下觅食、缠线和逃脱，钓鱼人在岸边控竿、收放线与抄网。支持单机挑战、自由练习和一人对一鱼的局域网联机。
 
-**当前源码与公开 Windows 试玩版本：0.24.2（三种饵型试玩版）** · Windows x64 · Godot 4.7.2
+**当前源码版本：0.24.3（摄食选择最终人工门，尚未打包）；公开 Windows 试玩包：0.24.2** · Windows x64 · Godot 4.7.2
 
 ## 下载试玩
 
@@ -12,13 +12,15 @@
 
 2026-10-02 已逐版发布 **0.21.0–0.24.2，共 15 个 Release**，每版均附 ZIP 和 `SHA256SUMS.txt`。其他版本见 [全部 Releases](https://github.com/lljh2777-cyber/BaitbreakPixel/releases)，核对结果见 [0.24.2 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.2.md)和[此前 14 版发布记录](docs/test-reports/GITHUB-RELEASES-2026-10-02.md)。0.24.2 仍用于人工试玩，发布包不代表已经完成人工手感与平衡验收。
 
-### Phase 2.2：0.24.2 饵型人工试玩门
+### Phase 2.3：0.24.3 摄食选择最终人工门
 
-用户允许从自动咬食阶段继续，既有反馈仍可重新打开。新增 Cluster 颗粒团、Worm 弯曲细条、Chunk 块状食物及公开形状/气味线索。单机开局三团各一种；双人保留两团预算，随机选择两种，不为凑三类增加食物。新挂饵从三类中抽取，类型与钩分配独立。
+用户允许继续组合平衡。三类食物现在有不同的吸动/剥离、碎散、自动咬食容量与饱食恢复；每粒挑战分数不变。Cluster 保留原基准，Worm 和 Chunk 更适合贴近自动咬食。自动咬食仍为嘴边 18 px、基础容量 4、成功后冷却 0.40 秒，无咬食按键，也没有禁用开关。
 
-本阶段只建立形态与生命周期基础：食物数、计分和摄食/饱食倍率保持原值，不声称已经实现类型效率差异或完成组合平衡。自动咬食仍为嘴边 18 px、每口最多 4 粒、成功后冷却 0.40 秒，无咬食按键。请先确认三种形态是否清楚、是否有一种看起来天然等于危险饵；确认前不进入 P2.3。
+100 个留出种子的 300 局比较发现远处吸食策略在核心均值上占优，尚未通过“无单一策略支配”目标；结果和局限已保留，不宣称平衡完成。
 
-对应 Windows ZIP 已生成、核对并公开发布，可直接体验三种饵型；本地目录为 `Releases/BaitbreakPixel-0.24.2`。见 [饵型实现边界](docs/architecture/PHASE02-BAIT-TYPES.md)、[验证与人工试玩清单](docs/test-reports/PHASE02-BAIT-VALIDATION.md)。历史自动咬食报告保留在 [P2.1 验证](docs/test-reports/PHASE02-BITE-VALIDATION.md)。
+本次只推送源码，没有生成或上传 0.24.3 ZIP。公开 0.24.2 包不含这轮平衡。同步 feature/dev 后用 Godot 4.7.2 运行源码，按[验证与最终试玩清单](docs/test-reports/PHASE02-FEEDING-VALIDATION.md)比较远处吸食、贴近和混合选择。自动统计只能发现问题，不能代替手感验收；停在最终人工门，只有用户明确确认 Phase 2 可以结束才允许进入 Phase 3。
+
+实现与统计定义见[摄食平衡边界](docs/architecture/PHASE02-FEEDING-BALANCE.md)。此前[三种饵型报告](docs/test-reports/PHASE02-BAIT-VALIDATION.md)与[P2.1 报告](docs/test-reports/PHASE02-BITE-VALIDATION.md)保留原始结果。
 
 0.23.0 新增饱食度、可抵抗的本能偏移、基于可见线索的三档警惕，以及按饵生命周期随机决定的隐藏鱼钩。保持一条玩家鱼和现有主鱼竿，没有加入自动吸食、多鱼或长期记忆。实施与验收范围见 [Phase 0–1 检查记录](docs/architecture/PHASE-0-1.md)。当前版本尚需人工试玩确认控制手感与核心博弈，不能将自动统计当作“已经好玩”的证明。
 

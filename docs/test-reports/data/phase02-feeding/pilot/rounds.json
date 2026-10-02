@@ -1,0 +1,1878 @@
+[
+	{
+		"automatic_bite_events": 33,
+		"automatic_bite_while_suction_command": 33,
+		"completed": true,
+		"decision_trace": [
+			{
+				"caution": "CALM",
+				"kind": "unknown",
+				"mode": "suck",
+				"satiety": 100.0,
+				"target": 2,
+				"tick": 0
+			},
+			{
+				"caution": "ALARMED",
+				"kind": "unknown",
+				"mode": "suck",
+				"satiety": 90.3639999999986,
+				"target": 1,
+				"tick": 1498
+			},
+			{
+				"caution": "ALARMED",
+				"kind": "unknown",
+				"mode": "suck",
+				"satiety": 98.1662499999999,
+				"target": 5,
+				"tick": 2042
+			}
+		],
+		"duration": 41.7333333333322,
+		"escapes": 0,
+		"feeding_attempts": 34,
+		"feeding_seconds": 27.05,
+		"food_consumed": 56.4,
+		"home_win": false,
+		"hook_contacts": 0,
+		"hook_events": 0,
+		"mode_choices": {
+			"bite": 0,
+			"suck": 1
+		},
+		"mode_seconds": {
+			"bite": 0.0,
+			"home": 0.0,
+			"seek": 0.0,
+			"suck": 41.7333333333322
+		},
+		"mode_switches": 0,
+		"per_type": {
+			"chunk": {
+				"automatic_bite_events": 24,
+				"automatic_bite_food": 30.0,
+				"automatic_bite_grains": 44,
+				"food": 30.0,
+				"grains": 44,
+				"satiety_effective": 51.4075000000027,
+				"satiety_gross": 99.0000000000001,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			},
+			"cluster": {
+				"automatic_bite_events": 9,
+				"automatic_bite_food": 16.05,
+				"automatic_bite_grains": 23,
+				"food": 26.4,
+				"grains": 38,
+				"satiety_effective": 29.9702500000028,
+				"satiety_gross": 52.8,
+				"suction_food": 10.35,
+				"suction_grains": 15
+			},
+			"worm": {
+				"automatic_bite_events": 0,
+				"automatic_bite_food": 0.0,
+				"automatic_bite_grains": 0,
+				"food": 0.0,
+				"grains": 0,
+				"satiety_effective": 0.0,
+				"satiety_gross": 0.0,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			}
+		},
+		"phase": "pilot",
+		"policy": "SuckOnly",
+		"reason": "net",
+		"satiety_final": 79.3397499999986,
+		"satiety_mean": 92.4049084464851,
+		"satiety_min": 79.3397499999986,
+		"seed": 21001,
+		"stats": {
+			"angler_good": 0,
+			"angler_total": 0,
+			"bait_approaches": 4,
+			"bait_retreats": 4,
+			"bite_attempts": 33,
+			"bite_hook_contacts": 0,
+			"bite_intake_by_type": {
+				"chunk": 30.0,
+				"cluster": 16.05,
+				"worm": 0.0
+			},
+			"bite_successes": 33,
+			"breaks": 0,
+			"caution_high_seconds": 28.1833333333328,
+			"caution_low_seconds": 8.7999999999996,
+			"caution_medium_seconds": 4.74999999999982,
+			"critical_satiety_seconds": 0.0,
+			"danger_seconds": 0.0,
+			"feeding_aborts": 1,
+			"feeding_attempts": 34,
+			"feeding_session_start": 56.4,
+			"fish_good": 0,
+			"fish_total": 0,
+			"food_by_type": {
+				"chunk": 30.0,
+				"cluster": 26.4,
+				"worm": 0.0
+			},
+			"food_consumed": 56.4,
+			"hook_contacts": 0,
+			"hook_events": 0,
+			"hooked_seconds": 0.0,
+			"instinct_total_duration": 0.0,
+			"instinct_trigger_count": 0,
+			"last_suck_success_tick": 1991,
+			"round_duration": 41.7333333333322,
+			"satiety_integral": 3856.36484583321,
+			"satiety_mean": 92.4049084464851,
+			"satiety_min": 79.3397499999986,
+			"slips": 0,
+			"successful_escapes": 0,
+			"suck_attempts": 1656,
+			"suck_hook_contacts": 0,
+			"suck_intake_by_type": {
+				"chunk": 0.0,
+				"cluster": 10.35,
+				"worm": 0.0
+			},
+			"suck_successes": 15,
+			"unwrap_good": 0,
+			"wrap_good": 0
+		},
+		"suction_command_attempts": 4,
+		"suction_command_seconds": 27.85,
+		"ticks": 2504,
+		"winner": "angler"
+	},
+	{
+		"automatic_bite_events": 19,
+		"automatic_bite_while_suction_command": 0,
+		"completed": true,
+		"decision_trace": [
+			{
+				"caution": "CALM",
+				"kind": "unknown",
+				"mode": "bite",
+				"satiety": 100.0,
+				"target": 2,
+				"tick": 0
+			},
+			{
+				"caution": "ALARMED",
+				"kind": "unknown",
+				"mode": "bite",
+				"satiety": 100.0,
+				"target": 1,
+				"tick": 360
+			},
+			{
+				"caution": "ALARMED",
+				"kind": "cluster",
+				"mode": "home",
+				"satiety": 100.0,
+				"target": 1,
+				"tick": 953
+			}
+		],
+		"duration": 35.6833333333326,
+		"escapes": 0,
+		"feeding_attempts": 0,
+		"feeding_seconds": 0.0,
+		"food_consumed": 60.0,
+		"home_win": false,
+		"hook_contacts": 1,
+		"hook_events": 1,
+		"mode_choices": {
+			"bite": 1,
+			"suck": 0
+		},
+		"mode_seconds": {
+			"bite": 15.8833333333337,
+			"home": 19.8000000000002,
+			"seek": 0.0,
+			"suck": 0.0
+		},
+		"mode_switches": 0,
+		"per_type": {
+			"chunk": {
+				"automatic_bite_events": 7,
+				"automatic_bite_food": 30.0,
+				"automatic_bite_grains": 44,
+				"food": 30.0,
+				"grains": 44,
+				"satiety_effective": 14.670000000001,
+				"satiety_gross": 98.9999999999999,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			},
+			"cluster": {
+				"automatic_bite_events": 12,
+				"automatic_bite_food": 30.0,
+				"automatic_bite_grains": 44,
+				"food": 30.0,
+				"grains": 44,
+				"satiety_effective": 24.1647500000016,
+				"satiety_gross": 60.0,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			},
+			"worm": {
+				"automatic_bite_events": 0,
+				"automatic_bite_food": 0.0,
+				"automatic_bite_grains": 0,
+				"food": 0.0,
+				"grains": 0,
+				"satiety_effective": 0.0,
+				"satiety_gross": 0.0,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			}
+		},
+		"phase": "pilot",
+		"policy": "BiteOnly",
+		"reason": "landed",
+		"satiety_final": 51.5889999999968,
+		"satiety_mean": 85.3088087342358,
+		"satiety_min": 51.5889999999968,
+		"seed": 21001,
+		"stats": {
+			"angler_good": 1,
+			"angler_total": 2,
+			"bait_approaches": 2,
+			"bait_retreats": 1,
+			"bite_attempts": 19,
+			"bite_hook_contacts": 0,
+			"bite_intake_by_type": {
+				"chunk": 30.0,
+				"cluster": 30.0,
+				"worm": 0.0
+			},
+			"bite_successes": 19,
+			"breaks": 0,
+			"caution_high_seconds": 9.9833333333337,
+			"caution_low_seconds": 23.3666666666655,
+			"caution_medium_seconds": 2.33333333333335,
+			"critical_satiety_seconds": 0.0,
+			"danger_seconds": 0.5,
+			"feeding_aborts": 0,
+			"feeding_attempts": 0,
+			"feeding_session_start": 0.0,
+			"fish_good": 0,
+			"fish_total": 2,
+			"food_by_type": {
+				"chunk": 30.0,
+				"cluster": 30.0,
+				"worm": 0.0
+			},
+			"food_consumed": 60.0,
+			"hook_contacts": 1,
+			"hook_events": 1,
+			"hooked_seconds": 22.0833333333334,
+			"instinct_total_duration": 0.0,
+			"instinct_trigger_count": 0,
+			"last_suck_success_tick": -1,
+			"round_duration": 35.6833333333326,
+			"satiety_integral": 3044.10265833325,
+			"satiety_mean": 85.3088087342358,
+			"satiety_min": 51.5889999999968,
+			"slips": 0,
+			"successful_escapes": 0,
+			"suck_attempts": 0,
+			"suck_hook_contacts": 0,
+			"suck_intake_by_type": {
+				"chunk": 0.0,
+				"cluster": 0.0,
+				"worm": 0.0
+			},
+			"suck_successes": 0,
+			"unwrap_good": 0,
+			"wrap_good": 0
+		},
+		"suction_command_attempts": 0,
+		"suction_command_seconds": 0.0,
+		"ticks": 2141,
+		"winner": "angler"
+	},
+	{
+		"automatic_bite_events": 33,
+		"automatic_bite_while_suction_command": 33,
+		"completed": true,
+		"decision_trace": [
+			{
+				"caution": "CALM",
+				"kind": "unknown",
+				"mode": "suck",
+				"satiety": 100.0,
+				"target": 2,
+				"tick": 0
+			},
+			{
+				"caution": "CALM",
+				"kind": "chunk",
+				"mode": "bite",
+				"satiety": 95.8842499999997,
+				"target": 2,
+				"tick": 101
+			},
+			{
+				"caution": "UNEASY",
+				"kind": "chunk",
+				"mode": "suck",
+				"satiety": 95.3952499999997,
+				"target": 2,
+				"tick": 113
+			},
+			{
+				"caution": "ALARMED",
+				"kind": "unknown",
+				"mode": "suck",
+				"satiety": 90.3639999999986,
+				"target": 1,
+				"tick": 1498
+			},
+			{
+				"caution": "ALARMED",
+				"kind": "unknown",
+				"mode": "suck",
+				"satiety": 98.1662499999999,
+				"target": 5,
+				"tick": 2042
+			},
+			{
+				"caution": "CALM",
+				"kind": "worm",
+				"mode": "bite",
+				"satiety": 86.9599999999991,
+				"target": 5,
+				"tick": 2317
+			},
+			{
+				"caution": "UNEASY",
+				"kind": "worm",
+				"mode": "suck",
+				"satiety": 85.329999999999,
+				"target": 5,
+				"tick": 2357
+			}
+		],
+		"duration": 41.7333333333322,
+		"escapes": 0,
+		"feeding_attempts": 34,
+		"feeding_seconds": 27.05,
+		"food_consumed": 56.4,
+		"home_win": false,
+		"hook_contacts": 0,
+		"hook_events": 0,
+		"mode_choices": {
+			"bite": 2,
+			"suck": 3
+		},
+		"mode_seconds": {
+			"bite": 0.866666666666668,
+			"home": 0.0,
+			"seek": 0.0,
+			"suck": 40.8666666666656
+		},
+		"mode_switches": 4,
+		"per_type": {
+			"chunk": {
+				"automatic_bite_events": 24,
+				"automatic_bite_food": 30.0,
+				"automatic_bite_grains": 44,
+				"food": 30.0,
+				"grains": 44,
+				"satiety_effective": 51.4075000000027,
+				"satiety_gross": 99.0000000000001,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			},
+			"cluster": {
+				"automatic_bite_events": 9,
+				"automatic_bite_food": 16.05,
+				"automatic_bite_grains": 23,
+				"food": 26.4,
+				"grains": 38,
+				"satiety_effective": 29.9702500000028,
+				"satiety_gross": 52.8,
+				"suction_food": 10.35,
+				"suction_grains": 15
+			},
+			"worm": {
+				"automatic_bite_events": 0,
+				"automatic_bite_food": 0.0,
+				"automatic_bite_grains": 0,
+				"food": 0.0,
+				"grains": 0,
+				"satiety_effective": 0.0,
+				"satiety_gross": 0.0,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			}
+		},
+		"phase": "pilot",
+		"policy": "Mixed",
+		"reason": "net",
+		"satiety_final": 79.3397499999986,
+		"satiety_mean": 92.4049084464851,
+		"satiety_min": 79.3397499999986,
+		"seed": 21001,
+		"stats": {
+			"angler_good": 0,
+			"angler_total": 0,
+			"bait_approaches": 4,
+			"bait_retreats": 4,
+			"bite_attempts": 33,
+			"bite_hook_contacts": 0,
+			"bite_intake_by_type": {
+				"chunk": 30.0,
+				"cluster": 16.05,
+				"worm": 0.0
+			},
+			"bite_successes": 33,
+			"breaks": 0,
+			"caution_high_seconds": 28.1833333333328,
+			"caution_low_seconds": 8.7999999999996,
+			"caution_medium_seconds": 4.74999999999982,
+			"critical_satiety_seconds": 0.0,
+			"danger_seconds": 0.0,
+			"feeding_aborts": 1,
+			"feeding_attempts": 34,
+			"feeding_session_start": 56.4,
+			"fish_good": 0,
+			"fish_total": 0,
+			"food_by_type": {
+				"chunk": 30.0,
+				"cluster": 26.4,
+				"worm": 0.0
+			},
+			"food_consumed": 56.4,
+			"hook_contacts": 0,
+			"hook_events": 0,
+			"hooked_seconds": 0.0,
+			"instinct_total_duration": 0.0,
+			"instinct_trigger_count": 0,
+			"last_suck_success_tick": 1991,
+			"round_duration": 41.7333333333322,
+			"satiety_integral": 3856.36484583321,
+			"satiety_mean": 92.4049084464851,
+			"satiety_min": 79.3397499999986,
+			"slips": 0,
+			"successful_escapes": 0,
+			"suck_attempts": 1656,
+			"suck_hook_contacts": 0,
+			"suck_intake_by_type": {
+				"chunk": 0.0,
+				"cluster": 10.35,
+				"worm": 0.0
+			},
+			"suck_successes": 15,
+			"unwrap_good": 0,
+			"wrap_good": 0
+		},
+		"suction_command_attempts": 4,
+		"suction_command_seconds": 27.85,
+		"ticks": 2504,
+		"winner": "angler"
+	},
+	{
+		"automatic_bite_events": 35,
+		"automatic_bite_while_suction_command": 35,
+		"completed": true,
+		"decision_trace": [
+			{
+				"caution": "CALM",
+				"kind": "unknown",
+				"mode": "suck",
+				"satiety": 100.0,
+				"target": 4,
+				"tick": 0
+			},
+			{
+				"caution": "ALARMED",
+				"kind": "unknown",
+				"mode": "suck",
+				"satiety": 99.5389999999995,
+				"target": 2,
+				"tick": 692
+			},
+			{
+				"caution": "CALM",
+				"kind": "chunk",
+				"mode": "home",
+				"satiety": 91.0974999999986,
+				"target": 2,
+				"tick": 2379
+			}
+		],
+		"duration": 50.4499999999984,
+		"escapes": 0,
+		"feeding_attempts": 35,
+		"feeding_seconds": 29.4333333333333,
+		"food_consumed": 60.0,
+		"home_win": true,
+		"hook_contacts": 0,
+		"hook_events": 0,
+		"mode_choices": {
+			"bite": 0,
+			"suck": 1
+		},
+		"mode_seconds": {
+			"bite": 0.0,
+			"home": 10.8000000000001,
+			"seek": 0.0,
+			"suck": 39.649999999999
+		},
+		"mode_switches": 0,
+		"per_type": {
+			"chunk": {
+				"automatic_bite_events": 25,
+				"automatic_bite_food": 30.0,
+				"automatic_bite_grains": 44,
+				"food": 30.0,
+				"grains": 44,
+				"satiety_effective": 60.3037500000037,
+				"satiety_gross": 99.0000000000001,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			},
+			"cluster": {
+				"automatic_bite_events": 10,
+				"automatic_bite_food": 17.7,
+				"automatic_bite_grains": 26,
+				"food": 30.0,
+				"grains": 44,
+				"satiety_effective": 27.7380000000014,
+				"satiety_gross": 60.0,
+				"suction_food": 12.3,
+				"suction_grains": 18
+			},
+			"worm": {
+				"automatic_bite_events": 0,
+				"automatic_bite_food": 0.0,
+				"automatic_bite_grains": 0,
+				"food": 0.0,
+				"grains": 0,
+				"satiety_effective": 0.0,
+				"satiety_gross": 0.0,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			}
+		},
+		"phase": "pilot",
+		"policy": "SuckOnly",
+		"reason": "home",
+		"satiety_final": 64.6914999999969,
+		"satiety_mean": 90.1929830690445,
+		"satiety_min": 64.6914999999969,
+		"seed": 21002,
+		"stats": {
+			"angler_good": 0,
+			"angler_total": 0,
+			"bait_approaches": 2,
+			"bait_retreats": 2,
+			"bite_attempts": 35,
+			"bite_hook_contacts": 0,
+			"bite_intake_by_type": {
+				"chunk": 30.0,
+				"cluster": 17.7,
+				"worm": 0.0
+			},
+			"bite_successes": 35,
+			"breaks": 0,
+			"caution_high_seconds": 8.76666666666683,
+			"caution_low_seconds": 40.9333333333316,
+			"caution_medium_seconds": 0.749999999999997,
+			"critical_satiety_seconds": 0.0,
+			"danger_seconds": 0.0,
+			"feeding_aborts": 0,
+			"feeding_attempts": 35,
+			"feeding_session_start": 59.4,
+			"fish_good": 0,
+			"fish_total": 0,
+			"food_by_type": {
+				"chunk": 30.0,
+				"cluster": 30.0,
+				"worm": 0.0
+			},
+			"food_consumed": 60.0,
+			"hook_contacts": 0,
+			"hook_events": 0,
+			"hooked_seconds": 0.0,
+			"instinct_total_duration": 0.0,
+			"instinct_trigger_count": 0,
+			"last_suck_success_tick": 690,
+			"round_duration": 50.4499999999984,
+			"satiety_integral": 4550.23599583315,
+			"satiety_mean": 90.1929830690445,
+			"satiety_min": 64.6914999999969,
+			"slips": 0,
+			"successful_escapes": 0,
+			"suck_attempts": 1801,
+			"suck_hook_contacts": 0,
+			"suck_intake_by_type": {
+				"chunk": 0.0,
+				"cluster": 12.3,
+				"worm": 0.0
+			},
+			"suck_successes": 17,
+			"unwrap_good": 0,
+			"wrap_good": 0
+		},
+		"suction_command_attempts": 2,
+		"suction_command_seconds": 30.0166666666667,
+		"ticks": 3027,
+		"winner": "fish"
+	},
+	{
+		"automatic_bite_events": 18,
+		"automatic_bite_while_suction_command": 0,
+		"completed": true,
+		"decision_trace": [
+			{
+				"caution": "CALM",
+				"kind": "unknown",
+				"mode": "bite",
+				"satiety": 100.0,
+				"target": 4,
+				"tick": 0
+			},
+			{
+				"caution": "ALARMED",
+				"kind": "unknown",
+				"mode": "bite",
+				"satiety": 100.0,
+				"target": 2,
+				"tick": 484
+			},
+			{
+				"caution": "ALARMED",
+				"kind": "chunk",
+				"mode": "home",
+				"satiety": 100.0,
+				"target": 2,
+				"tick": 1120
+			}
+		],
+		"duration": 38.3499999999991,
+		"escapes": 0,
+		"feeding_attempts": 0,
+		"feeding_seconds": 0.0,
+		"food_consumed": 60.0,
+		"home_win": false,
+		"hook_contacts": 1,
+		"hook_events": 1,
+		"mode_choices": {
+			"bite": 1,
+			"suck": 0
+		},
+		"mode_seconds": {
+			"bite": 18.6666666666669,
+			"home": 19.6833333333335,
+			"seek": 0.0,
+			"suck": 0.0
+		},
+		"mode_switches": 0,
+		"per_type": {
+			"chunk": {
+				"automatic_bite_events": 6,
+				"automatic_bite_food": 30.0,
+				"automatic_bite_grains": 44,
+				"food": 30.0,
+				"grains": 44,
+				"satiety_effective": 25.9170000000017,
+				"satiety_gross": 98.9999999999999,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			},
+			"cluster": {
+				"automatic_bite_events": 12,
+				"automatic_bite_food": 30.0,
+				"automatic_bite_grains": 44,
+				"food": 30.0,
+				"grains": 44,
+				"satiety_effective": 19.7230000000013,
+				"satiety_gross": 60.0,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			},
+			"worm": {
+				"automatic_bite_events": 0,
+				"automatic_bite_food": 0.0,
+				"automatic_bite_grains": 0,
+				"food": 0.0,
+				"grains": 0,
+				"satiety_effective": 0.0,
+				"satiety_gross": 0.0,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			}
+		},
+		"phase": "pilot",
+		"policy": "BiteOnly",
+		"reason": "landed",
+		"satiety_final": 51.8742499999968,
+		"satiety_mean": 85.5212557583652,
+		"satiety_min": 51.8742499999968,
+		"seed": 21002,
+		"stats": {
+			"angler_good": 1,
+			"angler_total": 1,
+			"bait_approaches": 2,
+			"bait_retreats": 1,
+			"bite_attempts": 18,
+			"bite_hook_contacts": 0,
+			"bite_intake_by_type": {
+				"chunk": 30.0,
+				"cluster": 30.0,
+				"worm": 0.0
+			},
+			"bite_successes": 18,
+			"breaks": 0,
+			"caution_high_seconds": 5.99999999999995,
+			"caution_low_seconds": 29.1499999999993,
+			"caution_medium_seconds": 3.19999999999991,
+			"critical_satiety_seconds": 0.0,
+			"danger_seconds": 0.3,
+			"feeding_aborts": 0,
+			"feeding_attempts": 0,
+			"feeding_session_start": 0.0,
+			"fish_good": 0,
+			"fish_total": 2,
+			"food_by_type": {
+				"chunk": 30.0,
+				"cluster": 30.0,
+				"worm": 0.0
+			},
+			"food_consumed": 60.0,
+			"hook_contacts": 1,
+			"hook_events": 1,
+			"hooked_seconds": 19.4666666666668,
+			"instinct_total_duration": 0.0,
+			"instinct_trigger_count": 0,
+			"last_suck_success_tick": -1,
+			"round_duration": 38.3499999999991,
+			"satiety_integral": 3279.74015833323,
+			"satiety_mean": 85.5212557583652,
+			"satiety_min": 51.8742499999968,
+			"slips": 0,
+			"successful_escapes": 0,
+			"suck_attempts": 0,
+			"suck_hook_contacts": 0,
+			"suck_intake_by_type": {
+				"chunk": 0.0,
+				"cluster": 0.0,
+				"worm": 0.0
+			},
+			"suck_successes": 0,
+			"unwrap_good": 0,
+			"wrap_good": 0
+		},
+		"suction_command_attempts": 0,
+		"suction_command_seconds": 0.0,
+		"ticks": 2301,
+		"winner": "angler"
+	},
+	{
+		"automatic_bite_events": 17,
+		"automatic_bite_while_suction_command": 10,
+		"completed": true,
+		"decision_trace": [
+			{
+				"caution": "CALM",
+				"kind": "unknown",
+				"mode": "suck",
+				"satiety": 100.0,
+				"target": 4,
+				"tick": 0
+			},
+			{
+				"caution": "ALARMED",
+				"kind": "unknown",
+				"mode": "suck",
+				"satiety": 99.5389999999995,
+				"target": 2,
+				"tick": 692
+			},
+			{
+				"caution": "CALM",
+				"kind": "chunk",
+				"mode": "bite",
+				"satiety": 87.9252499999987,
+				"target": 2,
+				"tick": 977
+			},
+			{
+				"caution": "UNEASY",
+				"kind": "chunk",
+				"mode": "suck",
+				"satiety": 99.0627499999999,
+				"target": 2,
+				"tick": 1135
+			},
+			{
+				"caution": "ALARMED",
+				"kind": "chunk",
+				"mode": "home",
+				"satiety": 100.0,
+				"target": 2,
+				"tick": 1374
+			}
+		],
+		"duration": 43.9833333333321,
+		"escapes": 0,
+		"feeding_attempts": 10,
+		"feeding_seconds": 8.1,
+		"food_consumed": 60.0,
+		"home_win": false,
+		"hook_contacts": 1,
+		"hook_events": 1,
+		"mode_choices": {
+			"bite": 1,
+			"suck": 2
+		},
+		"mode_seconds": {
+			"bite": 2.63333333333333,
+			"home": 21.0833333333334,
+			"seek": 0.0,
+			"suck": 20.2666666666668
+		},
+		"mode_switches": 2,
+		"per_type": {
+			"chunk": {
+				"automatic_bite_events": 7,
+				"automatic_bite_food": 30.0,
+				"automatic_bite_grains": 44,
+				"food": 30.0,
+				"grains": 44,
+				"satiety_effective": 28.2525000000023,
+				"satiety_gross": 98.9999999999999,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			},
+			"cluster": {
+				"automatic_bite_events": 10,
+				"automatic_bite_food": 17.7,
+				"automatic_bite_grains": 26,
+				"food": 30.0,
+				"grains": 44,
+				"satiety_effective": 27.7380000000014,
+				"satiety_gross": 60.0,
+				"suction_food": 12.3,
+				"suction_grains": 18
+			},
+			"worm": {
+				"automatic_bite_events": 0,
+				"automatic_bite_food": 0.0,
+				"automatic_bite_grains": 0,
+				"food": 0.0,
+				"grains": 0,
+				"satiety_effective": 0.0,
+				"satiety_gross": 0.0,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			}
+		},
+		"phase": "pilot",
+		"policy": "Mixed",
+		"reason": "landed",
+		"satiety_final": 48.4512499999965,
+		"satiety_mean": 85.1824083933301,
+		"satiety_min": 48.4512499999965,
+		"seed": 21002,
+		"stats": {
+			"angler_good": 1,
+			"angler_total": 2,
+			"bait_approaches": 2,
+			"bait_retreats": 1,
+			"bite_attempts": 17,
+			"bite_hook_contacts": 0,
+			"bite_intake_by_type": {
+				"chunk": 30.0,
+				"cluster": 17.7,
+				"worm": 0.0
+			},
+			"bite_successes": 17,
+			"breaks": 0,
+			"caution_high_seconds": 10.3666666666667,
+			"caution_low_seconds": 30.4666666666655,
+			"caution_medium_seconds": 3.14999999999986,
+			"critical_satiety_seconds": 0.0,
+			"danger_seconds": 0.766666666666667,
+			"feeding_aborts": 0,
+			"feeding_attempts": 10,
+			"feeding_session_start": 27.0,
+			"fish_good": 0,
+			"fish_total": 2,
+			"food_by_type": {
+				"chunk": 30.0,
+				"cluster": 30.0,
+				"worm": 0.0
+			},
+			"food_consumed": 60.0,
+			"hook_contacts": 1,
+			"hook_events": 1,
+			"hooked_seconds": 21.7,
+			"instinct_total_duration": 0.0,
+			"instinct_trigger_count": 0,
+			"last_suck_success_tick": 690,
+			"round_duration": 43.9833333333321,
+			"satiety_integral": 3746.60626249986,
+			"satiety_mean": 85.1824083933301,
+			"satiety_min": 48.4512499999965,
+			"slips": 0,
+			"successful_escapes": 0,
+			"suck_attempts": 496,
+			"suck_hook_contacts": 0,
+			"suck_intake_by_type": {
+				"chunk": 0.0,
+				"cluster": 12.3,
+				"worm": 0.0
+			},
+			"suck_successes": 17,
+			"unwrap_good": 0,
+			"wrap_good": 0
+		},
+		"suction_command_attempts": 1,
+		"suction_command_seconds": 8.26666666666667,
+		"ticks": 2639,
+		"winner": "angler"
+	},
+	{
+		"automatic_bite_events": 25,
+		"automatic_bite_while_suction_command": 25,
+		"completed": true,
+		"decision_trace": [
+			{
+				"caution": "CALM",
+				"kind": "unknown",
+				"mode": "suck",
+				"satiety": 100.0,
+				"target": 4,
+				"tick": 0
+			},
+			{
+				"caution": "UNEASY",
+				"kind": "unknown",
+				"mode": "suck",
+				"satiety": 99.5389999999995,
+				"target": 2,
+				"tick": 693
+			},
+			{
+				"caution": "ALARMED",
+				"kind": "worm",
+				"mode": "home",
+				"satiety": 96.5644999999992,
+				"target": 2,
+				"tick": 1650
+			}
+		],
+		"duration": 34.8833333333326,
+		"escapes": 0,
+		"feeding_attempts": 25,
+		"feeding_seconds": 20.6,
+		"food_consumed": 60.0,
+		"home_win": true,
+		"hook_contacts": 0,
+		"hook_events": 0,
+		"mode_choices": {
+			"bite": 0,
+			"suck": 1
+		},
+		"mode_seconds": {
+			"bite": 0.0,
+			"home": 7.38333333333331,
+			"seek": 0.0,
+			"suck": 27.4999999999997
+		},
+		"mode_switches": 0,
+		"per_type": {
+			"chunk": {
+				"automatic_bite_events": 0,
+				"automatic_bite_food": 0.0,
+				"automatic_bite_grains": 0,
+				"food": 0.0,
+				"grains": 0,
+				"satiety_effective": 0.0,
+				"satiety_gross": 0.0,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			},
+			"cluster": {
+				"automatic_bite_events": 10,
+				"automatic_bite_food": 16.95,
+				"automatic_bite_grains": 25,
+				"food": 30.0,
+				"grains": 44,
+				"satiety_effective": 27.7787500000014,
+				"satiety_gross": 60.0,
+				"suction_food": 13.05,
+				"suction_grains": 19
+			},
+			"worm": {
+				"automatic_bite_events": 15,
+				"automatic_bite_food": 27.3,
+				"automatic_bite_grains": 40,
+				"food": 30.0,
+				"grains": 44,
+				"satiety_effective": 36.0232500000023,
+				"satiety_gross": 78.0000000000001,
+				"suction_food": 2.7,
+				"suction_grains": 4
+			}
+		},
+		"phase": "pilot",
+		"policy": "SuckOnly",
+		"reason": "home",
+		"satiety_final": 78.5122499999979,
+		"satiety_mean": 94.2619652412799,
+		"satiety_min": 78.5122499999979,
+		"seed": 21003,
+		"stats": {
+			"angler_good": 0,
+			"angler_total": 0,
+			"bait_approaches": 2,
+			"bait_retreats": 2,
+			"bite_attempts": 25,
+			"bite_hook_contacts": 0,
+			"bite_intake_by_type": {
+				"chunk": 0.0,
+				"cluster": 16.95,
+				"worm": 27.3
+			},
+			"bite_successes": 25,
+			"breaks": 0,
+			"caution_high_seconds": 13.8833333333328,
+			"caution_low_seconds": 11.4999999999997,
+			"caution_medium_seconds": 9.50000000000018,
+			"critical_satiety_seconds": 0.0,
+			"danger_seconds": 0.0,
+			"feeding_aborts": 0,
+			"feeding_attempts": 25,
+			"feeding_session_start": 59.4,
+			"fish_good": 0,
+			"fish_total": 0,
+			"food_by_type": {
+				"chunk": 0.0,
+				"cluster": 30.0,
+				"worm": 30.0
+			},
+			"food_consumed": 60.0,
+			"hook_contacts": 0,
+			"hook_events": 0,
+			"hooked_seconds": 0.0,
+			"instinct_total_duration": 0.0,
+			"instinct_trigger_count": 0,
+			"last_suck_success_tick": 1334,
+			"round_duration": 34.8833333333326,
+			"satiety_integral": 3288.17155416658,
+			"satiety_mean": 94.2619652412799,
+			"satiety_min": 78.5122499999979,
+			"slips": 0,
+			"successful_escapes": 0,
+			"suck_attempts": 1261,
+			"suck_hook_contacts": 0,
+			"suck_intake_by_type": {
+				"chunk": 0.0,
+				"cluster": 13.05,
+				"worm": 2.7
+			},
+			"suck_successes": 22,
+			"unwrap_good": 0,
+			"wrap_good": 0
+		},
+		"suction_command_attempts": 2,
+		"suction_command_seconds": 21.0166666666667,
+		"ticks": 2093,
+		"winner": "fish"
+	},
+	{
+		"automatic_bite_events": 21,
+		"automatic_bite_while_suction_command": 0,
+		"completed": true,
+		"decision_trace": [
+			{
+				"caution": "CALM",
+				"kind": "unknown",
+				"mode": "bite",
+				"satiety": 100.0,
+				"target": 4,
+				"tick": 0
+			},
+			{
+				"caution": "UNEASY",
+				"kind": "unknown",
+				"mode": "bite",
+				"satiety": 100.0,
+				"target": 2,
+				"tick": 484
+			},
+			{
+				"caution": "ALARMED",
+				"kind": "worm",
+				"mode": "home",
+				"satiety": 100.0,
+				"target": 2,
+				"tick": 1009
+			}
+		],
+		"duration": 34.066666666666,
+		"escapes": 0,
+		"feeding_attempts": 0,
+		"feeding_seconds": 0.0,
+		"food_consumed": 60.0,
+		"home_win": false,
+		"hook_contacts": 1,
+		"hook_events": 1,
+		"mode_choices": {
+			"bite": 1,
+			"suck": 0
+		},
+		"mode_seconds": {
+			"bite": 16.816666666667,
+			"home": 17.2500000000003,
+			"seek": 0.0,
+			"suck": 0.0
+		},
+		"mode_switches": 0,
+		"per_type": {
+			"chunk": {
+				"automatic_bite_events": 0,
+				"automatic_bite_food": 0.0,
+				"automatic_bite_grains": 0,
+				"food": 0.0,
+				"grains": 0,
+				"satiety_effective": 0.0,
+				"satiety_gross": 0.0,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			},
+			"cluster": {
+				"automatic_bite_events": 12,
+				"automatic_bite_food": 30.0,
+				"automatic_bite_grains": 44,
+				"food": 30.0,
+				"grains": 44,
+				"satiety_effective": 19.7230000000013,
+				"satiety_gross": 60.0,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			},
+			"worm": {
+				"automatic_bite_events": 9,
+				"automatic_bite_food": 30.0,
+				"automatic_bite_grains": 44,
+				"food": 30.0,
+				"grains": 44,
+				"satiety_effective": 21.3937500000014,
+				"satiety_gross": 78.0000000000001,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			}
+		},
+		"phase": "pilot",
+		"policy": "BiteOnly",
+		"reason": "landed",
+		"satiety_final": 57.8237499999972,
+		"satiety_mean": 87.9784667318978,
+		"satiety_min": 57.8237499999972,
+		"seed": 21003,
+		"stats": {
+			"angler_good": 1,
+			"angler_total": 1,
+			"bait_approaches": 2,
+			"bait_retreats": 1,
+			"bite_attempts": 21,
+			"bite_hook_contacts": 0,
+			"bite_intake_by_type": {
+				"chunk": 0.0,
+				"cluster": 30.0,
+				"worm": 30.0
+			},
+			"bite_successes": 21,
+			"breaks": 0,
+			"caution_high_seconds": 6.85000000000025,
+			"caution_low_seconds": 21.2999999999991,
+			"caution_medium_seconds": 5.91666666666667,
+			"critical_satiety_seconds": 0.0,
+			"danger_seconds": 0.366666666666667,
+			"feeding_aborts": 0,
+			"feeding_attempts": 0,
+			"feeding_session_start": 0.0,
+			"fish_good": 0,
+			"fish_total": 3,
+			"food_by_type": {
+				"chunk": 0.0,
+				"cluster": 30.0,
+				"worm": 30.0
+			},
+			"food_consumed": 60.0,
+			"hook_contacts": 1,
+			"hook_events": 1,
+			"hooked_seconds": 18.2833333333336,
+			"instinct_total_duration": 0.0,
+			"instinct_trigger_count": 0,
+			"last_suck_success_tick": -1,
+			"round_duration": 34.066666666666,
+			"satiety_integral": 2997.13309999993,
+			"satiety_mean": 87.9784667318978,
+			"satiety_min": 57.8237499999972,
+			"slips": 0,
+			"successful_escapes": 0,
+			"suck_attempts": 0,
+			"suck_hook_contacts": 0,
+			"suck_intake_by_type": {
+				"chunk": 0.0,
+				"cluster": 0.0,
+				"worm": 0.0
+			},
+			"suck_successes": 0,
+			"unwrap_good": 0,
+			"wrap_good": 0
+		},
+		"suction_command_attempts": 0,
+		"suction_command_seconds": 0.0,
+		"ticks": 2044,
+		"winner": "angler"
+	},
+	{
+		"automatic_bite_events": 25,
+		"automatic_bite_while_suction_command": 25,
+		"completed": true,
+		"decision_trace": [
+			{
+				"caution": "CALM",
+				"kind": "unknown",
+				"mode": "suck",
+				"satiety": 100.0,
+				"target": 4,
+				"tick": 0
+			},
+			{
+				"caution": "UNEASY",
+				"kind": "unknown",
+				"mode": "suck",
+				"satiety": 99.5389999999995,
+				"target": 2,
+				"tick": 693
+			},
+			{
+				"caution": "CALM",
+				"kind": "worm",
+				"mode": "bite",
+				"satiety": 95.9529999999993,
+				"target": 2,
+				"tick": 781
+			},
+			{
+				"caution": "UNEASY",
+				"kind": "worm",
+				"mode": "suck",
+				"satiety": 95.6677499999992,
+				"target": 2,
+				"tick": 788
+			},
+			{
+				"caution": "ALARMED",
+				"kind": "worm",
+				"mode": "home",
+				"satiety": 96.5644999999992,
+				"target": 2,
+				"tick": 1650
+			}
+		],
+		"duration": 34.8833333333326,
+		"escapes": 0,
+		"feeding_attempts": 25,
+		"feeding_seconds": 20.6,
+		"food_consumed": 60.0,
+		"home_win": true,
+		"hook_contacts": 0,
+		"hook_events": 0,
+		"mode_choices": {
+			"bite": 1,
+			"suck": 2
+		},
+		"mode_seconds": {
+			"bite": 0.116666666666667,
+			"home": 7.38333333333331,
+			"seek": 0.0,
+			"suck": 27.3833333333331
+		},
+		"mode_switches": 2,
+		"per_type": {
+			"chunk": {
+				"automatic_bite_events": 0,
+				"automatic_bite_food": 0.0,
+				"automatic_bite_grains": 0,
+				"food": 0.0,
+				"grains": 0,
+				"satiety_effective": 0.0,
+				"satiety_gross": 0.0,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			},
+			"cluster": {
+				"automatic_bite_events": 10,
+				"automatic_bite_food": 16.95,
+				"automatic_bite_grains": 25,
+				"food": 30.0,
+				"grains": 44,
+				"satiety_effective": 27.7787500000014,
+				"satiety_gross": 60.0,
+				"suction_food": 13.05,
+				"suction_grains": 19
+			},
+			"worm": {
+				"automatic_bite_events": 15,
+				"automatic_bite_food": 27.3,
+				"automatic_bite_grains": 40,
+				"food": 30.0,
+				"grains": 44,
+				"satiety_effective": 36.0232500000023,
+				"satiety_gross": 78.0000000000001,
+				"suction_food": 2.7,
+				"suction_grains": 4
+			}
+		},
+		"phase": "pilot",
+		"policy": "Mixed",
+		"reason": "home",
+		"satiety_final": 78.5122499999979,
+		"satiety_mean": 94.2619652412799,
+		"satiety_min": 78.5122499999979,
+		"seed": 21003,
+		"stats": {
+			"angler_good": 0,
+			"angler_total": 0,
+			"bait_approaches": 2,
+			"bait_retreats": 2,
+			"bite_attempts": 25,
+			"bite_hook_contacts": 0,
+			"bite_intake_by_type": {
+				"chunk": 0.0,
+				"cluster": 16.95,
+				"worm": 27.3
+			},
+			"bite_successes": 25,
+			"breaks": 0,
+			"caution_high_seconds": 13.8833333333328,
+			"caution_low_seconds": 11.4999999999997,
+			"caution_medium_seconds": 9.50000000000018,
+			"critical_satiety_seconds": 0.0,
+			"danger_seconds": 0.0,
+			"feeding_aborts": 0,
+			"feeding_attempts": 25,
+			"feeding_session_start": 59.4,
+			"fish_good": 0,
+			"fish_total": 0,
+			"food_by_type": {
+				"chunk": 0.0,
+				"cluster": 30.0,
+				"worm": 30.0
+			},
+			"food_consumed": 60.0,
+			"hook_contacts": 0,
+			"hook_events": 0,
+			"hooked_seconds": 0.0,
+			"instinct_total_duration": 0.0,
+			"instinct_trigger_count": 0,
+			"last_suck_success_tick": 1334,
+			"round_duration": 34.8833333333326,
+			"satiety_integral": 3288.17155416658,
+			"satiety_mean": 94.2619652412799,
+			"satiety_min": 78.5122499999979,
+			"slips": 0,
+			"successful_escapes": 0,
+			"suck_attempts": 1261,
+			"suck_hook_contacts": 0,
+			"suck_intake_by_type": {
+				"chunk": 0.0,
+				"cluster": 13.05,
+				"worm": 2.7
+			},
+			"suck_successes": 22,
+			"unwrap_good": 0,
+			"wrap_good": 0
+		},
+		"suction_command_attempts": 2,
+		"suction_command_seconds": 21.0166666666667,
+		"ticks": 2093,
+		"winner": "fish"
+	},
+	{
+		"automatic_bite_events": 32,
+		"automatic_bite_while_suction_command": 27,
+		"completed": true,
+		"decision_trace": [
+			{
+				"caution": "CALM",
+				"kind": "unknown",
+				"mode": "suck",
+				"satiety": 100.0,
+				"target": 4,
+				"tick": 0
+			},
+			{
+				"caution": "ALARMED",
+				"kind": "unknown",
+				"mode": "suck",
+				"satiety": 99.3759999999995,
+				"target": 1,
+				"tick": 1020
+			},
+			{
+				"caution": "ALARMED",
+				"kind": "unknown",
+				"mode": "suck",
+				"satiety": 93.6429999999996,
+				"target": 5,
+				"tick": 1922
+			},
+			{
+				"caution": "ALARMED",
+				"kind": "worm",
+				"mode": "home",
+				"satiety": 100.0,
+				"target": 5,
+				"tick": 2212
+			}
+		],
+		"duration": 60.0166666666645,
+		"escapes": 0,
+		"feeding_attempts": 28,
+		"feeding_seconds": 20.35,
+		"food_consumed": 77.9999999999999,
+		"home_win": false,
+		"hook_contacts": 1,
+		"hook_events": 1,
+		"mode_choices": {
+			"bite": 0,
+			"suck": 1
+		},
+		"mode_seconds": {
+			"bite": 0.0,
+			"home": 23.15,
+			"seek": 0.0,
+			"suck": 36.8666666666659
+		},
+		"mode_switches": 0,
+		"per_type": {
+			"chunk": {
+				"automatic_bite_events": 12,
+				"automatic_bite_food": 18.0,
+				"automatic_bite_grains": 24,
+				"food": 18.0,
+				"grains": 24,
+				"satiety_effective": 31.0235000000025,
+				"satiety_gross": 59.4,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			},
+			"cluster": {
+				"automatic_bite_events": 10,
+				"automatic_bite_food": 16.5,
+				"automatic_bite_grains": 24,
+				"food": 30.0,
+				"grains": 44,
+				"satiety_effective": 40.9410000000023,
+				"satiety_gross": 60.0,
+				"suction_food": 13.5,
+				"suction_grains": 20
+			},
+			"worm": {
+				"automatic_bite_events": 10,
+				"automatic_bite_food": 29.25,
+				"automatic_bite_grains": 43,
+				"food": 30.0,
+				"grains": 44,
+				"satiety_effective": 28.3212500000019,
+				"satiety_gross": 78.0000000000001,
+				"suction_food": 0.75,
+				"suction_grains": 1
+			}
+		},
+		"phase": "pilot",
+		"policy": "SuckOnly",
+		"reason": "net",
+		"satiety_final": 53.5449999999969,
+		"satiety_mean": 87.5277759650089,
+		"satiety_min": 53.5449999999969,
+		"seed": 21004,
+		"stats": {
+			"angler_good": 1,
+			"angler_total": 1,
+			"bait_approaches": 3,
+			"bait_retreats": 3,
+			"bite_attempts": 32,
+			"bite_hook_contacts": 0,
+			"bite_intake_by_type": {
+				"chunk": 18.0,
+				"cluster": 16.5,
+				"worm": 29.25
+			},
+			"bite_successes": 32,
+			"breaks": 0,
+			"caution_high_seconds": 28.8333333333326,
+			"caution_low_seconds": 30.483333333332,
+			"caution_medium_seconds": 0.699999999999974,
+			"critical_satiety_seconds": 0.0,
+			"danger_seconds": 0.2,
+			"feeding_aborts": 1,
+			"feeding_attempts": 28,
+			"feeding_session_start": 57.0,
+			"fish_good": 0,
+			"fish_total": 3,
+			"food_by_type": {
+				"chunk": 18.0,
+				"cluster": 30.0,
+				"worm": 30.0
+			},
+			"food_consumed": 77.9999999999999,
+			"hook_contacts": 1,
+			"hook_events": 1,
+			"hooked_seconds": 18.7666666666669,
+			"instinct_total_duration": 0.0,
+			"instinct_trigger_count": 0,
+			"last_suck_success_tick": 2161,
+			"round_duration": 60.0166666666645,
+			"satiety_integral": 5253.12535416643,
+			"satiety_mean": 87.5277759650089,
+			"satiety_min": 53.5449999999969,
+			"slips": 0,
+			"successful_escapes": 0,
+			"suck_attempts": 1248,
+			"suck_hook_contacts": 0,
+			"suck_intake_by_type": {
+				"chunk": 0.0,
+				"cluster": 13.5,
+				"worm": 0.75
+			},
+			"suck_successes": 20,
+			"unwrap_good": 0,
+			"wrap_good": 0
+		},
+		"suction_command_attempts": 3,
+		"suction_command_seconds": 20.8,
+		"ticks": 3601,
+		"winner": "angler"
+	},
+	{
+		"automatic_bite_events": 15,
+		"automatic_bite_while_suction_command": 0,
+		"completed": true,
+		"decision_trace": [
+			{
+				"caution": "CALM",
+				"kind": "unknown",
+				"mode": "bite",
+				"satiety": 100.0,
+				"target": 4,
+				"tick": 0
+			},
+			{
+				"caution": "ALARMED",
+				"kind": "unknown",
+				"mode": "bite",
+				"satiety": 100.0,
+				"target": 1,
+				"tick": 808
+			}
+		],
+		"duration": 21.6666666666667,
+		"escapes": 0,
+		"feeding_attempts": 0,
+		"feeding_seconds": 0.0,
+		"food_consumed": 44.25,
+		"home_win": false,
+		"hook_contacts": 1,
+		"hook_events": 0,
+		"mode_choices": {
+			"bite": 1,
+			"suck": 0
+		},
+		"mode_seconds": {
+			"bite": 21.6666666666667,
+			"home": 0.0,
+			"seek": 0.0,
+			"suck": 0.0
+		},
+		"mode_switches": 0,
+		"per_type": {
+			"chunk": {
+				"automatic_bite_events": 3,
+				"automatic_bite_food": 14.25,
+				"automatic_bite_grains": 21,
+				"food": 14.25,
+				"grains": 21,
+				"satiety_effective": 14.996000000001,
+				"satiety_gross": 47.025,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			},
+			"cluster": {
+				"automatic_bite_events": 12,
+				"automatic_bite_food": 30.0,
+				"automatic_bite_grains": 44,
+				"food": 30.0,
+				"grains": 44,
+				"satiety_effective": 32.9260000000022,
+				"satiety_gross": 60.0,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			},
+			"worm": {
+				"automatic_bite_events": 0,
+				"automatic_bite_food": 0.0,
+				"automatic_bite_grains": 0,
+				"food": 0.0,
+				"grains": 0,
+				"satiety_effective": 0.0,
+				"satiety_gross": 0.0,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			}
+		},
+		"phase": "pilot",
+		"policy": "BiteOnly",
+		"reason": "net",
+		"satiety_final": 94.9469999999997,
+		"satiety_mean": 92.6362638461532,
+		"satiety_min": 78.3209999999985,
+		"seed": 21004,
+		"stats": {
+			"angler_good": 0,
+			"angler_total": 0,
+			"bait_approaches": 2,
+			"bait_retreats": 2,
+			"bite_attempts": 15,
+			"bite_hook_contacts": 0,
+			"bite_intake_by_type": {
+				"chunk": 14.25,
+				"cluster": 30.0,
+				"worm": 0.0
+			},
+			"bite_successes": 15,
+			"breaks": 0,
+			"caution_high_seconds": 10.15,
+			"caution_low_seconds": 11.0166666666667,
+			"caution_medium_seconds": 0.499999999999985,
+			"critical_satiety_seconds": 0.0,
+			"danger_seconds": 0.0,
+			"feeding_aborts": 0,
+			"feeding_attempts": 0,
+			"feeding_session_start": 0.0,
+			"fish_good": 0,
+			"fish_total": 0,
+			"food_by_type": {
+				"chunk": 14.25,
+				"cluster": 30.0,
+				"worm": 0.0
+			},
+			"food_consumed": 44.25,
+			"hook_contacts": 1,
+			"hook_events": 0,
+			"hooked_seconds": 0.0,
+			"instinct_total_duration": 0.0,
+			"instinct_trigger_count": 0,
+			"last_suck_success_tick": -1,
+			"round_duration": 21.6666666666667,
+			"satiety_integral": 2007.11904999999,
+			"satiety_mean": 92.6362638461532,
+			"satiety_min": 78.3209999999985,
+			"slips": 0,
+			"successful_escapes": 0,
+			"suck_attempts": 0,
+			"suck_hook_contacts": 0,
+			"suck_intake_by_type": {
+				"chunk": 0.0,
+				"cluster": 0.0,
+				"worm": 0.0
+			},
+			"suck_successes": 0,
+			"unwrap_good": 0,
+			"wrap_good": 0
+		},
+		"suction_command_attempts": 0,
+		"suction_command_seconds": 0.0,
+		"ticks": 1300,
+		"winner": "angler"
+	},
+	{
+		"automatic_bite_events": 32,
+		"automatic_bite_while_suction_command": 27,
+		"completed": true,
+		"decision_trace": [
+			{
+				"caution": "CALM",
+				"kind": "unknown",
+				"mode": "suck",
+				"satiety": 100.0,
+				"target": 4,
+				"tick": 0
+			},
+			{
+				"caution": "ALARMED",
+				"kind": "unknown",
+				"mode": "suck",
+				"satiety": 99.3759999999995,
+				"target": 1,
+				"tick": 1020
+			},
+			{
+				"caution": "CALM",
+				"kind": "chunk",
+				"mode": "bite",
+				"satiety": 89.4737499999988,
+				"target": 1,
+				"tick": 1263
+			},
+			{
+				"caution": "UNEASY",
+				"kind": "chunk",
+				"mode": "suck",
+				"satiety": 89.1884999999988,
+				"target": 1,
+				"tick": 1270
+			},
+			{
+				"caution": "ALARMED",
+				"kind": "unknown",
+				"mode": "suck",
+				"satiety": 93.6429999999996,
+				"target": 5,
+				"tick": 1922
+			},
+			{
+				"caution": "ALARMED",
+				"kind": "worm",
+				"mode": "home",
+				"satiety": 100.0,
+				"target": 5,
+				"tick": 2212
+			}
+		],
+		"duration": 60.0166666666645,
+		"escapes": 0,
+		"feeding_attempts": 28,
+		"feeding_seconds": 20.35,
+		"food_consumed": 77.9999999999999,
+		"home_win": false,
+		"hook_contacts": 1,
+		"hook_events": 1,
+		"mode_choices": {
+			"bite": 1,
+			"suck": 2
+		},
+		"mode_seconds": {
+			"bite": 0.116666666666667,
+			"home": 23.15,
+			"seek": 0.0,
+			"suck": 36.7499999999992
+		},
+		"mode_switches": 2,
+		"per_type": {
+			"chunk": {
+				"automatic_bite_events": 12,
+				"automatic_bite_food": 18.0,
+				"automatic_bite_grains": 24,
+				"food": 18.0,
+				"grains": 24,
+				"satiety_effective": 31.0235000000025,
+				"satiety_gross": 59.4,
+				"suction_food": 0.0,
+				"suction_grains": 0
+			},
+			"cluster": {
+				"automatic_bite_events": 10,
+				"automatic_bite_food": 16.5,
+				"automatic_bite_grains": 24,
+				"food": 30.0,
+				"grains": 44,
+				"satiety_effective": 40.9410000000023,
+				"satiety_gross": 60.0,
+				"suction_food": 13.5,
+				"suction_grains": 20
+			},
+			"worm": {
+				"automatic_bite_events": 10,
+				"automatic_bite_food": 29.25,
+				"automatic_bite_grains": 43,
+				"food": 30.0,
+				"grains": 44,
+				"satiety_effective": 28.3212500000019,
+				"satiety_gross": 78.0000000000001,
+				"suction_food": 0.75,
+				"suction_grains": 1
+			}
+		},
+		"phase": "pilot",
+		"policy": "Mixed",
+		"reason": "net",
+		"satiety_final": 53.5449999999969,
+		"satiety_mean": 87.5277759650089,
+		"satiety_min": 53.5449999999969,
+		"seed": 21004,
+		"stats": {
+			"angler_good": 1,
+			"angler_total": 1,
+			"bait_approaches": 3,
+			"bait_retreats": 3,
+			"bite_attempts": 32,
+			"bite_hook_contacts": 0,
+			"bite_intake_by_type": {
+				"chunk": 18.0,
+				"cluster": 16.5,
+				"worm": 29.25
+			},
+			"bite_successes": 32,
+			"breaks": 0,
+			"caution_high_seconds": 28.8333333333326,
+			"caution_low_seconds": 30.483333333332,
+			"caution_medium_seconds": 0.699999999999974,
+			"critical_satiety_seconds": 0.0,
+			"danger_seconds": 0.2,
+			"feeding_aborts": 1,
+			"feeding_attempts": 28,
+			"feeding_session_start": 57.0,
+			"fish_good": 0,
+			"fish_total": 3,
+			"food_by_type": {
+				"chunk": 18.0,
+				"cluster": 30.0,
+				"worm": 30.0
+			},
+			"food_consumed": 77.9999999999999,
+			"hook_contacts": 1,
+			"hook_events": 1,
+			"hooked_seconds": 18.7666666666669,
+			"instinct_total_duration": 0.0,
+			"instinct_trigger_count": 0,
+			"last_suck_success_tick": 2161,
+			"round_duration": 60.0166666666645,
+			"satiety_integral": 5253.12535416643,
+			"satiety_mean": 87.5277759650089,
+			"satiety_min": 53.5449999999969,
+			"slips": 0,
+			"successful_escapes": 0,
+			"suck_attempts": 1248,
+			"suck_hook_contacts": 0,
+			"suck_intake_by_type": {
+				"chunk": 0.0,
+				"cluster": 13.5,
+				"worm": 0.75
+			},
+			"suck_successes": 20,
+			"unwrap_good": 0,
+			"wrap_good": 0
+		},
+		"suction_command_attempts": 3,
+		"suction_command_seconds": 20.8,
+		"ticks": 3601,
+		"winner": "angler"
+	}
+]

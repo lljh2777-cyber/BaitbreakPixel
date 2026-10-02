@@ -2,6 +2,8 @@
 
 [返回项目首页](../README.md)
 
+- [0.24.3 摄食选择平衡与最终人工门](test-reports/PHASE02-FEEDING-VALIDATION.md)
+
 ## 玩法与试玩
 
 - [完整操作与试玩说明](gameplay/PLAY.txt)
