@@ -6,7 +6,7 @@ const FoodProfile = preload("res://scripts/food_profile.gd")
 const SCHEMA := 14
 # Schema 14 remains the authority contract. This mandatory extension guard rejects
 # pre-archetype snapshots even when no network exact-build handshake is involved.
-const BAIT_PROFILE_VERSION := 1
+const BAIT_PROFILE_VERSION := 2
 const MAP_ID := "pond_v2"
 const WORLD_FIELDS: Array[String] = [
 	"fish_id", "rod_id", "next_bait_id", "next_hook_id",
@@ -244,6 +244,7 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 	for role in ["fish","angler"]:
 		if not world.Effort.valid(state.effort_checks.get(role)): return false
 	if not world.Stats.valid(state.round_stats) or state.net_capture<0 or state.net_capture>1: return false
+	if state.round_stats.last_suck_success_tick>state.simulation_tick: return false
 	if not state.net_state in ["wait","rest","prepare","warning","sweep","miss","withdraw","caught"]: return false
 	if state.wrap_target < -1 or state.wrap_target>=world.targets.size(): return false
 	if state.contact_target < -1 or state.contact_target>=world.targets.size(): return false

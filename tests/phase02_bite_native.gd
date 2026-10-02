@@ -44,8 +44,9 @@ func setup_fixture() -> void:
 	game.elapsed=2.0; game.power=0.35; game.feeding=false; game.notice_age=0; game.hook_cooldown=1000
 	game.satiety=50; game.instinct_drive=0; game.caution_state="CALM"
 	for bait in game.baits:
+		bait.bait_type="cluster"
 		bait.active=false; bait.hook=false
-		for grain in bait.grains: grain.eaten=true
+		for grain in bait.grains: grain.eaten=true; grain.visual_kind="cluster"
 
 func put_food(offset: Vector2, count: int=1) -> void:
 	var bait: Dictionary=game.baits[0]

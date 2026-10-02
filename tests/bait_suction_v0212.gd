@@ -13,6 +13,11 @@ func fresh(mode: String="survival", has_hook: bool=true, power_value: float=1.0,
 	w.angler.x=650; w.angler.previous_anchor=w.angler.anchor(); w.angler.free_line_length=360
 	for bait in w.baits: bait.active=false
 	var bait: Dictionary=w.baits[0]
+	# These assertions pin the legacy Cluster response, not a randomly assigned P2.3 profile.
+	bait.bait_type="cluster"
+	var baseline: Dictionary=w._make_bait(0,0,"cluster")
+	for i in bait.grains.size():
+		bait.grains[i].visual_kind="cluster"; bait.grains[i].offset=baseline.grains[i].offset
 	bait.active=true; bait.hook=has_hook; bait.pos=w.mouth()+Vector2(26,0); bait.home=bait.pos
 	bait.angle=0.0; bait.tip_before=w._tip(0)
 	for grain in bait.grains: grain.pos=bait.pos+Vector2(grain.offset)

@@ -1,6 +1,22 @@
 extends RefCounted
 
 static func fresh() -> Dictionary:
+	var result:=legacy_fresh()
+	result.merge({"food_by_type":type_totals(),"suck_intake_by_type":type_totals(),"bite_intake_by_type":type_totals(),
+		"suck_attempts":0,"suck_successes":0,"suck_hook_contacts":0,"bite_attempts":0,"bite_successes":0,"bite_hook_contacts":0,"last_suck_success_tick":-1})
+	return result
+
+static func type_totals() -> Dictionary:
+	return {"cluster":0.0,"worm":0.0,"chunk":0.0}
+
+static func intake(stats: Dictionary, kind: String, points: float, action: String, tick: int) -> void:
+	stats.food_by_type[kind]+=points
+	stats[action+"_intake_by_type"][kind]+=points
+	if action=="suck" and stats.last_suck_success_tick!=tick:
+		stats.suck_successes+=1
+		stats.last_suck_success_tick=tick
+
+static func legacy_fresh() -> Dictionary:
 	return {"fish_good":0,"fish_total":0,"angler_good":0,"angler_total":0,
 		"wrap_good":0,"unwrap_good":0,"breaks":0,"slips":0,"danger_seconds":0.0,"hooked_seconds":0.0,
 		"round_duration":0.0,"food_consumed":0.0,"feeding_attempts":0,"feeding_aborts":0,
@@ -16,9 +32,22 @@ static func rate(stats: Dictionary, role: String) -> String:
 	var total: int=stats[role+"_total"]
 	return "—（未判定）" if total==0 else "%d%%（%d/%d）" % [roundi(100.0*stats[role+"_good"]/total),stats[role+"_good"],total]
 
-static func valid(stats: Dictionary) -> bool:
-	for key in fresh():
-		if not stats.has(key) or typeof(stats[key])!=typeof(fresh()[key]) or stats[key]<0: return false
+static func valid(stats: Dictionary, public_only: bool=false) -> bool:
+	var defaults:=legacy_fresh() if public_only else fresh()
+	if stats.size()!=defaults.size(): return false
+	for key in defaults:
+		if not stats.has(key) or typeof(stats[key])!=typeof(defaults[key]): return false
+		if defaults[key] is Dictionary:
+			if stats[key].size()!=3: return false
+			for kind in type_totals():
+				if not stats[key].has(kind) or not stats[key][kind] is float or not is_finite(stats[key][kind]) or stats[key][kind]<0: return false
+		elif key=="last_suck_success_tick":
+			if stats[key]< -1: return false
+		elif not is_finite(float(stats[key])) or stats[key]<0: return false
+	if not public_only:
+		if stats.bite_successes>stats.bite_attempts: return false
+		for kind in type_totals():
+			if not is_equal_approx(stats.food_by_type[kind],stats.suck_intake_by_type[kind]+stats.bite_intake_by_type[kind]): return false
 	return stats.fish_good<=stats.fish_total and stats.angler_good<=stats.angler_total
 
 # Sampling uses observed transitions and final authority counters, never drives play.

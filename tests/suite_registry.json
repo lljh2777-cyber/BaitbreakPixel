@@ -567,6 +567,18 @@
       "status": "current",
       "mode": "renderer",
       "timeout_seconds": 120
+    },
+    "phase02_feeding_balance": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "phase02_feeding_policies": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120,
+      "pack_compatible": false,
+      "pack_reason": "Observation-only benchmark policy source is in tools/, intentionally excluded from release PCK."
     }
   }
 }

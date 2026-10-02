@@ -1,0 +1,60 @@
+{
+	"definitions": {
+		"BiteOnly": "Approach mouth range without suction commands; automatic Bite supplies intake.",
+		"Mixed": "Uses observed shape hints, self caution and satiety to choose standoff suction or approach Bite.",
+		"SuckOnly": "Standoff suction command policy; unavoidable automatic mouth-range Bite remains enabled.",
+		"automatic_bite_events": "Observed bite feedback events; automatic events can occur under every policy.",
+		"feeding_attempts": "World round_stats feeding_attempts: actual suction-state transitions, NOT Bite attempts.",
+		"feeding_seconds": "Seconds in effective world.feeding state; a Bite event owns its tick and disables that state.",
+		"per_type": "Post-tick authority measurement, never supplied to policy; gross satiety is uncapped, effective gain apportioned by gross gain.",
+		"qte": "All fish policies output false: the allowed FishObservation lacks hook/QTE/net state. No hidden-state escape adapter.",
+		"win": "Actual world.winner_role, including engine timeout wins; home wins recorded separately."
+	},
+	"first_seed": 21001,
+	"last_seed": 21004,
+	"max_ticks": 22200,
+	"note": "Small paired bot experiment, not human playability evidence or a forced-winner test. Incomplete rounds remain marked; no seed filtering.",
+	"paired_seeds": 4,
+	"phase": "pilot",
+	"policies": [
+		"SuckOnly",
+		"BiteOnly",
+		"Mixed"
+	],
+	"policy_version": 1,
+	"profile_version": 2,
+	"profiles": {
+		"chunk": {
+			"bite_efficiency": 2.0,
+			"fragmentation": 0.35,
+			"id": "chunk",
+			"satiety_scale": 1.65,
+			"shape_hint": "solid_chunk",
+			"smell_hint": "rich",
+			"suction_efficiency": 0.4,
+			"visual_kind": "chunk"
+		},
+		"cluster": {
+			"bite_efficiency": 1.0,
+			"fragmentation": 1.0,
+			"id": "cluster",
+			"satiety_scale": 1.0,
+			"shape_hint": "grain_cluster",
+			"smell_hint": "grain",
+			"suction_efficiency": 1.0,
+			"visual_kind": "cluster"
+		},
+		"worm": {
+			"bite_efficiency": 1.5,
+			"fragmentation": 0.65,
+			"id": "worm",
+			"satiety_scale": 1.3,
+			"shape_hint": "slender_curved",
+			"smell_hint": "savory",
+			"suction_efficiency": 0.65,
+			"visual_kind": "worm"
+		}
+	},
+	"tick_seconds": 0.0166666666666667,
+	"wall_seconds": 24.705
+}

@@ -1,0 +1,867 @@
+{
+  "phase": "heldout",
+  "seeds": [
+    31001,
+    31002,
+    31003,
+    31004,
+    31005,
+    31006,
+    31007,
+    31008,
+    31009,
+    31010,
+    31011,
+    31012,
+    31013,
+    31014,
+    31015,
+    31016,
+    31017,
+    31018,
+    31019,
+    31020,
+    31021,
+    31022,
+    31023,
+    31024,
+    31025,
+    31026,
+    31027,
+    31028,
+    31029,
+    31030,
+    31031,
+    31032,
+    31033,
+    31034,
+    31035,
+    31036,
+    31037,
+    31038,
+    31039,
+    31040,
+    31041,
+    31042,
+    31043,
+    31044,
+    31045,
+    31046,
+    31047,
+    31048,
+    31049,
+    31050,
+    31051,
+    31052,
+    31053,
+    31054,
+    31055,
+    31056,
+    31057,
+    31058,
+    31059,
+    31060,
+    31061,
+    31062,
+    31063,
+    31064,
+    31065,
+    31066,
+    31067,
+    31068,
+    31069,
+    31070,
+    31071,
+    31072,
+    31073,
+    31074,
+    31075,
+    31076,
+    31077,
+    31078,
+    31079,
+    31080,
+    31081,
+    31082,
+    31083,
+    31084,
+    31085,
+    31086,
+    31087,
+    31088,
+    31089,
+    31090,
+    31091,
+    31092,
+    31093,
+    31094,
+    31095,
+    31096,
+    31097,
+    31098,
+    31099,
+    31100
+  ],
+  "paired_seeds": 100,
+  "bootstrap_replicates": 2000,
+  "note": "No winning policy is imposed. Seed-sample uncertainty is not a human-playability verdict; fish QTE is unavailable through FishObservation. Per-type outcome composition is descriptive, not randomized within-type treatment evidence.",
+  "policies": {
+    "SuckOnly": {
+      "completed": 100,
+      "incomplete_seeds": [],
+      "outcome_reasons": {
+        "net": 32,
+        "home": 60,
+        "landed": 8
+      },
+      "metrics": {
+        "fish_win_rate": 0.6,
+        "home_win_rate": 0.6,
+        "food_consumed": 57.585,
+        "satiety_final": 73.5479274999978,
+        "satiety_mean": 90.11844681472654,
+        "satiety_min": 68.30159999999746,
+        "hook_contacts": 0.11,
+        "hook_events": 0.1,
+        "hook_event_rate": 0.1,
+        "feeding_attempts": 29.97,
+        "feeding_seconds": 24.2745,
+        "suction_command_attempts": 2.27,
+        "suction_command_seconds": 24.82766666666667,
+        "automatic_bite_events": 29.67,
+        "automatic_bite_while_suction_command": 29.46,
+        "duration": 45.745833333332016,
+        "suck_eligible_ticks": 1485.93,
+        "suck_intake_ticks": 15.26,
+        "bite_candidate_attempts": 29.67,
+        "bite_intake_events": 29.67,
+        "suction_context_hook_contacts": 0,
+        "mouth_context_hook_contacts": 0
+      },
+      "per_type": {
+        "cluster": {
+          "automatic_bite_events": 6.56,
+          "automatic_bite_food": 11.451,
+          "automatic_bite_grains": 16.63,
+          "food": 20.1495,
+          "grains": 29.19,
+          "satiety_effective": 23.21567250000163,
+          "satiety_gross": 40.299,
+          "suction_food": 8.6985,
+          "suction_grains": 12.56
+        },
+        "worm": {
+          "automatic_bite_events": 10.75,
+          "automatic_bite_food": 19.542,
+          "automatic_bite_grains": 28.5,
+          "food": 21.6345,
+          "grains": 31.51,
+          "satiety_effective": 32.2455800000018,
+          "satiety_gross": 56.24970000000006,
+          "suction_food": 2.0925,
+          "suction_grains": 3.01
+        },
+        "chunk": {
+          "automatic_bite_events": 12.36,
+          "automatic_bite_food": 15.801,
+          "automatic_bite_grains": 22.87,
+          "food": 15.801,
+          "grains": 22.87,
+          "satiety_effective": 29.935237500001826,
+          "satiety_gross": 52.14330000000004,
+          "suction_food": 0.0,
+          "suction_grains": 0
+        }
+      },
+      "mode_choices": {
+        "suck": 100,
+        "bite": 0
+      },
+      "mode_seconds": {
+        "suck": 38.49033333333243,
+        "bite": 0.0,
+        "seek": 0.0,
+        "home": 7.255500000000061
+      },
+      "action_diagnostics": {
+        "suck_intake_ticks_per_eligible_tick": 0.010269662770117031,
+        "bite_intake_events_per_candidate_attempt": 1.0,
+        "note": "Different denominators: suction counts eligible ticks; Bite counts candidate attempts after hook arbitration. The near-100% Bite rate is not a risk-adjusted feeding success rate. Hook-contact contexts can overlap and do not establish action causality."
+      }
+    },
+    "BiteOnly": {
+      "completed": 100,
+      "incomplete_seeds": [],
+      "outcome_reasons": {
+        "landed": 70,
+        "net": 13,
+        "home": 17
+      },
+      "metrics": {
+        "fish_win_rate": 0.17,
+        "home_win_rate": 0.17,
+        "food_consumed": 43.554,
+        "satiety_final": 64.9251224999976,
+        "satiety_mean": 87.08472714152848,
+        "satiety_min": 62.470102499997466,
+        "hook_contacts": 0.8,
+        "hook_events": 0.76,
+        "hook_event_rate": 0.76,
+        "feeding_attempts": 0,
+        "feeding_seconds": 0.0,
+        "suction_command_attempts": 0,
+        "suction_command_seconds": 0.0,
+        "automatic_bite_events": 13.15,
+        "automatic_bite_while_suction_command": 0,
+        "duration": 28.78983333333295,
+        "suck_eligible_ticks": 0,
+        "suck_intake_ticks": 0,
+        "bite_candidate_attempts": 13.15,
+        "bite_intake_events": 13.15,
+        "suction_context_hook_contacts": 0,
+        "mouth_context_hook_contacts": 0.02
+      },
+      "per_type": {
+        "cluster": {
+          "automatic_bite_events": 4.88,
+          "automatic_bite_food": 12.1665,
+          "automatic_bite_grains": 17.86,
+          "food": 12.1665,
+          "grains": 17.86,
+          "satiety_effective": 10.742310000000684,
+          "satiety_gross": 24.333,
+          "suction_food": 0.0,
+          "suction_grains": 0
+        },
+        "worm": {
+          "automatic_bite_events": 5.07,
+          "automatic_bite_food": 17.529,
+          "automatic_bite_grains": 25.71,
+          "food": 17.529,
+          "grains": 25.71,
+          "satiety_effective": 14.671222500000981,
+          "satiety_gross": 45.57540000000006,
+          "suction_food": 0.0,
+          "suction_grains": 0
+        },
+        "chunk": {
+          "automatic_bite_events": 3.2,
+          "automatic_bite_food": 13.8585,
+          "automatic_bite_grains": 20.33,
+          "food": 13.8585,
+          "grains": 20.33,
+          "satiety_effective": 9.902732500000647,
+          "satiety_gross": 45.73304999999997,
+          "suction_food": 0.0,
+          "suction_grains": 0
+        }
+      },
+      "mode_choices": {
+        "suck": 0,
+        "bite": 100
+      },
+      "mode_seconds": {
+        "suck": 0.0,
+        "bite": 22.950499999999945,
+        "seek": 0.0,
+        "home": 5.839333333333382
+      },
+      "action_diagnostics": {
+        "suck_intake_ticks_per_eligible_tick": null,
+        "bite_intake_events_per_candidate_attempt": 1.0,
+        "note": "Different denominators: suction counts eligible ticks; Bite counts candidate attempts after hook arbitration. The near-100% Bite rate is not a risk-adjusted feeding success rate. Hook-contact contexts can overlap and do not establish action causality."
+      }
+    },
+    "Mixed": {
+      "completed": 100,
+      "incomplete_seeds": [],
+      "outcome_reasons": {
+        "net": 29,
+        "home": 59,
+        "landed": 12
+      },
+      "metrics": {
+        "fish_win_rate": 0.59,
+        "home_win_rate": 0.59,
+        "food_consumed": 56.0745,
+        "satiety_final": 71.93464749999772,
+        "satiety_mean": 89.87161084256664,
+        "satiety_min": 67.48519749999744,
+        "hook_contacts": 0.15,
+        "hook_events": 0.15,
+        "hook_event_rate": 0.15,
+        "feeding_attempts": 23.49,
+        "feeding_seconds": 19.1685,
+        "suction_command_attempts": 1.84,
+        "suction_command_seconds": 19.65066666666667,
+        "automatic_bite_events": 25.76,
+        "automatic_bite_while_suction_command": 23.09,
+        "duration": 41.66533333333225,
+        "suck_eligible_ticks": 1173.2,
+        "suck_intake_ticks": 13.71,
+        "bite_candidate_attempts": 25.76,
+        "bite_intake_events": 25.76,
+        "suction_context_hook_contacts": 0,
+        "mouth_context_hook_contacts": 0
+      },
+      "per_type": {
+        "cluster": {
+          "automatic_bite_events": 6.08,
+          "automatic_bite_food": 10.5195,
+          "automatic_bite_grains": 15.34,
+          "food": 18.4935,
+          "grains": 26.9,
+          "satiety_effective": 20.589805000001338,
+          "satiety_gross": 36.987,
+          "suction_food": 7.974,
+          "suction_grains": 11.56
+        },
+        "worm": {
+          "automatic_bite_events": 9.67,
+          "automatic_bite_food": 20.337,
+          "automatic_bite_grains": 29.7,
+          "food": 22.044,
+          "grains": 32.17,
+          "satiety_effective": 28.710327500001682,
+          "satiety_gross": 57.31440000000006,
+          "suction_food": 1.707,
+          "suction_grains": 2.47
+        },
+        "chunk": {
+          "automatic_bite_events": 10.01,
+          "automatic_bite_food": 15.537,
+          "automatic_bite_grains": 22.6,
+          "food": 15.537,
+          "grains": 22.6,
+          "satiety_effective": 24.506255000001488,
+          "satiety_gross": 51.27210000000002,
+          "suction_food": 0.0,
+          "suction_grains": 0
+        }
+      },
+      "mode_choices": {
+        "suck": 239,
+        "bite": 149
+      },
+      "mode_seconds": {
+        "suck": 32.158499999999435,
+        "bite": 1.860666666666665,
+        "seek": 0.0,
+        "home": 7.646166666666721
+      },
+      "action_diagnostics": {
+        "suck_intake_ticks_per_eligible_tick": 0.011685987043982271,
+        "bite_intake_events_per_candidate_attempt": 1.0,
+        "note": "Different denominators: suction counts eligible ticks; Bite counts candidate attempts after hook arbitration. The near-100% Bite rate is not a risk-adjusted feeding success rate. Hook-contact contexts can overlap and do not establish action causality."
+      }
+    }
+  },
+  "paired_differences": {
+    "BiteOnly minus SuckOnly": {
+      "fish_win_rate": {
+        "mean": -0.43,
+        "paired_bootstrap_95_percent": [
+          -0.55,
+          -0.32
+        ]
+      },
+      "home_win_rate": {
+        "mean": -0.43,
+        "paired_bootstrap_95_percent": [
+          -0.55,
+          -0.31
+        ]
+      },
+      "food_consumed": {
+        "mean": -14.031,
+        "paired_bootstrap_95_percent": [
+          -17.0595,
+          -10.9845
+        ]
+      },
+      "satiety_final": {
+        "mean": -8.622805000000193,
+        "paired_bootstrap_95_percent": [
+          -12.722827500000577,
+          -4.442917499999931
+        ]
+      },
+      "satiety_mean": {
+        "mean": -3.033719673198055,
+        "paired_bootstrap_95_percent": [
+          -4.221539336858564,
+          -1.8572222389209454
+        ]
+      },
+      "satiety_min": {
+        "mean": -5.831497499999999,
+        "paired_bootstrap_95_percent": [
+          -9.211955000000234,
+          -2.2692349999997954
+        ]
+      },
+      "hook_contacts": {
+        "mean": 0.69,
+        "paired_bootstrap_95_percent": [
+          0.6,
+          0.78
+        ]
+      },
+      "hook_events": {
+        "mean": 0.66,
+        "paired_bootstrap_95_percent": [
+          0.57,
+          0.75
+        ]
+      },
+      "hook_event_rate": {
+        "mean": 0.66,
+        "paired_bootstrap_95_percent": [
+          0.56,
+          0.75
+        ]
+      },
+      "feeding_attempts": {
+        "mean": -29.97,
+        "paired_bootstrap_95_percent": [
+          -31.3,
+          -28.61
+        ]
+      },
+      "feeding_seconds": {
+        "mean": -24.2745,
+        "paired_bootstrap_95_percent": [
+          -25.360166666666675,
+          -23.189500000000002
+        ]
+      },
+      "suction_command_attempts": {
+        "mean": -2.27,
+        "paired_bootstrap_95_percent": [
+          -2.4,
+          -2.15
+        ]
+      },
+      "suction_command_seconds": {
+        "mean": -24.82766666666667,
+        "paired_bootstrap_95_percent": [
+          -25.97666666666667,
+          -23.726833333333335
+        ]
+      },
+      "automatic_bite_events": {
+        "mean": -16.52,
+        "paired_bootstrap_95_percent": [
+          -18.12,
+          -14.93
+        ]
+      },
+      "automatic_bite_while_suction_command": {
+        "mean": -29.46,
+        "paired_bootstrap_95_percent": [
+          -30.75,
+          -28.21
+        ]
+      },
+      "duration": {
+        "mean": -16.955999999999065,
+        "paired_bootstrap_95_percent": [
+          -18.700166666665655,
+          -15.059333333332491
+        ]
+      },
+      "suck_eligible_ticks": {
+        "mean": -1485.93,
+        "paired_bootstrap_95_percent": [
+          -1553.21,
+          -1418.45
+        ]
+      },
+      "suck_intake_ticks": {
+        "mean": -15.26,
+        "paired_bootstrap_95_percent": [
+          -16.77,
+          -13.63
+        ]
+      },
+      "bite_candidate_attempts": {
+        "mean": -16.52,
+        "paired_bootstrap_95_percent": [
+          -18.12,
+          -14.96
+        ]
+      },
+      "bite_intake_events": {
+        "mean": -16.52,
+        "paired_bootstrap_95_percent": [
+          -18.08,
+          -14.85
+        ]
+      },
+      "suction_context_hook_contacts": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "mouth_context_hook_contacts": {
+        "mean": 0.02,
+        "paired_bootstrap_95_percent": [
+          0,
+          0.05
+        ]
+      }
+    },
+    "Mixed minus SuckOnly": {
+      "fish_win_rate": {
+        "mean": -0.01,
+        "paired_bootstrap_95_percent": [
+          -0.07,
+          0.05
+        ]
+      },
+      "home_win_rate": {
+        "mean": -0.01,
+        "paired_bootstrap_95_percent": [
+          -0.07,
+          0.05
+        ]
+      },
+      "food_consumed": {
+        "mean": -1.5105,
+        "paired_bootstrap_95_percent": [
+          -2.8935,
+          -0.23850000000000002
+        ]
+      },
+      "satiety_final": {
+        "mean": -1.6132800000000755,
+        "paired_bootstrap_95_percent": [
+          -3.9351150000002177,
+          0.3902475000000118
+        ]
+      },
+      "satiety_mean": {
+        "mean": -0.2468359721598928,
+        "paired_bootstrap_95_percent": [
+          -0.7442360612928189,
+          0.20017739164712098
+        ]
+      },
+      "satiety_min": {
+        "mean": -0.8164025000000263,
+        "paired_bootstrap_95_percent": [
+          -2.436830000000124,
+          0.5725650000000746
+        ]
+      },
+      "hook_contacts": {
+        "mean": 0.04,
+        "paired_bootstrap_95_percent": [
+          0.01,
+          0.08
+        ]
+      },
+      "hook_events": {
+        "mean": 0.05,
+        "paired_bootstrap_95_percent": [
+          0.01,
+          0.1
+        ]
+      },
+      "hook_event_rate": {
+        "mean": 0.05,
+        "paired_bootstrap_95_percent": [
+          0.01,
+          0.1
+        ]
+      },
+      "feeding_attempts": {
+        "mean": -6.48,
+        "paired_bootstrap_95_percent": [
+          -8.43,
+          -4.48
+        ]
+      },
+      "feeding_seconds": {
+        "mean": -5.105999999999999,
+        "paired_bootstrap_95_percent": [
+          -6.782666666666667,
+          -3.5509999999999975
+        ]
+      },
+      "suction_command_attempts": {
+        "mean": -0.43,
+        "paired_bootstrap_95_percent": [
+          -0.57,
+          -0.3
+        ]
+      },
+      "suction_command_seconds": {
+        "mean": -5.177,
+        "paired_bootstrap_95_percent": [
+          -6.822166666666663,
+          -3.5836666666666663
+        ]
+      },
+      "automatic_bite_events": {
+        "mean": -3.91,
+        "paired_bootstrap_95_percent": [
+          -5.29,
+          -2.63
+        ]
+      },
+      "automatic_bite_while_suction_command": {
+        "mean": -6.37,
+        "paired_bootstrap_95_percent": [
+          -8.25,
+          -4.44
+        ]
+      },
+      "duration": {
+        "mean": -4.080499999999766,
+        "paired_bootstrap_95_percent": [
+          -5.8359999999996655,
+          -2.4281666666665274
+        ]
+      },
+      "suck_eligible_ticks": {
+        "mean": -312.73,
+        "paired_bootstrap_95_percent": [
+          -413.32,
+          -215.64
+        ]
+      },
+      "suck_intake_ticks": {
+        "mean": -1.55,
+        "paired_bootstrap_95_percent": [
+          -2.36,
+          -0.78
+        ]
+      },
+      "bite_candidate_attempts": {
+        "mean": -3.91,
+        "paired_bootstrap_95_percent": [
+          -5.29,
+          -2.66
+        ]
+      },
+      "bite_intake_events": {
+        "mean": -3.91,
+        "paired_bootstrap_95_percent": [
+          -5.27,
+          -2.54
+        ]
+      },
+      "suction_context_hook_contacts": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "mouth_context_hook_contacts": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      }
+    },
+    "Mixed minus BiteOnly": {
+      "fish_win_rate": {
+        "mean": 0.42,
+        "paired_bootstrap_95_percent": [
+          0.31,
+          0.53
+        ]
+      },
+      "home_win_rate": {
+        "mean": 0.42,
+        "paired_bootstrap_95_percent": [
+          0.31,
+          0.53
+        ]
+      },
+      "food_consumed": {
+        "mean": 12.5205,
+        "paired_bootstrap_95_percent": [
+          9.441,
+          15.801
+        ]
+      },
+      "satiety_final": {
+        "mean": 7.009525000000117,
+        "paired_bootstrap_95_percent": [
+          2.397807499999805,
+          11.23696250000034
+        ]
+      },
+      "satiety_mean": {
+        "mean": 2.7868837010381626,
+        "paired_bootstrap_95_percent": [
+          1.5941347557123557,
+          3.9202843081922203
+        ]
+      },
+      "satiety_min": {
+        "mean": 5.015094999999973,
+        "paired_bootstrap_95_percent": [
+          1.5507399999997886,
+          8.76123000000022
+        ]
+      },
+      "hook_contacts": {
+        "mean": -0.65,
+        "paired_bootstrap_95_percent": [
+          -0.75,
+          -0.55
+        ]
+      },
+      "hook_events": {
+        "mean": -0.61,
+        "paired_bootstrap_95_percent": [
+          -0.72,
+          -0.51
+        ]
+      },
+      "hook_event_rate": {
+        "mean": -0.61,
+        "paired_bootstrap_95_percent": [
+          -0.71,
+          -0.5
+        ]
+      },
+      "feeding_attempts": {
+        "mean": 23.49,
+        "paired_bootstrap_95_percent": [
+          21.47,
+          25.35
+        ]
+      },
+      "feeding_seconds": {
+        "mean": 19.1685,
+        "paired_bootstrap_95_percent": [
+          17.4865,
+          20.827333333333332
+        ]
+      },
+      "suction_command_attempts": {
+        "mean": 1.84,
+        "paired_bootstrap_95_percent": [
+          1.7,
+          1.99
+        ]
+      },
+      "suction_command_seconds": {
+        "mean": 19.65066666666667,
+        "paired_bootstrap_95_percent": [
+          17.991166666666675,
+          21.311166666666672
+        ]
+      },
+      "automatic_bite_events": {
+        "mean": 12.61,
+        "paired_bootstrap_95_percent": [
+          10.72,
+          14.47
+        ]
+      },
+      "automatic_bite_while_suction_command": {
+        "mean": 23.09,
+        "paired_bootstrap_95_percent": [
+          21.07,
+          25.03
+        ]
+      },
+      "duration": {
+        "mean": 12.875499999999299,
+        "paired_bootstrap_95_percent": [
+          10.364499999999444,
+          15.281999999999158
+        ]
+      },
+      "suck_eligible_ticks": {
+        "mean": 1173.2,
+        "paired_bootstrap_95_percent": [
+          1070.35,
+          1272.77
+        ]
+      },
+      "suck_intake_ticks": {
+        "mean": 13.71,
+        "paired_bootstrap_95_percent": [
+          12.02,
+          15.5
+        ]
+      },
+      "bite_candidate_attempts": {
+        "mean": 12.61,
+        "paired_bootstrap_95_percent": [
+          10.68,
+          14.44
+        ]
+      },
+      "bite_intake_events": {
+        "mean": 12.61,
+        "paired_bootstrap_95_percent": [
+          10.86,
+          14.4
+        ]
+      },
+      "suction_context_hook_contacts": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "mouth_context_hook_contacts": {
+        "mean": -0.02,
+        "paired_bootstrap_95_percent": [
+          -0.05,
+          0
+        ]
+      }
+    }
+  },
+  "strict_dominance": {
+    "criterion": "Every paired95% bootstrap interval strictly favorable on food, time-mean satiety, fish wins, hook contacts and hook events; exploratory marginal intervals, not simultaneous confidence.",
+    "directions": {
+      "food_consumed": 1,
+      "satiety_mean": 1,
+      "fish_win_rate": 1,
+      "hook_contacts": -1,
+      "hook_events": -1
+    },
+    "qualifying_pairs": [
+      {
+        "candidate": "SuckOnly",
+        "other": "BiteOnly"
+      },
+      {
+        "candidate": "Mixed",
+        "other": "BiteOnly"
+      }
+    ],
+    "point_estimate_weak_dominance": {
+      "criterion": "Mean no worse on every dimension and strictly better on at least one; tolerance1e-9, descriptive point estimates only.",
+      "qualifying_pairs": [
+        {
+          "candidate": "SuckOnly",
+          "other": "BiteOnly"
+        },
+        {
+          "candidate": "SuckOnly",
+          "other": "Mixed"
+        },
+        {
+          "candidate": "Mixed",
+          "other": "BiteOnly"
+        }
+      ]
+    },
+    "note": "Point-estimate dominance is reported even when confidence intervals overlap. Failure of the stringent interval criterion is neither equivalence nor proof of no dominance. No minimum win rate or forced winner."
+  }
+}

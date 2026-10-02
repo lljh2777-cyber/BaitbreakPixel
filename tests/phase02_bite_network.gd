@@ -18,8 +18,9 @@ func fresh() -> Node2D:
 	w.reset_world({"seed":1976,"rules":{"water_strength":0.0,"satiety_decay":0.0,"instinct_max_strength":0.0,"timer_enabled":false}})
 	w.fish=Vector2(250,200); w.fish_before=w.fish; w.aim=Vector2.RIGHT; w.satiety=50
 	for bait in w.baits:
+		bait.bait_type="cluster"
 		bait.active=false; bait.hook=false
-		for grain in bait.grains: grain.eaten=true
+		for grain in bait.grains: grain.eaten=true; grain.visual_kind="cluster"
 	for index in 8:
 		var grain:Dictionary=w.baits[0].grains[index]
 		grain.free=true; grain.eaten=false; grain.pos=w.mouth()+Vector2(index+1,0); grain.points=1.0
@@ -117,8 +118,9 @@ func live_checks() -> void:
 	if not await phase("playing"): check(false,"ENet start/countdown completes"); return
 	host.fish=Vector2(250,200); host.fish_before=host.fish; host.aim=Vector2.RIGHT; host.velocity=Vector2.ZERO; host.satiety=50
 	for bait in host.baits:
+		bait.bait_type="cluster"
 		bait.active=false; bait.hook=false
-		for grain in bait.grains: grain.eaten=true
+		for grain in bait.grains: grain.eaten=true; grain.visual_kind="cluster"
 	host.network._send_state(true)
 	for tick in 5: await frame()
 	check(client.network.local_role=="fish" and client.satiety==50 and client.score==0,"fish receives prepared empty public world")

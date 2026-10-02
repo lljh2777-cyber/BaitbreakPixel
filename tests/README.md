@@ -13,7 +13,7 @@ Windows 可使用 `D:\python\python.exe`；用 `--godot "引擎可执行文件�
 
 ## 注册表与状态
 
-[`suite_registry.json`](suite_registry.json) 显式登记全部 101 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
+[`suite_registry.json`](suite_registry.json) 显式登记全部 103 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
 
 - `current`：当前有效的回归门禁；不按文件名版本新旧决定。`--profile current` 运行无窗口套件，`--profile native` 运行图形套件。已重新验证的 effort、net_animation、rules_network 等较早版本仍在当前门禁中
 - `historical`：当前检出复现了失败的诊断套件。保留原断言，失败仍返回非零；这不是“已证明所有断言过时”，更不是通过。具体原因和结果见[维护报告](../docs/test-reports/TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md)
@@ -75,4 +75,19 @@ python3 tools/run_tests.py --profile native --pack /path/to/BaitbreakPixel.pck -
 
 ## Phase 2.2 饵型基础
 
-`phase02_bait_types` 覆盖三类型分配、原食物预算、生命周期、混合旧散粒、schema14 重放，以及固定种子范围的初始/重挂钩型独立性诊断；`phase02_food_profiles` 验证集中定义和数值仍为中性。`phase02_observation` 与 `phase02_bait_network` 验证合法线索、严格裁剪、版本门和回放；`phase02_bait_native` 捕获三类型、部分吃掉/散落/吸动和 safe/hooked 像素等价。类型效率差异与组合平衡仍等待 P2.3，测试通过不能替代人工辨识度确认。
+`phase02_bait_types` 覆盖三类型分配、原食物预算、生命周期、混合旧散粒、schema14 重放，以及固定种子范围的初始/重挂钩型独立性诊断；`phase02_food_profiles` 验证集中定义、不可变配置和分数/饱食分离。`phase02_observation` 与 `phase02_bait_network` 验证合法线索、严格裁剪、版本门和回放；`phase02_bait_native` 捕获三类型、部分吃掉/散落/吸动和 safe/hooked 像素等价。P2.3 已加入类型效率差异；测试通过不能替代人工辨识度与最终平衡确认。
+
+## Phase 2.3 摄食选择
+
+`phase02_feeding_balance` 覆盖整粒 4/6/8 摄入、混合旧散粒预算、重复计分保护、饱食倍率、真实吸动/剥离/碎散物理、schema14 回放、新统计保密与嵌套校验。`phase02_feeding_policies` 验证纯观察策略、自动咬食语义、隐藏真值等价命令和真实 60 Hz 重放。后者引用不打包的 tools，PCK 模式明确 BLOCKED。
+
+现有 `bait_suction_v0212`、`feeding_feel_v022` 与 Bite 基准 fixture 显式固定 Cluster，以继续验证原始曲线和基础容量，断言不放宽；各类型差异另有独立用例。
+
+配对实验入口：
+
+```sh
+python3 tools/phase02_run_feeding.py --phase pilot --seed 21001 --rounds 4 --output artifacts/p23-pilot
+python3 tools/phase02_run_feeding.py --phase heldout --seed 31001 --rounds 100 --pilot artifacts/p23-pilot --output artifacts/p23-heldout
+```
+
+默认真实 60 Hz、370 秒上限，运行前后验证源码哈希；留出种子不得与 pilot 重叠，源码/控制器及时间上限须保持一致。`SuckOnly` 只是远处吸食偏好，不会禁用嘴边自动咬食。比较保留所有输局、未终局与不利结果；无 QTE/解钩技巧，因此不能当成熟练玩家胜率。结果和最终人工门见 [P2.3 验证报告](../docs/test-reports/PHASE02-FEEDING-VALIDATION.md)。
