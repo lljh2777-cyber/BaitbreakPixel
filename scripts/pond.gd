@@ -82,7 +82,10 @@ func _present_result(_winner: String, _cause: String) -> void:
 
 func _ready() -> void:
 	Engine.max_fps = 60
-	rng.seed = 2649
+	# Explicit test/replay seeds remain deterministic; ordinary app restarts must not
+	# replay the same first hidden-hook layout. Presentation never consumes this RNG.
+	if "--test-profile" in OS.get_cmdline_user_args(): rng.seed=2649
+	else: rng.randomize()
 	_register_inputs()
 	if "--test-profile" in OS.get_cmdline_user_args(): save_path = "user://pixel-test.cfg"
 	else: _load_profile()

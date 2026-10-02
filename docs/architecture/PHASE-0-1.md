@@ -86,3 +86,5 @@ Focused real-ENet projection42, network rules25, rules synchronization9, untangl
 Distance-only and cautious bot policies use the same public bait observation; cautious policy adds its own observation-derived beliefs, never authority hook fields. Self-induced suction displacement is compensated in the motion cue rather than mistaken for new danger evidence. Policy choice/hidden-truth invariance3, suspicion11 and suction41 checks pass.
 
 Paired1000-seed policies (seeds1001–2000) are running from an immutable authority/policy tree with a source hash manifest. Final aggregate/native checks and report follow. Version0.23.0 denotes unreleased source only; no Windows package or GitHub Release has been produced.
+
+Normal local app launches initialize the session seed from entropy; only explicit test-profile/replay seed paths retain deterministic startup. Restarting the app therefore cannot memorize the same first hidden layout. This adapter change does not alter seeded authority batch runs.
