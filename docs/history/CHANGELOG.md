@@ -1,3 +1,7 @@
+# 2026-10-02 · v0.24.2 Windows 试玩包发布
+
+已发布 [v0.24.2](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.24.2)，包含颗粒团、弯曲细条和块状三种饵型。Windows 当前源码回归、独立包内针对性画面与 EXE 启动检查通过；饵型辨识、手感和组合平衡仍等待人工试玩，未进入 P2.3。详细范围与校验值见[发布记录](../test-reports/GITHUB-RELEASE-0.24.2.md)。后文“未打包”属于原开发记录当时的状态。
+
 ## 0.24.2 — P2.2 饵型基础（源码，2026-10-02）
 
 - Cluster / Worm / Chunk 的稳定生命周期、模拟 RNG 分配及合法形状/气味投影

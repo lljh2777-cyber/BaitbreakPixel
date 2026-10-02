@@ -2,15 +2,15 @@
 
 一个 2D 像素风格的人鱼对抗游戏：小鱼在水下觅食、缠线和逃脱，钓鱼人在岸边控竿、收放线与抄网。支持单机挑战、自由练习和一人对一鱼的局域网联机。
 
-**当前源码版本：0.24.2（三种饵型人工试玩门，尚未打包）** · Windows x64 · Godot 4.7.2
+**当前源码与公开 Windows 试玩版本：0.24.2（三种饵型试玩版）** · Windows x64 · Godot 4.7.2
 
 ## 下载试玩
 
-### 公开 Windows 试玩包：0.24.1
+### 公开 Windows 试玩包：0.24.2
 
-从 [v0.24.1 发行页](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.24.1)下载 [BaitbreakPixel-0.24.1.zip](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.24.1/BaitbreakPixel-0.24.1.zip)，解压后运行 `BaitbreakPixel.exe`。EXE 与同目录 PCK 保持在一起，玩家无需安装 Godot。小鱼嘴边有食物时自动咬食，左键吸食；完整操作见包内说明。
+从 [v0.24.2 发行页](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.24.2)下载 [BaitbreakPixel-0.24.2.zip](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.24.2/BaitbreakPixel-0.24.2.zip)，解压后运行 `BaitbreakPixel.exe`。EXE 与同目录 PCK 保持在一起，玩家无需安装 Godot。小鱼嘴边有食物时自动咬食，左键吸食；完整操作见包内说明。
 
-2026-10-02 已逐版补齐 **0.21.0–0.24.1，共 14 个 Release**，每版均附 ZIP 和 `SHA256SUMS.txt`。其他版本见 [全部 Releases](https://github.com/lljh2777-cyber/BaitbreakPixel/releases)，包与源码标签核对结果见 [发布记录](docs/test-reports/GITHUB-RELEASES-2026-10-02.md)。0.24.1 仍用于人工试玩，发布包不代表已经完成人工手感与平衡验收。
+2026-10-02 已逐版发布 **0.21.0–0.24.2，共 15 个 Release**，每版均附 ZIP 和 `SHA256SUMS.txt`。其他版本见 [全部 Releases](https://github.com/lljh2777-cyber/BaitbreakPixel/releases)，核对结果见 [0.24.2 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.2.md)和[此前 14 版发布记录](docs/test-reports/GITHUB-RELEASES-2026-10-02.md)。0.24.2 仍用于人工试玩，发布包不代表已经完成人工手感与平衡验收。
 
 ### Phase 2.2：0.24.2 饵型人工试玩门
 
@@ -18,7 +18,7 @@
 
 本阶段只建立形态与生命周期基础：食物数、计分和摄食/饱食倍率保持原值，不声称已经实现类型效率差异或完成组合平衡。自动咬食仍为嘴边 18 px、每口最多 4 粒、成功后冷却 0.40 秒，无咬食按键。请先确认三种形态是否清楚、是否有一种看起来天然等于危险饵；确认前不进入 P2.3。
 
-本次仅提交源码，不生成或上传 ZIP。公开下载仍是上方 0.24.1，不能用于体验新饵型。见 [饵型实现边界](docs/architecture/PHASE02-BAIT-TYPES.md)、[验证与人工试玩清单](docs/test-reports/PHASE02-BAIT-VALIDATION.md)。历史自动咬食报告保留在 [P2.1 验证](docs/test-reports/PHASE02-BITE-VALIDATION.md)。
+对应 Windows ZIP 已生成、核对并公开发布，可直接体验三种饵型；本地目录为 `Releases/BaitbreakPixel-0.24.2`。见 [饵型实现边界](docs/architecture/PHASE02-BAIT-TYPES.md)、[验证与人工试玩清单](docs/test-reports/PHASE02-BAIT-VALIDATION.md)。历史自动咬食报告保留在 [P2.1 验证](docs/test-reports/PHASE02-BITE-VALIDATION.md)。
 
 0.23.0 新增饱食度、可抵抗的本能偏移、基于可见线索的三档警惕，以及按饵生命周期随机决定的隐藏鱼钩。保持一条玩家鱼和现有主鱼竿，没有加入自动吸食、多鱼或长期记忆。实施与验收范围见 [Phase 0–1 检查记录](docs/architecture/PHASE-0-1.md)。当前版本尚需人工试玩确认控制手感与核心博弈，不能将自动统计当作“已经好玩”的证明。
 
