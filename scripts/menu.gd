@@ -127,7 +127,7 @@ func _title(frame: Control) -> void:
 	button(frame,"设置",274,func(): open("settings"),false,124)
 	var quit := button(frame,"退出",274,func(): get_tree().quit(),false,124)
 	quit.position.x = 150
-	text(content,"0.23.1 · 试玩修正 · 等待人工确认",Vector2(341,280),10,Color("91afa7"))
+	text(content,"0.24.0 · 近距咬食 · 等待人工确认",Vector2(341,280),10,Color("91afa7"))
 	text(content,"小鱼 · 吃饵脱身",Vector2(391,119),18,GOLD)
 	text(content,"人类 · 收线抄网",Vector2(391,159),18,GOLD)
 	text(content,"独自练习 · 双人对战",Vector2(375,199),16,GOLD)
@@ -154,7 +154,7 @@ func _help(frame: Control) -> void:
 	text(frame,"把鱼带出水面" if human else "怎样在池塘里活下来",Vector2(20,16),21)
 	var lines := [
 		"WASD / 方向键 游动 · 鼠标决定朝向",
-		"左键吸食 · 滚轮调吸力 · Q 慢游",
+		"左键吸食 · F 咬食 · 滚轮调吸力 · Q 慢游",
 		"按住右键加速耗体力 · 吃饵补体力",
 		"所有 QTE：浮漂到绿色判定区按空格",
 		"上钩抗拉会触发发力：成功加力，失败脱力",
