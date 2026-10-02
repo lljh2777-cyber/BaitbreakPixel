@@ -396,7 +396,6 @@ func _take_remote() -> Dictionary:
 	combined.qte=false
 	combined.qte_at_age=-1.0
 	combined.home=false
-	combined.bite=false
 	combined.deploy=false
 	combined.untangle=false
 	combined.qte_condition_valid=true
@@ -414,7 +413,6 @@ func _take_remote() -> Dictionary:
 			age=effort_history[remote_role][entry.seen_tick].age if entry.get("check_kind")=="effort" else (qte_history[entry.seen_tick].age if not game.qte.is_empty() else -1.0)
 			qte_accepted+=1
 			if entry.get("check_kind")=="effort": condition_valid=effort_history[remote_role][entry.seen_tick].valid
-		var bite: bool=combined.bite or cmd.get("bite",false)
 		var home: bool=combined.home or cmd.get("home",false)
 		var deploy: bool=combined.deploy or cmd.get("deploy",false)
 		var untangle: bool=combined.untangle or cmd.get("untangle",false)
@@ -422,7 +420,6 @@ func _take_remote() -> Dictionary:
 		combined.qte=pressed
 		combined.qte_at_age=age
 		combined.home=home
-		combined.bite=bite
 		combined.deploy=deploy
 		combined.untangle=untangle
 		combined.qte_condition_valid=condition_valid

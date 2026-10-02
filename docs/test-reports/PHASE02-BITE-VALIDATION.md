@@ -1,41 +1,45 @@
-# P2.0 / P2.1 Bite validation — v0.24.0
+# P2.1 automatic mouth Bite validation — v0.24.1
 
-Date: 2026-10-02. Starting commit: `19178ccb572cce992624c934a1ad55c58cdced47` (`feature/dev`, v0.23.1, authority schema 13).
+Date: 2026-10-02. Baseline: `811a8b83d2a7e7b3b14e486ff3b192f2e914d701` (`feature/dev`, v0.24.0, authority schema 14).
 
-## Scope
+## User feedback implemented; playtest remains open
 
-Phase 1.5 is provisionally passed for progression, not permanently closed. This change implements only P2.0 preparation and P2.1 existing-food Bite. P2.2 bait archetypes and P2.3 balance are not started. No package is produced or uploaded: the user synchronizes source locally.
+The user requested: “咬食不设置按键，鱼嘴靠近饵料后自动触发”. This revision implements that feedback. It does not close the subjective playtest gate or start P2.2/P2.3. The prior F-key implementation and its original validation are preserved unchanged in [v0.24.0 history](PHASE02-BITE-VALIDATION-0.24.0.md).
 
-- F = one fish Bite attempt; angler F remains Untangle
-- Accepted intake: nearest mouth-range grains, radius 18 px, up to 4 grains, cooldown 0.40 s
-- Exact-distance ties: bait lifecycle ID, then stable grain-array order
-- No automatic movement, targeting, added hook dice, or modified hook-contact radius
-- Same-tick Bite suppresses all Suck intake, even if Bite is cooling down
-- Empty/far attempts: neutral short snap, zero reward, no successful-intake cooldown
-- Neutral 0.18 s jaw animation, short synthesized cue, food flash and ready/cooldown HUD
-- Existing per-grain score/satiety/stamina values unchanged
+- No fish Bite key, input action, local input bit, or remote queued edge remains; angler F still means Untangle
+- Authority automatically consumes eligible food within 18 px of the mouth, at most 4 grains per mouthful
+- Sustained proximity repeats after the 0.40 s cooldown; moving away or exhausting food stops intake
+- Only successful intake emits the 0.18 s mouth feedback and sound; empty/far/already-counted identities stay quiet
+- No automatic Suck, lunge, target lock, hook dice or altered contact radius
+- Manual Suck movement/peeling and real hook contact resolve before awards; automatic Bite has intake priority, otherwise Suck can award during cooldown. Never both in one tick
+- Existing score, satiety, stamina, defaults, maps and Watergen remain unchanged
+- Source only; no package generated or uploaded
 
-## Replay and information boundary
+## State and network boundary
 
-Authority schema is now 14, with validated `bite_cooldown` and `bite_feedback_age`; schema 13 is explicitly rejected. Both fields are public neutral action state and separately allowlisted in fish presentation. Fish clients still receive no hooks, hook IDs, simulation RNG, reserve order or authority truth events. Commands and countdowns are type/range checked before state mutation. Same-build peers only: 0.24.0.
-
-The legacy `net_aim` compatibility assertion in `architecture_v020` was updated from exact schema 13 to exact schema 14; retention and nondefault roundtrip checks remain intact. This is the planned schema migration, not removal of a failing behavior assertion.
+Authority and public snapshot schema remain 14, with the same validated `bite_cooldown` and `bite_feedback_age` fields. Existing schema14 snapshots restore normally; countdowns and replay remain deterministic. Live peers must both use build 0.24.1. Legacy incoming Bite flags are stripped by normalization and cannot trigger, suppress or repeat automatic intake. Fish public packets retain strict hidden-hook/RNG clipping.
 
 ## Verification
 
-Release validation uses official Godot 4.7.2 stable (`ed1daf0bf`), Linux x86_64, binary SHA256 `8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e`. The downloaded archive was checked against the official release SHA512 list. Preliminary 4.6.3 runs were diagnostics only.
+Official Godot 4.7.2 stable (`ed1daf0bf`), Linux x86_64, binary SHA256 `8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e`.
 
-- `phase02_bite`: 41 passed, 0 failed, including range, cooldown, input, deterministic sorting, terminal gates, no lunge, unchanged RNG, and full safe/hooked pre-contact observation equality
-- `phase02_bite_network`: 130 passed, 0 failed, including strict malformed-command/snapshot rejection, replay, queue/duplicate/lease handling, and actual ENet host-angler/remote-fish input, food, satiety, cooldown, no-repeat and physical hook-QTE results
-- Full current headless profile: all 38 suites passed, 18,686 passed assertions/log markers, 0 failed/timeout/blocked suites
-- Python runner/capture-contract unit tests: 28 passed
-- Official native import plus all 18 current renderer suites: 397 passed assertions/log markers, 0 failures/timeouts/blocked entries; after adding two explicit far-grain visibility checks, focused Bite native rerun: 18 passed, 0 failed
-- Native screenshots inspected at 640×360: ready, empty, far, intake, cooldown and recovered; HUD has no overlap; equal hidden safe/hooked states have identical pixels
-- Independent command/network/contact/snapshot review found no remaining blocker
+- Current headless gate: all 38 suites plus editor import passed; 18,704 assertions/log markers, 0 failed/timeout/blocked entries
+- Focused automatic Bite: 57/57 passed, including range, deterministic repeats, quiet empty/far states, pause/end, no input, no lunge, recoil boundary, movement-away and cross-bait contact arbitration
+- Focused network: 132/132 passed, including actual ENet host-angler / remote-fish neutral input, automatic repeat, food/satiety/cooldown, hook-contact result, schema14 replay and privacy
+- Native gate: all 18 current renderer suites plus editor import passed; 399 assertions/log markers, 0 failed/timeout/blocked entries; Bite native 18/18
+- Native screenshots inspected at 640×360: automatic HUD with no F prompt, empty/far quiet states, intake, cooldown and recovery; equal hidden safe/hooked states have identical pixels in ready/active/cooldown states
+- Python runner/capture-contract tests: 28/28 passed
+- Independent reviewer edge probes: 26/26 passed, including exact recoil/starvation and later-bait hook cancellation of earlier deferred intake; core regressions retained in the committed suite
 
-Native execution was the dot cloud Linux desktop on actual `DISPLAY=:0`, OpenGL compatibility, Dummy audio. The synthesized Bite cue is implemented, but Dummy audio does not verify audible hardware output. Full-profile native evidence used the final gameplay implementation, followed by the two-assertion test-only strengthening and focused rerun.
+Native execution used the dot cloud Linux desktop, official 4.7.2 OpenGL compatibility and Dummy audio. The full native copy's `world_simulation.gd` SHA256 matched the final source (`048b9ce4af77ecfaa0f7506614587f6db5170d37963c6c6e37ac34e94c518bee`). Actual hardware sound was not verified.
 
-Reproduce source gates:
+Evidence in the validation workspace: `artifacts/test-runs/auto-bite-current-final/summary.json`, `artifacts/test-runs/automatic-bite-edges-verified`, `artifacts/test-runs/automatic-bite-focused-verified`; native `/workspace/shared/bait-native-auto0241/all-results/summary.json`. These are source-test evidence, not release packages. Current gates do not claim every historical suite passes. No packaged/PCK or Windows gate was run for this source-only revision.
+
+### Regression found and fixed
+
+An initial start-of-tick eligibility approach starved the existing 26 px gentle-Suck fixture: the displaced food was close enough to suppress Suck, but bait relaxation then moved it outside Bite range, yielding neither action. Final arbitration defers Suck awards until after motion/contact and gives a successful automatic Bite exclusive intake. The original `feeding_feel_v022` assertion is unchanged and passes 27/27 after the fix. Initial failed logs are retained in `artifacts/test-runs/auto-bite-current`; they are not claimed as a clean gate. Focused test construction also corrected food points and isolated counted-identity fixtures; these are fixture changes, not gameplay exceptions.
+
+### Reproduce
 
 ```sh
 python3 tools/run_tests.py --godot /path/to/Godot_v4.7.2 --import --profile current
@@ -43,33 +47,15 @@ python3 tools/run_tests.py --godot /path/to/Godot_v4.7.2 --profile native
 python3 -m unittest discover -s tests/runner -v
 ```
 
-Evidence directories in the verification workspace: `artifacts/test-runs/phase02-current-gate-472`, `artifacts/test-runs/phase02-bite-tests-enet-official`; native runner `all-results/summary.json` and focused rerun were kept separately. Generated screenshots/logs are not uploaded or included as distributable packages. The current profile does not claim every historical suite is passing.
+## Human playtest — OPEN
 
-### Failures encountered and resolved
+Run synchronized source with Godot 4.7.2 and confirm menu v0.24.1.
 
-- Malformed Bite values exposed `Commands.flag` comparing non-bool Variants to `true`, generating script errors despite an assertion summary. The shared command flag helper now accepts only actual bool values; error-aware runner reruns are clean.
-- `architecture_v020` intentionally hardcoded schema 13. Its exact-version expectation migrated to 14 while preserving field retention, roundtrip and rejected-unknown-schema assertions; targeted rerun 46/46.
-- One full-profile run hit the existing `net_network_v021` six-frame intermediate capture-state assumption (12 pass/1 fail), although both peers later settled the same net victory. Earlier full run and unchanged isolated rerun both passed 13/13. The fixture now polls for convergence for at most 30 simulated frames and additionally requires exactly one catch on the client as well as the host; it preserves the original capture-state assertion and adds diagnostics. No gameplay/network protocol change was made for this fixture. The final whole-profile gate is rerun below, and original failed logs are retained.
-- The Python capture-manifest count was increased by one for the new native test; per-file validation remains in place, and all 28 Python tests pass.
+1. Without any feeding key, approach existing food: the mouth should take at most four nearby grains and show a short snap/cooldown
+2. Stay nearby: another mouthful occurs after about 0.40 seconds; swim away to stop. Empty/far water must not animate or click
+3. Compare manual left-button Suck to automatic close-range intake, including held Suck while approaching and during cooldown; check no extra same-tick reward
+4. Judge distance, repeat rhythm, mouth animation, food disappearance, score flash and actual audio clarity
+5. Approach real hidden-hook contact and check that the outcome feels physically caused rather than randomly penalized
+6. If convenient, use two same-build clients with a remote fish and compare automatic result, food, satiety and cooldown
 
-### Contract audit
-
-- All 147 existing catalog default values match baseline exactly; only developer-only `bite_range`, `bite_cooldown`, `bite_intake` are added
-- `pond_layout.gd` is byte-identical to baseline: map ID, SIZE, WATER, FLOOR, HOME, SPAWN, SOLIDS, PLANTS, BAIT_SITES and WOOD_GROUPS unchanged
-- Water/environment visual files and `fish_observation.gd` unchanged; no new simulation/visual RNG call
-- Hook attachment remains in the existing physical swept mouth/tip contact path; Bite never tests bait hook truth to decide intake or feedback
-- No FoodProfile, bait_type, extra maps, Watergen geometry, economy, AI fish, or P2.2/P2.3 scope
-
-## Human playtest gate — OPEN
-
-Automated pass does not establish good game feel. Stop further expansion here. Run synchronized source with Godot 4.7.2 and confirm menu v0.24.0.
-
-1. Try F in empty water and on nearby existing food; check clear response and visibly shorter reach than Suck
-2. Hold F: one attempt only. Release and press again; check the 0.40 s successful-intake cooldown
-3. Compare left-button Suck and F: gradual/cancellable versus an immediate small mouthful; simultaneous input must not double-feed
-4. Check mouth snap, sound, food disappearance, score flash and cooldown readability
-5. Judge whether Bite is overpowered, tedious, or useful in particular situations; does the F key feel natural?
-6. Approach actual hidden-hook contact and judge whether the result feels caused by close physical commitment
-7. If convenient, join as fish from another same-build client and compare input/result/food/satiety feedback
-
-Real Windows launch, physical two-computer networking, real audio-device output and subjective feel remain user validation. P2.2 must not begin until the user clears this gate.
+Windows launch, physical two-computer networking, actual audio output and subjective feel remain user validation. Feedback is implemented and awaiting that playtest; do not start new bait types or balance expansion without the user's go-ahead.

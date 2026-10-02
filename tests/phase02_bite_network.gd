@@ -22,29 +22,28 @@ func fresh() -> Node2D:
 		for grain in bait.grains: grain.eaten=true
 	for index in 8:
 		var grain:Dictionary=w.baits[0].grains[index]
-		grain.free=true; grain.eaten=false; grain.pos=w.mouth()+Vector2(index+1,0)
+		grain.free=true; grain.eaten=false; grain.pos=w.mouth()+Vector2(index+1,0); grain.points=1.0
 	return w
 func packet(session: Node, seq: int, command: Dictionary) -> Dictionary:
 	return {"session":session.session_id,"round":session.round_id,"seq":seq,"command":command,"events":[],"seen_tick":0,"qte_id":0,"gesture":0}
 func _initialize() -> void: call_deferred("run")
 func pure_checks() -> void:
-	check(Commands.fish({},Vector2.RIGHT,0.35).bite==false,"missing Bite defaults neutral")
-	check(Commands.fish({"bite":true},Vector2.RIGHT,0.35).bite,"boolean Bite accepted")
-	for value in [false,"true",[],{},null,1,2,-1]:
-		check(not Commands.fish({"bite":value},Vector2.RIGHT,0.35).bite,"invalid/false Bite is neutral: "+str(value))
+	check(not Commands.fish({},Vector2.RIGHT,0.35).has("bite"),"fish command has no Bite action bit")
+	for value in [true,false,"true",[],{},null,1,2,-1]:
+		check(not Commands.fish({"bite":value},Vector2.RIGHT,0.35).has("bite"),"obsolete Bite field is discarded: "+str(value))
 	var wire:=Protocol.decode(Protocol.encode({"bite":true,"suck":true}))
-	check(Protocol.input("fish",wire).bite and Protocol.input("fish",wire).suck,"wire preserves simultaneous action flags for authority priority")
+	check(not Protocol.input("fish",wire).has("bite") and Protocol.input("fish",wire).suck,"wire sanitization discards obsolete Bite but preserves held Suck")
 	check(not Protocol.input("angler",wire).has("bite"),"angler command cannot acquire Bite")
 	var w=fresh(); var replay=World.new(); replay.reset_world()
-	w.advance_tick({"bite":true},{})
+	w.advance_tick({},{})
 	var saved:Dictionary=w.capture_snapshot()
-	check(saved.schema==14 and saved.state.bite_cooldown>0 and saved.state.bite_feedback_age>0,"schema14 captures in-flight Bite")
+	check(saved.schema==14 and saved.state.bite_cooldown>0 and saved.state.bite_feedback_age>0,"schema14 captures in-flight automatic Bite from a neutral tick")
 	check(replay.restore_snapshot(saved),"restore in-flight Bite snapshot")
 	for tick in 70:
-		var command={"bite":tick in [1,26,55],"suck":tick==32}
+		var command={"suck":tick==32}
 		w.advance_tick(command,{}); replay.advance_tick(Protocol.input("fish",Protocol.decode(Protocol.encode(command))),{})
 		check(w.capture_snapshot()==replay.capture_snapshot(),"wire/replay deterministic tick "+str(tick))
-	check(w.score>0 and w.score==replay.score and w.satiety==replay.satiety,"replay preserves exact food rewards")
+	check(w.score==8 and w.score==replay.score and w.satiety==replay.satiety,"schema14 replay repeats automatic intake and preserves exact rewards without Bite input")
 	for key in ["bite_cooldown","bite_feedback_age"]:
 		for value in [-0.1,NAN,INF,"0",999.0]:
 			var bad=saved.duplicate(true); bad.state[key]=value
@@ -75,20 +74,25 @@ func queue_checks() -> void:
 	var w=fresh(); var session=Session.new()
 	session.game=w; session.remote_role="fish"; session.session_id="bite-test"; session.round_id=1
 	session.receive_input(packet(session,1,{"bite":true}))
-	session.receive_input(packet(session,2,{"bite":false,"move":Vector2.RIGHT}))
+	session.receive_input(packet(session,2,{"bite":false,"move":Vector2.RIGHT,"suck":true}))
 	var first:Dictionary=session._take_remote()
-	check(first.bite and first.move==Vector2.RIGHT,"queue ORs Bite edge while preserving latest held direction")
-	check(not session._take_remote().bite,"remote held state cannot repeat Bite")
+	check(not first.has("bite") and first.move==Vector2.RIGHT and first.suck,"remote queue strips obsolete Bite and preserves latest held movement/Suck")
+	var held:Dictionary=session._take_remote()
+	check(not held.has("bite") and held.move==Vector2.RIGHT and held.suck,"held remote state has no Bite edge to replay")
 	session.receive_input(packet(session,2,{"bite":true}))
-	check(not session._take_remote().bite and session.rejected_inputs==1,"duplicate sequence cannot replay Bite")
-	session.receive_input(packet(session,3,{"bite":true}))
-	check(session._take_remote().bite,"new sequenced press is accepted")
-	for seq in range(4,14): session.receive_input(packet(session,seq,{"bite":seq==13}))
-	check(not session._take_remote().bite and session.remote_queue.size()==2,"eight-command bounded drain preserves later edge")
-	check(session._take_remote().bite and not session._take_remote().bite,"deferred edge executes exactly once")
-	session.receive_input(packet(session,14,{"bite":true}))
+	check(not session._take_remote().has("bite") and session.rejected_inputs==1,"duplicate sequence stays rejected without introducing Bite")
+	session.receive_input(packet(session,3,{}))
+	var neutral:Dictionary=session._take_remote()
+	w.advance_tick(neutral,{})
+	check(not neutral.has("bite") and w.score==4,"neutral sequenced remote input automatically eats nearby food on authority")
+	for seq in range(4,14): session.receive_input(packet(session,seq,{"bite":true,"suck":seq==13}))
+	var bounded:Dictionary=session._take_remote()
+	check(not bounded.has("bite") and not bounded.suck and session.remote_queue.size()==2,"eight-command bounded drain never recreates an obsolete Bite field")
+	check(session._take_remote().suck and not session._take_remote().has("bite"),"deferred held Suck survives bounded queue drain")
+	session.receive_input(packet(session,14,{"bite":true,"suck":true}))
 	session.last_input_rx=session.now()-session.INPUT_LEASE_MS-1
-	check(not session._take_remote().get("bite",false) and session.remote_queue.is_empty(),"expired input lease clears stale Bite")
+	var expired:Dictionary=session._take_remote()
+	check(not expired.has("bite") and not expired.get("suck",false) and session.remote_queue.is_empty(),"expired input lease clears stale held input and has no Bite bit")
 	session.presentation.dispose(); session.free(); w.free()
 
 func frame(command: Dictionary={}) -> void:
@@ -115,32 +119,32 @@ func live_checks() -> void:
 	for bait in host.baits:
 		bait.active=false; bait.hook=false
 		for grain in bait.grains: grain.eaten=true
+	host.network._send_state(true)
+	for tick in 5: await frame()
+	check(client.network.local_role=="fish" and client.satiety==50 and client.score==0,"fish receives prepared empty public world")
+	check(host.bite_cooldown==0 and host.bite_feedback_age==0 and client.bite_feedback_age==0,"real ENet neutral empty ticks produce no Bite feedback")
 	for index in 8:
 		var grain:Dictionary=host.baits[1].grains[index]
 		grain.eaten=false; grain.free=true; grain.pos=host.mouth()+Vector2(index+1,0); grain.points=1.0
-	host.network._send_state(true)
-	for tick in 5: await frame()
-	check(client.network.local_role=="fish" and client.satiety==50,"fish receives prepared near-food public world")
-	await frame({"bite":true})
-	for tick in 5: await frame()
-	check(host.score==4 and host.satiety>50,"real remote Bite awards four grains on authority")
-	check(client.score==host.score and client.satiety==host.satiety,"actual ENet public result carries score and satiety")
-	check(client.bite_cooldown>0 and client.bite_feedback_age>0,"actual ENet state carries active Bite countdown and snap")
-	check(not client.baits[1].has("hook") and not client.network.presentation.current.has("rng_seed"),"real Bite result remains hook-private")
-	var first_score:float=host.score
+	for tick in 6: await frame()
+	check(host.score==4 and host.satiety>50,"real ENet authority automatically takes four nearby grains without a key command")
+	check(client.score==host.score and client.satiety==host.satiety,"actual ENet public result carries automatic score and satiety")
+	check(client.bite_cooldown>0 and client.bite_feedback_age>0,"actual ENet state carries successful automatic Bite countdown and snap")
+	check(not client.baits[1].has("hook") and not client.network.presentation.current.has("rng_seed"),"real automatic Bite result remains hook-private")
 	for tick in 35: await frame()
-	check(host.score==first_score and client.score==first_score and host.bite_cooldown==0,"neutral remote ticks do not repeat Bite after cooldown")
-	await frame({"bite":true})
-	for tick in 5: await frame()
-	check(host.score==8 and client.score==8,"second real remote edge takes remaining four grains")
+	check(host.score==8 and client.score==8,"neutral remote ticks automatically repeat after cooldown and take the remaining four grains")
+	for tick in 30: await frame()
+	check(host.score==8 and client.score==8 and host.bite_cooldown==0 and client.bite_cooldown==0 and client.bite_feedback_age==0,"empty authority and remote view settle quietly after the repeated intake")
 	# Use the unchanged physical contact route and observe its public result.
 	var bait:Dictionary=host.baits[1]
 	bait.active=true; bait.hook=true; bait.pos=host.mouth()+Vector2(1,-1); bait.home=bait.pos; bait.angle=0; bait.tip_before=bait.pos+Vector2(2,1)
+	var contact_food:Dictionary=bait.grains[8]
+	contact_food.eaten=false; contact_food.free=true; contact_food.pos=host.mouth()+Vector2(1,0); contact_food.points=1.0
 	host.bite_cooldown=0
-	await frame({"bite":true})
-	for tick in 5: await frame()
-	check(host.hooked==host.HookState.MOUTH and client.hooked==client.HookState.MOUTH,"real physical hook contact reaches remote fish mouth QTE")
-	check(client.score==8 and not client.baits[1].has("hook"),"contact result changes no food reward and exposes no hidden hook field")
+	for tick in 6: await frame()
+	check(host.hooked==host.HookState.MOUTH and client.hooked==client.HookState.MOUTH,"real physical hook contact reaches remote fish mouth QTE with neutral input")
+	check(not contact_food.eaten and host.score==8 and client.score==8 and not client.baits[1].has("hook"),"physical contact preempts automatic food reward and exposes no hidden hook field")
+	check(host.bite_feedback_age==0 and client.bite_feedback_age==0,"real contact result cannot pretend an automatic intake succeeded")
 func run() -> void:
 	pure_checks()
 	await live_checks()

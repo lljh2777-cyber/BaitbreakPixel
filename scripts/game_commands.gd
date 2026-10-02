@@ -18,7 +18,7 @@ static func fish(command: Dictionary, previous_aim: Vector2, previous_power: flo
 		"move":vector(command.get("move"),Vector2.ZERO).limit_length(1),
 		"aim":vector(command.get("aim"),previous_aim).normalized(),
 		"power":clampf(number(command.get("power"),previous_power),0.1,1),
-		"bite":flag(command,"bite"),"suck":flag(command,"suck"),"dash":flag(command,"dash"),
+		"suck":flag(command,"suck"),"dash":flag(command,"dash"),
 		"slow":flag(command,"slow"),"qte":flag(command,"qte"),"home":flag(command,"home"),
 		"qte_at_age":clampf(number(command.get("qte_at_age"),-1),-1,Rules.MAX_QTE_AGE)
 	}

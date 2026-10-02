@@ -510,7 +510,7 @@ func _hud(t: float) -> void:
 	var target: float = world.food_target()
 	var food_age: float=world.elapsed-world.last_eat_at
 	label_at(Vector2(111,22), "食物 %02d / %d" % [int(world.score),int(target)], 15, GOLD if food_age>=0 and food_age<0.18 else CREAM)
-	label_at(Vector2(272,43),"F 咬食" if world.bite_cooldown<=0 else "咬食 %.1fs" % world.bite_cooldown,10,MINT if world.bite_cooldown<=0 else CREAM)
+	label_at(Vector2(272,43),"自动咬食" if world.bite_cooldown<=0 else "咬食 %.1fs" % world.bite_cooldown,10,MINT if world.bite_cooldown<=0 else CREAM)
 	label_at(Vector2(272,15), "%s %d%%" % [world.Suction.mode_name(world.power),int(world.power*100)], 11, CREAM)
 	draw_rect(Rect2(272,22,68,3), Color("335762"))
 	draw_rect(Rect2(272,22,68*world.power,3), GOLD)

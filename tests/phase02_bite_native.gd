@@ -63,36 +63,37 @@ func run() -> void:
 	var initial: Dictionary=game.capture_snapshot()
 	var repeated:=await render()
 	check(ready.get_data()==repeated.get_data() and game.capture_snapshot()==initial,"ready render is deterministic and simulation-neutral")
-	game._attempt_bite(); game.bite_feedback_age=game.BITE_FEEDBACK_SECONDS*0.6
-	var empty:=await render("bite-empty-snap")
-	check(game.score==0 and game.satiety==50 and game.bite_cooldown==0,"empty snap gives no food, satiety or accepted cooldown")
-	check(empty.get_region(Rect2i(272,31,80,17)).get_data()==ready.get_region(Rect2i(272,31,80,17)).get_data(),"empty snap keeps HUD ready, never advertises successful intake")
-	check(empty.get_region(Rect2i(285,160,75,65)).get_data()!=ready.get_region(Rect2i(285,160,75,65)).get_data(),"empty press still has local neutral jaw response")
+	game.advance_tick({}, {}); game.elapsed=2.0
+	var empty:=await render("bite-empty-idle")
+	check(game.score==0 and game.satiety==50 and game.bite_cooldown==0,"empty automatic tick gives no food, satiety or accepted cooldown")
+	check(empty.get_region(Rect2i(272,31,80,17)).get_data()==ready.get_region(Rect2i(272,31,80,17)).get_data(),"empty automatic tick keeps HUD ready, never advertises successful intake")
+	check(game.bite_feedback_age==0 and empty.get_region(Rect2i(285,160,75,65)).get_data()==ready.get_region(Rect2i(285,160,75,65)).get_data(),"empty automatic tick has no jaw feedback")
 	setup_fixture(); put_food(Vector2(24,0))
 	var far_ready:=await render("bite-far-ready")
 	check(far_ready.get_region(Rect2i(350,188,12,12)).get_data()!=ready.get_region(Rect2i(350,188,12,12)).get_data(),"far fixture has a visible food grain beyond mouth range")
-	game._attempt_bite(); game.bite_feedback_age=game.BITE_FEEDBACK_SECONDS*0.6
-	var far:=await render("bite-far-snap")
-	check(far.get_region(Rect2i(350,188,12,12)).get_data()==far_ready.get_region(Rect2i(350,188,12,12)).get_data(),"far snap does not visually remove unreachable food")
-	check(not game.baits[0].grains[0].eaten and game.score==0 and game.bite_cooldown==0,"far food is not collected and incurs no accepted cooldown")
-	check(far.get_region(Rect2i(272,31,80,17)).get_data()==far_ready.get_region(Rect2i(272,31,80,17)).get_data(),"far snap leaves ready hint unchanged")
+	game.advance_tick({}, {}); game.elapsed=2.0
+	var far:=await render("bite-far-idle")
+	check(far.get_region(Rect2i(350,188,12,12)).get_data()==far_ready.get_region(Rect2i(350,188,12,12)).get_data(),"far automatic tick does not visually remove unreachable food")
+	check(not game.baits[0].grains[0].eaten and game.score==0 and game.bite_cooldown==0 and game.bite_feedback_age==0,"far food is not collected and incurs no accepted cooldown")
+	check(far.get_region(Rect2i(272,31,80,17)).get_data()==far_ready.get_region(Rect2i(272,31,80,17)).get_data(),"far automatic tick leaves ready hint unchanged")
 	setup_fixture(); put_food(Vector2(7,0),4)
 	var offered:=await render("bite-food-ready")
-	game._attempt_bite(); game.bite_feedback_age=game.BITE_FEEDBACK_SECONDS*0.6
+	game.advance_tick({}, {}); game.elapsed=2.0
+	game.bite_feedback_age=game.BITE_FEEDBACK_SECONDS*0.6
 	var active:=await render("bite-active")
-	check(game.score==4 and game.satiety>50 and game.bite_cooldown>0,"accepted Bite shows actual four-grain food reward and cooldown")
+	check(game.score==4 and game.satiety>50 and game.bite_cooldown>0,"nearby food automatically triggers four-grain reward and cooldown without input")
 	check(offered.get_region(Rect2i(272,31,80,17)).get_data()!=active.get_region(Rect2i(272,31,80,17)).get_data(),"ready and cooldown HUD are visually distinct")
 	game.bite_feedback_age=0
 	var cooling:=await render("bite-cooldown")
 	check(active.get_region(Rect2i(285,160,75,65)).get_data()!=cooling.get_region(Rect2i(285,160,75,65)).get_data(),"active jaw and cooldown-resting pose visibly differ")
 	game.bite_cooldown=0
 	var recovered:=await render("bite-recovered")
-	check(recovered.get_region(Rect2i(272,31,80,17)).get_data()==ready.get_region(Rect2i(272,31,80,17)).get_data(),"cooldown recovery restores F ready hint")
+	check(recovered.get_region(Rect2i(272,31,80,17)).get_data()==ready.get_region(Rect2i(272,31,80,17)).get_data(),"cooldown recovery restores automatic Bite hint")
 	check(active.get_region(Rect2i(366,0,274,49)).get_data()==cooling.get_region(Rect2i(366,0,274,49)).get_data(),"jaw animation does not disturb neighboring HUD")
 	check(active.get_region(Rect2i(272,0,80,30)).get_data()==recovered.get_region(Rect2i(272,0,80,30)).get_data(),"Bite hint stays clear of suction label and power bar")
 	for state in ["ready","active","cooldown"]:
 		setup_fixture(); put_food(Vector2(7,0),4)
-		if state!="ready": game._attempt_bite()
+		if state!="ready": game.advance_tick({}, {}); game.elapsed=2.0
 		game.bite_feedback_age=game.BITE_FEEDBACK_SECONDS*0.6 if state=="active" else 0.0
 		var safe:=await render("hidden-safe-"+state)
 		for bait in game.baits: bait.hook=true; bait.hook_id=int(bait.bait_id)+1000

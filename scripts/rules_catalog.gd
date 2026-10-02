@@ -3,7 +3,7 @@ extends RefCounted
 # Single source of defaults, UI metadata, bounds and import validation.
 const ITEMS := [
 	{"group":"开发调参","id":"bite_range","label":"咬食距离","value":18.0,"min":8.0,"max":24.0,"step":1.0,"unit":"像素","help":"嘴部附近的摄入半径；不移动鱼或饵。","developer":true},
-	{"group":"开发调参","id":"bite_cooldown","label":"咬食冷却","value":0.4,"min":0.3,"max":0.55,"step":0.01,"unit":"秒","help":"摄入食物后的短冷却；空咬只有中性反馈。","developer":true},
+	{"group":"开发调参","id":"bite_cooldown","label":"咬食冷却","value":0.4,"min":0.3,"max":0.55,"step":0.01,"unit":"秒","help":"自动摄入后的短冷却；嘴边有食物时到期再咬。","developer":true},
 	{"group":"开发调参","id":"bite_intake","label":"单口摄入上限","value":4.0,"min":1.0,"max":8.0,"step":1.0,"unit":"粒","help":"按嘴部距离、饵生命周期 ID、颗粒顺序确定摄入。","developer":true},
 	{"group":"开发调参","id":"bait_safe_min","label":"bait_safe_min","value":1.0,"min":0.0,"max":3.0,"step":1.0,"unit":"","help":"当前可食用目标的安全数量下限；只有新生命周期可重抽，无法满足时记录诊断而不翻转旧饵。","developer":true},
 	{"group":"生存压力","id":"hook_danger","label":"鱼钩危险度（低 / 标准 / 高）","value":1.0,"min":0.5,"max":1.5,"step":0.5,"unit":"","help":"只在创建或重新挂饵事件决定，单团饵生命周期不变。","developer":false},

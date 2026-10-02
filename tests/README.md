@@ -71,4 +71,4 @@ python3 tools/run_tests.py --profile native --pack /path/to/BaitbreakPixel.pck -
 
 ## Phase 2.1 Bite 垂直切片
 
-`phase02_bite` 验证独立 F 按键边沿、冷却、空咬、摄入上限、范围边界、稳定排序、Bite 对 Suck 的优先级、恢复与真实钩尖接触；`phase02_bite_network` 验证命令类型、队列一次性消费、schema14 回放、倒计时验证与鱼端裁剪，并通过真实 ENet 鱼客户端验证两次咬食、空闲不重放与钩尖接触结果。`phase02_bite_native` 验证就绪/空咬/远距/摄入/冷却画面及隐藏钩像素等价。自动通过不替代用户的手感与双端人工试玩。
+`phase02_bite` 验证无按键自动咬食、冷却后持续近距再咬、空处无反馈、摄入上限、范围边界、稳定排序、Bite 对 Suck 的优先级、恢复与真实钩尖接触；`phase02_bite_network` 验证移除命令位、schema14 回放、倒计时验证与鱼端裁剪，并通过真实 ENet 鱼客户端验证自动咬食、近距重复与钩尖接触结果。`phase02_bite_native` 验证就绪/空处/远距/摄入/冷却画面及隐藏钩像素等价。自动通过不替代用户的手感与双端人工试玩。
