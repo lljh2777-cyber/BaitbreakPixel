@@ -4,6 +4,7 @@ signal changed
 const Rules=preload("res://scripts/game_rules.gd")
 const Protocol=preload("res://scripts/network_protocol.gd")
 const Presentation=preload("res://scripts/network_presentation.gd")
+const FishNetworkObservation=preload("res://scripts/fish_network_observation.gd")
 const QTE_HISTORY_TICKS := 15
 const INPUT_LEASE_MS := 250
 const SILENCE_MS := 5000
@@ -211,14 +212,14 @@ func _handle(packet: Dictionary) -> void:
 	if kind=="hello" and is_host and status=="waiting":
 		if packet.get("build")!=Protocol.BUILD:
 			_send({"kind":"reject","reason":"版本不同，请双方使用 "+Protocol.BUILD+" 版"},true,2); return
-		_send({"kind":"welcome","session":session_id,"role":remote_role,"config":config,"build":Protocol.BUILD,"ready":local_ready},true,2)
+		_send({"kind":"welcome","session":session_id,"role":remote_role,"config":_peer_config(),"build":Protocol.BUILD,"ready":local_ready},true,2)
 		message="玩家已连接，双方准备后开始"
 		changed.emit(); return
 	if kind=="reject" and not is_host: fail("版本不同，请双方使用 "+Protocol.BUILD+" 版"); return
 	if kind=="welcome" and not is_host and status=="connecting":
 		if packet.get("build")!=Protocol.BUILD or not packet.get("role") in ["fish","angler"] or not packet.get("config") is Dictionary or not packet.get("session") is String: fail("房间信息无效"); return
 		session_id=packet.session
-		if not Rules.valid(packet.config.get("rules")): fail("房主玩法规则无效"); return
+		if not Rules.valid(packet.config.get("rules")) or (packet.role=="fish" and not FishNetworkObservation.config_valid(packet.config)): fail("房主玩法规则无效"); return
 		config=packet.config
 		local_role=packet.role
 		remote_role=other_role(local_role)
@@ -291,22 +292,22 @@ func _start_round() -> void:
 	game.start_shared_session(local_role,config)
 	_phase("starting","等待对方载入池塘…")
 	var packet := _state_packet("start")
-	packet.config=config
+	packet.config=_peer_config()
 	packet.role=remote_role
 	_send(packet,true,2)
 
 func _receive_start(packet: Dictionary) -> void:
-	if not packet.get("round") is int or packet.round<=round_id or not packet.get("config") is Dictionary or packet.get("role")!=local_role: return
+	if not packet.get("round") is int or packet.round<=round_id or not packet.get("seq") is int or packet.seq<0 or not packet.get("config") is Dictionary or packet.get("role")!=local_role: return
 	if not packet.get("snapshot") is Dictionary: return
-	if not Rules.valid(packet.config.get("rules")): fail("开局规则无效"); return
+	if not Rules.valid(packet.config.get("rules")) or (local_role=="fish" and not FishNetworkObservation.config_valid(packet.config)): fail("开局规则无效"); return
 	var snapshot := Protocol.unpack_state(packet.snapshot)
-	if snapshot.is_empty(): fail("初始世界数据无效"); return
+	if snapshot.is_empty() or (local_role=="fish" and not FishNetworkObservation.valid(game,snapshot)): fail("初始世界数据无效"); return
 	round_id=packet.round
 	_reset_round()
 	config=packet.config
 	game.start_shared_session(local_role,config)
-	if not game.restore_snapshot(snapshot): fail("无法恢复初始世界"); return
-	presentation.accept(snapshot,now()/1000.0)
+	if not _apply_remote_state(snapshot): fail("无法恢复初始世界"); return
+	presentation.accept(snapshot,now()/1000.0,local_role)
 	received_state_seq=packet.seq
 	countdown=3.0
 	_phase("starting","等待房主开始…")
@@ -451,9 +452,16 @@ func _valid_qte(entry: Dictionary) -> bool:
 	var past: Dictionary=qte_history[entry.seen_tick]
 	return past.id==game.qte_id and past.kind==game.qte and past.valid
 
+func _peer_config() -> Dictionary:
+	return FishNetworkObservation.public_config(config) if remote_role=="fish" else config.duplicate(true)
+
+func _apply_remote_state(snapshot: Dictionary) -> bool:
+	return FishNetworkObservation.apply(game,snapshot) if local_role=="fish" else game.restore_snapshot(snapshot)
+
 func _state_packet(kind: String) -> Dictionary:
 	state_seq+=1
-	return {"kind":kind,"session":session_id,"round":round_id,"seq":state_seq,"snapshot":Protocol.pack_state(game.capture_snapshot()),
+	var snapshot: Dictionary=FishNetworkObservation.capture(game) if remote_role=="fish" else game.capture_snapshot()
+	return {"kind":kind,"session":session_id,"round":round_id,"seq":state_seq,"snapshot":Protocol.pack_state(snapshot),
 		"phase":status,"countdown":countdown,"ack":applied_input_seq}
 
 func _send_state(reliable: bool) -> void:
@@ -498,11 +506,11 @@ func _receive_state(packet: Dictionary) -> void:
 	if packet.get("round")!=round_id or not packet.get("seq") is int or packet.seq<=received_state_seq or not packet.get("snapshot") is Dictionary: return
 	if not packet.get("phase") in ["countdown","playing","finished"]: return
 	var snapshot := Protocol.unpack_state(packet.snapshot)
-	if snapshot.is_empty() or not game.restore_snapshot(snapshot): fail("收到的世界状态无效，本局已停止"); return
+	if snapshot.is_empty() or not _apply_remote_state(snapshot): fail("收到的世界状态无效，本局已停止"); return
 	received_state_seq=packet.seq
 	applied_input_seq=int(packet.get("ack",0))
 	countdown=clampf(float(packet.get("countdown",0)),0,3)
-	presentation.accept(snapshot,now()/1000.0)
+	presentation.accept(snapshot,now()/1000.0,local_role)
 	if status!=packet.phase: _phase(packet.phase)
 	if game.match_over and result_round!=round_id:
 		result_round=round_id

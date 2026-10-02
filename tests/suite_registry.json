@@ -507,6 +507,11 @@
       "status": "current",
       "mode": "renderer",
       "timeout_seconds": 120
+    },
+    "phase01_network": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
     }
   }
 }

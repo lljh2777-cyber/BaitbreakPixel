@@ -2,6 +2,7 @@ extends RefCounted
 
 # A separate render-only world. The latest authority state is never interpolated in place.
 const World=preload("res://scripts/world_simulation.gd")
+const FishNetworkObservation=preload("res://scripts/fish_network_observation.gd")
 var world := World.new()
 var previous: Dictionary={}
 var current: Dictionary={}
@@ -12,17 +13,20 @@ func clear() -> void:
 	previous.clear()
 	current.clear()
 
-func accept(snapshot: Dictionary, now: float) -> void:
-	previous=current
-	current=snapshot
+func accept(snapshot: Dictionary, now: float, role: String = "angler") -> bool:
+	var accepted: bool=FishNetworkObservation.apply(world,snapshot) if role=="fish" else world.restore_snapshot(snapshot)
+	if not accepted: return false
+	previous=current if current.get("format","")==snapshot.get("format","") else {}
+	current=snapshot.duplicate(true)
 	if not previous.is_empty(): interval=clampf((snapshot.state.simulation_tick-previous.state.simulation_tick)/60.0,1.0/60,0.15)
 	received_at=now
-	world.restore_snapshot(snapshot)
+	return true
 
 func sample(now: float) -> Node2D:
 	if current.is_empty() or previous.is_empty(): return world
 	var a: Dictionary=previous.state
 	var b: Dictionary=current.state
+	var check_roles: Array=["fish"] if current.get("format")==FishNetworkObservation.FORMAT else ["fish","angler"]
 	var ratio := clampf((now-received_at)/interval,0,1)
 	world.elapsed=lerpf(a.elapsed,b.elapsed,ratio)
 	world.power=lerpf(a.power,b.power,ratio)
@@ -48,6 +52,7 @@ func sample(now: float) -> Node2D:
 			if a.wraps[index].target==b.wraps[index].target:
 				world.wraps[index].progress=lerpf(a.wraps[index].progress,b.wraps[index].progress,ratio)
 	for index in world.baits.size():
+		if index>=a.baits.size(): continue
 		var old: Dictionary=a.baits[index]
 		var latest: Dictionary=b.baits[index]
 		if old.bait_id!=latest.bait_id or old.active!=latest.active: continue
@@ -61,7 +66,7 @@ func sample(now: float) -> Node2D:
 	if not b.qte.is_empty() and a.qte_id==b.qte_id and a.qte==b.qte:
 		world.qte_age=lerpf(a.qte_age,b.qte_age,ratio)
 	else: world.qte_age=b.qte_age
-	for role in ["fish","angler"]:
+	for role in check_roles:
 		var old: Dictionary=a.effort_checks[role]
 		var latest: Dictionary=b.effort_checks[role]
 		if old.active and latest.active and old.id==latest.id:
@@ -69,11 +74,11 @@ func sample(now: float) -> Node2D:
 		else: world.effort_checks[role].age=latest.age
 	# On a newly appearing check use the current tick, matching its unsmoothed age.
 	var changed_check: bool=a.qte_id!=b.qte_id or a.qte!=b.qte
-	for role in ["fish","angler"]:
+	for role in check_roles:
 		changed_check=changed_check or a.effort_checks[role].id!=b.effort_checks[role].id or a.effort_checks[role].active!=b.effort_checks[role].active
 	if changed_check: world.simulation_tick=b.simulation_tick; world.qte_age=b.qte_age
 	if changed_check:
-		for role in ["fish","angler"]: world.effort_checks[role].age=b.effort_checks[role].age
+		for role in check_roles: world.effort_checks[role].age=b.effort_checks[role].age
 	if a.net_action.observing and b.net_action.observing:
 		world.net_action.age=lerpf(a.net_action.age,b.net_action.age,ratio)
 	# A sweep is a single segment. During retraction interpolate time on the actual
