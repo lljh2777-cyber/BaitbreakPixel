@@ -48,7 +48,11 @@ func run() -> void:
 	for i in 220:
 		await frame()
 		if host.net_state=="caught": break
-	await wait_frames(6)
+	# ENet receipt is asynchronous: observe convergence within the same capture,
+	# rather than assuming a fixed six-frame delivery latency under test load.
+	for i in 30:
+		if host.net_state!="caught" or client.net_state=="caught": break
+		await frame()
 	check(host.net_state=="caught" and client.net_state=="caught" and host.net_catches==1,"directional free-fish capture occurs once on both peers")
 	check(host.hooked==host.HookState.FREE,"free-fish capture never requires a hook")
 	for i in 300:

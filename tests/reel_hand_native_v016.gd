@@ -7,7 +7,12 @@ class Layer extends Node2D:
 	var pose:Dictionary={}
 	func _draw() -> void:
 		if not pose.is_empty(): hand.draw_hand(self,pose)
-func _initialize() -> void: call_deferred("run")
+func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This check needs a renderer; rerun without --headless.")
+		quit(2)
+		return
+	call_deferred("run")
 func reaches_bottom(picture:Image,start_at:Vector2) -> bool:
 	picture.convert(Image.FORMAT_RGBA8)
 	var bytes:=picture.get_data(); var width:=picture.get_width(); var height:=picture.get_height()

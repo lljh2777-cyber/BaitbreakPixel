@@ -22,6 +22,9 @@ static func normalize(input: Dictionary) -> Dictionary:
 		elif (raw is float or raw is int) and is_finite(float(raw)):
 			values[item.id]=float(String.num(snappedf(clampf(float(raw),item.min,item.max),item.step),6))
 			if is_equal_approx(values[item.id],item.value): values[item.id]=item.value
+	values.satiety_critical_threshold=maxf(values.satiety_critical_threshold,values.satiety_starving_threshold+1)
+	values.satiety_low_threshold=maxf(values.satiety_low_threshold,values.satiety_critical_threshold+1)
+	values.bait_danger_max=maxf(values.bait_danger_max,values.bait_danger_min)
 	# Keep dependent values playable. The editor reports every adjustment.
 	values.tension_high=maxf(values.tension_high,values.tension_low+0.05)
 	values.untangle_max=maxf(values.untangle_max,values.untangle_min+0.05)

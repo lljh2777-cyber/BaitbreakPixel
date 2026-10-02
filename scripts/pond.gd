@@ -82,7 +82,10 @@ func _present_result(_winner: String, _cause: String) -> void:
 
 func _ready() -> void:
 	Engine.max_fps = 60
-	rng.seed = 2649
+	# Explicit test/replay seeds remain deterministic; ordinary app restarts must not
+	# replay the same first hidden-hook layout. Presentation never consumes this RNG.
+	if "--test-profile" in OS.get_cmdline_user_args(): rng.seed=2649
+	else: rng.randomize()
 	_register_inputs()
 	if "--test-profile" in OS.get_cmdline_user_args(): save_path = "user://pixel-test.cfg"
 	else: _load_profile()
@@ -107,7 +110,7 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.22.4 | expanded-pond-unified-suction")
+	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.24.2 | playtest-gate-phase02-bait-types")
 
 func _register_inputs() -> void:
 	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[], "use":[KEY_E], "slow":[KEY_Q], "qte":[KEY_SPACE], "untangle":[KEY_F]}
@@ -244,7 +247,7 @@ func hint() -> String:
 	if cycle_phase == "warning": return "闪烁的饵即将收回，剩余颗粒下次继续"
 	if cycle_phase == "refill": return "正在补饵，可前往另一侧取食"
 	if vegetation_drag(fish) < 1: return "浓密水草中 · 游动稍慢，向上游出草丛"
-	return "左键吸食 · 滚轮轻吸/猛吸 · Q 慢游 · 按住右键加速"
+	return "左键吸食 · 靠近自动咬食 · 滚轮调吸力 · Q 慢游 · 右键加速"
 
 func angler_hint() -> String:
 	if landing or net_state=="caught": return "鱼已被控制 · 正在提出水面"

@@ -48,8 +48,12 @@ func run() -> void:
 	for i in 220:
 		await frame()
 		if host.net_state=="caught": break
-	await wait_frames(6)
-	check(host.net_state=="caught" and client.net_state=="caught" and host.net_catches==1,"directional free-fish capture occurs once on both peers")
+	# Wait for the reliable capture state, not an assumed six-frame LAN latency.
+	# Keep a bounded 0.5 s simulation window and require exactly one catch on both peers.
+	for i in 30:
+		if host.net_state=="caught" and client.net_state=="caught" and host.net_catches==1 and client.net_catches==1: break
+		await frame()
+	check(host.net_state=="caught" and client.net_state=="caught" and host.net_catches==1 and client.net_catches==1,"directional free-fish capture occurs once on both peers (host=%s/%d client=%s/%d)" % [host.net_state,host.net_catches,client.net_state,client.net_catches])
 	check(host.hooked==host.HookState.FREE,"free-fish capture never requires a hook")
 	for i in 300:
 		await frame()

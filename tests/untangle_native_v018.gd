@@ -1,10 +1,16 @@
 extends SceneTree
+var output := "res://artifacts"
 const Main=preload("res://scenes/main.tscn")
 const Shore=preload("res://scripts/shore_view.gd")
 var game:Node2D
 var passed:=0
 var failed:=0
-func _initialize() -> void: call_deferred("run")
+func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This check needs a renderer; rerun without --headless.")
+		quit(2)
+		return
+	call_deferred("run")
 func check(ok:bool,label:String) -> void:
 	if ok: passed+=1; print("UNTANGLE_NATIVE_PASS | ",label)
 	else: failed+=1; push_error("UNTANGLE_NATIVE_FAIL | "+label)
@@ -22,6 +28,9 @@ func setup(role:String) -> void:
 	game.tension=0.4; game.angler.x=310; game._rebuild_rope()
 	game.effort_checks.angler.wait=12.0
 func run() -> void:
+	if not prepare_capture_output():
+		quit(2)
+		return
 	game=Main.instantiate(); root.add_child(game); game.capture_mode="untangle-native"
 	game.save_path="user://untangle-native-v018.cfg"; game.set_process(false); game.set_physics_process(false)
 	for role in ["angler","fish"]:
@@ -43,12 +52,30 @@ func run() -> void:
 				if first.is_empty(): first=pose
 			game.view.queue_redraw(); await process_frame; await RenderingServer.frame_post_draw
 			if state.active and state.age>0.75 and not captured:
-				root.get_texture().get_image().save_png("E:/Fish_catches_people/BaitbreakPixel/artifacts/untangle-"+role+"-check-v018.png"); captured=true
+				if root.get_texture().get_image().save_png(output+"/untangle-"+role+"-check-v018.png") != OK:
+					failed += 1
+					push_error("CAPTURE_OUTPUT_FAIL | cannot save untangle capture in "+output)
+				captured=true
 			if game.untangle_phase=="unwind" and game.untangle_age>0.30 and game.untangle_age<0.32:
-				root.get_texture().get_image().save_png("E:/Fish_catches_people/BaitbreakPixel/artifacts/untangle-"+role+"-unwind-v018.png")
+				if root.get_texture().get_image().save_png(output+"/untangle-"+role+"-unwind-v018.png") != OK:
+					failed += 1
+					push_error("CAPTURE_OUTPUT_FAIL | cannot save untangle capture in "+output)
 		check(pressed and unwind_seen and game.round_stats.unwrap_good==1,"actual W/S and Space complete one animated counter in "+role+" view")
 		check(not game.movement_locked(),"fish remains mobile after the counter in "+role+" view")
 		key(KEY_W,false); key(KEY_S,false); key(KEY_F,false); key(KEY_SPACE,false)
 	game.queue_free(); await process_frame
 	print("UNTANGLE_NATIVE_V018 | passed=",passed," | failed=",failed)
 	quit(1 if failed else 0)
+
+func prepare_capture_output() -> bool:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--capture-output-directory="):
+			output = argument.trim_prefix("--capture-output-directory=")
+	if output.strip_edges().is_empty():
+		push_error("CAPTURE_OUTPUT_FAIL | --capture-output-directory must not be empty")
+		return false
+	var error := DirAccess.make_dir_recursive_absolute(output)
+	if error != OK:
+		push_error("CAPTURE_OUTPUT_FAIL | cannot create '%s': %s; choose a writable --capture-output-directory" % [output, error_string(error)])
+		return false
+	return true

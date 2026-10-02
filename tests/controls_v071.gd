@@ -1,16 +1,22 @@
 extends SceneTree
+var failures := 0
 
 const Main = preload("res://scenes/main.tscn")
 var game: Node2D
 var checks := 0
-var output := "E:/Fish_catches_people/BaitbreakPixel/artifacts"
+var output := "res://artifacts"
 
 func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This check needs a renderer; rerun without --headless.")
+		quit(2)
+		return
 	call_deferred("run")
 
 func require(ok: bool, message: String) -> bool:
 	if not ok:
 		push_error("NATIVE_CONTROLS_FAIL | "+message)
+		failures += 1
 		quit(1)
 	else:
 		checks+=1
@@ -50,8 +56,9 @@ func fresh(point: Vector2) -> void:
 	game.set_physics_process(true)
 
 func run() -> void:
-	for argument in OS.get_cmdline_user_args():
-		if argument.begins_with("--visual-output="): output=argument.trim_prefix("--visual-output=")
+	if not prepare_capture_output():
+		quit(2)
+		return
 	game=Main.instantiate()
 	root.add_child(game)
 	game.capture_mode="native-controls"
@@ -148,4 +155,20 @@ func run() -> void:
 	await key(KEY_H,false)
 	await capture("help-controls")
 	print("NATIVE_CONTROLS_V071_PASS | checks=",checks)
-	quit(0)
+	quit(1 if failures else 0)
+
+func prepare_capture_output() -> bool:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--visual-output="):
+			output = argument.trim_prefix("--visual-output=")
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--capture-output-directory="):
+			output = argument.trim_prefix("--capture-output-directory=")
+	if output.strip_edges().is_empty():
+		push_error("CAPTURE_OUTPUT_FAIL | --capture-output-directory must not be empty")
+		return false
+	var error := DirAccess.make_dir_recursive_absolute(output)
+	if error != OK:
+		push_error("CAPTURE_OUTPUT_FAIL | cannot create '%s': %s; choose a writable --capture-output-directory" % [output, error_string(error)])
+		return false
+	return true

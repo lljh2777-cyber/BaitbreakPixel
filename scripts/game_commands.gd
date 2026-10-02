@@ -10,7 +10,8 @@ static func number(value: Variant, fallback: float) -> float:
 	return float(value) if (value is float or value is int) and is_finite(float(value)) else fallback
 
 static func flag(command: Dictionary, key: String) -> bool:
-	return command.get(key,false)==true
+	var value: Variant=command.get(key,false)
+	return value is bool and value
 
 static func fish(command: Dictionary, previous_aim: Vector2, previous_power: float) -> Dictionary:
 	return {

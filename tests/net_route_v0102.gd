@@ -5,7 +5,12 @@ var game: Node2D
 var passed:=0
 var failed:=0
 
-func _initialize() -> void: call_deferred("run")
+# Historical multi-corner drag-net behavior was replaced by the committed
+# two-point net action. Keep the original assertions, but never call its removed
+# manual_net_pending_path() API: that aborts run() without reaching quit().
+func _initialize() -> void:
+	print("RETIRED_SUITE | net_route_v0102 | replacements=res://tests/net_v021.gd,res://tests/net_animation_v0201.gd")
+	quit(2)
 func check(ok: bool, message: String) -> void:
 	if ok: passed+=1; print("ROUTE_PASS | ",message)
 	else: failed+=1; push_error("ROUTE_FAIL | "+message)

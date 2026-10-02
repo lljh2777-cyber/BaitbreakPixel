@@ -1,16 +1,22 @@
 extends SceneTree
+var failures := 0
 
 const Main = preload("res://scenes/main.tscn")
 var game: Node2D
-var output := "E:/Fish_catches_people/BaitbreakPixel/artifacts"
+var output := "res://artifacts"
 var checks := 0
 
 func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This check needs a renderer; rerun without --headless.")
+		quit(2)
+		return
 	call_deferred("run")
 
 func require(ok: bool, message: String) -> bool:
 	if not ok:
 		push_error("NATIVE_V07_FAIL | "+message)
+		failures += 1
 		quit(1)
 	else:
 		checks+=1
@@ -49,8 +55,9 @@ func hold_input(place: Vector2) -> Vector2:
 	return ((place-game.fish)*5-game.line_pull_velocity()-game.water_velocity(game.fish))/70/game.vegetation_drag(game.fish)
 
 func run() -> void:
-	for argument in OS.get_cmdline_user_args():
-		if argument.begins_with("--visual-output="): output=argument.trim_prefix("--visual-output=")
+	if not prepare_capture_output():
+		quit(2)
+		return
 	game=Main.instantiate()
 	root.add_child(game)
 	game.capture_mode="visual-test"
@@ -134,4 +141,20 @@ func run() -> void:
 	tick(0.7,Vector2.DOWN)
 	await capture("exhausted")
 	print("NATIVE_HAUL_V07_PASS | checks=",checks)
-	quit(0)
+	quit(1 if failures else 0)
+
+func prepare_capture_output() -> bool:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--visual-output="):
+			output = argument.trim_prefix("--visual-output=")
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--capture-output-directory="):
+			output = argument.trim_prefix("--capture-output-directory=")
+	if output.strip_edges().is_empty():
+		push_error("CAPTURE_OUTPUT_FAIL | --capture-output-directory must not be empty")
+		return false
+	var error := DirAccess.make_dir_recursive_absolute(output)
+	if error != OK:
+		push_error("CAPTURE_OUTPUT_FAIL | cannot create '%s': %s; choose a writable --capture-output-directory" % [output, error_string(error)])
+		return false
+	return true

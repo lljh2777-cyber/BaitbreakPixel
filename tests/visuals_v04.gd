@@ -1,10 +1,16 @@
 extends SceneTree
+var failures := 0
+var capture_failed := false
 
 const Main = preload("res://scenes/main.tscn")
 var game: Node2D
-var output := "E:/Fish_catches_people/BaitbreakPixel/artifacts"
+var output := "res://artifacts"
 
 func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This check needs a renderer; rerun without --headless.")
+		quit(2)
+		return
 	call_deferred("run")
 
 func capture(which: String) -> void:
@@ -14,6 +20,9 @@ func capture(which: String) -> void:
 	await RenderingServer.frame_post_draw
 	var error := root.get_texture().get_image().save_png(output+"/"+which+"-v04.png")
 	print("VISUAL | ",which," | error=",error)
+	if error != OK:
+		capture_failed = true
+		push_error("CAPTURE_OUTPUT_FAIL | cannot save %s in %s: %s" % [which, output, error_string(error)])
 
 func key_event(code: Key, pressed: bool) -> void:
 	var event := InputEventKey.new()
@@ -31,6 +40,7 @@ func press(code: Key) -> void:
 func require(ok: bool, message: String) -> bool:
 	if not ok:
 		push_error(message)
+		failures += 1
 		quit(1)
 	return ok
 
@@ -44,6 +54,9 @@ func prepare_hook() -> void:
 	game._update_contacts(1)
 
 func run() -> void:
+	if not prepare_capture_output():
+		quit(2)
+		return
 	game=Main.instantiate()
 	root.add_child(game)
 	game.capture_mode="visual-test"
@@ -139,4 +152,17 @@ func run() -> void:
 	print("NATIVE_V04_PASS | held Shift, release, wrap success/failure, follow-up slack and pause")
 	game.queue_free()
 	await create_timer(0.1).timeout
-	quit()
+	quit(1 if failures or capture_failed else 0)
+
+func prepare_capture_output() -> bool:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--capture-output-directory="):
+			output = argument.trim_prefix("--capture-output-directory=")
+	if output.strip_edges().is_empty():
+		push_error("CAPTURE_OUTPUT_FAIL | --capture-output-directory must not be empty")
+		return false
+	var error := DirAccess.make_dir_recursive_absolute(output)
+	if error != OK:
+		push_error("CAPTURE_OUTPUT_FAIL | cannot create '%s': %s; choose a writable --capture-output-directory" % [output, error_string(error)])
+		return false
+	return true

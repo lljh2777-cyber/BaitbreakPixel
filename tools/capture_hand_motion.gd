@@ -4,8 +4,14 @@ var game: Node2D
 var frame := 0
 var done := false
 
-func _initialize() -> void: call_deferred("setup")
+func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This capture needs a renderer; rerun without --headless.")
+		quit(2)
+		return
+	call_deferred("setup")
 func setup() -> void:
+	DirAccess.make_dir_recursive_absolute("res://artifacts")
 	game=Main.instantiate(); root.add_child(game)
 	game.capture_mode="hand-motion"; game.save_path="user://hand-motion-v0159.cfg"
 	game.set_process(false); game.set_physics_process(false)
@@ -36,7 +42,7 @@ func _process(_delta: float) -> bool:
 
 func snapshot(index: int) -> void:
 	await RenderingServer.frame_post_draw
-	var path := "E:/Fish_catches_people/BaitbreakPixel/artifacts/hand-motion-%04d-v0159.png" % index
+	var path := "res://artifacts/hand-motion-%04d-v0159.png" % index
 	print("MOTION_FRAME | ",index," | ",root.get_texture().get_image().save_png(path))
 
 func finish() -> void:

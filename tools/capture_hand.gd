@@ -3,18 +3,24 @@ extends SceneTree
 const Main=preload("res://scenes/main.tscn")
 var game: Node2D
 
-func _initialize() -> void: call_deferred("run")
+func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This capture needs a renderer; rerun without --headless.")
+		quit(2)
+		return
+	call_deferred("run")
 
 func capture(label: String) -> void:
 	game.view.queue_redraw()
 	await process_frame
 	await RenderingServer.frame_post_draw
-	var path := "E:/Fish_catches_people/BaitbreakPixel/artifacts/hand-"+label+"-v0159.png"
+	var path := "res://artifacts/hand-"+label+"-v0159.png"
 	var result := root.get_texture().get_image().save_png(path)
 	print("HAND_CAPTURE | ",label," | ",result)
 	if result!=OK: quit(1)
 
 func run() -> void:
+	DirAccess.make_dir_recursive_absolute("res://artifacts")
 	game=Main.instantiate(); root.add_child(game)
 	game.save_path="user://hand-preview-v0159.cfg"
 	game.capture_mode="hand-preview"; game.set_process(false); game.set_physics_process(false)

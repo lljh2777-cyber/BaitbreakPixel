@@ -1280,5 +1280,579 @@
       },
       "exported_resources": 54
     }
+  ],
+  "index_notes": "releases preserves the 42 recovered archive manifests; recovery_date, method and validation apply only to that array. local_playtests transcribes subsequent test reports; hashes and sizes were not reverified from package bytes during indexing. Paths are relative to the repository root. See docs/history/RELEASES.md. public_releases records the 14 Windows ZIPs published and reverified on 2026-10-02; prior recovered manifests and historical local report fields are preserved. 0.24.2 was built, Windows-validated and published on 2026-10-02; the preceding 14 publication records remain unchanged.",
+  "public_release_snapshot": {
+    "checked_on": "2026-10-02",
+    "version": "0.24.2",
+    "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.24.2",
+    "asset_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.24.2/BaitbreakPixel-0.24.2.zip",
+    "source_url": "https://api.github.com/repos/lljh2777-cyber/BaitbreakPixel/releases/latest"
+  },
+  "local_playtests": [
+    {
+      "version": "0.21.0",
+      "source_commit": "a65ad149376aedcc198b8d3788ed4e21e9db1a6b",
+      "report_date": "2026-09-30",
+      "test_report": "docs/test-reports/TEST-REPORT-0.21.0.md",
+      "github_release_published_at_report": false,
+      "pack_sha256": "c1dff8c7ddb1bb110151a1b8e18df40164a2329e57210ce12439201ee1ba8ea7",
+      "pack_bytes": 4007536,
+      "zip_bytes": 91284558
+    },
+    {
+      "version": "0.21.1",
+      "source_commit": "1ab38d018c7a15656f39bfc35afc240144629a4c",
+      "report_date": "2026-09-30",
+      "test_report": "docs/test-reports/TEST-REPORT-0.21.1.md",
+      "github_release_published_at_report": false,
+      "pack_sha256": "16d256959d5b55751469e18b8f7b85baffe0f4e055792cbb597adc7d4029d275",
+      "pack_bytes": 4007264,
+      "zip_bytes": 91284000
+    },
+    {
+      "version": "0.21.2",
+      "source_commit": "662b631649b8769a8fbb083887a13c69cc4f75c1",
+      "report_date": "2026-09-30",
+      "test_report": "docs/test-reports/TEST-REPORT-0.21.2.md",
+      "github_release_published_at_report": false,
+      "pack_sha256": "e4b22be462d3e7541c116c0f62dc0a94e8de73e96ef60aa6f2eca1b1ac53347a",
+      "pack_bytes": 4008272,
+      "zip_bytes": 91284684
+    },
+    {
+      "version": "0.22.0",
+      "source_commit": "da33c39511ed332443692cbde68be76e604a609d",
+      "report_date": "2026-09-30",
+      "test_report": "docs/test-reports/TEST-REPORT-0.22.0.md",
+      "github_release_published_at_report": false,
+      "pack_sha256": "b6cfeaa1ccb2b77d279c2e493c9aa72d76c119ca17b17e10584606b82eb75fbd",
+      "pack_bytes": 4010864,
+      "zip_bytes": 91285512
+    },
+    {
+      "version": "0.22.1",
+      "source_commit": "db215eb0440375ea3a31896aa056367c2ba1e711",
+      "report_date": "2026-09-30",
+      "test_report": "docs/test-reports/TEST-REPORT-0.22.1.md",
+      "github_release_published_at_report": false,
+      "pack_sha256": "d01e436a5fa0ad7d86a436154c84706b1f8f261019cf6bc9f80ecdf2808f91cc",
+      "pack_bytes": 4010896,
+      "zip_bytes": 91285587
+    },
+    {
+      "version": "0.22.2",
+      "source_commit": "cb931f787421ef36f288499502dff4324e799457",
+      "report_date": "2026-10-01",
+      "test_report": "docs/test-reports/TEST-REPORT-0.22.2.md",
+      "github_release_published_at_report": false,
+      "pack_sha256": "8598ce2d4c6af9712ecacb8c53d929f6139505b79e8cc7f7e6765dcf879987d4",
+      "pack_bytes": 4030312,
+      "zip_bytes": 91293665
+    },
+    {
+      "version": "0.22.3",
+      "source_commit": "527143324d8198490cfcc80727added4df448da6",
+      "report_date": "2026-10-01",
+      "test_report": "docs/test-reports/TEST-REPORT-0.22.3.md",
+      "github_release_published_at_report": false,
+      "pack_sha256": "4c3321c402c67d6667e4dc9a913ec3c3ebf05ba8462acb7a757916120c496008",
+      "pack_bytes": 4037548,
+      "zip_bytes": 91295570
+    },
+    {
+      "version": "0.22.4",
+      "source_commit": "b6705d65880f0e70c4d1421645b2a09c88a28487",
+      "report_date": "2026-10-01",
+      "test_report": "docs/test-reports/TEST-REPORT-0.22.4.md",
+      "github_release_published_at_report": false,
+      "pack_sha256": "9482c8ee1d7aa93673a50f55b6f3b7872bacf7772dab05fe709aa085a64d0cac",
+      "pack_bytes": 4039884,
+      "zip_bytes": 91296544
+    },
+    {
+      "version": "0.22.5",
+      "source_commit": "96faf4d57795cb2925339945aceee1182084e8e7",
+      "report_date": "2026-10-02",
+      "test_report": "docs/test-reports/TEST-REPORT-0.22.5.md",
+      "github_release_published_at_report": false,
+      "pack_sha256": "65c98d1367e90c0af4c211661621a0b4d98b6ea97d645bc64ee1683886f94730",
+      "pack_bytes": 2181080,
+      "zip_bytes": 88098452
+    },
+    {
+      "version": "0.22.6",
+      "source_commit": "85299be488090485667879208ce89d159f6fba8e",
+      "pack_bytes": 2181056,
+      "pack_sha256": "b0c23b1a442d8f81413ade63c43b1ab7e30dd24f2521a2b1f30a31575779991d",
+      "zip_bytes": 89569416,
+      "report_date": "2026-10-02",
+      "test_report": "docs/test-reports/GITHUB-RELEASES-2026-10-02.md",
+      "development_report": "docs/test-reports/TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md",
+      "github_release_published_at_report": true
+    },
+    {
+      "version": "0.23.0",
+      "source_commit": "ddf790979e0ba5d81c2cda49ff1d44e2c3abb5be",
+      "pack_bytes": 2225188,
+      "pack_sha256": "9ce63f40a2f09243498d2444d4d2bb86573cc3b60c429d9984c41df8a6c5980f",
+      "zip_bytes": 89581632,
+      "report_date": "2026-10-02",
+      "test_report": "docs/test-reports/GITHUB-RELEASES-2026-10-02.md",
+      "development_report": "docs/test-reports/PHASE01-VALIDATION.md",
+      "github_release_published_at_report": true
+    },
+    {
+      "version": "0.23.1",
+      "source_commit": "19178ccb572cce992624c934a1ad55c58cdced47",
+      "pack_bytes": 2226900,
+      "pack_sha256": "d43e64510487591177bb05786bd2920249b54411edb784467181ffbe56801158",
+      "zip_bytes": 89583029,
+      "report_date": "2026-10-02",
+      "test_report": "docs/test-reports/GITHUB-RELEASES-2026-10-02.md",
+      "development_report": "docs/test-reports/PHASE15-VALIDATION.md",
+      "github_release_published_at_report": true
+    },
+    {
+      "version": "0.24.0",
+      "source_commit": "811a8b83d2a7e7b3b14e486ff3b192f2e914d701",
+      "pack_bytes": 2231748,
+      "pack_sha256": "c8a82bcf4c3ef32218677434f6ca8475699c4e749e5b4833e9c2bf52cdceed55",
+      "zip_bytes": 89584445,
+      "report_date": "2026-10-02",
+      "test_report": "docs/test-reports/GITHUB-RELEASES-2026-10-02.md",
+      "development_report": "docs/test-reports/PHASE02-BITE-VALIDATION-0.24.0.md",
+      "github_release_published_at_report": true
+    },
+    {
+      "version": "0.24.1",
+      "source_commit": "baf909fd1953e4b75369ef3ffa52a48734e8a8c1",
+      "pack_bytes": 2231860,
+      "pack_sha256": "4ddb345a262830519efdc746659e113b17d9dd60f6b77b66f6baa506ba8b108b",
+      "zip_bytes": 89584644,
+      "report_date": "2026-10-02",
+      "test_report": "docs/test-reports/GITHUB-RELEASES-2026-10-02.md",
+      "development_report": "docs/test-reports/PHASE02-BITE-VALIDATION.md",
+      "github_release_published_at_report": true
+    },
+    {
+      "version": "0.24.2",
+      "source_commit": "196c067fef604b97a9ba8292455c6bc390788732",
+      "pack_bytes": 2238836,
+      "pack_sha256": "31db2bd0f4c2ba299a9e58f8a6541a370919a57a4c07364d6084c3803797188f",
+      "zip_bytes": 89587715,
+      "report_date": "2026-10-02",
+      "test_report": "docs/test-reports/GITHUB-RELEASE-0.24.2.md",
+      "development_report": "docs/test-reports/PHASE02-BAIT-VALIDATION.md",
+      "github_release_published_at_report": true
+    }
+  ],
+  "public_release_snapshot_history": [
+    {
+      "checked_on": "2026-10-02",
+      "version": "0.20.1",
+      "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.20.1",
+      "asset_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.20.1/BaitbreakPixel-0.20.1.zip",
+      "source_url": "https://api.github.com/repos/lljh2777-cyber/BaitbreakPixel/releases/latest"
+    },
+    {
+      "checked_on": "2026-10-02",
+      "version": "0.24.1",
+      "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.24.1",
+      "asset_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.24.1/BaitbreakPixel-0.24.1.zip",
+      "source_url": "https://api.github.com/repos/lljh2777-cyber/BaitbreakPixel/releases/latest"
+    }
+  ],
+  "public_releases": [
+    {
+      "version": "0.21.0",
+      "source_commit": "a65ad149376aedcc198b8d3788ed4e21e9db1a6b",
+      "zip_bytes": 91284558,
+      "zip_sha256": "8d9f4e3fd2a6e5e570e21658f63fe9b376a191f0ebba64b627f064f7111119af",
+      "pack_bytes": 4007536,
+      "pack_sha256": "c1dff8c7ddb1bb110151a1b8e18df40164a2329e57210ce12439201ee1ba8ea7",
+      "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.21.0",
+      "published_at": "2026-10-02T12:21:56Z",
+      "verified_scripts": 38,
+      "assets": [
+        {
+          "name": "BaitbreakPixel-0.21.0.zip",
+          "size": 91284558,
+          "sha256": "sha256:8d9f4e3fd2a6e5e570e21658f63fe9b376a191f0ebba64b627f064f7111119af",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.21.0/BaitbreakPixel-0.21.0.zip"
+        },
+        {
+          "name": "SHA256SUMS.txt",
+          "size": 93,
+          "sha256": "sha256:9e899a7e0b0494ea5f956eae014d6fd7d8923eec3c29e7ae468f6ac813582d0d",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.21.0/SHA256SUMS.txt"
+        }
+      ],
+      "verification": "ZIP CRC and exact local contents; PCK SHA256; every packed game script matches tag source; packed main scene loads; GitHub asset SHA256 and size match local files"
+    },
+    {
+      "version": "0.21.1",
+      "source_commit": "1ab38d018c7a15656f39bfc35afc240144629a4c",
+      "zip_bytes": 91284000,
+      "zip_sha256": "dfdae7d780afc1f8994ddf58a79f6e7f91f15eb8d75cc821bda3bb82838941e1",
+      "pack_bytes": 4007264,
+      "pack_sha256": "16d256959d5b55751469e18b8f7b85baffe0f4e055792cbb597adc7d4029d275",
+      "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.21.1",
+      "published_at": "2026-10-02T12:22:50Z",
+      "verified_scripts": 38,
+      "assets": [
+        {
+          "name": "BaitbreakPixel-0.21.1.zip",
+          "size": 91284000,
+          "sha256": "sha256:dfdae7d780afc1f8994ddf58a79f6e7f91f15eb8d75cc821bda3bb82838941e1",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.21.1/BaitbreakPixel-0.21.1.zip"
+        },
+        {
+          "name": "SHA256SUMS.txt",
+          "size": 93,
+          "sha256": "sha256:73b16ca62f10c4a0d2d7f21b5e70c44608f4660ca9d109bad95953c910dd49a4",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.21.1/SHA256SUMS.txt"
+        }
+      ],
+      "verification": "ZIP CRC and exact local contents; PCK SHA256; every packed game script matches tag source; packed main scene loads; GitHub asset SHA256 and size match local files"
+    },
+    {
+      "version": "0.21.2",
+      "source_commit": "662b631649b8769a8fbb083887a13c69cc4f75c1",
+      "zip_bytes": 91284684,
+      "zip_sha256": "ded8df8f7244d6cd24300c254113bb736f282b4fce5695f0df59585da6b8bd52",
+      "pack_bytes": 4008272,
+      "pack_sha256": "e4b22be462d3e7541c116c0f62dc0a94e8de73e96ef60aa6f2eca1b1ac53347a",
+      "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.21.2",
+      "published_at": "2026-10-02T12:23:48Z",
+      "verified_scripts": 38,
+      "assets": [
+        {
+          "name": "BaitbreakPixel-0.21.2.zip",
+          "size": 91284684,
+          "sha256": "sha256:ded8df8f7244d6cd24300c254113bb736f282b4fce5695f0df59585da6b8bd52",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.21.2/BaitbreakPixel-0.21.2.zip"
+        },
+        {
+          "name": "SHA256SUMS.txt",
+          "size": 93,
+          "sha256": "sha256:774ff8d9e5fac683ee7dec6a6c1db58d24b607b697a2e6947649dda916f87be3",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.21.2/SHA256SUMS.txt"
+        }
+      ],
+      "verification": "ZIP CRC and exact local contents; PCK SHA256; every packed game script matches tag source; packed main scene loads; GitHub asset SHA256 and size match local files"
+    },
+    {
+      "version": "0.22.0",
+      "source_commit": "da33c39511ed332443692cbde68be76e604a609d",
+      "zip_bytes": 91285512,
+      "zip_sha256": "33628b1386c8ee0988420317fa7504011be84aad8945414d75b9a1c456f8efae",
+      "pack_bytes": 4010864,
+      "pack_sha256": "b6cfeaa1ccb2b77d279c2e493c9aa72d76c119ca17b17e10584606b82eb75fbd",
+      "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.22.0",
+      "published_at": "2026-10-02T12:24:43Z",
+      "verified_scripts": 39,
+      "assets": [
+        {
+          "name": "BaitbreakPixel-0.22.0.zip",
+          "size": 91285512,
+          "sha256": "sha256:33628b1386c8ee0988420317fa7504011be84aad8945414d75b9a1c456f8efae",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.22.0/BaitbreakPixel-0.22.0.zip"
+        },
+        {
+          "name": "SHA256SUMS.txt",
+          "size": 93,
+          "sha256": "sha256:50e426c62306f57e4d792604720b6dca87382bcae3b39e0f67a72fde135db446",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.22.0/SHA256SUMS.txt"
+        }
+      ],
+      "verification": "ZIP CRC and exact local contents; PCK SHA256; every packed game script matches tag source; packed main scene loads; GitHub asset SHA256 and size match local files"
+    },
+    {
+      "version": "0.22.1",
+      "source_commit": "db215eb0440375ea3a31896aa056367c2ba1e711",
+      "zip_bytes": 91285587,
+      "zip_sha256": "967ea2ba430fac0ad69c89ab40c5e15bf0658a8f6e44b6a7c44e3e6522272a6d",
+      "pack_bytes": 4010896,
+      "pack_sha256": "d01e436a5fa0ad7d86a436154c84706b1f8f261019cf6bc9f80ecdf2808f91cc",
+      "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.22.1",
+      "published_at": "2026-10-02T12:25:43Z",
+      "verified_scripts": 39,
+      "assets": [
+        {
+          "name": "BaitbreakPixel-0.22.1.zip",
+          "size": 91285587,
+          "sha256": "sha256:967ea2ba430fac0ad69c89ab40c5e15bf0658a8f6e44b6a7c44e3e6522272a6d",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.22.1/BaitbreakPixel-0.22.1.zip"
+        },
+        {
+          "name": "SHA256SUMS.txt",
+          "size": 93,
+          "sha256": "sha256:7d301fe95e0b532011ae0f88f3f52cf80efc3cec99871f6f71ce3dd5c9ca0638",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.22.1/SHA256SUMS.txt"
+        }
+      ],
+      "verification": "ZIP CRC and exact local contents; PCK SHA256; every packed game script matches tag source; packed main scene loads; GitHub asset SHA256 and size match local files"
+    },
+    {
+      "version": "0.22.2",
+      "source_commit": "cb931f787421ef36f288499502dff4324e799457",
+      "zip_bytes": 91293665,
+      "zip_sha256": "953ce2ccca38532cfc44d59d0b90e3c77adf41317dbd9862d4ace390e7581d1c",
+      "pack_bytes": 4030312,
+      "pack_sha256": "8598ce2d4c6af9712ecacb8c53d929f6139505b79e8cc7f7e6765dcf879987d4",
+      "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.22.2",
+      "published_at": "2026-10-02T12:26:43Z",
+      "verified_scripts": 42,
+      "assets": [
+        {
+          "name": "BaitbreakPixel-0.22.2.zip",
+          "size": 91293665,
+          "sha256": "sha256:953ce2ccca38532cfc44d59d0b90e3c77adf41317dbd9862d4ace390e7581d1c",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.22.2/BaitbreakPixel-0.22.2.zip"
+        },
+        {
+          "name": "SHA256SUMS.txt",
+          "size": 93,
+          "sha256": "sha256:ea92f38335f889de5a2e2519c810b39a86485cfbffe6a349ffa99c9a49b9f52e",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.22.2/SHA256SUMS.txt"
+        }
+      ],
+      "verification": "ZIP CRC and exact local contents; PCK SHA256; every packed game script matches tag source; packed main scene loads; GitHub asset SHA256 and size match local files"
+    },
+    {
+      "version": "0.22.3",
+      "source_commit": "527143324d8198490cfcc80727added4df448da6",
+      "zip_bytes": 91295570,
+      "zip_sha256": "ab5b556426f8ef237da3da3ecb4ac5ac3ae38550a5e2fef822d5be0c7c656acc",
+      "pack_bytes": 4037548,
+      "pack_sha256": "4c3321c402c67d6667e4dc9a913ec3c3ebf05ba8462acb7a757916120c496008",
+      "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.22.3",
+      "published_at": "2026-10-02T12:27:35Z",
+      "verified_scripts": 43,
+      "assets": [
+        {
+          "name": "BaitbreakPixel-0.22.3.zip",
+          "size": 91295570,
+          "sha256": "sha256:ab5b556426f8ef237da3da3ecb4ac5ac3ae38550a5e2fef822d5be0c7c656acc",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.22.3/BaitbreakPixel-0.22.3.zip"
+        },
+        {
+          "name": "SHA256SUMS.txt",
+          "size": 93,
+          "sha256": "sha256:5e26f7e3429afe87d8ecdc0a291eb67a1cb5dcdc0ba7a578e7ea0011820f7b5e",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.22.3/SHA256SUMS.txt"
+        }
+      ],
+      "verification": "ZIP CRC and exact local contents; PCK SHA256; every packed game script matches tag source; packed main scene loads; GitHub asset SHA256 and size match local files"
+    },
+    {
+      "version": "0.22.4",
+      "source_commit": "b6705d65880f0e70c4d1421645b2a09c88a28487",
+      "zip_bytes": 91296544,
+      "zip_sha256": "28675bea4bf130def6f8997cc7d92c72b759a15b5733c428dfcb724ef91822fd",
+      "pack_bytes": 4039884,
+      "pack_sha256": "9482c8ee1d7aa93673a50f55b6f3b7872bacf7772dab05fe709aa085a64d0cac",
+      "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.22.4",
+      "published_at": "2026-10-02T12:28:29Z",
+      "verified_scripts": 43,
+      "assets": [
+        {
+          "name": "BaitbreakPixel-0.22.4.zip",
+          "size": 91296544,
+          "sha256": "sha256:28675bea4bf130def6f8997cc7d92c72b759a15b5733c428dfcb724ef91822fd",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.22.4/BaitbreakPixel-0.22.4.zip"
+        },
+        {
+          "name": "SHA256SUMS.txt",
+          "size": 93,
+          "sha256": "sha256:fdaae177e1e17ae5f12166381253050e0017c8ca8fe9d60cb8a9d36be0076877",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.22.4/SHA256SUMS.txt"
+        }
+      ],
+      "verification": "ZIP CRC and exact local contents; PCK SHA256; every packed game script matches tag source; packed main scene loads; GitHub asset SHA256 and size match local files"
+    },
+    {
+      "version": "0.22.5",
+      "source_commit": "96faf4d57795cb2925339945aceee1182084e8e7",
+      "zip_bytes": 88098452,
+      "zip_sha256": "f2960a4bae329a1dc8c4dc170e71ae38777963a8e1f2e155deee1530c9fc4081",
+      "pack_bytes": 2181080,
+      "pack_sha256": "65c98d1367e90c0af4c211661621a0b4d98b6ea97d645bc64ee1683886f94730",
+      "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.22.5",
+      "published_at": "2026-10-02T12:29:28Z",
+      "verified_scripts": 43,
+      "assets": [
+        {
+          "name": "BaitbreakPixel-0.22.5.zip",
+          "size": 88098452,
+          "sha256": "sha256:f2960a4bae329a1dc8c4dc170e71ae38777963a8e1f2e155deee1530c9fc4081",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.22.5/BaitbreakPixel-0.22.5.zip"
+        },
+        {
+          "name": "SHA256SUMS.txt",
+          "size": 93,
+          "sha256": "sha256:29a1bcda576a78f78ed2412f14d32542a4b7a172c540962bb2311fd0ff3b9c27",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.22.5/SHA256SUMS.txt"
+        }
+      ],
+      "verification": "ZIP CRC and exact local contents; PCK SHA256; every packed game script matches tag source; packed main scene loads; GitHub asset SHA256 and size match local files"
+    },
+    {
+      "version": "0.22.6",
+      "source_commit": "85299be488090485667879208ce89d159f6fba8e",
+      "zip_bytes": 89569416,
+      "zip_sha256": "801b96691e6e79458e22e4974eb00df672c6b3e7bcebfd324fcaeaf8162951fa",
+      "pack_bytes": 2181056,
+      "pack_sha256": "b0c23b1a442d8f81413ade63c43b1ab7e30dd24f2521a2b1f30a31575779991d",
+      "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.22.6",
+      "published_at": "2026-10-02T12:30:27Z",
+      "verified_scripts": 43,
+      "assets": [
+        {
+          "name": "BaitbreakPixel-0.22.6.zip",
+          "size": 89569416,
+          "sha256": "sha256:801b96691e6e79458e22e4974eb00df672c6b3e7bcebfd324fcaeaf8162951fa",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.22.6/BaitbreakPixel-0.22.6.zip"
+        },
+        {
+          "name": "SHA256SUMS.txt",
+          "size": 93,
+          "sha256": "sha256:6f71ac5a3ac7ceecaf9a211641cf23f235210c64db4e42682c6c9564e7f6e9aa",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.22.6/SHA256SUMS.txt"
+        }
+      ],
+      "verification": "ZIP CRC and exact local contents; PCK SHA256; every packed game script matches tag source; packed main scene loads; GitHub asset SHA256 and size match local files"
+    },
+    {
+      "version": "0.23.0",
+      "source_commit": "ddf790979e0ba5d81c2cda49ff1d44e2c3abb5be",
+      "zip_bytes": 89581632,
+      "zip_sha256": "4c314b993c3e0fa35dec896ecf6b9cfdf140de87b80e95fdb7660b0e4835915c",
+      "pack_bytes": 2225188,
+      "pack_sha256": "9ce63f40a2f09243498d2444d4d2bb86573cc3b60c429d9984c41df8a6c5980f",
+      "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.23.0",
+      "published_at": "2026-10-02T12:31:29Z",
+      "verified_scripts": 47,
+      "assets": [
+        {
+          "name": "BaitbreakPixel-0.23.0.zip",
+          "size": 89581632,
+          "sha256": "sha256:4c314b993c3e0fa35dec896ecf6b9cfdf140de87b80e95fdb7660b0e4835915c",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.23.0/BaitbreakPixel-0.23.0.zip"
+        },
+        {
+          "name": "SHA256SUMS.txt",
+          "size": 93,
+          "sha256": "sha256:0a1abe13468623559748a76bbe4dabe402fdeb0cb0767cea33f16f33f7fc2c80",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.23.0/SHA256SUMS.txt"
+        }
+      ],
+      "verification": "ZIP CRC and exact local contents; PCK SHA256; every packed game script matches tag source; packed main scene loads; GitHub asset SHA256 and size match local files"
+    },
+    {
+      "version": "0.23.1",
+      "source_commit": "19178ccb572cce992624c934a1ad55c58cdced47",
+      "zip_bytes": 89583029,
+      "zip_sha256": "64a62bf780b517f22c446d9c490353751f4768396b374227e7fe52266e9356dc",
+      "pack_bytes": 2226900,
+      "pack_sha256": "d43e64510487591177bb05786bd2920249b54411edb784467181ffbe56801158",
+      "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.23.1",
+      "published_at": "2026-10-02T12:32:31Z",
+      "verified_scripts": 47,
+      "assets": [
+        {
+          "name": "BaitbreakPixel-0.23.1.zip",
+          "size": 89583029,
+          "sha256": "sha256:64a62bf780b517f22c446d9c490353751f4768396b374227e7fe52266e9356dc",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.23.1/BaitbreakPixel-0.23.1.zip"
+        },
+        {
+          "name": "SHA256SUMS.txt",
+          "size": 93,
+          "sha256": "sha256:f688a05c6aea8c5e48a4b1c5b1ab82a6a4511baef95268cc9e201241b878445f",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.23.1/SHA256SUMS.txt"
+        }
+      ],
+      "verification": "ZIP CRC and exact local contents; PCK SHA256; every packed game script matches tag source; packed main scene loads; GitHub asset SHA256 and size match local files"
+    },
+    {
+      "version": "0.24.0",
+      "source_commit": "811a8b83d2a7e7b3b14e486ff3b192f2e914d701",
+      "zip_bytes": 89584445,
+      "zip_sha256": "20929e399f02b106f1a845444bc9e121904662de30a9b1f5d2916377e22902b9",
+      "pack_bytes": 2231748,
+      "pack_sha256": "c8a82bcf4c3ef32218677434f6ca8475699c4e749e5b4833e9c2bf52cdceed55",
+      "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.24.0",
+      "published_at": "2026-10-02T12:33:36Z",
+      "verified_scripts": 47,
+      "assets": [
+        {
+          "name": "BaitbreakPixel-0.24.0.zip",
+          "size": 89584445,
+          "sha256": "sha256:20929e399f02b106f1a845444bc9e121904662de30a9b1f5d2916377e22902b9",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.24.0/BaitbreakPixel-0.24.0.zip"
+        },
+        {
+          "name": "SHA256SUMS.txt",
+          "size": 93,
+          "sha256": "sha256:a653a6693334258188f6fac11134fd1751386bb753f8bc3fbc562a38c635f74d",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.24.0/SHA256SUMS.txt"
+        }
+      ],
+      "verification": "ZIP CRC and exact local contents; PCK SHA256; every packed game script matches tag source; packed main scene loads; GitHub asset SHA256 and size match local files"
+    },
+    {
+      "version": "0.24.1",
+      "source_commit": "baf909fd1953e4b75369ef3ffa52a48734e8a8c1",
+      "zip_bytes": 89584644,
+      "zip_sha256": "63cf6eb15a86db37fd80529a33eceb1622af003619cd2fee5f4509f5b11ae34e",
+      "pack_bytes": 2231860,
+      "pack_sha256": "4ddb345a262830519efdc746659e113b17d9dd60f6b77b66f6baa506ba8b108b",
+      "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.24.1",
+      "published_at": "2026-10-02T12:42:56Z",
+      "verified_scripts": 47,
+      "assets": [
+        {
+          "name": "BaitbreakPixel-0.24.1.zip",
+          "size": 89584644,
+          "sha256": "sha256:63cf6eb15a86db37fd80529a33eceb1622af003619cd2fee5f4509f5b11ae34e",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.24.1/BaitbreakPixel-0.24.1.zip"
+        },
+        {
+          "name": "SHA256SUMS.txt",
+          "size": 93,
+          "sha256": "sha256:50118a2b2bde78dcb415eaf929db44fc3c85e4bbe76c4537f567a233f03d6d7b",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.24.1/SHA256SUMS.txt"
+        }
+      ],
+      "verification": "ZIP CRC and exact local contents; PCK SHA256; every packed game script matches tag source; packed main scene loads; GitHub asset SHA256 and size match local files"
+    },
+    {
+      "version": "0.24.2",
+      "source_commit": "196c067fef604b97a9ba8292455c6bc390788732",
+      "zip_bytes": 89587715,
+      "zip_sha256": "139aaff5bdd00f1ea464884a0852fcc56a849b29067f26dbb867df7359fe8140",
+      "pack_bytes": 2238836,
+      "pack_sha256": "31db2bd0f4c2ba299a9e58f8a6541a370919a57a4c07364d6084c3803797188f",
+      "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.24.2",
+      "published_at": "2026-10-02T13:33:01Z",
+      "verified_scripts": 48,
+      "assets": [
+        {
+          "name": "BaitbreakPixel-0.24.2.zip",
+          "size": 89587715,
+          "sha256": "sha256:139aaff5bdd00f1ea464884a0852fcc56a849b29067f26dbb867df7359fe8140",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.24.2/BaitbreakPixel-0.24.2.zip"
+        },
+        {
+          "name": "SHA256SUMS.txt",
+          "size": 93,
+          "sha256": "sha256:67b78a253526c54eb18b1bba95ff76b067eacdf5da0fcbecf45c38017e10460c",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.24.2/SHA256SUMS.txt"
+        }
+      ],
+      "verification": "ZIP CRC and exact local contents; every packed game script matches tag source; packed main scene loads; Windows source regressions and targeted packed native suites pass; standalone EXE launches; GitHub asset SHA256 and size match local files"
+    }
   ]
 }

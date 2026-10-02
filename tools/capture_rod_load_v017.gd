@@ -1,11 +1,17 @@
 extends SceneTree
 const Main=preload("res://scenes/main.tscn")
 var game:Node2D
-func _initialize() -> void: call_deferred("run")
+func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This capture needs a renderer; rerun without --headless.")
+		quit(2)
+		return
+	call_deferred("run")
 func capture(label:String) -> void:
 	game.view.queue_redraw(); await process_frame; await RenderingServer.frame_post_draw
-	root.get_texture().get_image().save_png("E:/Fish_catches_people/BaitbreakPixel/artifacts/rod-load-"+label+"-v017.png")
+	root.get_texture().get_image().save_png("res://artifacts/rod-load-"+label+"-v017.png")
 func run() -> void:
+	DirAccess.make_dir_recursive_absolute("res://artifacts")
 	game=Main.instantiate(); root.add_child(game)
 	game.capture_mode="rod-load"; game.save_path="user://rod-load-v017.cfg"
 	game.set_process(false); game.set_physics_process(false)

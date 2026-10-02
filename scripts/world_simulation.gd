@@ -2,6 +2,7 @@ extends Node2D
 
 const Rules = preload("res://scripts/game_rules.gd")
 const Suction = preload("res://scripts/suction_feel.gd")
+const FoodProfile = preload("res://scripts/food_profile.gd")
 var rules := Rules.defaults()
 var qte_timing := Rules.qte(Rules.defaults(),"entry")
 
@@ -9,21 +10,19 @@ const Effort = preload("res://scripts/effort_check.gd")
 const Net = preload("res://scripts/net_simulation.gd")
 var net_action := Net.fresh()
 
+const Observation=preload("res://scripts/fish_observation.gd")
+const Suspicion=preload("res://scripts/fish_suspicion.gd")
+const Instinct=preload("res://scripts/fish_instinct.gd")
 const Stats = preload("res://scripts/round_stats.gd")
 const Rope = preload("res://scripts/rope.gd")
 const Layout = preload("res://scripts/pond_layout.gd")
 const AnglerController = preload("res://scripts/angler_rig.gd")
 enum HookState { FREE, MOUTH, HOOKED }
 const HOME := Layout.HOME
-const TARGET := 60.0
 const TIME_LIMIT := 360.0
 const SOLIDS: Array = Layout.SOLIDS
-const HOOK_SCALE := 0.70
-const BITE_RADIUS := 7.0
 const NET_RIM := Vector2(8,24)
 const NET_CATCH := Vector2(8,24)
-const NET_PREPARE := 0.8
-const NET_WARNING := 2.2
 const NET_SWEEP := 1.6
 const NET_WITHDRAW := 1.0
 const NET_LIFT := 1.15
@@ -32,8 +31,14 @@ const NET_MISS := 0.22
 const LINE_ELASTIC_PIXELS := 32.0
 const MAX_LINE_LENGTH := 720.0
 
+# IDs are stable within a round. Slots remain compatibility implementation details.
+var fish_id := 1
+var rod_id := 1
+var next_bait_id := 1
+var next_hook_id := 1
 var fish := Layout.SPAWN
 var angler := AnglerController.new()
+# Compatibility-only state for snapshot schema 12; gameplay uses net_to.
 var net_aim := Vector2.ZERO
 var manual_net := false
 var net_trail := PackedVector2Array()
@@ -41,18 +46,21 @@ var net_return_path := PackedVector2Array()
 var net_exit_path := PackedVector2Array()
 var net_route := PackedVector2Array()
 var net_route_next := 1
-const MANUAL_NET_WARNING := 0.55
-const MANUAL_NET_SECONDS := 5.0
-const MANUAL_NET_SPEED := 160.0
 var velocity := Vector2.ZERO
 var aim := Vector2.RIGHT
 var power := 0.35
+var truth_events: Array[Dictionary]=[]
+var suspicion_by_bait: Dictionary={}
+var caution_by_bait: Dictionary={}
+var risk_tolerance := 0.0
+var caution_state := "CALM"
+var instinct_drive := 0.0
+var focus_bait_id := -1
+var satiety := 100.0
 var stamina := 100.0
 var sprinting := false
 var sprint_exhausted := false
 var stamina_delay := 0.0
-const SPRINT_SPEED := 140.0
-const SPRINT_DRAIN := 28.0
 var water_strength: float:
 	get: return rule("water_strength")
 	set(value): rules["water_strength"]=value
@@ -60,6 +68,9 @@ var fish_before := Vector2.ZERO
 var hooked := HookState.FREE
 var bound_bait := -1
 var hook_cooldown := 0.0
+var bite_cooldown := 0.0
+var bite_feedback_age := 0.0
+const BITE_FEEDBACK_SECONDS := 0.18
 var rope_path := PackedVector2Array()
 var rope_length := 0.0
 var tension := 0.0
@@ -127,11 +138,7 @@ var untangle_phase := ""
 var untangle_target := -1
 var untangle_age := 0.0
 var untangle_cooldown := 0.0
-const UNTANGLE_MIN := 0.25
-const UNTANGLE_MAX := 0.55
 const UNWIND_SECONDS := 0.7
-const UNTANGLE_COOLDOWN := 3.0
-const WIND_SECONDS := 0.85
 var result_flash := 0.0
 var result_good := false
 var baits: Array[Dictionary] = []
@@ -354,6 +361,7 @@ func advance_tick(fish_command: Dictionary, angler_command: Dictionary) -> void:
 
 func simulate(delta: float, fish_command: Dictionary, angler_command: Dictionary) -> void:
 	if match_paused or match_over or not is_finite(delta) or delta<=0: return
+	var stats_before:=Stats.before(self)
 	var fish_input := Commands.fish(fish_command,aim,power)
 	var angler_input := Commands.angler(angler_command,angler.cursor)
 	angler.update(self,delta,angler_input)
@@ -365,6 +373,7 @@ func simulate(delta: float, fish_command: Dictionary, angler_command: Dictionary
 	_simulate_fish(delta,fish_input.move,fish_input.suck,fish_input.home,fish_input.dash,fish_input.slow,fish_input.qte,fish_input.qte_at_age)
 	_tick_untangle(delta,angler_input)
 	angler.step_tackle_feedback(self,delta)
+	Stats.sample(self,stats_before)
 	if net_state=="caught" or match_over:
 		for role in effort_checks: Effort.reset(effort_checks[role])
 
@@ -424,6 +433,7 @@ func reset_world(config: Dictionary = {}) -> void:
 	_reset_untangle()
 	untangle_cooldown=0.0
 	round_stats=Stats.fresh()
+	truth_events.clear()
 	net_capture=0.0
 	net_action=Net.fresh()
 	qte_grace_seconds=clampf(Commands.number(config.get("qte_grace"),0),0,0.25)
@@ -438,6 +448,10 @@ func reset_world(config: Dictionary = {}) -> void:
 	net_route.clear()
 	net_route_next=1
 	bait_batch=0
+	fish_id=1
+	rod_id=1
+	next_bait_id=1
+	next_hook_id=1
 	challenge = bool(config.get("challenge",false))
 	fish = Layout.SPAWN
 	power=rule("suction_initial")
@@ -460,12 +474,21 @@ func reset_world(config: Dictionary = {}) -> void:
 	aim = Vector2.RIGHT
 	fish_before = fish
 	stamina = rule("stamina_max")*rule("stamina_initial")
+	satiety=rule("satiety_start")
+	suspicion_by_bait.clear()
+	caution_by_bait.clear()
+	risk_tolerance=0.0
+	caution_state="CALM"
+	instinct_drive=0.0
+	focus_bait_id=-1
 	sprinting = false
 	sprint_exhausted = false
 	stamina_delay = 0
 	hooked = HookState.FREE
 	bound_bait = -1
 	hook_cooldown = 0
+	bite_cooldown = 0.0
+	bite_feedback_age = 0.0
 	qte = ""
 	qte_age = 0
 	qte_result_age = 0
@@ -530,8 +553,13 @@ func reset_world(config: Dictionary = {}) -> void:
 	for index in range(sites.size()-1,0,-1):
 		var other:=rng.randi_range(0,index)
 		var swap:=sites[index]; sites[index]=sites[other]; sites[other]=swap
+	var assignments:=_initial_hook_assignments()
+	# Independent shuffle after hook constraints; never choose a type from hook truth.
+	var types:=FoodProfile.shuffled(rng)
+	var initial_types: Array[String]=[FoodProfile.roll(rng),types[0],FoodProfile.roll(rng),types[1]]
+	if not uses_mobile_tackle(): initial_types[0]=types[2]
 	for index in range(4):
-		_create_bait(index)
+		_create_bait(index,int(assignments[index]),initial_types[index])
 		baits[index].home=sites[index]
 		baits[index].pos=sites[index]
 		baits[index].tip_before=sites[index]+Vector2(2,1)
@@ -544,15 +572,79 @@ func reset_world(config: Dictionary = {}) -> void:
 	if uses_mobile_tackle(): notice="Q 下钩 · W 收线 / S 放线 · E 观察 · 左键选择 A/B 抄网"
 
 func line_anchor(index: int) -> Vector2:
-	return angler.anchor() if uses_mobile_tackle() else Vector2(baits[index].home.x,53)
+	if uses_mobile_tackle(): return angler.anchor()
+	var bait: Dictionary=baits[index]
+	if bait.has("attachment_anchor"): return Vector2(bait.attachment_anchor)
+	return Vector2(bait.home.x,53)
 
-func _create_bait(index: int) -> void:
-	baits.append(_make_bait(index))
+func _create_bait(index: int, forced_hook: int=-1, bait_type: String="") -> void:
+	var kind:=FoodProfile.roll(rng) if bait_type.is_empty() else bait_type
+	baits.append(_assign_bait_identity(_make_bait(index,0,kind),forced_hook))
 
-func _make_bait(index: int, batch: int = 0) -> Dictionary:
-	var hooked_bait := index % 2 == 0
-	var home := Vector2(232, 153) if hooked_bait else Vector2(532, 216)
-	var bait := {"id":index, "home":home, "pos":home, "angle":0.0, "suction_offset":Vector2.ZERO, "hook":hooked_bait, "removed":false, "active":index != 2, "age":0.0, "budget":0.0, "grains":[], "tip_before":home + Vector2(2, 1)}
+func bait_slot(bait_id: int) -> int:
+	for index in baits.size():
+		if int(baits[index].bait_id)==bait_id: return index
+	return -1
+
+func _assign_bait_identity(bait: Dictionary, forced_hook: int=-1) -> Dictionary:
+	bait.hook=bool(forced_hook) if forced_hook>=0 else rng.randf()<clampf(rule("bait_hook_probability")*rule("hook_danger"),0,1)
+	var initial_population:=2 if uses_mobile_tackle() else 3
+	var feasible: bool=rule("bait_danger_min")+rule("bait_safe_min")<=initial_population
+	if forced_hook<0:
+		var danger:=0
+		var population:=1
+		for existing in baits:
+			if existing.id==bait.id or not existing.active or not _remaining(existing): continue
+			population+=1
+			danger+=int(existing.hook and not existing.removed)
+		var minimum:=int(rule("bait_danger_min"))
+		var maximum:=mini(int(rule("bait_danger_max")),maxi(0,population-int(rule("bait_safe_min"))))
+		var safe_allowed: bool=danger>=minimum and danger<=maximum
+		var hook_allowed: bool=danger+1>=minimum and danger+1<=maximum
+		feasible=safe_allowed or hook_allowed
+		if safe_allowed and not hook_allowed: bait.hook=false
+		elif hook_allowed and not safe_allowed: bait.hook=true
+		elif not feasible:
+			# Existing lifetimes never flip to repair an impossible configuration.
+			# Prefer a safe new target when the population cannot support both minima.
+			bait.hook=danger<minimum and danger<maximum
+	bait.hook_id=0
+	bait.drift_phase=rng.randf_range(0,TAU)
+	# Overlapping physical flutter distributions: useful evidence, never a label.
+	var flutter_a:=rng.randf_range(0.0,4.0)
+	var flutter_b:=rng.randf_range(0.0,4.0)
+	# Both states have the same support: no amplitude range certifies a hook.
+	bait.flutter_amplitude=maxf(flutter_a,flutter_b) if bait.hook else minf(flutter_a,flutter_b)
+	bait.bait_id=next_bait_id
+	next_bait_id+=1
+	if bait.hook:
+		bait.hook_id=next_hook_id
+		next_hook_id+=1
+	truth_events.append({"event":"BAIT_CREATED","tick":simulation_tick,"bait_id":bait.bait_id,"hooked":bait.hook,"seed":rng.seed,"population_feasible":feasible})
+	if truth_events.size()>2048: truth_events.pop_front()
+	return bait
+
+func _initial_hook_assignments() -> Array[bool]:
+	var result: Array[bool]=[]
+	for index in 4: result.append(rng.randf()<clampf(rule("bait_hook_probability")*rule("hook_danger"),0,1))
+	var active: Array[int]=[]
+	active.assign([1,3] if uses_mobile_tackle() else [0,1,3])
+	for index in range(active.size()-1,0,-1):
+		var other:=rng.randi_range(0,index)
+		var swap:=active[index]; active[index]=active[other]; active[other]=swap
+	var maximum:=mini(int(rule("bait_danger_max")),maxi(0,active.size()-int(rule("bait_safe_min"))))
+	var minimum:=mini(int(rule("bait_danger_min")),maximum)
+	var danger:=0
+	for index in active: danger+=int(result[index])
+	for index in active:
+		if danger<minimum and not result[index]: result[index]=true; danger+=1
+		elif danger>maximum and result[index]: result[index]=false; danger-=1
+	return result
+
+func _make_bait(index: int, batch: int = 0, bait_type: String = "cluster") -> Dictionary:
+	var hooked_bait := false
+	var home := Vector2(232,153)
+	var bait := {"bait_type":bait_type,"bait_id":0,"hook_id":0,"rod_id":rod_id,"tackle":index in [0,2],"drift_phase":0.0,"flutter_amplitude":0.0,"created_tick":simulation_tick,"motion_velocity":Vector2.ZERO,"last_disturbance_tick":-1000,"id":index, "home":home, "pos":home, "angle":0.0, "suction_offset":Vector2.ZERO, "hook":hooked_bait, "removed":false, "active":index != 2, "age":0.0, "budget":0.0, "grains":[], "tip_before":home + Vector2(2, 1)}
 	var counts := [24, 14, 6]
 	var radii := [7.0, 4.4, 1.9]
 	var grain_rng := RandomNumberGenerator.new()
@@ -564,7 +656,8 @@ func _make_bait(index: int, batch: int = 0) -> Dictionary:
 			var angle: float = TAU * float(particle) / counts[layer] + layer * 0.37 + grain_rng.randf_range(-0.12,0.12)
 			var radius: float = radii[layer] - grain_rng.randf_range(0,1.7 if layer < 2 else 1.0)
 			var offset := (Vector2.from_angle(angle) * radius * Vector2(1,0.88)).round()
-			bait.grains.append({"id":("%d_%d" % [index, serial] if batch==0 else "%d_%d_%d" % [index,batch,serial]), "offset":offset, "pos":home + offset, "layer":layer, "fleck":serial%5, "free":false, "eaten":false, "progress":0.0, "points":rule("bait_points")*(0.6 / 24 if layer == 0 else 0.4 / 20)})
+			offset=FoodProfile.grain_offset(bait_type,offset,particle,counts[layer],layer)
+			bait.grains.append({"visual_kind":bait_type,"id":("%d_%d" % [index, serial] if batch==0 else "%d_%d_%d" % [index,batch,serial]), "offset":offset, "pos":home + offset, "layer":layer, "fleck":serial%5, "free":false, "eaten":false, "progress":0.0, "points":rule("bait_points")*(0.6 / 24 if layer == 0 else 0.4 / 20)})
 			serial += 1
 	return bait
 
@@ -573,9 +666,22 @@ func refill_hook_bait(index: int) -> void:
 	var loose: Array=[]
 	for grain in baits[index].grains:
 		if grain.free and not grain.eaten: loose.append(grain)
-	baits[index]=_make_bait(index,bait_batch)
+	baits[index]=_assign_bait_identity(_make_bait(index,bait_batch,FoodProfile.roll(rng)))
 	baits[index].active=false
 	baits[index].grains.append_array(loose)
+
+func redeploy_bait(index: int) -> void:
+	# Deployment is a new hook lifecycle, not a hidden flip of an existing identity.
+	# Recasting existing food keeps its type/shape; a full rehang rolls fresh food.
+	# Loose grains retain their old visual_kind when mixed into a replacement.
+	if not _remaining(baits[index],true):
+		refill_hook_bait(index)
+	else:
+		var bait: Dictionary=baits[index].duplicate(true)
+		bait.created_tick=simulation_tick
+		bait.removed=false
+		baits[index]=_assign_bait_identity(bait)
+	baits[index].age=0.0
 
 func mouth() -> Vector2:
 	return fish + aim * 10
@@ -759,13 +865,30 @@ func _rebuild_rope() -> void:
 func step(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: bool = false, slow: bool = false, qte_pressed: bool = false) -> void:
 	# Compatibility helper for existing gameplay probes; production uses advance_tick.
 	if match_paused or match_over or not is_finite(delta) or delta<=0: return
+	var stats_before:=Stats.before(self)
 	_simulate_fish(delta,movement,sucking,interact,dash,slow,qte_pressed)
 	angler.step_tackle_feedback(self,delta)
+	Stats.sample(self,stats_before)
 
 func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: bool = false, slow: bool = false, qte_pressed: bool = false, qte_at_age: float = -1) -> void:
 	if match_paused or match_over or not is_finite(delta) or delta<=0: return
 	simulation_tick+=1
 	elapsed += delta
+	if rules.hunger_enabled: satiety=clampf(satiety-rule("satiety_decay")*delta,0,100)
+	var perception:=Observation.build(self,false)
+	var interpretation:=Suspicion.update(suspicion_by_bait,caution_by_bait,perception,delta,rules,focus_bait_id)
+	suspicion_by_bait=interpretation["values"]
+	caution_by_bait=interpretation.bands
+	for id in suspicion_by_bait.keys():
+		if bait_slot(int(id))<0:
+			suspicion_by_bait.erase(id)
+			caution_by_bait.erase(id)
+	risk_tolerance=interpretation.risk_tolerance
+	caution_state=interpretation.caution_state
+	var instinct:=Instinct.sample(perception,satiety,rules)
+	instinct_drive=instinct.drive
+	focus_bait_id=interpretation.focus_bait_id
+	if not movement_locked(): movement=Instinct.combine(movement,instinct.bias)
 	if hooked==HookState.HOOKED and not landing and net_state!="caught": round_stats.hooked_seconds+=delta
 	if fish.distance_to(HOME) > 34: started = true
 	if challenge and rules.timer_enabled and started: clock = minf(rule("time_limit"), clock + delta)
@@ -773,6 +896,8 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 	result_flash = maxf(0, result_flash - delta)
 	qte_result_age = maxf(0,qte_result_age-delta)
 	hook_cooldown = maxf(0, hook_cooldown - delta)
+	bite_cooldown = maxf(0, bite_cooldown - delta)
+	bite_feedback_age = maxf(0, bite_feedback_age - delta)
 	retry_age = maxf(0, retry_age - delta)
 	wrap_retry = maxf(0,wrap_retry-delta)
 	net_recovery = maxf(0, net_recovery - delta)
@@ -807,7 +932,7 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 		velocity = velocity.move_toward(movement.limit_length(1)*speed,delta*(rule("sprint_accel") if sprinting else rule("swim_accel")))
 		move_fish((velocity*vegetation_drag(fish)+water_velocity(fish)+pull+net_action.impulse)*delta)
 	else: velocity = Vector2.ZERO
-	if not sprinting and stamina_delay<=0: stamina = minf(rule("stamina_max"),stamina+delta*rule("stamina_recovery"))
+	if not sprinting and stamina_delay<=0: stamina = minf(rule("stamina_max"),stamina+delta*rule("stamina_recovery")*satiety_recovery())
 	_update_contacts(delta)
 	_step_net(delta)
 	if match_over or net_state=="caught": return
@@ -817,7 +942,14 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 	elif hooked == HookState.HOOKED:
 		_step_line(delta, qte_pressed and not began_wrap,qte_at_age)
 	if match_over or landing: return
-	for index in baits.size(): _step_bait(index, delta, feeding and hooked!=HookState.MOUTH, previous_mouth)
+	# Resolve all movement/contact first. Defer Suck's food awards so the
+	# automatic mouth-range intake can own this tick without double feeding.
+	var sucked_grains: Array[Dictionary]=[]
+	for index in baits.size(): _step_bait(index, delta, feeding and hooked!=HookState.MOUTH, previous_mouth, true, sucked_grains)
+	if _attempt_bite():
+		feeding=false
+	elif hooked!=HookState.MOUTH:
+		for grain in sucked_grains: _consume_grain(grain)
 	if hooked != HookState.FREE: returning = false
 	if interact and was_free and hooked == HookState.FREE and can_home(): returning = not returning
 	if returning and can_home():
@@ -832,20 +964,23 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 		return
 	_step_supply(delta)
 
-func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2) -> void:
+func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2, defer_intake: bool=false, pending_intake: Array[Dictionary]=[]) -> void:
 	var bait := baits[index]
 	var old_tip := Vector2(bait.tip_before)
+	# Remove visible self-induced suction displacement from the external-motion cue.
+	var old_position: Vector2=Vector2(bait.pos)-Vector2(bait.suction_offset)
 	if bait.active:
 		bait.age += delta
 		# Advance passive/tackle motion from the base, without accumulating last tick's suction offset.
 		bait.pos=Vector2(bait.pos)-Vector2(bait.suction_offset)
-		if uses_mobile_tackle() and bait.hook and not bait.removed and bound_bait!=index:
+		if uses_mobile_tackle() and bait.tackle and not bait.removed and bound_bait!=index:
 			angler.step_free_hook(self,index,delta)
 		elif bound_bait==index and hooked!=HookState.FREE:
 			bait.pos=mouth()-Vector2(2,1).rotated(bait.angle)
 			bait.suction_offset=Vector2.ZERO
 		else:
-			var target: Vector2 = bait.home + water_offset(bait.home)
+			var flutter:=Vector2(sin(elapsed*5.0+float(bait.drift_phase)),cos(elapsed*3.0+float(bait.drift_phase))*0.5)*float(bait.flutter_amplitude)*water_strength
+			var target: Vector2 = bait.home + water_offset(bait.home)+flutter
 			bait.angle = sin(elapsed*0.75+bait.home.y*0.007)*0.16*water_strength
 			bait.pos = Vector2(bait.pos).move_toward(target, delta * 44)
 		if bound_bait!=index or hooked==HookState.FREE:
@@ -870,19 +1005,61 @@ func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2) -> 
 		if grain.free:
 			grain.pos = Vector2(grain.pos).move_toward(mouth(), delta * rule("pellet_speed") * Suction.pellet_gain(power))
 			if Vector2(grain.pos).distance_to(mouth()) < 4:
-				grain.eaten = true
-				if not counted.has(grain.id):
-					counted[grain.id] = true
-					score += float(grain.points)
-					last_eat_at = elapsed
-					stamina = minf(rule("stamina_max"),stamina+float(grain.points)*rule("food_recovery"))
-					play_feedback("eat")
+				if defer_intake: pending_intake.append(grain)
+				else: _consume_grain(grain)
 		elif grain.layer == layer:
 			grain.progress += delta * pull * Suction.peel_gain(power,grain.layer) * rule("pellet_detach")
 			if grain.progress >= 1 and bait.budget >= 1:
 				grain.free = true
 				bait.budget -= 1
+	if delta>0:
+		bait.motion_velocity=(Vector2(bait.pos)-Vector2(bait.suction_offset)-old_position)/delta
+		if (Vector2(bait.motion_velocity)-water_velocity(bait.pos)).length()>8: bait.last_disturbance_tick=simulation_tick
 	bait.tip_before = _tip(index)
+
+# Shared accounting preserves Suck's existing per-grain values and de-duplication.
+func _consume_grain(grain: Dictionary, sound: bool = true) -> void:
+	grain.eaten=true
+	if counted.has(grain.id): return
+	counted[grain.id]=true
+	score+=float(grain.points)
+	if rules.hunger_enabled: satiety=clampf(satiety+float(grain.points)*rule("satiety_food_value"),0,100)
+	last_eat_at=elapsed
+	stamina=minf(rule("stamina_max"),stamina+float(grain.points)*rule("food_recovery"))
+	if sound: play_feedback("eat")
+
+func _can_bite() -> bool:
+	return not (match_paused or match_over or landing or returning or net_state=="caught" or hooked==HookState.MOUTH or bite_cooldown>0)
+
+func _bite_candidates() -> Array[Dictionary]:
+	# Eligibility never inspects hidden hook truth.
+	var candidates: Array[Dictionary]=[]
+	var origin:=mouth()
+	var radius_squared:=pow(rule("bite_range"),2)
+	for bait in baits:
+		for order in bait.grains.size():
+			var grain: Dictionary=bait.grains[order]
+			if grain.eaten or counted.has(grain.id) or (not bait.active and not grain.free): continue
+			var distance:=origin.distance_squared_to(Vector2(grain.pos))
+			if distance<=radius_squared:
+				candidates.append({"distance":distance,"bait_id":int(bait.bait_id),"order":order,"grain":grain})
+	candidates.sort_custom(func(a: Dictionary,b: Dictionary) -> bool:
+		if a.distance!=b.distance: return a.distance<b.distance
+		if a.bait_id!=b.bait_id: return a.bait_id<b.bait_id
+		return a.order<b.order)
+	return candidates
+
+func _attempt_bite() -> bool:
+	# Ordinary swept mouth/tip contact resolves before automatic intake.
+	if not _can_bite(): return false
+	var candidates:=_bite_candidates()
+	if candidates.is_empty(): return false
+	bite_feedback_age=BITE_FEEDBACK_SECONDS
+	play_feedback("bite")
+	bite_cooldown=rule("bite_cooldown")
+	for index in mini(int(rule("bite_intake")),candidates.size()):
+		_consume_grain(candidates[index].grain,false)
+	return true
 
 func _step_bait_suction(bait: Dictionary, delta: float, sucking: bool) -> void:
 	# Both kinds of food share whole-cluster displacement and response speed.
@@ -907,6 +1084,7 @@ func _enter_hook(index: int) -> void:
 	returning = false
 
 func _attach_hook() -> void:
+	round_stats.hook_events+=1
 	for role in effort_checks: Effort.reset(effort_checks[role],rng.randf_range(1.2,2.8))
 	hooked = HookState.HOOKED
 	qte = ""
@@ -1088,7 +1266,7 @@ func _step_supply(delta: float) -> void:
 	if not challenge or hooked != HookState.FREE or not net_state in ["wait", "rest"]: return
 	if cycle_phase.is_empty():
 		for index in baits.size():
-			if uses_mobile_tackle() and baits[index].hook: continue
+			if uses_mobile_tackle() and baits[index].tackle: continue
 			if baits[index].active and (baits[index].age >= rule("bait_cycle") or not _remaining(baits[index])):
 				cycle_slot = index
 				cycle_phase = "warning"
@@ -1101,14 +1279,15 @@ func _step_supply(delta: float) -> void:
 			cycle_phase = "refill"
 			cycle_age = 0
 		elif cycle_phase == "refill" and cycle_age >= rule("bait_refill"):
-			if _remaining(baits[cycle_slot], true): supply_queue.append(cycle_slot)
+			if not cycle_slot in supply_queue: supply_queue.append(cycle_slot)
 			var next := -1
 			for candidate in supply_queue:
-				if candidate % 2 == cycle_slot % 2 and not baits[candidate].active:
+				if not baits[candidate].active and (not uses_mobile_tackle() or not baits[candidate].tackle):
 					next = candidate
 					break
 			if next >= 0:
 				supply_queue.erase(next)
+				redeploy_bait(next)
 				baits[next].active = true
 				baits[next].age = 0
 			cycle_phase = ""
@@ -1201,3 +1380,14 @@ func finish(success: bool, why: String) -> void:
 	velocity=Vector2.ZERO
 	match_ended.emit(winner_role,reason)
 
+
+func satiety_band() -> String:
+	if not rules.hunger_enabled: return "NORMAL"
+	if satiety<=rule("satiety_starving_threshold"): return "STARVING"
+	if satiety<=rule("satiety_critical_threshold"): return "CRITICAL"
+	if satiety<=rule("satiety_low_threshold"): return "HUNGRY"
+	return "NORMAL"
+
+func satiety_recovery() -> float:
+	if not rules.hunger_enabled: return 1.0
+	return lerpf(rule("satiety_recovery_min"),1.0,clampf(satiety/rule("satiety_low_threshold"),0,1))

@@ -2,19 +2,34 @@
 
 一个 2D 像素风格的人鱼对抗游戏：小鱼在水下觅食、缠线和逃脱，钓鱼人在岸边控竿、收放线与抄网。支持单机挑战、自由练习和一人对一鱼的局域网联机。
 
-**本分支源码版本：0.22.4 · 最新公开 Windows 试玩版本：0.24.1** · Windows x64 · Godot 4.7.2
+**当前源码与公开 Windows 试玩版本：0.24.2（三种饵型试玩版）** · Windows x64 · Godot 4.7.2
 
 ## 下载试玩
 
-从 [v0.24.1 发行页](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.24.1)下载 [BaitbreakPixel-0.24.1.zip](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.24.1/BaitbreakPixel-0.24.1.zip)，解压后运行 `BaitbreakPixel.exe`。EXE 和同目录的 PCK 需要放在一起，玩家无需安装 Godot。完整操作以包内“开始试玩.txt”为准。
+### 公开 Windows 试玩包：0.24.2
 
-2026-10-02 已逐版发布 v0.21.0–v0.24.1 共 14 个 Windows 试玩包，每版附 ZIP 与 SHA-256 校验文件。最新 v0.24.1 包含嘴边自动咬食；[全部 Releases](https://github.com/lljh2777-cyber/BaitbreakPixel/releases)与[发布核验记录](https://github.com/lljh2777-cyber/BaitbreakPixel/blob/3f916e4609f6758e5b928f6cf343b075210ecfd4/docs/test-reports/GITHUB-RELEASES-2026-10-02.md)。
+从 [v0.24.2 发行页](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.24.2)下载 [BaitbreakPixel-0.24.2.zip](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.24.2/BaitbreakPixel-0.24.2.zip)，解压后运行 `BaitbreakPixel.exe`。EXE 与同目录 PCK 保持在一起，玩家无需安装 Godot。小鱼嘴边有食物时自动咬食，左键吸食；完整操作见包内说明。
 
-本分支源码及本地包仍为 0.22.4，本地目录为相邻 `Releases/BaitbreakPixel-0.22.4`。0.21 扩大水域并加入跟随镜头，完善草木石环境，鱼视角隐藏钩体、吊线及饵料身份，钩饵与散饵整团都随吸食向鱼嘴移动。0.22 加入轻吸剥外层、猛吸快速拉近的取舍，以及饵团拉伸、流线、拖尾和入口反馈。0.22.1 让鱼吸食时减速，默认游速为当前游动模式的 68%，松开后恢复。0.22.2 完善水体渐变、柔和透光、远景草木与视差，并加入沙泥水底、接地阴影和树根巢穴。0.22.3 参考自然池塘的岩坡、长茎荷叶和垂根，增加远中近景视差、收窄的沙砾通道、深色前景和木石体积明暗。0.22.4 修正木头的透明效果：鱼接触任一相连部分，主干、枝干与根系同步淡出和恢复，连接处不再重复叠加透明度。
+2026-10-02 已逐版发布 **0.21.0–0.24.2，共 15 个 Release**，每版均附 ZIP 和 `SHA256SUMS.txt`。其他版本见 [全部 Releases](https://github.com/lljh2777-cyber/BaitbreakPixel/releases)，核对结果见 [0.24.2 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.2.md)和[此前 14 版发布记录](docs/test-reports/GITHUB-RELEASES-2026-10-02.md)。0.24.2 仍用于人工试玩，发布包不代表已经完成人工手感与平衡验收。
 
-本分支场景更新、原生画面与 Windows 包验证见 [0.22.4 整木透明效果验证](docs/test-reports/TEST-REPORT-0.22.4.md)。
+### Phase 2.2：0.24.2 饵型人工试玩门
 
-本分支源码的完整操作见 [试玩说明](docs/gameplay/PLAY.txt)，双人连接方法见 [联机指南](docs/gameplay/NETWORK.md)。
+用户允许从自动咬食阶段继续，既有反馈仍可重新打开。新增 Cluster 颗粒团、Worm 弯曲细条、Chunk 块状食物及公开形状/气味线索。单机开局三团各一种；双人保留两团预算，随机选择两种，不为凑三类增加食物。新挂饵从三类中抽取，类型与钩分配独立。
+
+本阶段只建立形态与生命周期基础：食物数、计分和摄食/饱食倍率保持原值，不声称已经实现类型效率差异或完成组合平衡。自动咬食仍为嘴边 18 px、每口最多 4 粒、成功后冷却 0.40 秒，无咬食按键。请先确认三种形态是否清楚、是否有一种看起来天然等于危险饵；确认前不进入 P2.3。
+
+对应 Windows ZIP 已生成、核对并公开发布，可直接体验三种饵型；本地目录为 `Releases/BaitbreakPixel-0.24.2`。见 [饵型实现边界](docs/architecture/PHASE02-BAIT-TYPES.md)、[验证与人工试玩清单](docs/test-reports/PHASE02-BAIT-VALIDATION.md)。历史自动咬食报告保留在 [P2.1 验证](docs/test-reports/PHASE02-BITE-VALIDATION.md)。
+
+0.23.0 新增饱食度、可抵抗的本能偏移、基于可见线索的三档警惕，以及按饵生命周期随机决定的隐藏鱼钩。保持一条玩家鱼和现有主鱼竿，没有加入自动吸食、多鱼或长期记忆。实施与验收范围见 [Phase 0–1 检查记录](docs/architecture/PHASE-0-1.md)。当前版本尚需人工试玩确认控制手感与核心博弈，不能将自动统计当作“已经好玩”的证明。
+
+0.22.6 基于 `96faf4d`，修复首次打开玩法方案页时因方案目录尚不存在而产生的引擎错误；同时维护测试入口、截图产物路径和文档，并排除未引用的调色着色器。检查环境与范围见 [2026-10-02 维护报告](docs/test-reports/TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md)，不能将原始 0.22.5 的 Windows 检查结果当成本次改动的验证。
+
+- 0.21：扩大水域、跟随镜头、完善草木石环境；鱼视角隐藏钩体、吊线及饵料身份，钩饵与散饵整团共用吸动响应
+- 0.22.0–0.22.1：轻吸剥外层、猛吸快速拉近，增加拉伸、流线与入口反馈；吸食时默认以当前游动模式的 68% 游速移动
+- 0.22.2–0.22.4：水体层次、自然树根巢穴、远中近景视差及木石体积明暗；相连主干、枝干和根系统一透明，连接处不重复混合
+- 0.22.5：精简发行包并整理测试与打包工具，玩法、规则及画面与 0.22.4 相同
+
+逐版记录见 [开发历史](docs/history/CHANGELOG.md)，包体校验来源和后续维护约定见 [版本与包索引说明](docs/history/RELEASES.md)。当前源码的完整操作见 [试玩说明](docs/gameplay/PLAY.txt)，双人连接方法见 [联机指南](docs/gameplay/NETWORK.md)。
 
 ## 游戏画面
 
@@ -26,7 +41,7 @@
 
 | 角色 | 操作 |
 | --- | --- |
-| 小鱼 | WASD 游动，鼠标朝向；左键吸食，滚轮调吸力，右键持续冲刺；空格进行 QTE 和主动缠线；满足目标后按 E 回巢 |
+| 小鱼 | WASD 游动，鼠标朝向；左键吸食，嘴边自动咬食，滚轮调吸力，右键持续冲刺；空格进行 QTE 和主动缠线；满足目标后按 E 回巢 |
 | 钓鱼人 | A/D 左右移竿，W/S 收放线，Q 下钩或补饵；F 尝试解缠，空格进行 QTE；E 进入水下观察，左键依次选择抄网起点 A、终点 B |
 | 通用 | H 查看帮助，Esc 打开菜单，F2 / F3 调整玩法规则，F11 全屏 |
 
@@ -44,15 +59,15 @@
 .\Build-Pixel.ps1 -GodotDirectory 'D:\Tools\Godot_v4.7.2-stable_win64.exe'
 ```
 
-该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.22.4` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
+该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.24.1` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
 
-核心抄网逻辑检查示例（替换为本机引擎路径）：
+当前测试入口、套件状态和产物目录配置见 [测试运行指南](tests/README.md)。核心抄网逻辑检查示例（替换为本机引擎路径）：
 
 ```powershell
 & 'D:\Tools\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe' --headless --path . --script res://tests/net_v021.gd -- --test-profile
 ```
 
-测试使用独立配置。其他检查与运行要求见 [0.22.4 整木透明效果验证](docs/test-reports/TEST-REPORT-0.22.4.md)；带原生画面截图的脚本需要图形窗口，不使用 `--headless`。
+测试使用独立配置；带原生画面截图的脚本需要图形窗口，不使用 `--headless`。本次检查见 [2026-10-02 维护报告](docs/test-reports/TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md)；此前 Windows 试玩包的验证保留在 [0.22.5 原始报告](docs/test-reports/TEST-REPORT-0.22.5.md)。
 
 ## 项目结构与文档
 
@@ -60,6 +75,6 @@
 - `scenes/`、`assets/`：场景和素材；素材制作记录与素材放在一起。
 - `tests/`、`tools/`：回归检查与开发工具。
 - [`docs/`](docs/README.md)：[架构](docs/architecture/)、[玩法](docs/gameplay/)、[测试报告](docs/test-reports/README.md)、[开发历史](docs/history/CHANGELOG.md)。
-- [`history/releases.json`](history/releases.json)：历代发行包校验记录；历史标签的恢复范围见 [历史恢复说明](docs/history/HISTORY-RECOVERY.md)。
+- [`history/releases.json`](history/releases.json)：42 个历史恢复包及 0.21 起本地试玩包的分区索引；字段与来源见 [索引说明](docs/history/RELEASES.md)，历史标签的恢复范围见 [历史恢复说明](docs/history/HISTORY-RECOVERY.md)。
 
 `.godot/` 缓存、`artifacts/` 测试产物和游戏发行包不纳入源码仓库。旧版可运行包保存在 [Releases](https://github.com/lljh2777-cyber/BaitbreakPixel/releases)。

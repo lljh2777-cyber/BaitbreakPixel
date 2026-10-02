@@ -27,6 +27,7 @@ func handle(event: InputEvent, role: String, point: Vector2) -> void:
 		elif event.button_index==MOUSE_BUTTON_WHEEL_DOWN: power_steps-=1
 
 func fish_command(world: Node2D, pointer: Vector2) -> Dictionary:
+	if needs_neutral and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT): needs_neutral=false
 	var direction: Vector2=pointer-world.fish
 	var result := {
 		"move":Input.get_vector("left","right","up","down"),

@@ -2,13 +2,20 @@ extends RefCounted
 
 # Explicit, versioned value schema. Local views, input sources and profiles are excluded.
 const Rules = preload("res://scripts/game_rules.gd")
-const SCHEMA := 12
+const FoodProfile = preload("res://scripts/food_profile.gd")
+const SCHEMA := 14
+# Schema 14 remains the authority contract. This mandatory extension guard rejects
+# pre-archetype snapshots even when no network exact-build handshake is involved.
+const BAIT_PROFILE_VERSION := 1
 const MAP_ID := "pond_v2"
 const WORLD_FIELDS: Array[String] = [
+	"fish_id", "rod_id", "next_bait_id", "next_hook_id",
 	"rules",
 	"net_action",
 	"qte_timing",
 	"fish",
+	# Deprecated compatibility field: retain for schema 12 snapshots/replays.
+	# Gameplay targets net_to; remove only with an explicit schema migration.
 	"net_aim",
 	"manual_net",
 	"net_trail",
@@ -20,6 +27,9 @@ const WORLD_FIELDS: Array[String] = [
 	"aim",
 	"power",
 	"stamina",
+	"satiety", "instinct_drive", "focus_bait_id",
+	"truth_events",
+	"suspicion_by_bait", "caution_by_bait", "risk_tolerance", "caution_state",
 	"sprinting",
 	"sprint_exhausted",
 	"stamina_delay",
@@ -27,6 +37,7 @@ const WORLD_FIELDS: Array[String] = [
 	"hooked",
 	"bound_bait",
 	"hook_cooldown",
+	"bite_cooldown", "bite_feedback_age",
 	"rope_path",
 	"rope_length",
 	"tension",
@@ -160,7 +171,7 @@ static func capture(world: Node2D) -> Dictionary:
 	for key in WORLD_FIELDS: state[key]=world.get(key)
 	for key in RIG_FIELDS: rig[key]=world.angler.get(key)
 	# Variant serialization also detaches packed arrays and nested grain/wrap data.
-	return bytes_to_var(var_to_bytes({"schema":SCHEMA,"map_id":MAP_ID,"state":state,"rig":rig,"rng_seed":world.rng.seed,"rng_state":world.rng.state}))
+	return bytes_to_var(var_to_bytes({"schema":SCHEMA,"bait_profile_version":BAIT_PROFILE_VERSION,"map_id":MAP_ID,"state":state,"rig":rig,"rng_seed":world.rng.seed,"rng_state":world.rng.state}))
 
 static func plain(value: Variant) -> bool:
 	match typeof(value):
@@ -191,6 +202,8 @@ static func record_matches(values: Dictionary, reference: Dictionary, excluded: 
 	return true
 
 static func restore(world: Node2D, snapshot: Dictionary) -> bool:
+	if not snapshot.get("bait_profile_version") is int or snapshot.bait_profile_version!=BAIT_PROFILE_VERSION: return false
+	if snapshot.size()!=7: return false
 	if snapshot.get("schema")!=SCHEMA or snapshot.get("map_id")!=MAP_ID or not plain(snapshot): return false
 	if not snapshot.get("state") is Dictionary or not snapshot.get("rig") is Dictionary: return false
 	if not snapshot.get("rng_seed") is int or not snapshot.get("rng_state") is int: return false
@@ -202,6 +215,19 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 	if not fields_match(world,state,WORLD_FIELDS) or not fields_match(world.angler,snapshot.rig,RIG_FIELDS): return false
 	if not state.get("net_action") is Dictionary or not record_matches(state.net_action,world.Net.fresh()): return false
 	if state.net_action.age<0 or state.net_action.slow_age<0 or state.net_action.impulse.length()>1000: return false
+	if not state.caution_state in ["CALM","UNEASY","ALARMED"] or state.risk_tolerance<0 or state.risk_tolerance>1: return false
+	for id in state.suspicion_by_bait:
+		if not id is int or id<=0 or not (state.suspicion_by_bait[id] is float or state.suspicion_by_bait[id] is int) or state.suspicion_by_bait[id]<0 or state.suspicion_by_bait[id]>1: return false
+	for id in state.caution_by_bait:
+		if not id is int or not state.caution_by_bait[id] in ["CALM","UNEASY","ALARMED"]: return false
+	if state.instinct_drive<0 or state.instinct_drive>1 or state.focus_bait_id< -1: return false
+	if state.truth_events.size()>2048: return false
+	for event in state.truth_events:
+		if not event is Dictionary or event.get("event")!="BAIT_CREATED": return false
+		if not event.get("tick") is int or event.tick<0 or event.tick>state.simulation_tick: return false
+		if not event.get("bait_id") is int or event.bait_id<=0 or not event.get("hooked") is bool or not event.get("seed") is int: return false
+	if state.bite_cooldown<0 or state.bite_cooldown>state.rules.bite_cooldown+0.000001 or state.bite_feedback_age<0 or state.bite_feedback_age>world.BITE_FEEDBACK_SECONDS+0.000001: return false
+	if state.satiety<0 or state.satiety>100: return false
 	if state.stamina<0 or state.stamina>state.rules.stamina_max: return false
 	if state.last_eat_at < -10 or state.last_eat_at > state.elapsed+0.000001: return false
 	if snapshot.rig.surface_x<0 or snapshot.rig.surface_x>world.Layout.SIZE.x or absf(snapshot.rig.surface_velocity)>10000: return false
@@ -228,12 +254,29 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 		if state.hooked!=2 or state.wraps.is_empty() or not state.wraps[-1] is Dictionary or state.wraps[-1].get("target")!=state.untangle_target: return false
 		if state.effort_checks.angler.kind!="untangle" or state.effort_checks.angler.active!=(state.untangle_phase=="check"): return false
 	var bait_reference: Dictionary=world._make_bait(0)
+	var bait_ids: Dictionary={}
+	var hook_ids: Dictionary={}
+	var grain_ids: Dictionary={}
+	if state.fish_id<=0 or state.rod_id<=0 or state.next_bait_id<=0 or state.next_hook_id<=0: return false
 	for bait in state.baits:
 		if not bait is Dictionary or not bait.get("grains") is Array or bait.grains.size()>2048: return false
-		if not record_matches(bait,bait_reference,"grains") or bait.suction_offset.length()>78.001: return false
+		if bait.size()!=bait_reference.size() or not record_matches(bait,bait_reference,"grains") or bait.suction_offset.length()>78.001: return false
+		if not FoodProfile.valid_type(bait.get("bait_type")): return false
+		for identity in ["bait_id","hook_id","rod_id","created_tick"]:
+			if not bait[identity] is int: return false
+		if bait.bait_id<=0 or bait.bait_id>=state.next_bait_id or bait_ids.has(bait.bait_id): return false
+		bait_ids[bait.bait_id]=true
+		if bait.rod_id!=state.rod_id or bait.created_tick<0 or bait.created_tick>state.simulation_tick: return false
+		if bait.hook_id<0 or bait.hook_id>=state.next_hook_id: return false
+		if bait.hook_id>0:
+			if hook_ids.has(bait.hook_id): return false
+			hook_ids[bait.hook_id]=true
 		for grain in bait.grains:
-			if not grain is Dictionary or not record_matches(grain,bait_reference.grains[0]): return false
-			if not grain.id is String or grain.id.is_empty() or grain.id.length()>64: return false
+			if not grain is Dictionary or grain.size()!=bait_reference.grains[0].size() or not record_matches(grain,bait_reference.grains[0]): return false
+			if not FoodProfile.valid_type(grain.get("visual_kind")): return false
+			if not grain.free and grain.visual_kind!=bait.bait_type: return false
+			if not grain.id is String or grain.id.is_empty() or grain.id.length()>64 or grain_ids.has(grain.id): return false
+			grain_ids[grain.id]=true
 	for wrap in state.wraps:
 		if not wrap is Dictionary: return false
 		if not record_matches(wrap,{"center":Vector2.ZERO,"radii":Vector2.ONE,"entry":Vector2.ZERO,"loop":PackedVector2Array(),"progress":0.0,"target":0}): return false

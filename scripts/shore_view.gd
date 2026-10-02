@@ -57,9 +57,10 @@ static func tackle_pose(world: Node2D, t: float, motion: Dictionary={}) -> Dicti
 	return {"hand":pose,"rod":rod,"tip":rod[-1],"load":load,"reel_speed":reel_speed}
 
 static func rig_index(world: Node2D) -> int:
+	# Ownership/deployment is physical tackle state, never hidden hook assignment.
 	if world.bound_bait>=0: return world.bound_bait
 	for index in world.baits.size():
-		if world.baits[index].hook and world.baits[index].active and not world.baits[index].removed: return index
+		if world.baits[index].tackle and world.baits[index].active and not world.baits[index].removed: return index
 	return -1
 
 static func float_position(world: Node2D, t: float, motion: Dictionary={}) -> Vector2:
@@ -87,6 +88,9 @@ static func surface_line(world: Node2D, tip: Vector2, end: Vector2) -> PackedVec
 	var slack:=0.0
 	if world.hooked==world.HookState.HOOKED:
 		slack=maxf(0,world.rope_length-world.Rope.length_of(world.rope_path))
+	elif rig_index(world)>=0:
+		var bait: Dictionary=world.baits[rig_index(world)]
+		slack=maxf(0,world.angler.free_line_length-world.angler.anchor().distance_to(bait.pos))
 	var sag:=lerpf(13,1.5,load)+minf(slack*0.22,25)
 	var trail:float=clampf(-world.angler.surface_velocity*0.11,-12,12)*(1-load*0.7)
 	var line:=PackedVector2Array()
@@ -193,6 +197,15 @@ func _tackle(view: Node2D, world: Node2D, t: float) -> void:
 		var line := surface_line(world,tip,line_end)
 		for part in line.size(): line[part]=line[part].round()
 		view.draw_polyline(line,Color(CREAM,0.85),1)
+		# Feed marks follow integrated physical spool motion, including network playback.
+		# No held-key animation while undeployed, blocked, or at a line limit.
+		if absf(reel_speed)>0.5 and not world.angler.casting and not world.Net.busy(world):
+			var phase: float=world.angler.reel_phase/TAU if reel_speed<0 else world.angler.release_phase/TAU
+			for mark in 3:
+				var travel: float=fposmod(phase+float(mark)/3.0,1.0)
+				if reel_speed<0: travel=1.0-travel
+				var part: int=clampi(int(travel*(line.size()-2)),0,line.size()-2)
+				view.draw_line(line[part],line[part+1],GOLD if reel_speed<0 else MINT,2)
 		if not world.angler.casting and not world.landing and not (world.net_state=="caught" and world.fish.y<WATER_LEVEL):
 			for ring in 2:
 				var age := fmod(t*0.6+ring*0.5,1)

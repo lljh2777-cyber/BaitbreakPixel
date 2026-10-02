@@ -59,5 +59,5 @@ func run() -> void:
 		gap=maxf(gap,nearest)
 	check(gap<0.20,"last grass contact releases smoothly into the free strand")
 	w.free()
-	print("GRASS_BINDING_V0183 | passed=",passed," | failed=",failed)
+	print("GRASS_BINDING_V021 | passed=",passed," | failed=",failed)
 	quit(1 if failed else 0)

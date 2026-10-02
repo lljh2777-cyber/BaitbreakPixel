@@ -1,0 +1,13 @@
+{
+	"accuracy": 0.744666666666667,
+	"auc": 0.816810340996162,
+	"false_negatives": 219,
+	"false_positives": 164,
+	"feature": "mean observed water-relative bait velocity, 1–2 seconds",
+	"holdout_examples": 1500,
+	"holdout_seeds": "501–1000",
+	"note": "Simple held-out classifier is a diagnostic, not proof against every possible classifier or long-duration inference.",
+	"seeds": 1000,
+	"threshold": 7.0,
+	"training_seeds": "1–500"
+}

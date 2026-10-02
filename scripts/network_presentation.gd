@@ -2,6 +2,7 @@ extends RefCounted
 
 # A separate render-only world. The latest authority state is never interpolated in place.
 const World=preload("res://scripts/world_simulation.gd")
+const FishNetworkObservation=preload("res://scripts/fish_network_observation.gd")
 var world := World.new()
 var previous: Dictionary={}
 var current: Dictionary={}
@@ -12,20 +13,26 @@ func clear() -> void:
 	previous.clear()
 	current.clear()
 
-func accept(snapshot: Dictionary, now: float) -> void:
-	previous=current
-	current=snapshot
+func accept(snapshot: Dictionary, now: float, role: String = "angler") -> bool:
+	var accepted: bool=FishNetworkObservation.apply(world,snapshot) if role=="fish" else world.restore_snapshot(snapshot)
+	if not accepted: return false
+	previous=current if current.get("format","")==snapshot.get("format","") else {}
+	current=snapshot.duplicate(true)
 	if not previous.is_empty(): interval=clampf((snapshot.state.simulation_tick-previous.state.simulation_tick)/60.0,1.0/60,0.15)
 	received_at=now
-	world.restore_snapshot(snapshot)
+	return true
 
 func sample(now: float) -> Node2D:
 	if current.is_empty() or previous.is_empty(): return world
 	var a: Dictionary=previous.state
 	var b: Dictionary=current.state
+	var check_roles: Array=["fish"] if current.get("format")==FishNetworkObservation.FORMAT else ["fish","angler"]
 	var ratio := clampf((now-received_at)/interval,0,1)
 	world.elapsed=lerpf(a.elapsed,b.elapsed,ratio)
 	world.power=lerpf(a.power,b.power,ratio)
+	# Snap on a new discrete action; only interpolate decay inside that action.
+	world.bite_feedback_age=lerpf(a.bite_feedback_age,b.bite_feedback_age,ratio) if b.bite_feedback_age<=a.bite_feedback_age else b.bite_feedback_age
+	world.bite_cooldown=lerpf(a.bite_cooldown,b.bite_cooldown,ratio) if b.bite_cooldown<=a.bite_cooldown else b.bite_cooldown
 	world.simulation_tick=roundi(lerpf(a.simulation_tick,b.simulation_tick,ratio))
 	if a.hooked==b.hooked and a.net_state==b.net_state and not b.net_state=="caught" and not b.landing:
 		world.fish=Vector2(a.fish).lerp(b.fish,ratio)
@@ -48,9 +55,10 @@ func sample(now: float) -> Node2D:
 			if a.wraps[index].target==b.wraps[index].target:
 				world.wraps[index].progress=lerpf(a.wraps[index].progress,b.wraps[index].progress,ratio)
 	for index in world.baits.size():
+		if index>=a.baits.size(): continue
 		var old: Dictionary=a.baits[index]
 		var latest: Dictionary=b.baits[index]
-		if old.id!=latest.id or old.active!=latest.active: continue
+		if old.bait_id!=latest.bait_id or old.active!=latest.active: continue
 		world.baits[index].pos=Vector2(old.pos).lerp(latest.pos,ratio)
 		world.baits[index].angle=lerp_angle(old.angle,latest.angle,ratio)
 		world.baits[index].suction_offset=Vector2(old.suction_offset).lerp(latest.suction_offset,ratio)
@@ -61,7 +69,7 @@ func sample(now: float) -> Node2D:
 	if not b.qte.is_empty() and a.qte_id==b.qte_id and a.qte==b.qte:
 		world.qte_age=lerpf(a.qte_age,b.qte_age,ratio)
 	else: world.qte_age=b.qte_age
-	for role in ["fish","angler"]:
+	for role in check_roles:
 		var old: Dictionary=a.effort_checks[role]
 		var latest: Dictionary=b.effort_checks[role]
 		if old.active and latest.active and old.id==latest.id:
@@ -69,11 +77,11 @@ func sample(now: float) -> Node2D:
 		else: world.effort_checks[role].age=latest.age
 	# On a newly appearing check use the current tick, matching its unsmoothed age.
 	var changed_check: bool=a.qte_id!=b.qte_id or a.qte!=b.qte
-	for role in ["fish","angler"]:
+	for role in check_roles:
 		changed_check=changed_check or a.effort_checks[role].id!=b.effort_checks[role].id or a.effort_checks[role].active!=b.effort_checks[role].active
 	if changed_check: world.simulation_tick=b.simulation_tick; world.qte_age=b.qte_age
 	if changed_check:
-		for role in ["fish","angler"]: world.effort_checks[role].age=b.effort_checks[role].age
+		for role in check_roles: world.effort_checks[role].age=b.effort_checks[role].age
 	if a.net_action.observing and b.net_action.observing:
 		world.net_action.age=lerpf(a.net_action.age,b.net_action.age,ratio)
 	# A sweep is a single segment. During retraction interpolate time on the actual

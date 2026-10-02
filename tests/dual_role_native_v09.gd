@@ -1,16 +1,22 @@
 extends SceneTree
+var failures := 0
 
 const Main=preload("res://scenes/main.tscn")
 var game: Node2D
 var checks:=0
 var original_mouse:=Vector2i.ZERO
-var output:="E:/Fish_catches_people/BaitbreakPixel/artifacts"
+var output:="res://artifacts"
 
-func _initialize() -> void: call_deferred("run")
+func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This check needs a renderer; rerun without --headless.")
+		quit(2)
+		return
+	call_deferred("run")
 
 func require(ok: bool, message: String) -> bool:
 	if ok: checks+=1; print("DUAL_NATIVE_PASS | ",message)
-	else: push_error("DUAL_NATIVE_FAIL | "+message); DisplayServer.warp_mouse(original_mouse); quit(1)
+	else: failures += 1; push_error("DUAL_NATIVE_FAIL | "+message); DisplayServer.warp_mouse(original_mouse); quit(1)
 	return ok
 
 func key(code: Key, pressed: bool) -> void:
@@ -54,9 +60,10 @@ func click_button(prefix: String) -> bool:
 	return require(false,"missing button: "+prefix)
 
 func run() -> void:
+	if not prepare_capture_output():
+		quit(2)
+		return
 	original_mouse=DisplayServer.mouse_get_position()
-	for argument in OS.get_cmdline_user_args():
-		if argument.begins_with("--visual-output="): output=argument.trim_prefix("--visual-output=")
 	game=Main.instantiate()
 	root.add_child(game)
 	game.capture_mode="dual-native"
@@ -149,4 +156,20 @@ func run() -> void:
 	game.queue_free()
 	await process_frame
 	DisplayServer.warp_mouse(original_mouse)
-	quit()
+	quit(1 if failures else 0)
+
+func prepare_capture_output() -> bool:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--visual-output="):
+			output = argument.trim_prefix("--visual-output=")
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--capture-output-directory="):
+			output = argument.trim_prefix("--capture-output-directory=")
+	if output.strip_edges().is_empty():
+		push_error("CAPTURE_OUTPUT_FAIL | --capture-output-directory must not be empty")
+		return false
+	var error := DirAccess.make_dir_recursive_absolute(output)
+	if error != OK:
+		push_error("CAPTURE_OUTPUT_FAIL | cannot create '%s': %s; choose a writable --capture-output-directory" % [output, error_string(error)])
+		return false
+	return true

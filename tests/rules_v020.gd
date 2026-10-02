@@ -110,6 +110,8 @@ func run() -> void:
 	var migrated:=Store.load_profile(cfg)
 	check(is_equal_approx(migrated.line_force,1.7) and migrated.qte_entry_window==0.4 and migrated.qte_slack_window==0.4,"old profile timings and practice values migrate")
 	Store.save_profile(cfg,migrated); check(Store.load_profile(cfg)==migrated,"new profile schema has a stable roundtrip")
+	var missing_presets := "user://rules-presets-missing-"+str(OS.get_process_id())+"-"+str(Time.get_ticks_usec())
+	check(Store.preset_names(missing_presets).is_empty() and not DirAccess.dir_exists_absolute(missing_presets),"first-use missing preset directory lists no presets without errors or filesystem changes")
 	check(Store.save_preset("user://rules-presets-test","rules-regression",migrated)==OK and Store.load_preset("user://rules-presets-test","rules-regression").values==migrated,"named preset saves and reloads JSON")
 	check(Store.save_preset("user://rules-presets-test","../unsafe",migrated)!=OK,"preset name cannot escape its directory")
 	check(Rules.parse_document({"format":"baitbreak-rules","version":999,"values":{}}).has("error") and Rules.parse_document({"format":"baitbreak-rules","version":1,"values":{"unknown":4}}).has("error"),"unsupported and unknown import values are rejected")

@@ -1,9 +1,15 @@
 extends SceneTree
+var output := "res://artifacts"
 const Main=preload("res://scenes/main.tscn")
 var game: Node2D
 var passed:=0
 var failed:=0
-func _initialize() -> void: call_deferred("run")
+func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This check needs a renderer; rerun without --headless.")
+		quit(2)
+		return
+	call_deferred("run")
 func check(ok: bool, text: String) -> void:
 	if ok: passed+=1; print("NET_NATIVE_PASS | ",text)
 	else: failed+=1; push_error("NET_NATIVE_FAIL | "+text)
@@ -11,10 +17,9 @@ func frames() -> void:
 	for i in 3: await process_frame
 func capture(label: String) -> void:
 	game.view.queue_redraw(); await frames(); await RenderingServer.frame_post_draw
-	var directory:="res://artifacts"
-	for arg in OS.get_cmdline_user_args():
-		if arg.begins_with("--capture-output-directory="): directory=arg.trim_prefix("--capture-output-directory=")
-	root.get_texture().get_image().save_png(directory.path_join("net-"+label+"-v020.png"))
+	if root.get_texture().get_image().save_png(output.path_join("net-"+label+"-v020.png")) != OK:
+		failed += 1
+		push_error("CAPTURE_OUTPUT_FAIL | cannot save %s in %s" % [label, output])
 func flush() -> void:
 	game.advance_tick({},game.local_input.angler_command(game,game.screen_to_game(game.get_global_mouse_position())))
 func key_e() -> void:
@@ -26,6 +31,9 @@ func click(point: Vector2) -> void:
 	Input.parse_input_event(event); await process_frame; flush()
 	event=event.duplicate(); event.pressed=false; Input.parse_input_event(event); await frames(); flush()
 func run() -> void:
+	if not prepare_capture_output():
+		quit(2)
+		return
 	game=Main.instantiate(); root.add_child(game); game.capture_mode="net-native"; game.set_process(false); game.set_physics_process(false)
 	game.reset(false,"angler"); game.set_physics_process(false); game.menu.close(); game.fish=Vector2(280,170); game.baits[0].active=true
 	await frames()
@@ -62,3 +70,16 @@ func run() -> void:
 	check(editor.controls.has("net_observe_time") and not editor.controls.has("net_capture_base"),"settings show new rules without retired capture timer")
 	print("NET_NATIVE_V020 | passed=",passed," | failed=",failed)
 	quit(1 if failed else 0)
+
+func prepare_capture_output() -> bool:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--capture-output-directory="):
+			output = argument.trim_prefix("--capture-output-directory=")
+	if output.strip_edges().is_empty():
+		push_error("CAPTURE_OUTPUT_FAIL | --capture-output-directory must not be empty")
+		return false
+	var error := DirAccess.make_dir_recursive_absolute(output)
+	if error != OK:
+		push_error("CAPTURE_OUTPUT_FAIL | cannot create '%s': %s; choose a writable --capture-output-directory" % [output, error_string(error)])
+		return false
+	return true

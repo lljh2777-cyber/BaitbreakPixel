@@ -14,8 +14,23 @@ func _initialize() -> void:
 	var view := View.new()
 	var frames := 0
 	var preview := ""
+	var capture_directory := ""
+	var capture_requested := false
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--preview="): preview=arg.trim_prefix("--preview=")
+		if arg.begins_with("--capture-output-directory="):
+			capture_directory=arg.trim_prefix("--capture-output-directory=")
+			capture_requested=true
+	# Preserve the explicit --preview filename and the default no-image mode.
+	if capture_requested and preview.is_empty():
+		if capture_directory.strip_edges().is_empty():
+			push_error("CAPTURE_OUTPUT_FAIL | --capture-output-directory must not be empty")
+			view.free(); quit(2); return
+		var error := DirAccess.make_dir_recursive_absolute(capture_directory)
+		if error!=OK:
+			push_error("CAPTURE_OUTPUT_FAIL | cannot create '%s': %s" % [capture_directory,error_string(error)])
+			view.free(); quit(2); return
+		preview=capture_directory.path_join("plant-art-preview.png")
 	var sheet := Image.create(660,156,false,Image.FORMAT_RGBA8)
 	sheet.fill(Color("174654"))
 	var samples := [0,1,2,5,6,13,14,18]

@@ -15,7 +15,7 @@
 
 42 个恢复目录均通过 Godot 4.7.2 资源重新导入及主场景实例化检查；该检查不执行游戏启动/存档逻辑，也不代表每个历史版本做过完整玩法回归。
 
-完整发行包与源码哈希见 [history/releases.json](../../history/releases.json)，每个历史标签也有自己的 `RECOVERY-MANIFEST.json`。Git 不存放 EXE、PCK、ZIP、`.godot/` 缓存和 `artifacts/` 录制文件；原本机发行目录没有移动或删除。
+这 42 个恢复包的发行包与源码哈希见 [history/releases.json](../../history/releases.json) 的 `releases` 数组；后续本地试玩包另记在 `local_playtests`，不属于本次恢复，字段与来源见[版本与包索引说明](RELEASES.md)。每个历史标签也有自己的 `RECOVERY-MANIFEST.json`。Git 不存放 EXE、PCK、ZIP、`.godot/` 缓存和 `artifacts/` 录制文件；原本机发行目录没有移动或删除。
 
 日常开发使用 `main`。查看历史可以在 GitHub 选择相应标签；需要运行旧版时，建议在独立目录检出标签，避免覆盖当前工作和共用正式游戏存档。
 

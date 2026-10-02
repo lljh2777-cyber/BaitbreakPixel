@@ -39,6 +39,7 @@ func _ready() -> void:
 	category_picker.position=Vector2(12,54); category_picker.size=Vector2(145,28)
 	var groups: Array[String]=[]
 	for item in Rules.Catalog.ITEMS:
+		if item.get("developer",false): continue
 		if not item.group in groups: groups.append(item.group)
 	for group in groups: category_picker.add_item(group)
 	category_picker.select(maxi(0,groups.find(category)))
@@ -85,6 +86,7 @@ func _rebuild() -> void:
 	var modified := Rules.changed(draft)
 	var count := 0
 	for item in Rules.Catalog.ITEMS:
+		if item.get("developer",false): continue
 		if query.is_empty() and item.group!=category: continue
 		if not query.is_empty() and not query in (item.label+" "+item.group+" "+item.id+" "+item.help).to_lower(): continue
 		if changed_only.button_pressed and not modified.has(item.id): continue
@@ -122,6 +124,7 @@ func _add_row(item: Dictionary) -> void:
 
 func _reset_group() -> void:
 	for item in Rules.Catalog.ITEMS:
+		if item.get("developer",false): continue
 		if item.group==category: draft[item.id]=item.value
 	_rebuild()
 

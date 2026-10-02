@@ -76,6 +76,7 @@ func run() -> void:
 	check(not game.restore_snapshot(invalid) and game.capture_snapshot()==original,"malformed nested food records cannot partially change the world")
 	invalid=game.capture_snapshot(); invalid.state.qte="unknown"
 	check(not game.restore_snapshot(invalid),"unknown state machine values are rejected")
+	session.local_role="angler" # This fixture intentionally tests authoritative replay payloads.
 	var packet := {"kind":"state","v":Protocol.VERSION,"session":session.session_id,"round":1,"seq":10,"phase":"playing","countdown":0.0,"ack":5,"snapshot":Protocol.pack_state(original)}
 	var pieces := chunks(packet)
 	session.received_state_seq=-1

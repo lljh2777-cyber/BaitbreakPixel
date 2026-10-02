@@ -3,9 +3,14 @@ extends SceneTree
 # Reproducible visual fixtures; these do not modify the player's save or rules.
 const Main = preload("res://scenes/main.tscn")
 var game: Node2D
-const OUTPUT := "E:/Fish_catches_people/BaitbreakPixel/artifacts/"
+const OUTPUT := "res://artifacts/"
 
-func _initialize() -> void: call_deferred("run")
+func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This capture needs a renderer; rerun without --headless.")
+		quit(2)
+		return
+	call_deferred("run")
 
 func capture(tag: String) -> void:
 	game.view.queue_redraw()
@@ -29,6 +34,7 @@ func fresh() -> void:
 	for grain in game.baits[0].grains: grain.pos=game.baits[0].pos+grain.offset
 
 func run() -> void:
+	DirAccess.make_dir_recursive_absolute(OUTPUT)
 	game=Main.instantiate()
 	root.add_child(game)
 	game.capture_mode="visual-angler"

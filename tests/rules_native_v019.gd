@@ -1,9 +1,15 @@
 extends SceneTree
+var output := "res://artifacts"
 const Main=preload("res://scenes/main.tscn")
 var game: Node2D
 var passed:=0
 var failed:=0
-func _initialize() -> void: call_deferred("run")
+func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This check needs a renderer; rerun without --headless.")
+		quit(2)
+		return
+	call_deferred("run")
 func check(ok: bool, message: String) -> void:
 	if ok: passed+=1; print("RULE_UI_PASS | ",message)
 	else: failed+=1; push_error("RULE_UI_FAIL | "+message)
@@ -12,16 +18,16 @@ func frame() -> void:
 func capture(name: String) -> void:
 	await frame()
 	await RenderingServer.frame_post_draw
-	var directory := "res://artifacts"
-	for argument in OS.get_cmdline_user_args():
-		if argument.begins_with("--capture-output-directory="): directory=argument.trim_prefix("--capture-output-directory=")
-	var error := get_root().get_texture().get_image().save_png(directory.path_join("rules-"+name+"-v019.png"))
+	var error := get_root().get_texture().get_image().save_png(output.path_join("rules-"+name+"-v019.png"))
 	if error!=OK: failed+=1; push_error("RULE_UI_FAIL | capture could not be saved")
 func click(point: Vector2) -> void:
 	var event:=InputEventMouseButton.new(); event.button_index=MOUSE_BUTTON_LEFT; event.position=point; event.pressed=true
 	Input.parse_input_event(event); await process_frame
 	event=event.duplicate(); event.pressed=false; Input.parse_input_event(event); await frame()
 func run() -> void:
+	if not prepare_capture_output():
+		quit(2)
+		return
 	game=Main.instantiate(); root.add_child(game); game.capture_mode="rules-native"; game.set_process(false); game.set_physics_process(false); game.save_path="user://rules-native-v019.cfg"
 	game.reset(false); game.menu.open("rules"); await frame()
 	var editor: Control=game.menu.rules_editor
@@ -64,3 +70,16 @@ func run() -> void:
 	await capture("locked")
 	print("RULES_NATIVE_V019 | passed=",passed," | failed=",failed)
 	quit(1 if failed else 0)
+
+func prepare_capture_output() -> bool:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--capture-output-directory="):
+			output = argument.trim_prefix("--capture-output-directory=")
+	if output.strip_edges().is_empty():
+		push_error("CAPTURE_OUTPUT_FAIL | --capture-output-directory must not be empty")
+		return false
+	var error := DirAccess.make_dir_recursive_absolute(output)
+	if error != OK:
+		push_error("CAPTURE_OUTPUT_FAIL | cannot create '%s': %s; choose a writable --capture-output-directory" % [output, error_string(error)])
+		return false
+	return true

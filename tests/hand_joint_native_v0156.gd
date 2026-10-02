@@ -1,4 +1,5 @@
 extends SceneTree
+var output := "res://artifacts"
 const Hand=preload("res://scripts/angler_hand.gd")
 const Shore=preload("res://scripts/shore_view.gd")
 
@@ -10,7 +11,12 @@ class RigLayer extends Node2D:
 			hand.draw_rod(self,Shore.rod_points(pose,pose.brace,1,Vector2(410,213)))
 			hand.draw(self,pose,0,0)
 
-func _initialize() -> void: call_deferred("run")
+func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This check needs a renderer; rerun without --headless.")
+		quit(2)
+		return
+	call_deferred("run")
 
 func connected_to_edge(picture: Image, seed_at: Vector2, checkpoints: Array) -> bool:
 	picture.convert(Image.FORMAT_RGBA8)
@@ -41,6 +47,9 @@ func connected_to_edge(picture: Image, seed_at: Vector2, checkpoints: Array) -> 
 	return true
 
 func run() -> void:
+	if not prepare_capture_output():
+		quit(2)
+		return
 	var viewport := SubViewport.new(); viewport.size=Vector2i(640,327)
 	viewport.transparent_bg=true; viewport.disable_3d=true
 	viewport.render_target_update_mode=SubViewport.UPDATE_ALWAYS
@@ -62,6 +71,20 @@ func run() -> void:
 			if connected_to_edge(picture,seed,checks): passed+=1
 			else:
 				failed+=1; push_error("JOINT_ALPHA_GAP | travel="+str(travel)+" phase="+str(phase))
-				if failed==1: picture.save_png("E:/Fish_catches_people/BaitbreakPixel/artifacts/arm-gap-v0159.png")
+				if failed==1 and picture.save_png(output+"/arm-gap-v0159.png") != OK:
+					push_error("CAPTURE_OUTPUT_FAIL | cannot save arm-gap-v0159.png in "+output)
 	print("ARM_ALPHA_V0159 | continuous_alpha_poses=",passed," | failed=",failed)
 	viewport.queue_free(); await process_frame; quit(1 if failed else 0)
+
+func prepare_capture_output() -> bool:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--capture-output-directory="):
+			output = argument.trim_prefix("--capture-output-directory=")
+	if output.strip_edges().is_empty():
+		push_error("CAPTURE_OUTPUT_FAIL | --capture-output-directory must not be empty")
+		return false
+	var error := DirAccess.make_dir_recursive_absolute(output)
+	if error != OK:
+		push_error("CAPTURE_OUTPUT_FAIL | cannot create '%s': %s; choose a writable --capture-output-directory" % [output, error_string(error)])
+		return false
+	return true

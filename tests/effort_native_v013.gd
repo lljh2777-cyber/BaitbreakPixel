@@ -1,10 +1,16 @@
 extends SceneTree
+var output := "res://artifacts"
 const Main=preload("res://scenes/main.tscn")
 var game: Node2D
 var passed:=0
 var failed:=0
 var seen: Array[String]=[]
-func _initialize() -> void: call_deferred("run")
+func _initialize() -> void:
+	if DisplayServer.get_name() == "headless":
+		push_error("This check needs a renderer; rerun without --headless.")
+		quit(2)
+		return
+	call_deferred("run")
 func check(ok: bool, description: String) -> void:
 	if ok: passed+=1; print("EFFORT_NATIVE_PASS | ",description)
 	else: failed+=1; push_error("EFFORT_NATIVE_FAIL | "+description)
@@ -19,7 +25,7 @@ func tick(frames: int, role: String) -> void:
 		game.advance_tick(fish_input,angler_input)
 func capture(name: String) -> void:
 	game.view.queue_redraw(); await process_frame; await RenderingServer.frame_post_draw
-	check(root.get_texture().get_image().save_png("E:/Fish_catches_people/BaitbreakPixel/artifacts/effort-"+name+"-v013.png")==OK,"capture "+name)
+	check(root.get_texture().get_image().save_png(output+"/effort-"+name+"-v013.png")==OK,"capture "+name)
 func fresh(role: String) -> void:
 	game.reset(true,"angler"); game.player_role=role
 	game.menu.close(); game.set_process(false); game.set_physics_process(false)
@@ -27,6 +33,9 @@ func fresh(role: String) -> void:
 	game.baits[0].active=true; game.water_strength=0
 	game._enter_hook(0); game._attach_hook(); seen.clear()
 func run() -> void:
+	if not prepare_capture_output():
+		quit(2)
+		return
 	game=Main.instantiate(); root.add_child(game)
 	game.capture_mode="effort-test"; game.save_path="user://effort-native-v013.cfg"
 	game.feedback_requested.connect(func(cue: String): seen.append(cue))
@@ -65,3 +74,16 @@ func run() -> void:
 	check(game.sound.next_voice!=voice,"local cue reaches an actual audio player")
 	print("EFFORT_NATIVE_V013_TESTS | passed=",passed," | failed=",failed)
 	game.queue_free(); await process_frame; quit(1 if failed else 0)
+
+func prepare_capture_output() -> bool:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--capture-output-directory="):
+			output = argument.trim_prefix("--capture-output-directory=")
+	if output.strip_edges().is_empty():
+		push_error("CAPTURE_OUTPUT_FAIL | --capture-output-directory must not be empty")
+		return false
+	var error := DirAccess.make_dir_recursive_absolute(output)
+	if error != OK:
+		push_error("CAPTURE_OUTPUT_FAIL | cannot create '%s': %s; choose a writable --capture-output-directory" % [output, error_string(error)])
+		return false
+	return true

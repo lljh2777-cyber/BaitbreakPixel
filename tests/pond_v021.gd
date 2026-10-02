@@ -71,10 +71,13 @@ func run() -> void:
 	count=0
 	for bait in w.baits:
 		if bait.active: count+=1
-	var common_shape:=true
+	var type_shapes:=true
+	var active_types: Dictionary={}
 	for bait in w.baits:
-		for i in bait.grains.size(): common_shape=common_shape and bait.grains[i].offset==w.baits[0].grains[i].offset
-	check(count==3 and common_shape,"fish solo starts with three identical pellet silhouettes that cannot identify hook slots")
+		if bait.active: active_types[bait.bait_type]=true
+		var reference: Dictionary=w._make_bait(0,0,bait.bait_type)
+		for i in bait.grains.size(): type_shapes=type_shapes and bait.grains[i].offset==reference.grains[i].offset
+	check(count==3 and active_types.size()==3 and type_shapes,"fish solo offers three type silhouettes independent of hook truth or slot")
 	var brain:=Brain.new(); brain.reset(99); w.fish=Vector2(400,230); w.aim=Vector2.RIGHT
 	for i in w.baits.size(): w.baits[i].active=i<2; w.baits[i].pos=Vector2(470+i*150,230)
 	var a: Dictionary=brain.command(w,1.0/60)

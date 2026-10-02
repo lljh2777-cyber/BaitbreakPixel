@@ -1,0 +1,57 @@
+{
+  "paired_seeds": 50,
+  "first_seed": 2001,
+  "last_seed": 2050,
+  "completed_distance": 50,
+  "completed_cautious": 50,
+  "difference_direction": "cautious minus distance",
+  "bootstrap_replicates": 2000,
+  "metrics": {
+    "fish_win_rate": {
+      "distance": 0.76,
+      "cautious": 0.88,
+      "paired_difference": 0.12,
+      "paired_bootstrap_95_percent": [
+        0.04,
+        0.22
+      ]
+    },
+    "hook_event_rate": {
+      "distance": 0.54,
+      "cautious": 0.3,
+      "paired_difference": -0.24,
+      "paired_bootstrap_95_percent": [
+        -0.36,
+        -0.14
+      ]
+    },
+    "hook_events_mean": {
+      "distance": 0.62,
+      "cautious": 0.32,
+      "paired_difference": -0.3,
+      "paired_bootstrap_95_percent": [
+        -0.44,
+        -0.18
+      ]
+    },
+    "food_consumed_mean": {
+      "distance": 53.283,
+      "cautious": 56.433,
+      "paired_difference": 3.15,
+      "paired_bootstrap_95_percent": [
+        0.891,
+        5.55
+      ]
+    },
+    "survival_seconds_mean": {
+      "distance": 41.7149999999989,
+      "cautious": 40.55833333333231,
+      "paired_difference": -1.156666666666594,
+      "paired_bootstrap_95_percent": [
+        -2.9983333333331577,
+        0.3889999999999961
+      ]
+    }
+  },
+  "note": "Paired bot policies share seeds; uncertainty intervals describe this seed distribution, not human play quality."
+}

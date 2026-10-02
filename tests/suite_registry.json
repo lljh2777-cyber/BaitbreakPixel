@@ -1,0 +1,572 @@
+{
+  "schema": 1,
+  "description": "Current release gate plus explicit historical diagnostics. Historical is not a waiver, a passing result, or proof a failure is obsolete. Source files and assertions are retained.",
+  "suites": {
+    "angler_native_v010": {
+      "status": "historical",
+      "mode": "renderer",
+      "timeout_seconds": 90,
+      "reason": "Legacy diagnostic reproduced a failure on the current checkout; original assertions retained. See maintenance report for exact result; do not count as passing."
+    },
+    "angler_round_probe": {
+      "status": "manual",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "reason": "Exploratory AI probe, not an assertion suite; run explicitly outside the regression gate."
+    },
+    "angler_v010": {
+      "status": "historical",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "reason": "Old menu, fixed pond and angler fixtures; broad suite is not proved wholly obsolete. Retained as known-red diagnostic, not silently marked passing."
+    },
+    "architecture_v011": {
+      "status": "historical",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "reason": "architecture_v020 evolves the snapshot and net-action fixtures; this older snapshot suite remains available as diagnostic."
+    },
+    "architecture_v020": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "arm_motion_v0159": {
+      "status": "historical",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "reason": "Old arm framing/motion fixture; no complete replacement equivalence established. Preserved as known-red diagnostic."
+    },
+    "bait_suction_native_v0211": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 90
+    },
+    "bait_suction_native_v0212": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 90
+    },
+    "bait_suction_v0211": {
+      "status": "historical",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "reason": "Pre-0.21.2 suction behavior; bait_suction_v0212 and feeding_feel_v022 cover current suction. Older assertions retained as diagnostic."
+    },
+    "bait_suction_v0212": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "balance_native_v014": {
+      "status": "historical",
+      "mode": "renderer",
+      "timeout_seconds": 90,
+      "reason": "Legacy menu entry labels and balance fixture; retained as diagnostic rather than weakening assertions."
+    },
+    "balance_v014": {
+      "status": "historical",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "reason": "Old net and movement balancing fixtures; no complete coverage equivalence asserted. Preserved as known-red diagnostic."
+    },
+    "controls_v071": {
+      "status": "historical",
+      "mode": "renderer",
+      "timeout_seconds": 90,
+      "reason": "Legacy diagnostic reproduced a failure on the current checkout; original assertions retained. See maintenance report for exact result; do not count as passing."
+    },
+    "dual_role_native_v09": {
+      "status": "historical",
+      "mode": "renderer",
+      "timeout_seconds": 90,
+      "reason": "Legacy diagnostic reproduced a failure on the current checkout; original assertions retained. See maintenance report for exact result; do not count as passing."
+    },
+    "dual_role_v09": {
+      "status": "historical",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "reason": "Old menu, fixed pond and duel fixtures; no complete coverage equivalence asserted. Preserved as known-red diagnostic."
+    },
+    "effort_native_v013": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 90
+    },
+    "effort_peer_v013": {
+      "status": "manual",
+      "mode": "renderer",
+      "timeout_seconds": 90,
+      "reason": "Requires two coordinated native processes (--peer-host and client); individual invocation is not a complete test."
+    },
+    "effort_v013": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "feeding_feel_native_v022": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 90
+    },
+    "feeding_feel_v022": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "feeding_movement_v0221": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "fish_orbit_v0182": {
+      "status": "historical",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "reason": "Pre-expanded-pond cosmetic orbit fixtures; fish_orbit_v021 covers the updated world. Older assertions retained as diagnostic."
+    },
+    "fish_orbit_v021": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "grass_binding_v021": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "hand_joint_native_v0156": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 90
+    },
+    "hand_rig_v0153": {
+      "status": "historical",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "reason": "Legacy diagnostic reproduced a failure on the current checkout; original assertions retained. See maintenance report for exact result; do not count as passing.",
+      "pack_compatible": false,
+      "pack_reason": "Uses res://tests/ inheritance; release PCK intentionally excludes test dependencies. Run this suite against source."
+    },
+    "hand_rig_v0154": {
+      "status": "historical",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "reason": "Legacy diagnostic reproduced a failure on the current checkout; original assertions retained. See maintenance report for exact result; do not count as passing.",
+      "pack_compatible": false,
+      "pack_reason": "Uses res://tests/ inheritance; release PCK intentionally excludes test dependencies. Run this suite against source."
+    },
+    "hand_rig_v0155": {
+      "status": "historical",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "reason": "Legacy diagnostic reproduced a failure on the current checkout; original assertions retained. See maintenance report for exact result; do not count as passing.",
+      "pack_compatible": false,
+      "pack_reason": "Uses res://tests/ inheritance; release PCK intentionally excludes test dependencies. Run this suite against source."
+    },
+    "hand_rig_v0156": {
+      "status": "historical",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "reason": "Legacy diagnostic reproduced a failure on the current checkout; original assertions retained. See maintenance report for exact result; do not count as passing.",
+      "pack_compatible": false,
+      "pack_reason": "Uses res://tests/ inheritance; release PCK intentionally excludes test dependencies. Run this suite against source."
+    },
+    "hand_rig_v0157": {
+      "status": "historical",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "reason": "Legacy diagnostic reproduced a failure on the current checkout; original assertions retained. See maintenance report for exact result; do not count as passing.",
+      "pack_compatible": false,
+      "pack_reason": "Uses res://tests/ inheritance; release PCK intentionally excludes test dependencies. Run this suite against source."
+    },
+    "hauling_v07": {
+      "status": "historical",
+      "mode": "renderer",
+      "timeout_seconds": 90,
+      "reason": "Legacy diagnostic reproduced a failure on the current checkout; original assertions retained. See maintenance report for exact result; do not count as passing."
+    },
+    "line_motion_v0181": {
+      "status": "historical",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "reason": "Legacy diagnostic reproduced a failure on the current checkout; original assertions retained. See maintenance report for exact result; do not count as passing."
+    },
+    "line_motion_v021": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "net_animation_capture_v0201": {
+      "status": "manual",
+      "mode": "renderer",
+      "timeout_seconds": 90,
+      "reason": "Visual capture sequence, not an assertion suite; run explicitly with a renderer and output override."
+    },
+    "net_animation_v0201": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "net_native_v020": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 90
+    },
+    "net_network_v020": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "net_network_v021": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "net_route_native_v0102": {
+      "status": "historical",
+      "mode": "renderer",
+      "timeout_seconds": 90,
+      "reason": "Legacy diagnostic reproduced a failure on the current checkout; original assertions retained. See maintenance report for exact result; do not count as passing."
+    },
+    "net_route_native_v011": {
+      "status": "historical",
+      "mode": "renderer",
+      "timeout_seconds": 90,
+      "reason": "Legacy diagnostic reproduced a failure on the current checkout; original assertions retained. See maintenance report for exact result; do not count as passing."
+    },
+    "net_route_v0102": {
+      "status": "retired",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "reason": "Retired: arbitrary multi-corner drag-net route and manual_net_pending_path were removed. Current committed routes/capture/return animation covered by net_v021 and net_animation_v0201. Direct entry exits 2; historical body retained.",
+      "replacement": "net_v021",
+      "related_coverage": [
+        "net_animation_v0201"
+      ]
+    },
+    "net_v020": {
+      "status": "historical",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "reason": "Legacy diagnostic reproduced a failure on the current checkout; original assertions retained. See maintenance report for exact result; do not count as passing."
+    },
+    "net_v021": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "pack_compatible": false,
+      "pack_reason": "Uses res://tests/ inheritance; release PCK intentionally excludes test dependencies. Run this suite against source."
+    },
+    "nets_v06": {
+      "status": "historical",
+      "mode": "renderer",
+      "timeout_seconds": 90,
+      "reason": "Legacy native menu/net assertions; current two-point net behavior is checked by net_v021/net_network_v021. Retained as diagnostic."
+    },
+    "nets_v08": {
+      "status": "historical",
+      "mode": "renderer",
+      "timeout_seconds": 90,
+      "reason": "Legacy diagnostic reproduced a failure on the current checkout; original assertions retained. See maintenance report for exact result; do not count as passing."
+    },
+    "network_peer_v012": {
+      "status": "manual",
+      "mode": "renderer",
+      "timeout_seconds": 120,
+      "reason": "Requires two coordinated native processes (--peer-host and client); individual invocation is not a complete test."
+    },
+    "network_rules_v012": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "network_v012": {
+      "status": "historical",
+      "mode": "headless",
+      "timeout_seconds": 120,
+      "reason": "Legacy diagnostic reproduced a failure on the current checkout; original assertions retained. See maintenance report for exact result; do not count as passing."
+    },
+    "obstacle_art": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "obstacle_visuals_native": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 90
+    },
+    "plant_art": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "pond_native_v021": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 90
+    },
+    "pond_v021": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "reel_hand_native_v016": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 90
+    },
+    "reeling_native_v0122": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 90
+    },
+    "reeling_v0122": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "reference_tackle_v0158": {
+      "status": "historical",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "reason": "Legacy diagnostic reproduced a failure on the current checkout; original assertions retained. See maintenance report for exact result; do not count as passing.",
+      "pack_compatible": false,
+      "pack_reason": "Uses res://tests/ inheritance; release PCK intentionally excludes test dependencies. Run this suite against source."
+    },
+    "rod_load_v017": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "rules_native_v019": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 90
+    },
+    "rules_network_v019": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "rules_v019": {
+      "status": "retired",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "reason": "Retired: rules_v020 preserves the rule checks and replaces removed net_capture_seconds plus obsolete net-route setup. Direct entry exits 2 before historical body.",
+      "replacement": "rules_v020"
+    },
+    "rules_v020": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "shore_native_v015": {
+      "status": "historical",
+      "mode": "renderer",
+      "timeout_seconds": 90,
+      "reason": "Legacy diagnostic reproduced a failure on the current checkout; original assertions retained. See maintenance report for exact result; do not count as passing."
+    },
+    "shore_v015": {
+      "status": "historical",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "reason": "Older shore/landing fixture. Current pond and tackle coverage does not establish equivalence for every assertion; preserved for explicit diagnosis."
+    },
+    "smoke": {
+      "status": "historical",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "reason": "Legacy diagnostic reproduced a failure on the current checkout; original assertions retained. See maintenance report for exact result; do not count as passing."
+    },
+    "tackle_dynamics_v016": {
+      "status": "historical",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "reason": "Legacy diagnostic reproduced a failure on the current checkout; original assertions retained. See maintenance report for exact result; do not count as passing."
+    },
+    "tackle_dynamics_v021": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "untangle_native_v018": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 90
+    },
+    "untangle_network_v018": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "untangle_v018": {
+      "status": "historical",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "reason": "Legacy diagnostic reproduced a failure on the current checkout; original assertions retained. See maintenance report for exact result; do not count as passing."
+    },
+    "untangle_v020": {
+      "status": "historical",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "reason": "Older fixed-position/obstacle fixtures; untangle_v021 covers the expanded pond. Preserved diagnostic suite; known-red assertions remain visible."
+    },
+    "untangle_v021": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90,
+      "pack_compatible": false,
+      "pack_reason": "Uses res://tests/ inheritance; release PCK intentionally excludes test dependencies. Run this suite against source."
+    },
+    "visuals": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 90
+    },
+    "visuals_v03": {
+      "status": "historical",
+      "mode": "renderer",
+      "timeout_seconds": 90,
+      "reason": "Legacy diagnostic reproduced a failure on the current checkout; original assertions retained. See maintenance report for exact result; do not count as passing."
+    },
+    "visuals_v04": {
+      "status": "historical",
+      "mode": "renderer",
+      "timeout_seconds": 90,
+      "reason": "Legacy diagnostic reproduced a failure on the current checkout; original assertions retained. See maintenance report for exact result; do not count as passing."
+    },
+    "visuals_v05": {
+      "status": "historical",
+      "mode": "renderer",
+      "timeout_seconds": 90,
+      "reason": "Legacy diagnostic reproduced a failure on the current checkout; original assertions retained. See maintenance report for exact result; do not count as passing."
+    },
+    "water_art": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "water_scenery_native": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 90
+    },
+    "wood_fade": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "wood_fade_native": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 90
+    },
+    "wood_junctions": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "phase01_entities": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "phase01_observation": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "phase01_statistics": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "phase01_satiety": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "phase01_instinct": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "phase01_suspicion": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "phase01_random_hooks": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "phase01_native": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 120
+    },
+    "phase01_policies": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "phase01_network": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "phase15_controls": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "phase15_native": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 120
+    },
+    "phase02_bite": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "phase02_bite_network": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "phase02_bite_native": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 120
+    },
+    "phase02_bait_types": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "phase02_food_profiles": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "phase02_observation": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "phase02_bait_network": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "phase02_bait_native": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 120
+    }
+  }
+}

@@ -1,13 +1,21 @@
+- [0.23.0 Phase 0–1 开发与验证（2026-10-02，人工玩法验收仍开放）](PHASE01-VALIDATION.md)
+
 # 测试报告
 
 [返回文档导航](../README.md)
 
 报告按版本由新到旧排列，记录当时的测试环境、范围和结果。旧版玩法断言可能已经退役；复现时请结合对应版本。
 
+- [0.24.2 Windows 试玩包与发布核验](GITHUB-RELEASE-0.24.2.md)
+- [2026-10-02 GitHub 逐版补发与 Windows 包核验](GITHUB-RELEASES-2026-10-02.md)
+- [测试运行指南与套件状态](../../tests/README.md)
+- [0.22.6 开发版修复与测试维护（2026-10-02，未发行）](TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md)
+- [版本 0.22.5](TEST-REPORT-0.22.5.md)
 - [版本 0.22.4](TEST-REPORT-0.22.4.md)
 - [版本 0.22.3](TEST-REPORT-0.22.3.md)
 - [版本 0.22.2](TEST-REPORT-0.22.2.md)
 - [水体层次与自然巢穴（2026-10-01，Windows 分支试玩包）](TEST-REPORT-WATER-DEPTH.md)
+- [树枝与主干连接（2026-10-01，源码验证，未另行发行）](TEST-REPORT-WOOD-JUNCTIONS.md)
 - [水底障碍物外观验证（2026-10-01，未发行）](TEST-REPORT-OBSTACLE-ART.md)
 - [版本 0.22.1](TEST-REPORT-0.22.1.md)
 - [版本 0.22.0](TEST-REPORT-0.22.0.md)
@@ -54,3 +62,9 @@
 - [版本 0.3](TEST-REPORT-0.3.md)
 - [版本 0.2](TEST-REPORT-0.2.md)
 - [初版报告](TEST-REPORT.md)
+
+## 已删除的套件
+
+- `tests/grass_binding_v0183.gd`（0.22.5 删除）：0.18 时代的缠草绑定夹具，硬编码的水草起点（`range(12, …)`）和尾部目标（`targets[14]`）在 0.21 扩图后指向木石目标，`Grass.profile()` 因此返回空字典并触发脚本错误；错误让 `run()` 提前中止、`quit()` 不再执行，进程会一直挂着（表现为“测试卡死”，实际是空闲而非死循环）。删除前先按 `Layout.SOLIDS.size()` 修正两处索引，确认它能在 12 秒内正常结束并如实报告 46 通过 / 24 失败（包围盒等断言属旧版预期，责任已由下条承担）。
+
+- [P2.2 饵型验证与人工试玩门](PHASE02-BAIT-VALIDATION.md)
