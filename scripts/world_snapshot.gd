@@ -215,6 +215,10 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 		if not id is int or not state.caution_by_bait[id] in ["CALM","UNEASY","ALARMED"]: return false
 	if state.instinct_drive<0 or state.instinct_drive>1 or state.focus_bait_id< -1: return false
 	if state.truth_events.size()>2048: return false
+	for event in state.truth_events:
+		if not event is Dictionary or event.get("event")!="BAIT_CREATED": return false
+		if not event.get("tick") is int or event.tick<0 or event.tick>state.simulation_tick: return false
+		if not event.get("bait_id") is int or event.bait_id<=0 or not event.get("hooked") is bool or not event.get("seed") is int: return false
 	if state.satiety<0 or state.satiety>100: return false
 	if state.stamina<0 or state.stamina>state.rules.stamina_max: return false
 	if state.last_eat_at < -10 or state.last_eat_at > state.elapsed+0.000001: return false

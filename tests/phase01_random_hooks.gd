@@ -33,5 +33,8 @@ func _initialize() -> void:
 	check(not a.baits[0].hook and a.angler.deploy(a),"safe rolled payload still deploys on the one existing rod")
 	for tick in 60: a.advance_tick({}, {})
 	check(a.baits[0].active and not a.baits[0].hook,"safe tackle remains usable after cast")
+	var invalid: Dictionary=a.capture_snapshot(); invalid.state.truth_events=["invalid"]
+	var unchanged: PackedByteArray=var_to_bytes(b.capture_snapshot())
+	check(not b.restore_snapshot(invalid) and unchanged==var_to_bytes(b.capture_snapshot()),"malformed truth log rejected before any restore mutation")
 	a.free(); b.free()
 	print("RANDOM_HOOK | passed=%d | failed=%d" % [passed,failed]); quit(0 if failed==0 else 1)
