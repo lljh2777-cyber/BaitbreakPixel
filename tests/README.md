@@ -13,7 +13,7 @@ Windows 可使用 `D:\python\python.exe`；用 `--godot "引擎可执行文件�
 
 ## 注册表与状态
 
-[`suite_registry.json`](suite_registry.json) 显式登记全部 81 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
+[`suite_registry.json`](suite_registry.json) 显式登记全部 91 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
 
 - `current`：当前有效的回归门禁；不按文件名版本新旧决定。`--profile current` 运行无窗口套件，`--profile native` 运行图形套件。已重新验证的 effort、net_animation、rules_network 等较早版本仍在当前门禁中
 - `historical`：当前检出复现了失败的诊断套件。保留原断言，失败仍返回非零；这不是“已证明所有断言过时”，更不是通过。具体原因和结果见[维护报告](../docs/test-reports/TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md)
@@ -39,7 +39,7 @@ python3 tools/run_tests.py --suite shore_native_v015
 
 ## 原生与打包截图
 
-所有 30 个使用原生画面、且会写 PNG 的脚本都接受：
+所有 31 个使用原生画面、且会写 PNG 的脚本都接受：
 
 ```sh
 godot --path . --script res://tests/wood_fade_native.gd -- --test-profile --capture-output-directory=/absolute/writable/captures
@@ -47,7 +47,7 @@ godot --path . --script res://tests/wood_fade_native.gd -- --test-profile --capt
 
 默认路径不变。目录会创建，空值、建目录失败、PNG 写入失败都返回非零。5 个旧脚本继续支持 `--visual-output=`，同时提供时以 `--capture-output-directory=` 为准。
 
-计数说明：31 个脚本使用原生渲染/画面回读，其中 `reel_hand_native_v016` 只验证像素连通性，不写图片。另一个会写图的 `plant_art` 是无窗口图像测试：默认不写图，保留 `--preview=文件名`，也支持公共目录参数生成 `plant-art-preview.png`；显式 `--preview` 优先。因此所有 31 个会写图片的入口均有可写路径选择，不需要给不写文件的测试增加空参数。
+计数说明：32 个脚本使用原生渲染/画面回读，其中 `reel_hand_native_v016` 只验证像素连通性，不写图片。另一个会写图的 `plant_art` 是无窗口图像测试：默认不写图，保留 `--preview=文件名`，也支持公共目录参数生成 `plant-art-preview.png`；显式 `--preview` 优先。因此所有 32 个会写图片的入口均有可写路径选择，不需要给不写文件的测试增加空参数。
 
 发行 PCK 故意不包含 `tests/` 和 `tools/`。运行器用外部绝对 `--script` 加载测试，让 `res://scripts/` 和素材来自包内：
 
@@ -56,3 +56,11 @@ python3 tools/run_tests.py --profile native --pack /path/to/BaitbreakPixel.pck -
 ```
 
 每个脚本的路径配置在自身内部，不依赖包内不存在的测试 helper。`net_v021`、`untangle_v021`、旧 hand_rig 等继承 `res://tests/...` 的包装脚本不能这样外部加载；注册表把它们明确标为包模式 BLOCKED，需在源码模式执行。这个限制不会被当作通过，也不会把测试源码偷偷加入发行包。
+
+## Phase 0–1 统计与隐私检查
+
+- `phase01_*` 覆盖实体、感知、饱食、本能、警惕、随机生命周期、网络裁剪、策略与原生视觉
+- `python3 tools/run_rounds.py --strategy distance --rounds 1000 --seed 3001` 导出真实60 Hz对局；`cautious` 使用相同种子作对照
+- `--project` 选择不可变归档，默认从该归档冻结一份 harness；provenance.json 记录实际脚本哈希
+- `tools/summarize_rounds.py` 合并不重叠种子，`tools/compare_policies.py` 提供配对差值与重采样区间
+- 详细验收范围与未关闭的人工试玩项见 `docs/test-reports/PHASE01-VALIDATION.md`

@@ -1,0 +1,40 @@
+{
+  "engine": "Godot 4.6.3 Linux",
+  "date": "2026-10-02",
+  "world_snapshot_schema": 13,
+  "final_gameplay": {
+    "local_commit": "3db010de8cc470d1bd01ef3eee0dfe3c3854b6d7",
+    "publication_commit": "33632930bed0352353653c6c7a0746aaee2b69c2",
+    "tree": "9e2ebf4252ef08a715099c0b6b56f1fad564fa26",
+    "headless_current_suites_passed": 35,
+    "native_current_suites_passed": 16,
+    "editor_import_passed": true
+  },
+  "matched_policy": {
+    "local_commit": "04cae9533d5db0b55c60e88c906291ad7070ad5d",
+    "publication_commit": "7857a98e55a283fae834f4162d7fe99abcfcc4e7",
+    "tree": "d086185fef5d6e1a25750374fa47897ada7a647f",
+    "policy_assertions_passed": 5,
+    "architecture_assertions_passed": 46
+  },
+  "reused_cautious_policy_equivalence": {
+    "reference_commit": "3db010de8cc470d1bd01ef3eee0dfe3c3854b6d7",
+    "current_commit": "04cae9533d5db0b55c60e88c906291ad7070ad5d",
+    "seeds": "3001–3010",
+    "identical_command_ticks": 21274,
+    "passed": true
+  },
+  "heldout": {
+    "seeds": "3001–4000",
+    "rounds_per_policy": 1000,
+    "both_policies_commit_meals": true,
+    "discarded_or_censored_rounds": 0
+  },
+  "python_runner_tests_passed": 28,
+  "native_phase01_assertions_passed": 16,
+  "limits": [
+    "Current curated suites only; historical/manual/retired diagnostics were not rerun",
+    "Windows build, hardware audio and human play-feel acceptance not performed",
+    "Legacy escape/QTE AI helpers still use shared authority interfaces; food targeting and caution are observation-based"
+  ]
+}

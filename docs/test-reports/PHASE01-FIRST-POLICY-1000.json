@@ -1,0 +1,57 @@
+{
+  "paired_seeds": 1000,
+  "first_seed": 1001,
+  "last_seed": 2000,
+  "completed_distance": 1000,
+  "completed_cautious": 1000,
+  "difference_direction": "cautious minus distance",
+  "bootstrap_replicates": 2000,
+  "metrics": {
+    "fish_win_rate": {
+      "distance": 0.879,
+      "cautious": 0.86,
+      "paired_difference": -0.019,
+      "paired_bootstrap_95_percent": [
+        -0.031,
+        -0.009
+      ]
+    },
+    "hook_event_rate": {
+      "distance": 0.391,
+      "cautious": 0.402,
+      "paired_difference": 0.011,
+      "paired_bootstrap_95_percent": [
+        -0.005,
+        0.026
+      ]
+    },
+    "hook_events_mean": {
+      "distance": 0.481,
+      "cautious": 0.517,
+      "paired_difference": 0.036,
+      "paired_bootstrap_95_percent": [
+        0.012,
+        0.063
+      ]
+    },
+    "food_consumed_mean": {
+      "distance": 56.6736,
+      "cautious": 56.39565,
+      "paired_difference": -0.27795000000000003,
+      "paired_bootstrap_95_percent": [
+        -0.48719999999999997,
+        -0.07710000000000003
+      ]
+    },
+    "survival_seconds_mean": {
+      "distance": 41.26829999999894,
+      "cautious": 42.07786666666563,
+      "paired_difference": 0.8095666666666929,
+      "paired_bootstrap_95_percent": [
+        0.40593333333331016,
+        1.2856166666667288
+      ]
+    }
+  },
+  "note": "Paired bot policies share seeds; uncertainty intervals describe this seed distribution, not human play quality."
+}

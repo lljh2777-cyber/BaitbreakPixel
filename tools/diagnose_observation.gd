@@ -45,8 +45,14 @@ func _initialize() -> void:
 		else: negative+=1
 	test_rows.sort_custom(func(a: Dictionary,b: Dictionary)->bool: return float(a.feature)<float(b.feature))
 	var rank_sum:=0.0
-	for index in test_rows.size():
-		if test_rows[index].hook: rank_sum+=index+1
+	var index:=0
+	while index<test_rows.size():
+		var end:=index+1
+		while end<test_rows.size() and test_rows[end].feature==test_rows[index].feature: end+=1
+		var average_rank: float=(index+1+end)/2.0
+		for tied in range(index,end):
+			if test_rows[tied].hook: rank_sum+=average_rank
+		index=end
 	var auc: float=(rank_sum-positive*(positive+1)/2.0)/maxf(1,positive*negative)
 	var summary: Dictionary={"seeds":1000,"training_seeds":"1–500","holdout_seeds":"501–1000","feature":"mean observed water-relative bait velocity, 1–2 seconds", "threshold":threshold,"holdout_examples":test_rows.size(),"accuracy":float(correct)/test_rows.size(),"auc":auc,"false_positives":fp,"false_negatives":fn,"note":"Simple held-out classifier is a diagnostic, not proof against every possible classifier or long-duration inference."}
 	DirAccess.make_dir_recursive_absolute(output)

@@ -22,7 +22,8 @@ class CaptureContractTests(unittest.TestCase):
                 self.assertIn("error != OK", source)
                 self.assertNotRegex(source, r'save_png\("res://')
                 self.assertNotIn('preload("res://tests/', source)
-        self.assertEqual(len(producers), 30)
+        self.assertIn("phase01_native.gd", producers)
+        self.assertEqual(len(producers), 31)
 
     def test_capture_success_cannot_overwrite_failure(self):
         for script in sorted((ROOT / "tests").glob("*.gd")):
