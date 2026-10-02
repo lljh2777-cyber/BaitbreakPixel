@@ -2,7 +2,7 @@
 
 一个 2D 像素风格的人鱼对抗游戏：小鱼在水下觅食、缠线和逃脱，钓鱼人在岸边控竿、收放线与抄网。支持单机挑战、自由练习和一人对一鱼的局域网联机。
 
-**当前开发源码版本：0.23.1（本地试玩修正版，非公开发行）** · Windows x64 · Godot 4.7.2
+**当前开发源码版本：0.24.0（Bite 试玩版源码，非公开发行）** · Windows x64 · Godot 4.7.2
 
 ## 下载试玩
 
@@ -12,11 +12,11 @@
 
 截至 2026-10-02 核验，GitHub 最新公开发行仍为 0.20.1。该包不包含下面的 0.21 / 0.22 开发改动；包内“开始试玩.txt”对应其自身版本。
 
-### Phase 1.5：0.23.1 人工试玩修正
+### Phase 2.1：0.24.0 近距咬食人工试玩门
 
-本分支源码为 0.23.1，可按下方“开发运行”直接运行或自行构建；本地Windows试玩包与源码/打包资源检查均已准备，真实Windows启动仍待人工确认。完整验证状态见 [Phase 1.5 检查记录](docs/test-reports/PHASE15-VALIDATION.md)。既有 Windows 本地试玩包的记录见 [0.22.5 测试与打包报告](docs/test-reports/TEST-REPORT-0.22.5.md)；该包没有发布到 GitHub Releases，也不随源码仓库下载。当前脚本的默认构建输出为仓库相邻的 `Releases/BaitbreakPixel-0.23.1` 目录及 `BaitbreakPixel-0.23.1.zip`；包单独提供，不存入源码仓库，也不发布为GitHub Release。
+仅在既有饵料上增加 F 咬食：嘴部 18 px 内最多摄入 4 粒，成功摄入后冷却 0.40 秒；按住不连咬，与左键同 tick 时咬食优先。空咬只有中性反馈，不扣食物、不启动摄入冷却。没有自动位移、锁定或额外中钩骰子。当前只推进 P2.0 / P2.1；新饵型和平衡阶段等待用户试玩后再决定。
 
-本轮修复开局部署显示、收放线可见反馈、A/D 默认速度（+25%）和鱼侧 HUD。必须等待用户人工确认，Phase 2 冻结；反馈记录见 [阶段文档](docs/architecture/PHASE-1.5-PLAYTEST-GATE.md)。
+本次只提交源码，由用户同步后运行；不生成、上传或发布试玩包。版本与构建脚本默认目录同步为 `Releases/BaitbreakPixel-0.24.0`，不表示已有包。见 [实现边界与 schema 14 计划](docs/architecture/PHASE02-BITE.md)、[Bite 验证与人工试玩清单](docs/test-reports/PHASE02-BITE-VALIDATION.md)。Phase 1.5 暂通过推进，后续反馈随时可重新打开；历史记录见 [Phase 1.5 验证](docs/test-reports/PHASE15-VALIDATION.md)。
 
 0.23.0 新增饱食度、可抵抗的本能偏移、基于可见线索的三档警惕，以及按饵生命周期随机决定的隐藏鱼钩。保持一条玩家鱼和现有主鱼竿，没有加入自动吸食、多鱼或长期记忆。实施与验收范围见 [Phase 0–1 检查记录](docs/architecture/PHASE-0-1.md)。当前版本尚需人工试玩确认控制手感与核心博弈，不能将自动统计当作“已经好玩”的证明。
 
@@ -39,7 +39,7 @@
 
 | 角色 | 操作 |
 | --- | --- |
-| 小鱼 | WASD 游动，鼠标朝向；左键吸食，滚轮调吸力，右键持续冲刺；空格进行 QTE 和主动缠线；满足目标后按 E 回巢 |
+| 小鱼 | WASD 游动，鼠标朝向；左键吸食，F 单次咬食，滚轮调吸力，右键持续冲刺；空格进行 QTE 和主动缠线；满足目标后按 E 回巢 |
 | 钓鱼人 | A/D 左右移竿，W/S 收放线，Q 下钩或补饵；F 尝试解缠，空格进行 QTE；E 进入水下观察，左键依次选择抄网起点 A、终点 B |
 | 通用 | H 查看帮助，Esc 打开菜单，F2 / F3 调整玩法规则，F11 全屏 |
 
@@ -57,7 +57,7 @@
 .\Build-Pixel.ps1 -GodotDirectory 'D:\Tools\Godot_v4.7.2-stable_win64.exe'
 ```
 
-该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.23.1` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
+该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.24.0` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
 
 当前测试入口、套件状态和产物目录配置见 [测试运行指南](tests/README.md)。核心抄网逻辑检查示例（替换为本机引擎路径）：
 
