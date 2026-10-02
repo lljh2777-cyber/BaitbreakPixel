@@ -27,7 +27,7 @@ func _initialize() -> void:
 		var seed_value:=first_seed+index
 		var world:=World.new()
 		world.reset_world({"seed":seed_value,"challenge":true,"ruleset":"survival"})
-		var brain:=FishBrain.new(); brain.reset(seed_value+100000)
+		var brain:=FishBrain.new(); brain.reset(seed_value+100000); brain.use_caution=strategy=="cautious"
 		var opponent:=AnglerBrain.new()
 		for frame in 22200:
 			world.advance_tick(brain.command(world,World.TICK_SECONDS),opponent.command(world,World.TICK_SECONDS))

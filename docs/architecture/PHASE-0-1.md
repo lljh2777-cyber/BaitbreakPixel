@@ -74,3 +74,15 @@ Checks: random hook206, IDs13, suction41, architecture46 and tackle26 pass; fina
 - Briefly unseen same-ID evidence decays instead of resetting; replaced/destroyed IDs are pruned from authority state
 - Focus switching has a12px margin so nearby competing targets do not make the displayed caution flicker every frame
 - Focused suspicion11, statistics13 and architecture46 pass after these corrections
+
+## M1.5 — role-filtered transport
+
+A separate strict fish-presentation schema now allowlists public fields before every fish welcome/start/state/reliable/chunk send. Application validates the entire payload before mutation; authoritative schema13 capture/restore remains separate. Bait hook/tackle/private assignment fields, RNG/seed, truth logs, future supply state and internal beliefs never enter the fish payload. Opponent QTE targets are neutralized while realized line-force effects remain visible. Sanitized bait dictionaries do not regain fake hook fields on the client.
+
+Focused real-ENet projection42, network rules25, rules synchronization9, untangle6, net02013 and net02113 pass. A fixed-six-frame capture assertion proved timing-sensitive under the larger simulation workload; it now waits within a bounded caught-state window for both peers, while retaining capture-once and final-victory assertions.
+
+## M1.6 — validation in progress
+
+Distance-only and cautious bot policies use the same public bait observation; cautious policy adds its own observation-derived beliefs, never authority hook fields. Self-induced suction displacement is compensated in the motion cue rather than mistaken for new danger evidence. Policy choice/hidden-truth invariance3, suspicion11 and suction41 checks pass.
+
+Paired1000-seed policies (seeds1001–2000) are running from an immutable authority/policy tree with a source hash manifest. Final aggregate/native checks and report follow. Version0.23.0 denotes unreleased source only; no Windows package or GitHub Release has been produced.

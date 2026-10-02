@@ -7,9 +7,9 @@ static func evidence(bait: Dictionary, rules: Dictionary) -> float:
 	var velocity: Vector2=motion.get("velocity",Vector2.ZERO)
 	var drift: Vector2=motion.get("water_drift",Vector2.ZERO)
 	var abnormal: float=clampf((velocity-drift).length()/12.0,0,1) if not motion.is_empty() else 0.0
-	var displaced: float=clampf(Vector2(motion.get("suction_displacement",Vector2.ZERO)).length()/16.0,0,1)
+	# The fish knows its own suction: displacement alone is not new danger evidence.
 	var disturbed: float=1.0 if hints.get("disturbances",{}).get("recent_motion",false) else 0.0
-	return clampf(abnormal*float(rules.suspicion_motion_weight)+disturbed*float(rules.suspicion_disturbance_weight)+displaced*0.18,0,1)
+	return clampf(abnormal*float(rules.suspicion_motion_weight)+disturbed*float(rules.suspicion_disturbance_weight),0,1)
 
 static func tolerance(self_state: Dictionary, bait: Dictionary) -> float:
 	var hunger: float={"NORMAL":0.0,"HUNGRY":0.15,"CRITICAL":0.30,"STARVING":0.40}.get(self_state.satiety_band,0.0)

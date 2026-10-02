@@ -1,4 +1,9 @@
 extends RefCounted
+const Suspicion=preload("res://scripts/fish_suspicion.gd")
+var use_caution := false
+var beliefs: Dictionary={}
+var belief_bands: Dictionary={}
+var belief_focus := -1
 const Observation=preload("res://scripts/fish_observation.gd")
 var observation: Dictionary={}
 const Layout=preload("res://scripts/pond_layout.gd")
@@ -22,6 +27,7 @@ var evade_memory := 0.0
 
 func reset(seed_value: int = 2719) -> void:
 	observation.clear()
+	beliefs.clear(); belief_bands.clear(); belief_focus=-1
 	rng.seed=seed_value
 	food_target=-1
 	escape_target=-1
@@ -57,6 +63,9 @@ func _judge(game: Node2D) -> bool:
 
 func command(game: Node2D, delta: float) -> Dictionary:
 	observation=Observation.build(game,false)
+	if use_caution:
+		var interpretation:=Suspicion.update(beliefs,belief_bands,observation,delta,game.rules,belief_focus)
+		beliefs=interpretation["values"]; belief_bands=interpretation.bands; belief_focus=interpretation.focus_bait_id
 	var result := {"move":Vector2.ZERO,"aim":game.aim,"power":game.rule("suction_initial"),"suck":false,"dash":false,"slow":false,"qte":false,"home":false}
 	if game.landing or game.net_state=="caught": state="被捕获"; return result
 	result.qte=_judge(game)
@@ -138,6 +147,8 @@ func command(game: Node2D, delta: float) -> Dictionary:
 			var point := food_position(game,index)
 			if not point.is_finite(): continue
 			var value: float=game.fish.distance_to(point)
+			if use_caution:
+				value+=maxf(0,float(beliefs.get(index,0.0))-Suspicion.tolerance(observation.self,perceived))*220.0
 			if value<best: best=value; selected=index
 		if selected!=food_target and selected>=0: approach_side=-1 if game.fish.x<food_position(game,selected).x else 1
 		food_target=selected

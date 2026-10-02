@@ -916,7 +916,8 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2) -> void:
 	var bait := baits[index]
 	var old_tip := Vector2(bait.tip_before)
-	var old_position: Vector2=bait.pos
+	# Remove visible self-induced suction displacement from the external-motion cue.
+	var old_position: Vector2=Vector2(bait.pos)-Vector2(bait.suction_offset)
 	if bait.active:
 		bait.age += delta
 		# Advance passive/tackle motion from the base, without accumulating last tick's suction offset.
@@ -967,7 +968,7 @@ func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2) -> 
 				grain.free = true
 				bait.budget -= 1
 	if delta>0:
-		bait.motion_velocity=(Vector2(bait.pos)-old_position)/delta
+		bait.motion_velocity=(Vector2(bait.pos)-Vector2(bait.suction_offset)-old_position)/delta
 		if (Vector2(bait.motion_velocity)-water_velocity(bait.pos)).length()>8: bait.last_disturbance_tick=simulation_tick
 	bait.tip_before = _tip(index)
 

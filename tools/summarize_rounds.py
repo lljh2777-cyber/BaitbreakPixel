@@ -33,6 +33,11 @@ for key in ['instinct_trigger_count','instinct_total_duration','critical_satiety
     summary[key+'_mean']=statistics.mean(values) if len(values)==len(rows) else None
 for source,name in [('instinct_trigger_count','instinct_trigger_rate'),('critical_satiety_seconds','critical_satiety_rate')]:
     summary[name]=sum(row['stats'].get(source,0)>0 for row in rows)/len(rows) if all(source in row['stats'] for row in rows) else None
+total_seconds=sum(row['duration'] for row in rows)
+attempts=sum(row['stats'].get('feeding_attempts',0) for row in rows)
+summary['feeding_attempt_rate_per_second']=attempts/total_seconds
+summary['feeding_abort_rate']=sum(row['stats'].get('feeding_aborts',0) for row in rows)/max(1,attempts)
+summary['time_in_caution_states']={name:sum(row['stats'].get(key,0) for row in rows)/total_seconds for name,key in [('CALM','caution_low_seconds'),('UNEASY','caution_medium_seconds'),('ALARMED','caution_high_seconds')]}
 a.output.mkdir(parents=True,exist_ok=True)
 (a.output/'summary.json').write_text(json.dumps(summary,indent=2)+'\n')
 (a.output/'rounds.json').write_text(json.dumps(rows,indent=2)+'\n')

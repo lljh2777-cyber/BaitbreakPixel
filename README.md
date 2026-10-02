@@ -2,7 +2,7 @@
 
 一个 2D 像素风格的人鱼对抗游戏：小鱼在水下觅食、缠线和逃脱，钓鱼人在岸边控竿、收放线与抄网。支持单机挑战、自由练习和一人对一鱼的局域网联机。
 
-**当前开发源码版本：0.22.6（未发行）** · Windows x64 · Godot 4.7.2
+**当前开发源码版本：0.23.0（未发行）** · Windows x64 · Godot 4.7.2
 
 ## 下载试玩
 
@@ -12,9 +12,11 @@
 
 截至 2026-10-02 核验，GitHub 最新公开发行仍为 0.20.1。该包不包含下面的 0.21 / 0.22 开发改动；包内“开始试玩.txt”对应其自身版本。
 
-### 开发源码：0.22.6；已有本地试玩包：0.22.5
+### 开发源码：0.23.0；已有本地试玩包：0.22.5
 
-本分支源码为 0.22.6，可按下方“开发运行”直接运行或自行构建；尚未生成并验证本版 Windows 试玩包。既有 Windows 本地试玩包的记录见 [0.22.5 测试与打包报告](docs/test-reports/TEST-REPORT-0.22.5.md)；该包没有发布到 GitHub Releases，也不随源码仓库下载。当前脚本的默认构建输出为仓库相邻的 `Releases/BaitbreakPixel-0.22.6` 目录及 `BaitbreakPixel-0.22.6.zip`；这是输出约定，不表示这些包已存在。
+本分支源码为 0.23.0，可按下方“开发运行”直接运行或自行构建；尚未生成并验证本版 Windows 试玩包。既有 Windows 本地试玩包的记录见 [0.22.5 测试与打包报告](docs/test-reports/TEST-REPORT-0.22.5.md)；该包没有发布到 GitHub Releases，也不随源码仓库下载。当前脚本的默认构建输出为仓库相邻的 `Releases/BaitbreakPixel-0.23.0` 目录及 `BaitbreakPixel-0.23.0.zip`；这是输出约定，不表示这些包已存在。
+
+0.23.0 新增饱食度、可抵抗的本能偏移、基于可见线索的三档警惕，以及按饵生命周期随机决定的隐藏鱼钩。保持一条玩家鱼和现有主鱼竿，没有加入自动吸食、多鱼或长期记忆。实施与验收范围见 [Phase 0–1 检查记录](docs/architecture/PHASE-0-1.md)。当前版本尚需人工试玩确认控制手感与核心博弈，不能将自动统计当作“已经好玩”的证明。
 
 0.22.6 基于 `96faf4d`，修复首次打开玩法方案页时因方案目录尚不存在而产生的引擎错误；同时维护测试入口、截图产物路径和文档，并排除未引用的调色着色器。检查环境与范围见 [2026-10-02 维护报告](docs/test-reports/TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md)，不能将原始 0.22.5 的 Windows 检查结果当成本次改动的验证。
 
@@ -53,7 +55,7 @@
 .\Build-Pixel.ps1 -GodotDirectory 'D:\Tools\Godot_v4.7.2-stable_win64.exe'
 ```
 
-该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.22.6` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
+该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.23.0` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
 
 当前测试入口、套件状态和产物目录配置见 [测试运行指南](tests/README.md)。核心抄网逻辑检查示例（替换为本机引擎路径）：
 

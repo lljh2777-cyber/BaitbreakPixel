@@ -11,7 +11,7 @@ Scope: Phase0–1 one-fish prototype. Observed attachment/contact is a gameplay 
 
 ## B — legitimate physical evidence
 
-- Water-relative bait motion, suction displacement, recent disturbance, visible grains and actual feeding results
+- Water-relative external bait motion, recent disturbance, visible grains and actual feeding results. Visible self-induced suction displacement is compensated before the suspicion model reads motion; it is not automatically treated as new danger evidence
 - Physical flutter has overlapping full support for safe and hooked food; no amplitude interval guarantees either truth
 - Actual mouth entry/attachment, visible line tension after attachment, QTE and escape feedback are action outcomes
 - Cast/reel/tackle movement can occur with either safe or hooked payloads. There is only the existing main rod; no added dual-tether system
