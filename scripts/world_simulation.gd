@@ -346,6 +346,7 @@ func advance_tick(fish_command: Dictionary, angler_command: Dictionary) -> void:
 
 func simulate(delta: float, fish_command: Dictionary, angler_command: Dictionary) -> void:
 	if match_paused or match_over or not is_finite(delta) or delta<=0: return
+	var stats_before:=Stats.before(self)
 	var fish_input := Commands.fish(fish_command,aim,power)
 	var angler_input := Commands.angler(angler_command,angler.cursor)
 	angler.update(self,delta,angler_input)
@@ -357,6 +358,7 @@ func simulate(delta: float, fish_command: Dictionary, angler_command: Dictionary
 	_simulate_fish(delta,fish_input.move,fish_input.suck,fish_input.home,fish_input.dash,fish_input.slow,fish_input.qte,fish_input.qte_at_age)
 	_tick_untangle(delta,angler_input)
 	angler.step_tackle_feedback(self,delta)
+	Stats.sample(self,stats_before)
 	if net_state=="caught" or match_over:
 		for role in effort_checks: Effort.reset(effort_checks[role])
 
@@ -768,8 +770,10 @@ func _rebuild_rope() -> void:
 func step(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: bool = false, slow: bool = false, qte_pressed: bool = false) -> void:
 	# Compatibility helper for existing gameplay probes; production uses advance_tick.
 	if match_paused or match_over or not is_finite(delta) or delta<=0: return
+	var stats_before:=Stats.before(self)
 	_simulate_fish(delta,movement,sucking,interact,dash,slow,qte_pressed)
 	angler.step_tackle_feedback(self,delta)
+	Stats.sample(self,stats_before)
 
 func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: bool = false, slow: bool = false, qte_pressed: bool = false, qte_at_age: float = -1) -> void:
 	if match_paused or match_over or not is_finite(delta) or delta<=0: return

@@ -21,3 +21,12 @@ Remaining checkpoints: observation boundary, measurement/baseline gate, then seq
 - Visual decoration uses its own deterministic grain RNG; observation and drawing never consume simulation RNG
 - Checks: hidden-truth equivalence, detachment, tier edges, serialized finite values and stable identity: 22/22
 - The authority network transport remains unchanged at this checkpoint; role filtering is required before Phase1 network acceptance
+
+## M0.3 — measurement foundation
+
+- RoundStats records duration, feeding attempts/aborts, approaches/retreats, hook/escape outcomes and physiology/caution occupancy placeholders
+- Both production simulate and legacy step sample statistics; pause/end remain frozen
+- `python3 tools/run_rounds.py --rounds 1000 --seed 1` runs bounded, isolated 60 Hz headless rounds and exports summary.json, rounds.json and rounds.csv
+- Immutable `--project` archives isolate measurements from ongoing edits; `summarize_rounds.py` merges disjoint seed shards, rejects duplicate seeds and marks censored rounds
+- Initial two-round real-simulation probe completed; 1000-seed baseline is in progress and is a required Phase0 gate, not yet acceptance
+- Deterministic replay/counter/freeze checks: 8/8. Current aggregate/native regression and full baseline measurement remain pending
