@@ -13,7 +13,7 @@ Windows 可使用 `D:\python\python.exe`；用 `--godot "引擎可执行文件�
 
 ## 注册表与状态
 
-[`suite_registry.json`](suite_registry.json) 显式登记全部 96 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
+[`suite_registry.json`](suite_registry.json) 显式登记全部 101 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
 
 - `current`：当前有效的回归门禁；不按文件名版本新旧决定。`--profile current` 运行无窗口套件，`--profile native` 运行图形套件。已重新验证的 effort、net_animation、rules_network 等较早版本仍在当前门禁中
 - `historical`：当前检出复现了失败的诊断套件。保留原断言，失败仍返回非零；这不是“已证明所有断言过时”，更不是通过。具体原因和结果见[维护报告](../docs/test-reports/TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md)
@@ -39,7 +39,7 @@ python3 tools/run_tests.py --suite shore_native_v015
 
 ## 原生与打包截图
 
-所有 33 个使用原生画面、且会写 PNG 的脚本都接受：
+所有 34 个使用原生画面、且会写 PNG 的脚本都接受：
 
 ```sh
 godot --path . --script res://tests/wood_fade_native.gd -- --test-profile --capture-output-directory=/absolute/writable/captures
@@ -47,7 +47,7 @@ godot --path . --script res://tests/wood_fade_native.gd -- --test-profile --capt
 
 默认路径不变。目录会创建，空值、建目录失败、PNG 写入失败都返回非零。5 个旧脚本继续支持 `--visual-output=`，同时提供时以 `--capture-output-directory=` 为准。
 
-计数说明：34 个脚本使用原生渲染/画面回读，其中 `reel_hand_native_v016` 只验证像素连通性，不写图片。另一个会写图的 `plant_art` 是无窗口图像测试：默认不写图，保留 `--preview=文件名`，也支持公共目录参数生成 `plant-art-preview.png`；显式 `--preview` 优先。因此所有 34 个会写图片的入口均有可写路径选择，不需要给不写文件的测试增加空参数。
+计数说明：35 个脚本使用原生渲染/画面回读，其中 `reel_hand_native_v016` 只验证像素连通性，不写图片。另一个会写图的 `plant_art` 是无窗口图像测试：默认不写图，保留 `--preview=文件名`，也支持公共目录参数生成 `plant-art-preview.png`；显式 `--preview` 优先。因此所有 35 个会写图片的入口均有可写路径选择，不需要给不写文件的测试增加空参数。
 
 发行 PCK 故意不包含 `tests/` 和 `tools/`。运行器用外部绝对 `--script` 加载测试，让 `res://scripts/` 和素材来自包内：
 
@@ -72,3 +72,7 @@ python3 tools/run_tests.py --profile native --pack /path/to/BaitbreakPixel.pck -
 ## Phase 2.1 Bite 垂直切片
 
 `phase02_bite` 验证无按键自动咬食、冷却后持续近距再咬、空处无反馈、摄入上限、范围边界、稳定排序、Bite 对 Suck 的优先级、恢复与真实钩尖接触；`phase02_bite_network` 验证移除命令位、schema14 回放、倒计时验证与鱼端裁剪，并通过真实 ENet 鱼客户端验证自动咬食、近距重复与钩尖接触结果。`phase02_bite_native` 验证就绪/空处/远距/摄入/冷却画面及隐藏钩像素等价。自动通过不替代用户的手感与双端人工试玩。
+
+## Phase 2.2 饵型基础
+
+`phase02_bait_types` 覆盖三类型分配、原食物预算、生命周期、混合旧散粒、schema14 重放，以及固定种子范围的初始/重挂钩型独立性诊断；`phase02_food_profiles` 验证集中定义和数值仍为中性。`phase02_observation` 与 `phase02_bait_network` 验证合法线索、严格裁剪、版本门和回放；`phase02_bait_native` 捕获三类型、部分吃掉/散落/吸动和 safe/hooked 像素等价。类型效率差异与组合平衡仍等待 P2.3，测试通过不能替代人工辨识度确认。

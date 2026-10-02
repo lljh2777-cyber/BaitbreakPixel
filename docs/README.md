@@ -40,3 +40,5 @@
 - [历史恢复与本地试玩包索引](../history/releases.json)
 
 文中的 `scripts/`、`tests/` 和 `assets/` 路径均以仓库根目录为基准。旧报告保留当时的结果和规则，不能作为当前玩法说明；当前操作以试玩说明为准。
+
+- [P2.2 饵型实现与人工门](architecture/PHASE02-BAIT-TYPES.md)
