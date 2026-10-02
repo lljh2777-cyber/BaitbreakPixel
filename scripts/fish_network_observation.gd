@@ -160,7 +160,7 @@ static func valid(world: Node2D, snapshot: Dictionary) -> bool:
 	if not _record(state.effort_checks.angler,Effort.fresh(),OPPONENT_EFFORT_FIELDS): return false
 	var opponent: Dictionary=state.effort_checks.angler
 	if opponent.multiplier<0.1 or opponent.multiplier>2.5 or opponent.effect_age<0 or opponent.effect_age>6: return false
-	if not _record(state.round_stats,Stats.fresh(),STAT_FIELDS) or not Stats.valid(state.round_stats): return false
+	if not _record(state.round_stats,Stats.fresh(),STAT_FIELDS) or not Stats.valid(state.round_stats,true): return false
 	if state.wraps.size()>world.targets.size(): return false
 	var wrap_ids: Dictionary={}
 	for wrap in state.wraps:

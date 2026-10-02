@@ -179,13 +179,26 @@ func run() -> void:
 		game.advance_tick({},{}); game.elapsed=2.0
 		var after_intake:=await render(kind+"-automatic-bite-after")
 		var eaten_count:=0
+		var eaten_points:=0.0
 		var retained_offsets: Array=[]
 		for grain in bait.grains:
 			eaten_count+=int(grain.eaten)
+			if grain.eaten: eaten_points+=float(grain.points)
 			retained_offsets.append(Vector2(grain.offset))
-		check(eaten_count==4 and game.score>0 and game.bite_cooldown>0 and game.bite_feedback_age>0,kind+": actual mouth proximity automatically consumes four grains and starts cooldown")
+		var expected_count: int={"cluster":4,"worm":6,"chunk":8}[kind]
+		check(eaten_count==expected_count and game.score>0 and game.bite_cooldown>0 and game.bite_feedback_age>0,kind+": actual mouth proximity automatically consumes profile capacity and starts cooldown without input")
+		var expected_satiety:=clampf(50.0+eaten_points*game.rule("satiety_food_value")*float(FoodProfile.get_profile(kind).satiety_scale),0,100)
+		check(is_equal_approx(game.score,eaten_points) and is_equal_approx(game.satiety,expected_satiety),kind+": actual eaten grain points determine score and independently scaled satiety")
+		check(before_intake.get_region(Rect2i(446,22,70,3)).get_data()!=after_intake.get_region(Rect2i(446,22,70,3)).get_data(),kind+": actual intake visibly fills satiety bar")
+		check(before_intake.get_region(Rect2i(272,31,80,17)).get_data()!=after_intake.get_region(Rect2i(272,31,80,17)).get_data(),kind+": automatic Bite ready hint becomes cooldown feedback")
+		check(before_intake.get_region(Rect2i(516,0,124,49)).get_data()==after_intake.get_region(Rect2i(516,0,124,49)).get_data(),kind+": satiety feedback stays clear of right HUD bounds")
 		check(bait.grains.size()==44 and retained_offsets==offered_offsets,kind+": real intake depletes existing grains without replacing or changing physical type geometry")
 		check(before_intake.get_region(Rect2i(310,175,55,35)).get_data()!=after_intake.get_region(Rect2i(310,175,55,35)).get_data(),kind+": real automatic intake visibly changes the mouth and food region")
+		setup_fixture(); bait=put_bait(kind,game.mouth()+Vector2(6,0)); game.satiety=99.99
+		game.advance_tick({},{}); game.elapsed=2.0
+		var full:=await render(kind+"-satiety-capped")
+		check(game.satiety==100.0,kind+": actual intake caps satiety at 100")
+		check(full.get_region(Rect2i(516,0,124,49)).get_data()==after_intake.get_region(Rect2i(516,0,124,49)).get_data(),kind+": capped satiety cannot overflow right HUD bounds")
 	for pair in [[0,1],[1,2],[0,2]]:
 		check(silhouettes[pair[0]]!=silhouettes[pair[1]],"types %s remain visibly distinct at the same position" % [pair])
 	check(dimensions.worm.x>dimensions.worm.y*2,"worm forms a slender curved strip rather than a round cluster")

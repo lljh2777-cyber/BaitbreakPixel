@@ -14,8 +14,9 @@ func fresh() -> Node2D:
 	w.reset_world({"seed":8231,"rules":{"water_strength":0.0,"satiety_decay":0.0,"instinct_max_strength":0.0,"timer_enabled":false}})
 	w.fish=Vector2(250,200); w.fish_before=w.fish; w.aim=Vector2.RIGHT; w.satiety=50
 	for bait in w.baits:
+		bait.bait_type="cluster"
 		bait.active=false; bait.hook=false
-		for grain in bait.grains: grain.eaten=true
+		for grain in bait.grains: grain.eaten=true; grain.visual_kind="cluster"
 	return w
 func food(w: Node2D, slot: int, index: int, offset: Vector2, loose: bool=true) -> Dictionary:
 	var grain: Dictionary=w.baits[slot].grains[index]

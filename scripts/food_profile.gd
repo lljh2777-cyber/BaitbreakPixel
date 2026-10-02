@@ -1,13 +1,13 @@
 extends RefCounted
 
-# P2.2 establishes identity and physical silhouettes, not P2.3 feeding balance.
-# Multipliers intentionally remain neutral; no profile is a danger label.
-const VERSION := 1
+# P2.3: immutable authority tuning, never a hook-risk label.
+# Whole-grain score is unchanged. Bite spends base capacity / efficiency per grain.
+const VERSION := 2
 const TYPES: Array[String] = ["cluster", "worm", "chunk"]
 const PROFILES := {
 	"cluster": {"id":"cluster", "visual_kind":"cluster", "shape_hint":"grain_cluster", "smell_hint":"grain", "suction_efficiency":1.0, "bite_efficiency":1.0, "satiety_scale":1.0, "fragmentation":1.0},
-	"worm": {"id":"worm", "visual_kind":"worm", "shape_hint":"slender_curved", "smell_hint":"savory", "suction_efficiency":1.0, "bite_efficiency":1.0, "satiety_scale":1.0, "fragmentation":1.0},
-	"chunk": {"id":"chunk", "visual_kind":"chunk", "shape_hint":"solid_chunk", "smell_hint":"rich", "suction_efficiency":1.0, "bite_efficiency":1.0, "satiety_scale":1.0, "fragmentation":1.0},
+	"worm": {"id":"worm", "visual_kind":"worm", "shape_hint":"slender_curved", "smell_hint":"savory", "suction_efficiency":0.65, "bite_efficiency":1.5, "satiety_scale":1.3, "fragmentation":0.65},
+	"chunk": {"id":"chunk", "visual_kind":"chunk", "shape_hint":"solid_chunk", "smell_hint":"rich", "suction_efficiency":0.4, "bite_efficiency":2.0, "satiety_scale":1.65, "fragmentation":0.35},
 }
 
 static func valid_type(value: Variant) -> bool:

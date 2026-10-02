@@ -13,9 +13,9 @@ func _initialize() -> void:
 		var profile:=Profile.get_profile(kind)
 		check(profile.id==kind and profile.visual_kind==kind,"known profile identity")
 		for field in ["suction_efficiency","bite_efficiency","satiety_scale","fragmentation"]:
-			check(profile[field]==1.0,"P2.2 keeps "+field+" baseline; P2.3 remains gated")
+			check(profile[field]>0.0 and profile[field]<=2.0,"P2.3 bounded positive "+field)
 		profile.satiety_scale=999.0
-		check(Profile.get_profile(kind).satiety_scale==1.0,"profile callers cannot mutate global defaults")
+		check(Profile.get_profile(kind).satiety_scale<2.0,"profile callers cannot mutate global defaults")
 		var bait: Dictionary=w._make_bait(0,0,kind)
 		var points:=0.0; var offsets: Array=[]
 		for grain in bait.grains:
@@ -25,7 +25,7 @@ func _initialize() -> void:
 		shapes[str(offsets)]=true
 		w.score=0; w.satiety=20; w.counted.clear()
 		w._consume_grain(bait.grains[0],false)
-		check(is_equal_approx(w.score,w.rule("bait_points")*0.6/24) and is_equal_approx(w.satiety,20+w.score*w.rule("satiety_food_value")),"actual consumption keeps baseline score and satiety for "+kind)
+		check(is_equal_approx(w.score,w.rule("bait_points")*0.6/24) and is_equal_approx(w.satiety,20+w.score*w.rule("satiety_food_value")*Profile.get_profile(kind).satiety_scale),"actual consumption keeps baseline score and applies profile satiety for "+kind)
 	check(shapes.size()==3,"three real physical silhouettes, no display-only phantom food")
 	check(not Profile.valid_type("unknown") and not Profile.valid_type(1) and Profile.get_profile("unknown").is_empty(),"unknown profile rejected without silent cluster fallback")
 	w.free()

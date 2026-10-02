@@ -944,6 +944,7 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 	if match_over or landing: return
 	# Resolve all movement/contact first. Defer Suck's food awards so the
 	# automatic mouth-range intake can own this tick without double feeding.
+	if feeding: round_stats.suck_attempts+=1 # Eligible suction simulation ticks, not clicks.
 	var sucked_grains: Array[Dictionary]=[]
 	for index in baits.size(): _step_bait(index, delta, feeding and hooked!=HookState.MOUTH, previous_mouth, true, sucked_grains)
 	if _attempt_bite():
@@ -966,6 +967,7 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 
 func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2, defer_intake: bool=false, pending_intake: Array[Dictionary]=[]) -> void:
 	var bait := baits[index]
+	var profile:=FoodProfile.get_profile(bait.bait_type)
 	var old_tip := Vector2(bait.tip_before)
 	# Remove visible self-induced suction displacement from the external-motion cue.
 	var old_position: Vector2=Vector2(bait.pos)-Vector2(bait.suction_offset)
@@ -994,7 +996,7 @@ func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2, def
 	var layer := 3
 	for grain in bait.grains:
 		if not grain.eaten and not grain.free: layer = mini(layer, grain.layer)
-	bait.budget = minf(2, float(bait.budget) + delta * (8 + 20 * power)*rule("pellet_rate")/28.0) if sucking else 0.0
+	bait.budget = minf(2, float(bait.budget) + delta * (8 + 20 * power)*rule("pellet_rate")/28.0*float(profile.fragmentation)) if sucking else 0.0
 	for grain in bait.grains:
 		if grain.eaten: continue
 		if not grain.free: grain.pos = Vector2(bait.pos) + Vector2(grain.offset).rotated(bait.angle)
@@ -1003,12 +1005,12 @@ func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2, def
 		var pull := strength(grain.pos)
 		if pull <= 0: continue
 		if grain.free:
-			grain.pos = Vector2(grain.pos).move_toward(mouth(), delta * rule("pellet_speed") * Suction.pellet_gain(power))
+			grain.pos = Vector2(grain.pos).move_toward(mouth(), delta * rule("pellet_speed") * Suction.pellet_gain(power)*float(FoodProfile.get_profile(grain.visual_kind).suction_efficiency))
 			if Vector2(grain.pos).distance_to(mouth()) < 4:
 				if defer_intake: pending_intake.append(grain)
 				else: _consume_grain(grain)
 		elif grain.layer == layer:
-			grain.progress += delta * pull * Suction.peel_gain(power,grain.layer) * rule("pellet_detach")
+			grain.progress += delta * pull * Suction.peel_gain(power,grain.layer) * rule("pellet_detach")*float(profile.suction_efficiency)
 			if grain.progress >= 1 and bait.budget >= 1:
 				grain.free = true
 				bait.budget -= 1
@@ -1018,12 +1020,13 @@ func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2, def
 	bait.tip_before = _tip(index)
 
 # Shared accounting preserves Suck's existing per-grain values and de-duplication.
-func _consume_grain(grain: Dictionary, sound: bool = true) -> void:
+func _consume_grain(grain: Dictionary, sound: bool = true, action: String = "suck") -> void:
 	grain.eaten=true
 	if counted.has(grain.id): return
 	counted[grain.id]=true
 	score+=float(grain.points)
-	if rules.hunger_enabled: satiety=clampf(satiety+float(grain.points)*rule("satiety_food_value"),0,100)
+	Stats.intake(round_stats,grain.visual_kind,float(grain.points),action,simulation_tick)
+	if rules.hunger_enabled: satiety=clampf(satiety+float(grain.points)*rule("satiety_food_value")*float(FoodProfile.get_profile(grain.visual_kind).satiety_scale),0,100)
 	last_eat_at=elapsed
 	stamina=minf(rule("stamina_max"),stamina+float(grain.points)*rule("food_recovery"))
 	if sound: play_feedback("eat")
@@ -1054,19 +1057,28 @@ func _attempt_bite() -> bool:
 	if not _can_bite(): return false
 	var candidates:=_bite_candidates()
 	if candidates.is_empty(): return false
+	round_stats.bite_attempts+=1
+	var budget: float=rule("bite_intake")
+	var taken:=0
+	for candidate in candidates:
+		var cost:=1.0/float(FoodProfile.get_profile(candidate.grain.visual_kind).bite_efficiency)
+		if cost>budget+0.000001: break # Stable nearest-first; never skip an expensive grain.
+		budget-=cost
+		_consume_grain(candidate.grain,false,"bite")
+		taken+=1
+	if taken==0: return false
+	round_stats.bite_successes+=1
 	bite_feedback_age=BITE_FEEDBACK_SECONDS
 	play_feedback("bite")
 	bite_cooldown=rule("bite_cooldown")
-	for index in mini(int(rule("bite_intake")),candidates.size()):
-		_consume_grain(candidates[index].grain,false)
 	return true
 
 func _step_bait_suction(bait: Dictionary, delta: float, sucking: bool) -> void:
-	# Both kinds of food share whole-cluster displacement and response speed.
+	# Profile scales physical suction response, without any hidden-truth branch.
 	var base: Vector2=bait.pos
 	var target:=Vector2.ZERO
 	if sucking and _remaining(bait,true):
-		var reach:=strength(base)*Suction.body_gain(power)*26*rule("hook_suction")
+		var reach:=strength(base)*Suction.body_gain(power)*26*rule("hook_suction")*float(FoodProfile.get_profile(bait.bait_type).suction_efficiency)
 		target=base.move_toward(mouth(),reach)-base
 	bait.suction_offset=Vector2(bait.suction_offset).move_toward(target,delta*(Suction.body_speed(power) if sucking else 38))
 	var bounds:=Layout.WATER.grow(-7)
@@ -1074,6 +1086,10 @@ func _step_bait_suction(bait: Dictionary, delta: float, sucking: bool) -> void:
 	bait.suction_offset=Vector2(bait.pos)-base
 
 func _enter_hook(index: int) -> void:
+	# Context counters overlap: contact precedes automatic Bite and may interrupt it.
+	# These diagnose proximity, not a claim that Bite caused attachment.
+	if feeding: round_stats.suck_hook_contacts+=1
+	if _can_bite() and not _bite_candidates().is_empty(): round_stats.bite_hook_contacts+=1
 	baits[index].suction_offset=Vector2.ZERO
 	bound_bait = index
 	hooked = HookState.MOUTH
