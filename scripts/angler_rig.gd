@@ -78,8 +78,11 @@ func surface_target(game: Node2D) -> Vector2:
 	return Vector2(INF,INF)
 
 func feedback_reel_speed(game: Node2D) -> float:
-	if casting or game.landing or game.net_state=="caught": return 0.0
-	if game.hooked==game.HookState.HOOKED: return game.reel_speed
+	if casting or game.landing or game.net_state=="caught" or game.Net.busy(game): return 0.0
+	if game.hooked==game.HookState.HOOKED:
+		var available: float=game.fish_line_length if game.latched else game.rope_length
+		if (game.reel_speed>0 and available>=game.rule("line_max")) or (game.reel_speed<0 and available<=0): return 0.0
+		return game.reel_speed
 	if game.hooked!=game.HookState.FREE: return 0.0
 	# Free tackle has a separate spool. Ignore its cached speed after retrieval
 	# or a broken line, and stop the animation at the physical line limits.

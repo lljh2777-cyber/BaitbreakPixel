@@ -77,7 +77,7 @@ func run() -> void:
 		check(picture.get_data() == repeat.get_data(), state + ": fixed-tick rendering is deterministic")
 	for pair in [[0,1], [1,2], [0,2]]:
 		check(pictures[pair[0]].get_region(Rect2i(285,160,70,60)).get_data() != pictures[pair[1]].get_region(Rect2i(285,160,70,60)).get_data(), "caution states %s visibly differ beside fish" % [pair])
-		check(pictures[pair[0]].get_region(Rect2i(360,26,78,9)).get_data() != pictures[pair[1]].get_region(Rect2i(360,26,78,9)).get_data(), "caution states %s visibly differ in HUD" % [pair])
+		check(pictures[pair[0]].get_region(Rect2i(366,31,100,17)).get_data() != pictures[pair[1]].get_region(Rect2i(366,31,100,17)).get_data(), "caution states %s visibly differ in HUD" % [pair])
 	game.caution_state = "UNEASY"
 	for bait in game.baits:
 		bait.hook = true
@@ -93,7 +93,7 @@ func run() -> void:
 		game.satiety = value
 		satiety_pictures.append(await render("satiety-" + game.satiety_band().to_lower()))
 	for index in range(1, satiety_pictures.size()):
-		check(satiety_pictures[index-1].get_region(Rect2i(440,3,70,20)).get_data() != satiety_pictures[index].get_region(Rect2i(440,3,70,20)).get_data(), "adjacent satiety bands have visibly distinct HUD labels %d" % index)
+		check(satiety_pictures[index-1].get_region(Rect2i(446,20,70,6)).get_data() != satiety_pictures[index].get_region(Rect2i(446,20,70,6)).get_data(), "adjacent satiety bands have visibly distinct HUD bars %d" % index)
 	print("PHASE01_NATIVE | passed=", passed, " | failed=", failed)
 	quit(1 if failed else 0)
 

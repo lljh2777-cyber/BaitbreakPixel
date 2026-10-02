@@ -25,6 +25,10 @@ const MINT := Color("8de0bd")
 const GOLD := Color("ffd379")
 const RED := Color("f58375")
 const SKILL_ORIGIN := Vector2(10,122)
+const STATUS_BAR_WIDTH := 70.0
+
+static func satiety_bar_width(value: float) -> float:
+	return STATUS_BAR_WIDTH*clampf(value/100.0,0,1)
 var game: Node2D
 const FishObservation=preload("res://scripts/fish_observation.gd")
 var fish_observation: Dictionary={}
@@ -190,7 +194,7 @@ func _angler(t: float) -> void:
 func _angler_hud(_t: float) -> void:
 	draw_rect(Rect2(0,0,640,29),INK)
 	label_at(Vector2(12,19),"水下 · 抄网观察" if world.net_action.observing else "岸边 · 钓鱼人",13,GOLD)
-	var rig := "挂鱼 · 留意张力" if world.hooked==world.HookState.HOOKED else "浮漂下顿" if world.hooked==world.HookState.MOUTH else "钩饵在水中" if Shore.rig_index(world)>=0 else "Q 下钩 / 补饵"
+	var rig := "挂鱼 · 留意张力" if world.hooked==world.HookState.HOOKED else "浮漂下顿" if world.hooked==world.HookState.MOUTH else "正在下钩…" if world.angler.casting else "钩饵在水中" if Shore.rig_index(world)>=0 else "未下钩 · 按 Q"
 	label_at(Vector2(140,19),rig,12,CREAM)
 	label_at(Vector2(360,19),"抄网 %.1fs" % world.angler.net_cooldown if world.angler.net_cooldown>0 else "E 观察 / 抄网",11,MINT)
 	var remaining := maxi(0,int(ceil(world.rule("time_limit")-world.clock)))
@@ -202,7 +206,8 @@ func _angler_hud(_t: float) -> void:
 	# Opponent checks remain autonomous; never invite the angler to press a fish QTE.
 	panel(Rect2(10,65,151,50))
 	if world.hooked==world.HookState.HOOKED:
-		var spool := "S 放线" if world.angler.spool>0 else ("W 收线" if world.angler.spool<0 else "稳线")
+		var speed: float=world.angler.feedback_reel_speed(world)
+		var spool := "S 放线" if speed>0.5 else ("W 收线" if speed< -0.5 else "稳线")
 		label_at(Vector2(18,81),"张力 %d%% · %s" % [int(world.tension*100),spool],11,RED if world.tension>=world.rule("tension_high")-0.02 else CREAM)
 		draw_rect(Rect2(18,88,134,5),Color("335762"))
 		draw_rect(Rect2(18,88,134*world.tension,5),MINT.lerp(RED,world.tension))
@@ -213,10 +218,12 @@ func _angler_hud(_t: float) -> void:
 		label_at(Vector2(18,81),"浮漂正在下顿",11,MINT)
 		label_at(Vector2(18,100),"吐钩判定中 · 暂缓收放",10,GOLD)
 	else:
-		label_at(Vector2(18,81),"观察浮漂与水面",11,MINT)
+		var speed: float=world.angler.feedback_reel_speed(world)
+		var status := "收线 ↑" if speed< -0.5 else "放线 ↓" if speed>0.5 else "稳线 · 观察浮漂" if Shore.rig_index(world)>=0 else "未下钩 · Q 开始"
+		label_at(Vector2(18,81),status,11,GOLD if speed< -0.5 else MINT)
 		var remaining_bait := 0
 		for bait in world.baits:
-			if bait.hook and not bait.removed:
+			if bait.tackle and not bait.removed:
 				for grain in bait.grains:
 					if not grain.eaten and not grain.free: remaining_bait+=1
 		label_at(Vector2(18,100),"钩饵 %d 粒 · Q 下钩" % remaining_bait,11,CREAM)
@@ -485,7 +492,7 @@ func _hud(t: float) -> void:
 		_angler_hud(t)
 		_skill_hud(t)
 		return
-	draw_rect(Rect2(0,0,640,35), INK)
+	draw_rect(Rect2(0,0,640,49), INK)
 	label_at(Vector2(12,15), "像素池塘", 12, GOLD)
 	label_at(Vector2(12,28), "双人对战" if game.shared_session else ("限时挑战" if world.challenge else "练习 · F2 调节"), 10, MINT)
 	var target: float = world.food_target()
@@ -497,12 +504,15 @@ func _hud(t: float) -> void:
 	label_at(Vector2(366,15), "加速" if world.sprinting else ("抗拉" if world.resisting else ("乏力" if world.stamina_ratio()<world.rule("fatigue_threshold") else "体力")), 11, GOLD if world.sprinting or world.resisting else CREAM)
 	draw_rect(Rect2(366,22,70,3), Color("335762"))
 	draw_rect(Rect2(366,22,70*world.stamina_ratio(),3), GOLD if world.sprinting else (RED if world.sprint_exhausted else MINT))
-	label_at(Vector2(366,32),{"CALM":"平静","UNEASY":"迟疑","ALARMED":"警觉"}[fish_observation.self.caution_state],9,MINT if fish_observation.self.caution_state=="CALM" else GOLD)
-	if float(fish_observation.self.instinct_drive)>0.05: label_at(Vector2(446,29),"想吃…",9,GOLD)
+	label_at(Vector2(366,43),"警惕 · "+{"CALM":"平静","UNEASY":"迟疑","ALARMED":"警觉"}[fish_observation.self.caution_state],11,MINT if fish_observation.self.caution_state=="CALM" else GOLD)
+	if float(fish_observation.self.instinct_drive)>0.05: label_at(Vector2(470,43),"想吃…",11,GOLD)
 	var satiety_state: String=fish_observation.self.satiety_band
-	label_at(Vector2(446,15),{"NORMAL":"饱足","HUNGRY":"饥饿","CRITICAL":"很饿","STARVING":"极饿"}[satiety_state],11,MINT if satiety_state=="NORMAL" else GOLD if satiety_state=="HUNGRY" else RED)
+	var satiety_color: Color=MINT if satiety_state=="NORMAL" else GOLD if satiety_state=="HUNGRY" else RED
+	label_at(Vector2(446,15),"饱食",11,CREAM)
+	draw_rect(Rect2(446,22,STATUS_BAR_WIDTH,3),Color("335762"))
+	draw_rect(Rect2(446,22,satiety_bar_width(float(fish_observation.self.satiety)),3),satiety_color)
 	var remaining := maxi(0, int(ceil(world.rule("time_limit")-world.clock)))
-	label_at(Vector2(515,23), "%02d:%02d" % [remaining/60,remaining%60] if world.challenge and world.rules.timer_enabled else ("不限时" if world.challenge else "N 抄网练习"), 14, RED if remaining < 60 else CREAM)
+	label_at(Vector2(532,23), "%02d:%02d" % [remaining/60,remaining%60] if world.challenge and world.rules.timer_enabled else ("不限时" if world.challenge else "练习"), 14, RED if remaining < 60 else CREAM)
 	draw_rect(Rect2(0,333,640,27), INK)
 	label_at(Vector2(12,350), game.hint(), 12)
 	label_at(Vector2(584,350), "H 帮助", 10, Color("9cbbb4"))

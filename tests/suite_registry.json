@@ -517,6 +517,16 @@
       "status": "current",
       "mode": "headless",
       "timeout_seconds": 120
+    },
+    "phase15_controls": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "phase15_native": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 120
     }
   }
 }
