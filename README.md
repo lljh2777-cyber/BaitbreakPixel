@@ -2,10 +2,10 @@
 
 一个 2D 像素风格的人鱼对抗游戏：小鱼在水下觅食、缠线和逃脱，钓鱼人在岸边控竿、收放线与抄网。支持单机挑战、自由练习和一人对一鱼的局域网联机。
 
-**当前源码：0.25.3（水域分支 · 四种构图选择）** · Godot 4.7.2
-**本分支本地包：0.25.3**。主线另有 [0.25.1 觅食版](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.25.1)，本轮水域继续沿用已确认的 0.25.2 玩法基线。
+**当前源码：0.25.4（水域分支 · 中上层近远景）** · Godot 4.7.2
+**本分支本地包：0.25.4**。主线另有 [0.25.1 觅食版](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.25.1)，本轮水域继续沿用已确认的 0.25.2 玩法基线。
 
-0.25.3 在设置中提供四种构图：蕨叶庭 713284（默认选择）、长叶湾 2649、浮叶荫 42、垂根岸 731。打开「生成水域 · 本地小鱼视角」后可用下拉框切换；本次启动有效，联机和岸上沿用原环境。碰撞、摄食、鱼线和 NPC 玩法不变。[使用与范围](docs/watergen/WG4_README.md) · [验证报告](docs/watergen/WG4_REPORT.md)。本地包位于 `Releases/BaitbreakPixel-0.25.3`。
+0.25.4 为四种构图补充中上层远景高草、悬垂叶簇与近景视差。设置中提供四种构图：蕨叶庭 713284（默认选择）、长叶湾 2649、浮叶荫 42、垂根岸 731。打开「生成水域 · 本地小鱼视角」后可用下拉框切换；本次启动有效，联机和岸上沿用原环境。碰撞、摄食、鱼线和 NPC 玩法不变。[使用与范围](docs/watergen/WG4_README.md) · [本次视觉调整与验证](docs/watergen/WG4_UPPER_REPORT.md)。本地包位于 `Releases/BaitbreakPixel-0.25.4`。
 
 用户已确认 0.24.6 手感合适，Phase 2 关闭。0.25.0 新增 3 条独立游动的环境鱼、多鱼 ID、独立随机源、schema15 重放与双角色公共表现；玩家现有 10 px 自动咬食、0.80 秒间隔、渐变吸力和 4/6/8 容量保持不变。NPC 本轮只游动与软避让，不抢食、不上钩、不影响胜负。
 
@@ -66,7 +66,7 @@
 .\Build-Pixel.ps1 -GodotDirectory 'D:\Tools\Godot_v4.7.2-stable_win64.exe'
 ```
 
-该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.25.3` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
+该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.25.4` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
 
 当前测试入口、套件状态和产物目录配置见 [测试运行指南](tests/README.md)。核心抄网逻辑检查示例（替换为本机引擎路径）：
 

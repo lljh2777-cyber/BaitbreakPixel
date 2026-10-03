@@ -42,6 +42,30 @@ func run() -> void:
 		check(Map.canonical(plan) == Map.canonical(Generator.generate(map, profile, seed).plan), "repeat layout " + str(seed))
 		var baked := Baker.bake(plan)
 		check(baked.ok and baked.animations.size() == 18, "18 bounded decorative patches " + str(seed))
+		var canopy_layers: Dictionary = {}
+		var crop_exact := true
+		var tall_groves := 0
+		for layer in plan.layers:
+			for object in layer.objects:
+				if object.kind == "clump" and object.get("midwater", false):
+					for stem in object.stems:
+						if stem.y - stem.height < 150: tall_groves += 1
+				if object.kind not in ["canopy", "animated_canopy"]: continue
+				canopy_layers[layer.name] = true
+				if object.kind != "animated_canopy": continue
+				# Compare the cropped atlas patch to an uncropped raster, including
+				# leaves outside the crop. This catches truncated tips and bad origins.
+				var whole := Image.create(1280, 480, false, Image.FORMAT_RGBA8)
+				whole.fill(Color.TRANSPARENT)
+				Baker.Foliage.canopy(whole, object, layer.name, plan.palette)
+				for animation in baked.animations:
+					if animation.id != object.id: continue
+					var restored := Image.create(1280, 480, false, Image.FORMAT_RGBA8)
+					restored.fill(Color.TRANSPARENT)
+					restored.blit_rect(animation.image, Rect2i(Vector2i.ZERO, animation.image.get_size()), Vector2i(animation.origin_px[0], animation.origin_px[1]))
+					crop_exact = crop_exact and whole.get_data() == restored.get_data()
+		check(canopy_layers.has("distance") and canopy_layers.has("foreground") and tall_groves >= 2, "upper center has both depth planes and tall groves " + str(seed))
+		check(crop_exact, "canopy animation crops preserve complete leaves " + str(seed))
 		var atlas_exact := true
 		for animation in baked.animations:
 			var r: Array = animation.region_px
@@ -91,7 +115,7 @@ func run() -> void:
 	var empty := profile.duplicate(true)
 	for key in Generator.Profile.CLUMP_LIMITS: empty.composition[key] = [0, 0]
 	var empty_plan: Dictionary = Generator.generate(map, empty, 713284).plan
-	check(empty_plan.layers[1].objects.filter(func(o): return o.kind in ["clump", "animated_stem"]).is_empty(), "zero foliage budget respected")
+	check(empty_plan.layers[1].objects.filter(func(o): return o.kind in ["clump", "animated_stem", "canopy", "animated_canopy"]).is_empty() and empty_plan.layers[5].objects.is_empty(), "zero foliage budget respected in both depth planes")
 	check(Map.canonical(map) + Map.canonical(profile) == before and authority == Adapter.authority_bytes(), "map/profile/targets unchanged")
 	print("WG21_CONTRACT | passed=", passed, " | failed=", failed)
 	quit(1 if failed else 0)

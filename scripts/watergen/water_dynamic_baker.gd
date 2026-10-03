@@ -48,6 +48,8 @@ static func bake(plan: Dictionary) -> Dictionary:
 					Raster.pixel(image, local.x, local.y, color)
 				"animated_stem": animations.append(_stem(object, layer.name, plan.palette))
 				"animated_root": animations.append(_root(object, layer.name, plan.palette))
+				"canopy": Foliage.canopy(image, local, layer.name, plan.palette)
+				"animated_canopy": animations.append(_canopy(object, layer.name, plan.palette))
 				"leaf_litter": Foliage.litter(image, local, plan.palette)
 		layers[layer.name] = {"image": image, "origin_px": layer.origin_px.duplicate(), "rgba_sha256": Raster.digest(image)}
 	var result := {"ok": true, "code": "OK", "layers": layers, "animations": animations}
@@ -104,4 +106,14 @@ static func _root(object: Dictionary, layer: String, palette: Dictionary) -> Dic
 	var image := Image.create(ceili(object.width * 2 + 50), ceili(object.length + 18), false, Image.FORMAT_RGBA8)
 	image.fill(Color.TRANSPARENT)
 	Base._root(image, shifted(object, Vector2(-left, -top)), palette)
+	return _animation(object, layer, image, [left, top])
+
+static func _canopy(object: Dictionary, layer: String, palette: Dictionary) -> Dictionary:
+	# Include the widest leaf, branch lean and both sway extremes in the crop.
+	var half_width := ceili(object.width + absf(object.lean) + 52)
+	var left := floori(object.x) - half_width
+	var top := floori(object.y) - 2
+	var image := Image.create(half_width * 2 + 2, ceili(object.length + 42), false, Image.FORMAT_RGBA8)
+	image.fill(Color.TRANSPARENT)
+	Foliage.canopy(image, shifted(object, Vector2(-left, -top)), layer, palette)
 	return _animation(object, layer, image, [left, top])
