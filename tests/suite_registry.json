@@ -619,6 +619,16 @@
       "status": "current",
       "mode": "headless",
       "timeout_seconds": 120
+    },
+    "watergen_integration": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "watergen_native": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 180
     }
   }
 }
