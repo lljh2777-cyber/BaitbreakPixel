@@ -15,6 +15,9 @@ func clear() -> void:
 	previous.clear()
 	current.clear()
 	world.npc_fishes.clear()
+	world.hook_target_fish_id=-1
+	world.npc_hook={"phase":""}
+	world.public_npc_hook_result={"tick":-1,"fish_id":-1,"result":"","position":Vector2.ZERO}
 
 func accept(snapshot: Dictionary, now: float, role: String = "angler") -> bool:
 	var accepted: bool=false
@@ -25,12 +28,16 @@ func accept(snapshot: Dictionary, now: float, role: String = "angler") -> bool:
 	previous=current if current.get("format","")==snapshot.get("format","") else {}
 	current=snapshot.duplicate(true)
 	# Render history never holds private NPC replay state, even for local previews.
-	current.state.npc_fishes=NPCPublic.capture(world.npc_fishes)
-	current.state.erase("next_fish_id")
-	current.state.erase("hook_target_fish_id")
-	world.npc_fishes.assign(NPCPublic.capture(world.npc_fishes))
+	current.state.npc_fishes=NPCPublic.capture(world.npc_fishes,world.hook_target_fish_id,world.npc_hook)
+	for key: String in AnglerNetworkObservation.PRIVATE_WORLD_FIELDS: current.state.erase(key)
+	current.state.npc_hook=NPCPublic.capture_hook(world.npc_hook)
+	current.state.public_npc_hook_result=NPCPublic.capture_result(world.public_npc_hook_result)
+	world.npc_fishes.assign(NPCPublic.capture(world.npc_fishes,world.hook_target_fish_id,world.npc_hook))
 	world.next_fish_id=2
-	world.hook_target_fish_id=-1
+	world.npc_hook=NPCPublic.capture_hook(world.npc_hook)
+	world.npc_foraging_enabled=false
+	world.npc_social_enabled=false
+	world.npc_hook_enabled=false
 	if not previous.is_empty(): interval=clampf((snapshot.state.simulation_tick-previous.state.simulation_tick)/60.0,1.0/60,0.15)
 	received_at=now
 	return true
@@ -109,6 +116,8 @@ func sample(now: float) -> Node2D:
 			if b.net_state=="caught":
 				world.fish=world.net_pos+world.net_catch_offset.lerp(world.net_bag_offset(),smoothstep(0,1,world.net_age/world.NET_SETTLE))
 	if world.hooked==world.HookState.HOOKED: world._rebuild_rope()
+	elif world.hook_target_fish_id>1 and world.bound_bait>=0:
+		world.rope_path=PackedVector2Array([world.line_anchor(world.bound_bait),world.hook_target_mouth()])
 	return world
 
 func _sample_npc_fishes(old_states: Array, latest_states: Array, ratio: float) -> void:
@@ -119,7 +128,7 @@ func _sample_npc_fishes(old_states: Array, latest_states: Array, ratio: float) -
 		if not by_id.has(state.fish_id): continue # New/replacement/reactivated identity snaps.
 		var old: Dictionary=by_id[state.fish_id]
 		# Cosmetic identity changes are discrete; never morph unrelated silhouettes.
-		if old.visual_variant!=state.visual_variant: continue
+		if old.visual_variant!=state.visual_variant or old.animation_state!=state.animation_state: continue
 		state.position=Vector2(old.position).lerp(state.position,ratio)
 		state.velocity=Vector2(old.velocity).lerp(state.velocity,ratio)
 		state.aim=Vector2(old.aim).slerp(state.aim,ratio).normalized()

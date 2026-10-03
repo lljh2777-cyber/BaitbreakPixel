@@ -1,10 +1,10 @@
 extends RefCounted
 
-const NPC_FIELDS := ["npc_food_consumed","npc_food_by_type","npc_feeding_events","player_npc_food_contests","npc_target_switches"]
+const NPC_FIELDS := ["npc_food_consumed","npc_food_by_type","npc_feeding_events","player_npc_food_contests","npc_target_switches","npc_hook_count","npc_escapes","npc_breaks","wrong_catches","npc_hooked_seconds"]
 
 static func fresh() -> Dictionary:
 	var result:=legacy_fresh()
-	result.merge({"npc_food_consumed":0.0,"npc_food_by_type":type_totals(),"npc_feeding_events":0,"player_npc_food_contests":0,"npc_target_switches":0})
+	result.merge({"npc_food_consumed":0.0,"npc_food_by_type":type_totals(),"npc_feeding_events":0,"player_npc_food_contests":0,"npc_target_switches":0,"npc_hook_count":0,"npc_escapes":0,"npc_breaks":0,"wrong_catches":0,"npc_hooked_seconds":0.0})
 	result.merge({"food_by_type":type_totals(),"suck_intake_by_type":type_totals(),"bite_intake_by_type":type_totals(),
 		"suck_attempts":0,"suck_successes":0,"suck_hook_contacts":0,"bite_attempts":0,"bite_successes":0,"bite_hook_contacts":0,"last_suck_success_tick":-1})
 	return result

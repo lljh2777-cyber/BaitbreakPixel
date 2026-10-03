@@ -1,0 +1,5 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+LIFECYCLE | duel captures=1 slips=0 breaks=0 active=true id=3
+LIFECYCLE | survival captures=1 slips=0 breaks=0 active=true id=3
+INDEPENDENT_REVIEW | checked=258 failed=0

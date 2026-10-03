@@ -72,14 +72,14 @@ func reset() -> void:
 func surface_target(game: Node2D) -> Vector2:
 	if game.bound_bait>=0:
 		if game.rope_path.size()>2: return game.rope_path[1]
-		return game.mouth()
+		return game.hook_target_mouth()
 	for bait in game.baits:
 		if bait.tackle and bait.active and not bait.removed: return bait.pos
 	return Vector2(INF,INF)
 
 func feedback_reel_speed(game: Node2D) -> float:
-	if casting or game.landing or game.net_state=="caught" or game.Net.busy(game): return 0.0
-	if game.hooked==game.HookState.HOOKED:
+	if casting or game.line_landing() or game.net_state=="caught" or game.Net.busy(game): return 0.0
+	if game.line_hooked():
 		var available: float=game.fish_line_length if game.latched else game.rope_length
 		if (game.reel_speed>0 and available>=game.rule("line_max")) or (game.reel_speed<0 and available<=0): return 0.0
 		return game.reel_speed
@@ -93,7 +93,7 @@ func feedback_reel_speed(game: Node2D) -> float:
 
 func step_tackle_feedback(game: Node2D, delta: float) -> void:
 	if not game.uses_mobile_tackle(): return
-	var bracing:bool=game.hooked==game.HookState.HOOKED and not game.landing and game.net_state!="caught"
+	var bracing:bool=game.line_hooked() and not game.line_landing() and game.net_state!="caught"
 	var target_load:float=clampf(game.tension,0,1) if bracing else 0.0
 	var target_lift:=0.25+0.75*target_load if bracing else 0.0
 	rod_load=lerpf(rod_load,target_load,1-exp(-delta*(10 if target_load>rod_load else 6)))
@@ -108,7 +108,7 @@ func step_tackle_feedback(game: Node2D, delta: float) -> void:
 			surface_x=target.x; surface_velocity=0; surface_live=true
 		# A buoy has its own momentum. The submerged hook/fish supplies most of
 		# its lateral pull; rod motion reaches it through a tension-dependent spring.
-		var load:float=game.tension if game.hooked==game.HookState.HOOKED else 0.35
+		var load:float=game.tension if game.line_hooked() else 0.35
 		var goal := lerpf(anchor().x,target.x,0.78)
 		var count := maxi(1,ceili(delta*120))
 		for part in count:
@@ -147,7 +147,7 @@ func available_bait(game: Node2D) -> int:
 	return -1
 
 func deploy(game: Node2D) -> bool:
-	if game.hooked!=game.HookState.FREE or game.net_active() or game.net_action.observing or net_held or casting or cast_cooldown>0: return false
+	if game.hooked!=game.HookState.FREE or game.hook_target_fish_id>1 or game.net_active() or game.net_action.observing or net_held or casting or cast_cooldown>0: return false
 	for bait in game.baits:
 		if bait.tackle and bait.active and not bait.removed and game._remaining(bait,true):
 			game.notice="钩饵已在水中 · W 收线 / S 放线，收至岸边可取回"
@@ -157,7 +157,7 @@ func deploy(game: Node2D) -> bool:
 	return cast(game,anchor()+Vector2(0,game.rule("cast_depth")))
 
 func cast(game: Node2D, point: Vector2) -> bool:
-	if game.hooked!=game.HookState.FREE or game.net_active() or casting or cast_cooldown>0: return false
+	if game.hooked!=game.HookState.FREE or game.hook_target_fish_id>1 or game.net_active() or casting or cast_cooldown>0: return false
 	var index := available_bait(game)
 	if index<0: return false
 	game.redeploy_bait(index)
@@ -187,7 +187,7 @@ func update(game: Node2D, delta: float, command: Dictionary) -> void:
 	var raw_cursor := Vector2(command.get("target",cursor))
 	cursor=raw_cursor.clamp(Vector2(30,80),Vector2(Layout.SIZE.x-30,Layout.FLOOR-19))
 	anchor_before=anchor()
-	if not game.landing and game.net_state!="caught": x=clampf(x+clampf(float(command.get("walk",0)),-1,1)*game.rule("angler_speed")*delta,18,Layout.SIZE.x-52)
+	if not game.line_landing() and game.net_state!="caught": x=clampf(x+clampf(float(command.get("walk",0)),-1,1)*game.rule("angler_speed")*delta,18,Layout.SIZE.x-52)
 	var bank_speed := (anchor().x-anchor_before.x)/maxf(delta,0.001)
 	var count := maxi(1,ceili(delta*120))
 	for part in count:
@@ -195,7 +195,7 @@ func update(game: Node2D, delta: float, command: Dictionary) -> void:
 		sway_speed+=(-32*line_sway-4.8*sway_speed-bank_speed*4)*dt
 		line_sway=clampf(line_sway+sway_speed*dt,-22,22)
 	spool=float(bool(command.get("release",false)))-float(bool(command.get("reel",false)))
-	if game.hooked==game.HookState.MOUTH or game.landing or game.net_state=="caught": spool=0
+	if game.hooked==game.HookState.MOUTH or game.line_landing() or game.net_state=="caught": spool=0
 	if needs_neutral:
 		if not command.get("net_hold",false) and not command.get("drag",false): needs_neutral=false
 	else:

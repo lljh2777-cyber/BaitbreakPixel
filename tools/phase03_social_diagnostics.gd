@@ -69,7 +69,7 @@ func _initialize() -> void:
 
 func run_natural(seed_value: int, split: String, max_ticks: int) -> void:
 	var world:=World.new()
-	world.reset_world({"seed":seed_value,"challenge":true,"ruleset":"survival","npc_count":3,"npc_foraging_enabled":true,"npc_social_enabled":true})
+	world.reset_world({"npc_hook_enabled":false,"seed":seed_value,"challenge":true,"ruleset":"survival","npc_count":3,"npc_foraging_enabled":true,"npc_social_enabled":true})
 	var player:=Policy.new(); player.reset("Mixed",world.rules)
 	var opponent:=Opponent.new()
 	for tick in max_ticks:
@@ -86,7 +86,7 @@ func run_natural(seed_value: int, split: String, max_ticks: int) -> void:
 
 func fixture(seed_value: int, satiety: float, scene: String) -> Node2D:
 	var world:=World.new()
-	world.reset_world({"seed":seed_value,"npc_count":1,"npc_foraging_enabled":true,"npc_social_enabled":true,
+	world.reset_world({"npc_hook_enabled":false,"seed":seed_value,"npc_count":1,"npc_foraging_enabled":true,"npc_social_enabled":true,
 		"rules":{"water_strength":0.0,"satiety_decay":0.0,"instinct_max_strength":0.0,"timer_enabled":false}})
 	world.fish=Vector2(1100,300); world.fish_before=world.fish; world.aim=Vector2.RIGHT
 	var npc: Dictionary=world.npc_fishes[0]

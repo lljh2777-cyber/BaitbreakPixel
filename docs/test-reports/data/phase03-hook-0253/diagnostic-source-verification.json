@@ -1,0 +1,24 @@
+{
+  "checked_utc": "2026-10-03T13:27:07Z",
+  "success": true,
+  "pilot_complete_rows": 16,
+  "heldout_complete_rows": 100,
+  "pilot_source_matches_current": true,
+  "heldout_source_matches_current": true,
+  "same_pilot_heldout_sources": true,
+  "seeds_disjoint": true,
+  "heldout_analysis_recomputed_exactly": true,
+  "passive_control_mismatched_seeds": [],
+  "copied_file_sha256": {
+    "diagnostic-heldout-comparison.json": "026704439b8f2068f626d293f2ad003af735d37251c71207c96afb772c5277d3",
+    "diagnostic-heldout-provenance.json": "c01623df29e93f04ec5846fba2ba19babfc7946193e6043f4884b4c8e047a1d0",
+    "diagnostic-heldout-rounds.json": "8cceaa2d86a55d9c846f905cd14c8ef49cdcc5bfad9f7fcde7c59ecbb51682a9",
+    "diagnostic-heldout-summary.json": "093564cb9ad5fff684d35458e7b988ef3d413ae827eaafbce2015cbd57f7a6cf",
+    "diagnostic-pilot-comparison.json": "5a7b032cfbeb3de2ddc88d5dc8b200ce86699b0995ab868ce568fe0bc4f52fc4",
+    "diagnostic-pilot-provenance.json": "b3b362ce865d6ad1a35391e95358f71f88d59d887ee787d4a4307272b938e3c0",
+    "diagnostic-pilot-rounds.json": "d9c036500ac2a1af1ca6148f3a45162ee912851553c3c3d9cd8dc6d036051951",
+    "diagnostic-pilot-summary.json": "ab5db0d9f9eebb274c194813691ea789e0550ddc78444dbb9ae03e56ca96df46",
+    "diagnostic-pilot.txt": "4084f5ba60e0f6d832fcbb7b4c4fee226cbaf0690c36958d85bc510653839e1a",
+    "diagnostic-heldout.txt": "22d124dcfbe248c906ff7a2ee873e484d7ce3e578eb924c063bf73a676772049"
+  }
+}

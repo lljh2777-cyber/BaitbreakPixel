@@ -1,0 +1,16 @@
+extends "res://tests/phase03_npc_hook_native.gd"
+func run() -> void:
+	if not prepare_capture_output(): quit(2); return
+	game=Main.instantiate(); root.add_child(game); game.capture_mode="phase03_npc_hook_review"
+	if not contact_fixture(): quit(1); return
+	game.player_role="angler"
+	var npc: Dictionary=game.npc_fishes[0]
+	var anchor: Vector2=game.line_anchor(game.bound_bait)
+	npc.position=Vector2(anchor.x,82); npc.velocity=Vector2.ZERO; npc.aim=Vector2.UP
+	game.angler.auto_reel=false; game.angler.spool=0
+	game.rope_length=anchor.distance_to(game.hook_target_mouth()); game.npc_hook.landing_age=game.rule("landing_hold")
+	game.NPCHook.step(game,1.0/60.0); game.NPCHook.step(game,game.rule("landing_lift")*0.65)
+	print("NATIVE_REVIEW | held landing | target=",game.hook_target_fish_id," npc=",npc.position," player_hooked=",game.hooked)
+	await render("review-held-landing")
+	await create_timer(30).timeout
+	quit(0)

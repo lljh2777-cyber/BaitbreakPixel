@@ -212,9 +212,13 @@ func guard_checks() -> void:
 		for value in [NAN,INF,-0.01,4.0,0,"0"]:
 			var bad:=record.duplicate(true); bad[field]=value
 			check(not State.valid(bad,3),"strict timer scalar rejects malformed "+field)
-	for pair: Array in [["social_origin",Vector2(NAN,0)],["social_origin",Vector2(INF,0)],["social_origin",Vector2(1,0)],["social_origin",0],["social_bait_id",0],["social_bait_id",-2],["social_bait_id",3],["social_bait_id",-1.0],["social_motion_level",-1],["social_motion_level",3],["social_motion_level",1.0],["social_danger_tick",-2],["social_danger_tick",0.0],["social_reaction_left",0.1],["social_compete_left",0.1],["behavior_state","HESITATE"],["behavior_state","FLEE"],["behavior_state","COMPETE"],["behavior_state","HOOKED"],["behavior_state","CAPTURED"]]:
+	for pair: Array in [["social_origin",Vector2(NAN,0)],["social_origin",Vector2(INF,0)],["social_origin",Vector2(1,0)],["social_origin",0],["social_bait_id",0],["social_bait_id",-2],["social_bait_id",3],["social_bait_id",-1.0],["social_motion_level",-1],["social_motion_level",3],["social_motion_level",1.0],["social_danger_tick",-2],["social_danger_tick",0.0],["social_reaction_left",0.1],["social_compete_left",0.1],["behavior_state","HESITATE"],["behavior_state","FLEE"],["behavior_state","COMPETE"],["behavior_state","WRAPPED"],["behavior_state","CAPTURED"]]:
 		var bad:=record.duplicate(true); bad[pair[0]]=pair[1]
 		check(not State.valid(bad,3),"strict semantic/type guard rejects inconsistent social record: "+str(pair))
+	# P3.4 admits the local Hook state; world_snapshot separately requires the
+	# matching single-line target/phase and rejects orphan HOOKED records.
+	var hooked_record:=record.duplicate(true); hooked_record.behavior_state="HOOKED"
+	check(State.valid(hooked_record,3),"P3.4 Hook record shape is valid; target association belongs to the world guard")
 	apply(record,decide(record,[bait(Vector2(300,200),6.0)]))
 	for pair: Array in [["feeding",true],["target_bait_id",4],["social_bait_id",-1],["social_reaction_left",1.0],["social_recovery_left",0.0],["social_compete_left",0.1]]:
 		var bad:=record.duplicate(true); bad[pair[0]]=pair[1]

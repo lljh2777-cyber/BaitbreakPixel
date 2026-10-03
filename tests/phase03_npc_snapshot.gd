@@ -31,7 +31,7 @@ func replay_checks() -> void:
 			var replacement: int=source.spawn_npc()
 			check(replacement==count+2,"saved allocator includes a removed identity")
 		var snapshot: Dictionary=source.capture_snapshot()
-		check(snapshot.schema==15 and snapshot.state.has("npc_fishes") and snapshot.state.hook_target_fish_id==-1,"schema15 explicitly contains separate NPC authority and inert hook placeholder")
+		check(snapshot.schema==15 and snapshot.state.has("npc_fishes") and snapshot.state.hook_target_fish_id==-1,"schema15 explicitly contains separate NPC authority and inactive hook target")
 		check(receiver.restore_snapshot(snapshot),"restore legal running NPC snapshot count="+str(count))
 		check(var_to_bytes(snapshot)==var_to_bytes(receiver.capture_snapshot()),"restore reproduces exact byte-serialized authority including local RNG and steering")
 		if count>0:
@@ -170,7 +170,7 @@ func malformed_checks() -> void:
 	baseline=source.capture_snapshot()
 	check(receiver.restore_snapshot(baseline),"malformed tests start from a valid live baseline")
 	var changed: Dictionary=baseline.duplicate(true); changed.schema=14; reject(changed,"prior schema14")
-	for field: String in ["next_fish_id","npc_fishes","hook_target_fish_id","npc_foraging_enabled","npc_social_enabled","public_hook_cue"]:
+	for field: String in ["next_fish_id","npc_fishes","hook_target_fish_id","npc_foraging_enabled","npc_social_enabled","public_hook_cue","npc_hook_enabled","npc_hook","public_npc_hook_result"]:
 		changed=baseline.duplicate(true); changed.state.erase(field); reject(changed,"missing state field "+field)
 	# Schema 15 is intentionally strict: old P3.1 shapes are not silently upgraded.
 	changed=baseline.duplicate(true)
@@ -182,7 +182,7 @@ func malformed_checks() -> void:
 	for value in [-1,0,1,4,5.0,"5",null]:
 		changed=baseline.duplicate(true); changed.state.next_fish_id=value; reject(changed,"invalid allocator "+str(value))
 	for value in [0,1,2,2.0,"-1"]:
-		changed=baseline.duplicate(true); changed.state.hook_target_fish_id=value; reject(changed,"premature hook target "+str(value))
+		changed=baseline.duplicate(true); changed.state.hook_target_fish_id=value; reject(changed,"target without matching contact state "+str(value))
 	changed=baseline.duplicate(true); changed.state.npc_fishes[1].fish_id=changed.state.npc_fishes[0].fish_id; reject(changed,"duplicate fish ID")
 	changed=baseline.duplicate(true); changed.state.npc_fishes=[1]; reject(changed,"non-dictionary NPC")
 	changed=baseline.duplicate(true); changed.state.npc_fishes={}; reject(changed,"non-array NPC container")
@@ -232,9 +232,90 @@ func malformed_checks() -> void:
 	check(before.state.npc_fishes[0].position!=receiver.npc_fishes[0].position,"captured nested NPC state is detached from live world")
 	source.free()
 
+func hook_fixture(world: Node2D) -> void:
+	world.reset_world({"seed":83003,"npc_count":1,"npc_foraging_enabled":true,"npc_social_enabled":false,"ruleset":"duel","rules":{"hunger_enabled":false,"timer_enabled":false,"water_strength":0.0}})
+	world.fish=Vector2(950,310); world.fish_before=world.fish
+	var npc: Dictionary=world.npc_fishes[0]
+	npc.position=Vector2(650,200); npc.velocity=Vector2.ZERO; npc.aim=Vector2.RIGHT; npc.intent_aim=Vector2.RIGHT
+	var bait: Dictionary=world.baits[0]
+	bait.active=true; bait.hook=true; bait.removed=false; bait.tackle=false
+	bait.angle=0.0; bait.suction_offset=Vector2.ZERO
+	bait.pos=world.FishFeeding.mouth(npc.position,npc.aim)+Vector2(1,-1)
+	bait.home=bait.pos; bait.tip_before=world._tip(0)
+	world._step_bait(0,0.0,false,world.mouth())
+
+func hook_replay_checks() -> void:
+	var source:=World.new()
+	hook_fixture(source)
+	check(source.hook_target_fish_id==source.npc_fishes[0].fish_id and source.hooked==source.HookState.FREE,"snapshot hook fixture comes from actual NPC mouth contact")
+	var checkpoint: Dictionary=source.capture_snapshot()
+	check(receiver.restore_snapshot(checkpoint),"restore actual NPC hooked checkpoint")
+	check(var_to_bytes(checkpoint)==var_to_bytes(receiver.capture_snapshot()),"NPC hook restores exact private struggle phase and timers")
+	for tick in 240:
+		var fish: Dictionary={"move":Vector2.LEFT if tick<60 else Vector2.ZERO}
+		var angler: Dictionary={"release":tick>80}
+		source.advance_tick(fish,angler); receiver.advance_tick(fish,angler)
+		check(source.capture_snapshot()==receiver.capture_snapshot(),"NPC hooked/release continuation stays deterministic tick="+str(tick))
+	hook_fixture(source)
+	var npc: Dictionary=source.npc_fishes[0]
+	var captured_id: int=npc.fish_id
+	npc.position=Vector2(source.line_anchor(0).x,80); npc.behavior_state="LANDING"
+	source.npc_hook.phase="landing"; source.npc_hook.landing_from=npc.position; source.npc_hook.landing_age=0.0
+	source._rebuild_rope()
+	checkpoint=source.capture_snapshot()
+	check(receiver.restore_snapshot(checkpoint),"restore pending NPC landing checkpoint")
+	for tick in 600:
+		source.advance_tick({},{}); receiver.advance_tick({},{})
+		check(source.capture_snapshot()==receiver.capture_snapshot(),"NPC landing/capture/respawn continuation exact tick="+str(tick))
+		if source.public_npc_hook_result.result=="captured" and source.npc_fishes[0].fish_id==captured_id:
+			check(receiver.restore_snapshot(source.capture_snapshot()),"captured inactive ecology and pending respawn timer restore")
+	check(source.npc_fishes.size()==1 and source.npc_fishes[0].active and source.npc_fishes[0].fish_id>captured_id,"replay crosses delayed respawn into new stable identity")
+	check(not source.match_over and source.winner_role=="" and source.score==0,"NPC replay capture never claims victory or player food")
+	source.free()
+
+func hook_malformed_checks() -> void:
+	var source:=World.new(); hook_fixture(source)
+	var checkpoint: Dictionary=source.capture_snapshot()
+	check(receiver.restore_snapshot(checkpoint),"NPC malformed checks begin from actual hooked state")
+	for field: String in checkpoint.state.npc_hook:
+		var changed:=checkpoint.duplicate(true); changed.state.npc_hook.erase(field)
+		reject(changed,"missing authoritative NPC hook field "+field)
+	var changed:=checkpoint.duplicate(true); changed.state.npc_hook.future_secret=1
+	reject(changed,"unknown authoritative NPC hook key")
+	for field: String in ["age","low_age","high_age","landing_age","struggle_phase"]:
+		for value in [-0.01,NAN,INF,0,"0",null]:
+			changed=checkpoint.duplicate(true); changed.state.npc_hook[field]=value
+			reject(changed,"malformed NPC hook timer "+field+" "+str(value))
+	for value in ["","captured","HOOKED",0,null]:
+		changed=checkpoint.duplicate(true); changed.state.npc_hook.phase=value
+		reject(changed,"inconsistent NPC phase "+str(value))
+	for value in [-1,0,1,999,2.0,"2",null]:
+		changed=checkpoint.duplicate(true); changed.state.hook_target_fish_id=value
+		reject(changed,"orphan or wrong-role NPC target "+str(value))
+	changed=checkpoint.duplicate(true); changed.state.npc_fishes[0].active=false
+	reject(changed,"inactive NPC cannot own the live line")
+	changed=checkpoint.duplicate(true); changed.state.landing=true
+	reject(changed,"NPC target cannot claim player landing")
+	changed=checkpoint.duplicate(true); changed.state.qte="entry"
+	reject(changed,"NPC target cannot claim a player QTE")
+	changed=checkpoint.duplicate(true); changed.state.npc_fishes[0].behavior_state="WANDER"
+	reject(changed,"NPC target cannot remain a free swimmer")
+	for value in [{},{"tick":0,"fish_id":1,"result":"hooked","position":Vector2(650,200)},{"tick":0,"fish_id":999,"result":"hooked","position":Vector2(650,200)},{"tick":999999,"fish_id":2,"result":"hooked","position":Vector2(650,200)},{"tick":0,"fish_id":2,"result":"safe","position":Vector2(650,200)},{"tick":0,"fish_id":2,"result":"hooked","position":Vector2.ZERO}]:
+		changed=checkpoint.duplicate(true); changed.state.public_npc_hook_result=value
+		reject(changed,"malformed realized NPC result "+str(value))
+	changed=checkpoint.duplicate(true); changed.state.npc_hook={"phase":"hooked"}
+	reject(changed,"public phase-only dictionary cannot restore authority")
+	changed=checkpoint.duplicate(true); changed.state.npc_fishes=source.NPCFishState.fresh(2,1,Vector2(650,200),Vector2.RIGHT,1)
+	reject(changed,"malformed hook-target collection remains atomic")
+	source.reset_world({"seed":1})
+	changed=source.capture_snapshot(); changed.state.bound_bait=0
+	reject(changed,"unowned bound bait cannot masquerade as an inactive line")
+	check(receiver.restore_snapshot(baseline),"new hook rejection checks leave receiver able to restore valid current schema")
+	source.free()
+
 func _initialize() -> void:
 	receiver=World.new(); receiver.reset_world({"seed":9,"npc_count":0})
-	replay_checks(); live_foraging_replay_checks(); social_replay_checks(); malformed_checks(); social_malformed_checks()
+	replay_checks(); live_foraging_replay_checks(); social_replay_checks(); malformed_checks(); social_malformed_checks(); hook_replay_checks(); hook_malformed_checks()
 	receiver.free()
 	print("PHASE03_NPC_SNAPSHOT_TESTS | passed=%d | failed=%d" % [passed,failed])
 	quit(0 if failed==0 else 1)

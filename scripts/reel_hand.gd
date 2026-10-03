@@ -50,7 +50,7 @@ func draw_hand(view:Node2D,state:Dictionary) -> void:
 func draw(view:Node2D,right:Dictionary,world:Node2D) -> void:
 	if texture==null: return
 	var rig:RefCounted=world.angler
-	if world.hooked!=world.HookState.HOOKED and rig.reel_hand_amount<=0: return
+	if not world.line_hooked() and rig.reel_hand_amount<=0: return
 	var state:=pose(right,rig)
 	var crank_path:=PackedVector2Array([state.hub,state.hub+Vector2(-5,2).rotated(right.angle),state.crank])
 	view.draw_polyline(crank_path,Color("231e1c"),3)

@@ -1,0 +1,37 @@
+{
+  "reviewed_at_utc": "2026-10-03T13:24:41.802368+00:00",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "baseline": "6a2f1244fd3ba1db81fc507a26e3830d13f1cc62",
+  "command": "XDG_DATA_HOME=/tmp/p34-review-data XDG_CONFIG_HOME=/tmp/p34-review-config XDG_CACHE_HOME=/tmp/p34-review-cache /workspace/shared/baitbreak-toolchain-472/Godot_v4.7.2-stable_linux.x86_64 --headless --path /workspace/scratch/5dc5a43a1104/BaitbreakPixel --script /workspace/scratch/5dc5a43a1104/BaitbreakPixel/artifacts/p34-independent-review/probe.gd > artifacts/p34-independent-review/final-output.log 2>&1",
+  "probe_sha256": "2baa58af11628905111e77288f487c063d8a584a5f392b4e85567647c6f073aa",
+  "checked": 258,
+  "failed": 0,
+  "scope": [
+    "real swept mouth contact in duel and survival",
+    "continuous normal W produces landing, wrong catch, and new-ID respawn",
+    "snapshot exact roundtrip and fish/angler wire validation during lifecycle",
+    "occupied-line deploy/cast rejection without mutation",
+    "pause/end exact authority freeze",
+    "practice net recovery preserves active NPC line target",
+    "normal S produces isolated NPC escape"
+  ],
+  "limits": [
+    "Focused independent review supplement, not the registered aggregate suite",
+    "No native-renderer run or real ENet run in this probe",
+    "No human gameplay/balance claim"
+  ],
+  "source_sha256": {
+    "scripts/npc_hook.gd": "dfc79669ec92bfcbf7f6ddce32cb21092708d112d1aac40d0ba621fbd919b109",
+    "scripts/world_simulation.gd": "b88f88691811d32923560574512d2961712e231296a3e2b189a088d1aba07e9e",
+    "scripts/npc_fish_state.gd": "9240abb57813474c1fa02e39e0fcda54fcd219f94ae3a01e9dcc2563bb850c64",
+    "scripts/angler_rig.gd": "5ca54e3751b26e303846c44a0c9e0e606b2382928737d4df9d24ac7aad3bc4f1",
+    "scripts/net_simulation.gd": "4a50a169994284b143b99a1808ea85443f51eddcd381a865026e8b69e012f5f5",
+    "scripts/world_snapshot.gd": "2a9702e3d9f6f2060165175666f83849ed36ecc52766e8a314316d4350ea924e",
+    "scripts/fish_network_observation.gd": "61231951e4b4e005233d9be8ba28ea7dea1d2dd63ec79a31519846808cb85114",
+    "scripts/angler_network_observation.gd": "40ce0453d366b08da1dd344dceaf60177c794f452ed6e18af96c889665cfb0a7",
+    "scripts/npc_fish_public_state.gd": "4b1c2530f6657b45e082e3db9a26262e292e6f0219e19be82eaa637500c0e763",
+    "scripts/network_presentation.gd": "c4f11e5391a354aa0b12cdb218ca9dc58ccc13c43608b357a456208c1df806bc",
+    "scripts/fish_feeding.gd": "c8f84d1a473e45e73d002684a08c62f95671c5c79a286d6409ddc80325c1c4a7"
+  },
+  "note": "Original independent review probe rerun unchanged against the final frozen production source."
+}
