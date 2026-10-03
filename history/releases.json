@@ -1281,12 +1281,12 @@
       "exported_resources": 54
     }
   ],
-  "index_notes": "releases preserves the 42 recovered archive manifests; recovery_date, method and validation apply only to that array. local_playtests transcribes subsequent test reports; hashes and sizes were not reverified from package bytes during indexing. Paths are relative to the repository root. See docs/history/RELEASES.md. public_releases records the 14 Windows ZIPs published and reverified on 2026-10-02; prior recovered manifests and historical local report fields are preserved. 0.24.2 was built, Windows-validated and published on 2026-10-02; the preceding 14 publication records remain unchanged. 0.24.3 was built, Windows-validated and published on 2026-10-02; preceding publication records and balance evidence remain unchanged. 0.24.4 was built, Windows-validated and published on 2026-10-03; preceding publication records and original distance-tuning evidence remain unchanged.",
+  "index_notes": "releases preserves the 42 recovered archive manifests; recovery_date, method and validation apply only to that array. local_playtests transcribes subsequent test reports; hashes and sizes were not reverified from package bytes during indexing. Paths are relative to the repository root. See docs/history/RELEASES.md. public_releases records the 14 Windows ZIPs published and reverified on 2026-10-02; prior recovered manifests and historical local report fields are preserved. 0.24.2 was built, Windows-validated and published on 2026-10-02; the preceding 14 publication records remain unchanged. 0.24.3 was built, Windows-validated and published on 2026-10-02; preceding publication records and balance evidence remain unchanged. 0.24.4 was built, Windows-validated and published on 2026-10-03; preceding publication records and original distance-tuning evidence remain unchanged. 0.24.5 was built, Windows-validated and published on 2026-10-03; preceding publication records and original bite-tuning evidence remain unchanged.",
   "public_release_snapshot": {
     "checked_on": "2026-10-03",
-    "version": "0.24.4",
-    "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.24.4",
-    "asset_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.24.4/BaitbreakPixel-0.24.4.zip",
+    "version": "0.24.5",
+    "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.24.5",
+    "asset_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.24.5/BaitbreakPixel-0.24.5.zip",
     "source_url": "https://api.github.com/repos/lljh2777-cyber/BaitbreakPixel/releases/latest"
   },
   "local_playtests": [
@@ -1467,6 +1467,17 @@
       "test_report": "docs/test-reports/GITHUB-RELEASE-0.24.4.md",
       "development_report": "docs/test-reports/PHASE02-DISTANCE-VALIDATION.md",
       "github_release_published_at_report": true
+    },
+    {
+      "version": "0.24.5",
+      "source_commit": "73e7954c9085e275b6de4125e051d09247bdbbde",
+      "pack_bytes": 2242404,
+      "pack_sha256": "ba8fae93895d080b8cd09d9d2e305ee222fb05e33d82fce7ed4ffe06e4d265b3",
+      "zip_bytes": 89589318,
+      "report_date": "2026-10-03",
+      "test_report": "docs/test-reports/GITHUB-RELEASE-0.24.5.md",
+      "development_report": "docs/test-reports/PHASE02-BITE-TUNING-VALIDATION.md",
+      "github_release_published_at_report": true
     }
   ],
   "public_release_snapshot_history": [
@@ -1496,6 +1507,13 @@
       "version": "0.24.3",
       "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.24.3",
       "asset_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.24.3/BaitbreakPixel-0.24.3.zip",
+      "source_url": "https://api.github.com/repos/lljh2777-cyber/BaitbreakPixel/releases/latest"
+    },
+    {
+      "checked_on": "2026-10-03",
+      "version": "0.24.4",
+      "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.24.4",
+      "asset_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.24.4/BaitbreakPixel-0.24.4.zip",
       "source_url": "https://api.github.com/repos/lljh2777-cyber/BaitbreakPixel/releases/latest"
     }
   ],
@@ -1938,6 +1956,32 @@
           "size": 93,
           "sha256": "sha256:42a780cdc2ed6a56eb6df957e33a4727e49c845a7a2ced87996ecd12802ec022",
           "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.24.4/SHA256SUMS.txt"
+        }
+      ],
+      "verification": "ZIP CRC and exact local contents; every packed game script matches tag source; packed main scene loads; Windows source regressions and targeted packed native suites pass; standalone EXE launches; GitHub asset SHA256 and size match local files"
+    },
+    {
+      "version": "0.24.5",
+      "source_commit": "73e7954c9085e275b6de4125e051d09247bdbbde",
+      "zip_bytes": 89589318,
+      "zip_sha256": "afcbf7009dadf527085e1d3b47b7717caa3b1c15dad2890ebb77eb91de8b5677",
+      "pack_bytes": 2242404,
+      "pack_sha256": "ba8fae93895d080b8cd09d9d2e305ee222fb05e33d82fce7ed4ffe06e4d265b3",
+      "release_url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.24.5",
+      "published_at": "2026-10-03T00:41:36Z",
+      "verified_scripts": 48,
+      "assets": [
+        {
+          "name": "BaitbreakPixel-0.24.5.zip",
+          "size": 89589318,
+          "sha256": "sha256:afcbf7009dadf527085e1d3b47b7717caa3b1c15dad2890ebb77eb91de8b5677",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.24.5/BaitbreakPixel-0.24.5.zip"
+        },
+        {
+          "name": "SHA256SUMS.txt",
+          "size": 93,
+          "sha256": "sha256:0723a815e644731b27119100ba74bbb037744f5f40f9a02361eab3c7449fc881",
+          "url": "https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.24.5/SHA256SUMS.txt"
         }
       ],
       "verification": "ZIP CRC and exact local contents; every packed game script matches tag source; packed main scene loads; Windows source regressions and targeted packed native suites pass; standalone EXE launches; GitHub asset SHA256 and size match local files"

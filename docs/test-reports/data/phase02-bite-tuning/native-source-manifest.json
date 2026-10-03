@@ -1,0 +1,2094 @@
+[
+  {
+    "path": ".gitignore",
+    "sha256": "cbb4cd116a3525b62260a62ad531bbc62fced63a69169e3efab38c70fbd97582"
+  },
+  {
+    "path": "README.md",
+    "sha256": "de441ed03b59fb33eef41b868fe68486b46cea113b7fe69c349a2410326c8389"
+  },
+  {
+    "path": "project.godot",
+    "sha256": "1a2d5a097da2b6d1f5053c8b59c1db978d371a07397d643eb30aedbe6c5e8032"
+  },
+  {
+    "path": "export_presets.cfg",
+    "sha256": "5cbe5f0b5b040816eb374118917e9705f1e32fbdedba52348c2d85508c0421e1"
+  },
+  {
+    "path": "AGENTS.md",
+    "sha256": "6ecfc314b1165ff269f6c15ff8bdc252141fdabb77cff157aa8720fd7487761f"
+  },
+  {
+    "path": ".gitattributes",
+    "sha256": "6c8a081099b9c7c309fa59116c2b228246ba1cbd0be494631a0bdb75d37757ac"
+  },
+  {
+    "path": "Build-Pixel.ps1",
+    "sha256": "6191d1509aa6cdff72e5a23e3f7fcbf585ef4f9897a53edef30a982278189014"
+  },
+  {
+    "path": "docs/README.md",
+    "sha256": "689618507c8ff5f60d46b61ec3433fb6cd237e98e640349d8d62aa2ea1f9c8a9"
+  },
+  {
+    "path": "docs/.gdignore",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "scripts/pond_camera.gd",
+    "sha256": "2170a1430fe074b9f6113e196a25d77b76eaffaee678e4a6f03969a33a8e3614"
+  },
+  {
+    "path": "scripts/fish_observation.gd.uid",
+    "sha256": "1b4c6ddf8f8c6597a0db5e443d1c80261515b1a61cb8aaa34b992b4f0c4a87f4"
+  },
+  {
+    "path": "scripts/pond_layout.gd.uid",
+    "sha256": "c6d701d99608f3f8e9854e3a2d2d6e783db02b9d4c527b586f71b4d6f40019c1"
+  },
+  {
+    "path": "scripts/network_protocol.gd.uid",
+    "sha256": "05beea073c4fa390e441e822a6cf708b99059ce1c72e0885fffda5307dec063e"
+  },
+  {
+    "path": "scripts/world_snapshot.gd.uid",
+    "sha256": "88baab1611bcd68621c96e938983a70646dd28bf9b64118d8d3d74f3492ab120"
+  },
+  {
+    "path": "scripts/round_stats.gd",
+    "sha256": "4d3dce30f657b43ed127904fa78a6f26952d13db4f11e70614962ead66b24c8c"
+  },
+  {
+    "path": "scripts/angler_hand.gd",
+    "sha256": "f5db4b118381c8f4e5cb5c606aab3b01231f04ae23bb33a499550dbab68eb17a"
+  },
+  {
+    "path": "scripts/hook_gauge.gd",
+    "sha256": "4fe42c7690fa40f42e970af97eb26915793ec166c01b06da3ea21eb1fb692593"
+  },
+  {
+    "path": "scripts/suction_feel.gd.uid",
+    "sha256": "157f3b2d59548a03b30c19283c7ea1a73bbdb49b5fcbf4754702cdc4009e3069"
+  },
+  {
+    "path": "scripts/fish_winding.gd",
+    "sha256": "b0bb3762ac5323a7457c4e747e6c76079b063605098039ddd35aa08b5bf72823"
+  },
+  {
+    "path": "scripts/game_rules.gd.uid",
+    "sha256": "c3c8a2082b5e92623048f2dedf90f4e752364167e127055ab220fec90a6ff3fa"
+  },
+  {
+    "path": "scripts/angler_controller.gd",
+    "sha256": "cf870f0d5277403a54ee51ee6e7e5b8f1dee032241636046e505974567136a7a"
+  },
+  {
+    "path": "scripts/food_profile.gd.uid",
+    "sha256": "49c5620f9e615425d101752d6f71285acf955d692431e53fcaf430069e412c8c"
+  },
+  {
+    "path": "scripts/angler_brain.gd",
+    "sha256": "0cf8cd83aa58fa0d38a000badc1726ecba81011ae9445f415c3e6ba43903582d"
+  },
+  {
+    "path": "scripts/effort_check.gd.uid",
+    "sha256": "c1f130810f830e1c2becd1d9d58ebf265dc11b8f0a2ecc5cc5cae18391120c2c"
+  },
+  {
+    "path": "scripts/pond_camera.gd.uid",
+    "sha256": "8e266b6c98fd88194255c816504f073bcbdfff27c4ff994ac9c6e458398e5ef2"
+  },
+  {
+    "path": "scripts/network_session.gd",
+    "sha256": "e6e4792773941bc7c3bc262c797a9942e4e91ba3fd3127d1ab7ffea2f1368022"
+  },
+  {
+    "path": "scripts/net_visual.gd.uid",
+    "sha256": "ff8d2e2022d292806d038c9acb72826ff1b23cbf15fa663d5470c4f030a9698c"
+  },
+  {
+    "path": "scripts/menu.gd.uid",
+    "sha256": "69617e4fc309a94cba635c1adcb8d5732314be50357dc4a81feb7986f4b5a470"
+  },
+  {
+    "path": "scripts/pond_plant_art.gd.uid",
+    "sha256": "37465bfc7716304059deccf47ba4da6da204f26b4a2054bd306bfc73e8d8f264"
+  },
+  {
+    "path": "scripts/fish_suspicion.gd",
+    "sha256": "b2398e40a6d0694339f87ab9659c42a2b14a7c941c224abdf51a3b69810d9ed1"
+  },
+  {
+    "path": "scripts/angler_visual.gd.uid",
+    "sha256": "2be52441196e3ab10e98cf0407201e39c8adff0f417e39c8b72129f9241cf4fa"
+  },
+  {
+    "path": "scripts/net_simulation.gd.uid",
+    "sha256": "5e2d5ea6ef8a2bfc177a6bcf07519b6a1cfdd107dac4c16054fdfb661a47f68f"
+  },
+  {
+    "path": "scripts/fish_brain.gd",
+    "sha256": "1de20533cba63e62839d5e7646ecc194ba3d38bfb00ec7da8490207ad1c65fc3"
+  },
+  {
+    "path": "scripts/net_motion.gd",
+    "sha256": "03f50c4915c97c0c8b4af15547086f35e013461dae9e5df3a376817c6b2720da"
+  },
+  {
+    "path": "scripts/food_profile.gd",
+    "sha256": "0dbc7b16a19dec0cf943d1efe499f293207e69925cad7d8af77230f5176a9b44"
+  },
+  {
+    "path": "scripts/pond_depth_art.gd",
+    "sha256": "387aec1492eff7d2a0ef846798091ebc60bdafeba6edd16760ce9ac759be5b31"
+  },
+  {
+    "path": "scripts/local_input.gd",
+    "sha256": "5a688916328d4cdb0337e26d2906df79efaf6f8498e0eef91b219920bded018c"
+  },
+  {
+    "path": "scripts/sound.gd",
+    "sha256": "e26674ed0be1337c53838e95e32e04452131bba5610b50fb24add73304d3b9c0"
+  },
+  {
+    "path": "scripts/pixel_art.gd",
+    "sha256": "160bc93e46ce4c23018af0f5cd344d9ee24f2c260d8604910ba3b69944a444a2"
+  },
+  {
+    "path": "scripts/suction_feel.gd",
+    "sha256": "9d291d1db447505cc56dfe70618ce8ccb35dec60b2e0779665926de2d1b0a05a"
+  },
+  {
+    "path": "scripts/game_commands.gd",
+    "sha256": "f83cdf0aefc7fcfaa4bf18d6b3966629d17f27709edb65f6208937a160c01ca4"
+  },
+  {
+    "path": "scripts/line_motion.gd",
+    "sha256": "dc3ec74204ff97dc61b4ec6cd0cfafb37792c4a7f8fad41533d735c3f1432735"
+  },
+  {
+    "path": "scripts/local_input.gd.uid",
+    "sha256": "3d0ac1620e7315cdf455341f11f947acd86d36e5f1e166d03e6d00d950417d05"
+  },
+  {
+    "path": "scripts/hand_palette.gdshader.uid",
+    "sha256": "d304e80353178cbdc3fe37dc59fd9cbba80b5c118f59f4e899cdd1ef62361968"
+  },
+  {
+    "path": "scripts/rope.gd.uid",
+    "sha256": "4828708ec7f8749b126f0e5b09fd77233e9f82ce53462962b69568f884b31a04"
+  },
+  {
+    "path": "scripts/angler_rig.gd.uid",
+    "sha256": "a8aa773c57c79aa8d65d84fc46ec8f358d0a893d6c1a7c155b7b05c290d43264"
+  },
+  {
+    "path": "scripts/world_simulation.gd.uid",
+    "sha256": "54dd3fa796c1c30293e06742b735c096a61bb353eb07f9273e50790b99475d5e"
+  },
+  {
+    "path": "scripts/hand_palette.gdshader",
+    "sha256": "821a1a18ea07e9fc77ce72aca698253e79a43b16f4a0c1c30c91416edb944211"
+  },
+  {
+    "path": "scripts/angler_visual.gd",
+    "sha256": "220f2896ef24c9342bfc7b5b5cbc76c0b2169b78e2d20dae8acae559ff612529"
+  },
+  {
+    "path": "scripts/grass_binding.gd",
+    "sha256": "bfc09fa96e18db82d25467042b9daf9e2339b3748fc45445c97d629c68a8f1c4"
+  },
+  {
+    "path": "scripts/net_observation.gd.uid",
+    "sha256": "a645d4396eace68069808565c19d06be846dc1e44d68ac687aadf9062863856e"
+  },
+  {
+    "path": "scripts/game_rules.gd",
+    "sha256": "5d58b745ad3b6872ab1cca1375dcda28c4c2df2bafce47ce7bb7422806c0a311"
+  },
+  {
+    "path": "scripts/network_protocol.gd",
+    "sha256": "716afeb952388805b84b2599c62a0bf931ab894160d3fa395bb281c5f4b44866"
+  },
+  {
+    "path": "scripts/pond_view.gd.uid",
+    "sha256": "f998626ad239ed8b52c37cb26b01ff327651e7729bb323d57870284d7dee52c3"
+  },
+  {
+    "path": "scripts/rules_store.gd",
+    "sha256": "3914184afa9d8b62d430f9382d784700c662e763f1b990efa87a14632441ade8"
+  },
+  {
+    "path": "scripts/network_presentation.gd.uid",
+    "sha256": "7fbeae34080e64475a7f3f896b46e16cc5753d253b95d0888b30a2060fa53466"
+  },
+  {
+    "path": "scripts/rules_store.gd.uid",
+    "sha256": "4c5e9e20d989d293eefeddf1b24a35048eab55a7849b66dd6cc1d51ba5251384"
+  },
+  {
+    "path": "scripts/rules_catalog.gd",
+    "sha256": "1a336a64fcb29f249709940b23472460f7d9ed06ec69d3d6f97fc01718fccb1d"
+  },
+  {
+    "path": "scripts/grass_binding.gd.uid",
+    "sha256": "efdbae3083a42640024b2550b682ebc858b13df001f67b07984ea14b24459729"
+  },
+  {
+    "path": "scripts/angler_brain.gd.uid",
+    "sha256": "c99aec14240d598d76c26bc8806b7d31cb5e549a70720987289a12b9b031948e"
+  },
+  {
+    "path": "scripts/rules_settings.gd.uid",
+    "sha256": "db431fb943a0bc1e69b37ebc2a737b365e851ffa723595339dc8ccd929053ccd"
+  },
+  {
+    "path": "scripts/pond_water_art.gd.uid",
+    "sha256": "467f74fd28bc6db452f10abd81587839f59a14b8a6c973a62ee58971f4617bbd"
+  },
+  {
+    "path": "scripts/fish_brain.gd.uid",
+    "sha256": "e32bc5824a5817b2645ff21a8f9059a997948976597e2c47cfaec12fc0e9b54c"
+  },
+  {
+    "path": "scripts/fish_winding.gd.uid",
+    "sha256": "8a40576b8bea29d28ffb8ad818eaec89276a86c3f8e28a3977f76f8e68f981f4"
+  },
+  {
+    "path": "scripts/fish_observation.gd",
+    "sha256": "98d9879af1d9bb1416220b4dd475a79c3af4744ac8d8a08f3f981233bd5d11f3"
+  },
+  {
+    "path": "scripts/hook_gauge.gd.uid",
+    "sha256": "71652de19010a727276c1a901907f0b98f4a8d028bd05739fca3da62df4aa63b"
+  },
+  {
+    "path": "scripts/rules_catalog.gd.uid",
+    "sha256": "5ef8775a761f600355aace44bd70d427e0b6f24e0608961edc4ac945d65a0946"
+  },
+  {
+    "path": "scripts/pond_wood_art.gd.uid",
+    "sha256": "74fa10ce7711510d732d786a7ee49fac801b9d49f7e84d8af63523c09eba8ce4"
+  },
+  {
+    "path": "scripts/pond_wood_art.gd",
+    "sha256": "bd042f616dfe75bbe007f92bab72fc34c414a6489631da7f7d5ff62190bd598b"
+  },
+  {
+    "path": "scripts/reel_hand.gd",
+    "sha256": "6c4e2e9391dc2a9092ebcbd8d3cd2d52b62beb1ea5236b6fa50b2cbb460be3f3"
+  },
+  {
+    "path": "scripts/pond.gd",
+    "sha256": "395bf03b5169a7f39e259da7b908e0e3f5957deedc7f390a4d0ad104e607e612"
+  },
+  {
+    "path": "scripts/net_simulation.gd",
+    "sha256": "51f93ef76345d0a5c2bbdb96a9665efac4505371f1f8f5f04ffd6fb4eeb8c47d"
+  },
+  {
+    "path": "scripts/angler_hand.gd.uid",
+    "sha256": "3139017b728431bf6f3851bdc3afc93c4499091077aaf7e4547dd43f0adbb6fe"
+  },
+  {
+    "path": "scripts/pond_scenery.gd.uid",
+    "sha256": "e9d050bb375da2e56ee437ee453677f4678ab14eddfc6c28f51caa8755e5485a"
+  },
+  {
+    "path": "scripts/pond.gd.uid",
+    "sha256": "475655cfa1cf724ee178e3eea950c22325ea235406ddf338dfdd7f5aa24f9e8d"
+  },
+  {
+    "path": "scripts/pond_view.gd",
+    "sha256": "cfebef77f34f3dd909bfd64d99218f2668c8ba19a9c214d3c276d9b818f11d4b"
+  },
+  {
+    "path": "scripts/fish_instinct.gd",
+    "sha256": "0e915d74eefd04b1711b2896b174181a9623f8a74a6b6425dfbfd4d09029ddc8"
+  },
+  {
+    "path": "scripts/world_simulation.gd",
+    "sha256": "c8ad70c270be8259339ffdd3124986244a8170704081f3121f8b6d0673459577"
+  },
+  {
+    "path": "scripts/shore_view.gd.uid",
+    "sha256": "5577369d4e8c8c4a57674122bbfb050e7e90c210cd786ba7bc6658796ee01048"
+  },
+  {
+    "path": "scripts/effort_check.gd",
+    "sha256": "c693244b6a0703a9218f88afc83d47f1521adedc7901390f1aae504829c1ede6"
+  },
+  {
+    "path": "scripts/line_motion.gd.uid",
+    "sha256": "371a971e41e774dbba7ec3c833da1d8d863236fe57fe23cfbf0b0c9dd0019204"
+  },
+  {
+    "path": "scripts/angler_controller.gd.uid",
+    "sha256": "ef252b7c370dc63e0e9a03e31649b5ad640b4267e829acf28ff8f8d3939ce774"
+  },
+  {
+    "path": "scripts/fish_suspicion.gd.uid",
+    "sha256": "f812c1293252abba61dba7315204b3c347154f7ff97bad9e50b018633ba55ec8"
+  },
+  {
+    "path": "scripts/reel_hand.gd.uid",
+    "sha256": "931fd142881d397b6fbbcfad96f1392cda1fa7507da3bb16cfbe3a64905e1c7f"
+  },
+  {
+    "path": "scripts/pond_water_art.gd",
+    "sha256": "c875541049c29e6817cfedc7767e63b43888ab8cc6d5745b98e40a8aec31fdad"
+  },
+  {
+    "path": "scripts/net_observation.gd",
+    "sha256": "c3c844c963c04b16dd24b0ed0ba07efedab6e70b2b690a20b2089864589f2481"
+  },
+  {
+    "path": "scripts/pond_plant_art.gd",
+    "sha256": "e3f95151f229c4a6d6425ae144358dbb3a728046d5e416f548afbb74a8c4512e"
+  },
+  {
+    "path": "scripts/menu.gd",
+    "sha256": "d6e3f2011c0718a5992d72326555a0c61c7c067560d85b7b3d67761920813e32"
+  },
+  {
+    "path": "scripts/round_stats.gd.uid",
+    "sha256": "06be9b3bf66eaa15a8c4c50c97f7f7736566de84464b3df2545de2bc86af9859"
+  },
+  {
+    "path": "scripts/pond_scenery.gd",
+    "sha256": "2897e3eb6c3e4a0cad142ec7d212129e4e99f7057053170d12da6e6c7b03ef87"
+  },
+  {
+    "path": "scripts/fish_instinct.gd.uid",
+    "sha256": "eec6e6cc238b5348f9cab409729ece81bd1518dd8f6155b91a02ab7db8435f7a"
+  },
+  {
+    "path": "scripts/rules_settings.gd",
+    "sha256": "ad6b2bca83710ad92f8477da83151a21f57d00d8979b81a864f7824f7383885b"
+  },
+  {
+    "path": "scripts/game_commands.gd.uid",
+    "sha256": "3621947264d3e0545050e4c9985292b1b5d9d2651482ffbfb0fc3e42202da40b"
+  },
+  {
+    "path": "scripts/world_snapshot.gd",
+    "sha256": "df04a634516a58aa0a79911ddc67d95bfc98739cda76557705617bd3af0fbadd"
+  },
+  {
+    "path": "scripts/shore_view.gd",
+    "sha256": "4a92ff2e5249f4b04d08cd0556877ddfeeb5d94fa8740453056f4ff8c39d16af"
+  },
+  {
+    "path": "scripts/fish_network_observation.gd",
+    "sha256": "0a081e71797a0a4d0386426865688d175eb2a7a6e6e123f51e4e123749e2a500"
+  },
+  {
+    "path": "scripts/sound.gd.uid",
+    "sha256": "f423c1a9bbde25f367aea190d8552f2133103787ecfc0e7b8960f84c7d52fc52"
+  },
+  {
+    "path": "scripts/angler_rig.gd",
+    "sha256": "7d4e11a24cec34a172f2e1ec92b7e99745ed4df380f52badee0dad3cb45863b4"
+  },
+  {
+    "path": "scripts/network_session.gd.uid",
+    "sha256": "7ed9202b59516f1f1f5e3c75ce95b458b1cb925f9c036c86900ef9d0a3de0966"
+  },
+  {
+    "path": "scripts/net_visual.gd",
+    "sha256": "aee8baa45953d779c446696aca27f8a8f6080f94db63d4c037182b17decef6f5"
+  },
+  {
+    "path": "scripts/pond_depth_art.gd.uid",
+    "sha256": "78c2bb4c35a8becd3cc962195324a071527555b75f812844cd653746ca2d0be4"
+  },
+  {
+    "path": "scripts/fish_network_observation.gd.uid",
+    "sha256": "4ec455620f9c5f0438688eaa07218a4afbc7fe3f92eb8df363b04cb8734efafd"
+  },
+  {
+    "path": "scripts/rope.gd",
+    "sha256": "2e30152e65b00f39fe25324b992afd39925acfadd80b64dce385df865d69fe42"
+  },
+  {
+    "path": "scripts/pond_layout.gd",
+    "sha256": "3d9405536a8a02e5002dbe9ed2d0cab1591ac04f0b9628050c1881106871174f"
+  },
+  {
+    "path": "scripts/network_presentation.gd",
+    "sha256": "3a2f025f73ffab06c3c46d62c0d46387ceda6485386f2f687f62d896bd7836db"
+  },
+  {
+    "path": "scripts/net_motion.gd.uid",
+    "sha256": "c46fc6f0f3f4545c4509c4c0bd8299fc5602f6c34d593a3ad1ca1a71c77d6e3d"
+  },
+  {
+    "path": "scripts/pixel_art.gd.uid",
+    "sha256": "43a5bab3e001b58069fd2d3f8c390ebc4cb15180b5a5eda929c90be733df64ad"
+  },
+  {
+    "path": "tests/network_rules_v012.gd",
+    "sha256": "b40bcaeb1479350953a8b3e94962f83e16d22c60bd50bdb64aa92b9bf4fa3ca9"
+  },
+  {
+    "path": "tests/phase15_native.gd.uid",
+    "sha256": "9bf2103f09d2d765307cdd293cc43a6e44ce4fd8594f5db6e437efc3256b9162"
+  },
+  {
+    "path": "tests/bait_suction_v0211.gd.uid",
+    "sha256": "5a2aeef0a963f5ba97f6d0cf7406bc6c167bf46d4964e12e08abcf5c6021be14"
+  },
+  {
+    "path": "tests/plant_art.gd.uid",
+    "sha256": "ceec075ea579b40dcf5919836f4c2c6945c9bbcc94b5f90a47d66829cbbdc3aa"
+  },
+  {
+    "path": "tests/rules_native_v019.gd.uid",
+    "sha256": "843bc7bdbb83848cda4333ac57914ce36699c66cecf50581230aae2caf258833"
+  },
+  {
+    "path": "tests/line_motion_v0181.gd",
+    "sha256": "324c79a384c5aafff2fdac435a6c57ba8bd40c56ab0ce357bc25224f5e6cfd7e"
+  },
+  {
+    "path": "tests/net_route_native_v011.gd",
+    "sha256": "396cf1cba3a117c4701417f31bdf54b7620bcb91552d7da328079d9753070fb2"
+  },
+  {
+    "path": "tests/net_v020.gd.uid",
+    "sha256": "aaf1e163e49741f4333c7da518d2b5879b1530dbf2c05f75aaf353fbb464cb0d"
+  },
+  {
+    "path": "tests/tackle_dynamics_v016.gd",
+    "sha256": "8196e72358ed8218d07bfebfed1effecb500818f6f191b6d14304229b1c42bbd"
+  },
+  {
+    "path": "tests/phase01_satiety.gd.uid",
+    "sha256": "08a73e43fb26f227c85c4f17a39f7633ca82f9fe86ddee16cf220c72282dc7ae"
+  },
+  {
+    "path": "tests/tackle_dynamics_v021.gd",
+    "sha256": "a20195162b7ab1791fb0fb5e6923de212571870991b253b76ef6054cd284f445"
+  },
+  {
+    "path": "tests/effort_native_v013.gd.uid",
+    "sha256": "6a18feef426eef93120eaba62f4d560d5c20c8b5cc77adf0711965e925d63a0e"
+  },
+  {
+    "path": "tests/phase02_bite_network.gd",
+    "sha256": "e50606f54849c218ffcaa4df0255d3649e53ace8d4304e2095e0117cc8d2cb64"
+  },
+  {
+    "path": "tests/obstacle_visuals_native.gd",
+    "sha256": "068c34db9ae1e68912c3e4a6ea393a59c83f588bda98bb0db6772a86821ea8d1"
+  },
+  {
+    "path": "tests/phase01_entities.gd",
+    "sha256": "d8bfa92056265f53eb3f95e84c66cb68730f445d3dde2b5c7c91193892537925"
+  },
+  {
+    "path": "tests/water_scenery_native.gd.uid",
+    "sha256": "099970b05cb233b2b684a67b18e647bfefbe81c697a1e5b838f4b49afbe2e2c4"
+  },
+  {
+    "path": "tests/net_animation_capture_v0201.gd",
+    "sha256": "fa33fa86288099a4f859427358cc5ddadcff736e172846c673d1eb7e9344d17d"
+  },
+  {
+    "path": "tests/phase01_native.gd",
+    "sha256": "6cf1d951c9d52c838c954a76c9f5bd7c9f4aa2e23bfbcade9cd3a73eac967c23"
+  },
+  {
+    "path": "tests/obstacle_art.gd.uid",
+    "sha256": "48a54356e2cc9f04ea2add5f5eae0b7f0c1f1bd71106aaaddfb9a26a72cacbad"
+  },
+  {
+    "path": "tests/controls_v071.gd.uid",
+    "sha256": "f908b01b7bc63a09d6f8c08eaed664379048346457c342475ef4b9b1f456d214"
+  },
+  {
+    "path": "tests/grass_binding_v021.gd.uid",
+    "sha256": "5b444d69f124d1e9fc39f3a68ba5e1d0e39ec48063cee3e4757f733c0f82a798"
+  },
+  {
+    "path": "tests/phase01_policies.gd",
+    "sha256": "e4342c6d9fe566e23dab233a083471a31ffe138b17d02717064bb9b2114ec5bb"
+  },
+  {
+    "path": "tests/fish_orbit_v021.gd.uid",
+    "sha256": "37e24fcc8e3446198ce55fc59364a87e2d4ea6bc3807fca574460e812c3f34a0"
+  },
+  {
+    "path": "tests/net_animation_v0201.gd",
+    "sha256": "7e37723b18cda1f617b6033b576af524186b21074992e0270f7c02ccacb4a4c1"
+  },
+  {
+    "path": "tests/untangle_network_v018.gd.uid",
+    "sha256": "09200c2daba7d98f0b5137258043a3b528eb3d3075916fb8ec335caacfe86552"
+  },
+  {
+    "path": "tests/dual_role_v09.gd",
+    "sha256": "db16a666f0ced06af5f4b10eb077558384c2c421869f6d7d3b82e9158dbd9541"
+  },
+  {
+    "path": "tests/nets_v06.gd.uid",
+    "sha256": "f566618d89841b9917150c87608dafeca005a2cb8cff2f669da93f0f2e1261ad"
+  },
+  {
+    "path": "tests/tackle_dynamics_v021.gd.uid",
+    "sha256": "349852316822579d30b6c9528e3a16121de7e27e3921f86b6dccb974b3332404"
+  },
+  {
+    "path": "tests/wood_fade.gd",
+    "sha256": "8d9ed1a6143ce315114c7809a523ef77c40a640ba22191a9277d78440543096d"
+  },
+  {
+    "path": "tests/phase02_feeding_policies.gd",
+    "sha256": "df438aca7f279f39f2778b3fc19ae7138a8eaba0ac140251df6cb6c61826af44"
+  },
+  {
+    "path": "tests/bait_suction_native_v0211.gd",
+    "sha256": "2f393f3af64f3f05997484b44ef92da319c15a4fe4dba4d4ed2373d863380a39"
+  },
+  {
+    "path": "tests/phase15_native.gd",
+    "sha256": "7af3d2db31764406d7f9c12768dbcf355b73ef658f703c150d7ad96974bf015d"
+  },
+  {
+    "path": "tests/phase01_random_hooks.gd",
+    "sha256": "ada7c075166d5653c3dd73939880c7c17fa7aa77ffc3ca83516feb3e2e528997"
+  },
+  {
+    "path": "tests/phase01_random_hooks.gd.uid",
+    "sha256": "883a0d2c0e14c1fdafe2a157396ea9ac6972dc71d1c2644645ba01e2c8071d3c"
+  },
+  {
+    "path": "tests/angler_v010.gd",
+    "sha256": "833a900347dde2c205bd07ce1d569c9b95ff3445d97fcc5b0cecf67c66bd46cb"
+  },
+  {
+    "path": "tests/balance_native_v014.gd.uid",
+    "sha256": "f9d8691a220ced958c4220c1bcbd71cc94eaadaa45a7c7e326d2e3a475e3f09c"
+  },
+  {
+    "path": "tests/phase02_feeding_policies.gd.uid",
+    "sha256": "0794b7ccc68636e15c6751270bf166ffd237a1d2c1d8d99236d92d2c8bc8db73"
+  },
+  {
+    "path": "tests/fish_orbit_v0182.gd",
+    "sha256": "1788564ba8fd005306b345a2fb070c04bec99b97c1d06477798697c0c4437632"
+  },
+  {
+    "path": "tests/smoke.gd.uid",
+    "sha256": "f7bfe3c4f90d7ce63bd7209011118d71cf7e32f183813673bd5bf6568a7c28bc"
+  },
+  {
+    "path": "tests/reeling_native_v0122.gd.uid",
+    "sha256": "bf03c364f3d58a8bc7b1d8a68a978eb30c28050d1d35cf8c96e9a5be20f6729c"
+  },
+  {
+    "path": "tests/fish_orbit_v021.gd",
+    "sha256": "6ee032dc30f61e7f79a1e6aa4f7b01837f8b6d290163ab8b95d393371e86c378"
+  },
+  {
+    "path": "tests/visuals_v05.gd",
+    "sha256": "59fd5cd5b9d0489ee80876f63cec3b7db5cf0763eee26f3ea0d0b8e4244cb821"
+  },
+  {
+    "path": "tests/rod_load_v017.gd.uid",
+    "sha256": "8f18ab33f65ae854bd1015fe079e5e19e37c6fe29f3c3eefcf2f2c59246d40f1"
+  },
+  {
+    "path": "tests/angler_native_v010.gd",
+    "sha256": "318d0d91ee0ad8b4dc17bf0c9c32b621e489a75082c0af2d8259e41ccbec0d71"
+  },
+  {
+    "path": "tests/phase02_food_profiles.gd.uid",
+    "sha256": "f12c69bdb3ca5138b0ac95d71a3547382f55bfa7f32f642481ec5e4dbbfdca69"
+  },
+  {
+    "path": "tests/angler_native_v010.gd.uid",
+    "sha256": "b50dc4a3db4dfcf05d9568b8ea848528d0ae3bd9947f16fb3b9ee8d612654239"
+  },
+  {
+    "path": "tests/nets_v06.gd",
+    "sha256": "59b64a6e0836a90c40d56031fc1941c2b7691f6b705d2786096284718503f868"
+  },
+  {
+    "path": "tests/effort_peer_v013.gd.uid",
+    "sha256": "68277417cfa95b90be8b3ce768ce017c5cb148cd21cdcca521a58c98544c1df7"
+  },
+  {
+    "path": "tests/net_route_v0102.gd.uid",
+    "sha256": "0cb24a35a4d7226e01ab27b50eaf15fd0acce5e63a2fd667027f4021642a6e45"
+  },
+  {
+    "path": "tests/architecture_v011.gd.uid",
+    "sha256": "1a6e460de72ccf1925fcdc3ba10a469783fe88db7023f0c94e2d30bae08eb200"
+  },
+  {
+    "path": "tests/hauling_v07.gd.uid",
+    "sha256": "4ae57ce96e471a0b8e40994df676b53299442ff8c853cd5f1702bf4948266366"
+  },
+  {
+    "path": "tests/bait_suction_native_v0212.gd",
+    "sha256": "7dde3ebf4c4002e5fa088b4ebfdcdc19db1aec21270315c066534c8d238c600d"
+  },
+  {
+    "path": "tests/controls_v071.gd",
+    "sha256": "ef323b81b4624088fb16cd5da06ecc13c5297003254e3acfa9c44e36a13df7b4"
+  },
+  {
+    "path": "tests/phase01_network.gd.uid",
+    "sha256": "ee83e49b13b610d58735cd624ed254aeb62f54ea5cec1ef676663cae79351db3"
+  },
+  {
+    "path": "tests/line_motion_v021.gd.uid",
+    "sha256": "93658d29c19ea608e7505c96edc405e07db863258ec837b26fe27824b353712e"
+  },
+  {
+    "path": "tests/dual_role_v09.gd.uid",
+    "sha256": "57ce39c14706240abfff720e65006027a047c4b02201ca58a284a016ef491589"
+  },
+  {
+    "path": "tests/bait_suction_v0212.gd.uid",
+    "sha256": "8a8b2fcd1b8176dfdb98750fcb729c920cb57775c181a616d99d1cf74756faf7"
+  },
+  {
+    "path": "tests/dual_role_native_v09.gd.uid",
+    "sha256": "52b4d5e8d1086f2190d00e2d9180b5202bd0c509d2c0580e138a8383973b771f"
+  },
+  {
+    "path": "tests/net_route_native_v0102.gd.uid",
+    "sha256": "d1212458871e385bf3d18c765493c5eff1b38ac9cbad978f8a639c5fbc660945"
+  },
+  {
+    "path": "tests/README.md",
+    "sha256": "fea20eb8fd255087939a6cd09a3ae33000bc45e0fb9d8628d166bcc10b8be6bd"
+  },
+  {
+    "path": "tests/feeding_feel_v022.gd.uid",
+    "sha256": "52aaf969a0eff6cb47ddd8e34d171c9005a5c9d321e545d65b7501c62af19ce4"
+  },
+  {
+    "path": "tests/phase01_satiety.gd",
+    "sha256": "de8b4f5da25f14126c4ce5702dc6a2f9ac3216b05a81a3b0e7c4ffc1c8602efd"
+  },
+  {
+    "path": "tests/effort_v013.gd",
+    "sha256": "14b3667be7dbf40d553f278589f2753f8424913305b807e5f56592d6585eda39"
+  },
+  {
+    "path": "tests/rules_v019.gd",
+    "sha256": "81a6be2283b150f6d53dc89c2818ebe31f8b781be0920a645a2d0d2d0422fc0d"
+  },
+  {
+    "path": "tests/hand_rig_v0153.gd",
+    "sha256": "15e344015883341c8694ef3861c48a2219077f60fdbeb2384a67b4b41b009d3d"
+  },
+  {
+    "path": "tests/net_v021.gd",
+    "sha256": "c93ba69fb5e56409007aa844a6ad77c69f09e7c3456b0b90c8cd405cadbd956d"
+  },
+  {
+    "path": "tests/shore_native_v015.gd",
+    "sha256": "e28a841609c1c6709c7d6435f38484dc8bd32e5e0c08a2697841e9f18ec336fa"
+  },
+  {
+    "path": "tests/rules_network_v019.gd.uid",
+    "sha256": "83c3b07fff89294571eeddefbfc9613d9b3a3747e04670ad81cd4b1514a149a9"
+  },
+  {
+    "path": "tests/pond_native_v021.gd.uid",
+    "sha256": "f4a42bb2e96615af468156696897ca5cc94c5761e55fdeae27dd5975b75c0769"
+  },
+  {
+    "path": "tests/phase02_bait_types.gd.uid",
+    "sha256": "230306fbb82b824d8cdb21dcacb81503abe5017699a8fbc3cd42349668510ebf"
+  },
+  {
+    "path": "tests/shore_v015.gd.uid",
+    "sha256": "021f3bcc46395dc76f05baf30c62900df66a9384d9101add05b5053c6b661c52"
+  },
+  {
+    "path": "tests/phase02_observation.gd",
+    "sha256": "0f53598aefad6310961e56c01cb79cf02707a8386566c6b382d42bd4de1d3454"
+  },
+  {
+    "path": "tests/phase01_policies.gd.uid",
+    "sha256": "9af7df675bf21804508bc2f0115d80172e7adbf40aee66cd340fe6255f87e41c"
+  },
+  {
+    "path": "tests/line_motion_v0181.gd.uid",
+    "sha256": "5d74692efbc08707b551b210c325e7394addc1754f75d58095b0b16ac07184cc"
+  },
+  {
+    "path": "tests/rules_v019.gd.uid",
+    "sha256": "6385d4d2c42f50b05414a9f7b0ebc55bb218ee5a63c5f829b0456720f7506bde"
+  },
+  {
+    "path": "tests/obstacle_visuals_native.gd.uid",
+    "sha256": "39887129e4a8d77cbb5210ec3db33bef9642cd4b749e87dc3bec657b9bf12262"
+  },
+  {
+    "path": "tests/phase02_feeding_balance.gd",
+    "sha256": "e55c656f99b8203c7b281dc20443d65c2fc8232431aa3ff9b6c38ad93819814c"
+  },
+  {
+    "path": "tests/effort_native_v013.gd",
+    "sha256": "85943c6f36ff4043e1acfa62287ee566053142bc4462d5a54c01fa69703e82c6"
+  },
+  {
+    "path": "tests/water_art.gd.uid",
+    "sha256": "6a2384582ee140834a19641a56076156f70583e51965a3657fb5f5bb47c8129e"
+  },
+  {
+    "path": "tests/reference_tackle_v0158.gd.uid",
+    "sha256": "f52c8980672bec0b42b81665cd7db9391da770f94fc42b71185282b2d9834efd"
+  },
+  {
+    "path": "tests/dual_role_native_v09.gd",
+    "sha256": "b5136766035f510df85b88607788fcc239d7d622afcc2ae99f8c076c2f83934e"
+  },
+  {
+    "path": "tests/reel_hand_native_v016.gd",
+    "sha256": "9326b89b42ea65fa6fe7de09f02244af6e176c42448cdc09bd4c973d0ff07828"
+  },
+  {
+    "path": "tests/hand_rig_v0155.gd.uid",
+    "sha256": "2b3331ec236f729ed7ddceaaec2145664a576a22ca56360d0e09bd2336ec5d34"
+  },
+  {
+    "path": "tests/phase01_observation.gd",
+    "sha256": "e2da41c3e52fd62dc6da3ae6bb19b98762d769a04cf8d14f403932e5bef6a502"
+  },
+  {
+    "path": "tests/rules_network_v019.gd",
+    "sha256": "4e83e579ac0dc3723e605287f6d904e6c391394d4332e11e89f6a1c69709ed97"
+  },
+  {
+    "path": "tests/net_animation_v0201.gd.uid",
+    "sha256": "01f211c19682568b2994f343222c39465b31276d3e5505e09d7e140716a731a9"
+  },
+  {
+    "path": "tests/net_network_v020.gd",
+    "sha256": "b58513d0d1733a97dc02f76c6f1878fd9570c11a724d84dc5b9ca29c790ec200"
+  },
+  {
+    "path": "tests/line_motion_v021.gd",
+    "sha256": "c84faaa5d2833ea5e9d111e58f824734830644dc9c90e9a15e6bb57113220fbe"
+  },
+  {
+    "path": "tests/phase01_statistics.gd",
+    "sha256": "39014d565bc181f530af9a33b8aad25f56b52e4f85a475e76614bb4b734a98a0"
+  },
+  {
+    "path": "tests/phase02_bait_native.gd",
+    "sha256": "4ddbbee629c478225f4f9ed8545144fb11ff97339ae56eb60f26fea3ab901442"
+  },
+  {
+    "path": "tests/phase02_bite_native.gd",
+    "sha256": "a12a4a3c2681cab416f67a40363417f4d3519f8a66b17fd17bd4bb223b3d3c41"
+  },
+  {
+    "path": "tests/phase01_instinct.gd",
+    "sha256": "0140607688883892e8b3fc71afc1ea2572c3aad0107750bb17c588b498ca5f1c"
+  },
+  {
+    "path": "tests/shore_v015.gd",
+    "sha256": "2bae4b4b22905431b33c4acbab9b972f9aee4c8baebca311520e9483a529a5df"
+  },
+  {
+    "path": "tests/hand_rig_v0154.gd.uid",
+    "sha256": "ab499df7fc075dae09ed7696e7414b6fca34e9f5394c24b237a3085174f95354"
+  },
+  {
+    "path": "tests/net_v021.gd.uid",
+    "sha256": "77958e9f604449369d45828596723444b138f0aab61d58dd1e22906579fd5d09"
+  },
+  {
+    "path": "tests/grass_binding_v021.gd",
+    "sha256": "f0a3e9bebfb5f1f3bde228ad753f6e1f939a28a238f7c415a08ea787ea46d246"
+  },
+  {
+    "path": "tests/shore_native_v015.gd.uid",
+    "sha256": "442c2eedcc7d637ef9d50d37f2fa8b9d8aad40c4d933a788c63b5dd1c011f03e"
+  },
+  {
+    "path": "tests/wood_fade.gd.uid",
+    "sha256": "2ecc54f959bca3f99379f83fe4febe107b0761462c6312d010a9327f4ad60a67"
+  },
+  {
+    "path": "tests/smoke.gd",
+    "sha256": "17071d74fc4d4f954c34e8d09341240b3fcc6c4ea83544eba0ef46b5b7917254"
+  },
+  {
+    "path": "tests/net_network_v020.gd.uid",
+    "sha256": "db65981a8dc9ee5a16e9dfc812be5cbb9506a3346b467f6b8487ef4cdd3cea7b"
+  },
+  {
+    "path": "tests/network_rules_v012.gd.uid",
+    "sha256": "91fb68df2568f96a38226d897d0c4df2a7185815306c29d671afa52406f789c8"
+  },
+  {
+    "path": "tests/phase01_network.gd",
+    "sha256": "50d1cd67977e62d13ba3d769e79f0a08b28fcf73efa3daa04c4050de0bf94731"
+  },
+  {
+    "path": "tests/plant_art.gd",
+    "sha256": "8fe20c223d42b552a840287ce2266bb932d9781d0a4ac89efd916c5e2aeba309"
+  },
+  {
+    "path": "tests/bait_suction_native_v0212.gd.uid",
+    "sha256": "d390bfdf3a0494512fa4cae2068b4e52744b7838ffd8397a56defcdba41a4214"
+  },
+  {
+    "path": "tests/architecture_v011.gd",
+    "sha256": "2170be9ba2b11a61b5bc52af3482d9573268f3248526c37a8c8ffb43648e8af0"
+  },
+  {
+    "path": "tests/effort_v013.gd.uid",
+    "sha256": "824eb5dd05619fcb7f9df71dd1eea5907c10a49c84d3dd063c69726b346f6686"
+  },
+  {
+    "path": "tests/visuals.gd",
+    "sha256": "53c0b21b705b4cbe0a3a342c5ee3cfef98a9941acb554c0072a40391d8b69dc6"
+  },
+  {
+    "path": "tests/visuals_v04.gd.uid",
+    "sha256": "6a3ac7e03f86049b120f5a0eab9a67620ba794665df7d61a09c9b7ee5dfa15d5"
+  },
+  {
+    "path": "tests/visuals_v03.gd.uid",
+    "sha256": "f490aea0f9c88191d9b97478e94d1d67e8b6648d726fa4423949d6221b23f2d5"
+  },
+  {
+    "path": "tests/phase15_controls.gd.uid",
+    "sha256": "c960ca83b50f29acb8ca66b0fa50a58a65a02cb9dcf9ab40a5ac47fcebb3e6ef"
+  },
+  {
+    "path": "tests/angler_v010.gd.uid",
+    "sha256": "75395e8a8ddff28f7557d06774669ee0115931b8a3d53e7786944d030d4a60d8"
+  },
+  {
+    "path": "tests/bait_suction_v0212.gd",
+    "sha256": "14d7855eb61f410390a153bf6fbde2768192bc7356ce3f2ef0fad88100807c30"
+  },
+  {
+    "path": "tests/angler_round_probe.gd",
+    "sha256": "555e8efb3ccad6a35be0d78d87d1d0ea4f2106eff32f50c8cb82a7184d93bbde"
+  },
+  {
+    "path": "tests/phase02_bait_network.gd.uid",
+    "sha256": "df79cdec7b11ca3d57eb102aa2fdfc28487883141b71a5ca97e6b9f841db67d8"
+  },
+  {
+    "path": "tests/reference_tackle_v0158.gd",
+    "sha256": "196500c7072c6fe23d41dae32b8a5046e14aa8204844ca28b905e09985ec8fa1"
+  },
+  {
+    "path": "tests/untangle_v021.gd.uid",
+    "sha256": "767529fbefb70be62e9c52fdc3407086b4cfe62bcd9347ce2d4095a938965400"
+  },
+  {
+    "path": "tests/hand_joint_native_v0156.gd.uid",
+    "sha256": "ed1f93b6780100fc9e969153ebdaaba14859b75c23d54512ecee06ab16401d87"
+  },
+  {
+    "path": "tests/untangle_v021.gd",
+    "sha256": "dc69171642409690ad3584e193d4197fbce04a6fc0eb15ee3eb49a7340c5c644"
+  },
+  {
+    "path": "tests/untangle_v020.gd.uid",
+    "sha256": "b55af69cefbf46674bbeb676de1782952dc26797313e5d689d4befc960f06a76"
+  },
+  {
+    "path": "tests/feeding_feel_native_v022.gd",
+    "sha256": "d933b47fb61d44cdf04bb6efc3e993c652fa8c9ceb82b815327cf46189e437d4"
+  },
+  {
+    "path": "tests/balance_v014.gd.uid",
+    "sha256": "8957d28eb6989d44793d370c7577491caddd0848a98fa9b44adcea059c29b279"
+  },
+  {
+    "path": "tests/tackle_dynamics_v016.gd.uid",
+    "sha256": "de8e662d5748b83fd75b238a17441f1aa680c396b37f47aa3fb522a664062f3f"
+  },
+  {
+    "path": "tests/untangle_network_v018.gd",
+    "sha256": "9387ec27dd10a11cc6949c51896d121a88b990d0d924eae65d01282fe99ab780"
+  },
+  {
+    "path": "tests/network_v012.gd",
+    "sha256": "2b2b084d63f580e2d545a04033a1278f788c66c98297dddcab27b3676caf51c4"
+  },
+  {
+    "path": "tests/fish_orbit_v0182.gd.uid",
+    "sha256": "76e6e0042d0061fa5ea99f94cd2e7844f2001e13278491830a8c1d69b364c2f8"
+  },
+  {
+    "path": "tests/arm_motion_v0159.gd",
+    "sha256": "c27c32c2452a0a934d4fd0d208e28cde76aed923e8d80cf8187bac79aede2233"
+  },
+  {
+    "path": "tests/reeling_v0122.gd.uid",
+    "sha256": "9d7d0214fa3570f8131a68c5ab16834ea27351d8051ec035580889188a712b10"
+  },
+  {
+    "path": "tests/phase01_native.gd.uid",
+    "sha256": "ed402907bad402a5c55d38dc6c6c5b14c6f4e934299b1837d927e650eb20bc0b"
+  },
+  {
+    "path": "tests/water_art.gd",
+    "sha256": "c04728f5033c0de131aa87e8bc0dae6791ca5d05ac2b8c909079d325824ae502"
+  },
+  {
+    "path": "tests/phase01_suspicion.gd.uid",
+    "sha256": "5119593129f1f78115e3b443f82695b9ab7613ebad92f9fd9e69c329f90c7900"
+  },
+  {
+    "path": "tests/hand_rig_v0157.gd",
+    "sha256": "594de8c8222b2f938ddd811bdc4ef78787cafa36bf39f96bd530de421b6349a0"
+  },
+  {
+    "path": "tests/reeling_v0122.gd",
+    "sha256": "d421a489cb410c91b5393de32e1ffcca24e6762cead5f6fba00fc302b03e1aae"
+  },
+  {
+    "path": "tests/untangle_native_v018.gd",
+    "sha256": "e57f738b7488b4d36d77c96b483648ae9dad27345f17712ed10eeb859a306052"
+  },
+  {
+    "path": "tests/phase02_food_profiles.gd",
+    "sha256": "d0d46bf9344c93eba014a4cad4c7f7469344e4e56849506694ff9f497b9a118a"
+  },
+  {
+    "path": "tests/hand_rig_v0156.gd.uid",
+    "sha256": "aa80764b02e60a2d3edb55dacd028b6299916cc6564e36944fc8992daa270e48"
+  },
+  {
+    "path": "tests/suite_registry.json",
+    "sha256": "62c4b7ca739130eabbe64ddfd39e5d03cfb8782aaaa6542f1600149b83d53617"
+  },
+  {
+    "path": "tests/phase02_bite.gd",
+    "sha256": "b96ab3e890fab8a486226dfecf62d5ec3c1746e574e26b5c21a473a5c6f7e408"
+  },
+  {
+    "path": "tests/phase01_entities.gd.uid",
+    "sha256": "2b22b72daf518f9ac8341daeeead2e02d98ae829bcfe18b13f0021828caa8d2b"
+  },
+  {
+    "path": "tests/hand_rig_v0156.gd",
+    "sha256": "15e344015883341c8694ef3861c48a2219077f60fdbeb2384a67b4b41b009d3d"
+  },
+  {
+    "path": "tests/hand_rig_v0157.gd.uid",
+    "sha256": "4393fb0a71eea59d3a393f4955ba98c8eb3917f36f2c6451d45fd11d83f1e515"
+  },
+  {
+    "path": "tests/hand_rig_v0155.gd",
+    "sha256": "15e344015883341c8694ef3861c48a2219077f60fdbeb2384a67b4b41b009d3d"
+  },
+  {
+    "path": "tests/net_network_v021.gd.uid",
+    "sha256": "21d3fb1d943ba1ae32cd9db88767e80245abff30074bd3139fe3739c723cf2d0"
+  },
+  {
+    "path": "tests/phase02_bite.gd.uid",
+    "sha256": "53c9b7770bd220ff3b97e073b3ef6ab6ae68446f6890a33f052c1361de5b125b"
+  },
+  {
+    "path": "tests/phase02_feeding_balance.gd.uid",
+    "sha256": "85f4ba04b833370cc3429001eb57e9f67e4c2c0e7c6b63d1576f2a784c1a5969"
+  },
+  {
+    "path": "tests/phase02_bait_native.gd.uid",
+    "sha256": "e161cacb16ebf590dceebab6c1abec3e6f8293eff5a604379c5b4b403a53daf4"
+  },
+  {
+    "path": "tests/net_network_v021.gd",
+    "sha256": "d6022823848343dd73a5e102cb2d3e3cda0563628bf8ecc541c3933a5b85e617"
+  },
+  {
+    "path": "tests/wood_junctions.gd",
+    "sha256": "e26f54679fe099100eb03d1bf258cb1282666c6ba27c9abd13e6854113c68fea"
+  },
+  {
+    "path": "tests/untangle_native_v018.gd.uid",
+    "sha256": "2d0bccca1933f87f40a92ca11a6381536af6b0119e84d3ffd8ea47b186b9e6fc"
+  },
+  {
+    "path": "tests/untangle_v018.gd.uid",
+    "sha256": "8280e4ee68340536aab243577196f1bf9b23c3f82be1b604b613a32e22df2743"
+  },
+  {
+    "path": "tests/visuals.gd.uid",
+    "sha256": "625c2783c018aa3df5fc0038f3ad10c76a1452dc13ab484b3459721ba6312ba9"
+  },
+  {
+    "path": "tests/phase01_instinct.gd.uid",
+    "sha256": "2af4fd1bdffa5d0a8ab95745d8bdebc017710288a0949017a3b11665d5b5ed00"
+  },
+  {
+    "path": "tests/hand_rig_v0154.gd",
+    "sha256": "15e344015883341c8694ef3861c48a2219077f60fdbeb2384a67b4b41b009d3d"
+  },
+  {
+    "path": "tests/nets_v08.gd",
+    "sha256": "947a31cbd0488234b852c2483839a8e1f6d21338a5c51b4c427e4344d85fea1f"
+  },
+  {
+    "path": "tests/effort_peer_v013.gd",
+    "sha256": "c10ac8777b50dede549d0c77d898222ba771d80a99ed7d0e92d24128e425e6cd"
+  },
+  {
+    "path": "tests/pond_v021.gd",
+    "sha256": "eded0ceec652be3d314fcc477e4ece24bdebbb56ef4e00be03ab6f65dff42304"
+  },
+  {
+    "path": "tests/rod_load_v017.gd",
+    "sha256": "b670f0431267136800c6312136dbae564c60a602f4cf2288ed7c48c85a647851"
+  },
+  {
+    "path": "tests/reeling_native_v0122.gd",
+    "sha256": "dddd85b23209439915ee88c8be64fbca12adbd6def13d282e5bd6713dc405562"
+  },
+  {
+    "path": "tests/pond_native_v021.gd",
+    "sha256": "d3b7873b40818fe36d126a23ea4cbfc3c3d38581c9be3734869666809eeee675"
+  },
+  {
+    "path": "tests/untangle_v018.gd",
+    "sha256": "5e8c6c474870565a290c79cc9b596222647750369bc43060447a74065de9b88d"
+  },
+  {
+    "path": "tests/network_peer_v012.gd",
+    "sha256": "a6f2f169a00234514c778f0c2f2efc4bafde72033cab7298749cbfb3162c71ff"
+  },
+  {
+    "path": "tests/net_route_v0102.gd",
+    "sha256": "f21bbb267dee07152e65b39ae4541efa2fd5c8a19197ac46f0fa37f23456b9ee"
+  },
+  {
+    "path": "tests/net_native_v020.gd.uid",
+    "sha256": "a41abeff8a1ba8668f77a3bdb3c71596c51f75d7dbe2e99f194431411fed2a99"
+  },
+  {
+    "path": "tests/obstacle_art.gd",
+    "sha256": "077ff6d03e4b5794ece47da964b72c9b0287fa1beb539e75411044e5e665a58d"
+  },
+  {
+    "path": "tests/phase15_controls.gd",
+    "sha256": "175af169892b602d7ef06fd88422d4f4b947d30fab9eecfbd1cd4c9d583fba0b"
+  },
+  {
+    "path": "tests/feeding_feel_v022.gd",
+    "sha256": "ecf4638fb3694a45ceae6e9981c95871c80695af9229a6583794d90adc21eec8"
+  },
+  {
+    "path": "tests/hauling_v07.gd",
+    "sha256": "39ec6de9ea8cdbaa263ff9cb3cd01dce52ad6f9b534a2361675e817cd19d7e45"
+  },
+  {
+    "path": "tests/visuals_v05.gd.uid",
+    "sha256": "c67b5af3302d418df8b1e44df7f3a0ef204c447624fe29d0f63ccdefe34574d1"
+  },
+  {
+    "path": "tests/feeding_movement_v0221.gd.uid",
+    "sha256": "7f2d2a8d9840677ae27e62b024395e22a2e7664b22b978d125ca8e4b888e52b7"
+  },
+  {
+    "path": "tests/reel_hand_native_v016.gd.uid",
+    "sha256": "bdc0f6cfebd819c64fcb829600b26e24066f4378ad294097a079a0a0ff7930e9"
+  },
+  {
+    "path": "tests/phase02_bite_network.gd.uid",
+    "sha256": "e9cbe5738ff798692ab6d3d154d6b143654c5d3ba0522060542402262e36a906"
+  },
+  {
+    "path": "tests/bait_suction_v0211.gd",
+    "sha256": "aae98de1b099bf179e3435283f65664e243e01122ef89e0bd76063fe01b590bd"
+  },
+  {
+    "path": "tests/phase01_suspicion.gd",
+    "sha256": "54b0bf9fc18f08d28b004cc98f61e2e17c345acba0d3b86b53187b4aa4a77f82"
+  },
+  {
+    "path": "tests/water_scenery_native.gd",
+    "sha256": "8377183ceb424c05c365ec1ce2aa0f402b20806cc99b991cdc306368f17296a9"
+  },
+  {
+    "path": "tests/wood_fade_native.gd",
+    "sha256": "636a2e453bd7df9f85c2f5b72017b2895c5a329b631a546c1dc202830add741c"
+  },
+  {
+    "path": "tests/wood_fade_native.gd.uid",
+    "sha256": "1312c6ce048237cf78e7634223264ff7cd3ba08aeadcf30a53cecdc052355ab9"
+  },
+  {
+    "path": "tests/net_route_native_v0102.gd",
+    "sha256": "82077bb9006dcfe329e8ec68b00426d95cc3d096927a01e13c5f6d939c4d926a"
+  },
+  {
+    "path": "tests/untangle_v020.gd",
+    "sha256": "ef590ca5aca09b89ebfa0e095f90d41db254a873eb46d81e72de3a50e81dfa6b"
+  },
+  {
+    "path": "tests/architecture_v020.gd.uid",
+    "sha256": "3763a90ec13df91b810a7655544a4c5604098d5476724e6f0249c2f5ef3f84de"
+  },
+  {
+    "path": "tests/net_native_v020.gd",
+    "sha256": "32a08eb297bb35d3297327fbb81a2a3134e24764ebdc825f333d91405db945ff"
+  },
+  {
+    "path": "tests/pond_v021.gd.uid",
+    "sha256": "1f9311d46c6733535e5bb548acc182de5306cbdb2fa9c3f33ccae8871e3a4681"
+  },
+  {
+    "path": "tests/network_v012.gd.uid",
+    "sha256": "f5d04340ce6ba45c38cc0fe331d6c75e6164ac685c3160ef4c55b134640e5226"
+  },
+  {
+    "path": "tests/net_v020.gd",
+    "sha256": "b507c5ae60e1cde3dd0fb4a21446dec46c8f0704c78de5617884134ff9cfc779"
+  },
+  {
+    "path": "tests/feeding_movement_v0221.gd",
+    "sha256": "b8366303f5a41a6ec684d04c15b3bd628c239c6a7f69f4fbec38d7050cd89aa0"
+  },
+  {
+    "path": "tests/visuals_v03.gd",
+    "sha256": "1a44611641b471ea341875328b33539fee27e90bcd6a4d2c00f9837e8b3c7401"
+  },
+  {
+    "path": "tests/net_animation_capture_v0201.gd.uid",
+    "sha256": "8ef0b73939d3e54b6696b4e24dcbe6b8da0b54ef748fdf09a7481e58b8f3cae8"
+  },
+  {
+    "path": "tests/nets_v08.gd.uid",
+    "sha256": "e4f9f7e3461aa446f8572e669cdfd9b2e73bd365a33190c4e51373f1d61e898c"
+  },
+  {
+    "path": "tests/hand_rig_v0153.gd.uid",
+    "sha256": "85176b0961f9e06e536d9da5a7e56f7245e6111a41a3df177550f1fad283a84c"
+  },
+  {
+    "path": "tests/architecture_v020.gd",
+    "sha256": "718417605ed06af1e99e9b9031b09ae622587497c5933becc4a0715b87d5b825"
+  },
+  {
+    "path": "tests/phase02_observation.gd.uid",
+    "sha256": "cd9c6f0e93163bf86de0d2e41d886d5c5062a82df4cea3a70c75573fa24a9a76"
+  },
+  {
+    "path": "tests/phase02_bait_network.gd",
+    "sha256": "2c99d6d86f43f765a660504c64c6caf4178e6f52fb2dc892e47da0669a31f6ee"
+  },
+  {
+    "path": "tests/feeding_feel_native_v022.gd.uid",
+    "sha256": "fcaa41e2d83839f6a6d754ee16e3b8fb7b20f512836155a57373a0eef7358f7b"
+  },
+  {
+    "path": "tests/network_peer_v012.gd.uid",
+    "sha256": "ed320f82e1eb80dfe02f7e3005fac63c1ab84712abf6e706eb90f05758fde852"
+  },
+  {
+    "path": "tests/phase01_statistics.gd.uid",
+    "sha256": "6c3956b0df3a1623e0789b550533bb800b99bec589db01265e6502bede263ac7"
+  },
+  {
+    "path": "tests/visuals_v04.gd",
+    "sha256": "ff7842bf4d35305736e72d74504e812f8aa060e504d41e788bc021c944dd1acf"
+  },
+  {
+    "path": "tests/phase02_bite_native.gd.uid",
+    "sha256": "fbc71803546a5afff20f9991a903c8a1b7d48487550c798f198bbb1c19ba263a"
+  },
+  {
+    "path": "tests/rules_native_v019.gd",
+    "sha256": "d97a55f5028ba581ed1a0b57267b3321a58cc21a1ecdf7846b99db00ae3845cf"
+  },
+  {
+    "path": "tests/wood_junctions.gd.uid",
+    "sha256": "a329f25a3f1daa0ebbf7a3f699cda2635b5695c06800948b02023088e94aa517"
+  },
+  {
+    "path": "tests/rules_v020.gd",
+    "sha256": "b4f7cc67bc64ee4bd8b76279d2a318d961c8c30ca635b57066b51018f7d9796e"
+  },
+  {
+    "path": "tests/arm_motion_v0159.gd.uid",
+    "sha256": "d1e7f274d237064af5d26b941d3e39c7897b8af86a4d957fd265d41455d789b0"
+  },
+  {
+    "path": "tests/balance_native_v014.gd",
+    "sha256": "1e2af67ddb16d5974356d443857f2a49f6cd6b2017f6c680aa0da49eeadf7575"
+  },
+  {
+    "path": "tests/angler_round_probe.gd.uid",
+    "sha256": "55a583f00ef25c8bcbad3ada9d7f3234481c294082f3c01f34641810276984b2"
+  },
+  {
+    "path": "tests/hand_joint_native_v0156.gd",
+    "sha256": "ebba4a6b0ec6dee6c26cb5b9f9ce13ebaa9bedcabcce62604f0dc0faee589a24"
+  },
+  {
+    "path": "tests/net_route_native_v011.gd.uid",
+    "sha256": "2b754a39220a24ae9df79afe81b49f6ba59faa848e0956106504a884481dbea1"
+  },
+  {
+    "path": "tests/balance_v014.gd",
+    "sha256": "974c53b38084b195896917f0fd5d7294e2dc7b9dc048561b0618b35ae988b9ce"
+  },
+  {
+    "path": "tests/phase02_bait_types.gd",
+    "sha256": "eeeeae304b9361dacac16a632baf1596b8dc0730413d486ccd8575012f80662a"
+  },
+  {
+    "path": "tests/bait_suction_native_v0211.gd.uid",
+    "sha256": "238711f75c7b5124173d005dc71cfb4ac9c282d38d2e076e6d276fa3d7a9012c"
+  },
+  {
+    "path": "tests/phase01_observation.gd.uid",
+    "sha256": "42b83d2ddb7c283da3d9720027eb49b67367e584d4deddfe03bbe3961121e20b"
+  },
+  {
+    "path": "tests/rules_v020.gd.uid",
+    "sha256": "7a1c5d9b4e736512aa80317773205594dc983225cc195903a0835c2d32fed124"
+  },
+  {
+    "path": "history/releases.json",
+    "sha256": "d4ccc12394439086772f96019c2f52d651742e0ed5e62839822f92acd6feb0cc"
+  },
+  {
+    "path": "tools/capture_fish_orbit_v0182.gd.uid",
+    "sha256": "5ae21d7c7aefac3f9f4c94ece77c9e5d27d515c8279b5d8697a3ee941189eaa7"
+  },
+  {
+    "path": "tools/phase02_simulate_feeding.gd.uid",
+    "sha256": "aadabeb6ea923ca6c5aa9b893e26063a466f307b49926d3a644cdfbb585853e4"
+  },
+  {
+    "path": "tools/phase02_feeding_protocol.md",
+    "sha256": "bc4972ba50dac8a57d6726da964207d25c20fa1b07f9e21aad8548bb454aa8b9"
+  },
+  {
+    "path": "tools/capture_angler_v0121.gd.uid",
+    "sha256": "e4f30ea652f3bb916d71af18feca24638dd07d85457240c014990dc87f56f850"
+  },
+  {
+    "path": "tools/capture_hand.gd.uid",
+    "sha256": "4effb9c806152aa9f636e9434f56cd77b020bc86b2116a9fe139e5042d4ff69a"
+  },
+  {
+    "path": "tools/capture_grass_v0183.gd.uid",
+    "sha256": "7de1fe49860684114f56b07cc724f0d70ec154bfa8b7a8186bce34363bc998c9"
+  },
+  {
+    "path": "tools/capture_hand_motion.gd.uid",
+    "sha256": "b5499861ced1b352a0e9ccb3be6b5bf11563d205cb60a83e816b483939eef458"
+  },
+  {
+    "path": "tools/capture_hand_scale_v0161.gd",
+    "sha256": "d5ceb1cd4e00a5ef488def8cb021442092ee1f376ed962f8305c9d4e9bc0f35c"
+  },
+  {
+    "path": "tools/summarize_rounds.py",
+    "sha256": "004a8ca0198678ac772ea4f6c9a12bd35129a4f03837b257a2f23f98ccc7496b"
+  },
+  {
+    "path": "tools/simulate_rounds.gd",
+    "sha256": "f5ada4ae70f2ad9dd8d0f623f896f13a00abcff10c630f2945e71e1e5eb0ca1b"
+  },
+  {
+    "path": "tools/capture_grass_v0183.gd",
+    "sha256": "2985810e8a12331f1071af072befc42bf3f0bb95af673337d9d7f6becc369c10"
+  },
+  {
+    "path": "tools/capture_rod_load_v017.gd.uid",
+    "sha256": "9faec5dec66c823183d637f00d2ff2a531ca42bb82803c0136c522c28506f5e9"
+  },
+  {
+    "path": "tools/compare_policies.py",
+    "sha256": "43bbe463dc3c6c1fb4fdff494683ac4f2b740a21236baa08f1a75272941bf970"
+  },
+  {
+    "path": "tools/simulate_rounds.gd.uid",
+    "sha256": "0f5b22d2569cd9eaca91e7568a61782237430bcce60a323891e96704978406b0"
+  },
+  {
+    "path": "tools/reel_probe_v0122.gd.uid",
+    "sha256": "4cb7ff047d2f1c2d7d5877ff3ffa9ab9dfb2e658465efa020ef3f02f553fe973"
+  },
+  {
+    "path": "tools/phase02_compare_feeding.py",
+    "sha256": "10a19e2a46059d39bdc7b30f45b5fe8420d089e2115680deb5113e1f3c39bc34"
+  },
+  {
+    "path": "tools/phase02_merge_feeding.py",
+    "sha256": "9a07e33cbd24393978fe08f96e08d9683560549aa980e0c3b8a79dae39c06fcf"
+  },
+  {
+    "path": "tools/grass_unwind_baseline.gd",
+    "sha256": "2d648513b40517de312fe819776ab5ed31de82a8ff885d166efe8cfe33b8d709"
+  },
+  {
+    "path": "tools/grass_unwind_baseline.gd.uid",
+    "sha256": "50d28c1393dbe1d42f5025ee38114f8315138bc3f2d45a4315789d0d46c77a7c"
+  },
+  {
+    "path": "tools/capture_hand_scale_v0161.gd.uid",
+    "sha256": "f8601e93e0fad2a17ed0a112a36c6e5ba556b045596301c38614e69a5324bd66"
+  },
+  {
+    "path": "tools/orbit_unwind_baseline.gd.uid",
+    "sha256": "2308fcf5c3ace4541e1eae21c826b1380b37077eeb723a6baa647c8e2e02a2db"
+  },
+  {
+    "path": "tools/engine_notices.gd.uid",
+    "sha256": "e9cec9ca036e22517bf3b506457300df547545b2d2840f3823a089ba3cb40f04"
+  },
+  {
+    "path": "tools/run_rounds.py",
+    "sha256": "ffd8afec40aa1a416d34b934d0f9a159e564f301f34d99a8172597efcfe599e6"
+  },
+  {
+    "path": "tools/capture_grass_motion_v0183.gd",
+    "sha256": "1a9088bca1b8135c8df590c904d3e1614d2830a4fa55da6098685b0bf0aa788a"
+  },
+  {
+    "path": "tools/capture_reel_v016.gd.uid",
+    "sha256": "8effaf87599c1dc95ed49a004599a6c5fe86668fb26498a9f7be202052e51924"
+  },
+  {
+    "path": "tools/verify_policy_equivalence.gd",
+    "sha256": "42c1f2eab1f901816528da1a95a621bf4043e17a1accc4bd8ca96cf713d63bf1"
+  },
+  {
+    "path": "tools/capture_fish_orbit_v0182.gd",
+    "sha256": "d7a11ed43f1e04938bb0bec4b5e04469704992ffb41eee539c62d62f95af5972"
+  },
+  {
+    "path": "tools/verify_policy_equivalence.gd.uid",
+    "sha256": "f71e02a1265c1382a4291af689d0f3ba5c8ff3c86371d7202b823da9787a4098"
+  },
+  {
+    "path": "tools/capture_hand_motion.gd",
+    "sha256": "d412369fe0c00e88a7952f623f362b9ca2a05e4e3f3d76373c4bce194c7e428c"
+  },
+  {
+    "path": "tools/capture_rod_load_v017.gd",
+    "sha256": "6022fb1bd35f588f5f1d37d2ae28e8057e54cf3d1d8bb5e938ceec08f2c197f4"
+  },
+  {
+    "path": "tools/capture_reel_v016.gd",
+    "sha256": "d6406b1fa8ada4f81ecd1562cb2e09e9abe6df7daf83e16382ddfc7199f0e139"
+  },
+  {
+    "path": "tools/engine_notices.gd",
+    "sha256": "79480f89c72f35bab5216faedfe7982157b7d44beca62a93da13b218aa829548"
+  },
+  {
+    "path": "tools/phase02_run_feeding.py",
+    "sha256": "9701d4402d90fbc955937c333ad22b780d84edc641f19442432deeeb4f50f2b5"
+  },
+  {
+    "path": "tools/orbit_unwind_baseline.gd",
+    "sha256": "a5083741fbe29461848607d71be1f4ca2571c6a0c7e86b800934f23ef445200f"
+  },
+  {
+    "path": "tools/reel_probe_v0122.gd",
+    "sha256": "5b3cce88ae2159408375c8dee0bbd2d0ffd1389e459822a6d4be83b89fdcc230"
+  },
+  {
+    "path": "tools/capture_angler_v0121.gd",
+    "sha256": "9d0db04b65b7596fee779369f0a4fdefd56f83b9727f2e51a09484c84e1af8b5"
+  },
+  {
+    "path": "tools/phase02_simulate_feeding.gd",
+    "sha256": "bab834ad8e75ad53558cfd3404ee2f7674e6fb81618f0cde88879711d1518f5f"
+  },
+  {
+    "path": "tools/phase02_feeding_policy.gd.uid",
+    "sha256": "b4b09b1b7854989f5b77742d55051879a1dae320576255757907a37bb460ee6f"
+  },
+  {
+    "path": "tools/phase02_feeding_policy.gd",
+    "sha256": "533976956a9e2186baf1da6ed321680e0f9304842d1d5813c8fa4977df919912"
+  },
+  {
+    "path": "tools/phase02_test_analysis.py",
+    "sha256": "2bdcefd3adbbfc00e05d64569623cde9bcbdd9c3f804bca0af662babfe066589"
+  },
+  {
+    "path": "tools/diagnose_observation.gd",
+    "sha256": "921bcefbfc48621dc4cef97f33ed0e131fa283a976836f75a941e756e3993074"
+  },
+  {
+    "path": "tools/run_tests.py",
+    "sha256": "5ffa8848c531af3096e56f789e5dbc687ef85afad284bd5530e24f69168f04ae"
+  },
+  {
+    "path": "tools/diagnose_observation.gd.uid",
+    "sha256": "f89e8fe6be4f3f0b1d980a554956568bbb11aa2e9ca2af62a1f373b388c57569"
+  },
+  {
+    "path": "tools/capture_hand.gd",
+    "sha256": "e376cf24e9ce923ad9ff08c95ec24589ae6d81e91665be3c675268bba6d30c23"
+  },
+  {
+    "path": "tools/capture_line_motion_v0181.gd.uid",
+    "sha256": "47d3b894295418c5ff5769f7dccc30ce7c4691e140630acb95bbb1011ebc15ec"
+  },
+  {
+    "path": "tools/capture_grass_motion_v0183.gd.uid",
+    "sha256": "e5acec3fb1236e2da7cfd056f20b941af50bddb77eae83e10a9e6e25f8890567"
+  },
+  {
+    "path": "tools/capture_line_motion_v0181.gd",
+    "sha256": "fdf3326017a61194bbe3ba319ac72e6aee6d6793134ca4458450c3bf2fdc5674"
+  },
+  {
+    "path": "scenes/main.tscn",
+    "sha256": "e93d9e0f585570e9ba621b471b93fd9b9db1a1265a9d92a4914e2525e8dd542f"
+  },
+  {
+    "path": "docs/test-reports/PHASE01-FIRST-POLICY-MANIFEST.json",
+    "sha256": "91b83b9d9c333bfe11067951cde812aec7f9958285c1f05f1da1689858d31d22"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.21.2.md",
+    "sha256": "96bf1c907c875a87f2d123e15502f2ac6878851f3c645a43cde3cd0738f8977d"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.22.4.md",
+    "sha256": "c5f05757dd06ad19af931bb15b48227e92ef9d3f9c4869bb7c4d3fa231df1b46"
+  },
+  {
+    "path": "docs/test-reports/GITHUB-RELEASE-0.24.2.md",
+    "sha256": "f8e42651adc331a10e66aac3870ec2e0ddb88510e23c5b577d283fdd0210b339"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.16.0.md",
+    "sha256": "f0e9ef946e13c44d3695facb00587f0c1656d0606a115df2d0898882f089893c"
+  },
+  {
+    "path": "docs/test-reports/PHASE01-UNMATCHED-HELDOUT-1000.json",
+    "sha256": "c987195b311ebbff6c56d9a93175a829b41420b46005c6c8e9a126f92883fef2"
+  },
+  {
+    "path": "docs/test-reports/PHASE02-FEEDING-VALIDATION.md",
+    "sha256": "98a0e712bbbb4b4403e490d4894011ee1dfc521141433b59234187576eaf6109"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.15.5.md",
+    "sha256": "0247506b58162915c64b160a02966210209ff30dae13665fdfaaafeb5c478d62"
+  },
+  {
+    "path": "docs/test-reports/PHASE15-NATIVE-VERIFICATION.md",
+    "sha256": "393b7f1a7c06941cd301331adb9020c01a7d86271a1e94c0b52e555c96d07e9b"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.21.1.md",
+    "sha256": "f55fd664143b9a53f3a63f069dc64aa75e263d9d3a5e5115075227061f06544c"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.16.1.md",
+    "sha256": "b77ff24a40d3b74319e6089f63ace538883c944dc4dbb7f4a74147b3ba07038e"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.18.0.md",
+    "sha256": "2f3f5c94b2e2ce6b951c1cb5264daf476215e8d8b5360057d71487b1ec8af21e"
+  },
+  {
+    "path": "docs/test-reports/PHASE01-CAUTIOUS-1000.json",
+    "sha256": "5020b3b45962db1204da08b317ea393b5685702bc6584ae326d924adf8f7cd09"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.13.md",
+    "sha256": "e5ac740116533f6ddfbece5a71d55496aa2b087b27569c9e8dba2729c088ffb4"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.20.0.md",
+    "sha256": "7c90a1ae5a61637f44b4df3879f8b7fa8e106494cf8d8ee2a4ed3048a22867f0"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.16.2.md",
+    "sha256": "4da323ddcd5a51cc8d7f9f9786f601cc68917aae4151c940a1a1240a4a1e73d2"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.18.2.md",
+    "sha256": "e817aea22bb19e7df15c60ee0a1d898361a158753c8c6911409706c46d151404"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.15.2.md",
+    "sha256": "8b7b53e5c4f5bd2012f0fb05b7336c3f9ba02251a498e6a78701cc08ca52929c"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.11.md",
+    "sha256": "74c538ee06610a4f138d089a8dfbb2eb70507b5e57097e30e1b5a3be7417305d"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.15.6.md",
+    "sha256": "ec5ee6d06ff6e027362269ce4f1b69215ce97dd136e175fad22a0ddebaa35c69"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.15.3.md",
+    "sha256": "bd74e4ed14602622c98b2f8e91c745672a0a66a3e94d021839d84d67fae5938f"
+  },
+  {
+    "path": "docs/test-reports/README.md",
+    "sha256": "27ccb599a7c5a564cb3a0fcc8fef31604ce44cbd03788581a939335fabece9cb"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-WATER-DEPTH.md",
+    "sha256": "10ff1fe048d7bd792427e72fc5930653b76c57ec3e31b0e258f314b66dff95df"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.18.1.md",
+    "sha256": "a4fdaf41ebbe3b8e1363d69bece8b1b2322991326193cb0839ab1328f184b8fb"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT.md",
+    "sha256": "0c13a940cfe2a5c3eb9d774c3e004c5c304677a1ad5fe51f62dc12a0eebe3193"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.22.3.md",
+    "sha256": "19fb6ba7ccd31e287c22b511534f4ec1c4f0bbeb3dc63e78046f281c020eb944"
+  },
+  {
+    "path": "docs/test-reports/PHASE01-INFORMATION-DIAGNOSTIC.json",
+    "sha256": "204e85c8cc6982cd1827ca1596b53f0c1c25db7d2ba895af883942d1315a83fb"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.4.md",
+    "sha256": "db7fbac30c17950368169804b43c30fe90d5ac32bea3bc27c33d5270493a1162"
+  },
+  {
+    "path": "docs/test-reports/TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md",
+    "sha256": "69dc04158a146c22a813ba7bed4d3fff22c3e9d765773236131c5a89c0a7c1d6"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.6.md",
+    "sha256": "b8d406b362452e4ae494cadc87fe9392bf7b250ed035af3bddb66851d0defd65"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.12.md",
+    "sha256": "312a3a7f5025707da61820c9c8808e156e902e3958c49755672f7515783a9b42"
+  },
+  {
+    "path": "docs/test-reports/PHASE02-DISTANCE-VALIDATION.md",
+    "sha256": "20134d09b30dee82ff1244e52097e5cdf4f0415e8c60b04fc6a9bca9d9436f94"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.8.md",
+    "sha256": "4a53e9449b311b603aeb09e3ebf378cb81057dbb253b71800a4f7850725d89ab"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-OBSTACLE-ART.md",
+    "sha256": "8b951e71781f1227fd81546926a88a1c2c6b12e22558fc4c36c463ae9c3d465b"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.15.4.md",
+    "sha256": "cf13be55a0d4de14afdd8e7a5f9ffe7e13e014d852851d50d5f751fb30ac6e11"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.7.md",
+    "sha256": "5a5506029a3256da45569623890150a772b851f98a7f3922b17927763a7c6e05"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.15.9.md",
+    "sha256": "edf5ab86ecbf918ceab15861617389938cd3c2fe9d220479dcd2d33a8748f216"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.18.3.md",
+    "sha256": "96cc7a26de2a9cdf2fe00d3da6d1db83012a63f82deacec4274699fe06a6636c"
+  },
+  {
+    "path": "docs/test-reports/GITHUB-RELEASE-0.24.3.md",
+    "sha256": "e2fd54443cf8633108d29f40bf546d0b10c26e269a85c34eee0a773ac18416ee"
+  },
+  {
+    "path": "docs/test-reports/PHASE0-BASELINE-1000.json",
+    "sha256": "971d2c409d336a98b99910b685fdcdfb11e304584c01e8ab5405aa619f406672"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.19.0.md",
+    "sha256": "a684e2e30872511d9d4c1f1e288a1fb94c84dfe7ce069f951c3dcf7b8ab3711f"
+  },
+  {
+    "path": "docs/test-reports/PHASE01-MATCHED-1000.json",
+    "sha256": "d75b111e16b35366ac232bca7856b38c78990dd294b4304e668436294f171c31"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.12.1.md",
+    "sha256": "315dbae783edeac2f4813d59525362ae4eb81560fd0ddfaa778b2ff3b6cfbd41"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.22.0.md",
+    "sha256": "a3a08087a661aabed123bc0d176f88b1bd79b2ca553a8a95c73195161ad23fa6"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.21.0.md",
+    "sha256": "c4d03119ce662d3bd3b4f8c2a6988ba7222c9abdb33714fea146fc32a62fafa9"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.12.2.md",
+    "sha256": "da471ca2371fd6e2017371a9e9c311d1c4de03bf031bb9863aaac4202c13f8a1"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.10.md",
+    "sha256": "fa4583ce5e92e402430333e392c74f8cdc7baa16720f2b521c5730eaef8ccf27"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.15.1.md",
+    "sha256": "87d651c233cc25d4163dc2e1938032e23f751637e79a86bfe2329445536230e6"
+  },
+  {
+    "path": "docs/test-reports/PHASE01-FIRST-POLICY-1000.json",
+    "sha256": "e7c1981fa3231994045e4b8beefbdbb9622855c652ba1e7a319c4edb5ad6f4dc"
+  },
+  {
+    "path": "docs/test-reports/GITHUB-RELEASES-2026-10-02.md",
+    "sha256": "fda701a7aeff04850e1a8137a45ef795214bd34a40189d31334ec26fa6c4085d"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.20.1.md",
+    "sha256": "2883a0952a1122e92da8130bd5aed2da8188ebdbb154a35cfcef3f210e4b22a6"
+  },
+  {
+    "path": "docs/test-reports/PHASE01-VALIDATION.md",
+    "sha256": "0a23d424de493112689cf71bb7aa495459f8cdbad89fa601634e0f2769600775"
+  },
+  {
+    "path": "docs/test-reports/PHASE01-PILOT-50.json",
+    "sha256": "d51363d829f2db06e7c0e6db783ca0add1588facaa5149cb023abab6d69f9f9c"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.15.7.md",
+    "sha256": "6c7ad039afee12d7dce6046e879ca4215083a9f1fdd6d0b0ff0bb294c216612b"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.2.md",
+    "sha256": "dc367f035311a6267b7d9754af013c4fab4b253fe08ae11621bc3d063ed65a37"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.17.0.md",
+    "sha256": "d709f3e5ecd9c9c8ea63e740ab1098a091df973195bbc3a91839775105460582"
+  },
+  {
+    "path": "docs/test-reports/GITHUB-RELEASE-0.24.4.md",
+    "sha256": "0cf887ad460f41905d2ffcb9551ac83645993dff459b8302edc77d0d3cfa4600"
+  },
+  {
+    "path": "docs/test-reports/PHASE02-BITE-VALIDATION-0.24.0.md",
+    "sha256": "0a987f7e0bcd521cc33432d9f6d0edb43f2ee3582454ca29937503f323988ca4"
+  },
+  {
+    "path": "docs/test-reports/PHASE02-BAIT-VALIDATION.md",
+    "sha256": "4b8b433d1d196279ed98fe6dae172db7581c2bdc031f03c511544fb9b839d0ac"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.15.8.md",
+    "sha256": "d0cd20853f920709730422b1341827a13a2b455f5bda23c9b31cbd837ec73735"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.22.5.md",
+    "sha256": "fffc12d19d70943ec98e44d0591cf8d4990a4f0ab5ac3024c0d8998197876a0d"
+  },
+  {
+    "path": "docs/test-reports/PHASE01-PROVENANCE.json",
+    "sha256": "1f5e5aa22e1f074f1197b7208930a4b085a91d4d15fbddd8aec5fa7e3369f67c"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-WOOD-JUNCTIONS.md",
+    "sha256": "889ceecd40c4a147c460f5741072c20298b43dd36afa92161383050a49ff9b31"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.10.2.md",
+    "sha256": "528671e441d4d41d1c1e2116b5ac7524eff6ee213c133a7c7fc5ab3e0b1c7ac2"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.3.md",
+    "sha256": "a6caccfb64e21647412815608062bb64ecf9cc8aa776c1f63bd683e81f54b667"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.22.1.md",
+    "sha256": "be4b319429ad18bd9ccb49ae04e0bd49b8957daf04a05226e0f79584c0197c35"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.10.1.md",
+    "sha256": "d455784858fc573229db38d8a0577c909bb30da9618e0771c4aac9d343223766"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.15.md",
+    "sha256": "db002a306a23cbc7e3ce376359e7cf8f38384bd98d3268afec0bb361e1bbfc3c"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.22.2.md",
+    "sha256": "c37d184882b5c158e0d1d5fa7c9309b458906711de4210e43d7880475b5219d5"
+  },
+  {
+    "path": "docs/test-reports/PHASE02-BITE-VALIDATION.md",
+    "sha256": "1e7a465824687ade4cde308379fe1498db73aeb0fa1097b17b2507a4df391451"
+  },
+  {
+    "path": "docs/test-reports/PHASE15-VALIDATION.md",
+    "sha256": "02094fbae8de47ff5859d5ecca0a378da4a00cb9a90ee5a43fc5e5ff6c019311"
+  },
+  {
+    "path": "docs/test-reports/PHASE01-DISTANCE-1000.json",
+    "sha256": "11a901955a57f6694c1204ab5a366d219911e389e3e417c61f468c22fa345564"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.7.1.md",
+    "sha256": "0cf5834a7b0d7280acd54295b21b4edbd962ffdb57dc18dff9df260d5350c1cc"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.5.md",
+    "sha256": "40446a9a9c525b2a12eef7e6b87aae8426edf0c85a430e19256ae59123117354"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.9.md",
+    "sha256": "188b578bbead3fdf4e3426d0f3f15665f5e87ab9afefc12105959c32960233e6"
+  },
+  {
+    "path": "docs/test-reports/TEST-REPORT-0.14.md",
+    "sha256": "70c26c8633f5c94c80adbf8ef45047999305fe25f2fe386a5bc87becc9291204"
+  },
+  {
+    "path": "docs/architecture/ARCHITECTURE.md",
+    "sha256": "8e00141be077a608c04659ededb4acc27f42361b5173ca72a8b126c25603fdd1"
+  },
+  {
+    "path": "docs/architecture/PHASE02-BITE.md",
+    "sha256": "8d945ddf0f5d22a45a0469b74b1ce01afbdd9ee7125aa4c380aa207c13ede1ca"
+  },
+  {
+    "path": "docs/architecture/PHASE02-BAIT-TYPES.md",
+    "sha256": "3c4802fd6ab4d06911e1bb574ee989f1c0873d0947a4f438e63503ca626f11cb"
+  },
+  {
+    "path": "docs/architecture/PHASE-0-1.md",
+    "sha256": "4143d4f248b50a353ee52967babe21d6d68bddc2c4f7d3cc83976f3c28952d95"
+  },
+  {
+    "path": "docs/architecture/PHASE02-FEEDING-BALANCE.md",
+    "sha256": "450c5fd749f2d0f2d3d295564b8e739634ca98ee6ad5c116477cdedcac50d8f6"
+  },
+  {
+    "path": "docs/architecture/FISH-INFORMATION-AUDIT.md",
+    "sha256": "5e1524b5fca7aebd68f9ea9caffa02d01a2a5c48bc26c4c5c14c19f62a12a2f4"
+  },
+  {
+    "path": "docs/architecture/NET-ARCHITECTURE.md",
+    "sha256": "fccbeef8c5d2fec79f29c7526cccfe2b4422b7b7293308660c0b2f372f6da527"
+  },
+  {
+    "path": "docs/architecture/PHASE-1.5-PLAYTEST-GATE.md",
+    "sha256": "8722da5e2588eebe744022b0952d075d77f7a9ffdddd3f36954325ffb617c42c"
+  },
+  {
+    "path": "docs/architecture/POND-ARCHITECTURE.md",
+    "sha256": "4bd2e586ff5e82b67409911721035c848c3396ed111b6a2940a55b92a34965f0"
+  },
+  {
+    "path": "docs/architecture/RULES-ARCHITECTURE.md",
+    "sha256": "c19ff57f16a24a274d6a58a036a673515d2c9b066874aa7b095250ec01864048"
+  },
+  {
+    "path": "docs/history/HISTORY-RECOVERY.md",
+    "sha256": "f76ee7888509a386ee981813ad9077f9f4eed2aa859893e942dc10a341fafbb8"
+  },
+  {
+    "path": "docs/history/RELEASES.md",
+    "sha256": "cd54091a880ac768e1626f7f0d811c0c29d90ffb3d4f7e4bf6d18cd9c2ad7607"
+  },
+  {
+    "path": "docs/history/CHANGELOG.md",
+    "sha256": "412fc234a0d96713027262506ec2bb1579af28a0ef1e83feca9a5c4ced5b327c"
+  },
+  {
+    "path": "docs/gameplay/DESIGN-escape-v0.3.md",
+    "sha256": "fffe7083265bab7898d049a5a646d778e2d5ce42cdbe76a71ddc806b2c87f7b2"
+  },
+  {
+    "path": "docs/gameplay/NETWORK.md",
+    "sha256": "d3037d70fa2e5223c3904ab9bf8f8b6e7b2d84a35ea8ed5022ee83a1bf174f7e"
+  },
+  {
+    "path": "docs/gameplay/PLAY.txt",
+    "sha256": "1b1c91fa9f2faf62f0b4e0d9e722b2b6a95a815a61b2fe4782b07887000bc75a"
+  },
+  {
+    "path": "docs/gameplay/RULES-CATALOG.md",
+    "sha256": "e7885b7811312f8b4176f8c6729d37dcf008cde22fdbfa45758178c48c866fb8"
+  },
+  {
+    "path": "docs/images/pond-depth-v0223-nest.png",
+    "sha256": "9fdedc00927efafaddd6a812f248d52e6ab819ff4431bb6bd8a5bc2b631c6fd7"
+  },
+  {
+    "path": "docs/images/angler-view.png",
+    "sha256": "a4ae1bde68e452f687fc42d33ce9cb3515ae746cc2b66602a3fae2660661743a"
+  },
+  {
+    "path": "docs/images/nest-view.png",
+    "sha256": "e2968f1ee511c6901c0f8de28506420eb5da62ebbf485a5bbf2d204229f3461f"
+  },
+  {
+    "path": "docs/images/pond-depth-v0223-right.png",
+    "sha256": "8298d8ca109cb3c632684e6d615d392fe5a344878402d86be15910e90826a8f9"
+  },
+  {
+    "path": "docs/images/fish-view.png",
+    "sha256": "83a35595c403d34b91d1e968b8c375248e2043ac9b5e97694e739354781c7501"
+  },
+  {
+    "path": "docs/images/water-shallow-after.png",
+    "sha256": "07e250692c74af1e376be7845333d33ea386f1511ce7ebd4f80849e0a88b0362"
+  },
+  {
+    "path": "docs/images/water-shallow-before.png",
+    "sha256": "74fd4061f3ee96f2206ea3bc317554210c89399902b34cf6b8be35ee57448317"
+  },
+  {
+    "path": "docs/images/pond-depth-v0223-middle.png",
+    "sha256": "e8e8c578b737e9cc06e64fdc23e0552dda0345e1c9c723821211ef4f581fb6c0"
+  },
+  {
+    "path": "docs/images/obstacles-before.png",
+    "sha256": "d026ca46a0657144ff16806080b89134f1e4d3c1f615df9110f1b109f0f30569"
+  },
+  {
+    "path": "docs/images/pond-depth-v0223-shallow.png",
+    "sha256": "5747f6ca70bf16efc611057c836ae3285b22d90d770bb66f06cdcf2da7f16fd6"
+  },
+  {
+    "path": "docs/images/water-depth-before.png",
+    "sha256": "cafc44f29d427e3d9410f1e35cd6446710a6fffe6f3e33931366735ba0831187"
+  },
+  {
+    "path": "docs/images/wood-fade-v0224.png",
+    "sha256": "ce7faedba9a68a5c10dc48f645e426239ca2e60f17f9b6ad5f075be4cb81f440"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-feeding/native-gate-summary.json",
+    "sha256": "d797d4c9cafdbd4152ee72c17fc348149b4b7247f8af3eacc52832dbdf05d130"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-feeding/README.md",
+    "sha256": "4721c3501017f9f55379771dfe67e632cf27ebd33d5ca7b3587dcce12a47dd04"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-feeding/headless-gate-summary.json",
+    "sha256": "b018357b4dbd8194a67580e962a709e9e3a6ff4d05c65403c2f407f6a78dd539"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-feeding/initial-headless-gate-summary.json",
+    "sha256": "3f3b5181bed9fa6a3f2815e335755c54f4e7c1dc1d059d0bb88eaa34d00040b6"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-feeding/initial-native-gate-summary.json",
+    "sha256": "ab3d179b9fcf9cb1cc6e5c114a69fb93051daaa682cd03dd740e6c23dffce5aa"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-distance/native-summary.json",
+    "sha256": "45b263987e2ea94ee2e42335405e39a24caf44cb801d19d642a40600ad24c313"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-distance/headless-summary.json",
+    "sha256": "65f244af79846bef7007357bd316523264a7b3a0762c17582af0b273602dd2d3"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-distance/initial-bait-suction-failure.log",
+    "sha256": "f5d9d34ba10a69a26b8ce331e489a743c92081678c946805f21ce4799946ef17"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-distance/native-gradient.log",
+    "sha256": "b86189a1c92346ba75cdead2e73c35c6e33de778ec4e305009a0cde80369d440"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-distance/initial-feeding-feel-failure.log",
+    "sha256": "81a1c60dff2a4eb4ce383e7c1ace19d70995cb893279c701a5e58d502fd94580"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-feeding/heldout-extension-88/summary.json",
+    "sha256": "50654a884654f9d52eb77cb2cb5a0db70c756e0f50584abe754f656a325041ad"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-feeding/heldout-extension-88/provenance.json",
+    "sha256": "c366efad9ec65ee7ac3b551a9da187ee60da6286c4f8b06a6a1342d857b6da31"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-feeding/heldout-extension-88/rounds.json",
+    "sha256": "0dfb247b2bdbf5a96ec8615fc5af799381eb56f7ebdff11a8127baecea3c35c8"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-feeding/heldout-extension-88/comparison.json",
+    "sha256": "32c10fd237a6fef0737d9c8caea5074593128475dfd9f16d16edbcc5d9940cff"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-feeding/pilot/summary.json",
+    "sha256": "c7d69b0e7985f27e39902f775d01a0e76005befc9d64e8ea1c94be68cd5ba8ef"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-feeding/pilot/provenance.json",
+    "sha256": "ba73bbb0772b698e80ed2596ddcf66df475de5d31a7ba5b09ed39c1145793802"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-feeding/pilot/rounds.json",
+    "sha256": "362e02f9df658d6f50e0be62a20e66158b0324a2f13f52a1890169f1a2ac091d"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-feeding/pilot/comparison.json",
+    "sha256": "28e0a0b3ad5f21d71c40465f65455804918f5a43171dd316cbbc0c3335dd96f0"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-feeding/heldout-100/summary.json",
+    "sha256": "03e53025310d38c4dea50805be9d340c8a93d47811cfaecccbe0b0db27996191"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-feeding/heldout-100/rounds.csv",
+    "sha256": "0963aff1acc55b23703221ed0926582e6b19b45962af92c5204c922d5f92d125"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-feeding/heldout-100/provenance.json",
+    "sha256": "b33ace46978c631c5ae1fed8620bd7f0c5bbca55b4b5817d2869a9072fe1e779"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-feeding/heldout-100/rounds.json",
+    "sha256": "b8b9e792ff73b286ec49900ddf579b62ac7ffb9075a78e2de30c1200a7f68c5e"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-feeding/heldout-100/comparison.json",
+    "sha256": "a6e005e5c49ab6d725d056b12c97915327f6eb6303d7e731192146cc0ce78fb5"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-feeding/heldout-initial-12/summary.json",
+    "sha256": "d15f36a873185b266a545f0a73ff35acd8c4c4be3afad7ebfb38d666bd57ef61"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-feeding/heldout-initial-12/provenance.json",
+    "sha256": "c3a50bf67ed01d260dc023d5c7530b19d31a8cd3f0e68aeaf932a2b014ee57d2"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-feeding/heldout-initial-12/rounds.json",
+    "sha256": "e59c1d5291a8cc27d2cebfc1f738377b146907c89d8d5002279de7977c85927d"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-feeding/heldout-initial-12/comparison.json",
+    "sha256": "db9b1f83901a927d2d4e064772c1097f23acc6ced91a3aa568ffa2adaf00cbb4"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-distance/tuning-100/rounds.csv",
+    "sha256": "5d9d655e87d8ba97c54d67d4a0a35184d04061c14c6f370d6e3d1a7143d9e10a"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-distance/tuning-100/provenance.json",
+    "sha256": "be5edee94bf1b3629eaef548882381f5a07caebe9b6d0eb780c0063454c54952"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-distance/tuning-100/rounds.json",
+    "sha256": "8efa3afee2757c161468868691e8c91a77e86902320e84837148ddc965a51818"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-distance/tuning-100/phase02_simulate_feeding.gd",
+    "sha256": "bab834ad8e75ad53558cfd3404ee2f7674e6fb81618f0cde88879711d1518f5f"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-distance/tuning-100/phase02_feeding_policy.gd",
+    "sha256": "533976956a9e2186baf1da6ed321680e0f9304842d1d5813c8fa4977df919912"
+  },
+  {
+    "path": "docs/test-reports/data/phase02-distance/tuning-100/comparison.json",
+    "sha256": "a113dfa48c7ad395d1a57427ded6a1deeddd5eae78bc3fe78bb114ec26cc5e36"
+  },
+  {
+    "path": "tests/runner/test_run_tests.py",
+    "sha256": "a6b8724dfbd2795300d3aae2ff37c99bd571332413dda37179a59d518048b0be"
+  },
+  {
+    "path": "tests/runner/test_capture_contract.py",
+    "sha256": "df9dd26c28bfe99ef361667466cf3dc93ab6ec4c74cf27531932e366520c3c69"
+  },
+  {
+    "path": "tests/runner/test_godot_runner.py",
+    "sha256": "e0cb21d53c4832e494b213925fe72926082a166df6807b6485c76fad599cce15"
+  },
+  {
+    "path": "assets/first_person/angler_hand.png.import",
+    "sha256": "afe9aced3020ba6c7a86f75c85f8632921da308743376ad2d4335f21fec5049d"
+  },
+  {
+    "path": "assets/first_person/left_reel_hands_v016.md",
+    "sha256": "e71b5af911ff67de9363028172e3e587d0adb312b50998592db197a2dc073f9c"
+  },
+  {
+    "path": "assets/first_person/HAND-PIXEL-GENERATION.md",
+    "sha256": "487cc0d94e5d878620a90f94bcf313326894174a917563ffec958e7fe3d456ec"
+  },
+  {
+    "path": "assets/first_person/angler_hand_pixel.png.import",
+    "sha256": "6423560b551d61c575757ff753d4496eac6ca7cff515ea2ffd401d677f93e96c"
+  },
+  {
+    "path": "assets/first_person/reference_tackle_v0158.png.import",
+    "sha256": "b5a26f7cc513d2a9dfd639a60e382623cbdd3199641e1919a33c248bcb5f272d"
+  },
+  {
+    "path": "assets/first_person/sunset_lake.png.import",
+    "sha256": "22307328d6c63be31e55ff660033df94ee4230fae8c44f377b24af71ad2a355b"
+  },
+  {
+    "path": "assets/first_person/angler_hand.png",
+    "sha256": "d587e8c4be3a321bb4f56079cd8e416f0ec5a6417f2f91c4e93b1088e5dc4f44"
+  },
+  {
+    "path": "assets/first_person/angler_hand_forearm.png",
+    "sha256": "77ae57329889d026a6c3c2d10614ad822aa7a2bd1d27ab6029489d13664ef54c"
+  },
+  {
+    "path": "assets/first_person/sunset_lake.png",
+    "sha256": "70c0c2ff58dd929ce012e5dd780dea9466cc177de419d900a46c078444371091"
+  },
+  {
+    "path": "assets/first_person/reference_tackle_v0158.png",
+    "sha256": "ec08d18910ae6a7bf702b285151b44e5525462d94e2879bd445231eece9dd8f7"
+  },
+  {
+    "path": "assets/first_person/GENERATION.md",
+    "sha256": "46d6fdf93399f44bba3452fcd794606d3a479d8d344e06484ee9177237b312a1"
+  },
+  {
+    "path": "assets/first_person/HAND-FOREARM-GENERATION.md",
+    "sha256": "d916286735e8d08b06a85d8a64ec1cbacbab4690479bc76d54da9727a2d4a3fc"
+  },
+  {
+    "path": "assets/first_person/left_reel_hands_v016.png.import",
+    "sha256": "75cdd68f499aafb2751f2899589507141bf3a5efe905e9052a8ca0d1d84c9690"
+  },
+  {
+    "path": "assets/first_person/angler_hand_forearm.png.import",
+    "sha256": "d10fafc4d28a0fb962cd406f031b6f4d8e481233509923bc76c189d5306bbcfd"
+  },
+  {
+    "path": "assets/first_person/HAND-GENERATION.md",
+    "sha256": "86b464a589edfbc8dfe4ca0f435e34f7612bf716d5a28436aa8a8ba359a351fb"
+  },
+  {
+    "path": "assets/first_person/left_reel_hands_v016.png",
+    "sha256": "a0e7e00ecde0028d3fcd14820d269fee432a9c5a8c55d380523825d225f2ddd5"
+  },
+  {
+    "path": "assets/first_person/angler_hand_pixel.png",
+    "sha256": "c7b0432f8e7f1e49855c61b0a78b389c5fd9b41c7a858c371303d5729d833867"
+  },
+  {
+    "path": "assets/first_person/reference_tackle_v0158.md",
+    "sha256": "53a6c6c2ad998593e586b039ccdc76de8a493d931e310e91984bbc1b6a4cc743"
+  }
+]

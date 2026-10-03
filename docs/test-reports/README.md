@@ -8,6 +8,7 @@
 
 报告按版本由新到旧排列，记录当时的测试环境、范围和结果。旧版玩法断言可能已经退役；复现时请结合对应版本。
 
+- [0.24.5 Windows 试玩包与发布核验](GITHUB-RELEASE-0.24.5.md)
 - [0.24.4 Windows 试玩包与发布核验](GITHUB-RELEASE-0.24.4.md)
 - [0.24.3 Windows 试玩包与发布核验](GITHUB-RELEASE-0.24.3.md)
 - [0.24.2 Windows 试玩包与发布核验](GITHUB-RELEASE-0.24.2.md)
@@ -74,3 +75,5 @@
 - [P2.2 饵型验证与人工试玩门](PHASE02-BAIT-VALIDATION.md)
 
 - [0.24.4 distance tuning and manual gate](PHASE02-DISTANCE-VALIDATION.md)
+
+- [0.24.5 mouth range/cadence tuning and manual gate](PHASE02-BITE-TUNING-VALIDATION.md)
