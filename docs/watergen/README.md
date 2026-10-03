@@ -1,6 +1,6 @@
 # Watergen WG-0：旧环境独立预览
 
-本文保留 WG-0 旧环境入口和原始 0.24.5 基线说明。当前可选试玩为 [0.25.3 四种构图选择](WG4_README.md)，首次接入记录见 [WG3_README.md](WG3_README.md)（底层游戏基于 0.25.0）；独立视觉氛围预览见 [WG21_README.md](WG21_README.md)，此前动态阶段见 [WG2_README.md](WG2_README.md)，静态入口见 [WG1_README.md](WG1_README.md)。WG-0 入口自身仍只显示旧环境，不启动对局。
+本文保留 WG-0 旧环境入口和原始 0.24.5 基线说明。当前可选试玩为 [0.25.5 木石与水草材质](WG5_README.md)，首次接入记录见 [WG3_README.md](WG3_README.md)（底层游戏基于 0.25.0）；独立视觉氛围预览见 [WG21_README.md](WG21_README.md)，此前动态阶段见 [WG2_README.md](WG2_README.md)，静态入口见 [WG1_README.md](WG1_README.md)。WG-0 入口自身仍只显示旧环境，不启动对局。
 
 ## 工作区与入口
 

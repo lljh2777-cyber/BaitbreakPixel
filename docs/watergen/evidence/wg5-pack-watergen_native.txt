@@ -1,0 +1,116 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 3.3.0 Core Profile Context 23.20.28.03.231124 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon(TM) Graphics
+
+PIXEL_READY | asymmetric-2d | 640x360 | v0.25.5 | playtest-gate-wg3-water
+WG3_NATIVE_PASS | ordinary entry defaults to legacy
+WG3_NATIVE_PASS | legacy entry does not allocate material textures
+WG3_NATIVE_PASS | settings exposes explicit opt-in
+WG3_NATIVE_PASS | settings offers four named presets with fern selected
+WATERGEN_READY | wg-2.1 | seed=713284 | cache=4802658465358cbb555cd6089651cccbe1bf8b51c0c974183a3f7a5575f5db36
+WG3_NATIVE_PASS | opt-in prepares eleven prop unions and 176 plant poses once
+WG3_NATIVE_PASS | settings toggle prepares without touching authority
+WG3_NATIVE_PASS | UI preset fern changes appearance without changing authority
+WG3_NATIVE_PASS | capture preset-fern
+WG3_NATIVE_PASS | preset fern has a distinct production picture
+WATERGEN_READY | wg-2.1 | seed=2649 | cache=56971153f26d7d40686088ce9bbbf02a9cef6433d23f0a3e0a331a2e0d03ae84
+WG3_NATIVE_PASS | UI preset ribbon changes appearance without changing authority
+WG3_NATIVE_PASS | capture preset-ribbon
+WG3_NATIVE_PASS | preset ribbon has a distinct production picture
+WATERGEN_READY | wg-2.1 | seed=42 | cache=92a8ed593f8eb1103e6ee5faeee02b855838b490e92ce3c1fc2b5ee9936413c9
+WG3_NATIVE_PASS | UI preset lily changes appearance without changing authority
+WG3_NATIVE_PASS | capture preset-lily
+WG3_NATIVE_PASS | preset lily has a distinct production picture
+WATERGEN_READY | wg-2.1 | seed=731 | cache=3541a1da55e0c6713c310507bfb6cb2820d923f8cd8c3550985d7ec378f3653c
+WG3_NATIVE_PASS | UI preset root changes appearance without changing authority
+WG3_NATIVE_PASS | capture preset-root
+WG3_NATIVE_PASS | preset root has a distinct production picture
+WATERGEN_READY | wg-2.1 | seed=713284 | cache=4802658465358cbb555cd6089651cccbe1bf8b51c0c974183a3f7a5575f5db36
+WG3_NATIVE_PASS | capture settings-generated
+WG3_NATIVE_PASS | capture legacy-66-100
+WG3_NATIVE_PASS | capture generated-66-100
+WG3_NATIVE_PASS | environment visibly changes at (66.0, 100.0)
+WG3_NATIVE_PASS | HUD pixels remain exact at (66.0, 100.0)
+WG3_NATIVE_PASS | pointer coordinates unchanged
+WG3_NATIVE_PASS | capture legacy-640-240
+WG3_NATIVE_PASS | capture generated-640-240
+WG3_NATIVE_PASS | environment visibly changes at (640.0, 240.0)
+WG3_NATIVE_PASS | HUD pixels remain exact at (640.0, 240.0)
+WG3_NATIVE_PASS | pointer coordinates unchanged
+WG3_NATIVE_PASS | capture legacy-1250-450
+WG3_NATIVE_PASS | capture generated-1250-450
+WG3_NATIVE_PASS | environment visibly changes at (1250.0, 450.0)
+WG3_NATIVE_PASS | HUD pixels remain exact at (1250.0, 450.0)
+WG3_NATIVE_PASS | pointer coordinates unchanged
+WG3_NATIVE_PASS | capture legacy-66-450
+WG3_NATIVE_PASS | capture generated-66-450
+WG3_NATIVE_PASS | environment visibly changes at (66.0, 450.0)
+WG3_NATIVE_PASS | HUD pixels remain exact at (66.0, 450.0)
+WG3_NATIVE_PASS | pointer coordinates unchanged
+WG3_NATIVE_PASS | capture legacy-1250-100
+WG3_NATIVE_PASS | capture generated-1250-100
+WG3_NATIVE_PASS | environment visibly changes at (1250.0, 100.0)
+WG3_NATIVE_PASS | HUD pixels remain exact at (1250.0, 100.0)
+WG3_NATIVE_PASS | pointer coordinates unchanged
+WG3_NATIVE_PASS | capture generated-free
+WG3_NATIVE_PASS | hidden hook truth leaves final production pixels unchanged
+WG3_NATIVE_PASS | actual local pause freezes water time and pixels
+WG3_NATIVE_PASS | capture angler-legacy
+WG3_NATIVE_PASS | capture angler-selected
+WG3_NATIVE_PASS | ineligible angler remains exact legacy
+WG3_NATIVE_PASS | capture observation-legacy
+WG3_NATIVE_PASS | capture observation-selected
+WG3_NATIVE_PASS | net observation remains exact legacy
+WG3_NATIVE_PASS | shared session disables both appearance controls
+WG3_NATIVE_PASS | capture fish-legacy
+WG3_NATIVE_PASS | capture fish-selected
+WG3_NATIVE_PASS | ineligible fish remains exact legacy
+WATERGEN_FALLBACK | VERSION
+WG3_NATIVE_PASS | invalid profile reports failure
+WG3_NATIVE_PASS | capture fallback
+WG3_NATIVE_PASS | failure restores full legacy image
+WATERGEN_READY | wg-2.1 | seed=713284 | cache=4802658465358cbb555cd6089651cccbe1bf8b51c0c974183a3f7a5575f5db36
+WG3_NATIVE_PASS | twenty restarts/toggles never rebuild textures
+WG3_NATIVE_PASS | presets, roles, failure and twenty restarts/toggles reuse material textures
+WG3_NATIVE_PASS | restore identical authority for survival
+WATERGEN_READY | wg-2.1 | seed=2649 | cache=56971153f26d7d40686088ce9bbbf02a9cef6433d23f0a3e0a331a2e0d03ae84
+WATERGEN_READY | wg-2.1 | seed=42 | cache=92a8ed593f8eb1103e6ee5faeee02b855838b490e92ce3c1fc2b5ee9936413c9
+WATERGEN_READY | wg-2.1 | seed=731 | cache=3541a1da55e0c6713c310507bfb6cb2820d923f8cd8c3550985d7ec378f3653c
+WG3_NATIVE_PASS | survival: 240 rendered ticks preserve every authority field and RNG
+WG3_NATIVE_PASS | trace reaches attachment, QTE and refill survival
+WG3_NATIVE_PASS | restore identical authority for duel
+WATERGEN_READY | wg-2.1 | seed=713284 | cache=4802658465358cbb555cd6089651cccbe1bf8b51c0c974183a3f7a5575f5db36
+WATERGEN_READY | wg-2.1 | seed=2649 | cache=56971153f26d7d40686088ce9bbbf02a9cef6433d23f0a3e0a331a2e0d03ae84
+WATERGEN_READY | wg-2.1 | seed=42 | cache=92a8ed593f8eb1103e6ee5faeee02b855838b490e92ce3c1fc2b5ee9936413c9
+WATERGEN_READY | wg-2.1 | seed=731 | cache=3541a1da55e0c6713c310507bfb6cb2820d923f8cd8c3550985d7ec378f3653c
+WG3_NATIVE_PASS | duel: 240 rendered ticks preserve every authority field and RNG
+WG3_NATIVE_PASS | trace reaches attachment, QTE and refill duel
+WATERGEN_READY | wg-2.1 | seed=42 | cache=92a8ed593f8eb1103e6ee5faeee02b855838b490e92ce3c1fc2b5ee9936413c9
+WG3_NATIVE_PASS | restore interaction feeding
+WG3_NATIVE_PASS | capture feeding-0
+WG3_NATIVE_PASS | Bite/Suck cannot double-award reoffered grain identities
+WG3_NATIVE_PASS | capture feeding-30
+WG3_NATIVE_PASS | capture feeding-80
+WG3_NATIVE_PASS | capture feeding-159
+WG3_NATIVE_PASS | feeding: 160 rendered ticks keep full authority/RNG equal
+WATERGEN_READY | wg-2.1 | seed=2649 | cache=56971153f26d7d40686088ce9bbbf02a9cef6433d23f0a3e0a331a2e0d03ae84
+WG3_NATIVE_PASS | fixture reaches committed wood wrap
+WG3_NATIVE_PASS | restore interaction wrapping
+WG3_NATIVE_PASS | capture wrapping-0
+WG3_NATIVE_PASS | capture wrapping-30
+WG3_NATIVE_PASS | capture wrapping-80
+WG3_NATIVE_PASS | capture wrapping-159
+WG3_NATIVE_PASS | wrapping: 160 rendered ticks keep full authority/RNG equal
+WG3_NATIVE_PASS | trace enters real untangle check
+WATERGEN_READY | wg-2.1 | seed=731 | cache=3541a1da55e0c6713c310507bfb6cb2820d923f8cd8c3550985d7ec378f3653c
+WG3_NATIVE_PASS | restore interaction net
+WG3_NATIVE_PASS | capture net-0
+WG3_NATIVE_PASS | capture net-30
+WG3_NATIVE_PASS | capture net-80
+WG3_NATIVE_PASS | capture net-159
+WG3_NATIVE_PASS | net: 160 rendered ticks keep full authority/RNG equal
+WG3_NATIVE_PASS | trace reaches actual net capture
+WATERGEN_READY | wg-2.1 | seed=713284 | cache=4802658465358cbb555cd6089651cccbe1bf8b51c0c974183a3f7a5575f5db36
+WG3_NATIVE_PASS | performance sampling preserves authority
+WG3_NATIVE_PASS | performance sampling preserves authority
+WG3_NATIVE_PASS | evidence writable
+WG3_NATIVE | passed=93 | failed=0

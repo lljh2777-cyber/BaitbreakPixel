@@ -1545,6 +1545,17 @@
       "report_date": "2026-10-03",
       "test_report": "docs/watergen/WG4_UPPER_REPORT.md",
       "github_release_published_at_report": false
+    },
+    {
+      "version": "0.25.5",
+      "source_commit": "05fcb3339e1622ebd10ef1fb7c2a04f8e0a7d05f",
+      "pack_bytes": 2352124,
+      "pack_sha256": "cb07065c0f89dc103cf7626e9f01c29770447dd48bdd3c00ced8662737a5cb9b",
+      "zip_bytes": 89623763,
+      "zip_sha256": "7aa21bf7bd7f80909c888bee3e9951eda04756b4f792b69098e38cdf772e362f",
+      "report_date": "2026-10-03",
+      "test_report": "docs/watergen/WG5_REPORT.md",
+      "github_release_published_at_report": false
     }
   ],
   "public_release_snapshot_history": [

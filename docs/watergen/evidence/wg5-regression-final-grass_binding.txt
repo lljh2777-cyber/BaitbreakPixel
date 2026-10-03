@@ -1,0 +1,73 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+GRASS_BIND_PASS | compact stem binding at tip/middle/root with stationary roots: target 18
+GRASS_BIND_PASS | both directions keep a single connected route and unchanged physics: target 18
+GRASS_BIND_PASS | one open helical turn has separate entry/exit instead of a floating closed ring: target 18
+GRASS_BIND_PASS | compact stem binding at tip/middle/root with stationary roots: target 19
+GRASS_BIND_PASS | both directions keep a single connected route and unchanged physics: target 19
+GRASS_BIND_PASS | one open helical turn has separate entry/exit instead of a floating closed ring: target 19
+GRASS_BIND_PASS | compact stem binding at tip/middle/root with stationary roots: target 20
+GRASS_BIND_PASS | both directions keep a single connected route and unchanged physics: target 20
+GRASS_BIND_PASS | one open helical turn has separate entry/exit instead of a floating closed ring: target 20
+GRASS_BIND_PASS | compact stem binding at tip/middle/root with stationary roots: target 21
+GRASS_BIND_PASS | both directions keep a single connected route and unchanged physics: target 21
+GRASS_BIND_PASS | one open helical turn has separate entry/exit instead of a floating closed ring: target 21
+GRASS_BIND_PASS | compact stem binding at tip/middle/root with stationary roots: target 22
+GRASS_BIND_PASS | both directions keep a single connected route and unchanged physics: target 22
+GRASS_BIND_PASS | one open helical turn has separate entry/exit instead of a floating closed ring: target 22
+GRASS_BIND_PASS | compact stem binding at tip/middle/root with stationary roots: target 23
+GRASS_BIND_PASS | both directions keep a single connected route and unchanged physics: target 23
+GRASS_BIND_PASS | one open helical turn has separate entry/exit instead of a floating closed ring: target 23
+GRASS_BIND_PASS | compact stem binding at tip/middle/root with stationary roots: target 24
+GRASS_BIND_PASS | both directions keep a single connected route and unchanged physics: target 24
+GRASS_BIND_PASS | one open helical turn has separate entry/exit instead of a floating closed ring: target 24
+GRASS_BIND_PASS | compact stem binding at tip/middle/root with stationary roots: target 25
+GRASS_BIND_PASS | both directions keep a single connected route and unchanged physics: target 25
+GRASS_BIND_PASS | one open helical turn has separate entry/exit instead of a floating closed ring: target 25
+GRASS_BIND_PASS | compact stem binding at tip/middle/root with stationary roots: target 26
+GRASS_BIND_PASS | both directions keep a single connected route and unchanged physics: target 26
+GRASS_BIND_PASS | one open helical turn has separate entry/exit instead of a floating closed ring: target 26
+GRASS_BIND_PASS | compact stem binding at tip/middle/root with stationary roots: target 27
+GRASS_BIND_PASS | both directions keep a single connected route and unchanged physics: target 27
+GRASS_BIND_PASS | one open helical turn has separate entry/exit instead of a floating closed ring: target 27
+GRASS_BIND_PASS | compact stem binding at tip/middle/root with stationary roots: target 28
+GRASS_BIND_PASS | both directions keep a single connected route and unchanged physics: target 28
+GRASS_BIND_PASS | one open helical turn has separate entry/exit instead of a floating closed ring: target 28
+GRASS_BIND_PASS | compact stem binding at tip/middle/root with stationary roots: target 29
+GRASS_BIND_PASS | both directions keep a single connected route and unchanged physics: target 29
+GRASS_BIND_PASS | one open helical turn has separate entry/exit instead of a floating closed ring: target 29
+GRASS_BIND_PASS | compact stem binding at tip/middle/root with stationary roots: target 30
+GRASS_BIND_PASS | both directions keep a single connected route and unchanged physics: target 30
+GRASS_BIND_PASS | one open helical turn has separate entry/exit instead of a floating closed ring: target 30
+GRASS_BIND_PASS | compact stem binding at tip/middle/root with stationary roots: target 31
+GRASS_BIND_PASS | both directions keep a single connected route and unchanged physics: target 31
+GRASS_BIND_PASS | one open helical turn has separate entry/exit instead of a floating closed ring: target 31
+GRASS_BIND_PASS | compact stem binding at tip/middle/root with stationary roots: target 32
+GRASS_BIND_PASS | both directions keep a single connected route and unchanged physics: target 32
+GRASS_BIND_PASS | one open helical turn has separate entry/exit instead of a floating closed ring: target 32
+GRASS_BIND_PASS | compact stem binding at tip/middle/root with stationary roots: target 33
+GRASS_BIND_PASS | both directions keep a single connected route and unchanged physics: target 33
+GRASS_BIND_PASS | one open helical turn has separate entry/exit instead of a floating closed ring: target 33
+GRASS_BIND_PASS | compact stem binding at tip/middle/root with stationary roots: target 34
+GRASS_BIND_PASS | both directions keep a single connected route and unchanged physics: target 34
+GRASS_BIND_PASS | one open helical turn has separate entry/exit instead of a floating closed ring: target 34
+GRASS_BIND_PASS | compact stem binding at tip/middle/root with stationary roots: target 35
+GRASS_BIND_PASS | both directions keep a single connected route and unchanged physics: target 35
+GRASS_BIND_PASS | one open helical turn has separate entry/exit instead of a floating closed ring: target 35
+GRASS_BIND_PASS | compact stem binding at tip/middle/root with stationary roots: target 36
+GRASS_BIND_PASS | both directions keep a single connected route and unchanged physics: target 36
+GRASS_BIND_PASS | one open helical turn has separate entry/exit instead of a floating closed ring: target 36
+GRASS_BIND_PASS | compact stem binding at tip/middle/root with stationary roots: target 37
+GRASS_BIND_PASS | both directions keep a single connected route and unchanged physics: target 37
+GRASS_BIND_PASS | one open helical turn has separate entry/exit instead of a floating closed ring: target 37
+GRASS_BIND_PASS | compact stem binding at tip/middle/root with stationary roots: target 38
+GRASS_BIND_PASS | both directions keep a single connected route and unchanged physics: target 38
+GRASS_BIND_PASS | one open helical turn has separate entry/exit instead of a floating closed ring: target 38
+GRASS_BIND_PASS | compact stem binding at tip/middle/root with stationary roots: target 39
+GRASS_BIND_PASS | both directions keep a single connected route and unchanged physics: target 39
+GRASS_BIND_PASS | one open helical turn has separate entry/exit instead of a floating closed ring: target 39
+GRASS_BIND_PASS | sparse fern tip binds one stem while the lower bundle widens naturally
+GRASS_BIND_PASS | the entire root row stays fixed, including short clumps
+GRASS_BIND_PASS | load deformation stays subtle rather than dragging the clump through the scene
+GRASS_BIND_PASS | last grass contact releases smoothly into the free strand
+GRASS_BINDING_V021 | passed=70 | failed=0

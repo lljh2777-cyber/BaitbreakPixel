@@ -1,0 +1,64 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+WG5_MATERIAL_PASS | incomplete input cannot activate a partial material set
+WG5_MATERIAL_PASS | complete public sprite set prepares
+WG5_MATERIAL_PASS | prop union mask, crop and fade members unchanged 0
+WG5_MATERIAL_PASS | prop material changes RGB without mutating source 0
+WG5_MATERIAL_PASS | prop material deterministic 0
+WG5_MATERIAL_PASS | prop union mask, crop and fade members unchanged 1
+WG5_MATERIAL_PASS | prop material changes RGB without mutating source 1
+WG5_MATERIAL_PASS | prop material deterministic 1
+WG5_MATERIAL_PASS | prop union mask, crop and fade members unchanged 2
+WG5_MATERIAL_PASS | prop material changes RGB without mutating source 2
+WG5_MATERIAL_PASS | prop material deterministic 2
+WG5_MATERIAL_PASS | prop union mask, crop and fade members unchanged 3
+WG5_MATERIAL_PASS | prop material changes RGB without mutating source 3
+WG5_MATERIAL_PASS | prop material deterministic 3
+WG5_MATERIAL_PASS | prop union mask, crop and fade members unchanged 4
+WG5_MATERIAL_PASS | prop material changes RGB without mutating source 4
+WG5_MATERIAL_PASS | prop material deterministic 4
+WG5_MATERIAL_PASS | prop union mask, crop and fade members unchanged 5
+WG5_MATERIAL_PASS | prop material changes RGB without mutating source 5
+WG5_MATERIAL_PASS | prop material deterministic 5
+WG5_MATERIAL_PASS | prop union mask, crop and fade members unchanged 6
+WG5_MATERIAL_PASS | prop material changes RGB without mutating source 6
+WG5_MATERIAL_PASS | prop material deterministic 6
+WG5_MATERIAL_PASS | prop union mask, crop and fade members unchanged 7
+WG5_MATERIAL_PASS | prop material changes RGB without mutating source 7
+WG5_MATERIAL_PASS | prop material deterministic 7
+WG5_MATERIAL_PASS | prop union mask, crop and fade members unchanged 8
+WG5_MATERIAL_PASS | prop material changes RGB without mutating source 8
+WG5_MATERIAL_PASS | prop material deterministic 8
+WG5_MATERIAL_PASS | prop union mask, crop and fade members unchanged 9
+WG5_MATERIAL_PASS | prop material changes RGB without mutating source 9
+WG5_MATERIAL_PASS | prop material deterministic 9
+WG5_MATERIAL_PASS | prop union mask, crop and fade members unchanged 10
+WG5_MATERIAL_PASS | prop material changes RGB without mutating source 10
+WG5_MATERIAL_PASS | prop material deterministic 10
+WG5_MATERIAL_PASS | all eight plant silhouettes, roots and crops unchanged 0
+WG5_MATERIAL_PASS | all eight plant silhouettes, roots and crops unchanged 1
+WG5_MATERIAL_PASS | all eight plant silhouettes, roots and crops unchanged 2
+WG5_MATERIAL_PASS | all eight plant silhouettes, roots and crops unchanged 3
+WG5_MATERIAL_PASS | all eight plant silhouettes, roots and crops unchanged 4
+WG5_MATERIAL_PASS | all eight plant silhouettes, roots and crops unchanged 5
+WG5_MATERIAL_PASS | all eight plant silhouettes, roots and crops unchanged 6
+WG5_MATERIAL_PASS | all eight plant silhouettes, roots and crops unchanged 7
+WG5_MATERIAL_PASS | all eight plant silhouettes, roots and crops unchanged 8
+WG5_MATERIAL_PASS | all eight plant silhouettes, roots and crops unchanged 9
+WG5_MATERIAL_PASS | all eight plant silhouettes, roots and crops unchanged 10
+WG5_MATERIAL_PASS | all eight plant silhouettes, roots and crops unchanged 11
+WG5_MATERIAL_PASS | all eight plant silhouettes, roots and crops unchanged 12
+WG5_MATERIAL_PASS | all eight plant silhouettes, roots and crops unchanged 13
+WG5_MATERIAL_PASS | all eight plant silhouettes, roots and crops unchanged 14
+WG5_MATERIAL_PASS | all eight plant silhouettes, roots and crops unchanged 15
+WG5_MATERIAL_PASS | all eight plant silhouettes, roots and crops unchanged 16
+WG5_MATERIAL_PASS | all eight plant silhouettes, roots and crops unchanged 17
+WG5_MATERIAL_PASS | all eight plant silhouettes, roots and crops unchanged 18
+WG5_MATERIAL_PASS | all eight plant silhouettes, roots and crops unchanged 19
+WG5_MATERIAL_PASS | all eight plant silhouettes, roots and crops unchanged 20
+WG5_MATERIAL_PASS | all eight plant silhouettes, roots and crops unchanged 21
+WG5_MATERIAL_PASS | one bounded finish per existing sprite and plant pose
+WG5_MATERIAL_PASS | twenty prepares reuse exactly the same textures
+WG5_MATERIAL_PASS | all authority geometry and target ordering remain unchanged
+WG5_MATERIAL_PASS | material textures release with their owning view cache
+WG5_MATERIAL | passed=61 | failed=0
