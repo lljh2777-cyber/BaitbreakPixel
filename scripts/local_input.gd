@@ -4,17 +4,31 @@ extends RefCounted
 var net_events: Array[Dictionary]=[]
 var power_steps := 0
 var needs_neutral := false
+var qte_needs_release := false
 
 func reset() -> void:
 	net_events.clear()
 	power_steps=0
 	needs_neutral=false
+	suspend_qte()
 
 func suspend() -> void:
 	net_events.clear()
 	net_events.append({"kind":"suspend"})
 	power_steps=0
 	needs_neutral=true
+	suspend_qte()
+
+func suspend_qte() -> void:
+	# Space can activate Continue. Do not reuse that UI gesture to judge gameplay,
+	# including a held key across focus changes or a new round.
+	qte_needs_release=true
+
+func qte_pressed() -> bool:
+	if qte_needs_release:
+		if not Input.is_action_pressed("qte"): qte_needs_release=false
+		return false
+	return Input.is_action_just_pressed("qte")
 
 func handle(event: InputEvent, role: String, point: Vector2) -> void:
 	if needs_neutral: return
@@ -34,7 +48,7 @@ func fish_command(world: Node2D, pointer: Vector2) -> Dictionary:
 		"aim":direction.normalized() if direction.length()>4 else world.aim,
 		"power":clampf(world.power+power_steps*0.1,0.1,1),
 		"suck":Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT),"dash":Input.is_action_pressed("dash"),
-		"slow":Input.is_action_pressed("slow"),"qte":Input.is_action_just_pressed("qte"),"home":Input.is_action_just_pressed("use")
+		"slow":Input.is_action_pressed("slow"),"qte":qte_pressed(),"home":Input.is_action_just_pressed("use")
 	}
 	power_steps=0
 	return result
@@ -47,7 +61,7 @@ func angler_command(_world: Node2D, pointer: Vector2) -> Dictionary:
 		"target":pointer,"walk":Input.get_axis("left","right"),
 		"deploy":Input.is_action_just_pressed("slow"),"reel":Input.is_action_pressed("up"),"release":Input.is_action_pressed("down"),
 		"untangle":Input.is_action_just_pressed("untangle"),
-		"qte":Input.is_action_just_pressed("qte"),
+		"qte":qte_pressed(),
 		"net_hold":held and not needs_neutral,"drag":drag and not needs_neutral,
 		"net_events":net_events.duplicate(true)
 	}

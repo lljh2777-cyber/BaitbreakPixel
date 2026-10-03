@@ -5,6 +5,10 @@ extends RefCounted
 const State=preload("res://scripts/npc_fish_state.gd")
 const Feeding=preload("res://scripts/fish_feeding.gd")
 const Layout=preload("res://scripts/pond_layout.gd")
+# A wrong target should cost a short handling window, not a full player tug.
+# Scale inward spool and physical pull together; payout and failure windows stay
+# unchanged, and the player actuator/rules are never modified.
+const RETRIEVAL_GAIN := 1.8
 
 static func fresh() -> Dictionary:
 	return {"phase":"","age":0.0,"low_age":0.0,"high_age":0.0,"landing_age":0.0,"landing_from":Vector2.ZERO,"struggle_phase":0.0}
@@ -90,10 +94,11 @@ static func step(world: Node2D, delta: float) -> void:
 	var tuning: Vector2=world.line_tuning()
 	var raw: float=0.5+(anchor.distance_to(origin)-world.rope_length)/world.rule("line_elastic")
 	var desired: float=world.angler.spool_target(raw,tuning,not world.angler.auto_reel,world.rules)
+	if desired<0: desired*=RETRIEVAL_GAIN
 	if world.Net.busy(world): desired=0.0
 	if tuning.y<=0: world.reel_speed=0.0
 	elif world.Net.busy(world): world.reel_speed=move_toward(world.reel_speed,0.0,delta*720)
-	elif not world.angler.auto_reel: world.reel_speed=world.angler.manual_spool_speed(world.reel_speed,delta*tuning.x*maxf(1,tuning.y),1.0,world.rules)
+	elif not world.angler.auto_reel: world.reel_speed=world.angler.manual_spool_speed(world.reel_speed,delta*tuning.x*maxf(1,tuning.y),RETRIEVAL_GAIN,world.rules)
 	else: world.reel_speed=move_toward(world.reel_speed,desired,delta*60*tuning.x*maxf(1,tuning.y))
 	world.rope_length=clampf(world.rope_length+world.reel_speed*delta,0,world.rule("line_max"))
 	world.tension=clampf(0.5+(anchor.distance_to(origin)-world.rope_length)/world.rule("line_elastic"),0,1)
@@ -102,7 +107,7 @@ static func step(world: Node2D, delta: float) -> void:
 	var strength:=lerpf(26.0,8.0,clampf(state.age/12.0,0,1))*(0.7+0.3*sin(phase))
 	var struggle:=away*strength+away.orthogonal()*sin(phase*0.7)*12.0
 	var load:=clampf((world.tension-0.12)/0.88,0,1)
-	var pull: Vector2=-away*world.rule("line_pull")*load*sqrt(tuning.y)
+	var pull: Vector2=-away*world.rule("line_pull")*RETRIEVAL_GAIN*load*sqrt(tuning.y)
 	npc.velocity=Vector2(npc.velocity).move_toward(struggle,delta*70.0)
 	var motion: Vector2=(Vector2(npc.velocity)+pull+world.water_velocity(npc.position)).limit_length(State.HOOK_SPEED_LIMIT)
 	var bounds:=Layout.fish_bounds(State.RADIUS)

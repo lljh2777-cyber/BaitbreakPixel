@@ -1,0 +1,122 @@
+PASSED editor-import
+RUN architecture_v020 [current]
+PASSED architecture_v020: 46 passed, 0 failed;  log=architecture_v020.log
+RUN bait_suction_v0212 [current]
+PASSED bait_suction_v0212: 41 passed, 0 failed;  log=bait_suction_v0212.log
+RUN effort_v013 [current]
+PASSED effort_v013: 31 passed, 0 failed;  log=effort_v013.log
+RUN feeding_feel_v022 [current]
+PASSED feeding_feel_v022: 29 passed, 0 failed;  log=feeding_feel_v022.log
+RUN feeding_movement_v0221 [current]
+PASSED feeding_movement_v0221: 28 passed, 0 failed;  log=feeding_movement_v0221.log
+RUN fish_orbit_v021 [current]
+PASSED fish_orbit_v021: 160 passed, 0 failed;  log=fish_orbit_v021.log
+RUN grass_binding_v021 [current]
+PASSED grass_binding_v021: 70 passed, 0 failed;  log=grass_binding_v021.log
+RUN line_motion_v021 [current]
+PASSED line_motion_v021: 29 passed, 0 failed;  log=line_motion_v021.log
+RUN net_animation_v0201 [current]
+PASSED net_animation_v0201: 44 passed, 0 failed;  log=net_animation_v0201.log
+RUN net_network_v020 [current]
+PASSED net_network_v020: 13 passed, 0 failed;  log=net_network_v020.log
+RUN net_network_v021 [current]
+PASSED net_network_v021: 13 passed, 0 failed;  log=net_network_v021.log
+RUN net_v021 [current]
+PASSED net_v021: 43 passed, 0 failed;  log=net_v021.log
+RUN network_rules_v012 [current]
+PASSED network_rules_v012: 26 passed, 0 failed;  log=network_rules_v012.log
+RUN obstacle_art [current]
+PASSED obstacle_art: 92 passed, 0 failed;  log=obstacle_art.log
+RUN plant_art [current]
+PASSED plant_art: 16579 passed, 0 failed;  log=plant_art.log
+RUN pond_v021 [current]
+PASSED pond_v021: 31 passed, 0 failed;  log=pond_v021.log
+RUN reeling_v0122 [current]
+PASSED reeling_v0122: 20 passed, 0 failed;  log=reeling_v0122.log
+RUN rod_load_v017 [current]
+PASSED rod_load_v017: 11 passed, 0 failed;  log=rod_load_v017.log
+RUN rules_network_v019 [current]
+PASSED rules_network_v019: 9 passed, 0 failed;  log=rules_network_v019.log
+RUN rules_v020 [current]
+PASSED rules_v020: 256 passed, 0 failed;  log=rules_v020.log
+RUN tackle_dynamics_v021 [current]
+PASSED tackle_dynamics_v021: 28 passed, 0 failed;  log=tackle_dynamics_v021.log
+RUN untangle_network_v018 [current]
+PASSED untangle_network_v018: 6 passed, 0 failed;  log=untangle_network_v018.log
+RUN untangle_v021 [current]
+PASSED untangle_v021: 44 passed, 0 failed;  log=untangle_v021.log
+RUN water_art [current]
+PASSED water_art: 14 passed, 0 failed;  log=water_art.log
+RUN wood_fade [current]
+PASSED wood_fade: 57 passed, 0 failed;  log=wood_fade.log
+RUN wood_junctions [current]
+PASSED wood_junctions: 20 passed, 0 failed;  log=wood_junctions.log
+RUN phase01_entities [current]
+PASSED phase01_entities: 13 passed, 0 failed;  log=phase01_entities.log
+RUN phase01_observation [current]
+PASSED phase01_observation: 22 passed, 0 failed;  log=phase01_observation.log
+RUN phase01_statistics [current]
+PASSED phase01_statistics: 13 passed, 0 failed;  log=phase01_statistics.log
+RUN phase01_satiety [current]
+PASSED phase01_satiety: 14 passed, 0 failed;  log=phase01_satiety.log
+RUN phase01_instinct [current]
+PASSED phase01_instinct: 81 passed, 0 failed;  log=phase01_instinct.log
+RUN phase01_suspicion [current]
+PASSED phase01_suspicion: 11 passed, 0 failed;  log=phase01_suspicion.log
+RUN phase01_random_hooks [current]
+PASSED phase01_random_hooks: 508 passed, 0 failed;  log=phase01_random_hooks.log
+RUN phase01_policies [current]
+PASSED phase01_policies: 5 passed, 0 failed;  log=phase01_policies.log
+RUN phase01_network [current]
+PASSED phase01_network: 44 passed, 0 failed;  log=phase01_network.log
+RUN phase15_controls [current]
+PASSED phase15_controls: 131 passed, 0 failed;  log=phase15_controls.log
+RUN phase02_bite [current]
+PASSED phase02_bite: 57 passed, 0 failed;  log=phase02_bite.log
+RUN phase02_bite_network [current]
+PASSED phase02_bite_network: 136 passed, 0 failed;  log=phase02_bite_network.log
+RUN phase02_bait_types [current]
+PASSED phase02_bait_types: 6564 passed, 0 failed;  log=phase02_bait_types.log
+RUN phase02_food_profiles [current]
+PASSED phase02_food_profiles: 158 passed, 0 failed;  log=phase02_food_profiles.log
+RUN phase02_observation [current]
+PASSED phase02_observation: 59 passed, 0 failed;  log=phase02_observation.log
+RUN phase02_bait_network [current]
+PASSED phase02_bait_network: 94 passed, 0 failed;  log=phase02_bait_network.log
+RUN phase02_feeding_balance [current]
+PASSED phase02_feeding_balance: 204 passed, 0 failed;  log=phase02_feeding_balance.log
+RUN phase02_feeding_policies [current]
+PASSED phase02_feeding_policies: 29 passed, 0 failed;  log=phase02_feeding_policies.log
+RUN phase03_npc_observation [current]
+PASSED phase03_npc_observation: 209 passed, 0 failed;  log=phase03_npc_observation.log
+RUN phase03_npc_network [current]
+PASSED phase03_npc_network: 497 passed, 0 failed;  log=phase03_npc_network.log
+RUN phase03_npc_rng [current]
+PASSED phase03_npc_rng: 7043 passed, 0 failed;  log=phase03_npc_rng.log
+RUN phase03_npc_entities [current]
+PASSED phase03_npc_entities: 7274 passed, 0 failed;  log=phase03_npc_entities.log
+RUN phase03_npc_snapshot [current]
+PASSED phase03_npc_snapshot: 5463 passed, 0 failed;  log=phase03_npc_snapshot.log
+RUN phase03_npc_ambient [current]
+PASSED phase03_npc_ambient: 194441 passed, 0 failed;  log=phase03_npc_ambient.log
+RUN phase03_npc_statistics [current]
+PASSED phase03_npc_statistics: 2141 passed, 0 failed;  log=phase03_npc_statistics.log
+RUN phase03_npc_foraging [current]
+PASSED phase03_npc_foraging: 80 passed, 0 failed;  log=phase03_npc_foraging.log
+RUN phase03_food_reachability [current]
+PASSED phase03_food_reachability: 25 passed, 0 failed;  log=phase03_food_reachability.log
+RUN phase03_npc_foraging_brain [current]
+PASSED phase03_npc_foraging_brain: 397 passed, 0 failed;  log=phase03_npc_foraging_brain.log
+RUN phase03_npc_social [current]
+PASSED phase03_npc_social: 25 passed, 0 failed;  log=phase03_npc_social.log
+RUN phase03_npc_social_brain [current]
+PASSED phase03_npc_social_brain: 963 passed, 0 failed;  log=phase03_npc_social_brain.log
+RUN phase03_npc_hook_target [current]
+PASSED phase03_npc_hook_target: 69 passed, 0 failed;  log=phase03_npc_hook_target.log
+RUN phase03_npc_hook_pacing [current]
+PASSED phase03_npc_hook_pacing: 243 passed, 0 failed;  log=phase03_npc_hook_pacing.log
+RUN player_hook_entry [current]
+PASSED player_hook_entry: 46 passed, 0 failed;  log=player_hook_entry.log
+RUN player_hook_network [current]
+PASSED player_hook_network: 76 passed, 0 failed;  log=player_hook_network.log
+SUMMARY {"passed": 61, "failed": 0, "timeout": 0, "blocked": 0, "retired": 0}

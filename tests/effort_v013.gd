@@ -18,7 +18,7 @@ func tick(seconds: float, fish: Dictionary={}, angler: Dictionary={}) -> void:
 	for frame in roundi(seconds*60): game.advance_tick(fish,angler)
 func judge(role: String, good: bool) -> void:
 	var state: Dictionary=game.effort_checks[role]
-	state.age=0.4+(state.zone+state.width*0.5)*2-1.0/60 if good else 0.05
+	state.age=0.4+(state.zone+state.width*0.5)*2-1.0/60 if good else float(state.lead)+0.02
 	game.advance_tick({"qte":true} if role=="fish" else {},{"qte":true} if role=="angler" else {})
 func run() -> void:
 	game=World.new(); game.feedback_requested.connect(func(cue: String): cues.append(cue))

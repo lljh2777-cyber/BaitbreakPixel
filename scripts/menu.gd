@@ -47,6 +47,7 @@ func open(which: String) -> void:
 		rule_category="收放线" if which=="practice" else "张力与逃脱" if which=="timing" else "QTE·鱼发力"
 		which="rules"
 	if which=="rules" and screen!="rules": rules_previous=screen if visible else "pause"
+	if which!="result": game.local_input.suspend_qte()
 	if game.player_role=="angler" and which!="result": game.suspend_local_controls()
 	if which in ["help","settings"] and (not visible or not screen in ["help","settings","rules"]):
 		previous = screen if visible else "pause"
@@ -84,6 +85,7 @@ func open(which: String) -> void:
 	if first_button: first_button.grab_focus()
 
 func close() -> void:
+	game.local_input.suspend_qte()
 	visible = false
 	game.paused = false
 
@@ -127,7 +129,7 @@ func _title(frame: Control) -> void:
 	button(frame,"设置",274,func(): open("settings"),false,124)
 	var quit := button(frame,"退出",274,func(): get_tree().quit(),false,124)
 	quit.position.x = 150
-	text(content,"0.25.3 · 钓错目标 · 等待人工试玩",Vector2(341,280),10,Color("91afa7"))
+	text(content,"0.25.4 · 上钩修正 · 等待人工试玩",Vector2(341,280),10,Color("91afa7"))
 	text(content,"小鱼 · 吃饵脱身",Vector2(391,119),18,GOLD)
 	text(content,"人类 · 收线抄网",Vector2(391,159),18,GOLD)
 	text(content,"独自练习 · 双人对战",Vector2(375,199),16,GOLD)

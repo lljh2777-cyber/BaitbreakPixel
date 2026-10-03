@@ -1,0 +1,4 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+EMPTY_TRANSITION | tick=4126 empty=true target=1 player_hook_state=2 food_score=62.55 phase=refill
+EMPTY_DIAGNOSTIC | empty_ticks=1315 player_hook_ticks=1315 winner=angler reason=landed duration=90.6666666666628 score=62.55

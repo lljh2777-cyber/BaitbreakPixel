@@ -1,0 +1,169 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PLAYER_HOOK_PASS | physical mouth contact opens a fresh entry without reusing the same tick's Space
+PLAYER_HOOK_PASS | neutral next tick cannot replay the physical-entry edge
+PLAYER_HOOK_PASS | new entry resets old check age and old feedback
+ERROR: PLAYER_HOOK_FAIL | repeated preparation presses cannot judge an invisible entry target
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] entry_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:47)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+ERROR: PLAYER_HOOK_FAIL | last rendered warning-frame press cannot cross the lead boundary into a miss
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] entry_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:49)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+ERROR: PLAYER_HOOK_FAIL | ignored preparation presses are not buffered at the sweep start
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] entry_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:51)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+ERROR: PLAYER_HOOK_FAIL | fresh press in the unchanged entry green zone ejects exactly once
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] entry_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:54)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+PLAYER_HOOK_PASS | visible early miss still attaches hook without ending the round
+PLAYER_HOOK_PASS | entry does not time out before its full configured sweep
+PLAYER_HOOK_PASS | unanswered entry still expires at the original timeout
+ERROR: PLAYER_HOOK_FAIL | authority-verified preparation age is ignored even after live time enters sweep
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] entry_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:67)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+PLAYER_HOOK_PASS | zero-lead custom rules retain immediate visible judgment
+PLAYER_HOOK_PASS | boundary fixture begins inside the ordinary 12-pixel plant contact
+ERROR: PLAYER_HOOK_FAIL | normal line pull out of contact cannot open and fail wrapping in the same tick
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] wrap_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:78)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+PLAYER_HOOK_PASS | one opening press starts wrap without judging it
+ERROR: PLAYER_HOOK_FAIL | repeat preparation presses do not fail wrapping
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] wrap_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:83)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+ERROR: PLAYER_HOOK_FAIL | fresh green-zone press still earns one physical coil
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] wrap_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:86)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+ERROR: PLAYER_HOOK_FAIL | contact loss explains interruption and retains cooldown: visible=false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] wrap_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:92)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+ERROR: PLAYER_HOOK_FAIL | only contact loss during a visible sweep counts as a failed check: visible=false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] wrap_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:93)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+ERROR: PLAYER_HOOK_FAIL | contact loss explains interruption and retains cooldown: visible=true
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] wrap_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:92)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+PLAYER_HOOK_PASS | only contact loss during a visible sweep counts as a failed check: visible=true
+PLAYER_HOOK_PASS | slack interruption remains tension-dependent: visible=false
+ERROR: PLAYER_HOOK_FAIL | hidden-lead tension rebound is unjudged; visible rebound is a miss: visible=false
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] slack_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:102)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+PLAYER_HOOK_PASS | slack interruption remains tension-dependent: visible=true
+PLAYER_HOOK_PASS | hidden-lead tension rebound is unjudged; visible rebound is a miss: visible=true
+ERROR: PLAYER_HOOK_FAIL | fish effort owns preparation Space without failure or accidental wrap
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] effort_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:112)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+ERROR: PLAYER_HOOK_FAIL | fish effort ignores the final pre-lead frame edge
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] effort_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:115)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+ERROR: PLAYER_HOOK_FAIL | fish effort uses authority press age for preparation guard
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] effort_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:119)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+ERROR: PLAYER_HOOK_FAIL | fish effort fresh green press still grants the configured boost
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] effort_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:122)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+ERROR: PLAYER_HOOK_FAIL | angler effort owns preparation Space without failure or accidental wrap
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] effort_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:112)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+ERROR: PLAYER_HOOK_FAIL | angler effort ignores the final pre-lead frame edge
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] effort_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:115)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+ERROR: PLAYER_HOOK_FAIL | angler effort uses authority press age for preparation guard
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] effort_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:119)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+ERROR: PLAYER_HOOK_FAIL | angler effort fresh green press still grants the configured boost
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] effort_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:122)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+PLAYER_HOOK_PASS | real completed coil opens an angler untangle check
+ERROR: PLAYER_HOOK_FAIL | untangle preparation presses do not trigger recovery/failure
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] untangle_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:133)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+ERROR: PLAYER_HOOK_FAIL | untangle ignores the final pre-lead frame edge
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] untangle_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:136)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+ERROR: PLAYER_HOOK_FAIL | untangle guard respects verified historical preparation age
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] untangle_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:138)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+ERROR: PLAYER_HOOK_FAIL | fresh visible green press with valid tension still starts unwinding
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:12)
+       [1] untangle_checks (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:141)
+       [2] _initialize (/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/player_hook_entry.gd:176)
+PLAYER_HOOK_PASS | round timeout during preparation remains a round result, not a QTE miss
+PLAYER_HOOK_PASS | committed net capture interrupts preparation without inventing a QTE miss
+PLAYER_HOOK_PASS | net interruption retains its own eventual loss reason
+PLAYER_HOOK_PASS | normal bank proximity cannot cause an immediate landing loss
+PLAYER_HOOK_PASS | landing still requires the configured bank hold before its lift
+PLAYER_HOOK_PASS | bank lift retains a distinct eventual loss reason without judging a QTE
+PLAYER_HOOK_PASS | snapshot restores a preparation-phase wrap
+PLAYER_HOOK_PASS | preparation filtering and later misses replay deterministically
+PLAYER_HOOK_ENTRY | passed=22 | failed=24

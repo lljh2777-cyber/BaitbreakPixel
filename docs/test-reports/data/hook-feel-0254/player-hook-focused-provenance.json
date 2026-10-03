@@ -1,0 +1,85 @@
+{
+  "player_hook_entry_sha256": "1d407ae542c67415daed257bd028d54b359fe48b11da6a6b52cf468d5b4f1c72",
+  "player_hook_network_sha256": "1e003bcb7cb358c707f0b6d841d6bbf582112f08ac0ca960a5ea01624551e22e",
+  "results": {
+    "profile": "current",
+    "pack": null,
+    "results": [
+      {
+        "returncode": 0,
+        "timed_out": false,
+        "duration_seconds": 1.022,
+        "launch_error": false,
+        "passed": 46,
+        "failed": 0,
+        "count_basis": "summary",
+        "status": "passed",
+        "reason": "",
+        "suite": "player_hook_entry",
+        "registry_status": "current",
+        "log": "player_hook_entry.log",
+        "command": [
+          "/workspace/shared/baitbreak-toolchain-472/Godot_v4.7.2-stable_linux.x86_64",
+          "--audio-driver",
+          "Dummy",
+          "--headless",
+          "--path",
+          "/workspace/scratch/5dc5a43a1104/BaitbreakPixel",
+          "--script",
+          "res://tests/player_hook_entry.gd",
+          "--",
+          "--test-profile",
+          "--capture-output-directory=/workspace/scratch/5dc5a43a1104/BaitbreakPixel/artifacts/p34-player-hook-batch-final/captures/player_hook_entry"
+        ]
+      },
+      {
+        "returncode": 0,
+        "timed_out": false,
+        "duration_seconds": 29.889,
+        "launch_error": false,
+        "passed": 76,
+        "failed": 0,
+        "count_basis": "summary",
+        "status": "passed",
+        "reason": "",
+        "suite": "player_hook_network",
+        "registry_status": "current",
+        "log": "player_hook_network.log",
+        "command": [
+          "/workspace/shared/baitbreak-toolchain-472/Godot_v4.7.2-stable_linux.x86_64",
+          "--audio-driver",
+          "Dummy",
+          "--headless",
+          "--path",
+          "/workspace/scratch/5dc5a43a1104/BaitbreakPixel",
+          "--script",
+          "res://tests/player_hook_network.gd",
+          "--",
+          "--test-profile",
+          "--capture-output-directory=/workspace/scratch/5dc5a43a1104/BaitbreakPixel/artifacts/p34-player-hook-batch-final/captures/player_hook_network"
+        ]
+      }
+    ],
+    "counts": {
+      "passed": 2,
+      "failed": 0,
+      "timeout": 0,
+      "blocked": 0,
+      "retired": 0
+    }
+  },
+  "causal_batch_old_transport": {
+    "passed": 36,
+    "failed": 12
+  },
+  "causal_batch_current_transport": {
+    "passed": 48,
+    "failed": 0
+  },
+  "note": "Focused final network source includes selected untangle history condition validity. Headless aggregate began before this test-only strengthening; runtime remained unchanged, and final focused suite independently validates this exact test body.",
+  "published_network_log": {
+    "transformation": "Trailing whitespace removed only; full original retained in artifacts/p34-player-hook-batch-final/player_hook_network.log",
+    "original_sha256": "c40dd6f962772fabcdcb1193d590d9a385e201d25995a8033aa30d664915009a",
+    "published_sha256": "7a9c3a134131b16527a4e40de79ec95a52f2b2b2eee1d59ee61ac763c307cf6f"
+  }
+}

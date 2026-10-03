@@ -1,0 +1,49 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PLAYER_HOOK_PASS | physical mouth contact opens a fresh entry without reusing the same tick's Space
+PLAYER_HOOK_PASS | neutral next tick cannot replay the physical-entry edge
+PLAYER_HOOK_PASS | new entry resets old check age and old feedback
+PLAYER_HOOK_PASS | repeated preparation presses cannot judge an invisible entry target
+PLAYER_HOOK_PASS | last rendered warning-frame press cannot cross the lead boundary into a miss
+PLAYER_HOOK_PASS | ignored preparation presses are not buffered at the sweep start
+PLAYER_HOOK_PASS | fresh press in the unchanged entry green zone ejects exactly once
+PLAYER_HOOK_PASS | visible early miss still attaches hook without ending the round
+PLAYER_HOOK_PASS | entry does not time out before its full configured sweep
+PLAYER_HOOK_PASS | unanswered entry still expires at the original timeout
+PLAYER_HOOK_PASS | authority-verified preparation age is ignored even after live time enters sweep
+PLAYER_HOOK_PASS | zero-lead custom rules retain immediate visible judgment
+PLAYER_HOOK_PASS | boundary fixture begins inside the ordinary 12-pixel plant contact
+PLAYER_HOOK_PASS | normal line pull out of contact cannot open and fail wrapping in the same tick
+PLAYER_HOOK_PASS | one opening press starts wrap without judging it
+PLAYER_HOOK_PASS | repeat preparation presses do not fail wrapping
+PLAYER_HOOK_PASS | fresh green-zone press still earns one physical coil
+PLAYER_HOOK_PASS | contact loss explains interruption and retains cooldown: visible=false
+PLAYER_HOOK_PASS | only contact loss during a visible sweep counts as a failed check: visible=false
+PLAYER_HOOK_PASS | contact loss explains interruption and retains cooldown: visible=true
+PLAYER_HOOK_PASS | only contact loss during a visible sweep counts as a failed check: visible=true
+PLAYER_HOOK_PASS | slack interruption remains tension-dependent: visible=false
+PLAYER_HOOK_PASS | hidden-lead tension rebound is unjudged; visible rebound is a miss: visible=false
+PLAYER_HOOK_PASS | slack interruption remains tension-dependent: visible=true
+PLAYER_HOOK_PASS | hidden-lead tension rebound is unjudged; visible rebound is a miss: visible=true
+PLAYER_HOOK_PASS | fish effort owns preparation Space without failure or accidental wrap
+PLAYER_HOOK_PASS | fish effort ignores the final pre-lead frame edge
+PLAYER_HOOK_PASS | fish effort uses authority press age for preparation guard
+PLAYER_HOOK_PASS | fish effort fresh green press still grants the configured boost
+PLAYER_HOOK_PASS | angler effort owns preparation Space without failure or accidental wrap
+PLAYER_HOOK_PASS | angler effort ignores the final pre-lead frame edge
+PLAYER_HOOK_PASS | angler effort uses authority press age for preparation guard
+PLAYER_HOOK_PASS | angler effort fresh green press still grants the configured boost
+PLAYER_HOOK_PASS | real completed coil opens an angler untangle check
+PLAYER_HOOK_PASS | untangle preparation presses do not trigger recovery/failure
+PLAYER_HOOK_PASS | untangle ignores the final pre-lead frame edge
+PLAYER_HOOK_PASS | untangle guard respects verified historical preparation age
+PLAYER_HOOK_PASS | fresh visible green press with valid tension still starts unwinding
+PLAYER_HOOK_PASS | round timeout during preparation remains a round result, not a QTE miss
+PLAYER_HOOK_PASS | committed net capture interrupts preparation without inventing a QTE miss
+PLAYER_HOOK_PASS | net interruption retains its own eventual loss reason
+PLAYER_HOOK_PASS | normal bank proximity cannot cause an immediate landing loss
+PLAYER_HOOK_PASS | landing still requires the configured bank hold before its lift
+PLAYER_HOOK_PASS | bank lift retains a distinct eventual loss reason without judging a QTE
+PLAYER_HOOK_PASS | snapshot restores a preparation-phase wrap
+PLAYER_HOOK_PASS | preparation filtering and later misses replay deterministically
+PLAYER_HOOK_ENTRY | passed=46 | failed=0

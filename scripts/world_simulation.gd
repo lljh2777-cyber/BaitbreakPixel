@@ -260,7 +260,8 @@ func _tick_efforts(delta: float, fish_input: Dictionary, angler_input: Dictionar
 		var command: Dictionary=fish_input if role=="fish" else angler_input
 		if state.active:
 			state.age+=delta
-			var pressed: bool=command.qte
+			var at: float=command.qte_at_age if command.qte_at_age>=0 else state.age-delta
+			var pressed: bool=command.qte and at>=float(state.lead)
 			command.qte=false # One Space judges one check; never also starts wrapping.
 			if pressed or state.age>=float(state.lead)+float(state.sweep)+qte_grace_seconds:
 				var good := Effort.finish(state,pressed,command.get("qte_at_age",-1.0),rng)
@@ -351,8 +352,10 @@ func _tick_untangle(delta: float, command: Dictionary) -> void:
 	if untangle_phase=="check":
 		var state: Dictionary=effort_checks.angler
 		state.age+=delta
-		if command.qte or state.age>=float(state.lead)+float(state.sweep)+qte_grace_seconds:
-			_judge_untangle(command.qte,command.qte_at_age,"张力不合适" if not command.qte_condition_valid else "")
+		var at: float=command.qte_at_age if command.qte_at_age>=0 else state.age-delta
+		var pressed: bool=command.qte and at>=float(state.lead)
+		if pressed or state.age>=float(state.lead)+float(state.sweep)+qte_grace_seconds:
+			_judge_untangle(pressed,command.qte_at_age,"张力不合适" if not command.qte_condition_valid else "")
 	elif untangle_phase=="unwind":
 		wraps[-1].progress=maxf(0.0,1.0-untangle_age/rule("unwind_seconds"))
 		if untangle_age>=rule("unwind_seconds"):
@@ -956,19 +959,21 @@ func _begin_wrap() -> bool:
 	low_age = 0
 	return true
 
-func _fail_wrap() -> void:
-	_finish_qte_visual(false)
+func _fail_wrap(message: String = "", judged: bool = true) -> void:
+	_finish_qte_visual(false,message,judged)
 	qte = ""
 	wrap_target = -1
 	wrap_retry = rule("wrap_retry")
 	result_flash = 0.7
 	result_good = false
-	notice = "缠线失败 · 仍然上钩，可稍后再试"
+	notice = message+" · 保持接触后再试" if not message.is_empty() else "缠线失败 · 仍然上钩，可稍后再试"
 	notice_age = 2
 	play_feedback("fail")
 
 func _commit_wrap() -> void:
-	if not touching_target(wrap_target) or target_is_wrapped(wrap_target): _fail_wrap(); return
+	if not touching_target(wrap_target) or target_is_wrapped(wrap_target):
+		_fail_wrap("离开障碍 · 缠线中断",qte_age>=float(qte_timing.lead))
+		return
 	var coil := Layout.coil_at(targets[wrap_target],fish)
 	coil.target = wrap_target
 	wraps.append(coil)
@@ -1058,9 +1063,6 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 		_step_landing(delta)
 		return
 	_update_contacts(delta)
-	var began_wrap := false
-	# An active check owns Space. Its judgment must never start or replace another check.
-	if qte_pressed and qte.is_empty(): began_wrap = _begin_wrap()
 	sprinting = false
 	resisting = false
 	feeding = sucking and hooked!=HookState.MOUTH and net_state!="caught"
@@ -1087,6 +1089,10 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 	_update_contacts(delta)
 	_step_net(delta)
 	if match_over or net_state=="caught": return
+	# Start against the contact that survived this tick's real movement and net.
+	# Opening before pull used to create and fail a wrap before a single frame.
+	var began_wrap := false
+	if qte_pressed and qte.is_empty(): began_wrap = _begin_wrap()
 	var was_free := hooked == HookState.FREE
 	if hooked == HookState.MOUTH:
 		_step_qte(delta, qte_pressed,qte_at_age)
@@ -1315,8 +1321,12 @@ func _step_qte(delta: float, qte_pressed: bool, judged_age: float = -1) -> void:
 	# Only the authority can supply an age verified against its own QTE history.
 	var age := judged_age if judged_age>=0 else qte_age
 	var progress := clampf((age-float(qte_timing.lead))/float(qte_timing.sweep),0,1)
-	if qte_pressed or qte_age >= float(qte_timing.lead)+float(qte_timing.sweep)+qte_grace_seconds:
-		var success := qte_pressed and age>=float(qte_timing.lead) and age<=float(qte_timing.lead)+float(qte_timing.sweep) and progress>=qte_zone and progress<=qte_zone+qte_width
+	# The warning hides the target: preparation input is consumed, never buffered
+	# or judged against an invisible zone. Network age is authority-verified.
+	var input_age := judged_age if judged_age>=0 else qte_age-delta
+	var pressed := qte_pressed and input_age>=float(qte_timing.lead)
+	if pressed or qte_age >= float(qte_timing.lead)+float(qte_timing.sweep)+qte_grace_seconds:
+		var success := pressed and age>=float(qte_timing.lead) and age<=float(qte_timing.lead)+float(qte_timing.sweep) and progress>=qte_zone and progress<=qte_zone+qte_width
 		result_flash = 0.7
 		result_good = success
 		if qte=="wrap":
@@ -1389,13 +1399,13 @@ func _step_line(delta: float, qte_pressed: bool, judged_age: float = -1) -> void
 			return
 	else: landing_age = 0
 	if qte=="wrap":
-		if not touching_target(wrap_target): _fail_wrap()
+		if not touching_target(wrap_target): _fail_wrap("离开障碍 · 缠线中断",qte_age>=float(qte_timing.lead))
 		else: _step_qte(delta,qte_pressed,judged_age)
 		return
 	if animating: return
 	if qte == "slack":
 		if tension >= rule("tension_low"):
-			_finish_qte_visual(false,"张力回升")
+			_finish_qte_visual(false,"张力回升",qte_age>=float(qte_timing.lead))
 			qte = ""
 			retry_age = rule("slack_retry")
 			low_age = 0

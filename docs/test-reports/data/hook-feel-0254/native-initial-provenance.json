@@ -1,0 +1,22 @@
+{
+  "started_at_utc": "2026-10-03T14:23:37.682346+00:00",
+  "finished_at_utc": "2026-10-03T14:25:32.662118+00:00",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tools/run_tests.py",
+    "--godot",
+    "/workspace/shared/baitbreak-toolchain-472/Godot_v4.7.2-stable_linux.x86_64",
+    "--profile",
+    "native",
+    "--import",
+    "--output-directory",
+    "/workspace/scratch/5dc5a43a1104/BaitbreakPixel/artifacts/p34-bugfix-native-final"
+  ],
+  "returncode": 1,
+  "source_unchanged": false,
+  "changed_files": [
+    "tests/player_hook_entry_native.gd.uid"
+  ],
+  "file_count": 175,
+  "scope": "All runtime scripts, scenes, assets and import descriptors; project.godot; current renderer suite bodies and UIDs; runner and registry. Documentation, headless-only suites, and generated .godot cache excluded."
+}

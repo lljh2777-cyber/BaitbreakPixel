@@ -1,0 +1,25 @@
+{
+  "returncode": 1,
+  "timed_out": false,
+  "duration_seconds": 12.049,
+  "launch_error": false,
+  "passed": 201,
+  "failed": 42,
+  "count_basis": "summary",
+  "status": "failed",
+  "reason": "nonzero exit, failed assertion, or engine/script error",
+  "command": [
+    "/workspace/shared/baitbreak-toolchain-472/Godot_v4.7.2-stable_linux.x86_64",
+    "--headless",
+    "--audio-driver",
+    "Dummy",
+    "--path",
+    "/workspace/scratch/5dc5a43a1104/BaitbreakPixel/artifacts/p35-pacing-baseline-b739fda",
+    "--script",
+    "/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tests/phase03_npc_hook_pacing.gd",
+    "--",
+    "--test-profile"
+  ],
+  "expected_failure": true,
+  "test_sha256": "794bf8900585204bb45df93a9f281ec4fdf75bf849048edb752e37717dc9bbdc"
+}
