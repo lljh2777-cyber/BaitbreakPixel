@@ -1600,6 +1600,18 @@
       "test_report": "docs/test-reports/GITHUB-RELEASE-0.25.4.md",
       "development_report": "docs/test-reports/PHASE03-HOOK-FIX-0.25.4.md",
       "github_release_published_at_report": true
+    },
+    {
+      "version": "0.25.6",
+      "source_commit": "693441daaa5fc04d20a476bc47aa98898368ee6a",
+      "merged_dev_commit": "dfdd9af72e3700c4b82fcf32419ff998231d7ef9",
+      "pack_bytes": 2404072,
+      "pack_sha256": "e00f96205eea6e907efd979ebba7d40a6db4660ca5848add2a914d7ea035db1a",
+      "zip_bytes": 89633691,
+      "zip_sha256": "247da2290f95f9f88ba906a9df79d783c1d3cbd81eb636350d8cd970dff23a22",
+      "report_date": "2026-10-03",
+      "test_report": "docs/watergen/DEV_SYNC_0.25.6.md",
+      "github_release_published_at_report": false
     }
   ],
   "public_release_snapshot_history": [

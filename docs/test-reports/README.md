@@ -1,3 +1,4 @@
+- [0.25.6：dev/watergen 合并与独立包验证](../watergen/DEV_SYNC_0.25.6.md)
 - [0.25.5 木石与水草材质及独立包验证](../watergen/WG5_REPORT.md)
 - [0.25.4 四种构图的中上层层次与包验证](../watergen/WG4_UPPER_REPORT.md)
 - [0.25.3 四种水域构图切换与独立包验证](../watergen/WG4_REPORT.md)

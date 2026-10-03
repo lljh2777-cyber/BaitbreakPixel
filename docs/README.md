@@ -1,3 +1,4 @@
+- [0.25.6：同步最新 feature/dev 到 watergen](watergen/DEV_SYNC_0.25.6.md)
 - [0.25.5 木石与水草材质细化](watergen/WG5_REPORT.md)
 - [0.25.4 中上层近远景调整](watergen/WG4_UPPER_REPORT.md)
 - [0.25.3 四种水域构图切换](watergen/WG4_README.md) · [验证与本地包](watergen/WG4_REPORT.md)

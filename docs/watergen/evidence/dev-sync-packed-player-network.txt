@@ -1,0 +1,101 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PLAYER_HOOK_NET_PASS | authority replaces forged client age with its own observed preparation age
+PLAYER_HOOK_NET_PASS | late-arriving preparation press cannot judge a now-visible QTE
+PLAYER_HOOK_NET_PASS | held remote command cannot replay the consumed preparation edge
+PLAYER_HOOK_NET_PASS | duplicate input sequence cannot replay an ignored edge
+PLAYER_HOOK_NET_PASS | foreign QTE identity is still rejected
+PLAYER_HOOK_NET_PASS | unknown judgment kind remains rejected
+PLAYER_HOOK_NET_PASS | preparation guard does not weaken the 15-tick history bound
+PLAYER_HOOK_NET_PASS | verified green history still succeeds after ordinary transport delay
+PLAYER_HOOK_NET_PASS | regular batch warning_green: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | regular batch warning_green: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | regular batch warning_green: accepted candidates are bounded and cannot replay as held input
+PLAYER_HOOK_NET_PASS | regular batch visible_miss_green: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | regular batch visible_miss_green: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | regular batch visible_miss_green: accepted candidates are bounded and cannot replay as held input
+PLAYER_HOOK_NET_PASS | regular batch wrong_identity: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | regular batch wrong_identity: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | regular batch wrong_identity: accepted candidates are bounded and cannot replay as held input
+PLAYER_HOOK_NET_PASS | regular batch expired_history: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | regular batch expired_history: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | regular batch expired_history: accepted candidates are bounded and cannot replay as held input
+PLAYER_HOOK_NET_PASS | fish_effort batch warning_green: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | fish_effort batch warning_green: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | fish_effort batch warning_green: accepted candidates are bounded and cannot replay as held input
+PLAYER_HOOK_NET_PASS | fish_effort batch visible_miss_green: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | fish_effort batch visible_miss_green: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | fish_effort batch visible_miss_green: accepted candidates are bounded and cannot replay as held input
+PLAYER_HOOK_NET_PASS | fish_effort batch wrong_identity: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | fish_effort batch wrong_identity: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | fish_effort batch wrong_identity: accepted candidates are bounded and cannot replay as held input
+PLAYER_HOOK_NET_PASS | fish_effort batch expired_history: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | fish_effort batch expired_history: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | fish_effort batch expired_history: accepted candidates are bounded and cannot replay as held input
+PLAYER_HOOK_NET_PASS | angler_effort batch warning_green: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | angler_effort batch warning_green: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | angler_effort batch warning_green: accepted candidates are bounded and cannot replay as held input
+PLAYER_HOOK_NET_PASS | angler_effort batch visible_miss_green: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | angler_effort batch visible_miss_green: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | angler_effort batch visible_miss_green: accepted candidates are bounded and cannot replay as held input
+PLAYER_HOOK_NET_PASS | angler_effort batch wrong_identity: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | angler_effort batch wrong_identity: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | angler_effort batch wrong_identity: accepted candidates are bounded and cannot replay as held input
+PLAYER_HOOK_NET_PASS | angler_effort batch expired_history: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | angler_effort batch expired_history: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | angler_effort batch expired_history: accepted candidates are bounded and cannot replay as held input
+PLAYER_HOOK_NET_PASS | untangle batch warning_green: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | untangle batch warning_green: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | untangle batch warning_green: accepted candidates are bounded and cannot replay as held input
+PLAYER_HOOK_NET_PASS | untangle batch visible_miss_green: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | untangle batch visible_miss_green: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | untangle batch visible_miss_green: accepted candidates are bounded and cannot replay as held input
+PLAYER_HOOK_NET_PASS | untangle batch wrong_identity: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | untangle batch wrong_identity: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | untangle batch wrong_identity: accepted candidates are bounded and cannot replay as held input
+PLAYER_HOOK_NET_PASS | untangle batch expired_history: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | untangle batch expired_history: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | untangle batch expired_history: accepted candidates are bounded and cannot replay as held input
+PIXEL_READY | asymmetric-2d | 640x360 | v0.25.6 | playtest-gate-wg3-water
+PIXEL_READY | asymmetric-2d | 640x360 | v0.25.6 | playtest-gate-wg3-water
+NETWORK_PHASE | host=true | waiting | 房间已创建，等待另一位玩家
+NETWORK_PHASE | host=false | connecting | 正在连接房主…
+PLAYER_HOOK_NET_PASS | actual ENet connects with host role angler
+NETWORK_PHASE | host=false | waiting | 已进入房间，双方准备后开始
+NETWORK_PHASE | host=true | starting | 等待对方载入池塘…
+NETWORK_PHASE | host=false | starting | 等待房主开始…
+NETWORK_PHASE | host=true | countdown |
+NETWORK_PHASE | host=false | countdown |
+NETWORK_PHASE | host=true | playing |
+NETWORK_PHASE | host=false | playing |
+PLAYER_HOOK_NET_PASS | fish entry: actual remote preparation edge reaches authority
+PLAYER_HOOK_NET_PASS | fish entry: ignored edge is neither failed nor buffered into sweep
+PLAYER_HOOK_NET_PASS | fish entry: fresh displayed-green press resolves exactly once
+PLAYER_HOOK_NET_PASS | fish entry: transport accepts exactly two fresh edges, without held replays
+PLAYER_HOOK_NET_PASS | fish entry: public result converges across actual ENet
+PLAYER_HOOK_NET_PASS | remote fish entry success releases the hook on both peers
+PIXEL_READY | asymmetric-2d | 640x360 | v0.25.6 | playtest-gate-wg3-water
+PIXEL_READY | asymmetric-2d | 640x360 | v0.25.6 | playtest-gate-wg3-water
+NETWORK_PHASE | host=true | waiting | 房间已创建，等待另一位玩家
+NETWORK_PHASE | host=false | connecting | 正在连接房主…
+PLAYER_HOOK_NET_PASS | actual ENet connects with host role fish
+NETWORK_PHASE | host=false | waiting | 已进入房间，双方准备后开始
+NETWORK_PHASE | host=true | starting | 等待对方载入池塘…
+NETWORK_PHASE | host=false | starting | 等待房主开始…
+NETWORK_PHASE | host=true | countdown |
+NETWORK_PHASE | host=false | countdown |
+NETWORK_PHASE | host=true | playing |
+NETWORK_PHASE | host=false | playing |
+PLAYER_HOOK_NET_PASS | angler effort: actual remote preparation edge reaches authority
+PLAYER_HOOK_NET_PASS | angler effort: ignored edge is neither failed nor buffered into sweep
+PLAYER_HOOK_NET_PASS | angler effort: fresh displayed-green press resolves exactly once
+PLAYER_HOOK_NET_PASS | angler effort: transport accepts exactly two fresh edges, without held replays
+PLAYER_HOOK_NET_PASS | angler effort: public result converges across actual ENet
+PLAYER_HOOK_NET_PASS | remote angler effort retains its configured successful boost
+PLAYER_HOOK_NET_PASS | angler untangle: actual remote preparation edge reaches authority
+PLAYER_HOOK_NET_PASS | angler untangle: ignored edge is neither failed nor buffered into sweep
+PLAYER_HOOK_NET_PASS | angler untangle: fresh displayed-green press resolves exactly once
+PLAYER_HOOK_NET_PASS | angler untangle: transport accepts exactly two fresh edges, without held replays
+PLAYER_HOOK_NET_PASS | angler untangle: public result converges across actual ENet
+PLAYER_HOOK_NET_PASS | remote angler can still begin actual coil removal with valid tension
+PLAYER_HOOK_NETWORK | passed=76 | failed=0
