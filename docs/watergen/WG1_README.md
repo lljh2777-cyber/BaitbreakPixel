@@ -16,7 +16,7 @@
 & 'D:\python\python.exe' 'E:\Fish_catches_people\aquatic_system\BaitbreakPixel-watergen\tools\watergen\run_wg1.py' --godot 'E:\chrome下载\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe'
 ```
 
-运行目录为本工作树的 `artifacts/watergen/<唯一 run_id>/`；已有目录拒绝覆盖。`--mode headless/native/preview` 分别选择契约测试、原生捕获或交互预览。运行器记录源码摘要、SHA/dirty、命令、日志、实际引擎、硬件、渲染器、参数和图像摘要；子进程用户目录隔离。原生产物附 `gallery.html`，可本地浏览四个种子的五镜头、整世界和分层图片。
+运行目录为本工作树的 `artifacts/watergen/<唯一 run_id>/`；已有目录拒绝覆盖。`--mode headless/native/preview` 分别选择契约测试、原生捕获或交互预览。运行器记录源码摘要、SHA/dirty、命令、日志、实际引擎、硬件、渲染器、参数和图像摘要；子进程用户目录隔离。原生捕获产物附 `gallery.html`，可本地浏览四个种子的五镜头、整世界和分层图片。
 
 ## 配置与参数
 
