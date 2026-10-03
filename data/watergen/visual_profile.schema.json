@@ -1,0 +1,288 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:baitbreak:watergen:visual-profile:1",
+  "title": "拟定的 Watergen VisualProfile v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "format": {
+      "const": "baitbreak-water-visual-profile"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "profile_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{2,63}$"
+    },
+    "generator_version": {
+      "type": "string",
+      "pattern": "^wg-[0-9]+\\.[0-9]+$"
+    },
+    "palette": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "water_shallow": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "water_deep": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "haze_light": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "plant_far": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "silt_dark": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "silt_light": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "foreground_dark": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        }
+      },
+      "required": [
+        "water_shallow",
+        "water_deep",
+        "haze_light",
+        "plant_far",
+        "silt_dark",
+        "silt_light",
+        "foreground_dark"
+      ]
+    },
+    "beams": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "count_range": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 8
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "width_px_range": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "depth_px_range": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 420
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "lean_px_range": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -160,
+            "maximum": 160
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "intensity_range": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 0.12
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      },
+      "required": [
+        "count_range",
+        "width_px_range",
+        "depth_px_range",
+        "lean_px_range",
+        "intensity_range"
+      ]
+    },
+    "composition": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "open_center_x_fraction": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "far_clump_count_range": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 32
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "middle_clump_count_range": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 24
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "surface_pad_count_range": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 16
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "foreground_clump_count_range": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 12
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "gravel_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 400
+        },
+        "mote_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 128
+        }
+      },
+      "required": [
+        "open_center_x_fraction",
+        "far_clump_count_range",
+        "middle_clump_count_range",
+        "surface_pad_count_range",
+        "foreground_clump_count_range",
+        "gravel_count",
+        "mote_count"
+      ]
+    },
+    "parallax_compensation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "water": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -0.1,
+            "maximum": 0.3
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "distance": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -0.1,
+            "maximum": 0.3
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "surface": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -0.1,
+            "maximum": 0.3
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "terrain": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -0.1,
+            "maximum": 0.3
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "floor": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -0.1,
+            "maximum": 0.3
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "foreground": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -0.1,
+            "maximum": 0.3
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      },
+      "required": [
+        "water",
+        "distance",
+        "surface",
+        "terrain",
+        "floor",
+        "foreground"
+      ]
+    }
+  },
+  "required": [
+    "format",
+    "schema_version",
+    "profile_id",
+    "generator_version",
+    "palette",
+    "beams",
+    "composition",
+    "parallax_compensation"
+  ]
+}

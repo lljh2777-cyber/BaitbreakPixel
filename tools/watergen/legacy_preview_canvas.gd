@@ -20,7 +20,13 @@ func prepare(public_context: Dictionary) -> void:
 	# Preserve the legacy initialization call. Its CPU bake + upload is indivisible.
 	water_layers = Water.layers()
 	preparation_us = Time.get_ticks_usec() - started
+	prepare_geometry(public_context)
+	queue_redraw()
+
+func prepare_geometry(public_context: Dictionary) -> void:
+	context = public_context.duplicate(true)
 	props = Art.scene_props()
+	plants.clear()
 	# Original pond_view._make_plant_layer crop, at fixed visual time zero.
 	for record in context.static_cover_records:
 		if record.kind != "grass": continue
@@ -31,7 +37,6 @@ func prepare(public_context: Dictionary) -> void:
 		var region := Rect2i(int(plant.x - plant.width * 0.5 - 14), int(129 - plant.height - 8), int(plant.width + 29), int(plant.height + 12))
 		region = region.intersection(Rect2i(0, 0, 1280, 132))
 		plants.append({"texture": ImageTexture.create_from_image(canvas.get_region(region)), "position": Vector2(region.position) + Vector2(0, plant.y - 129), "back": plant.back})
-	queue_redraw()
 
 func _draw() -> void:
 	if water_layers.is_empty(): return
