@@ -22,16 +22,16 @@
       86
     ],
     "depth_px_range": [
-      220,
-      355
+      290,
+      410
     ],
     "lean_px_range": [
       60,
       128
     ],
     "intensity_range": [
-      0.045,
-      0.095
+      0.08,
+      0.115
     ]
   },
   "composition": {

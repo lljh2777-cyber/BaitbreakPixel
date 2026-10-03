@@ -19,7 +19,7 @@ static func enrich(plan: Dictionary, map: Dictionary, composition: Dictionary) -
 	var opening := rng.randf_range(390, 560) if dominant > 0 else rng.randf_range(710, 880)
 	var left_limit: float = 1280 * composition.open_center_x_fraction[0]
 	var right_limit: float = 1280 * composition.open_center_x_fraction[1]
-	plan["atmosphere"] = {"recipe": recipe.id, "label": recipe.label, "dominant_side": dominant, "light_opening_x": opening, "layout_version": "wg-2.1", "animated_budget": 18}
+	plan["atmosphere"] = {"recipe": recipe.id, "label": recipe.label, "dominant_side": dominant, "light_opening_x": opening, "layout_version": "wg-2.1.1", "animated_budget": 18}
 	for key in ["water_shallow", "water_deep", "plant_far", "foreground_dark"]:
 		var c := Color(plan.palette[key])
 		plan.palette[key] = "#" + Color.from_hsv(fposmod(c.h + recipe.hue, 1), c.s, c.v).to_html(false)
@@ -39,6 +39,18 @@ static func enrich(plan: Dictionary, map: Dictionary, composition: Dictionary) -
 				var x := local.randf_range(18, maxf(18, left_limit - margin)) if side < 0 else local.randf_range(minf(1262, right_limit + margin), 1262)
 				object["rich"] = true
 				object["tint"] = local.randf_range(0.04, 0.12)
+				# Reuse the far foliage budget for scattered submerged groves in the
+				# open water. They stay behind actors, lower contrast than the banks.
+				var midwater: bool = layer.name == "distance" and index % 3 == 0
+				var mid := stream(seed, "midwater", index)
+				var mid_height := 0.0
+				if midwater:
+					var fraction := fposmod(index / 3 * 0.61803398875 + 0.17, 1.0)
+					x = lerpf(left_limit - 30, right_limit + 30, fraction) + mid.randf_range(-24, 24)
+					mid_height = mid.randf_range(170, 275)
+					object["midwater"] = true
+					object.contrast = mid.randf_range(0.48, 0.64)
+					object.tint = mid.randf_range(0.08, 0.14)
 				for stem_index in object.stems.size():
 					var stem: Dictionary = object.stems[stem_index]
 					stem.x += x - center
@@ -46,6 +58,9 @@ static func enrich(plan: Dictionary, map: Dictionary, composition: Dictionary) -
 					if layer.name == "distance": stem.height = minf(328, stem.height * recipe.height * 1.13)
 					elif layer.name == "terrain": stem.height *= 1.25 if recipe.id != "lily_canopy" else 0.95
 					stem.lean = absf(stem.lean) * -side * (1.5 if recipe.leaf == "ribbon" else 1.0)
+					if midwater:
+						stem.height = mid_height * mid.randf_range(0.60, 1.0)
+						stem.lean = mid.randf_range(-25, 25)
 				# Keep public interaction guides quiet, without hard rectangular holes.
 				for region in map.protected_regions:
 					var r: Array = region.rect_px
