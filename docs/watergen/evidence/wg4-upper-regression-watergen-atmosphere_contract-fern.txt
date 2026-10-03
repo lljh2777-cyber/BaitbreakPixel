@@ -1,0 +1,60 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+WG21_CONTRACT_PASS | atmosphere profile valid
+WG21_CONTRACT_PASS | invalid seed rejected
+WG21_CONTRACT_PASS | invalid seed rejected
+WG21_CONTRACT_PASS | invalid seed rejected
+WG21_CONTRACT_PASS | invalid seed rejected
+WG21_CONTRACT_PASS | unknown version rejected
+WG21_CONTRACT_PASS | unknown field rejected
+WG21_CONTRACT_PASS | repeat layout 42
+WG21_CONTRACT_PASS | 18 bounded decorative patches 42
+WG21_CONTRACT_PASS | upper center has both depth planes and tall groves 42
+WG21_CONTRACT_PASS | canopy animation crops preserve complete leaves 42
+WG21_CONTRACT_PASS | atlas preserves every patch pixel
+WG21_CONTRACT_PASS | top roots and bottom roots pinned, motion bounded
+WG21_CONTRACT_PASS | merged bands equal every original pixel row with <=5 draws per patch
+WG21_CONTRACT_PASS | padded layers cover camera bounds
+WG21_CONTRACT_PASS | repeat layout 731
+WG21_CONTRACT_PASS | 18 bounded decorative patches 731
+WG21_CONTRACT_PASS | upper center has both depth planes and tall groves 731
+WG21_CONTRACT_PASS | canopy animation crops preserve complete leaves 731
+WG21_CONTRACT_PASS | atlas preserves every patch pixel
+WG21_CONTRACT_PASS | top roots and bottom roots pinned, motion bounded
+WG21_CONTRACT_PASS | merged bands equal every original pixel row with <=5 draws per patch
+WG21_CONTRACT_PASS | padded layers cover camera bounds
+WG21_CONTRACT_PASS | repeat layout 2649
+WG21_CONTRACT_PASS | 18 bounded decorative patches 2649
+WG21_CONTRACT_PASS | upper center has both depth planes and tall groves 2649
+WG21_CONTRACT_PASS | canopy animation crops preserve complete leaves 2649
+WG21_CONTRACT_PASS | atlas preserves every patch pixel
+WG21_CONTRACT_PASS | top roots and bottom roots pinned, motion bounded
+WG21_CONTRACT_PASS | merged bands equal every original pixel row with <=5 draws per patch
+WG21_CONTRACT_PASS | padded layers cover camera bounds
+WG21_CONTRACT_PASS | repeat layout 713284
+WG21_CONTRACT_PASS | 18 bounded decorative patches 713284
+WG21_CONTRACT_PASS | upper center has both depth planes and tall groves 713284
+WG21_CONTRACT_PASS | canopy animation crops preserve complete leaves 713284
+WG21_CONTRACT_PASS | atlas preserves every patch pixel
+WG21_CONTRACT_PASS | top roots and bottom roots pinned, motion bounded
+WG21_CONTRACT_PASS | merged bands equal every original pixel row with <=5 draws per patch
+WG21_CONTRACT_PASS | padded layers cover camera bounds
+WG21_CONTRACT_PASS | four seeds have distinct composition families
+WG21_CONTRACT_PASS | static pixel repeat water
+WG21_CONTRACT_PASS | static pixel repeat distance
+WG21_CONTRACT_PASS | static pixel repeat surface
+WG21_CONTRACT_PASS | static pixel repeat terrain
+WG21_CONTRACT_PASS | static pixel repeat floor
+WG21_CONTRACT_PASS | static pixel repeat foreground
+WG21_CONTRACT_PASS | all animation patch pixels repeat
+WG21_CONTRACT_PASS | extra mote never changes atmosphere/palette
+WG21_CONTRACT_PASS | motes leave vegetation/roots/light unchanged 0
+WG21_CONTRACT_PASS | motes leave vegetation/roots/light unchanged 1
+WG21_CONTRACT_PASS | motes leave vegetation/roots/light unchanged 2
+WG21_CONTRACT_PASS | motes leave vegetation/roots/light unchanged 3
+WG21_CONTRACT_PASS | motes leave vegetation/roots/light unchanged 4
+WG21_CONTRACT_PASS | motes leave vegetation/roots/light unchanged 5
+WG21_CONTRACT_PASS | open center profile still controls distribution
+WG21_CONTRACT_PASS | zero foliage budget respected in both depth planes
+WG21_CONTRACT_PASS | map/profile/targets unchanged
+WG21_CONTRACT | passed=57 | failed=0

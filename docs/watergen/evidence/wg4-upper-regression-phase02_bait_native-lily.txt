@@ -1,0 +1,84 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 3.3.0 Core Profile Context 23.20.28.03.231124 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon(TM) Graphics
+
+WATERGEN_READY | wg-2.1 | seed=42 | cache=92a8ed593f8eb1103e6ee5faeee02b855838b490e92ce3c1fc2b5ee9936413c9
+PIXEL_READY | asymmetric-2d | 640x360 | v0.25.4 | playtest-gate-wg3-water
+BAIT_TYPE_NATIVE_PASS | three-type scene preserves native 640x360 pixel canvas
+BAIT_TYPE_NATIVE_PASS | three-type fixed-tick rendering is exactly deterministic
+BAIT_TYPE_NATIVE_PASS | three-type rendering is simulation and RNG neutral
+BAIT_TYPE_NATIVE_PASS | all three types have identical whole-scene safe and hidden-hook pixels
+BAIT_TYPE_NATIVE_PASS | cluster: full food is visibly present at its physical position
+BAIT_TYPE_NATIVE_PASS | cluster: all food pixels stay within three pixels of real edible grains
+BAIT_TYPE_NATIVE_PASS | cluster: repeated rendering preserves pixels, simulation and RNG
+BAIT_TYPE_NATIVE_PASS | cluster: hook flags and IDs never change pre-contact pixels
+BAIT_TYPE_NATIVE_PASS | cluster: eaten fragments visibly reduce the real silhouette
+BAIT_TYPE_NATIVE_PASS | cluster: partial silhouette has no phantom food beyond surviving grains
+BAIT_TYPE_NATIVE_PASS | cluster: partial eating does not expose hook truth
+BAIT_TYPE_NATIVE_PASS | cluster: fully eaten food leaves no complete-bait sprite behind
+BAIT_TYPE_NATIVE_PASS | cluster: detached fragment remains at its actual food position
+BAIT_TYPE_NATIVE_PASS | cluster: old loose fragment retains its own visual kind after parent replacement
+BAIT_TYPE_NATIVE_PASS | cluster: detached fragments never reveal a hidden hook
+BAIT_TYPE_NATIVE_PASS | cluster: loose pixels follow the food position exactly
+BAIT_TYPE_NATIVE_PASS | cluster: consumed loose fragment leaves no ghost pixels
+BAIT_TYPE_NATIVE_PASS | cluster: whole-bait suction deformation stays hook-blind
+BAIT_TYPE_NATIVE_PASS | cluster: actual mouth proximity automatically consumes profile capacity and starts cooldown without input
+BAIT_TYPE_NATIVE_PASS | cluster: actual eaten grain points determine score and independently scaled satiety
+BAIT_TYPE_NATIVE_PASS | cluster: actual intake visibly fills satiety bar
+BAIT_TYPE_NATIVE_PASS | cluster: automatic Bite ready hint becomes cooldown feedback
+BAIT_TYPE_NATIVE_PASS | cluster: satiety feedback stays clear of right HUD bounds
+BAIT_TYPE_NATIVE_PASS | cluster: real intake depletes existing grains without replacing or changing physical type geometry
+BAIT_TYPE_NATIVE_PASS | cluster: real automatic intake visibly changes the mouth and food region
+BAIT_TYPE_NATIVE_PASS | cluster: actual intake caps satiety at 100
+BAIT_TYPE_NATIVE_PASS | cluster: capped satiety cannot overflow right HUD bounds
+BAIT_TYPE_NATIVE_PASS | worm: full food is visibly present at its physical position
+BAIT_TYPE_NATIVE_PASS | worm: all food pixels stay within three pixels of real edible grains
+BAIT_TYPE_NATIVE_PASS | worm: repeated rendering preserves pixels, simulation and RNG
+BAIT_TYPE_NATIVE_PASS | worm: hook flags and IDs never change pre-contact pixels
+BAIT_TYPE_NATIVE_PASS | worm: eaten fragments visibly reduce the real silhouette
+BAIT_TYPE_NATIVE_PASS | worm: partial silhouette has no phantom food beyond surviving grains
+BAIT_TYPE_NATIVE_PASS | worm: partial eating does not expose hook truth
+BAIT_TYPE_NATIVE_PASS | worm: fully eaten food leaves no complete-bait sprite behind
+BAIT_TYPE_NATIVE_PASS | worm: detached fragment remains at its actual food position
+BAIT_TYPE_NATIVE_PASS | worm: old loose fragment retains its own visual kind after parent replacement
+BAIT_TYPE_NATIVE_PASS | worm: detached fragments never reveal a hidden hook
+BAIT_TYPE_NATIVE_PASS | worm: loose pixels follow the food position exactly
+BAIT_TYPE_NATIVE_PASS | worm: consumed loose fragment leaves no ghost pixels
+BAIT_TYPE_NATIVE_PASS | worm: whole-bait suction deformation stays hook-blind
+BAIT_TYPE_NATIVE_PASS | worm: actual mouth proximity automatically consumes profile capacity and starts cooldown without input
+BAIT_TYPE_NATIVE_PASS | worm: actual eaten grain points determine score and independently scaled satiety
+BAIT_TYPE_NATIVE_PASS | worm: actual intake visibly fills satiety bar
+BAIT_TYPE_NATIVE_PASS | worm: automatic Bite ready hint becomes cooldown feedback
+BAIT_TYPE_NATIVE_PASS | worm: satiety feedback stays clear of right HUD bounds
+BAIT_TYPE_NATIVE_PASS | worm: real intake depletes existing grains without replacing or changing physical type geometry
+BAIT_TYPE_NATIVE_PASS | worm: real automatic intake visibly changes the mouth and food region
+BAIT_TYPE_NATIVE_PASS | worm: actual intake caps satiety at 100
+BAIT_TYPE_NATIVE_PASS | worm: capped satiety cannot overflow right HUD bounds
+BAIT_TYPE_NATIVE_PASS | chunk: full food is visibly present at its physical position
+BAIT_TYPE_NATIVE_PASS | chunk: all food pixels stay within three pixels of real edible grains
+BAIT_TYPE_NATIVE_PASS | chunk: repeated rendering preserves pixels, simulation and RNG
+BAIT_TYPE_NATIVE_PASS | chunk: hook flags and IDs never change pre-contact pixels
+BAIT_TYPE_NATIVE_PASS | chunk: eaten fragments visibly reduce the real silhouette
+BAIT_TYPE_NATIVE_PASS | chunk: partial silhouette has no phantom food beyond surviving grains
+BAIT_TYPE_NATIVE_PASS | chunk: partial eating does not expose hook truth
+BAIT_TYPE_NATIVE_PASS | chunk: fully eaten food leaves no complete-bait sprite behind
+BAIT_TYPE_NATIVE_PASS | chunk: detached fragment remains at its actual food position
+BAIT_TYPE_NATIVE_PASS | chunk: old loose fragment retains its own visual kind after parent replacement
+BAIT_TYPE_NATIVE_PASS | chunk: detached fragments never reveal a hidden hook
+BAIT_TYPE_NATIVE_PASS | chunk: loose pixels follow the food position exactly
+BAIT_TYPE_NATIVE_PASS | chunk: consumed loose fragment leaves no ghost pixels
+BAIT_TYPE_NATIVE_PASS | chunk: whole-bait suction deformation stays hook-blind
+BAIT_TYPE_NATIVE_PASS | chunk: actual mouth proximity automatically consumes profile capacity and starts cooldown without input
+BAIT_TYPE_NATIVE_PASS | chunk: actual eaten grain points determine score and independently scaled satiety
+BAIT_TYPE_NATIVE_PASS | chunk: actual intake visibly fills satiety bar
+BAIT_TYPE_NATIVE_PASS | chunk: automatic Bite ready hint becomes cooldown feedback
+BAIT_TYPE_NATIVE_PASS | chunk: satiety feedback stays clear of right HUD bounds
+BAIT_TYPE_NATIVE_PASS | chunk: real intake depletes existing grains without replacing or changing physical type geometry
+BAIT_TYPE_NATIVE_PASS | chunk: real automatic intake visibly changes the mouth and food region
+BAIT_TYPE_NATIVE_PASS | chunk: actual intake caps satiety at 100
+BAIT_TYPE_NATIVE_PASS | chunk: capped satiety cannot overflow right HUD bounds
+BAIT_TYPE_NATIVE_PASS | types [0, 1] remain visibly distinct at the same position
+BAIT_TYPE_NATIVE_PASS | types [1, 2] remain visibly distinct at the same position
+BAIT_TYPE_NATIVE_PASS | types [0, 2] remain visibly distinct at the same position
+BAIT_TYPE_NATIVE_PASS | worm forms a slender curved strip rather than a round cluster
+BAIT_TYPE_NATIVE_PASS | chunk forms a compact block rather than a slender strip
+BAIT_TYPE_NATIVE | passed=78 | failed=0

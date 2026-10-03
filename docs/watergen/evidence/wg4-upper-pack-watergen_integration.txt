@@ -1,0 +1,75 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+WG3_CONTRACT_PASS | default legacy allocates no generated textures
+WG3_CONTRACT_PASS | approved fern seed remains the default choice
+WG3_CONTRACT_PASS | choosing while disabled does not generate or enable
+WG3_CONTRACT_PASS | unknown preset leaves selection unchanged
+WG3_CONTRACT_PASS | local fish eligibility fish false false
+WG3_CONTRACT_PASS | local fish eligibility fish false true
+WG3_CONTRACT_PASS | local fish eligibility fish true false
+WG3_CONTRACT_PASS | local fish eligibility fish true true
+WG3_CONTRACT_PASS | local fish eligibility angler false false
+WG3_CONTRACT_PASS | local fish eligibility angler false true
+WG3_CONTRACT_PASS | local fish eligibility angler true false
+WG3_CONTRACT_PASS | local fish eligibility angler true true
+WG3_CONTRACT_PASS | local fish eligibility observer false false
+WG3_CONTRACT_PASS | local fish eligibility observer false true
+WG3_CONTRACT_PASS | local fish eligibility observer true false
+WG3_CONTRACT_PASS | local fish eligibility observer true true
+WG3_CONTRACT_PASS | local fish eligibility preview false false
+WG3_CONTRACT_PASS | local fish eligibility preview false true
+WG3_CONTRACT_PASS | local fish eligibility preview true false
+WG3_CONTRACT_PASS | local fish eligibility preview true true
+WATERGEN_READY | wg-2.1 | seed=713284 | cache=4802658465358cbb555cd6089651cccbe1bf8b51c0c974183a3f7a5575f5db36
+WG3_CONTRACT_PASS | all six layers ready before activation
+WG3_CONTRACT_PASS | preparation preserves complete authority, RNG and target geometry
+WATERGEN_READY | wg-2.1 | seed=713284 | cache=4802658465358cbb555cd6089651cccbe1bf8b51c0c974183a3f7a5575f5db36
+WG3_CONTRACT_PASS | private hook truth and simulation seed cannot affect visual key
+WG3_CONTRACT_PASS | private truth cannot affect layer water
+WG3_CONTRACT_PASS | private truth cannot affect layer distance
+WG3_CONTRACT_PASS | private truth cannot affect layer surface
+WG3_CONTRACT_PASS | private truth cannot affect layer terrain
+WG3_CONTRACT_PASS | private truth cannot affect layer floor
+WG3_CONTRACT_PASS | private truth cannot affect layer foreground
+WG3_CONTRACT_PASS | twenty option toggles reuse prepared bundle
+WATERGEN_FALLBACK | FIELDS
+WG3_CONTRACT_PASS | invalid configuration clears active bundle for complete legacy fallback
+WATERGEN_FALLBACK | PROFILE_TYPE
+WG3_CONTRACT_PASS | non-dictionary profile safely falls back
+WATERGEN_READY | wg-2.1 | seed=713284 | cache=4802658465358cbb555cd6089651cccbe1bf8b51c0c974183a3f7a5575f5db36
+WG3_CONTRACT_PASS | valid retry recovers after fallback
+WG3_CONTRACT_PASS | partial six-layer bundle rejected
+WG3_CONTRACT_PASS | integration baseline retains frozen public geometry
+WATERGEN_READY | wg-2.1 | seed=2649 | cache=56971153f26d7d40686088ce9bbbf02a9cef6433d23f0a3e0a331a2e0d03ae84
+WATERGEN_READY | wg-2.1 | seed=42 | cache=92a8ed593f8eb1103e6ee5faeee02b855838b490e92ce3c1fc2b5ee9936413c9
+WATERGEN_READY | wg-2.1 | seed=731 | cache=3541a1da55e0c6713c310507bfb6cb2820d923f8cd8c3550985d7ec378f3653c
+WATERGEN_READY | wg-2.1 | seed=713284 | cache=4802658465358cbb555cd6089651cccbe1bf8b51c0c974183a3f7a5575f5db36
+WATERGEN_READY | wg-2.1 | seed=2649 | cache=56971153f26d7d40686088ce9bbbf02a9cef6433d23f0a3e0a331a2e0d03ae84
+WATERGEN_READY | wg-2.1 | seed=42 | cache=92a8ed593f8eb1103e6ee5faeee02b855838b490e92ce3c1fc2b5ee9936413c9
+WATERGEN_READY | wg-2.1 | seed=731 | cache=3541a1da55e0c6713c310507bfb6cb2820d923f8cd8c3550985d7ec378f3653c
+WATERGEN_READY | wg-2.1 | seed=713284 | cache=4802658465358cbb555cd6089651cccbe1bf8b51c0c974183a3f7a5575f5db36
+WATERGEN_READY | wg-2.1 | seed=2649 | cache=56971153f26d7d40686088ce9bbbf02a9cef6433d23f0a3e0a331a2e0d03ae84
+WATERGEN_READY | wg-2.1 | seed=42 | cache=92a8ed593f8eb1103e6ee5faeee02b855838b490e92ce3c1fc2b5ee9936413c9
+WATERGEN_READY | wg-2.1 | seed=731 | cache=3541a1da55e0c6713c310507bfb6cb2820d923f8cd8c3550985d7ec378f3653c
+WATERGEN_READY | wg-2.1 | seed=713284 | cache=4802658465358cbb555cd6089651cccbe1bf8b51c0c974183a3f7a5575f5db36
+WATERGEN_READY | wg-2.1 | seed=2649 | cache=56971153f26d7d40686088ce9bbbf02a9cef6433d23f0a3e0a331a2e0d03ae84
+WATERGEN_READY | wg-2.1 | seed=42 | cache=92a8ed593f8eb1103e6ee5faeee02b855838b490e92ce3c1fc2b5ee9936413c9
+WATERGEN_READY | wg-2.1 | seed=731 | cache=3541a1da55e0c6713c310507bfb6cb2820d923f8cd8c3550985d7ec378f3653c
+WATERGEN_READY | wg-2.1 | seed=713284 | cache=4802658465358cbb555cd6089651cccbe1bf8b51c0c974183a3f7a5575f5db36
+WATERGEN_READY | wg-2.1 | seed=2649 | cache=56971153f26d7d40686088ce9bbbf02a9cef6433d23f0a3e0a331a2e0d03ae84
+WATERGEN_READY | wg-2.1 | seed=42 | cache=92a8ed593f8eb1103e6ee5faeee02b855838b490e92ce3c1fc2b5ee9936413c9
+WATERGEN_READY | wg-2.1 | seed=731 | cache=3541a1da55e0c6713c310507bfb6cb2820d923f8cd8c3550985d7ec378f3653c
+WG3_CONTRACT_PASS | twenty preset changes retain at most two bundles and fourteen live textures
+WG3_CONTRACT_PASS | four presets change visuals and reproduce after cache eviction
+WG3_CONTRACT_PASS | preset switching preserves all world state, RNG and geometry
+WG3_CONTRACT_PASS | invalid selection cannot damage active appearance
+WATERGEN_READY | wg-2.1 | seed=42 | cache=92a8ed593f8eb1103e6ee5faeee02b855838b490e92ce3c1fc2b5ee9936413c9
+WATERGEN_READY | wg-2.1 | seed=731 | cache=3541a1da55e0c6713c310507bfb6cb2820d923f8cd8c3550985d7ec378f3653c
+WG3_CONTRACT_PASS | returning to either recent preset uses cached textures
+WATERGEN_READY | wg-2.1 | seed=713284 | cache=4802658465358cbb555cd6089651cccbe1bf8b51c0c974183a3f7a5575f5db36
+WG3_CONTRACT_PASS | re-enabling prepares the pending preset rather than a stale bundle
+WATERGEN_FALLBACK | TEST_PREPARE_FAILURE
+WG3_CONTRACT_PASS | failed preset preparation atomically falls back and restores selection
+WATERGEN_READY | wg-2.1 | seed=713284 | cache=4802658465358cbb555cd6089651cccbe1bf8b51c0c974183a3f7a5575f5db36
+WG3_CONTRACT_PASS | failed preset change can recover using the prior cached choice
+WG3_CONTRACT | passed=43 | failed=0
