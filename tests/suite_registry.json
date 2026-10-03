@@ -654,6 +654,26 @@
       "status": "current",
       "mode": "renderer",
       "timeout_seconds": 120
+    },
+    "player_hook_entry_native": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 90
+    },
+    "phase03_npc_hook_pacing": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "player_hook_entry": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "player_hook_network": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
     }
   }
 }

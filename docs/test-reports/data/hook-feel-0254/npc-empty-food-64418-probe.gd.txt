@@ -1,0 +1,29 @@
+extends SceneTree
+const World=preload("res://scripts/world_simulation.gd")
+const Observation=preload("res://scripts/fish_observation.gd")
+const Policy=preload("res://tools/phase02_feeding_policy.gd")
+const Opponent=preload("res://scripts/angler_brain.gd")
+func _initialize() -> void:
+	var world:=World.new()
+	world.reset_world({"seed":64418,"challenge":true,"ruleset":"survival","npc_count":3,"npc_foraging_enabled":true,"npc_social_enabled":true,"npc_hook_enabled":true})
+	var player:=Policy.new(); player.reset("Mixed",world.rules)
+	var opponent:=Opponent.new()
+	var empty_ticks:=0
+	var empty_with_player_hook:=0
+	var previous_empty:=false
+	for frame in 22200:
+		world.advance_tick(player.command(Observation.build(world,false),World.TICK_SECONDS),opponent.command(world,World.TICK_SECONDS))
+		var food:=0.0
+		for bait: Dictionary in world.baits:
+			for grain: Dictionary in bait.grains:
+				if not grain.eaten and (bait.active or grain.free): food+=float(grain.points)
+		var empty:=food<=0.000001
+		if empty:
+			empty_ticks+=1
+			if world.hook_target_fish_id==1: empty_with_player_hook+=1
+		if empty!=previous_empty:
+			print("EMPTY_TRANSITION | tick=",world.simulation_tick," empty=",empty," target=",world.hook_target_fish_id," player_hook_state=",world.hooked," food_score=",world.score," phase=",world.cycle_phase)
+		previous_empty=empty
+		if world.match_over: break
+	print("EMPTY_DIAGNOSTIC | empty_ticks=",empty_ticks," player_hook_ticks=",empty_with_player_hook," winner=",world.winner_role," reason=",world.reason," duration=",world.elapsed," score=",world.score)
+	world.free();quit()

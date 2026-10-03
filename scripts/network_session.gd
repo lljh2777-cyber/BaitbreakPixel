@@ -409,11 +409,16 @@ func _take_remote() -> Dictionary:
 		var pressed: bool=combined.qte
 		var age: float=combined.qte_at_age
 		var condition_valid: bool=combined.qte_condition_valid
-		if not pressed and cmd.get("qte",false) and _valid_qte(entry):
-			pressed=true
-			age=effort_history[remote_role][entry.seen_tick].age if entry.get("check_kind")=="effort" else (qte_history[entry.seen_tick].age if not game.qte.is_empty() else -1.0)
-			qte_accepted+=1
-			if entry.get("check_kind")=="effort": condition_valid=effort_history[remote_role][entry.seen_tick].valid
+		if cmd.get("qte",false) and _valid_qte(entry):
+			var candidate_age: float=effort_history[remote_role][entry.seen_tick].age if entry.get("check_kind")=="effort" else (qte_history[entry.seen_tick].age if not game.qte.is_empty() else -1.0)
+			var lead: float=game.effort_checks[remote_role].lead if entry.get("check_kind")=="effort" else game.qte_timing.lead
+			# A consumed warning edge must not swallow a later visible press in
+			# this transport batch. The first visible judgment still owns it.
+			if not pressed or (age>=0 and age<lead and candidate_age>=lead):
+				pressed=true
+				age=candidate_age
+				qte_accepted+=1
+				if entry.get("check_kind")=="effort": condition_valid=effort_history[remote_role][entry.seen_tick].valid
 		var home: bool=combined.home or cmd.get("home",false)
 		var deploy: bool=combined.deploy or cmd.get("deploy",false)
 		var untangle: bool=combined.untangle or cmd.get("untangle",false)

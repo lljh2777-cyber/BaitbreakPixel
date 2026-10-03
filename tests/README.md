@@ -13,7 +13,7 @@ Windows 可使用 `D:\python\python.exe`；用 `--godot "引擎可执行文件�
 
 ## 注册表与状态
 
-[`suite_registry.json`](suite_registry.json) 显式登记全部 118 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
+[`suite_registry.json`](suite_registry.json) 显式登记全部 122 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
 
 - `current`：当前有效的回归门禁；不按文件名版本新旧决定。`--profile current` 运行无窗口套件，`--profile native` 运行图形套件。已重新验证的 effort、net_animation、rules_network 等较早版本仍在当前门禁中
 - `historical`：当前检出复现了失败的诊断套件。保留原断言，失败仍返回非零；这不是“已证明所有断言过时”，更不是通过。具体原因和结果见[维护报告](../docs/test-reports/TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md)
@@ -39,7 +39,7 @@ python3 tools/run_tests.py --suite shore_native_v015
 
 ## 原生与打包截图
 
-所有 36 个使用原生画面、且会写 PNG 的脚本都接受：
+所有 37 个使用原生画面、且会写 PNG 的脚本都接受：
 
 ```sh
 godot --path . --script res://tests/wood_fade_native.gd -- --test-profile --capture-output-directory=/absolute/writable/captures
@@ -47,7 +47,7 @@ godot --path . --script res://tests/wood_fade_native.gd -- --test-profile --capt
 
 默认路径不变。目录会创建，空值、建目录失败、PNG 写入失败都返回非零。5 个旧脚本继续支持 `--visual-output=`，同时提供时以 `--capture-output-directory=` 为准。
 
-计数说明：37 个脚本使用原生渲染/画面回读，其中 `reel_hand_native_v016` 只验证像素连通性，不写图片。另一个会写图的 `plant_art` 是无窗口图像测试：默认不写图，保留 `--preview=文件名`，也支持公共目录参数生成 `plant-art-preview.png`；显式 `--preview` 优先。因此所有 37 个会写图片的入口均有可写路径选择，不需要给不写文件的测试增加空参数。
+计数说明：38 个脚本使用原生渲染/画面回读，其中 `reel_hand_native_v016` 只验证像素连通性，不写图片。另一个会写图的 `plant_art` 是无窗口图像测试：默认不写图，保留 `--preview=文件名`，也支持公共目录参数生成 `plant-art-preview.png`；显式 `--preview` 优先。因此所有 38 个会写图片的入口均有可写路径选择，不需要给不写文件的测试增加空参数。
 
 发行 PCK 故意不包含 `tests/` 和 `tools/`。运行器用外部绝对 `--script` 加载测试，让 `res://scripts/` 和素材来自包内：
 
@@ -137,3 +137,13 @@ python3 tools/phase02_run_feeding.py --phase heldout --seed 31001 --rounds 100 -
 - `tools/phase03_run_hook_diagnostics.py`：NoNPC / PassiveNPC / ForagingNPC / HookableNPC 四组同种子实际 60 Hz 对照，含 Hook/钓错鱼及有限观察窗，不代替人工平衡
 
 Authority schema15；旧 0.25.2 缺少 Hook 生命周期字段的快照明确拒绝。网络 exact-build0.25.3，鱼端 NPC guard2、钓鱼人 guard4。当前[验证与人工门](../docs/test-reports/PHASE03-HOOK-VALIDATION-0.25.3.md)。
+
+
+## 0.25.4 · P3.4 上钩开局与 NPC 收近修正
+
+- `player_hook_entry`：准备阶段按键与最后一帧边界、没有输入缓存、原绿区/超时、移动后缠线准入、接触/张力中断、原回合终局原因、snapshot 重放
+- `player_hook_network`：远端鱼与钓鱼人真实 ENet 准备/成功流程、同批警告与可见按键归属、历史年龄/编号/重放守卫
+- `player_hook_entry_native`：重复入口/缠线、真实键盘长按/重复、暂停和失焦恢复、重开、原生画面与接触中断提示
+- `phase03_npc_hook_pacing`：浅/中/深与横向偏移的真实接触后连续收近、正常 W/S、完整提鱼动画、松线与持续高张力断线，不将 NPC 捕获算玩家终局
+
+网络 exact-build0.25.4；authority schema15、鱼端 NPC guard2、钓鱼人 guard4 不改。本轮只提交源码，不新建 Windows 包；[验证与人工复测](../docs/test-reports/PHASE03-HOOK-FIX-0.25.4.md)。

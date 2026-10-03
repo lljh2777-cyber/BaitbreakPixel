@@ -1,0 +1,246 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+NPC_PACING_PASS | real mouth contact: duel y=130 dx=0 reel
+NPC_PACING_PASS | continuous ordinary capture: duel y=130 dx=0 reel
+NPC_PACING_PASS | faster full-distance capture budget: duel y=130 dx=0 reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: duel y=130 dx=0 reel
+NPC_PACING_PASS | no post-contact jump toward shore: duel y=130 dx=0 reel
+NPC_PACING_PASS | no player match/food/Hook side effect: duel y=130 dx=0 reel
+NPC_PACING_PASS | real mouth contact: duel y=130 dx=0 auto_reel
+NPC_PACING_PASS | continuous ordinary capture: duel y=130 dx=0 auto_reel
+NPC_PACING_PASS | faster full-distance capture budget: duel y=130 dx=0 auto_reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: duel y=130 dx=0 auto_reel
+NPC_PACING_PASS | no post-contact jump toward shore: duel y=130 dx=0 auto_reel
+NPC_PACING_PASS | no player match/food/Hook side effect: duel y=130 dx=0 auto_reel
+NPC_PACING_PASS | real mouth contact: duel y=130 dx=160 reel
+NPC_PACING_PASS | continuous ordinary capture: duel y=130 dx=160 reel
+NPC_PACING_PASS | faster full-distance capture budget: duel y=130 dx=160 reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: duel y=130 dx=160 reel
+NPC_PACING_PASS | no post-contact jump toward shore: duel y=130 dx=160 reel
+NPC_PACING_PASS | no player match/food/Hook side effect: duel y=130 dx=160 reel
+NPC_PACING_PASS | real mouth contact: duel y=130 dx=160 auto_reel
+NPC_PACING_PASS | continuous ordinary capture: duel y=130 dx=160 auto_reel
+NPC_PACING_PASS | faster full-distance capture budget: duel y=130 dx=160 auto_reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: duel y=130 dx=160 auto_reel
+NPC_PACING_PASS | no post-contact jump toward shore: duel y=130 dx=160 auto_reel
+NPC_PACING_PASS | no player match/food/Hook side effect: duel y=130 dx=160 auto_reel
+NPC_PACING_PASS | real mouth contact: duel y=130 dx=320 reel
+NPC_PACING_PASS | continuous ordinary capture: duel y=130 dx=320 reel
+NPC_PACING_PASS | faster full-distance capture budget: duel y=130 dx=320 reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: duel y=130 dx=320 reel
+NPC_PACING_PASS | no post-contact jump toward shore: duel y=130 dx=320 reel
+NPC_PACING_PASS | no player match/food/Hook side effect: duel y=130 dx=320 reel
+NPC_PACING_PASS | real mouth contact: duel y=130 dx=320 auto_reel
+NPC_PACING_PASS | continuous ordinary capture: duel y=130 dx=320 auto_reel
+NPC_PACING_PASS | faster full-distance capture budget: duel y=130 dx=320 auto_reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: duel y=130 dx=320 auto_reel
+NPC_PACING_PASS | no post-contact jump toward shore: duel y=130 dx=320 auto_reel
+NPC_PACING_PASS | no player match/food/Hook side effect: duel y=130 dx=320 auto_reel
+NPC_PACING_PASS | real mouth contact: duel y=240 dx=0 reel
+NPC_PACING_PASS | continuous ordinary capture: duel y=240 dx=0 reel
+NPC_PACING_PASS | faster full-distance capture budget: duel y=240 dx=0 reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: duel y=240 dx=0 reel
+NPC_PACING_PASS | no post-contact jump toward shore: duel y=240 dx=0 reel
+NPC_PACING_PASS | no player match/food/Hook side effect: duel y=240 dx=0 reel
+NPC_PACING_PASS | real mouth contact: duel y=240 dx=0 auto_reel
+NPC_PACING_PASS | continuous ordinary capture: duel y=240 dx=0 auto_reel
+NPC_PACING_PASS | faster full-distance capture budget: duel y=240 dx=0 auto_reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: duel y=240 dx=0 auto_reel
+NPC_PACING_PASS | no post-contact jump toward shore: duel y=240 dx=0 auto_reel
+NPC_PACING_PASS | no player match/food/Hook side effect: duel y=240 dx=0 auto_reel
+NPC_PACING_PASS | real mouth contact: duel y=240 dx=160 reel
+NPC_PACING_PASS | continuous ordinary capture: duel y=240 dx=160 reel
+NPC_PACING_PASS | faster full-distance capture budget: duel y=240 dx=160 reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: duel y=240 dx=160 reel
+NPC_PACING_PASS | no post-contact jump toward shore: duel y=240 dx=160 reel
+NPC_PACING_PASS | no player match/food/Hook side effect: duel y=240 dx=160 reel
+NPC_PACING_PASS | real mouth contact: duel y=240 dx=160 auto_reel
+NPC_PACING_PASS | continuous ordinary capture: duel y=240 dx=160 auto_reel
+NPC_PACING_PASS | faster full-distance capture budget: duel y=240 dx=160 auto_reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: duel y=240 dx=160 auto_reel
+NPC_PACING_PASS | no post-contact jump toward shore: duel y=240 dx=160 auto_reel
+NPC_PACING_PASS | no player match/food/Hook side effect: duel y=240 dx=160 auto_reel
+NPC_PACING_PASS | real mouth contact: duel y=240 dx=320 reel
+NPC_PACING_PASS | continuous ordinary capture: duel y=240 dx=320 reel
+NPC_PACING_PASS | faster full-distance capture budget: duel y=240 dx=320 reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: duel y=240 dx=320 reel
+NPC_PACING_PASS | no post-contact jump toward shore: duel y=240 dx=320 reel
+NPC_PACING_PASS | no player match/food/Hook side effect: duel y=240 dx=320 reel
+NPC_PACING_PASS | real mouth contact: duel y=240 dx=320 auto_reel
+NPC_PACING_PASS | continuous ordinary capture: duel y=240 dx=320 auto_reel
+NPC_PACING_PASS | faster full-distance capture budget: duel y=240 dx=320 auto_reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: duel y=240 dx=320 auto_reel
+NPC_PACING_PASS | no post-contact jump toward shore: duel y=240 dx=320 auto_reel
+NPC_PACING_PASS | no player match/food/Hook side effect: duel y=240 dx=320 auto_reel
+NPC_PACING_PASS | real mouth contact: duel y=390 dx=0 reel
+NPC_PACING_PASS | continuous ordinary capture: duel y=390 dx=0 reel
+NPC_PACING_PASS | faster full-distance capture budget: duel y=390 dx=0 reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: duel y=390 dx=0 reel
+NPC_PACING_PASS | no post-contact jump toward shore: duel y=390 dx=0 reel
+NPC_PACING_PASS | no player match/food/Hook side effect: duel y=390 dx=0 reel
+NPC_PACING_PASS | real mouth contact: duel y=390 dx=0 auto_reel
+NPC_PACING_PASS | continuous ordinary capture: duel y=390 dx=0 auto_reel
+NPC_PACING_PASS | faster full-distance capture budget: duel y=390 dx=0 auto_reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: duel y=390 dx=0 auto_reel
+NPC_PACING_PASS | no post-contact jump toward shore: duel y=390 dx=0 auto_reel
+NPC_PACING_PASS | no player match/food/Hook side effect: duel y=390 dx=0 auto_reel
+NPC_PACING_PASS | real mouth contact: duel y=390 dx=160 reel
+NPC_PACING_PASS | continuous ordinary capture: duel y=390 dx=160 reel
+NPC_PACING_PASS | faster full-distance capture budget: duel y=390 dx=160 reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: duel y=390 dx=160 reel
+NPC_PACING_PASS | no post-contact jump toward shore: duel y=390 dx=160 reel
+NPC_PACING_PASS | no player match/food/Hook side effect: duel y=390 dx=160 reel
+NPC_PACING_PASS | real mouth contact: duel y=390 dx=160 auto_reel
+NPC_PACING_PASS | continuous ordinary capture: duel y=390 dx=160 auto_reel
+NPC_PACING_PASS | faster full-distance capture budget: duel y=390 dx=160 auto_reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: duel y=390 dx=160 auto_reel
+NPC_PACING_PASS | no post-contact jump toward shore: duel y=390 dx=160 auto_reel
+NPC_PACING_PASS | no player match/food/Hook side effect: duel y=390 dx=160 auto_reel
+NPC_PACING_PASS | real mouth contact: duel y=390 dx=320 reel
+NPC_PACING_PASS | continuous ordinary capture: duel y=390 dx=320 reel
+NPC_PACING_PASS | faster full-distance capture budget: duel y=390 dx=320 reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: duel y=390 dx=320 reel
+NPC_PACING_PASS | no post-contact jump toward shore: duel y=390 dx=320 reel
+NPC_PACING_PASS | no player match/food/Hook side effect: duel y=390 dx=320 reel
+NPC_PACING_PASS | real mouth contact: duel y=390 dx=320 auto_reel
+NPC_PACING_PASS | continuous ordinary capture: duel y=390 dx=320 auto_reel
+NPC_PACING_PASS | faster full-distance capture budget: duel y=390 dx=320 auto_reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: duel y=390 dx=320 auto_reel
+NPC_PACING_PASS | no post-contact jump toward shore: duel y=390 dx=320 auto_reel
+NPC_PACING_PASS | no player match/food/Hook side effect: duel y=390 dx=320 auto_reel
+NPC_PACING_PASS | real mouth contact: survival y=130 dx=0 reel
+NPC_PACING_PASS | continuous ordinary capture: survival y=130 dx=0 reel
+NPC_PACING_PASS | faster full-distance capture budget: survival y=130 dx=0 reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: survival y=130 dx=0 reel
+NPC_PACING_PASS | no post-contact jump toward shore: survival y=130 dx=0 reel
+NPC_PACING_PASS | no player match/food/Hook side effect: survival y=130 dx=0 reel
+NPC_PACING_PASS | real mouth contact: survival y=130 dx=0 auto_reel
+NPC_PACING_PASS | continuous ordinary capture: survival y=130 dx=0 auto_reel
+NPC_PACING_PASS | faster full-distance capture budget: survival y=130 dx=0 auto_reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: survival y=130 dx=0 auto_reel
+NPC_PACING_PASS | no post-contact jump toward shore: survival y=130 dx=0 auto_reel
+NPC_PACING_PASS | no player match/food/Hook side effect: survival y=130 dx=0 auto_reel
+NPC_PACING_PASS | real mouth contact: survival y=130 dx=160 reel
+NPC_PACING_PASS | continuous ordinary capture: survival y=130 dx=160 reel
+NPC_PACING_PASS | faster full-distance capture budget: survival y=130 dx=160 reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: survival y=130 dx=160 reel
+NPC_PACING_PASS | no post-contact jump toward shore: survival y=130 dx=160 reel
+NPC_PACING_PASS | no player match/food/Hook side effect: survival y=130 dx=160 reel
+NPC_PACING_PASS | real mouth contact: survival y=130 dx=160 auto_reel
+NPC_PACING_PASS | continuous ordinary capture: survival y=130 dx=160 auto_reel
+NPC_PACING_PASS | faster full-distance capture budget: survival y=130 dx=160 auto_reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: survival y=130 dx=160 auto_reel
+NPC_PACING_PASS | no post-contact jump toward shore: survival y=130 dx=160 auto_reel
+NPC_PACING_PASS | no player match/food/Hook side effect: survival y=130 dx=160 auto_reel
+NPC_PACING_PASS | real mouth contact: survival y=130 dx=320 reel
+NPC_PACING_PASS | continuous ordinary capture: survival y=130 dx=320 reel
+NPC_PACING_PASS | faster full-distance capture budget: survival y=130 dx=320 reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: survival y=130 dx=320 reel
+NPC_PACING_PASS | no post-contact jump toward shore: survival y=130 dx=320 reel
+NPC_PACING_PASS | no player match/food/Hook side effect: survival y=130 dx=320 reel
+NPC_PACING_PASS | real mouth contact: survival y=130 dx=320 auto_reel
+NPC_PACING_PASS | continuous ordinary capture: survival y=130 dx=320 auto_reel
+NPC_PACING_PASS | faster full-distance capture budget: survival y=130 dx=320 auto_reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: survival y=130 dx=320 auto_reel
+NPC_PACING_PASS | no post-contact jump toward shore: survival y=130 dx=320 auto_reel
+NPC_PACING_PASS | no player match/food/Hook side effect: survival y=130 dx=320 auto_reel
+NPC_PACING_PASS | real mouth contact: survival y=240 dx=0 reel
+NPC_PACING_PASS | continuous ordinary capture: survival y=240 dx=0 reel
+NPC_PACING_PASS | faster full-distance capture budget: survival y=240 dx=0 reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: survival y=240 dx=0 reel
+NPC_PACING_PASS | no post-contact jump toward shore: survival y=240 dx=0 reel
+NPC_PACING_PASS | no player match/food/Hook side effect: survival y=240 dx=0 reel
+NPC_PACING_PASS | real mouth contact: survival y=240 dx=0 auto_reel
+NPC_PACING_PASS | continuous ordinary capture: survival y=240 dx=0 auto_reel
+NPC_PACING_PASS | faster full-distance capture budget: survival y=240 dx=0 auto_reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: survival y=240 dx=0 auto_reel
+NPC_PACING_PASS | no post-contact jump toward shore: survival y=240 dx=0 auto_reel
+NPC_PACING_PASS | no player match/food/Hook side effect: survival y=240 dx=0 auto_reel
+NPC_PACING_PASS | real mouth contact: survival y=240 dx=160 reel
+NPC_PACING_PASS | continuous ordinary capture: survival y=240 dx=160 reel
+NPC_PACING_PASS | faster full-distance capture budget: survival y=240 dx=160 reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: survival y=240 dx=160 reel
+NPC_PACING_PASS | no post-contact jump toward shore: survival y=240 dx=160 reel
+NPC_PACING_PASS | no player match/food/Hook side effect: survival y=240 dx=160 reel
+NPC_PACING_PASS | real mouth contact: survival y=240 dx=160 auto_reel
+NPC_PACING_PASS | continuous ordinary capture: survival y=240 dx=160 auto_reel
+NPC_PACING_PASS | faster full-distance capture budget: survival y=240 dx=160 auto_reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: survival y=240 dx=160 auto_reel
+NPC_PACING_PASS | no post-contact jump toward shore: survival y=240 dx=160 auto_reel
+NPC_PACING_PASS | no player match/food/Hook side effect: survival y=240 dx=160 auto_reel
+NPC_PACING_PASS | real mouth contact: survival y=240 dx=320 reel
+NPC_PACING_PASS | continuous ordinary capture: survival y=240 dx=320 reel
+NPC_PACING_PASS | faster full-distance capture budget: survival y=240 dx=320 reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: survival y=240 dx=320 reel
+NPC_PACING_PASS | no post-contact jump toward shore: survival y=240 dx=320 reel
+NPC_PACING_PASS | no player match/food/Hook side effect: survival y=240 dx=320 reel
+NPC_PACING_PASS | real mouth contact: survival y=240 dx=320 auto_reel
+NPC_PACING_PASS | continuous ordinary capture: survival y=240 dx=320 auto_reel
+NPC_PACING_PASS | faster full-distance capture budget: survival y=240 dx=320 auto_reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: survival y=240 dx=320 auto_reel
+NPC_PACING_PASS | no post-contact jump toward shore: survival y=240 dx=320 auto_reel
+NPC_PACING_PASS | no player match/food/Hook side effect: survival y=240 dx=320 auto_reel
+NPC_PACING_PASS | real mouth contact: survival y=390 dx=0 reel
+NPC_PACING_PASS | continuous ordinary capture: survival y=390 dx=0 reel
+NPC_PACING_PASS | faster full-distance capture budget: survival y=390 dx=0 reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: survival y=390 dx=0 reel
+NPC_PACING_PASS | no post-contact jump toward shore: survival y=390 dx=0 reel
+NPC_PACING_PASS | no player match/food/Hook side effect: survival y=390 dx=0 reel
+NPC_PACING_PASS | real mouth contact: survival y=390 dx=0 auto_reel
+NPC_PACING_PASS | continuous ordinary capture: survival y=390 dx=0 auto_reel
+NPC_PACING_PASS | faster full-distance capture budget: survival y=390 dx=0 auto_reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: survival y=390 dx=0 auto_reel
+NPC_PACING_PASS | no post-contact jump toward shore: survival y=390 dx=0 auto_reel
+NPC_PACING_PASS | no player match/food/Hook side effect: survival y=390 dx=0 auto_reel
+NPC_PACING_PASS | real mouth contact: survival y=390 dx=160 reel
+NPC_PACING_PASS | continuous ordinary capture: survival y=390 dx=160 reel
+NPC_PACING_PASS | faster full-distance capture budget: survival y=390 dx=160 reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: survival y=390 dx=160 reel
+NPC_PACING_PASS | no post-contact jump toward shore: survival y=390 dx=160 reel
+NPC_PACING_PASS | no player match/food/Hook side effect: survival y=390 dx=160 reel
+NPC_PACING_PASS | real mouth contact: survival y=390 dx=160 auto_reel
+NPC_PACING_PASS | continuous ordinary capture: survival y=390 dx=160 auto_reel
+NPC_PACING_PASS | faster full-distance capture budget: survival y=390 dx=160 auto_reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: survival y=390 dx=160 auto_reel
+NPC_PACING_PASS | no post-contact jump toward shore: survival y=390 dx=160 auto_reel
+NPC_PACING_PASS | no player match/food/Hook side effect: survival y=390 dx=160 auto_reel
+NPC_PACING_PASS | real mouth contact: survival y=390 dx=320 reel
+NPC_PACING_PASS | continuous ordinary capture: survival y=390 dx=320 reel
+NPC_PACING_PASS | faster full-distance capture budget: survival y=390 dx=320 reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: survival y=390 dx=320 reel
+NPC_PACING_PASS | no post-contact jump toward shore: survival y=390 dx=320 reel
+NPC_PACING_PASS | no player match/food/Hook side effect: survival y=390 dx=320 reel
+NPC_PACING_PASS | real mouth contact: survival y=390 dx=320 auto_reel
+NPC_PACING_PASS | continuous ordinary capture: survival y=390 dx=320 auto_reel
+NPC_PACING_PASS | faster full-distance capture budget: survival y=390 dx=320 auto_reel
+NPC_PACING_PASS | retains full 1.05 s shore lift: survival y=390 dx=320 auto_reel
+NPC_PACING_PASS | no post-contact jump toward shore: survival y=390 dx=320 auto_reel
+NPC_PACING_PASS | no player match/food/Hook side effect: survival y=390 dx=320 auto_reel
+NPC_PACING_PASS | W/S reversal returns to capture through normal controls: duel seed=64317
+NPC_PACING_PASS | deep offset W/S stays bounded without jumps: duel seed=64317
+NPC_PACING_PASS | held S still yields true slack escape: duel seed=64317
+NPC_PACING_PASS | W/S reversal returns to capture through normal controls: survival seed=64317
+NPC_PACING_PASS | deep offset W/S stays bounded without jumps: survival seed=64317
+NPC_PACING_PASS | held S still yields true slack escape: survival seed=64317
+NPC_PACING_PASS | W/S reversal returns to capture through normal controls: duel seed=64404
+NPC_PACING_PASS | deep offset W/S stays bounded without jumps: duel seed=64404
+NPC_PACING_PASS | held S still yields true slack escape: duel seed=64404
+NPC_PACING_PASS | W/S reversal returns to capture through normal controls: survival seed=64404
+NPC_PACING_PASS | deep offset W/S stays bounded without jumps: survival seed=64404
+NPC_PACING_PASS | held S still yields true slack escape: survival seed=64404
+NPC_PACING_PASS | W/S reversal returns to capture through normal controls: duel seed=64423
+NPC_PACING_PASS | deep offset W/S stays bounded without jumps: duel seed=64423
+NPC_PACING_PASS | held S still yields true slack escape: duel seed=64423
+NPC_PACING_PASS | W/S reversal returns to capture through normal controls: survival seed=64423
+NPC_PACING_PASS | deep offset W/S stays bounded without jumps: survival seed=64423
+NPC_PACING_PASS | held S still yields true slack escape: survival seed=64423
+NPC_PACING_PASS | sustained high tension still breaks: duel
+NPC_PACING_PASS | observed full default high-tension hold: duel
+NPC_PACING_PASS | NPC break stays separate from player: duel
+NPC_PACING_PASS | sustained high tension still breaks: survival
+NPC_PACING_PASS | observed full default high-tension hold: survival
+NPC_PACING_PASS | NPC break stays separate from player: survival
+NPC_PACING_PASS | default W plus walking away still breaks without any state edits
+NPC_PACING_PASS | default practical break retains full sustained-high duration
+NPC_PACING_PASS | default practical NPC break does not end player match
+PHASE03_NPC_HOOK_PACING_TESTS | passed=243 | failed=0

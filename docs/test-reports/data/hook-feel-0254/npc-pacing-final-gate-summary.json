@@ -1,0 +1,40 @@
+{
+  "profile": "current",
+  "pack": null,
+  "results": [
+    {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 8.445,
+      "launch_error": false,
+      "passed": 243,
+      "failed": 0,
+      "count_basis": "summary",
+      "status": "passed",
+      "reason": "",
+      "suite": "phase03_npc_hook_pacing",
+      "registry_status": "current",
+      "log": "phase03_npc_hook_pacing.log",
+      "command": [
+        "/workspace/shared/baitbreak-toolchain-472/Godot_v4.7.2-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/workspace/scratch/5dc5a43a1104/BaitbreakPixel",
+        "--script",
+        "res://tests/phase03_npc_hook_pacing.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=/workspace/scratch/5dc5a43a1104/BaitbreakPixel/artifacts/p35-pacing/gate-final3/captures/phase03_npc_hook_pacing"
+      ]
+    }
+  ],
+  "counts": {
+    "passed": 1,
+    "failed": 0,
+    "timeout": 0,
+    "blocked": 0,
+    "retired": 0
+  }
+}

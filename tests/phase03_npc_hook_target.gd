@@ -170,7 +170,11 @@ func spool_and_rng() -> void:
 
 func escape_break_capture() -> void:
 	for broken: bool in [false,true]:
-		var world:=fixture(); npc_contact(world)
+		var world:=fixture()
+		# A forced taut line needs >3 s of water travel to test the break timer,
+		# otherwise faster NPC retrieval legitimately reaches shore first.
+		if broken: world.npc_fishes[0].position=Vector2(620,440)
+		npc_contact(world)
 		var identity: int=world.hook_target_fish_id
 		world.rope_length=0.0 if broken else world.rule("line_max")
 		var player: Vector2=world.fish
