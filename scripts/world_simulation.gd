@@ -3,6 +3,8 @@ extends Node2D
 const Rules = preload("res://scripts/game_rules.gd")
 const Suction = preload("res://scripts/suction_feel.gd")
 const FoodProfile = preload("res://scripts/food_profile.gd")
+const NPCFishState = preload("res://scripts/npc_fish_state.gd")
+const NPCFishBrain = preload("res://scripts/npc_fish_brain.gd")
 var rules := Rules.defaults()
 var qte_timing := Rules.qte(Rules.defaults(),"entry")
 
@@ -33,6 +35,10 @@ const MAX_LINE_LENGTH := 720.0
 
 # IDs are stable within a round. Slots remain compatibility implementation details.
 var fish_id := 1
+var next_fish_id := 2
+var npc_fishes: Array[Dictionary]=[]
+# Reserved for P3.4 only. Existing player HookState is still authoritative.
+var hook_target_fish_id := -1
 var rod_id := 1
 var next_bait_id := 1
 var next_hook_id := 1
@@ -449,6 +455,9 @@ func reset_world(config: Dictionary = {}) -> void:
 	net_route_next=1
 	bait_batch=0
 	fish_id=1
+	next_fish_id=2
+	npc_fishes.clear()
+	hook_target_fish_id=-1
 	rod_id=1
 	next_bait_id=1
 	next_hook_id=1
@@ -567,9 +576,72 @@ func reset_world(config: Dictionary = {}) -> void:
 	if uses_mobile_tackle():
 		baits[0].active=false
 		started=true
+	# Spawn uses a separate namespace after legacy setup, consuming no world RNG.
+	var npc_count:=clampi(int(config.get("npc_count",NPCFishState.DEFAULT_COUNT)),0,NPCFishState.MAX_COUNT)
+	for index in npc_count: spawn_npc()
 	notice = "寻找饵团 · 鼠标朝向，左键吸食 · 饵中可能藏有鱼钩"
 	notice_age = 5
 	if uses_mobile_tackle(): notice="Q 下钩 · W 收线 / S 放线 · E 观察 · 左键选择 A/B 抄网"
+
+func spawn_npc() -> int:
+	if npc_fishes.size()>=NPCFishState.MAX_COUNT: return -1
+	var identity:=next_fish_id
+	next_fish_id+=1
+	var seed:=NPCFishState.derive_seed(rng.seed,identity)
+	var local_rng:=RandomNumberGenerator.new()
+	local_rng.seed=seed
+	var region: Rect2=NPCFishState.SPAWN_REGIONS[posmod(identity-2,NPCFishState.SPAWN_REGIONS.size())]
+	var position:=region.get_center()
+	var found:=false
+	for attempt in 64:
+		var candidate:=region.position+Vector2(local_rng.randf()*region.size.x,local_rng.randf()*region.size.y)
+		var valid:=candidate.distance_to(HOME)>80 and not _collision(candidate,NPCFishState.RADIUS)
+		for bait: Dictionary in baits:
+			if bait.active and candidate.distance_to(bait.pos)<45: valid=false
+		for other: Dictionary in npc_fishes:
+			if other.active and candidate.distance_to(other.position)<36: valid=false
+		if valid:
+			position=candidate
+			found=true
+			break
+	# Never fall back to an unvalidated location. A failed allocation stays spent.
+	if not found: return -1
+	var heading:=Vector2.RIGHT.rotated(local_rng.randf_range(-PI,PI))
+	npc_fishes.append(NPCFishState.fresh(identity,seed,position,heading,local_rng.state))
+	return identity
+
+func _tick_npc_fishes(delta: float) -> void:
+	# Simultaneous detached public geometry avoids array-order feedback.
+	var neighbors: Array[Dictionary]=[{"fish_id":fish_id,"position":fish}]
+	for npc: Dictionary in npc_fishes:
+		if npc.active: neighbors.append({"fish_id":int(npc.fish_id),"position":Vector2(npc.position)})
+	neighbors.sort_custom(func(a: Dictionary,b: Dictionary) -> bool: return a.fish_id<b.fish_id)
+	var environment: Dictionary={"bounds":Layout.fish_bounds(NPCFishState.RADIUS),"neighbors":neighbors}
+	for npc: Dictionary in npc_fishes:
+		if not npc.active: continue
+		npc.behavior_age+=delta
+		npc.decision_age=maxf(0,npc.decision_age-delta)
+		if npc.decision_age<=0:
+			var local_rng:=RandomNumberGenerator.new()
+			local_rng.seed=npc.brain_seed
+			local_rng.state=npc.brain_rng_state
+			var perception:=Observation.build_for(self,NPCFishState.observer(npc,rules),false)
+			var memory: Dictionary={"wander_heading":npc.wander_heading,"turn_age":npc.turn_age}
+			var intent:=NPCFishBrain.decide(perception,memory,environment,rules,NPCFishState.DECISION_SECONDS,local_rng)
+			npc.brain_rng_state=local_rng.state
+			npc.steering=Vector2(intent.move).limit_length(1.0)
+			npc.wander_heading=Vector2(intent.wander_heading)
+			npc.turn_age=float(intent.turn_age)
+			npc.decision_age=NPCFishState.DECISION_SECONDS
+			# P3.1 accepts movement only; no food/Hook or score path is wired.
+			npc.behavior_state="WANDER"
+			npc.target_bait_id=-1
+		npc.velocity=Vector2(npc.velocity).move_toward(Vector2(npc.steering)*NPCFishState.SPEED,delta*48.0)
+		var bounds: Rect2=environment.bounds
+		# End is excluded by Rect2.has_point; stay strictly inside the legal body bounds.
+		npc.position=(Vector2(npc.position)+Vector2(npc.velocity)*delta).clamp(bounds.position,bounds.end-Vector2.ONE*0.001)
+		if Vector2(npc.velocity).length()>0.1:
+			npc.aim=Vector2(npc.aim).slerp(Vector2(npc.velocity).normalized(),minf(1.0,delta*5.0)).normalized()
 
 func line_anchor(index: int) -> Vector2:
 	if uses_mobile_tackle(): return angler.anchor()
@@ -873,6 +945,7 @@ func step(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: 
 
 func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: bool = false, slow: bool = false, qte_pressed: bool = false, qte_at_age: float = -1) -> void:
 	if match_paused or match_over or not is_finite(delta) or delta<=0: return
+	_tick_npc_fishes(delta)
 	simulation_tick+=1
 	elapsed += delta
 	if rules.hunger_enabled: satiety=clampf(satiety-rule("satiety_decay")*delta,0,100)

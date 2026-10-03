@@ -8,11 +8,13 @@ const Protocol=preload("res://scripts/network_protocol.gd")
 const Observation=preload("res://scripts/fish_observation.gd")
 const FoodProfile=preload("res://scripts/food_profile.gd")
 const Effort=preload("res://scripts/effort_check.gd")
+const NPCPublic=preload("res://scripts/npc_fish_public_state.gd")
 const Stats=preload("res://scripts/round_stats.gd")
 const FORMAT := "fish-presentation"
 const SCHEMA := 1
 # Required extension guard: schema 1 alone predates public bait archetypes.
 const BAIT_PROFILE_VERSION := 1
+const NPC_PROFILE_VERSION := 1
 const MAP_ID := "pond_v2"
 const STATE_FIELDS := [
 	"fish_id","rod_id","rules","net_action","qte_timing","fish","manual_net",
@@ -31,7 +33,7 @@ const STATE_FIELDS := [
 	"net_blocked","net_return_from","net_catch_offset","net_dodges","net_catches","net_angle","net_park",
 	"net_retract_duration","net_splash","net_splash_at","net_last_position","net_motion","net_warning_shape",
 	"ruleset","match_over","winner_role","match_paused","simulation_tick","qte_id","qte_grace_seconds",
-	"effort_checks","round_stats","net_capture",
+	"effort_checks","round_stats","net_capture","npc_fishes",
 ]
 const RIG_FIELDS := [
 	"x","spool","casting","cast_age","cast_from","cast_to","net_cooldown","net_held",
@@ -70,6 +72,7 @@ static func capture(world: Node2D) -> Dictionary:
 	var rig: Dictionary={}
 	for key in STATE_FIELDS: state[key]=world.get(key)
 	for key in RIG_FIELDS: rig[key]=world.angler.get(key)
+	state.npc_fishes=NPCPublic.capture(world.npc_fishes)
 	state.rules=Rules.normalize(world.rules)
 	state.net_action=_pick(world.net_action,NET_FIELDS)
 	state.qte_timing=_pick(world.qte_timing,QTE_FIELDS)
@@ -98,7 +101,7 @@ static func capture(world: Node2D) -> Dictionary:
 		state.baits.append(visual)
 	# The flashing warning is visible; upcoming cycle timing and reserve order are not.
 	state.cycle_slot=world.cycle_slot if world.cycle_phase=="warning" else -1
-	return bytes_to_var(var_to_bytes({"format":FORMAT,"schema":SCHEMA,"bait_profile_version":BAIT_PROFILE_VERSION,"map_id":MAP_ID,"role":"fish","state":state,"rig":rig}))
+	return bytes_to_var(var_to_bytes({"format":FORMAT,"schema":SCHEMA,"bait_profile_version":BAIT_PROFILE_VERSION,"npc_profile_version":NPC_PROFILE_VERSION,"map_id":MAP_ID,"role":"fish","state":state,"rig":rig}))
 
 static func _keys(values: Dictionary, fields: Array) -> bool:
 	if values.size()!=fields.size(): return false
@@ -119,20 +122,23 @@ static func _properties(object: Object, values: Dictionary, fields: Array) -> bo
 	return true
 
 static func valid(world: Node2D, snapshot: Dictionary) -> bool:
-	if not _keys(snapshot,["format","schema","bait_profile_version","map_id","role","state","rig"]): return false
+	if not _keys(snapshot,["format","schema","bait_profile_version","npc_profile_version","map_id","role","state","rig"]): return false
+	if not snapshot.npc_profile_version is int or snapshot.npc_profile_version!=NPC_PROFILE_VERSION: return false
+	if not snapshot.schema is int: return false
 	if not snapshot.bait_profile_version is int or snapshot.bait_profile_version!=BAIT_PROFILE_VERSION: return false
 	if snapshot.format!=FORMAT or snapshot.schema!=SCHEMA or snapshot.map_id!=MAP_ID or snapshot.role!="fish" or not Protocol.safe_values(snapshot): return false
 	if not snapshot.state is Dictionary or not snapshot.rig is Dictionary: return false
 	var state: Dictionary=snapshot.state
 	var rig: Dictionary=snapshot.rig
 	if not _properties(world,state,STATE_FIELDS) or not _properties(world.angler,rig,RIG_FIELDS): return false
+	if not NPCPublic.valid(state.npc_fishes,state.fish_id): return false
 	if not Rules.valid(state.rules): return false
 	if not _record(state.qte_timing,Rules.qte(Rules.defaults(),"entry"),QTE_FIELDS): return false
 	if state.qte_timing.lead<0 or state.qte_timing.lead>2 or state.qte_timing.sweep<0.5 or state.qte_timing.sweep>8: return false
 	if state.qte_timing.window<0.04 or state.qte_timing.window>2 or state.qte_timing.window>state.qte_timing.sweep*0.8+0.000001 or state.qte_timing.zone<0.099 or state.qte_timing.zone>0.9: return false
 	if not _record(state.net_action,world.Net.fresh(),NET_FIELDS): return false
 	if state.net_action.age<0 or state.net_action.slow_age<0 or state.net_action.impulse.length()>1000: return false
-	if state.fish_id<=0 or state.rod_id<=0 or state.simulation_tick<0: return false
+	if state.fish_id!=1 or state.rod_id<=0 or state.simulation_tick<0: return false
 	if not state.caution_state in ["CALM","UNEASY","ALARMED"] or state.instinct_drive<0 or state.instinct_drive>1: return false
 	if state.bite_cooldown<0 or state.bite_cooldown>state.rules.bite_cooldown+0.000001 or state.bite_feedback_age<0 or state.bite_feedback_age>world.BITE_FEEDBACK_SECONDS+0.000001: return false
 	if state.satiety<0 or state.satiety>100 or state.stamina<0 or state.stamina>state.rules.stamina_max: return false
@@ -214,6 +220,8 @@ static func apply(world: Node2D, snapshot: Dictionary) -> bool:
 	world.focus_bait_id=-1
 	world.supply_queue.clear()
 	world.counted.clear()
+	world.next_fish_id=2
+	world.hook_target_fish_id=-1
 	world.next_bait_id=1
 	world.next_hook_id=1
 	world.bait_batch=0

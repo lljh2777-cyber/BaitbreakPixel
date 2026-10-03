@@ -25,7 +25,7 @@ class CaptureContractTests(unittest.TestCase):
         self.assertIn("phase01_native.gd", producers)
         self.assertIn("phase02_bite_native.gd", producers)
         self.assertIn("phase02_bait_native.gd", producers)
-        self.assertEqual(len(producers), 34)
+        self.assertEqual(len(producers), 35)
 
     def test_capture_success_cannot_overwrite_failure(self):
         for script in sorted((ROOT / "tests").glob("*.gd")):

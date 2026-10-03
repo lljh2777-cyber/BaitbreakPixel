@@ -42,6 +42,7 @@ static func draw(view: Node2D, world: Node2D, t: float) -> void:
 				var p := origin.lerp(top,leaf/4.0).round()
 				view.draw_line(p,p+Vector2(7 if (leaf+stem)%2 else -7,-6),Color("3c746d"),1)
 	view.draw_rect(Rect2(0,Layout.FLOOR,Layout.SIZE.x,30),Color("405b59"))
+	view.shore.draw_observed_npcs(view,world)
 	# Silhouettes are approximate in position and contain no face, stamina or food detail.
 	var visibility := Net.visibility(world,world.fish)
 	if visibility>0.02:

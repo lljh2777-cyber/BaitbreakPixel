@@ -4,6 +4,9 @@ extends RefCounted
 const Lake = preload("res://assets/first_person/sunset_lake.png")
 const LineMotion = preload("res://scripts/line_motion.gd")
 const Layout = preload("res://scripts/pond_layout.gd")
+const Art = preload("res://scripts/pixel_art.gd")
+const NPCFishPublic = preload("res://scripts/npc_fish_public_state.gd")
+const Net = preload("res://scripts/net_simulation.gd")
 const Hand = preload("res://scripts/angler_hand.gd")
 const ReelHand = preload("res://scripts/reel_hand.gd")
 var hand := Hand.new()
@@ -147,6 +150,7 @@ func _underwater(view: Node2D, world: Node2D, t: float) -> void:
 		if not bait.active or bait.removed: continue
 		var p := to_screen(view._bait_point(bait_index,bait.pos),world)
 		view.draw_circle(p,2.5,Color(0.65,0.64,0.41,0.11))
+	_ambient_fishes(view,world,t)
 	var position := to_screen(world.fish,world)+Vector2(sin(t*1.3)*1.2,cos(t*1.7)*0.5)
 	var direction: Vector2=(to_screen(world.fish+world.aim)-to_screen(world.fish)).normalized()
 	var fish_shape := PackedVector2Array([Vector2(12,0),Vector2(5,-4),Vector2(-5,-4),Vector2(-9,-2),Vector2(-15,-5),Vector2(-13,0),Vector2(-15,5),Vector2(-9,2),Vector2(-5,4),Vector2(5,4)])
@@ -168,6 +172,29 @@ func _underwater(view: Node2D, world: Node2D, t: float) -> void:
 		var depth := clampf((world.fish.y-80)/220,0,1)
 		_ghost(view,fish_shape,lerpf(0.44,0.17,depth)*(0.86+sin(t*1.6)*0.14))
 	# No eyes, hook-tip markers, bait particles, nest markers or exact opponent status above water.
+
+func _ambient_fishes(view: Node2D, world: Node2D, t: float) -> void:
+	for fish: Dictionary in NPCFishPublic.capture(world.npc_fishes):
+		var source: Vector2=fish.position
+		var phase: float=t*1.3+int(fish.fish_id)*1.71
+		var position:=to_screen(source,world)+Vector2(sin(phase)*1.2,cos(phase*1.3)*0.5)
+		var direction: Vector2=(to_screen(source+Vector2(fish.aim),world)-to_screen(source,world)).normalized()
+		var shape:=Art.npc_shadow(int(fish.visual_variant))
+		for index in shape.size(): shape[index]=position+shape[index].rotated(direction.angle())
+		var depth:=clampf((source.y-80)/220,0,1)
+		_ghost(view,shape,lerpf(0.44,0.17,depth)*(0.86+sin(phase)*0.14)*0.72)
+
+static func draw_observed_npcs(view: Node2D, world: Node2D) -> void:
+	# Same visibility and approximate 3 px location as the existing player
+	# silhouette. No eyes, identity marker, exact mouth, or private AI status.
+	for fish: Dictionary in NPCFishPublic.capture(world.npc_fishes):
+		var visibility:=Net.visibility(world,Vector2(fish.position))
+		if visibility<=0.02: continue
+		var position: Vector2=Vector2(fish.position).snapped(Vector2(3,3))
+		var facing: float=-1.0 if Vector2(fish.aim).x<0 else 1.0
+		var shape:=Art.npc_shadow(int(fish.visual_variant))
+		for index in shape.size(): shape[index]=position+shape[index]*Vector2(facing,1)
+		view.draw_colored_polygon(shape,Color(0.06,0.18,0.23,visibility*0.5))
 
 func _water(view: Node2D, world: Node2D, t: float) -> void:
 	for index in 95:

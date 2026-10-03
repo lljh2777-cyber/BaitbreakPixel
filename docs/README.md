@@ -1,3 +1,5 @@
+- [0.25.0 环境鱼架构](architecture/PHASE03-AMBIENT-FISH.md) · [验证与人工试玩](test-reports/PHASE03-AMBIENT-VALIDATION-0.25.0.md)
+
 # 文档导航
 
 [返回项目首页](../README.md)

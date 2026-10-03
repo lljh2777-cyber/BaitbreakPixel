@@ -1,0 +1,55 @@
+extends RefCounted
+
+# Keep the established angler protocol for pre-Phase-3 systems, but carry no NPC
+# brain/replay data. Authority snapshots remain a separate, exact replay contract.
+const World=preload("res://scripts/world_simulation.gd")
+const Snapshot=preload("res://scripts/world_snapshot.gd")
+const NPCPublic=preload("res://scripts/npc_fish_public_state.gd")
+const Protocol=preload("res://scripts/network_protocol.gd")
+const FORMAT := "angler-presentation"
+const NPC_PROFILE_VERSION := 1
+const FIELDS := ["format","role","npc_profile_version","schema","bait_profile_version","map_id","state","rig","rng_seed","rng_state"]
+
+static func capture(world: Node2D) -> Dictionary:
+	var snapshot: Dictionary=world.capture_snapshot()
+	snapshot.format=FORMAT
+	snapshot.role="angler"
+	snapshot.npc_profile_version=NPC_PROFILE_VERSION
+	snapshot.state.npc_fishes=NPCPublic.capture(world.npc_fishes)
+	snapshot.state.erase("next_fish_id")
+	snapshot.state.erase("hook_target_fish_id")
+	return snapshot
+
+static func _authority(snapshot: Dictionary) -> Dictionary:
+	if snapshot.size()!=FIELDS.size(): return {}
+	for key: String in FIELDS:
+		if not snapshot.has(key): return {}
+	if snapshot.format!=FORMAT or snapshot.role!="angler" or not snapshot.npc_profile_version is int or snapshot.npc_profile_version!=NPC_PROFILE_VERSION: return {}
+	if not snapshot.schema is int or not snapshot.state is Dictionary or not Protocol.safe_values(snapshot): return {}
+	if not snapshot.state.get("fish_id") is int or not NPCPublic.valid(snapshot.state.get("npc_fishes"),snapshot.state.fish_id): return {}
+	if snapshot.state.size()!=Snapshot.WORLD_FIELDS.size()-2: return {}
+	for key: String in Snapshot.WORLD_FIELDS:
+		if key not in ["next_fish_id","hook_target_fish_id"] and not snapshot.state.has(key): return {}
+	if snapshot.state.has("next_fish_id") or snapshot.state.has("hook_target_fish_id"): return {}
+	# Validate the unchanged existing authority fields using their established
+	# schema. Do not fabricate private NPC state or retain locally generated AI.
+	var result: Dictionary=bytes_to_var(var_to_bytes(snapshot))
+	result.erase("format"); result.erase("role"); result.erase("npc_profile_version")
+	result.state.npc_fishes=[]
+	result.state.next_fish_id=2
+	result.state.hook_target_fish_id=-1
+	return result
+
+static func valid(_world: Node2D, snapshot: Dictionary) -> bool:
+	var authority:=_authority(snapshot)
+	if authority.is_empty(): return false
+	var probe:=World.new()
+	var accepted: bool=probe.restore_snapshot(authority)
+	probe.free()
+	return accepted
+
+static func apply(world: Node2D, snapshot: Dictionary) -> bool:
+	var authority:=_authority(snapshot)
+	if authority.is_empty() or not world.restore_snapshot(authority): return false
+	world.npc_fishes.assign(NPCPublic.capture(snapshot.state.npc_fishes))
+	return true

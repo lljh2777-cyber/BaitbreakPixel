@@ -579,6 +579,46 @@
       "timeout_seconds": 120,
       "pack_compatible": false,
       "pack_reason": "Observation-only benchmark policy source is in tools/, intentionally excluded from release PCK."
+    },
+    "phase03_npc_observation": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "phase03_npc_native": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 120
+    },
+    "phase03_npc_network": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "phase03_npc_rng": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "phase03_npc_entities": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "phase03_npc_snapshot": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "phase03_npc_ambient": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 180
+    },
+    "phase03_npc_statistics": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
     }
   }
 }

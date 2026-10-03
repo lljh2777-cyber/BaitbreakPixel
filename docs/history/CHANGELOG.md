@@ -1,3 +1,11 @@
+# 2026-10-03 · v0.25.0 多鱼基础与环境鱼
+
+- 用户已人工确认 Phase 2 手感合适；本轮只进入 P3.0+P3.1，完成后停在环境鱼人工门
+- 保留玩家 scalar authority；新增稳定 NPC ID、独立 RNG、WANDER/边界回避/软避让，默认 3 条，开发参数 0–6
+- Observation 泛化、schema15 完整重放、两种客户端 NPC 公共投影和按 ID 插值；隐藏钩信息纪律保持
+- 环境鱼采用较小低饱和度轮廓，玩家仍是主角，岸边沿用可见性规则；无抢食、警惕、NPC Hook/抄网或多竿
+- 仅提交推送源码，无新 ZIP/Release；[验证与人工清单](../test-reports/PHASE03-AMBIENT-VALIDATION-0.25.0.md)
+
 # 2026-10-03 · v0.24.6 Windows 试玩包发布
 
 已发布 [v0.24.6](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.24.6)，包含 10 px 自动咬食、0.80 秒重复冷却及个人规则修订 3 迁移。Windows 当前源码回归、针对性独立包画面及 EXE 启动通过；本次未重跑完整平衡实验，Phase 2 最终人工门继续开放，未推进 Phase 3。验证范围与校验值见[发布记录](../test-reports/GITHUB-RELEASE-0.24.6.md)。后文“未打包”保留原开发阶段状态。

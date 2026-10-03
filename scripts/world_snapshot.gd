@@ -3,13 +3,15 @@ extends RefCounted
 # Explicit, versioned value schema. Local views, input sources and profiles are excluded.
 const Rules = preload("res://scripts/game_rules.gd")
 const FoodProfile = preload("res://scripts/food_profile.gd")
-const SCHEMA := 14
-# Schema 14 remains the authority contract. This mandatory extension guard rejects
+const NPCFishState = preload("res://scripts/npc_fish_state.gd")
+const SCHEMA := 15
+# Schema 15 adds separate NPC authority. This mandatory extension guard rejects
 # earlier feeding physics even without a network exact-build handshake.
 const BAIT_PROFILE_VERSION := 3
 const MAP_ID := "pond_v2"
 const WORLD_FIELDS: Array[String] = [
 	"fish_id", "rod_id", "next_bait_id", "next_hook_id",
+	"next_fish_id", "npc_fishes", "hook_target_fish_id",
 	"rules",
 	"net_action",
 	"qte_timing",
@@ -258,6 +260,11 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 	var bait_ids: Dictionary={}
 	var hook_ids: Dictionary={}
 	var grain_ids: Dictionary={}
+	if state.fish_id!=1 or state.next_fish_id<2 or state.hook_target_fish_id!=-1 or state.npc_fishes.size()>NPCFishState.MAX_COUNT: return false
+	var npc_ids: Dictionary={}
+	for npc in state.npc_fishes:
+		if not NPCFishState.valid(npc,state.next_fish_id) or npc_ids.has(npc.fish_id): return false
+		npc_ids[npc.fish_id]=true
 	if state.fish_id<=0 or state.rod_id<=0 or state.next_bait_id<=0 or state.next_hook_id<=0: return false
 	for bait in state.baits:
 		if not bait is Dictionary or not bait.get("grains") is Array or bait.grains.size()>2048: return false
