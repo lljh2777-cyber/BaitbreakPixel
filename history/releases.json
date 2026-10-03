@@ -1500,6 +1500,18 @@
       "test_report": "docs/test-reports/GITHUB-RELEASE-0.25.0.md",
       "development_report": "docs/test-reports/PHASE03-AMBIENT-VALIDATION-0.25.0.md",
       "github_release_published_at_report": true
+    },
+    {
+      "version": "0.25.1",
+      "source_commit": "64c87bc4a189e6459c8834a8d3d4fdb52558b015",
+      "pack_bytes": 2340488,
+      "pack_sha256": "a7d7195c19e065e353f323faab97b6b999de8caaecd7afa506bce1bf67ed16d4",
+      "zip_bytes": 89618969,
+      "zip_sha256": "c1d544982899ca6334a9529bc018b34d1060a5458bfcd1b3115b706c36d52a14",
+      "report_date": "2026-10-03",
+      "test_report": "docs/watergen/WG3_REPORT.md",
+      "development_report": "docs/watergen/WG3_README.md",
+      "github_release_published_at_report": false
     }
   ],
   "public_release_snapshot_history": [

@@ -1,0 +1,62 @@
+{
+  "animation_count": 18,
+  "cache_key": "2997d16ac6ed12ca8d1d51aac078fea0867d0e7dab3ac601cd28f3aa831e42a3",
+  "layers": {
+    "distance": {
+      "height": 508,
+      "origin_px": [
+        -145,
+        -14
+      ],
+      "rgba_sha256": "5d02cb8faabba010b3cb2452fdb21195a0707f8ede527b7fdf1ca95f8a5b78da",
+      "width": 1570
+    },
+    "floor": {
+      "height": 480,
+      "origin_px": [
+        0,
+        0
+      ],
+      "rgba_sha256": "e359a37339dd03f1da0df115ec1e6c797485e8b944fcad5014c691dfcdcccb87",
+      "width": 1280
+    },
+    "foreground": {
+      "height": 480,
+      "origin_px": [
+        -33,
+        0
+      ],
+      "rgba_sha256": "007627b02345525b9c90f5df4e0aab15d5f349d7d3d73d10782782cfd53dec36",
+      "width": 1346
+    },
+    "surface": {
+      "height": 496,
+      "origin_px": [
+        -88,
+        -8
+      ],
+      "rgba_sha256": "e8e51a1c62445133668b831759edcbb105382329484db71ae7e9ae906c406e70",
+      "width": 1456
+    },
+    "terrain": {
+      "height": 494,
+      "origin_px": [
+        -43,
+        -7
+      ],
+      "rgba_sha256": "dc6c5bc6512702303ba151856ddbaae09f6622e59a3e0f8ea74bcec76d8bb8b9",
+      "width": 1366
+    },
+    "water": {
+      "height": 480,
+      "origin_px": [
+        0,
+        0
+      ],
+      "rgba_sha256": "b96d9f0a339f0a1fc3c788873f8a68ae7a295db50825d2145d2b9ab22cbf5ead",
+      "width": 1280
+    }
+  },
+  "plan_sha256": "8150c95dc7996cfd8a0ad5d4dfa580ed0aae3800c2bb61c165f25a50efc84f9b",
+  "texture_count": 7
+}

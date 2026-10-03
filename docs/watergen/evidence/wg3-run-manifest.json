@@ -1,0 +1,2510 @@
+{
+  "format": "baitbreak-watergen-run-manifest",
+  "template_only": false,
+  "task_id": "WG-3",
+  "authorized_stage": "WG-3 optional local fish playtest",
+  "base_commit": "c1e3946f0b8cf1afa7becf2b238c8297efda5dc8",
+  "tested_commit": "64c87bc4a189e6459c8834a8d3d4fdb52558b015",
+  "dirty": false,
+  "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "engine_version": "4.7.2-stable (official) ed1daf0bf001b61586d9930840f2f1394092c079",
+  "os": "Windows",
+  "renderer": "gl_compatibility / OpenGL 3.3 / AMD Radeon(TM) Graphics",
+  "generator_version": "wg-2.1",
+  "profile_id": "forest_pond_v1",
+  "profile_sha256": "64ab73ec313938ec12a4135d40ac1e0b623180345015b0110a46e6dca5c542b0",
+  "map_public_sha256": "ce6bd84149877c461f1765497b7aa7b58fe8e80abf74965e45b406824ac31b1d",
+  "visual_seed": 713284,
+  "camera_offsets_px": [
+    [
+      0,
+      0
+    ],
+    [
+      320,
+      47
+    ],
+    [
+      640,
+      120
+    ],
+    [
+      0,
+      120
+    ],
+    [
+      640,
+      0
+    ]
+  ],
+  "commands": [
+    {
+      "run": "wg3-current-final",
+      "suite": "import",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--editor",
+        "--import",
+        "--quit"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "architecture_v020",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\architecture_v020-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/architecture_v020.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\architecture_v020"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "bait_suction_v0212",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\bait_suction_v0212-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/bait_suction_v0212.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\bait_suction_v0212"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "effort_v013",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\effort_v013-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/effort_v013.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\effort_v013"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "feeding_feel_v022",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\feeding_feel_v022-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/feeding_feel_v022.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\feeding_feel_v022"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "feeding_movement_v0221",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\feeding_movement_v0221-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/feeding_movement_v0221.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\feeding_movement_v0221"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "fish_orbit_v021",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\fish_orbit_v021-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/fish_orbit_v021.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\fish_orbit_v021"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "grass_binding_v021",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\grass_binding_v021-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/grass_binding_v021.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\grass_binding_v021"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "line_motion_v021",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\line_motion_v021-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/line_motion_v021.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\line_motion_v021"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "net_animation_v0201",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\net_animation_v0201-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/net_animation_v0201.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\net_animation_v0201"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "net_network_v020",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\net_network_v020-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/net_network_v020.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\net_network_v020"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "net_network_v021",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\net_network_v021-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/net_network_v021.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\net_network_v021"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "net_v021",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\net_v021-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/net_v021.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\net_v021"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "network_rules_v012",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\network_rules_v012-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/network_rules_v012.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\network_rules_v012"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "obstacle_art",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\obstacle_art-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/obstacle_art.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\obstacle_art"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "plant_art",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\plant_art-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/plant_art.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\plant_art"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "pond_v021",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\pond_v021-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/pond_v021.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\pond_v021"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "reeling_v0122",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\reeling_v0122-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/reeling_v0122.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\reeling_v0122"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "rod_load_v017",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\rod_load_v017-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/rod_load_v017.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\rod_load_v017"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "rules_network_v019",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\rules_network_v019-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/rules_network_v019.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\rules_network_v019"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "rules_v020",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\rules_v020-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/rules_v020.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\rules_v020"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "tackle_dynamics_v021",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\tackle_dynamics_v021-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/tackle_dynamics_v021.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\tackle_dynamics_v021"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "untangle_network_v018",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\untangle_network_v018-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/untangle_network_v018.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\untangle_network_v018"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "untangle_v021",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\untangle_v021-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/untangle_v021.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\untangle_v021"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "water_art",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\water_art-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/water_art.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\water_art"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "wood_fade",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\wood_fade-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/wood_fade.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\wood_fade"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "wood_junctions",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\wood_junctions-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/wood_junctions.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\wood_junctions"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase01_entities",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase01_entities-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase01_entities.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase01_entities"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase01_observation",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase01_observation-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase01_observation.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase01_observation"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase01_statistics",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase01_statistics-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase01_statistics.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase01_statistics"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase01_satiety",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase01_satiety-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase01_satiety.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase01_satiety"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase01_instinct",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase01_instinct-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase01_instinct.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase01_instinct"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase01_suspicion",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase01_suspicion-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase01_suspicion.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase01_suspicion"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase01_random_hooks",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase01_random_hooks-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase01_random_hooks.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase01_random_hooks"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase01_policies",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase01_policies-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase01_policies.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase01_policies"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase01_network",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase01_network-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase01_network.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase01_network"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase15_controls",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase15_controls-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase15_controls.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase15_controls"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase02_bite",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase02_bite-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase02_bite.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase02_bite"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase02_bite_network",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase02_bite_network-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase02_bite_network.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase02_bite_network"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase02_bait_types",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase02_bait_types-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase02_bait_types.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase02_bait_types"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase02_food_profiles",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase02_food_profiles-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase02_food_profiles.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase02_food_profiles"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase02_observation",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase02_observation-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase02_observation.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase02_observation"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase02_bait_network",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase02_bait_network-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase02_bait_network.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase02_bait_network"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase02_feeding_balance",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase02_feeding_balance-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase02_feeding_balance.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase02_feeding_balance"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase02_feeding_policies",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase02_feeding_policies-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase02_feeding_policies.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase02_feeding_policies"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase03_npc_observation",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase03_npc_observation-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase03_npc_observation.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase03_npc_observation"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase03_npc_network",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase03_npc_network-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase03_npc_network.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase03_npc_network"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase03_npc_rng",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase03_npc_rng-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase03_npc_rng.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase03_npc_rng"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase03_npc_entities",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase03_npc_entities-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase03_npc_entities.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase03_npc_entities"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase03_npc_snapshot",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase03_npc_snapshot-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase03_npc_snapshot.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase03_npc_snapshot"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase03_npc_ambient",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase03_npc_ambient-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase03_npc_ambient.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase03_npc_ambient"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "phase03_npc_statistics",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\phase03_npc_statistics-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase03_npc_statistics.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\phase03_npc_statistics"
+      ]
+    },
+    {
+      "run": "wg3-current-final",
+      "suite": "watergen_integration",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\watergen_integration-engine.log",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/watergen_integration.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-current-final\\captures\\watergen_integration"
+      ]
+    },
+    {
+      "run": "wg3-native-final",
+      "suite": "bait_suction_native_v0211",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\bait_suction_native_v0211-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/bait_suction_native_v0211.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\captures\\bait_suction_native_v0211"
+      ]
+    },
+    {
+      "run": "wg3-native-final",
+      "suite": "bait_suction_native_v0212",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\bait_suction_native_v0212-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/bait_suction_native_v0212.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\captures\\bait_suction_native_v0212"
+      ]
+    },
+    {
+      "run": "wg3-native-final",
+      "suite": "effort_native_v013",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\effort_native_v013-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/effort_native_v013.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\captures\\effort_native_v013"
+      ]
+    },
+    {
+      "run": "wg3-native-final",
+      "suite": "feeding_feel_native_v022",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\feeding_feel_native_v022-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/feeding_feel_native_v022.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\captures\\feeding_feel_native_v022"
+      ]
+    },
+    {
+      "run": "wg3-native-final",
+      "suite": "hand_joint_native_v0156",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\hand_joint_native_v0156-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/hand_joint_native_v0156.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\captures\\hand_joint_native_v0156"
+      ]
+    },
+    {
+      "run": "wg3-native-final",
+      "suite": "net_native_v020",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\net_native_v020-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/net_native_v020.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\captures\\net_native_v020"
+      ]
+    },
+    {
+      "run": "wg3-native-final",
+      "suite": "obstacle_visuals_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\obstacle_visuals_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/obstacle_visuals_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\captures\\obstacle_visuals_native"
+      ]
+    },
+    {
+      "run": "wg3-native-final",
+      "suite": "pond_native_v021",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\pond_native_v021-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/pond_native_v021.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\captures\\pond_native_v021"
+      ]
+    },
+    {
+      "run": "wg3-native-final",
+      "suite": "reel_hand_native_v016",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\reel_hand_native_v016-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/reel_hand_native_v016.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\captures\\reel_hand_native_v016"
+      ]
+    },
+    {
+      "run": "wg3-native-final",
+      "suite": "reeling_native_v0122",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\reeling_native_v0122-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/reeling_native_v0122.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\captures\\reeling_native_v0122"
+      ]
+    },
+    {
+      "run": "wg3-native-final",
+      "suite": "rules_native_v019",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\rules_native_v019-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/rules_native_v019.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\captures\\rules_native_v019"
+      ]
+    },
+    {
+      "run": "wg3-native-final",
+      "suite": "untangle_native_v018",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\untangle_native_v018-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/untangle_native_v018.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\captures\\untangle_native_v018"
+      ]
+    },
+    {
+      "run": "wg3-native-final",
+      "suite": "visuals",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\visuals-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/visuals.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\captures\\visuals"
+      ]
+    },
+    {
+      "run": "wg3-native-final",
+      "suite": "water_scenery_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\water_scenery_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/water_scenery_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\captures\\water_scenery_native"
+      ]
+    },
+    {
+      "run": "wg3-native-final",
+      "suite": "wood_fade_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\wood_fade_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/wood_fade_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\captures\\wood_fade_native"
+      ]
+    },
+    {
+      "run": "wg3-native-final",
+      "suite": "phase01_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\phase01_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase01_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\captures\\phase01_native"
+      ]
+    },
+    {
+      "run": "wg3-native-final",
+      "suite": "phase15_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\phase15_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase15_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\captures\\phase15_native"
+      ]
+    },
+    {
+      "run": "wg3-native-final",
+      "suite": "phase02_bite_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\phase02_bite_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase02_bite_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\captures\\phase02_bite_native"
+      ]
+    },
+    {
+      "run": "wg3-native-final",
+      "suite": "phase02_bait_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\phase02_bait_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase02_bait_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\captures\\phase02_bait_native"
+      ]
+    },
+    {
+      "run": "wg3-native-final",
+      "suite": "phase03_npc_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\phase03_npc_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase03_npc_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\captures\\phase03_npc_native"
+      ]
+    },
+    {
+      "run": "wg3-native-final",
+      "suite": "watergen_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\watergen_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/watergen_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-native-final\\captures\\watergen_native"
+      ]
+    },
+    {
+      "run": "wg3-generated-final",
+      "suite": "bait_suction_native_v0211",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\bait_suction_native_v0211-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/bait_suction_native_v0211.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\captures\\bait_suction_native_v0211",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-generated-final",
+      "suite": "bait_suction_native_v0212",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\bait_suction_native_v0212-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/bait_suction_native_v0212.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\captures\\bait_suction_native_v0212",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-generated-final",
+      "suite": "effort_native_v013",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\effort_native_v013-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/effort_native_v013.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\captures\\effort_native_v013",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-generated-final",
+      "suite": "feeding_feel_native_v022",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\feeding_feel_native_v022-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/feeding_feel_native_v022.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\captures\\feeding_feel_native_v022",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-generated-final",
+      "suite": "hand_joint_native_v0156",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\hand_joint_native_v0156-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/hand_joint_native_v0156.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\captures\\hand_joint_native_v0156",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-generated-final",
+      "suite": "net_native_v020",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\net_native_v020-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/net_native_v020.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\captures\\net_native_v020",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-generated-final",
+      "suite": "obstacle_visuals_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\obstacle_visuals_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/obstacle_visuals_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\captures\\obstacle_visuals_native",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-generated-final",
+      "suite": "pond_native_v021",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\pond_native_v021-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/pond_native_v021.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\captures\\pond_native_v021",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-generated-final",
+      "suite": "reel_hand_native_v016",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\reel_hand_native_v016-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/reel_hand_native_v016.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\captures\\reel_hand_native_v016",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-generated-final",
+      "suite": "reeling_native_v0122",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\reeling_native_v0122-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/reeling_native_v0122.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\captures\\reeling_native_v0122",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-generated-final",
+      "suite": "rules_native_v019",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\rules_native_v019-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/rules_native_v019.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\captures\\rules_native_v019",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-generated-final",
+      "suite": "untangle_native_v018",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\untangle_native_v018-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/untangle_native_v018.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\captures\\untangle_native_v018",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-generated-final",
+      "suite": "visuals",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\visuals-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/visuals.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\captures\\visuals",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-generated-final",
+      "suite": "water_scenery_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\water_scenery_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/water_scenery_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\captures\\water_scenery_native",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-generated-final",
+      "suite": "wood_fade_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\wood_fade_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/wood_fade_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\captures\\wood_fade_native",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-generated-final",
+      "suite": "phase01_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\phase01_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase01_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\captures\\phase01_native",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-generated-final",
+      "suite": "phase15_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\phase15_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase15_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\captures\\phase15_native",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-generated-final",
+      "suite": "phase02_bite_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\phase02_bite_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase02_bite_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\captures\\phase02_bite_native",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-generated-final",
+      "suite": "phase02_bait_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\phase02_bait_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase02_bait_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\captures\\phase02_bait_native",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-generated-final",
+      "suite": "phase03_npc_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\phase03_npc_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--script",
+        "res://tests/phase03_npc_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-generated-final\\captures\\phase03_npc_native",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-pack-focused",
+      "suite": "watergen_integration",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-focused\\watergen_integration-engine.log",
+        "--headless",
+        "--main-pack",
+        "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\watergen_integration.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-focused\\captures\\watergen_integration"
+      ]
+    },
+    {
+      "run": "wg3-pack-focused",
+      "suite": "watergen_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-focused\\watergen_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--main-pack",
+        "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\watergen_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-focused\\captures\\watergen_native"
+      ]
+    },
+    {
+      "run": "wg3-pack-generated",
+      "suite": "bait_suction_native_v0211",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\bait_suction_native_v0211-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--main-pack",
+        "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\bait_suction_native_v0211.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\captures\\bait_suction_native_v0211",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-pack-generated",
+      "suite": "bait_suction_native_v0212",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\bait_suction_native_v0212-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--main-pack",
+        "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\bait_suction_native_v0212.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\captures\\bait_suction_native_v0212",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-pack-generated",
+      "suite": "effort_native_v013",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\effort_native_v013-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--main-pack",
+        "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\effort_native_v013.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\captures\\effort_native_v013",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-pack-generated",
+      "suite": "feeding_feel_native_v022",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\feeding_feel_native_v022-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--main-pack",
+        "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\feeding_feel_native_v022.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\captures\\feeding_feel_native_v022",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-pack-generated",
+      "suite": "hand_joint_native_v0156",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\hand_joint_native_v0156-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--main-pack",
+        "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\hand_joint_native_v0156.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\captures\\hand_joint_native_v0156",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-pack-generated",
+      "suite": "net_native_v020",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\net_native_v020-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--main-pack",
+        "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\net_native_v020.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\captures\\net_native_v020",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-pack-generated",
+      "suite": "obstacle_visuals_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\obstacle_visuals_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--main-pack",
+        "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\obstacle_visuals_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\captures\\obstacle_visuals_native",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-pack-generated",
+      "suite": "pond_native_v021",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\pond_native_v021-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--main-pack",
+        "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\pond_native_v021.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\captures\\pond_native_v021",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-pack-generated",
+      "suite": "reel_hand_native_v016",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\reel_hand_native_v016-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--main-pack",
+        "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\reel_hand_native_v016.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\captures\\reel_hand_native_v016",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-pack-generated",
+      "suite": "reeling_native_v0122",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\reeling_native_v0122-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--main-pack",
+        "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\reeling_native_v0122.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\captures\\reeling_native_v0122",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-pack-generated",
+      "suite": "rules_native_v019",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\rules_native_v019-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--main-pack",
+        "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\rules_native_v019.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\captures\\rules_native_v019",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-pack-generated",
+      "suite": "untangle_native_v018",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\untangle_native_v018-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--main-pack",
+        "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\untangle_native_v018.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\captures\\untangle_native_v018",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-pack-generated",
+      "suite": "visuals",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\visuals-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--main-pack",
+        "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\visuals.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\captures\\visuals",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-pack-generated",
+      "suite": "water_scenery_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\water_scenery_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--main-pack",
+        "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\water_scenery_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\captures\\water_scenery_native",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-pack-generated",
+      "suite": "wood_fade_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\wood_fade_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--main-pack",
+        "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\wood_fade_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\captures\\wood_fade_native",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-pack-generated",
+      "suite": "phase01_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\phase01_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--main-pack",
+        "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\phase01_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\captures\\phase01_native",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-pack-generated",
+      "suite": "phase15_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\phase15_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--main-pack",
+        "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\phase15_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\captures\\phase15_native",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-pack-generated",
+      "suite": "phase02_bite_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\phase02_bite_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--main-pack",
+        "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\phase02_bite_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\captures\\phase02_bite_native",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-pack-generated",
+      "suite": "phase02_bait_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\phase02_bait_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--main-pack",
+        "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\phase02_bait_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\captures\\phase02_bait_native",
+        "--water-appearance=fern"
+      ]
+    },
+    {
+      "run": "wg3-pack-generated",
+      "suite": "phase03_npc_native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\phase03_npc_native-engine.log",
+        "--rendering-method",
+        "gl_compatibility",
+        "--main-pack",
+        "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\phase03_npc_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg3-pack-generated\\captures\\phase03_npc_native",
+        "--water-appearance=fern"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "run": "wg3-current-final",
+      "status": "PASS",
+      "suites": 52,
+      "assertions_passed": 237373,
+      "tested_commit": "fda5d9bd484b57d2a09fb3b297ee8eba69eb1e10"
+    },
+    {
+      "run": "wg3-native-final",
+      "status": "PASS",
+      "suites": 21,
+      "assertions_passed": 599,
+      "tested_commit": "64c87bc4a189e6459c8834a8d3d4fdb52558b015"
+    },
+    {
+      "run": "wg3-generated-final",
+      "status": "PASS",
+      "suites": 20,
+      "assertions_passed": 523,
+      "tested_commit": "64c87bc4a189e6459c8834a8d3d4fdb52558b015"
+    },
+    {
+      "run": "wg3-pack-focused",
+      "status": "PASS",
+      "suites": 2,
+      "assertions_passed": 108,
+      "tested_commit": "64c87bc4a189e6459c8834a8d3d4fdb52558b015"
+    },
+    {
+      "run": "wg3-pack-generated",
+      "status": "PASS",
+      "suites": 20,
+      "assertions_passed": 523,
+      "tested_commit": "64c87bc4a189e6459c8834a8d3d4fdb52558b015"
+    }
+  ],
+  "performance": {
+    "status": "PASS",
+    "measurements": [
+      {
+        "cache_counts": [
+          3,
+          1,
+          1,
+          7
+        ],
+        "engine": {
+          "build": "official",
+          "hash": "ed1daf0bf001b61586d9930840f2f1394092c079",
+          "hex": 263938,
+          "major": 4,
+          "minor": 7,
+          "patch": 2,
+          "status": "stable",
+          "string": "4.7.2-stable (official)",
+          "timestamp": 0
+        },
+        "gpu": "AMD Radeon(TM) Graphics",
+        "measurement": "Frame intervals include pacing/scheduling. draw_cpu_us times inherited production _draw command submission, not GPU execution.",
+        "preparation_us": {
+          "bake": 731713,
+          "plan": 6406,
+          "upload_api": 26644
+        },
+        "renderer": "gl_compatibility",
+        "run": "wg3-native-final",
+        "metrics": [
+          {
+            "generated": false,
+            "draw_cpu_us": {
+              "n": 180,
+              "median": 2384.5,
+              "p95": 2824
+            },
+            "frame_interval_us": {
+              "n": 180,
+              "median": 33923.5,
+              "p95": 34994
+            }
+          },
+          {
+            "generated": true,
+            "draw_cpu_us": {
+              "n": 180,
+              "median": 2679.5,
+              "p95": 3183
+            },
+            "frame_interval_us": {
+              "n": 180,
+              "median": 34167.0,
+              "p95": 35525
+            }
+          }
+        ]
+      },
+      {
+        "cache_counts": [
+          3,
+          1,
+          1,
+          7
+        ],
+        "engine": {
+          "build": "official",
+          "hash": "ed1daf0bf001b61586d9930840f2f1394092c079",
+          "hex": 263938,
+          "major": 4,
+          "minor": 7,
+          "patch": 2,
+          "status": "stable",
+          "string": "4.7.2-stable (official)",
+          "timestamp": 0
+        },
+        "gpu": "AMD Radeon(TM) Graphics",
+        "measurement": "Frame intervals include pacing/scheduling. draw_cpu_us times inherited production _draw command submission, not GPU execution.",
+        "preparation_us": {
+          "bake": 726661,
+          "plan": 6576,
+          "upload_api": 27710
+        },
+        "renderer": "gl_compatibility",
+        "run": "wg3-pack-focused",
+        "metrics": [
+          {
+            "generated": false,
+            "draw_cpu_us": {
+              "n": 180,
+              "median": 2368.0,
+              "p95": 2923
+            },
+            "frame_interval_us": {
+              "n": 180,
+              "median": 33862.5,
+              "p95": 34934
+            }
+          },
+          {
+            "generated": true,
+            "draw_cpu_us": {
+              "n": 180,
+              "median": 2556.0,
+              "p95": 3101
+            },
+            "frame_interval_us": {
+              "n": 180,
+              "median": 34077.5,
+              "p95": 35262
+            }
+          }
+        ]
+      }
+    ],
+    "limits": "CPU submission and paced native test intervals only, not GPU execution or a 60 FPS claim."
+  },
+  "screenshots": [
+    "docs/watergen/images/wg3-playtest.png",
+    "docs/watergen/images/wg3-settings.png",
+    "docs/watergen/images/wg3-wrapping.png"
+  ],
+  "human_acceptance": {
+    "status": "NOT_RUN",
+    "confirmation_reference": null,
+    "integration_authorization": "2026-10-03 user: 可接入试玩",
+    "seed_choice": "user: 沿用 713284"
+  },
+  "rollback_instructions": "Disable 设置 > 蕨叶水域 · 本地小鱼视角; next launch also defaults to legacy. No rules or save rollback needed.",
+  "next_stop_gate": "WAITING_FOR_PLAYTEST"
+}
