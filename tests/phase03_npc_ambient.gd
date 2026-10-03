@@ -17,7 +17,7 @@ func unchanged_legacy(world: Node2D) -> Dictionary:
 
 func patrol_checks() -> void:
 	for seed_value: int in [1,3184,99173]:
-		var w:=World.new(); w.reset_world({"seed":seed_value,"npc_count":6,"ruleset":"duel","rules":{"timer_enabled":false,"hunger_enabled":false}})
+		var w:=World.new(); w.reset_world({"npc_foraging_enabled":false,"seed":seed_value,"npc_count":6,"ruleset":"duel","rules":{"timer_enabled":false,"hunger_enabled":false}})
 		var start: Array[Dictionary]=w.npc_fishes.duplicate(true)
 		var movement_ticks:=0; var decision_ticks:=0
 		for tick in 10800:
@@ -26,7 +26,7 @@ func patrol_checks() -> void:
 			if w.npc_fishes[0].position!=before.position: movement_ticks+=1
 			if w.npc_fishes[0].decision_age>before.decision_age: decision_ticks+=1
 			for npc: Dictionary in w.npc_fishes:
-				check(State.valid(npc,w.next_fish_id),"long patrol remains finite, normalized, in bounds, and WANDER-only seed=%d tick=%d id=%d" % [seed_value,tick,npc.fish_id])
+				check(State.valid(npc,w.next_fish_id) and npc.behavior_state=="WANDER" and not npc.feeding and npc.satiety==100.0,"long patrol remains finite, normalized, in bounds, and WANDER-only seed=%d tick=%d id=%d" % [seed_value,tick,npc.fish_id])
 		check(movement_ticks>10700,"NPC motion integrates each 60 Hz authority tick")
 		check(decision_ticks>1100 and decision_ticks<1600,"brain updates are slower than motion at approximately 0.12 seconds")
 		check(not w.match_over and w.npc_fishes.size()==6,"180-second ambient run does not alter match results or population")
@@ -34,7 +34,7 @@ func patrol_checks() -> void:
 		w.free()
 
 func freeze_checks() -> void:
-	var w:=World.new(); w.reset_world()
+	var w:=World.new(); w.reset_world({"npc_foraging_enabled":false})
 	for tick in 20: w.advance_tick({}, {})
 	w.npc_fishes[0].active=false
 	var inactive: Dictionary=w.npc_fishes[0].duplicate(true)
@@ -54,7 +54,7 @@ func freeze_checks() -> void:
 	w.free()
 
 func separation_checks() -> void:
-	var w:=World.new(); w.reset_world({"npc_count":1})
+	var w:=World.new(); w.reset_world({"npc_foraging_enabled":false,"npc_count":1})
 	w.fish=Vector2(650,200)
 	var npc: Dictionary=w.npc_fishes[0]
 	npc.position=Vector2(655,200); npc.velocity=Vector2.ZERO; npc.aim=Vector2.LEFT
@@ -63,7 +63,7 @@ func separation_checks() -> void:
 	w._tick_npc_fishes(1.0/60)
 	check(npc.steering.x>0,"close player avoidance overrides heading toward player")
 	check(unchanged_legacy(w)==before,"avoidance cannot push player or affect player authority")
-	w.reset_world({"npc_count":2})
+	w.reset_world({"npc_foraging_enabled":false,"npc_count":2})
 	for entry: Dictionary in w.npc_fishes:
 		entry.position=Vector2(700,200); entry.velocity=Vector2.ZERO; entry.aim=Vector2.UP
 		entry.wander_heading=Vector2.UP; entry.steering=Vector2.UP; entry.turn_age=2.0; entry.decision_age=0.0
@@ -73,7 +73,7 @@ func separation_checks() -> void:
 
 func harmless_contact_checks() -> void:
 	for hooked_food: bool in [false,true]:
-		var w:=World.new(); w.reset_world({"npc_count":1,"ruleset":"duel","rules":{"timer_enabled":false,"hunger_enabled":false,"water_strength":0.0}})
+		var w:=World.new(); w.reset_world({"npc_foraging_enabled":false,"npc_count":1,"ruleset":"duel","rules":{"timer_enabled":false,"hunger_enabled":false,"water_strength":0.0}})
 		var npc: Dictionary=w.npc_fishes[0]
 		npc.position=Vector2(650,200); npc.velocity=Vector2.ZERO; npc.steering=Vector2.RIGHT
 		for bait: Dictionary in w.baits:

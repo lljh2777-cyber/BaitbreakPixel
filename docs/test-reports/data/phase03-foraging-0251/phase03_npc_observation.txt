@@ -1,0 +1,212 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=1 hunger=true satiety=0.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=1 hunger=true satiety=0.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=1 hunger=true satiety=10.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=1 hunger=true satiety=10.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=1 hunger=true satiety=30.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=1 hunger=true satiety=30.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=1 hunger=true satiety=80.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=1 hunger=true satiety=80.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=1 hunger=true satiety=100.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=1 hunger=true satiety=100.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=1 hunger=false satiety=0.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=1 hunger=false satiety=0.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=1 hunger=false satiety=10.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=1 hunger=false satiety=10.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=1 hunger=false satiety=30.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=1 hunger=false satiety=30.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=1 hunger=false satiety=80.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=1 hunger=false satiety=80.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=1 hunger=false satiety=100.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=1 hunger=false satiety=100.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=93 hunger=true satiety=0.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=93 hunger=true satiety=0.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=93 hunger=true satiety=10.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=93 hunger=true satiety=10.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=93 hunger=true satiety=30.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=93 hunger=true satiety=30.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=93 hunger=true satiety=80.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=93 hunger=true satiety=80.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=93 hunger=true satiety=100.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=93 hunger=true satiety=100.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=93 hunger=false satiety=0.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=93 hunger=false satiety=0.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=93 hunger=false satiety=10.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=93 hunger=false satiety=10.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=93 hunger=false satiety=30.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=93 hunger=false satiety=30.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=93 hunger=false satiety=80.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=93 hunger=false satiety=80.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=93 hunger=false satiety=100.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=93 hunger=false satiety=100.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=731 hunger=true satiety=0.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=731 hunger=true satiety=0.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=731 hunger=true satiety=10.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=731 hunger=true satiety=10.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=731 hunger=true satiety=30.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=731 hunger=true satiety=30.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=731 hunger=true satiety=80.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=731 hunger=true satiety=80.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=731 hunger=true satiety=100.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=731 hunger=true satiety=100.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=731 hunger=false satiety=0.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=731 hunger=false satiety=0.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=731 hunger=false satiety=10.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=731 hunger=false satiety=10.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=731 hunger=false satiety=30.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=731 hunger=false satiety=30.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=731 hunger=false satiety=80.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=731 hunger=false satiety=80.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=731 hunger=false satiety=100.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=731 hunger=false satiety=100.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=3184 hunger=true satiety=0.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=3184 hunger=true satiety=0.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=3184 hunger=true satiety=10.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=3184 hunger=true satiety=10.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=3184 hunger=true satiety=30.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=3184 hunger=true satiety=30.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=3184 hunger=true satiety=80.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=3184 hunger=true satiety=80.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=3184 hunger=true satiety=100.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=3184 hunger=true satiety=100.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=3184 hunger=false satiety=0.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=3184 hunger=false satiety=0.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=3184 hunger=false satiety=10.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=3184 hunger=false satiety=10.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=3184 hunger=false satiety=30.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=3184 hunger=false satiety=30.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=3184 hunger=false satiety=80.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=3184 hunger=false satiety=80.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=3184 hunger=false satiety=100.0 visuals=true
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | legacy_player_observation_equivalence seed=3184 hunger=false satiety=100.0 visuals=false
+NPC_OBSERVATION_PASS | player observation remains serializable and private
+NPC_OBSERVATION_PASS | player observation never mutates world/RNG/allocators
+NPC_OBSERVATION_PASS | explicit NPC observer retains its own identity and public self
+NPC_OBSERVATION_PASS | build_for has no private/nested observer leakage or side effects
+NPC_OBSERVATION_PASS | NPC distance bands originate at observer rather than player position
+NPC_OBSERVATION_PASS | NPC measures exact public food distance
+NPC_OBSERVATION_PASS | NPC hint-only mode preserves decision fields and order
+NPC_OBSERVATION_PASS | NPC observation is invariant to hidden hook truth, both RNG streams and player private state
+NPC_OBSERVATION_PASS | held observation stays detached after caller moves observer
+NPC_OBSERVATION_PASS | mutating NPC observation cannot alter source records
+NPC_OBSERVATION_PASS | inactive bait nearest loose grain uses NPC observer
+PHASE03_NPC_OBSERVATION_TESTS | passed=209 | failed=0

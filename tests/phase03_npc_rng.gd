@@ -30,7 +30,7 @@ func trace(mode: String, seed_value: int) -> void:
 	var worlds: Array=[]
 	for count: int in [0,3,6]:
 		var w:=World.new()
-		w.reset_world({"seed":seed_value,"ruleset":mode,"npc_count":count,"rules":{"hunger_enabled":false,"timer_enabled":false}})
+		w.reset_world({"npc_foraging_enabled":false,"seed":seed_value,"ruleset":mode,"npc_count":count,"rules":{"hunger_enabled":false,"timer_enabled":false}})
 		worlds.append(w)
 	check(legacy_authority(worlds[0])==legacy_authority(worlds[1]) and legacy_authority(worlds[0])==legacy_authority(worlds[2]),"initial bait truth, IDs, player fields and RNG identical at 0/3/6")
 	var saw_hook:=false; var saw_qte:=false; var saw_refill:=false
@@ -51,7 +51,7 @@ func trace(mode: String, seed_value: int) -> void:
 
 func hidden_truth_checks() -> void:
 	var a:=World.new(); var b:=World.new()
-	a.reset_world({"seed":928,"npc_count":3}); b.reset_world({"seed":928,"npc_count":3})
+	a.reset_world({"npc_foraging_enabled":false,"seed":928,"npc_count":3}); b.reset_world({"npc_foraging_enabled":false,"seed":928,"npc_count":3})
 	for bait: Dictionary in a.baits: bait.hook=false
 	for bait: Dictionary in b.baits: bait.hook=true
 	var npc: Dictionary=a.npc_fishes[0]
@@ -74,9 +74,33 @@ func hidden_truth_checks() -> void:
 		check(not source.contains(forbidden),"brain has no hidden-world/Hook access: "+forbidden)
 	a.free(); b.free()
 
+func active_foraging_truth_checks() -> void:
+	var a:=World.new(); var b:=World.new()
+	for world in [a,b]:
+		world.reset_world({"seed":8439,"npc_count":1,"ruleset":"duel","rules":{"timer_enabled":false,"hunger_enabled":false,"water_strength":0.0}})
+		world.fish=Vector2(930,300); world.fish_before=world.fish
+		var npc: Dictionary=world.npc_fishes[0]
+		npc.position=Vector2(650,200); npc.velocity=Vector2.ZERO; npc.aim=Vector2.RIGHT
+		npc.intent_aim=Vector2.RIGHT; npc.steering=Vector2.ZERO; npc.decision_age=0.0
+		for bait: Dictionary in world.baits:
+			bait.active=false; bait.hook=world==b
+			for grain: Dictionary in bait.grains: grain.eaten=true
+		for index in 4:
+			var grain: Dictionary=world.baits[0].grains[index]
+			grain.eaten=false; grain.free=true; grain.pos=Vector2(662+index,200); grain.points=1.0
+	var rng_before: int=a.rng.state
+	for tick in 180:
+		check(Observation.build_for(a,State.observer(a.npc_fishes[0],a.rules),false)==Observation.build_for(b,State.observer(b.npc_fishes[0],b.rules),false),"active foraging perception is identical under opposing hidden hook assignments")
+		a.advance_tick({}, {}); b.advance_tick({}, {})
+		check(a.npc_fishes==b.npc_fishes and a.round_stats==b.round_stats and a.counted==b.counted,"active foraging decisions, consumption and local RNG remain hook-blind tick="+str(tick))
+		check(a.rng.state==rng_before and b.rng.state==rng_before,"real NPC food intake never consumes world RNG")
+	check(a.round_stats.npc_food_consumed>0 and a.score==0 and b.score==0,"hook-blind comparison includes actual NPC intake and no player award")
+	check(a.hooked==a.HookState.FREE and b.hooked==b.HookState.FREE and a.hook_count==0 and b.hook_count==0,"opposing hidden hooks do not trigger NPC Hook/QTE handling")
+	a.free(); b.free()
+
 func _initialize() -> void:
 	for mode: String in ["survival","duel"]:
 		for seed_value: int in [17,928,8231]: trace(mode,seed_value)
-	hidden_truth_checks()
+	hidden_truth_checks(); active_foraging_truth_checks()
 	print("PHASE03_NPC_RNG_TESTS | passed=%d | failed=%d" % [passed,failed])
 	quit(0 if failed==0 else 1)

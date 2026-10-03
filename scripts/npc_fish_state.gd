@@ -2,6 +2,7 @@ extends RefCounted
 
 # Phase 3 authority records. Player scalar authority deliberately stays untouched.
 const Layout=preload("res://scripts/pond_layout.gd")
+const Feeding=preload("res://scripts/fish_feeding.gd")
 const DEFAULT_COUNT := 3
 const MAX_COUNT := 6
 const RADIUS := 10.0
@@ -16,15 +17,23 @@ static func derive_seed(round_seed: int, identity: int) -> int:
 static func fresh(identity: int, seed: int, position: Vector2, heading: Vector2, rng_state: int) -> Dictionary:
 	return {"fish_id":identity,"active":true,"position":position,"velocity":Vector2.ZERO,"aim":heading,
 		"visual_variant":posmod(identity-2,3),"behavior_state":"WANDER","behavior_age":0.0,
-		"target_bait_id":-1,"satiety":100.0,"focus_bait_id":-1,"suspicion_by_bait":{},"caution_by_bait":{},
+		"target_bait_id":-1,"satiety":70.0,"focus_bait_id":-1,"suspicion_by_bait":{},"caution_by_bait":{},
 		"risk_tolerance":0.0,"caution_state":"CALM","brain_seed":seed,"brain_rng_state":rng_state,"respawn_age":0.0,
-		"decision_age":0.0,"wander_heading":heading,"turn_age":0.0,"steering":heading}
+		"decision_age":0.0,"wander_heading":heading,"turn_age":0.0,"steering":heading,
+		"feeding":false,"power":0.0,"bite_cooldown":0.0,"intent_aim":heading}
 
 static func observer(state: Dictionary, rules: Dictionary) -> Dictionary:
-	return {"fish_id":int(state.fish_id),"position":Vector2(state.position),"mouth":Vector2(state.position)+Vector2(state.aim)*10.0,
+	return {"fish_id":int(state.fish_id),"position":Vector2(state.position),"mouth":Feeding.mouth(Vector2(state.position),Vector2(state.aim)),
 		"aim":Vector2(state.aim),"velocity":Vector2(state.velocity),"stamina":float(rules.stamina_max),"stamina_ratio":1.0,
-		"satiety":float(state.satiety),"satiety_band":"NORMAL",
-		"caution_state":String(state.caution_state),"instinct_drive":0.0,"score":0.0,"power":0.0,"feeding":false}
+		"satiety":float(state.satiety),"satiety_band":satiety_band(float(state.satiety),rules),
+		"caution_state":String(state.caution_state),"instinct_drive":0.0,"score":0.0,"power":float(state.power),"feeding":bool(state.feeding)}
+
+static func satiety_band(value: float, rules: Dictionary) -> String:
+	if not bool(rules.hunger_enabled): return "NORMAL"
+	if value<=float(rules.satiety_starving_threshold): return "STARVING"
+	if value<=float(rules.satiety_critical_threshold): return "CRITICAL"
+	if value<=float(rules.satiety_low_threshold): return "HUNGRY"
+	return "NORMAL"
 
 static func valid(record: Variant, next_id: int) -> bool:
 	if not record is Dictionary: return false
@@ -33,17 +42,35 @@ static func valid(record: Variant, next_id: int) -> bool:
 	for key in reference:
 		if not record.has(key) or typeof(record[key])!=typeof(reference[key]): return false
 	if record.fish_id<2 or record.fish_id>=next_id or record.brain_seed<0: return false
-	if record.visual_variant<0 or record.visual_variant>2 or record.behavior_state!="WANDER": return false
+	if record.visual_variant<0 or record.visual_variant>2 or record.behavior_state not in ["WANDER","APPROACH_FOOD","FEED"]: return false
 	if not record.position.is_finite() or not Layout.fish_bounds(RADIUS).has_point(record.position): return false
 	if not record.velocity.is_finite() or record.velocity.length()>SPEED+0.001: return false
-	for key in ["aim","wander_heading"]:
+	for key in ["aim","wander_heading","intent_aim"]:
 		if not record[key].is_finite() or absf(record[key].length()-1.0)>0.001: return false
 	if not record.steering.is_finite() or record.steering.length()>1.001: return false
 	for key in ["behavior_age","respawn_age","decision_age","turn_age"]:
 		if not is_finite(record[key]) or record[key]<0: return false
 	if record.decision_age>DECISION_SECONDS+0.000001 or record.turn_age>4.000001: return false
-	# Reserved future behavior is deliberately inert in P3.1, not accepted silently.
-	if record.target_bait_id!=-1 or record.focus_bait_id!=-1 or record.satiety!=100.0: return false
-	if not record.suspicion_by_bait.is_empty() or not record.caution_by_bait.is_empty(): return false
-	if record.risk_tolerance!=0.0 or record.caution_state!="CALM" or record.respawn_age!=0.0: return false
+	for key in ["target_bait_id","focus_bait_id"]:
+		if record[key]!=-1 and record[key]<1: return false
+	if not is_finite(record.satiety) or record.satiety<0.0 or record.satiety>100.0: return false
+	if not is_finite(record.power) or record.power<0.0 or record.power>1.0: return false
+	if not is_finite(record.bite_cooldown) or record.bite_cooldown<0.0 or record.bite_cooldown>0.800001: return false
+	if not is_finite(record.risk_tolerance) or record.risk_tolerance<0.0 or record.risk_tolerance>0.600001: return false
+	if record.caution_state not in ["CALM","UNEASY","ALARMED"] or record.respawn_age!=0.0: return false
+	if record.suspicion_by_bait.size()!=record.caution_by_bait.size(): return false
+	for id in record.suspicion_by_bait:
+		if not id is int or id<1: return false
+		var value: Variant=record.suspicion_by_bait[id]
+		if not value is float or not is_finite(value) or value<0.0 or value>1.0: return false
+		if not record.caution_by_bait.has(id): return false
+		var caution: Variant=record.caution_by_bait[id]
+		if not caution is String or caution not in ["CALM","UNEASY","ALARMED"]: return false
+	if record.focus_bait_id!=-1 and not record.suspicion_by_bait.has(record.focus_bait_id): return false
+	if record.behavior_state=="WANDER":
+		if record.target_bait_id!=-1 or record.feeding: return false
+	elif record.target_bait_id<1 or not record.suspicion_by_bait.has(record.target_bait_id): return false
+	if record.feeding and record.behavior_state!="FEED": return false
+	# A P3.1 WANDER/100 record is still meaningful with explicit new fields, but
+	# incomplete old wire records and future social/respawn states stay rejected.
 	return true
