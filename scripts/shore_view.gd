@@ -67,15 +67,15 @@ static func rig_index(world: Node2D) -> int:
 	return -1
 
 static func float_position(world: Node2D, t: float, motion: Dictionary={}) -> Vector2:
-	if world.landing or (world.net_state=="caught" and world.fish.y<WATER_LEVEL):
-		return to_screen(world.mouth(),world)+Vector2(0,-3)
+	if world.line_landing() or (world.net_state=="caught" and world.fish.y<WATER_LEVEL):
+		return to_screen(world.hook_target_mouth() if world.line_landing() else world.mouth(),world)+Vector2(0,-3)
 	var anchor: Vector2=world.angler.anchor()
 	var index := rig_index(world)
 	var target := anchor+Vector2(0,150)
-	if index>=0: target=world.mouth() if world.bound_bait==index else Vector2(world.baits[index].pos)
-	if world.hooked==world.HookState.HOOKED and world.rope_path.size()>2: target=world.rope_path[1]
+	if index>=0: target=world.hook_target_mouth() if world.bound_bait==index else Vector2(world.baits[index].pos)
+	if world.line_hooked() and world.rope_path.size()>2: target=world.rope_path[1]
 	var x:float=world.angler.surface_x if world.angler.surface_live else target.x
-	var dip: float=world.tension*1.7 if world.hooked==world.HookState.HOOKED else 0.0
+	var dip: float=world.tension*1.7 if world.line_hooked() else 0.0
 	if world.hooked==world.HookState.MOUTH: dip=3.5
 	if motion.is_empty(): motion=LineMotion.action(world)
 	if motion.active: dip+=sin(motion.progress*TAU)*motion.strength*(0.7 if motion.unwind else 1.25)
@@ -87,9 +87,9 @@ static func ellipse(center: Vector2, radii: Vector2, count: int=32) -> PackedVec
 	return path
 
 static func surface_line(world: Node2D, tip: Vector2, end: Vector2) -> PackedVector2Array:
-	var load:float=world.tension if world.hooked==world.HookState.HOOKED else 0.35
+	var load:float=world.tension if world.line_hooked() else 0.35
 	var slack:=0.0
-	if world.hooked==world.HookState.HOOKED:
+	if world.line_hooked():
 		slack=maxf(0,world.rope_length-world.Rope.length_of(world.rope_path))
 	elif rig_index(world)>=0:
 		var bait: Dictionary=world.baits[rig_index(world)]
@@ -141,7 +141,7 @@ func _underwater(view: Node2D, world: Node2D, t: float) -> void:
 			var top := to_screen(Vector2(x+sin(t*1.5+index+stem)*4,plant.y-plant.height*0.7),world)
 			view.draw_polyline(PackedVector2Array([p,p.lerp(top,0.5)+Vector2(2,0),top]),Color(0.06,0.21,0.24,0.20),3)
 	var float_at := float_position(world,t,view.line_frame.action)
-	if world.hooked==world.HookState.HOOKED and world.rope_path.size()>1:
+	if world.line_hooked() and view.line_frame.path.size()>1:
 		var path := projected(view.line_frame.path,world)
 		path[0]=float_at
 		view.draw_polyline(path,Color(0.51,0.66,0.65,0.10),1)
@@ -174,11 +174,28 @@ func _underwater(view: Node2D, world: Node2D, t: float) -> void:
 	# No eyes, hook-tip markers, bait particles, nest markers or exact opponent status above water.
 
 func _ambient_fishes(view: Node2D, world: Node2D, t: float) -> void:
-	for fish: Dictionary in NPCFishPublic.capture(world.npc_fishes):
+	for fish: Dictionary in NPCFishPublic.capture(world.npc_fishes,world.hook_target_fish_id,world.npc_hook):
 		var source: Vector2=fish.position
 		var phase: float=t*1.3+int(fish.fish_id)*1.71
+		var contact: bool=fish.animation_state in ["hooked","landing"]
+		# A hooked silhouette and its line share one physical endpoint; ambient
+		# presentation drift must never make the line slide off the fish.
 		var position:=to_screen(source,world)+Vector2(sin(phase)*1.2,cos(phase*1.3)*0.5)
 		var direction: Vector2=(to_screen(source+Vector2(fish.aim),world)-to_screen(source,world)).normalized()
+		if contact:
+			# Shore silhouettes are enlarged for readability. Anchor their visible
+			# nose to the projected physical mouth, not their enlarged body center.
+			var nose:=10.0 if fish.animation_state=="landing" else 8.0 if int(fish.visual_variant)==2 else 9.0
+			position=to_screen(world.hook_target_mouth(),world)-direction*nose
+		if fish.animation_state=="landing":
+			var tilt:=direction.angle()
+			var flip:=1.0
+			if direction.x<0:
+				tilt-=PI; flip=-1.0
+			view.draw_set_transform(position.round(),tilt,Vector2(flip,1))
+			view.draw_texture(view.npc_textures[int(fish.visual_variant)],Vector2(-10,-5))
+			view.draw_set_transform(Vector2.ZERO)
+			continue
 		var shape:=Art.npc_shadow(int(fish.visual_variant))
 		for index in shape.size(): shape[index]=position+shape[index].rotated(direction.angle())
 		var depth:=clampf((source.y-80)/220,0,1)
@@ -187,7 +204,7 @@ func _ambient_fishes(view: Node2D, world: Node2D, t: float) -> void:
 static func draw_observed_npcs(view: Node2D, world: Node2D) -> void:
 	# Same visibility and approximate 3 px location as the existing player
 	# silhouette. No eyes, identity marker, exact mouth, or private AI status.
-	for fish: Dictionary in NPCFishPublic.capture(world.npc_fishes):
+	for fish: Dictionary in NPCFishPublic.capture(world.npc_fishes,world.hook_target_fish_id,world.npc_hook):
 		var visibility:=Net.visibility(world,Vector2(fish.position))
 		if visibility<=0.02: continue
 		var position: Vector2=Vector2(fish.position).snapped(Vector2(3,3))
@@ -202,7 +219,7 @@ func _water(view: Node2D, world: Node2D, t: float) -> void:
 		var x := fposmod(index*113+sin(t*0.6+index)*7,636)
 		var width := 3+posmod(index*17,15)
 		view.draw_rect(Rect2(roundf(x),y,width,1),Color(0.37,0.65,0.66,0.06+0.025*sin(t+index)))
-	if world.hooked==world.HookState.HOOKED and world.resisting:
+	if world.line_hooked() and (world.resisting if world.hook_target_fish_id<=1 else not world.line_landing()):
 		var p := float_position(world,t,view.line_frame.action)
 		for index in 3:
 			var life := fmod(t*1.5+index/3.0,1)
@@ -233,7 +250,7 @@ func _tackle(view: Node2D, world: Node2D, t: float) -> void:
 				if reel_speed<0: travel=1.0-travel
 				var part: int=clampi(int(travel*(line.size()-2)),0,line.size()-2)
 				view.draw_line(line[part],line[part+1],GOLD if reel_speed<0 else MINT,2)
-		if not world.angler.casting and not world.landing and not (world.net_state=="caught" and world.fish.y<WATER_LEVEL):
+		if not world.angler.casting and not world.line_landing() and not (world.net_state=="caught" and world.fish.y<WATER_LEVEL):
 			for ring in 2:
 				var age := fmod(t*0.6+ring*0.5,1)
 				view.draw_polyline(ellipse(float_at,Vector2(8+age*12,2+age*3)),Color(CREAM,(1-age)*0.44),1)

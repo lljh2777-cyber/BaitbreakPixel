@@ -1,0 +1,20 @@
+{
+  "started_at_utc": "2026-10-03T13:16:55.171309+00:00",
+  "finished_at_utc": "2026-10-03T13:18:43.567413+00:00",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tools/run_tests.py",
+    "--godot",
+    "/workspace/shared/baitbreak-toolchain-472/Godot_v4.7.2-stable_linux.x86_64",
+    "--profile",
+    "native",
+    "--import",
+    "--output-directory",
+    "/workspace/scratch/5dc5a43a1104/BaitbreakPixel/artifacts/p34-native-final-r2"
+  ],
+  "returncode": 0,
+  "source_unchanged": true,
+  "changed_files": [],
+  "file_count": 174,
+  "scope": "All runtime scripts, scenes, assets and import descriptors; project.godot; current renderer suite bodies and UIDs; runner and registry. Documentation, headless-only suites, and generated .godot cache excluded."
+}

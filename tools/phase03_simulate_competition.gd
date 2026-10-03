@@ -45,7 +45,7 @@ func _initialize() -> void:
 
 func run_round(seed_value: int, mode: String, max_ticks: int) -> Dictionary:
 	var world:=World.new()
-	world.reset_world({"seed":seed_value,"challenge":true,"ruleset":"survival","npc_count":0 if mode=="NoNPC" else 3,"npc_foraging_enabled":mode=="ForagingNPC"})
+	world.reset_world({"npc_hook_enabled":false,"seed":seed_value,"challenge":true,"ruleset":"survival","npc_count":0 if mode=="NoNPC" else 3,"npc_foraging_enabled":mode=="ForagingNPC"})
 	var controller:=Policy.new(); controller.reset("Mixed",world.rules)
 	var opponent:=Opponent.new()
 	var initial_allocator: int=world.next_bait_id

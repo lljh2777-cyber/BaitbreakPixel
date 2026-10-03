@@ -4,6 +4,8 @@ extends RefCounted
 const Rules = preload("res://scripts/game_rules.gd")
 const FoodProfile = preload("res://scripts/food_profile.gd")
 const NPCFishState = preload("res://scripts/npc_fish_state.gd")
+const NPCHook = preload("res://scripts/npc_hook.gd")
+const NPCPublic = preload("res://scripts/npc_fish_public_state.gd")
 const SCHEMA := 15
 # Schema 15 adds separate NPC authority. This mandatory extension guard rejects
 # earlier feeding physics even without a network exact-build handshake.
@@ -12,6 +14,7 @@ const MAP_ID := "pond_v2"
 const WORLD_FIELDS: Array[String] = [
 	"fish_id", "rod_id", "next_bait_id", "next_hook_id",
 	"next_fish_id", "npc_fishes", "hook_target_fish_id", "npc_foraging_enabled", "npc_social_enabled", "public_hook_cue",
+	"npc_hook_enabled", "npc_hook", "public_npc_hook_result",
 	"rules",
 	"net_action",
 	"qte_timing",
@@ -204,12 +207,21 @@ static func record_matches(values: Dictionary, reference: Dictionary, excluded: 
 	return true
 
 static func restore(world: Node2D, snapshot: Dictionary) -> bool:
+	return _restore(world,snapshot,false)
+
+# Internal angler adapter entry point: validate explicit public NPC records without
+# manufacturing brains, local RNG or hidden struggle timers. Not a replay restore.
+static func restore_angler_presentation(world: Node2D, snapshot: Dictionary) -> bool:
+	return _restore(world,snapshot,true)
+
+static func _restore(world: Node2D, snapshot: Dictionary, public_npcs: bool) -> bool:
 	if not snapshot.get("bait_profile_version") is int or snapshot.bait_profile_version!=BAIT_PROFILE_VERSION: return false
 	if snapshot.size()!=7: return false
 	if snapshot.get("schema")!=SCHEMA or snapshot.get("map_id")!=MAP_ID or not plain(snapshot): return false
 	if not snapshot.get("state") is Dictionary or not snapshot.get("rig") is Dictionary: return false
 	if not snapshot.get("rng_seed") is int or not snapshot.get("rng_state") is int: return false
 	var state: Dictionary=snapshot.state
+	if state.size()!=WORLD_FIELDS.size() or snapshot.rig.size()!=RIG_FIELDS.size(): return false
 	if not Rules.valid(state.get("rules")): return false
 	if not state.get("qte_timing") is Dictionary or not record_matches(state.qte_timing,Rules.qte(Rules.defaults(),"entry")): return false
 	if state.qte_timing.window<0.04 or state.qte_timing.window>2.0 or state.qte_timing.window>state.qte_timing.sweep*0.8+0.000001 or state.qte_timing.zone<0.099 or state.qte_timing.zone>0.9: return false
@@ -260,16 +272,21 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 	var bait_ids: Dictionary={}
 	var hook_ids: Dictionary={}
 	var grain_ids: Dictionary={}
-	if state.fish_id!=1 or state.next_fish_id<2 or state.hook_target_fish_id!=-1 or state.npc_fishes.size()>NPCFishState.MAX_COUNT: return false
+	if state.fish_id!=1 or state.next_fish_id<2 or state.npc_fishes.size()>NPCFishState.MAX_COUNT: return false
 	if not record_matches(state.public_hook_cue,{"tick":-1,"position":Vector2.ZERO}) or state.public_hook_cue.size()!=2: return false
 	if state.public_hook_cue.tick< -1 or state.public_hook_cue.tick>state.simulation_tick or not state.public_hook_cue.position.is_finite(): return false
 	if state.public_hook_cue.tick==-1 and state.public_hook_cue.position!=Vector2.ZERO: return false
 	if state.public_hook_cue.tick>=0 and not world.Layout.WATER.has_point(state.public_hook_cue.position): return false
-	var npc_ids: Dictionary={}
-	for npc in state.npc_fishes:
-		if not NPCFishState.valid(npc,state.next_fish_id) or npc_ids.has(npc.fish_id): return false
-		if npc.social_danger_tick>state.simulation_tick: return false
-		npc_ids[npc.fish_id]=true
+	if public_npcs:
+		if not NPCPublic.valid(state.npc_fishes,state.fish_id) or not NPCPublic.valid_hook_state(state): return false
+	else:
+		var npc_ids: Dictionary={}
+		for npc in state.npc_fishes:
+			if not NPCFishState.valid(npc,state.next_fish_id) or npc_ids.has(npc.fish_id): return false
+			if npc.social_danger_tick>state.simulation_tick: return false
+			npc_ids[npc.fish_id]=true
+		if not NPCHook.valid(state.npc_hook) or not _valid_hook_target(state): return false
+		if not NPCHook.valid_result(state.public_npc_hook_result,state.simulation_tick,state.next_fish_id) or not NPCPublic.valid_result(state.public_npc_hook_result,state.simulation_tick): return false
 	if state.fish_id<=0 or state.rod_id<=0 or state.next_bait_id<=0 or state.next_hook_id<=0: return false
 	for bait in state.baits:
 		if not bait is Dictionary or not bait.get("grains") is Array or bait.grains.size()>2048: return false
@@ -302,3 +319,18 @@ static func restore(world: Node2D, snapshot: Dictionary) -> bool:
 	world.rng.seed=detached.rng_seed
 	world.rng.state=detached.rng_state
 	return true
+
+static func _valid_hook_target(state: Dictionary) -> bool:
+	var target: int=state.hook_target_fish_id
+	if target < -1 or target==0: return false
+	if target==-1 and (state.hooked!=0 or state.npc_hook.phase!="" or state.bound_bait!=-1): return false
+	if target==1 and (state.hooked==0 or state.npc_hook.phase!=""): return false
+	if target>1 and (state.hooked!=0 or state.npc_hook.phase=="" or state.bound_bait<0): return false
+	if target>1 and (state.landing or not state.qte.is_empty() or not state.wraps.is_empty()): return false
+	var found: bool=false
+	for npc: Dictionary in state.npc_fishes:
+		if npc.fish_id==target:
+			found=true
+			if not npc.active or npc.behavior_state!=("LANDING" if state.npc_hook.phase=="landing" else "HOOKED"): return false
+		elif npc.behavior_state in ["HOOKED","LANDING"]: return false
+	return target<=1 or found

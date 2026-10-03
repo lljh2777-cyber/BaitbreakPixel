@@ -1,0 +1,72 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+NPC_HOOK_PASS | real mouth-contact eligibility: true_contact
+NPC_HOOK_PASS | NPC contact never aliases player HookState or counters: true_contact
+NPC_HOOK_PASS | physical NPC contact directly attaches and records exactly one NPC event
+NPC_HOOK_PASS | NPC attachment creates no player QTE or main RNG draw
+NPC_HOOK_PASS | actual attachment emits only realized social/result evidence
+NPC_HOOK_PASS | real mouth-contact eligibility: safe
+NPC_HOOK_PASS | NPC contact never aliases player HookState or counters: safe
+NPC_HOOK_PASS | real mouth-contact eligibility: removed
+NPC_HOOK_PASS | NPC contact never aliases player HookState or counters: removed
+NPC_HOOK_PASS | real mouth-contact eligibility: inactive
+NPC_HOOK_PASS | NPC contact never aliases player HookState or counters: inactive
+NPC_HOOK_PASS | real mouth-contact eligibility: outside
+NPC_HOOK_PASS | NPC contact never aliases player HookState or counters: outside
+NPC_HOOK_PASS | real mouth-contact eligibility: body_only
+NPC_HOOK_PASS | NPC contact never aliases player HookState or counters: body_only
+NPC_HOOK_PASS | real mouth-contact eligibility: disabled
+NPC_HOOK_PASS | NPC contact never aliases player HookState or counters: disabled
+NPC_HOOK_PASS | swept fixture has both hook endpoints outside contact radius
+NPC_HOOK_PASS | continuous relative swept hook crossing catches NPC without endpoint overlap
+NPC_HOOK_PASS | relative sweep also catches a moving NPC crossing a stationary hook
+NPC_HOOK_PASS | NPC mouth contact uses rotated shared geometry: (-1.0, 0.0)
+NPC_HOOK_PASS | NPC mouth contact uses rotated shared geometry: (0.0, -1.0)
+NPC_HOOK_PASS | NPC mouth contact uses rotated shared geometry: (0.0, 1.0)
+NPC_HOOK_PASS | NPC mouth contact uses rotated shared geometry: (0.707107, 0.707107)
+NPC_HOOK_PASS | simultaneous NPC contacts choose stable fish ID rather than array order
+NPC_HOOK_PASS | only the selected NPC enters hooked authority
+NPC_HOOK_PASS | line endpoint follows selected NPC mouth after movement and array reorder
+NPC_HOOK_PASS | hook visual point and rope endpoint cannot latch onto free player
+NPC_HOOK_PASS | one global line cannot be stolen by second NPC contact
+NPC_HOOK_PASS | player entry guard cannot overwrite an occupied NPC line
+NPC_HOOK_PASS | simultaneous player/NPC contact preserves player entry QTE priority
+NPC_HOOK_PASS | player attachment keeps distinct original player counters and path
+NPC_HOOK_PASS | existing player release clears target and keeps player escape count
+NPC_HOOK_PASS | free player genuinely eats and scores while NPC owns hook
+NPC_HOOK_PASS | NPC pull never locks, drags or exhausts the player movement state
+NPC_HOOK_PASS | hooked NPC is excluded from automatic Bite and Suck authority
+NPC_HOOK_PASS | player HOME remains eligible while another fish owns the line
+NPC_HOOK_PASS | player can complete normal HOME victory during NPC hook handling
+NPC_HOOK_PASS | normal W/S actuator shortens/pays out the NPC line without a custom command
+NPC_HOOK_PASS | real actuator feedback follows NPC reeling direction
+NPC_HOOK_PASS | NPC automatically struggles under real movement without player QTE
+NPC_HOOK_PASS | NPC attach/automatic struggle/release leaves Hook/QTE RNG untouched
+NPC_HOOK_PASS | next randomized player QTE is identical after NPC-only handling
+NPC_HOOK_PASS | NPC delayed replacement itself consumes no main Hook/QTE RNG
+NPC_HOOK_PASS | real sustained slack escapes and clears single line
+NPC_HOOK_PASS | resolved NPC rejoins ecology with contact immunity
+NPC_HOOK_PASS | NPC resolution increments only its actual outcome counter
+NPC_HOOK_PASS | public realized outcome and bait lifecycle distinguish escape/break
+NPC_HOOK_PASS | post-escape contact immunity prevents same-mouth immediate rehook
+NPC_HOOK_PASS | NPC resolution never declares winner or pollutes player escape history
+NPC_HOOK_PASS | real sustained high tension breaks and clears single line
+NPC_HOOK_PASS | resolved NPC rejoins ecology with contact immunity
+NPC_HOOK_PASS | NPC resolution increments only its actual outcome counter
+NPC_HOOK_PASS | public realized outcome and bait lifecycle distinguish escape/break
+NPC_HOOK_PASS | NPC resolution never declares winner or pollutes player escape history
+NPC_HOOK_PASS | ordinary reel/shore hold/lift traverses NPC landing and capture
+NPC_HOOK_PASS | wrong catch removes active NPC and used tackle, releases line
+NPC_HOOK_PASS | NPC landing cannot end match, award player food, or count as player landing
+NPC_HOOK_PASS | captured NPC starts bounded delayed replacement
+NPC_HOOK_PASS | captured identity stays absent from active ecology before delay
+NPC_HOOK_PASS | replacement restores population using a fresh, never-reused stable ID
+NPC_HOOK_PASS | match continues through capture, wait and replacement
+NPC_HOOK_PASS | pause freezes NPC hooked progress, line and replacement timers
+NPC_HOOK_PASS | terminal player match freezes NPC hooked without changing result
+NPC_HOOK_PASS | pause freezes NPC landing progress, line and replacement timers
+NPC_HOOK_PASS | terminal player match freezes NPC landing without changing result
+NPC_HOOK_PASS | pause freezes NPC captured progress, line and replacement timers
+NPC_HOOK_PASS | terminal player match freezes NPC captured without changing result
+NPC_HOOK_PASS | enabled NPC Hook preserves exact pre-contact perception, fish payload, angler NPC projection and NPC decisions under opposing hidden truth
+PHASE03_NPC_HOOK_TARGET_TESTS | passed=69 | failed=0

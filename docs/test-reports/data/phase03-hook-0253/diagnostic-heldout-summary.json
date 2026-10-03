@@ -1,0 +1,31 @@
+{
+	"controller": "unchanged P2 Mixed",
+	"controller_version": 1,
+	"definitions": {
+		"angler": "Existing survival AnglerBrain through ordinary command authority, unchanged across every arm.",
+		"arms": "0 NPC; 3 passive; 3 foraging/social with NPC hooks disabled; 3 foraging/social with NPC hooks enabled. All other settings are identical.",
+		"censoring": "All seed/arm outcomes retained. Horizon-limited rounds are explicitly incomplete, not silently treated as completed defeats.",
+		"comparison": "Paired same-seed descriptive diagnostics. No accepted P3.2 food/rule balance, player policy or opponent tuning changes.",
+		"hooks": "hook_events and hook_contacts remain player-only. npc_hook_count, npc_escapes, npc_breaks and wrong_catches are distinct actual authority counters.",
+		"lifecycle_events": "New bait identities after initial setup, measured by next_bait_id growth.",
+		"npc_hooked_seconds": "Actual authority time occupied by NPC hook/landing handling; reported independently from player hooked_seconds.",
+		"player": "Detached FishObservation only enters the unchanged P2 Mixed policy; no hook-truth oracle and no QTE escape adapter.",
+		"wrong_catches": "NPC successfully lifted out of water. This does not finish the player-versus-angler match."
+	},
+	"first_seed": 64401,
+	"format": "phase03-hook-diagnostics-v1",
+	"harness_version": 1,
+	"last_seed": 64425,
+	"limits": "Autonomous-policy diagnostic, not human win rate, final balance approval or food-reachability proof. No 50% win target, seed selection or favorable-outcome filtering. Historical P3.2/P3.3 evidence is not replaced.",
+	"max_ticks": 22200,
+	"modes": [
+		"NoNPC",
+		"PassiveNPC",
+		"ForagingNPC",
+		"HookableNPC"
+	],
+	"paired_seeds": 25,
+	"rules": "unmodified default survival challenge",
+	"tick_seconds": 0.0166666666666667,
+	"wall_seconds": 420.996
+}

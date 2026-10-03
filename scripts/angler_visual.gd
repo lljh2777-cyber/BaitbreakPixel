@@ -59,7 +59,7 @@ func draw(view: Node2D, world: Node2D, t: float) -> void:
 		walking=move_toward(walking,clampf(absf(distance)/maxf(t-last_time,0.001)/60.0,0,1),(t-last_time)*10)
 		stride+=distance*0.30
 	last_x=x; last_time=t
-	var load: float = world.tension if world.hooked==world.HookState.HOOKED else 0.0
+	var load: float = world.tension if world.line_hooked() else 0.0
 	var strength: float=world.effort_multiplier("angler")
 	var effort := strength-1.0
 	var cast: float = sin(clampf(world.angler.cast_age/world.angler.CAST_SECONDS,0,1)*PI) if world.angler.casting else 0.0
@@ -108,7 +108,7 @@ func draw(view: Node2D, world: Node2D, t: float) -> void:
 	view.draw_rect(Rect2(reel-Vector2(3,2),Vector2(6,5)),OUTLINE)
 	view.draw_rect(Rect2(reel-Vector2(2,1),Vector2(4,3)),Color("6e9696"))
 	view.draw_rect(Rect2(reel-Vector2(2,1),Vector2(4,1)),Color("d9e2c2"))
-	var reel_speed: float = world.reel_speed if world.hooked==world.HookState.HOOKED else world.angler.free_reel_speed
+	var reel_speed: float = world.reel_speed if world.line_hooked() else world.angler.free_reel_speed
 	var turning := absf(reel_speed)>0.5 or absf(world.angler.spool)>0.1
 	var crank := reel+Vector2(3,1)+Vector2(cos(t*12),sin(t*12)*2).round() if turning else reel+Vector2(4,2)
 	view.draw_line(reel,crank,Color("e1c58b"),1)

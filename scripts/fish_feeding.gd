@@ -7,6 +7,14 @@ const Suction=preload("res://scripts/suction_feel.gd")
 static func mouth(position: Vector2, aim: Vector2) -> Vector2:
 	return position+aim*10.0
 
+static func hook_contact(old_tip: Vector2, tip: Vector2, old_mouth: Vector2, current_mouth: Vector2, aim: Vector2, radius: float) -> bool:
+	# Shared swept physical contact, matching the established player hook mouth.
+	var before:=old_tip-old_mouth-aim*3.0
+	var after:=tip-current_mouth-aim*3.0
+	var length_squared:=before.distance_squared_to(after)
+	var factor:=clampf((-before).dot(after-before)/length_squared,0,1) if length_squared>0.000001 else 0.0
+	return before.lerp(after,factor).length()<radius
+
 static func strength(point: Vector2, origin: Vector2, aim: Vector2, rules: Dictionary) -> float:
 	var local:=point-origin
 	var depth:=local.dot(aim)
