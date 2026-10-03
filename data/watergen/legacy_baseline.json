@@ -1,0 +1,57 @@
+{
+  "format": "baitbreak-watergen-legacy-baseline",
+  "source_commit": "9c447e7210987472d108ce284b9df5cd057f2dc7",
+  "engine_hash": "ed1daf0bf001b61586d9930840f2f1394092c079",
+  "provenance": "Unchanged legacy Water.layers() captured in wg0-dev-02; fixed-engine CPU RGBA baseline, not a game screenshot golden.",
+  "map_public_digest": "ce6bd84149877c461f1765497b7aa7b58fe8e80abf74965e45b406824ac31b1d",
+  "layers": {
+    "distance": {
+      "format": "RGBA8",
+      "rgba_sha256": "6e7563b3ae96c513aa809cdc3217032f46d26806b63c8757c9f83f73bc3f9178",
+      "size_px": [
+        1280,
+        480
+      ]
+    },
+    "floor": {
+      "format": "RGBA8",
+      "rgba_sha256": "3afc4882a80b139575b9073be5c8fe4c56d87a3a67a49befe28b4f940f7014e2",
+      "size_px": [
+        1280,
+        480
+      ]
+    },
+    "foreground": {
+      "format": "RGBA8",
+      "rgba_sha256": "bcbd9f3416f9d4ca093ae70b4859099ff38ab1c08f4aa64e41b538c2a0f96e0f",
+      "size_px": [
+        1280,
+        480
+      ]
+    },
+    "surface": {
+      "format": "RGBA8",
+      "rgba_sha256": "299150434a6ad33cc7525128927259059ed5d4a30ab4bc7291e2550872607c0c",
+      "size_px": [
+        1280,
+        480
+      ]
+    },
+    "terrain": {
+      "format": "RGBA8",
+      "rgba_sha256": "b74b71f159a13c63826447fbdd7f9bf74875a43f2f7fa139a31407c370f18aae",
+      "size_px": [
+        1280,
+        480
+      ]
+    },
+    "water": {
+      "format": "RGBA8",
+      "rgba_sha256": "6c41c4b8f759fe651346bb57dae9fd935ec59151eb174374da11d6ddc9d0cf5e",
+      "size_px": [
+        1280,
+        480
+      ]
+    }
+  }
+}
