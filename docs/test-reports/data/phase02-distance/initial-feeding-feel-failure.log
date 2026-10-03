@@ -1,0 +1,42 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+FEEDING_PASS | 30 Hz: strong suction visibly pulls the whole cluster faster
+FEEDING_PASS | 30 Hz: strong suction delivers more food in the same time
+FEEDING_PASS | 30 Hz: gentle suction still delivers outer food
+FEEDING_PASS | 60 Hz: strong suction visibly pulls the whole cluster faster
+FEEDING_PASS | 60 Hz: strong suction delivers more food in the same time
+FEEDING_PASS | 60 Hz: gentle suction still delivers outer food
+FEEDING_PASS | 120 Hz: strong suction visibly pulls the whole cluster faster
+FEEDING_PASS | 120 Hz: strong suction delivers more food in the same time
+FEEDING_PASS | 120 Hz: gentle suction still delivers outer food
+FEEDING_PASS | gentle suction preferentially peels outer food; inner and core resist
+FEEDING_PASS | strong suction removes dense core food substantially faster
+FEEDING_PASS | power 0.35: profile cannot reveal hook identity
+FEEDING_PASS | power 1.00: profile cannot reveal hook identity
+FEEDING_PASS | gentle outer peeling stays outside hook contact in the 26-pixel fixture
+ERROR: FEEDING_FAIL | strong whole-cluster pull carries the same hidden hook to the mouth
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/feeding_feel_v022.gd:9)
+       [1] run (res://tests/feeding_feel_v022.gd:56)
+ERROR: FEEDING_FAIL | power 0.35: detached pellet speed has the intended gentle/strong response
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/feeding_feel_v022.gd:9)
+       [1] run (res://tests/feeding_feel_v022.gd:64)
+FEEDING_PASS | actual intake records a feedback timestamp
+FEEDING_PASS | pause freezes intake feedback and body motion
+FEEDING_PASS | intake feedback survives a detached snapshot roundtrip
+FEEDING_PASS | previous schema cannot omit intake feedback state
+ERROR: FEEDING_FAIL | power 1.00: detached pellet speed has the intended gentle/strong response
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/feeding_feel_v022.gd:9)
+       [1] run (res://tests/feeding_feel_v022.gd:64)
+FEEDING_PASS | actual intake records a feedback timestamp
+FEEDING_PASS | pause freezes intake feedback and body motion
+FEEDING_PASS | intake feedback survives a detached snapshot roundtrip
+FEEDING_PASS | previous schema cannot omit intake feedback state
+FEEDING_PASS | remote power and bait deformation interpolate together
+FEEDING_PASS | remote presentation never changes the authoritative feedback snapshot
+FEEDING_FEEL_V022 | passed=24 | failed=3

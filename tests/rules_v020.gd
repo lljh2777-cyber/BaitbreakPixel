@@ -18,6 +18,7 @@ func fresh(world: Node2D, values: Dictionary={}) -> void:
 func hook(world: Node2D) -> void:
 	world.fish=Vector2(250,220); world.baits[0].active=true; world._enter_hook(0); world._attach_hook()
 func run() -> void:
+	feeding_default_migration()
 	check(Rules.defaults()==Rules.normalize({}) and Rules.changed(Rules.normalize({})).is_empty(),"default normalization keeps exact defaults and zero false modifications")
 	var ids := {}
 	for item in Rules.Catalog.ITEMS: ids[item.id]=true
@@ -145,3 +146,15 @@ func application_checks() -> void:
 	app.reset(false)
 	check(app.rules==offline,"leaving room restores local saved rules")
 	app.queue_free(); await process_frame
+
+func feeding_default_migration() -> void:
+	var file:=ConfigFile.new()
+	file.set_value("rules","version",Rules.VERSION)
+	file.set_value("rules","values",{"bite_range":18.0,"water_strength":0.0})
+	var values:=Store.load_profile(file)
+	check(values.bite_range==14.0 and values.water_strength==0.0,"legacy 18 migrates narrowly, preserving other preferences")
+	file.set_value("rules","values",{"bite_range":20.0})
+	check(Store.load_profile(file).bite_range==20.0,"custom legacy range remains unchanged")
+	values.bite_range=18.0
+	Store.save_profile(file,values)
+	check(file.get_value("rules","feeding_defaults_version")==1 and Store.load_profile(file).bite_range==18.0,"new explicit 18 survives stamped save/load")

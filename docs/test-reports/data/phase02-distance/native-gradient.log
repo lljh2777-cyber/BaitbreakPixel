@@ -1,0 +1,19 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+PIXEL_READY | asymmetric-2d | 640x360 | v0.24.4 | playtest-gate-phase02-feeding-balance
+BITE_NATIVE_PASS | suction outside actual contact does not award or trigger Bite
+BITE_NATIVE_PASS | loose grain moves physically toward mouth center
+BITE_NATIVE_PASS | near/far renders preserve 640x360
+BITE_NATIVE_PASS | near/far movement and pixels stay exactly hidden-hook blind
+BITE_NATIVE_PASS | near/far render is stable and simulation neutral
+BITE_NATIVE_PASS | suction outside actual contact does not award or trigger Bite
+BITE_NATIVE_PASS | loose grain moves physically toward mouth center
+BITE_NATIVE_PASS | near/far renders preserve 640x360
+BITE_NATIVE_PASS | near/far movement and pixels stay exactly hidden-hook blind
+BITE_NATIVE_PASS | near/far render is stable and simulation neutral
+BITE_NATIVE_PASS | near real displacement exceeds far positive displacement
+GRADIENT_DISPLACEMENT | near20=2.697998046875 | far38=0.24090576171875
+GRADIENT_NATIVE | passed=11 | failed=0

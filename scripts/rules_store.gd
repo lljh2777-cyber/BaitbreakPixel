@@ -2,11 +2,18 @@ extends RefCounted
 
 # Persistence boundary. Simulation never reads user files or touches preferences.
 const Rules = preload("res://scripts/game_rules.gd")
+const FEEDING_DEFAULTS_VERSION := 1
 
 static func load_profile(file: ConfigFile) -> Dictionary:
 	if int(file.get_value("rules","version",0)) in [1,Rules.VERSION]:
 		var values: Variant=file.get_value("rules","values",{})
-		return Rules.normalize(values) if values is Dictionary else Rules.defaults()
+		if not values is Dictionary: return Rules.defaults()
+		values=values.duplicate(true)
+		# Legacy saves cannot distinguish the old built-in 18 from an explicit 18.
+		# Migrate that value once; preserve every other custom rule.
+		if int(file.get_value("rules","feeding_defaults_version",0))<FEEDING_DEFAULTS_VERSION and values.get("bite_range")==18.0:
+			values.bite_range=14.0
+		return Rules.normalize(values)
 	var old := {}
 	for key in ["line_sensitivity","line_force","effort_frequency","effort_window","effort_boost","effort_weak"]:
 		if file.has_section_key("practice",key): old[key]=file.get_value("practice",key)
@@ -18,6 +25,7 @@ static func load_profile(file: ConfigFile) -> Dictionary:
 
 static func save_profile(file: ConfigFile, values: Dictionary) -> void:
 	file.set_value("rules","version",Rules.VERSION)
+	file.set_value("rules","feeding_defaults_version",FEEDING_DEFAULTS_VERSION)
 	file.set_value("rules","values",Rules.normalize(values))
 
 static func preset_names(directory: String) -> PackedStringArray:

@@ -8,6 +8,7 @@
 
 报告按版本由新到旧排列，记录当时的测试环境、范围和结果。旧版玩法断言可能已经退役；复现时请结合对应版本。
 
+- [0.24.4 Windows 试玩包与发布核验](GITHUB-RELEASE-0.24.4.md)
 - [0.24.3 Windows 试玩包与发布核验](GITHUB-RELEASE-0.24.3.md)
 - [0.24.2 Windows 试玩包与发布核验](GITHUB-RELEASE-0.24.2.md)
 - [2026-10-02 GitHub 逐版补发与 Windows 包核验](GITHUB-RELEASES-2026-10-02.md)
@@ -71,3 +72,5 @@
 - `tests/grass_binding_v0183.gd`（0.22.5 删除）：0.18 时代的缠草绑定夹具，硬编码的水草起点（`range(12, …)`）和尾部目标（`targets[14]`）在 0.21 扩图后指向木石目标，`Grass.profile()` 因此返回空字典并触发脚本错误；错误让 `run()` 提前中止、`quit()` 不再执行，进程会一直挂着（表现为“测试卡死”，实际是空闲而非死循环）。删除前先按 `Layout.SOLIDS.size()` 修正两处索引，确认它能在 12 秒内正常结束并如实报告 46 通过 / 24 失败（包围盒等断言属旧版预期，责任已由下条承担）。
 
 - [P2.2 饵型验证与人工试玩门](PHASE02-BAIT-VALIDATION.md)
+
+- [0.24.4 distance tuning and manual gate](PHASE02-DISTANCE-VALIDATION.md)

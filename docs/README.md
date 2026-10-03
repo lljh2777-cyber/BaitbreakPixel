@@ -20,6 +20,7 @@
 
 ## 验证与历史
 
+- [0.24.4 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.24.4.md)
 - [0.24.3 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.24.3.md)
 - [0.24.2 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.24.2.md)
 - [2026-10-02 GitHub 逐版补发与当前下载](test-reports/GITHUB-RELEASES-2026-10-02.md)
@@ -46,3 +47,5 @@
 文中的 `scripts/`、`tests/` 和 `assets/` 路径均以仓库根目录为基准。旧报告保留当时的结果和规则，不能作为当前玩法说明；当前操作以试玩说明为准。
 
 - [P2.2 饵型实现与人工门](architecture/PHASE02-BAIT-TYPES.md)
+
+- [0.24.4 distance tuning and manual gate](test-reports/PHASE02-DISTANCE-VALIDATION.md)

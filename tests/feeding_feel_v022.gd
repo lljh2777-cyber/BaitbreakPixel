@@ -7,7 +7,7 @@ func _initialize() -> void: call_deferred("run")
 func check(ok: bool, title: String) -> void:
 	if ok: passed+=1; print("FEEDING_PASS | ",title)
 	else: failed+=1; push_error("FEEDING_FAIL | "+title)
-func fresh(power_value: float, has_hook: bool=false) -> Node2D:
+func fresh(power_value: float, has_hook: bool=false, distance: float=26.0) -> Node2D:
 	var w:=World.new(); w.reset_world({"ruleset":"survival","seed":42,"rules":{"water_strength":0,"timer_enabled":false}})
 	w.fish=Vector2(700,210); w.aim=Vector2.RIGHT; w.power=power_value; w.hook_cooldown=1000
 	for bait in w.baits: bait.active=false
@@ -17,7 +17,7 @@ func fresh(power_value: float, has_hook: bool=false) -> Node2D:
 	var baseline: Dictionary=w._make_bait(0,0,"cluster")
 	for i in bait.grains.size():
 		bait.grains[i].visual_kind="cluster"; bait.grains[i].offset=baseline.grains[i].offset
-	bait.active=true; bait.hook=has_hook; bait.pos=w.mouth()+Vector2(26,0); bait.home=bait.pos; bait.angle=0.0
+	bait.active=true; bait.hook=has_hook; bait.pos=w.mouth()+Vector2(distance,0); bait.home=bait.pos; bait.angle=0.0
 	for grain in bait.grains: grain.pos=bait.pos+Vector2(grain.offset)
 	return w
 func step(w: Node2D, count: int, hz: int=60, sucking: bool=true) -> void:
@@ -47,21 +47,30 @@ func run() -> void:
 		step(hook,90); step(plain,90)
 		check(hook.baits[0].grains==plain.baits[0].grains and hook.baits[0].pos==plain.baits[0].pos,"power %.2f: profile cannot reveal hook identity" % power_value)
 		hook.free(); plain.free()
-	var gentle:=fresh(0.35); var strong:=fresh(1.0)
+	var far:=fresh(1.0,true); far.hook_cooldown=0
+	for frame in 60: far.advance_tick({"aim":Vector2.RIGHT,"power":1.0,"suck":true},{})
+	check(far.hooked==far.HookState.FREE,"gradient no longer drags a 26px hook into the mouth in one second")
+	far.free()
+	# At 20px, strong target displacement is ~14.8px; at 26px only ~9.5px.
+	var gentle:=fresh(0.35,false,20.0); var strong:=fresh(1.0,false,20.0)
 	gentle.hook_cooldown=0; strong.hook_cooldown=0; gentle.baits[0].hook=true; strong.baits[0].hook=true
 	for frame in 60:
 		gentle.advance_tick({"aim":Vector2.RIGHT,"power":0.35,"suck":true},{})
 		strong.advance_tick({"aim":Vector2.RIGHT,"power":1.0,"suck":true},{})
-	check(gentle.hooked==gentle.HookState.FREE and gentle.score>0,"gentle outer peeling stays outside hook contact in the 26-pixel fixture")
+	check(gentle.hooked==gentle.HookState.FREE and gentle.score>0,"gentle outer peeling stays outside hook contact in the 20-pixel fixture")
 	check(strong.hooked!=strong.HookState.FREE,"strong whole-cluster pull carries the same hidden hook to the mouth")
 	gentle.free(); strong.free()
 	for power_value in [0.35,1.0]:
 		var w:=fresh(power_value)
 		for grain in w.baits[0].grains: grain.eaten=true
 		var grain: Dictionary=w.baits[0].grains[0]; grain.eaten=false; grain.free=true; grain.pos=w.mouth()+Vector2(24,0)
-		var initial: Vector2=grain.pos; step(w,6)
+		var initial: Vector2=grain.pos
+		var expected:=initial
+		for tick in 6:
+			expected=expected.move_toward(w.mouth(),w.strength(expected)*w.rule("pellet_speed")*w.Suction.pellet_gain(power_value)/60.0)
+		step(w,6)
 		var moved:=initial.distance_to(grain.pos)
-		check(moved>(4 if power_value<1 else 8) and moved<(7 if power_value<1 else 11),"power %.2f: detached pellet speed has the intended gentle/strong response" % power_value)
+		check(moved>0 and Vector2(grain.pos).distance_to(expected)<0.0001,"power %.2f: detached pellet transport follows the distance field and power gain" % power_value)
 		step(w,60)
 		check(w.score>0 and w.last_eat_at>=0 and w.last_eat_at<=w.elapsed,"actual intake records a feedback timestamp")
 		var captured: Dictionary=w.capture_snapshot(); w.match_paused=true; var frozen: Dictionary=w.capture_snapshot()

@@ -1,3 +1,11 @@
+# 0.24.4 distance tuning addendum
+
+Automatic Bite defaults to 14 px. The original longitudinal field 1−0.4d (60% at far edge) is replaced by t²(3−2t), t=1−clamp(depth/range,0,1). Existing cone length, width, lateral factor and physical hook-contact radius are unchanged. Loose-grain velocity now includes this same field once; peel progress and whole-bait displacement target already used it. Body target remains limited by mouth distance and existing response speed; stronger field does not imply larger actual displacement after reaching the mouth.
+
+Authority schema14 profile guard3 rejects earlier physics; public guard1 unchanged. Exact build0.24.4. Profile tables and 4/6/8 capacity/.4s cooldown unchanged. Legacy unstamped personal rules18 migrates to14; explicit other values preserved, new saves stamped. Named rule presets keep their explicit settings.
+
+The following is the historical 0.24.3 design record:
+
 # P2.3 Feeding Choice Balance — 0.24.3
 
 Base: `f82f535ae3931d7e013ad7827c782cef5a7366be` on `feature/dev` (published 0.24.2). Scope is the authorized P2.3 step. Final human gate remains open; Phase 3 is not authorized.

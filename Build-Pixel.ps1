@@ -1,6 +1,6 @@
 ﻿param(
     [string]$GodotDirectory = 'E:\chrome下载\Godot_v4.7.2-stable_win64.exe',
-    [string]$OutputDirectory = (Join-Path (Split-Path $PSScriptRoot -Parent) 'Releases\BaitbreakPixel-0.24.3')
+    [string]$OutputDirectory = (Join-Path (Split-Path $PSScriptRoot -Parent) 'Releases\BaitbreakPixel-0.24.4')
 )
 $ErrorActionPreference = 'Stop'
 $pixelConsole = Join-Path $GodotDirectory 'Godot_v4.7.2-stable_win64_console.exe'

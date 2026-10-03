@@ -50,6 +50,7 @@ func _initialize() -> void:
 		w.free(); replay.free()
 	mixed_budget()
 	suction_profiles()
+	distance_gradient()
 	print("FEEDING_BALANCE | passed=%d | failed=%d" % [passed,failed]); quit(1 if failed else 0)
 func mixed_budget() -> void:
 	var w:=fixture("cluster")
@@ -78,3 +79,54 @@ func suction_profiles() -> void:
 	check(peel[0]>peel[1] and peel[1]>peel[2],"suction efficiency changes actual peel physics")
 	check(release[0]>release[1] and release[1]>release[2],"fragmentation changes real release budget")
 	check(pull[0]>pull[1] and pull[1]>pull[2],"suction changes actual whole-bait movement")
+
+func distance_gradient() -> void:
+	var w:=fixture("cluster")
+	var reach: float=w.rule("suction_range")
+	check(w.rule("bite_range")==14.0,"smaller automatic mouth radius defaults to 14px")
+	check(is_equal_approx(w.strength(w.mouth()),1.0) and is_equal_approx(w.strength(w.mouth()+Vector2(reach*0.5,0)),0.5),"smooth field mouth and midpoint anchors")
+	check(w.strength(w.mouth()+Vector2(reach,0))==0 and w.strength(w.mouth()+Vector2(reach+0.01,0))==0,"field joins outside at zero")
+	check(w.strength(w.mouth()+Vector2(reach*0.99,0))>0,"weak far interior still exerts pull")
+	var previous:=1.0
+	for i in range(1,101):
+		var value: float=w.strength(w.mouth()+Vector2(reach*i/100.0,0))
+		check(value<previous,"continuous strictly decreasing longitudinal field %d"%i)
+		previous=value
+	w.free()
+	for kind in Profile.TYPES:
+		for power_value in [0.3,0.65,1.0]:
+			var moves: Array[float]=[]; var peels: Array[float]=[]; var bodies: Array[float]=[]
+			for fraction in [0.3,0.5,0.9]:
+				w=fixture(kind); w.power=power_value
+				var bait: Dictionary=w.baits[0]
+				bait.active=false
+				var grain: Dictionary=bait.grains[0]
+				for other in bait.grains: other.eaten=true
+				grain.eaten=false; grain.pos=w.mouth()+Vector2(reach*fraction,0)
+				var before: Vector2=grain.pos
+				var pull: float=w.strength(before)
+				w._step_bait(0,1.0/60.0,true,w.mouth())
+				moves.append(before.distance_to(grain.pos))
+				check(absf(moves[-1]-pull*w.rule("pellet_speed")*w.Suction.pellet_gain(power_value)*Profile.get_profile(kind).suction_efficiency/60.0)<0.00004,"loose transport uses field exactly once")
+				bait.active=true; bait.pos=before; bait.home=before; bait.suction_offset=Vector2.ZERO
+				grain.free=false; grain.offset=Vector2.ZERO; grain.layer=0; grain.progress=0
+				w.rules.hook_suction=0
+				w._step_bait(0,1.0/60.0,true,w.mouth())
+				peels.append(grain.progress)
+				w.rules.hook_suction=1; bait.pos=before; bait.suction_offset=Vector2.ZERO
+				w._step_bait_suction(bait,10.0,true)
+				bodies.append(Vector2(bait.suction_offset).length())
+				w.free()
+			check(moves[0]>moves[1] and moves[1]>moves[2] and moves[2]>0,"near/mid/far transport "+kind+str(power_value))
+			check(peels[0]>peels[1] and peels[1]>peels[2] and peels[2]>0,"near/mid/far peel "+kind+str(power_value))
+			check(bodies[0]>bodies[1] and bodies[1]>bodies[2] and bodies[2]>0,"near/mid/far body target "+kind+str(power_value))
+	# A weakly pulled loose grain crosses the new Bite boundary during cooldown,
+	# then reaches mouth intake without stalling or counting twice.
+	w=fixture("chunk"); w.power=0.3; w.bite_cooldown=0.4
+	var bait: Dictionary=w.baits[0]; bait.active=false
+	for other in bait.grains: other.eaten=true
+	var grain: Dictionary=bait.grains[0]; grain.eaten=false; grain.pos=w.mouth()+Vector2(14.1,0)
+	for tick in 120: w.advance_tick({"suck":true,"aim":Vector2.RIGHT,"power":0.3},{})
+	check(grain.eaten and w.counted.size()==1 and w.score==1,"cooldown handoff has no feeding stall or double intake")
+	check(w.round_stats.bite_intake_by_type.chunk+w.round_stats.suck_intake_by_type.chunk==1,"handoff conserves attribution")
+	w.free()

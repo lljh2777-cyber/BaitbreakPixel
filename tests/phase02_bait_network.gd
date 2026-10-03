@@ -51,7 +51,7 @@ func pure_checks() -> void:
 	populate(world)
 	var replay:=World.new(); replay.reset_world({"seed":8})
 	var saved: Dictionary=world.capture_snapshot()
-	check(saved.schema==14 and Snapshot.SCHEMA==14 and saved.bait_profile_version==2,"authority preserves schema 14 with a mandatory bait-profile extension guard")
+	check(saved.schema==14 and Snapshot.SCHEMA==14 and saved.bait_profile_version==3,"authority preserves schema 14 with a mandatory bait-profile extension guard")
 	check(replay.restore_snapshot(saved) and replay.capture_snapshot()==saved,"all bait and fragment kinds survive exact authority roundtrip")
 	for tick in 50:
 		world.advance_tick({"move":Vector2.UP},{})
@@ -110,13 +110,15 @@ func pure_checks() -> void:
 	mixed.state.baits[0].grains[0].free=true; mixed.state.baits[0].grains[0].visual_kind="worm"
 	check(world.restore_snapshot(mixed),"valid older loose fragment may differ from the current attached bait type")
 	check(world.restore_snapshot(saved),"mixed-fragment fixture resets to original authority")
-	for value in [0,3,1.0,"1",null]:
+	for value in [0,4,1.0,"1",null]:
 		bad=saved.duplicate(true); bad.bait_profile_version=value
 		reject_authority(world,bad,"authority rejects incompatible profile guard "+str(value))
 		bad=public.duplicate(true); bad.bait_profile_version=value
 		reject_public(replay,bad,"fish rejects incompatible profile guard "+str(value))
 	bad=saved.duplicate(true); bad.bait_profile_version=1
 	reject_authority(world,bad,"P2.2 neutral-profile snapshots cannot replay under P2.3 tuning")
+	bad=saved.duplicate(true); bad.bait_profile_version=2
+	reject_authority(world,bad,"P2.3 uniform transport cannot replay under distance-gradient physics")
 	bad=saved.duplicate(true); bad.erase("bait_profile_version")
 	reject_authority(world,bad,"pre-profile schema 14 snapshot is explicitly rejected")
 	bad=public.duplicate(true); bad.erase("bait_profile_version")
