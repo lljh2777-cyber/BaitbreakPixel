@@ -1,0 +1,13 @@
+{
+  "native_file_count": 414,
+  "final_file_count": 416,
+  "different_existing_files": [
+    "tools/phase03_competition_protocol.md"
+  ],
+  "added_files": [
+    "tests/runner/test_phase03_competition.py",
+    "tools/phase03_diagnose_supply.gd"
+  ],
+  "runtime_native_inputs_match": true,
+  "explanation": "Only experiment documentation changed after native copy; added supply-diagnostic and Python analysis-guard tools are not consumed by renderer suites. All runtime, scene, asset, native test and registered native runner inputs match exactly."
+}

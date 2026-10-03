@@ -2,12 +2,12 @@
 
 一个 2D 像素风格的人鱼对抗游戏：小鱼在水下觅食、缠线和逃脱，钓鱼人在岸边控竿、收放线与抄网。支持单机挑战、自由练习和一人对一鱼的局域网联机。
 
-**当前源码：0.25.0（P3.0+P3.1 环境鱼，等待人工试玩）** · Godot 4.7.2
+**当前源码：0.25.1（P3.2 抢食竞争，等待人工试玩）** · Godot 4.7.2
 **当前公开 Windows 试玩包：0.25.0**，历史发行记录继续保留。
 
-用户已确认 0.24.6 手感合适，Phase 2 关闭。0.25.0 新增 3 条独立游动的环境鱼、多鱼 ID、独立随机源、schema15 重放与双角色公共表现；玩家现有 10 px 自动咬食、0.80 秒间隔、渐变吸力和 4/6/8 容量保持不变。NPC 本轮只游动与软避让，不抢食、不上钩、不影响胜负。
+用户已确认 0.25.0 环境鱼试玩通过。0.25.1 让默认三条 NPC 根据可见食物线索和自身饱食寻找、靠近、吸食与自动咬食，真实消耗食物，只增加各自饱食，不增加玩家分数。玩家 10 px 自动咬食、0.80 秒间隔和 4/6/8 容量保持；双方共用嘴部与摄食物理。NPC 本轮仍不上钩、不参与胜负。
 
-0.25.0 Windows ZIP 已构建、验证并公开发布；解压后运行 `BaitbreakPixel.exe`，核对菜单显示 0.25.0。详见[架构边界](docs/architecture/PHASE03-AMBIENT-FISH.md)与[验证和人工试玩清单](docs/test-reports/PHASE03-AMBIENT-VALIDATION-0.25.0.md)。完成 P3.0+P3.1 后停止，等用户确认才进入 P3.2；Phase 4 继续锁定。
+本轮仅提交推送 0.25.1 源码，不生成新包。同步 `feature/dev` 后用 Godot 4.7.2 打开 `project.godot`，F5，核对菜单 0.25.1。详见[抢食架构](docs/architecture/PHASE03-FORAGING.md)与[验证和人工试玩清单](docs/test-reports/PHASE03-FORAGING-VALIDATION-0.25.1.md)。P3.2 完成后 STOP；P3.3 社会行为、P3.4 NPC Hook 与 Phase 4 多竿继续锁定。下方 0.25.0 公开包不包含本轮抢食。
 
 ## 下载试玩
 
@@ -21,7 +21,7 @@
 
 ### Phase 2.3：已由用户人工关闭
 
-用户于 2026-10-03 确认目前手感合适并进入 Phase 3。此前各版的自动统计、未通过项与人工门记录保留原文，不能把后续确认回写为当时已通过。现行环境鱼人工清单见上方 0.25.0 报告。
+用户于 2026-10-03 确认目前手感合适并进入 Phase 3。此前各版的自动统计、未通过项与人工门记录保留原文，不能把后续确认回写为当时已通过。0.25.0 环境鱼也已由用户试玩确认；现行抢食人工清单见上方 0.25.1 报告。
 
 实现与统计定义见[摄食平衡边界](docs/architecture/PHASE02-FEEDING-BALANCE.md)。此前[三种饵型报告](docs/test-reports/PHASE02-BAIT-VALIDATION.md)与[P2.1 报告](docs/test-reports/PHASE02-BITE-VALIDATION.md)保留原始结果。
 
@@ -64,7 +64,7 @@
 .\Build-Pixel.ps1 -GodotDirectory 'D:\Tools\Godot_v4.7.2-stable_win64.exe'
 ```
 
-该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.25.0` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
+该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.25.1` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
 
 当前测试入口、套件状态和产物目录配置见 [测试运行指南](tests/README.md)。核心抄网逻辑检查示例（替换为本机引擎路径）：
 

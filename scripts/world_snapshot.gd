@@ -11,7 +11,7 @@ const BAIT_PROFILE_VERSION := 3
 const MAP_ID := "pond_v2"
 const WORLD_FIELDS: Array[String] = [
 	"fish_id", "rod_id", "next_bait_id", "next_hook_id",
-	"next_fish_id", "npc_fishes", "hook_target_fish_id",
+	"next_fish_id", "npc_fishes", "hook_target_fish_id", "npc_foraging_enabled",
 	"rules",
 	"net_action",
 	"qte_timing",

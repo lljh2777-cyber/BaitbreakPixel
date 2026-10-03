@@ -1,7 +1,10 @@
 extends RefCounted
 
+const NPC_FIELDS := ["npc_food_consumed","npc_food_by_type","npc_feeding_events","player_npc_food_contests","npc_target_switches"]
+
 static func fresh() -> Dictionary:
 	var result:=legacy_fresh()
+	result.merge({"npc_food_consumed":0.0,"npc_food_by_type":type_totals(),"npc_feeding_events":0,"player_npc_food_contests":0,"npc_target_switches":0})
 	result.merge({"food_by_type":type_totals(),"suck_intake_by_type":type_totals(),"bite_intake_by_type":type_totals(),
 		"suck_attempts":0,"suck_successes":0,"suck_hook_contacts":0,"bite_attempts":0,"bite_successes":0,"bite_hook_contacts":0,"last_suck_success_tick":-1})
 	return result
@@ -46,6 +49,9 @@ static func valid(stats: Dictionary, public_only: bool=false) -> bool:
 		elif not is_finite(float(stats[key])) or stats[key]<0: return false
 	if not public_only:
 		if stats.bite_successes>stats.bite_attempts: return false
+		var npc_total:=0.0
+		for kind in type_totals(): npc_total+=float(stats.npc_food_by_type[kind])
+		if not is_equal_approx(npc_total,stats.npc_food_consumed): return false
 		for kind in type_totals():
 			if not is_equal_approx(stats.food_by_type[kind],stats.suck_intake_by_type[kind]+stats.bite_intake_by_type[kind]): return false
 	return stats.fish_good<=stats.fish_total and stats.angler_good<=stats.angler_total

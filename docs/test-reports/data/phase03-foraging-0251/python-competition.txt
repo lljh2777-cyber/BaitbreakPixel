@@ -1,0 +1,25 @@
+test_duplicate_mode_seed (test_phase03_competition.ComparisonGuards.test_duplicate_mode_seed) ... ok
+test_duration_must_be_real_ticks (test_phase03_competition.ComparisonGuards.test_duration_must_be_real_ticks) ... ok
+test_goal_mismatch (test_phase03_competition.ComparisonGuards.test_goal_mismatch) ... ok
+test_missing_mode (test_phase03_competition.ComparisonGuards.test_missing_mode) ... ok
+test_missing_requested_seed (test_phase03_competition.ComparisonGuards.test_missing_requested_seed) ... ok
+test_npc_type_total (test_phase03_competition.ComparisonGuards.test_npc_type_total) ... ok
+test_passive_difference_retained (test_phase03_competition.ComparisonGuards.test_passive_difference_retained) ... ok
+test_player_type_total (test_phase03_competition.ComparisonGuards.test_player_type_total) ... ok
+test_unimplemented_metric_is_not_fake_zero (test_phase03_competition.ComparisonGuards.test_unimplemented_metric_is_not_fake_zero) ... ok
+test_unknown_mode (test_phase03_competition.ComparisonGuards.test_unknown_mode) ... ok
+test_valid_complete_pair (test_phase03_competition.ComparisonGuards.test_valid_complete_pair) ... ok
+test_heldout_rejects_pilot_seed_overlap (test_phase03_competition.ProvenanceAndMergeGuards.test_heldout_rejects_pilot_seed_overlap) ... ok
+test_heldout_rejects_source_change (test_phase03_competition.ProvenanceAndMergeGuards.test_heldout_rejects_source_change) ... ok
+test_merge_complete_disjoint_shards (test_phase03_competition.ProvenanceAndMergeGuards.test_merge_complete_disjoint_shards) ... ok
+test_merge_horizon_mismatch (test_phase03_competition.ProvenanceAndMergeGuards.test_merge_horizon_mismatch) ... ok
+test_merge_overlapping_seeds (test_phase03_competition.ProvenanceAndMergeGuards.test_merge_overlapping_seeds) ... ok
+test_merge_rejects_missing_pair (test_phase03_competition.ProvenanceAndMergeGuards.test_merge_rejects_missing_pair) ... ok
+test_merge_rejects_source_unstable (test_phase03_competition.ProvenanceAndMergeGuards.test_merge_rejects_source_unstable) ... ok
+test_merge_rejects_unsuccessful (test_phase03_competition.ProvenanceAndMergeGuards.test_merge_rejects_unsuccessful) ... ok
+test_merge_source_mismatch (test_phase03_competition.ProvenanceAndMergeGuards.test_merge_source_mismatch) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.886s
+
+OK

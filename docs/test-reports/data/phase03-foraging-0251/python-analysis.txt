@@ -1,0 +1,16 @@
+test_actual_timestep_required (phase02_test_analysis.AnalysisTests.test_actual_timestep_required) ... ok
+test_automatic_bite_not_disabled_for_suckonly (phase02_test_analysis.AnalysisTests.test_automatic_bite_not_disabled_for_suckonly) ... ok
+test_biteonly_suction_refused (phase02_test_analysis.AnalysisTests.test_biteonly_suction_refused) ... ok
+test_deterministic_intervals (phase02_test_analysis.AnalysisTests.test_deterministic_intervals) ... ok
+test_duplicate_refused (phase02_test_analysis.AnalysisTests.test_duplicate_refused) ... ok
+test_independent_action_reconciliation (phase02_test_analysis.AnalysisTests.test_independent_action_reconciliation) ... ok
+test_missing_pair_refused (phase02_test_analysis.AnalysisTests.test_missing_pair_refused) ... ok
+test_paired_negative_and_incomplete_retained (phase02_test_analysis.AnalysisTests.test_paired_negative_and_incomplete_retained) ... ok
+test_per_type_score_reconciliation (phase02_test_analysis.AnalysisTests.test_per_type_score_reconciliation) ... ok
+test_pilot_mixing_refused (phase02_test_analysis.AnalysisTests.test_pilot_mixing_refused) ... ok
+test_point_dominance_with_equal_risk_is_preserved (phase02_test_analysis.AnalysisTests.test_point_dominance_with_equal_risk_is_preserved) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.199s
+
+OK

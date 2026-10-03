@@ -1,0 +1,38 @@
+{
+	"duration": 84.1666666666632,
+	"foodless_intervals": [
+		{
+			"cycle_phases": {
+				"refill": 1320
+			},
+			"eligible_supply_ticks": 0,
+			"end_tick": 5050,
+			"hook_states": {
+				"2": 1320
+			},
+			"net_states": {
+				"miss": 13,
+				"rest": 1176,
+				"sweep": 41,
+				"warning": 29,
+				"withdraw": 61
+			},
+			"start_tick": 3731,
+			"ticks": 1320
+		}
+	],
+	"hook_enum": {
+		"FREE": 0,
+		"HOOKED": 2,
+		"MOUTH": 1
+	},
+	"hook_events": 1,
+	"mode": "ForagingNPC",
+	"note": "Same real 60 Hz default challenge and detached Mixed policy as the paired comparison. Instrumentation only; no forced food, time, position, winner or hook changes.",
+	"npc_food": 77.9999999999999,
+	"player_food": 60.0,
+	"reason": "landed",
+	"seed": 44009,
+	"ticks": 5050,
+	"winner": "angler"
+}

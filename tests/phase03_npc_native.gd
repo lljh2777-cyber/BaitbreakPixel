@@ -98,7 +98,8 @@ func toggle_private_truth() -> void:
 		fish.target_bait_id=987; fish.focus_bait_id=987
 		fish.risk_tolerance=0.999; fish.satiety=1.0
 		fish.suspicion_by_bait={987:0.999}; fish.caution_by_bait={987:0.999}
-		fish.caution_state="ALARMED"; fish.behavior_state="FLEE"; fish.behavior_age=999.0
+		fish.caution_state="ALARMED"; fish.behavior_state="FEED"; fish.behavior_age=999.0
+		fish.feeding=true; fish.power=0.95; fish.bite_cooldown=0.4; fish.intent_aim=-fish.aim
 
 func run() -> void:
 	if not prepare_capture_output(): quit(2); return
@@ -165,6 +166,7 @@ func run() -> void:
 			if overlap.get_pixelv(origin+Vector2i(x,y))!=empty.get_pixelv(origin+Vector2i(x,y)): player_unchanged=false
 	check(opaque_count>100 and player_unchanged,"all opaque player pixels stay in front when an NPC overlaps the protagonist")
 	await check_shore_views()
+	await check_actual_foraging()
 	await record_frame_costs()
 	print("NPC_NATIVE | passed=",passed," | failed=",failed)
 	quit(1 if failed else 0)
@@ -199,6 +201,39 @@ func check_shore_views() -> void:
 	check(approximate.get_data()==(await render("observation-hidden-truth")).get_data(),"net observation shadows are blind to private hook and brain truth")
 	game.npc_fishes[0].position=Vector2(1260,400)
 	check(observing_empty.get_data()==(await render()).get_data(),"NPC beyond existing net sight is not rendered in observation mode")
+
+func check_actual_foraging() -> void:
+	setup_fixture(); place_fishes(1)
+	var npc: Dictionary=game.npc_fishes[0]
+	npc.position=Vector2(600,200); npc.velocity=Vector2.ZERO; npc.aim=Vector2.RIGHT
+	npc.intent_aim=Vector2.RIGHT; npc.steering=Vector2.ZERO; npc.decision_age=0.0
+	var grain: Dictionary=game.baits[0].grains[0]
+	grain.eaten=false; grain.free=true; grain.pos=npc.position+Vector2(12,0); grain.points=1.0
+	await render("fish-npc-food-before")
+	var score_before: float=game.score
+	for tick in 120:
+		game.advance_tick({}, {})
+		if grain.eaten: break
+	check(grain.eaten and game.round_stats.npc_food_consumed==1.0,"native authority NPC actually consumes the visible food fixture")
+	check(game.score==score_before and game.round_stats.food_consumed==0 and game.hook_count==0,"native NPC food intake gives no player award or hook event")
+	check(npc.behavior_state=="FEED" and npc.bite_cooldown>0,"native capture contains real feeding state and pending bite cooldown")
+	var consumed:=await render("fish-npc-food-consumed")
+	var actual: Dictionary=game.capture_snapshot()
+	# Restore only the food's visible presence at the exact same tick to localize
+	# its disappearance independently of animation, fish motion or HUD time.
+	grain.eaten=false
+	var visible:=await render("fish-npc-food-visible-control")
+	grain.eaten=true
+	var center:=Vector2i(Camera.to_screen(grain.pos,game,"fish").round())
+	var food_region:=Rect2i(center-Vector2i(6,6),Vector2i(13,13))
+	var bounds:=difference_bounds(consumed,visible)
+	check(bounds.has_area() and food_region.encloses(bounds),"actual consumed-food pixels disappear only at the food's visible position")
+	check(game.capture_snapshot()==actual,"food visibility control restores exact native authority")
+	var authority: Array[Dictionary]=game.npc_fishes.duplicate(true)
+	toggle_private_truth()
+	check(consumed.get_data()==(await render("fish-npc-feeding-hidden-truth")).get_data(),"actual feeding pixels are invariant to private hook, feeding intent, power, cooldown and AI memory")
+	game.npc_fishes=NPCPublic.capture(authority)
+	check(consumed.get_data()==(await render("fish-npc-fed-public-replica")).get_data(),"fed NPC public-only replica preserves exactly the same native pixels")
 
 func record_frame_costs() -> void:
 	setup_fixture()

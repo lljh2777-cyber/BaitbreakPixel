@@ -13,7 +13,7 @@ Windows 可使用 `D:\python\python.exe`；用 `--godot "引擎可执行文件�
 
 ## 注册表与状态
 
-[`suite_registry.json`](suite_registry.json) 显式登记全部 111 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
+[`suite_registry.json`](suite_registry.json) 显式登记全部 114 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
 
 - `current`：当前有效的回归门禁；不按文件名版本新旧决定。`--profile current` 运行无窗口套件，`--profile native` 运行图形套件。已重新验证的 effort、net_animation、rules_network 等较早版本仍在当前门禁中
 - `historical`：当前检出复现了失败的诊断套件。保留原断言，失败仍返回非零；这不是“已证明所有断言过时”，更不是通过。具体原因和结果见[维护报告](../docs/test-reports/TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md)
@@ -107,4 +107,14 @@ python3 tools/phase02_run_feeding.py --phase heldout --seed 31001 --rounds 100 -
 - `phase03_npc_statistics`：0/3/6 的 simulation time、snapshot bytes、公开包压缩前/后字节；不把测量当作长期性能保证
 - `phase03_npc_native`：原生三种外观、玩家最上层、公开副本/隐藏真值像素等价、岸边和观察视角，以及0/3/6冻结帧耗时
 
-正式门禁：`python3 tools/run_tests.py --import --profile current` 与 `--profile native`；渲染脚本需真实图形环境。当前报告见[0.25.0 验证](../docs/test-reports/PHASE03-AMBIENT-VALIDATION-0.25.0.md)。P3.2 尚未开放，未登记空壳 foraging/social/hook_target 测试来假装后续阶段已完成。
+正式门禁：`python3 tools/run_tests.py --import --profile current` 与 `--profile native`；渲染脚本需真实图形环境。历史结果见[0.25.0 验证](../docs/test-reports/PHASE03-AMBIENT-VALIDATION-0.25.0.md)。本轮保留显式 PassiveNPC 控制，以继续验证环境游动和玩家主随机源隔离。
+
+## Phase 3.2 抢食竞争
+
+- `phase03_npc_foraging_brain`：独立旧游动对照、合法公共线索、饱食/风险/摄食频率、确定性和输入不可变
+- `phase03_npc_foraging`：玩家/NPC 共用 mouth/Bite 容量与冷却、吸食物理、真实归属/去重、远处吸食者不补充其他鱼的剥离预算、隐藏真值等价
+- `phase03_food_reachability`：1,000 distinct seeds × 生存/对战 × 挑战/练习 = 4,000 场景，反复 NPC 耗尽后通过既有补给给出不降低目标的玩家摄食见证；结构可达性，不是自动获胜或熟练玩家保证
+- 既有 snapshot/network/statistics/native 套件增加实际抢食、私有字段/统计、真实 ENet 消耗同步和摄食画面
+- 自动策略对照：`NoNPC` / `PassiveNPC` / `ForagingNPC`，使用原 P2 Mixed，仅用于发现极端失衡；完整复现与限制见 [实验协议](../tools/phase03_competition_protocol.md)
+
+权威 schema15、FoodProfile guard3 保持；新增配置/内部字段严格检查，所以旧 0.25.0 快照明确拒绝，网络 exact-build=0.25.1，angler NPC 公共投影 guard2。P3.3/P3.4 不提前启用。当前[报告与人工门](../docs/test-reports/PHASE03-FORAGING-VALIDATION-0.25.1.md)。
