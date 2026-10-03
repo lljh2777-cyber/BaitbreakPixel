@@ -26,6 +26,13 @@ func freeze(node: Node) -> void:
 	node.set_process(false); node.set_physics_process(false)
 	for child in node.get_children(): freeze(child)
 
+func material_ids() -> Array:
+	var ids: Array = []
+	for prop in game.view.cover_materials.props: ids.append(prop.texture.get_instance_id())
+	for frames in game.view.cover_materials.plant_frames:
+		for sprite in frames: ids.append(sprite.texture.get_instance_id())
+	return ids
+
 func render(label := "") -> Image:
 	game.view.queue_redraw()
 	for index in 2: await process_frame
@@ -152,6 +159,7 @@ func run() -> void:
 	game.move_child(game.view, view_index)
 	setup()
 	check(not game.view.water_appearance.enabled, "ordinary entry defaults to legacy")
+	check(game.view.cover_materials.texture_count == 0 and material_ids().is_empty(), "legacy entry does not allocate material textures")
 	var before: PackedByteArray = var_to_bytes(game.capture_snapshot())
 	game.menu.open("settings")
 	var toggle: CheckButton = game.menu.find_child("GeneratedWater", true, false)
@@ -160,6 +168,9 @@ func run() -> void:
 	check(is_instance_valid(picker) and picker.item_count == 4 and picker.selected == 0, "settings offers four named presets with fern selected")
 	toggle.button_pressed = true
 	var cold_preparation: Dictionary = game.view.water_appearance.preparation.duplicate()
+	var materials = game.view.cover_materials
+	var initial_material_ids := material_ids()
+	check(initial_material_ids.size() == 187 and materials.texture_count == 187, "opt-in prepares eleven prop unions and 176 plant poses once")
 	check(game.view.water_appearance.enabled and before == var_to_bytes(game.capture_snapshot()), "settings toggle prepares without touching authority")
 	var preset_pixels: Array[PackedByteArray] = []
 	var preset_times: Dictionary = {}
@@ -220,12 +231,14 @@ func run() -> void:
 	game.view.set_water_appearance(true)
 	for index in 20: game.restart_round(); game.view.set_water_appearance(false); game.view.set_water_appearance(true)
 	check(cache.bake_count == counts[1] and cache.upload_count == counts[2] and cache.texture_count == counts[3], "twenty restarts/toggles never rebuild textures")
+	check(initial_material_ids == material_ids() and materials.texture_count == 187, "presets, roles, failure and twenty restarts/toggles reuse material textures")
 	await replay("survival"); await replay("duel")
 	await interaction_replays()
 	await frame_costs()
 	var report := {"engine":Engine.get_version_info(),"renderer":RenderingServer.get_current_rendering_method(),"gpu":RenderingServer.get_video_adapter_name(),"measurement":"Frame intervals include pacing/scheduling. draw_cpu_us times inherited production _draw command submission, not GPU execution.", "preparation_us":cold_preparation, "frame_costs":metrics, "cache_counts":[cache.plan_count,cache.bake_count,cache.upload_count,cache.texture_count]}
 	report["preset_preparation_us"] = preset_times
 	report["resident_bundles"] = cache.bundles.size()
+	report["cover_materials"] = {"preparation_us":materials.preparation_us, "texture_count":materials.texture_count, "rgba_bytes":materials.rgba_bytes, "measurement":"Additional fixed material set, shared by all presets. RGBA bytes exclude driver overhead and are not measured VRAM."}
 	var file := FileAccess.open(output.path_join("wg3-evidence.json"),FileAccess.WRITE)
 	check(file != null,"evidence writable")
 	if file: file.store_string(JSON.stringify(report,"\t")); file.close()

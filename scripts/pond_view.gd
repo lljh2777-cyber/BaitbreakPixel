@@ -8,11 +8,20 @@ const WaterAppearance = preload("res://scripts/watergen/pond_water_appearance.gd
 var water_appearance := WaterAppearance.new()
 var generated_water_active := false
 var water_visual_time := 0.0
+const CoverMaterials = preload("res://scripts/watergen/water_cover_materials.gd")
+var cover_materials := CoverMaterials.new()
 
 func set_water_appearance(enabled: bool, profile_override: Variant = null) -> bool:
 	var ok := water_appearance.select(enabled, profile_override)
+	if ok and enabled and not _prepare_cover_materials():
+		ok = water_appearance.fail("COVER_MATERIALS")
 	queue_redraw()
 	return ok
+
+func _prepare_cover_materials() -> bool:
+	var kinds: Array[String] = []
+	for prop in props: kinds.append(Layout.SOLIDS[prop.targets[0]].kind)
+	return cover_materials.prepare(props, plant_frames, kinds)
 
 func set_water_preset(id: String) -> bool:
 	var ok := water_appearance.choose_preset(id)
@@ -121,7 +130,7 @@ func _world(t: float) -> void:
 	_plants(t,true)
 	Scenery.floor_layer(self)
 	if line_frame.grass.is_empty(): _line_back()
-	for prop: Dictionary in props:
+	for prop: Dictionary in (cover_materials.props if generated_water_active else props):
 		var opacity:=1.0
 		for index: int in prop.targets: opacity=minf(opacity,world.target_opacity[index])
 		draw_texture(prop.texture,prop.position,Color(1,1,1,opacity))
@@ -167,7 +176,7 @@ func _plants(t: float, background: bool) -> void:
 	var frame := posmod(int(t*12.0/TAU),8)
 	for index in Layout.PLANTS.size():
 		if Layout.PLANTS[index].back!=background: continue
-		var sprite: Dictionary = plant_frames[index][frame]
+		var sprite: Dictionary = (cover_materials.plant_frames if generated_water_active else plant_frames)[index][frame]
 		var tint:=Color(1,1,1,world.target_opacity[Layout.SOLIDS.size()+index])
 		var cover: Dictionary={}
 		for candidate: Dictionary in line_frame.grass:
