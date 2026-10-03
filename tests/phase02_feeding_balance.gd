@@ -83,7 +83,7 @@ func suction_profiles() -> void:
 func distance_gradient() -> void:
 	var w:=fixture("cluster")
 	var reach: float=w.rule("suction_range")
-	check(w.rule("bite_range")==12.0,"smaller automatic mouth radius defaults to 12px")
+	check(w.rule("bite_range")==10.0,"smaller automatic mouth radius defaults to 10px")
 	check(is_equal_approx(w.strength(w.mouth()),1.0) and is_equal_approx(w.strength(w.mouth()+Vector2(reach*0.5,0)),0.5),"smooth field mouth and midpoint anchors")
 	check(w.strength(w.mouth()+Vector2(reach,0))==0 and w.strength(w.mouth()+Vector2(reach+0.01,0))==0,"field joins outside at zero")
 	check(w.strength(w.mouth()+Vector2(reach*0.99,0))>0,"weak far interior still exerts pull")

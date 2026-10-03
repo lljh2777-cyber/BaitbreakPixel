@@ -1,0 +1,30 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+PIXEL_READY | asymmetric-2d | 640x360 | v0.24.6 | playtest-gate-phase02-feeding-balance
+BITE_NATIVE_PASS | native capture preserves 640x360 pixel canvas
+BITE_NATIVE_PASS | ready render is deterministic and simulation-neutral
+BITE_NATIVE_PASS | empty automatic tick gives no food, satiety or accepted cooldown
+BITE_NATIVE_PASS | empty automatic tick keeps HUD ready, never advertises successful intake
+BITE_NATIVE_PASS | empty automatic tick has no jaw feedback
+BITE_NATIVE_PASS | far fixture has a visible food grain beyond mouth range
+BITE_NATIVE_PASS | far automatic tick does not visually remove unreachable food
+BITE_NATIVE_PASS | far food is not collected and incurs no accepted cooldown
+BITE_NATIVE_PASS | far automatic tick leaves ready hint unchanged
+BITE_NATIVE_PASS | 11px grain remains outside the actual 10px automatic Bite range
+BITE_NATIVE_PASS | outside-10px automatic tick has no false food disappearance, jaw contact, or HUD success
+BITE_NATIVE_PASS | nearby food automatically triggers four-grain reward and cooldown without input
+BITE_NATIVE_PASS | ready and cooldown HUD are visually distinct
+BITE_NATIVE_PASS | active jaw and cooldown-resting pose visibly differ
+BITE_NATIVE_PASS | cooldown recovery restores automatic Bite hint
+BITE_NATIVE_PASS | jaw animation does not disturb neighboring HUD
+BITE_NATIVE_PASS | Bite hint stays clear of suction label and power bar
+BITE_NATIVE_PASS | native actual simulation does not repeat at former .60s cadence
+BITE_NATIVE_PASS | native actual simulation repeats at .80s with four remaining grains
+BITE_NATIVE_PASS | .80s repeat visibly restarts jaw feedback
+BITE_NATIVE_PASS | ready: hidden hook flags and IDs never alter pre-contact pixels
+BITE_NATIVE_PASS | active: hidden hook flags and IDs never alter pre-contact pixels
+BITE_NATIVE_PASS | cooldown: hidden hook flags and IDs never alter pre-contact pixels
+BITE_NATIVE | passed=23 | failed=0

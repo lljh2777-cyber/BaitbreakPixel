@@ -2,9 +2,9 @@
 
 一个 2D 像素风格的人鱼对抗游戏：小鱼在水下觅食、缠线和逃脱，钓鱼人在岸边控竿、收放线与抄网。支持单机挑战、自由练习和一人对一鱼的局域网联机。
 
-**当前源码与公开 Windows 试玩版本：0.24.5（更近、更慢的自动咬食）** · Windows x64 · Godot 4.7.2
+**当前源码：0.24.6（进一步收紧自动咬食） · 公开 Windows 试玩包：0.24.5** · Windows x64 · Godot 4.7.2
 
-0.24.5 Windows 试玩包已发布：默认咬食半径 12 px，成功后冷却 0.60 秒；吸力渐变与 4/6/8 容量不变。旧个人档案的旧默认值逐项迁移，其他自定义值保留；之后明确保存的旧值及命名方案不迁移。见[本次验证与人工试玩](docs/test-reports/PHASE02-BITE-TUNING-VALIDATION.md)。
+0.24.6 源码将默认咬食半径从 12 px 进一步缩到 10 px，成功后冷却从 0.60 秒延长到 0.80 秒；吸力渐变与 4/6/8 容量不变。个人档案修订 3 逐项迁移上一版默认值，保留其他自定义值、较早修订已明确保存的旧值和命名方案。本次仅提交源码，不生成新试玩包。见[本次验证与人工试玩](docs/test-reports/PHASE02-BITE-TUNING-0.24.6.md)。
 
 ## 下载试玩
 
@@ -16,13 +16,13 @@
 
 截至 2026-10-03 已逐版发布 **0.21.0–0.24.5，共 18 个 Release**，每版均附 ZIP 和 `SHA256SUMS.txt`。其他版本见 [全部 Releases](https://github.com/lljh2777-cyber/BaitbreakPixel/releases)，核对结果见 [0.24.5 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.5.md)、[0.24.4 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.4.md)、[0.24.3 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.3.md)、[0.24.2 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.2.md)及[此前 14 版发布记录](docs/test-reports/GITHUB-RELEASES-2026-10-02.md)。0.24.5 仍用于人工试玩，发布包不代表已经完成人工手感与平衡验收。
 
-### Phase 2.3：0.24.5 摄食选择最终人工门
+### Phase 2.3：0.24.6 摄食选择最终人工门
 
-用户允许继续组合平衡。三类食物现在有不同的吸动/剥离、碎散、自动咬食容量与饱食恢复；每粒挑战分数不变。Cluster 保留原基准，Worm 和 Chunk 更适合贴近自动咬食。自动咬食默认缩至嘴边 12 px、基础容量 4、成功后冷却 0.60 秒，无咬食按键，也没有禁用开关。
+用户允许继续组合平衡。三类食物现在有不同的吸动/剥离、碎散、自动咬食容量与饱食恢复；每粒挑战分数不变。Cluster 保留原基准，Worm 和 Chunk 更适合贴近自动咬食。自动咬食默认缩至嘴边 10 px、基础容量 4、成功后冷却 0.80 秒，无咬食按键，也没有禁用开关。
 
-0.24.3 的 100 个留出种子、300 局比较曾发现远处吸食策略占优，原结果保留。0.24.4 重用相同种子调参比较后，样本均值未发现单一策略全面支配，但远距吸食/混合胜率下降、对局变长；这不是新的留出验证，也不能证明平衡或手感通过。0.24.5 本次仅调整距离和冷却，未重跑完整策略平衡实验；上述结果属于此前版本。
+0.24.3 的 100 个留出种子、300 局比较曾发现远处吸食策略占优，原结果保留。0.24.4 重用相同种子调参比较后，样本均值未发现单一策略全面支配，但远距吸食/混合胜率下降、对局变长；这不是新的留出验证，也不能证明平衡或手感通过。0.24.6 本次仅调整距离和冷却，未重跑完整策略平衡实验；上述结果属于此前版本。
 
-对应 0.24.5 Windows ZIP 已生成、核对并公开发布；本地目录为 `Releases/BaitbreakPixel-0.24.5`。解压后运行 `BaitbreakPixel.exe`，按[咬食微调与最终试玩清单](docs/test-reports/PHASE02-BITE-TUNING-VALIDATION.md)比较远处吸食、贴近和混合选择。自动统计只能发现问题，不能代替手感验收；停在最终人工门，只有用户明确确认 Phase 2 可以结束才允许进入 Phase 3。
+0.24.6 请用 Godot 4.7.2 运行当前源码，按[本轮咬食微调与最终试玩清单](docs/test-reports/PHASE02-BITE-TUNING-0.24.6.md)比较远处吸食、贴近和混合选择。已发布的 0.24.5 包仍为 12 px / 0.60 秒，不能验证本轮默认值。自动统计只能发现问题，不能代替手感验收；停在最终人工门，只有用户明确确认 Phase 2 可以结束才允许进入 Phase 3。
 
 实现与统计定义见[摄食平衡边界](docs/architecture/PHASE02-FEEDING-BALANCE.md)。此前[三种饵型报告](docs/test-reports/PHASE02-BAIT-VALIDATION.md)与[P2.1 报告](docs/test-reports/PHASE02-BITE-VALIDATION.md)保留原始结果。
 
@@ -65,7 +65,7 @@
 .\Build-Pixel.ps1 -GodotDirectory 'D:\Tools\Godot_v4.7.2-stable_win64.exe'
 ```
 
-该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.24.1` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
+该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.24.6` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
 
 当前测试入口、套件状态和产物目录配置见 [测试运行指南](tests/README.md)。核心抄网逻辑检查示例（替换为本机引擎路径）：
 
