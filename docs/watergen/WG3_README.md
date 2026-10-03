@@ -36,4 +36,4 @@ YELLOW 接口变更依据为用户本轮明确允许接入；本 Agent 在此工
 
 `generated` 运行原有 20 个现行原生套件，唯一额外参数是 `--water-appearance=fern`；不替换旧断言或黄金图。`focused` 仅运行两个新套件。`--pack` 让资源来自实际 PCK，测试脚本由外部加载；不兼容包模式的历史包装脚本仍标 BLOCKED。
 
-本轮最终结果和实际包位置见 [WG3_REPORT.md](WG3_REPORT.md)。完成后停在 `WAITING_FOR_PLAYTEST`；请反馈新环境是否影响三类食物、细线、绕行/QTE 和抄网的辨识，以及具体位置/角色/是否仅新版环境出现。
+当前包及本轮调整见 [WG3_CENTER_REPORT.md](WG3_CENTER_REPORT.md)，首次接入结果保留于 [WG3_REPORT.md](WG3_REPORT.md)。完成后停在 `WAITING_FOR_PLAYTEST`；请反馈新环境是否影响三类食物、细线、绕行/QTE 和抄网的辨识，以及具体位置/角色/是否仅新版环境出现。
