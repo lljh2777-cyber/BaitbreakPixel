@@ -27,10 +27,9 @@ func _layer(name: String) -> void:
 		if animation.layer != name: continue
 		var texture: Texture2D = animation.texture
 		var origin := Vector2(animation.origin_px[0], animation.origin_px[1])
-		# Cached cropped texture, one-pixel strips, no image creation or texture upload.
-		for row in texture.get_height():
-			var shift := Frame.sway(animation, origin.y + row, visual_time)
-			draw_texture_rect_region(texture, Rect2(origin + Vector2(shift, row), Vector2(texture.get_width(), 1)), Rect2(0, row, texture.get_width(), 1))
+		# Merge identically shifted rows, preserving the original nearest-pixel result.
+		for band in Frame.bands(animation, texture.get_height(), visual_time):
+			draw_texture_rect_region(texture, Rect2(origin + Vector2(band.shift, band.row), Vector2(texture.get_width(), band.height)), Rect2(0, band.row, texture.get_width(), band.height))
 
 func _draw() -> void:
 	if bundle.is_empty(): return

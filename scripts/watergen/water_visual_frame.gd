@@ -29,6 +29,29 @@ static func layer_offset(camera: Vector2, k: Array) -> Vector2:
 	return -camera + (camera * Vector2(k[0], k[1])).round()
 
 static func sway(animation: Dictionary, world_y: float, visual_time: float) -> float:
-	var weight := clampf((animation.root_y - world_y) / animation.height, 0, 1)
+	var weight := clampf((world_y - animation.root_y) * animation.get("growth", -1) / animation.height, 0, 1)
 	# Subtract the initial phase: time zero retains the chosen WG-1 stem pose.
-	return roundf((sin(visual_time * 0.65 + animation.phase) - sin(animation.phase)) * weight * weight)
+	return roundf(animation.get("amplitude", 2.0) * 0.5 * (sin(visual_time * animation.get("omega", 0.65) + animation.phase) - sin(animation.phase)) * weight * weight)
+
+static func bands(animation: Dictionary, texture_height: int, visual_time: float) -> Array:
+	# Sway is monotonic along a patch. Find the integer rounding thresholds instead
+	# of reevaluating sine for hundreds of rows. Neighbors guard half-pixel ties.
+	var result: Array = []
+	var amount: float = animation.get("amplitude", 2.0) * 0.5 * (sin(visual_time * animation.get("omega", 0.65) + animation.phase) - sin(animation.phase))
+	var magnitude := absf(amount)
+	var cuts: Array[int] = [0, texture_height]
+	for level in ceili(magnitude):
+		if level + 0.5 > magnitude: continue
+		var boundary: float = animation.root_y + animation.get("growth", -1) * animation.height * sqrt((level + 0.5) / magnitude) - animation.origin_px[1]
+		for neighbor in range(-1, 3):
+			var cut := clampi(floori(boundary) + neighbor, 0, texture_height)
+			if not cuts.has(cut): cuts.append(cut)
+	cuts.sort()
+	for index in range(cuts.size() - 1):
+		var row := cuts[index]
+		var height := cuts[index + 1] - row
+		var weight := clampf((animation.origin_px[1] + row - animation.root_y) * animation.get("growth", -1) / animation.height, 0, 1)
+		var shift := roundf(amount * weight * weight)
+		if not result.is_empty() and result[-1].shift == shift: result[-1].height += height
+		else: result.append({"row": row, "height": height, "shift": shift})
+	return result

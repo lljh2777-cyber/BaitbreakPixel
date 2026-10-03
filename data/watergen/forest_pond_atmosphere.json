@@ -1,0 +1,87 @@
+{
+  "format": "baitbreak-water-visual-profile",
+  "schema_version": 1,
+  "profile_id": "forest_pond_v1",
+  "generator_version": "wg-2.1",
+  "palette": {
+    "water_shallow": "#30777c",
+    "water_deep": "#123e50",
+    "haze_light": "#a4ceb4",
+    "plant_far": "#205057",
+    "silt_dark": "#355a55",
+    "silt_light": "#7d8970",
+    "foreground_dark": "#153b3c"
+  },
+  "beams": {
+    "count_range": [
+      4,
+      6
+    ],
+    "width_px_range": [
+      44,
+      86
+    ],
+    "depth_px_range": [
+      220,
+      355
+    ],
+    "lean_px_range": [
+      60,
+      128
+    ],
+    "intensity_range": [
+      0.045,
+      0.095
+    ]
+  },
+  "composition": {
+    "open_center_x_fraction": [
+      0.3,
+      0.7
+    ],
+    "far_clump_count_range": [
+      12,
+      16
+    ],
+    "middle_clump_count_range": [
+      8,
+      10
+    ],
+    "surface_pad_count_range": [
+      6,
+      9
+    ],
+    "foreground_clump_count_range": [
+      5,
+      8
+    ],
+    "gravel_count": 160,
+    "mote_count": 42
+  },
+  "parallax_compensation": {
+    "water": [
+      0,
+      0
+    ],
+    "distance": [
+      0.22,
+      0.08
+    ],
+    "surface": [
+      0.13,
+      0.03
+    ],
+    "terrain": [
+      0.06,
+      0.02
+    ],
+    "floor": [
+      0,
+      0
+    ],
+    "foreground": [
+      -0.045,
+      0
+    ]
+  }
+}

@@ -1,14 +1,16 @@
 extends RefCounted
-## WG-2 deliberately reuses WG-1 object streams to retain the selected composition.
-## The changed raster/animation semantics have a distinct version and cache key.
+## Versioned WG-2 preview. Keep 2.0 callable for a same-seed A/B comparison.
 const Base = preload("res://scripts/watergen/water_visual_generator.gd")
 const Profile = preload("res://scripts/watergen/water_visual_profile.gd")
 const Frame = preload("res://scripts/watergen/water_visual_frame.gd")
-const VERSION := "wg-2.0"
-const RASTER_SPEC := "rgba8-padded-stem-strips-v1"
+const Atmosphere = preload("res://scripts/watergen/water_atmosphere.gd")
+const VERSION := "wg-2.1"
+const LEGACY_VERSION := "wg-2.0"
+const RASTER_SPEC := "rgba8-rich-foliage-strips-v2"
+const LEGACY_RASTER_SPEC := "rgba8-padded-stem-strips-v1"
 
 static func validate(profile: Variant) -> Dictionary:
-	if not profile is Dictionary or profile.get("generator_version") != VERSION: return Profile.fail("VERSION")
+	if not profile is Dictionary or not profile.get("generator_version") in [VERSION, LEGACY_VERSION]: return Profile.fail("VERSION")
 	var legacy: Dictionary = profile.duplicate(true)
 	legacy.generator_version = Profile.VERSION
 	var k: Variant = profile.get("parallax_compensation")
@@ -29,15 +31,20 @@ static func generate(map: Variant, profile: Variant, visual_seed: Variant) -> Di
 	var result := Base.generate(map, legacy, visual_seed)
 	if not result.ok: return result
 	var plan: Dictionary = result.plan
-	plan.generator_version = VERSION
+	plan.generator_version = profile.generator_version
 	plan.profile_digest = Profile.digest(profile)
 	plan.parallax_compensation = profile.parallax_compensation.duplicate(true)
-	plan["raster_spec"] = RASTER_SPEC
+	plan["raster_spec"] = RASTER_SPEC if profile.generator_version == VERSION else LEGACY_RASTER_SPEC
 	plan["layout_stream_version"] = Profile.VERSION
+	if profile.generator_version == VERSION: Atmosphere.enrich(plan, map, profile.composition)
 	for layer in plan.layers:
 		var pad := Frame.padding(profile.parallax_compensation[layer.name])
 		layer.origin_px = [-pad.x, -pad.y]
 		layer["size_px"] = [1280 + pad.x * 2, 480 + pad.y * 2]
+		if profile.generator_version == VERSION:
+			Atmosphere.animate(layer, visual_seed)
+			plan.statistics[layer.name] = layer.objects.size()
+			continue
 		# Animate two separate decorative stems, never a collision/interactive plant.
 		if layer.name != "terrain": continue
 		var additions: Array = []

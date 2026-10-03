@@ -12,10 +12,18 @@ var seed_index := 3
 var current: Dictionary = {}
 var status_label: Label
 var timed_seconds := 60.0
+var baseline_mode := false
+var capture_clip := false
+
+func load_profile() -> void:
+	var path := "res://data/watergen/forest_pond_dynamic.json" if baseline_mode else "res://data/watergen/forest_pond_atmosphere.json"
+	profile = JSON.parse_string(FileAccess.get_file_as_string(path))
 
 func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument == "--wg-capture": capture_mode = true
+		elif argument == "--wg-baseline": baseline_mode = true
+		elif argument == "--wg-clip": capture_clip = true
 		elif argument.begins_with("--wg-output="): output = argument.trim_prefix("--wg-output=").replace("\\", "/").simplify_path()
 		elif argument.begins_with("--wg-test-seconds="): timed_seconds = float(argument.trim_prefix("--wg-test-seconds="))
 	if DisplayServer.get_name() == "headless" or timed_seconds < 1 or timed_seconds > 120:
@@ -25,7 +33,7 @@ func _ready() -> void:
 	before = Adapter.authority_bytes()
 	var source: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/watergen/source_baseline.json"))
 	public_context = Adapter.build(source.source_commit)
-	profile = JSON.parse_string(FileAccess.get_file_as_string("res://data/watergen/forest_pond_dynamic.json"))
+	load_profile()
 	viewport = SubViewport.new()
 	viewport.size = Vector2i(640, 360)
 	viewport.disable_3d = true
@@ -46,7 +54,7 @@ func _ready() -> void:
 	status_label.add_theme_font_size_override("font_size", 11)
 	status_label.add_theme_color_override("font_shadow_color", Color("102b30"))
 	add_child(status_label)
-	get_window().title = "WG-2 | Space pause | , . step | R reset | F samples | [ ] seed | 1-5 camera | arrows | G H | Esc"
+	get_window().title = "WG-2 atmosphere | V before/after | Space pause | , . step | R reset | F samples | [ ] seed | 1-5 camera | arrows | G H | Esc"
 	if capture_mode:
 		var allowed := ProjectSettings.globalize_path("res://artifacts/watergen/").replace("\\", "/").simplify_path() + "/"
 		if not output.begins_with(allowed) or output == allowed:
@@ -54,7 +62,9 @@ func _ready() -> void:
 			get_tree().quit(2)
 			return
 		call_deferred("capture")
-	else: _select_seed()
+	else:
+		canvas.camera_offset = Vector2(0, 120)
+		_select_seed()
 
 func _select_seed() -> bool:
 	current = cache.prepare(public_context, profile, SEEDS[seed_index])
@@ -74,7 +84,8 @@ func _process(delta: float) -> void:
 	super._process(delta)
 	clock.advance(delta)
 	_frame(canvas.camera_offset, clock.visual_time)
-	status_label.text = "Seed %d  t=%.2fs %s  | Space: pause   F: samples   [ ]: seed" % [SEEDS[seed_index], clock.visual_time, "PAUSED" if clock.paused else "PLAYING"]
+	var label: String = current.get("plan", {}).get("atmosphere", {}).get("label", "原版")
+	status_label.text = "%s · %s · %d  %.2fs %s | V: 对照 F: 样本 [ ]: 种子" % [profile.generator_version, label, SEEDS[seed_index], clock.visual_time, "暂停" if clock.paused else "播放"]
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if capture_mode or not event is InputEventKey or not event.pressed or event.echo: return
@@ -84,6 +95,11 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		KEY_COMMA: clock.paused = true; clock.seek(maxf(0, clock.visual_time - 0.25))
 		KEY_PERIOD: clock.paused = true; clock.seek(clock.visual_time + 0.25)
 		KEY_F: canvas.show_fixtures = not canvas.show_fixtures
+		KEY_V:
+			clock.paused = true
+			baseline_mode = not baseline_mode
+			load_profile()
+			_select_seed()
 		KEY_BRACKETLEFT, KEY_BRACKETRIGHT:
 			seed_index = posmod(seed_index + (1 if event.keycode == KEY_BRACKETRIGHT else -1), SEEDS.size())
 			_select_seed()
@@ -148,6 +164,26 @@ func renderer_probe() -> void:
 	canvas.use_bundle(saved_bundle)
 	await render()
 
+func comparison_capture() -> void:
+	var selected_profile := profile.duplicate(true)
+	seed_index = 3
+	if not _select_seed(): return
+	current.images.clear()
+	_frame(Vector2(0, 120), 4)
+	canvas.show_fixtures = false
+	var after := await render()
+	save_image(after, "comparison-after")
+	profile = JSON.parse_string(FileAccess.get_file_as_string("res://data/watergen/forest_pond_dynamic.json"))
+	if not _select_seed(): return
+	current.images.clear()
+	check(canvas.camera_offset == Vector2(0, 120) and canvas.visual_time == 4, "comparison preserves camera and explicit time")
+	var before_image := await render()
+	save_image(before_image, "comparison-before")
+	check(after.get_data() != before_image.get_data(), "same seed has a visible atmosphere revision")
+	profile = selected_profile
+	if not _select_seed(): return
+	check(current.cache_hit and after.get_data() == (await render()).get_data(), "switching back restores exact new frame from cache")
+
 func capture() -> void:
 	var root_output := output
 	var immutable := Contract.canonical(public_context) + Contract.canonical(profile)
@@ -191,9 +227,10 @@ func capture() -> void:
 		check(first.get_data() == (await render()).get_data(), "seek reproduces time zero")
 		check(fixed_counts == counts(), "camera/time/fixtures cause no generation or upload")
 		save_text("scene-plan.json", Contract.canonical(current.plan))
-		results.append({"visual_seed": SEEDS[index], "plan_sha256": Contract.canonical(current.plan).sha256_text(), "layers": layers, "cache_key": current.bundle.cache_key, "timing_us": current.timing_us, "resources": resources(), "screenshots": captures})
+		results.append({"visual_seed": SEEDS[index], "plan_sha256": Contract.canonical(current.plan).sha256_text(), "layers": layers, "cache_key": current.bundle.cache_key, "atmosphere": current.plan.get("atmosphere", {}), "animation_count": current.bundle.animations.size(), "timing_us": current.timing_us, "resources": resources(), "screenshots": captures})
 	output = root_output
 	viewport.size = Vector2i(640, 360)
+	if not baseline_mode: await comparison_capture()
 	await renderer_probe()
 	var switches: Array = []
 	var eviction_refs: Array = []
@@ -272,8 +309,20 @@ func capture() -> void:
 	save_image(await render(), "selected-readability")
 	canvas.show_fixtures = false
 	save_image(await render(), "selected-environment")
+	var clip: Dictionary = {}
+	if capture_clip:
+		output = root_output.path_join("clip-frames")
+		if DirAccess.make_dir_recursive_absolute(output) != OK: get_tree().quit(2); return
+		viewport.size = Vector2i(1280, 480)
+		var clip_counts := counts()
+		for index in 100:
+			_frame(Vector2.ZERO, index / 10.0)
+			save_image(await render(), "frame-%03d" % index)
+		check(counts() == clip_counts, "animation clip has no static regeneration")
+		output = root_output
+		clip = {"directory": "clip-frames", "frames": 100, "fps": 10, "visual_time_start": 0, "visual_time_end": 9.9, "seed": SEEDS[seed_index], "size_px": [1280, 480]}
 	save_text("visual-profile.json", Contract.canonical(profile))
 	save_text("public-map-context.json", Contract.canonical(public_context))
-	save_text("wg2-native-evidence.json", JSON.stringify({"engine_version": Engine.get_version_info(), "os": OS.get_name(), "renderer": RenderingServer.get_current_rendering_method(), "gpu": RenderingServer.get_video_adapter_name(), "processor": OS.get_processor_name(), "profile_digest": Profile.digest(profile), "map_public_digest": public_context.map_public_digest, "generator_version": Generator.VERSION, "results": results, "seed_switches": switches, "eviction_verified": released, "timed_preview": {"duration_s": duration, "required_duration_s": timed_seconds, "acceptance_60_seconds": duration >= 60, "warmup_frames": 120, "draw_cpu_us": draw_us, "frame_interval_us": frame_us, "timeline": timeline, "counts_before": steady_counts, "counts_after": counts()}, "performance_note": "draw_cpu_us measures command submission only; frame intervals include pacing, not GPU or simulation cost. upload_api is not GPU fence timing. Static memory is engine heap, not VRAM. No full-game legacy/generated performance claim.", "human_acceptance": "NOT_RUN", "failed": failed}, "\t"))
+	save_text("wg2-native-evidence.json", JSON.stringify({"engine_version": Engine.get_version_info(), "os": OS.get_name(), "renderer": RenderingServer.get_current_rendering_method(), "gpu": RenderingServer.get_video_adapter_name(), "processor": OS.get_processor_name(), "profile_digest": Profile.digest(profile), "map_public_digest": public_context.map_public_digest, "generator_version": profile.generator_version, "results": results, "clip": clip, "seed_switches": switches, "eviction_verified": released, "timed_preview": {"duration_s": duration, "required_duration_s": timed_seconds, "acceptance_60_seconds": duration >= 60, "warmup_frames": 120, "draw_cpu_us": draw_us, "frame_interval_us": frame_us, "timeline": timeline, "counts_before": steady_counts, "counts_after": counts()}, "performance_note": "draw_cpu_us measures command submission only; frame intervals include pacing, not GPU or simulation cost. upload_api is not GPU fence timing. Static memory is engine heap, not VRAM. No full-game legacy/generated performance claim.", "human_acceptance": "NOT_RUN", "failed": failed}, "\t"))
 	print("WG2_NATIVE | passed=", passed, " | failed=", failed)
 	get_tree().quit(1 if failed else 0)

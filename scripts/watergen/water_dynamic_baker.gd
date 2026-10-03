@@ -3,6 +3,7 @@ const Base = preload("res://scripts/watergen/water_visual_baker.gd")
 const Generator = preload("res://scripts/watergen/water_dynamic_generator.gd")
 const Raster = preload("res://scripts/watergen/water_raster.gd")
 const Frame = preload("res://scripts/watergen/water_visual_frame.gd")
+const Foliage = preload("res://scripts/watergen/water_foliage.gd")
 
 static func shifted(object: Dictionary, offset: Vector2) -> Dictionary:
 	var result := object.duplicate(true)
@@ -13,7 +14,9 @@ static func shifted(object: Dictionary, offset: Vector2) -> Dictionary:
 	return result
 
 static func bake(plan: Dictionary) -> Dictionary:
-	if plan.get("generator_version") != Generator.VERSION or plan.get("world_size_px") != [1280, 480] or plan.get("raster_spec") != Generator.RASTER_SPEC:
+	var version: String = plan.get("generator_version", "")
+	var spec: String = Generator.RASTER_SPEC if version == Generator.VERSION else Generator.LEGACY_RASTER_SPEC
+	if not version in [Generator.VERSION, Generator.LEGACY_VERSION] or plan.get("world_size_px") != [1280, 480] or plan.get("raster_spec") != spec:
 		return {"ok": false, "code": "PLAN_VERSION_OR_SIZE"}
 	# Internal plans only; also bound all allocations before creating any image.
 	for layer in plan.layers:
@@ -32,7 +35,9 @@ static func bake(plan: Dictionary) -> Dictionary:
 		for object in layer.objects:
 			var local := shifted(object, offset)
 			match object.kind:
-				"clump": Base._clump(image, local, layer.name, plan.palette)
+				"clump":
+					if object.get("rich", false): Foliage.clump(image, local, layer.name, plan.palette)
+					else: Base._clump(image, local, layer.name, plan.palette)
 				"pad": Base._pad(image, local, plan.palette)
 				"root": Base._root(image, local, plan.palette)
 				"gravel": Base._gravel(image, local, plan.palette)
@@ -42,18 +47,38 @@ static func bake(plan: Dictionary) -> Dictionary:
 					color.a = object.alpha
 					Raster.pixel(image, local.x, local.y, color)
 				"animated_stem": animations.append(_stem(object, layer.name, plan.palette))
+				"animated_root": animations.append(_root(object, layer.name, plan.palette))
+				"leaf_litter": Foliage.litter(image, local, plan.palette)
 		layers[layer.name] = {"image": image, "origin_px": layer.origin_px.duplicate(), "rgba_sha256": Raster.digest(image)}
 	return {"ok": true, "code": "OK", "layers": layers, "animations": animations}
 
 static func _stem(object: Dictionary, layer: String, palette: Dictionary) -> Dictionary:
 	var stem: Dictionary = object.stem
 	# A conservative crop includes lean, leaves, line width and both sway extremes.
-	var left := floori(stem.x - absf(stem.lean) - 20)
+	var margin := 28 if object.get("rich", false) else 20
+	var left := floori(stem.x - absf(stem.lean) - margin)
 	var top := floori(stem.y - stem.height - 12)
-	var width := ceili(absf(stem.lean) * 2 + 42)
+	var width := ceili(absf(stem.lean) * 2 + margin * 2 + 2)
 	var height := ceili(stem.height + 18)
 	var image := Image.create(width, height, false, Image.FORMAT_RGBA8)
 	image.fill(Color.TRANSPARENT)
 	var clump := shifted({"contrast": object.contrast, "stems": [stem]}, Vector2(-left, -top))
-	Base._clump(image, clump, layer, palette)
-	return {"id": object.id, "layer": layer, "image": image, "origin_px": [left, top], "root_y": object.root_y, "height": object.height, "phase": object.phase, "rgba_sha256": Raster.digest(image)}
+	if object.get("rich", false):
+		clump["tint"] = object.tint
+		Foliage.clump(image, clump, layer, palette)
+	else: Base._clump(image, clump, layer, palette)
+	return _animation(object, layer, image, [left, top])
+
+static func _animation(object: Dictionary, layer: String, image: Image, origin: Array) -> Dictionary:
+	var result := {"id": object.id, "layer": layer, "image": image, "origin_px": origin, "root_y": object.root_y, "height": object.height, "phase": object.phase, "rgba_sha256": Raster.digest(image)}
+	for key in ["amplitude", "omega", "growth"]:
+		if object.has(key): result[key] = object[key]
+	return result
+
+static func _root(object: Dictionary, layer: String, palette: Dictionary) -> Dictionary:
+	var left := floori(object.x - object.width - 24)
+	var top := floori(object.y)
+	var image := Image.create(ceili(object.width * 2 + 50), ceili(object.length + 18), false, Image.FORMAT_RGBA8)
+	image.fill(Color.TRANSPARENT)
+	Base._root(image, shifted(object, Vector2(-left, -top)), palette)
+	return _animation(object, layer, image, [left, top])
