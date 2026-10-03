@@ -3,21 +3,21 @@
 一个 2D 像素风格的人鱼对抗游戏：小鱼在水下觅食、缠线和逃脱，钓鱼人在岸边控竿、收放线与抄网。支持单机挑战、自由练习和一人对一鱼的局域网联机。
 
 **当前源码：0.25.1（P3.2 抢食竞争，等待人工试玩）** · Godot 4.7.2
-**当前公开 Windows 试玩包：0.25.0**，历史发行记录继续保留。
+**当前公开 Windows 试玩包：0.25.1**，历史发行记录继续保留。
 
 用户已确认 0.25.0 环境鱼试玩通过。0.25.1 让默认三条 NPC 根据可见食物线索和自身饱食寻找、靠近、吸食与自动咬食，真实消耗食物，只增加各自饱食，不增加玩家分数。玩家 10 px 自动咬食、0.80 秒间隔和 4/6/8 容量保持；双方共用嘴部与摄食物理。NPC 本轮仍不上钩、不参与胜负。
 
-本轮仅提交推送 0.25.1 源码，不生成新包。同步 `feature/dev` 后用 Godot 4.7.2 打开 `project.godot`，F5，核对菜单 0.25.1。详见[抢食架构](docs/architecture/PHASE03-FORAGING.md)与[验证和人工试玩清单](docs/test-reports/PHASE03-FORAGING-VALIDATION-0.25.1.md)。P3.2 完成后 STOP；P3.3 社会行为、P3.4 NPC Hook 与 Phase 4 多竿继续锁定。下方 0.25.0 公开包不包含本轮抢食。
+0.25.1 Windows ZIP 已构建、验证并公开发布；解压后运行 `BaitbreakPixel.exe`，核对菜单显示 0.25.1。详见[抢食架构](docs/architecture/PHASE03-FORAGING.md)与[验证和人工试玩清单](docs/test-reports/PHASE03-FORAGING-VALIDATION-0.25.1.md)。P3.2 完成后 STOP；P3.3 社会行为、P3.4 NPC Hook 与 Phase 4 多竿继续锁定。本版公开包包含抢食竞争，压力是否适度仍待人工试玩。
 
 ## 下载试玩
 
 本版沿用 0.24.4 的渐变吸力，散粒实际移动、剥离和整饵位移目标共用同一距离场；此前[距离修正验证](docs/test-reports/PHASE02-DISTANCE-VALIDATION.md)保留为历史记录。
 
-### 公开 Windows 试玩包：0.25.0
+### 公开 Windows 试玩包：0.25.1
 
-从 [v0.25.0 发行页](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.25.0)下载 [BaitbreakPixel-0.25.0.zip](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.25.0/BaitbreakPixel-0.25.0.zip)，解压后运行 `BaitbreakPixel.exe`。EXE 与同目录 PCK 保持在一起，玩家无需安装 Godot。小鱼嘴边有食物时自动咬食，左键吸食；完整操作见包内说明。
+从 [v0.25.1 发行页](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.25.1)下载 [BaitbreakPixel-0.25.1.zip](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.25.1/BaitbreakPixel-0.25.1.zip)，解压后运行 `BaitbreakPixel.exe`。EXE 与同目录 PCK 保持在一起，玩家无需安装 Godot。小鱼嘴边有食物时自动咬食，左键吸食；完整操作见包内说明。
 
-截至 2026-10-03 已逐版发布 **0.21.0–0.25.0，共 20 个 Release**，每版均附 ZIP 和 `SHA256SUMS.txt`。其他版本见 [全部 Releases](https://github.com/lljh2777-cyber/BaitbreakPixel/releases)，核对结果见 [0.25.0 发布记录](docs/test-reports/GITHUB-RELEASE-0.25.0.md)、[0.24.6 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.6.md)、[0.24.5 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.5.md)、[0.24.4 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.4.md)、[0.24.3 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.3.md)、[0.24.2 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.2.md)及[此前 14 版发布记录](docs/test-reports/GITHUB-RELEASES-2026-10-02.md)。0.24.6 发行记录保留其发布当时的验证边界；用户随后已确认手感并允许进入 Phase 3。
+截至 2026-10-03 已逐版发布 **0.21.0–0.25.1，共 21 个 Release**，每版均附 ZIP 和 `SHA256SUMS.txt`。其他版本见 [全部 Releases](https://github.com/lljh2777-cyber/BaitbreakPixel/releases)，核对结果见 [0.25.1 发布记录](docs/test-reports/GITHUB-RELEASE-0.25.1.md)、[0.25.0 发布记录](docs/test-reports/GITHUB-RELEASE-0.25.0.md)、[0.24.6 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.6.md)、[0.24.5 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.5.md)、[0.24.4 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.4.md)、[0.24.3 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.3.md)、[0.24.2 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.2.md)及[此前 14 版发布记录](docs/test-reports/GITHUB-RELEASES-2026-10-02.md)。0.24.6 发行记录保留其发布当时的验证边界；用户随后已确认手感并允许进入 Phase 3。
 
 ### Phase 2.3：已由用户人工关闭
 

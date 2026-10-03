@@ -1,6 +1,6 @@
 # 0.25.1 双人联机（开发版）
 
-本文对应 0.25.1 源码；本轮没有新 ZIP。双方同步 feature/dev，在 Godot 4.7.2 中运行；不要与旧版本混连，当前公开 0.25.0 包没有抢食。
+本文对应 0.25.1 源码及公开 Windows 试玩包。双方从项目首页下载 0.25.1 ZIP，解压后运行；不要与旧版本混连。
 
 抄网操作、模块及规则迁移见 [NET-ARCHITECTURE.md](../architecture/NET-ARCHITECTURE.md)。
 
