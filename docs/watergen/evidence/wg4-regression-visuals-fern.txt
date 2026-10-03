@@ -1,0 +1,15 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 3.3.0 Core Profile Context 23.20.28.03.231124 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon(TM) Graphics
+
+WATERGEN_READY | wg-2.1 | seed=713284 | cache=e07df9345c47af40d2d2fc8ed5f59cf700e97354ce2f1db644405cddb096e118
+PIXEL_READY | asymmetric-2d | 640x360 | v0.25.3 | playtest-gate-wg3-water
+VISUAL | title-final | error=0
+NATIVE_UI_PASS | mouse click starts challenge
+VISUAL | help | error=0
+VISUAL | settings | error=0
+VISUAL | root-line | error=0
+VISUAL | slack-ring | error=0
+VISUAL | win | error=0
+VISUAL | loss | error=0
+RENDER_SAMPLE | 120 animated frames | elapsed_ms=1995 | reported_fps=60.0
+NATIVE_PASS | scheduled movement, pause, menus, graphics and audio cue completed

@@ -1523,6 +1523,17 @@
       "report_date": "2026-10-03",
       "test_report": "docs/watergen/WG3_CENTER_REPORT.md",
       "github_release_published_at_report": false
+    },
+    {
+      "version": "0.25.3",
+      "source_commit": "c7e24e1ef163820b06b4b013a1c9db6ef221b6b3",
+      "pack_bytes": 2343592,
+      "pack_sha256": "d9da1b8fb8516874cb5c619a002202d88c6c501492a7ab461f5bdf12f442e02e",
+      "zip_bytes": 89620167,
+      "zip_sha256": "f393425be09b7c89b5e49f522d04f54c2e49f4a68da2df62b7420cc9663325ab",
+      "report_date": "2026-10-03",
+      "test_report": "docs/watergen/WG4_REPORT.md",
+      "github_release_published_at_report": false
     }
   ],
   "public_release_snapshot_history": [

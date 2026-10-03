@@ -4,9 +4,9 @@
 
 ## 三种版本信息
 
-- **源码版本**：以当前检出的 `project.godot` 为准；当前源码及 WG-3 本地试玩为 0.25.2，公开 Windows 包仍为 0.25.0。项目、菜单、启动日志、联机 build、默认构建目录和当前试玩说明应一致；源码提交并不等于已经生成可运行包。
+- **源码版本**：以当前检出的 `project.godot` 为准；当前水域分支及本地试玩为 0.25.3。项目、菜单、启动日志、联机 build、默认构建目录和当前试玩说明应一致；源码提交不等于已有可运行包。
 - **本地试玩包**：由构建脚本生成，并在对应报告中记录检查结果和包体信息。0.21.0–0.22.5 的记录均明确为 Windows 本地试玩，报告当时未发布 GitHub Releases；这些 EXE、PCK 和 ZIP 不纳入源码仓库。
-- **公开发行包**：以 GitHub Releases 实际附件为准。截至 2026-10-03 已发布 0.21.0–0.25.0，最新公开包是 [v0.25.0](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.25.0)。旧版包按原构建内容归档，上传日期不代表原始开发日期；同页 `Source code` 也不是可直接运行的包。
+- **公开发行包**：以 GitHub Releases 实际附件为准。2026-10-03 另已核对主线公开 [v0.25.1 觅食版](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.25.1) 存在；本分支 0.25.1 是历史本地水域包，两者不是同一构建。本轮本地 0.25.3 沿用已确认的水域玩法基线，没有创建 GitHub Release。
 
 ## `history/releases.json` 的范围
 
@@ -14,8 +14,12 @@
 
 - `releases`：2026-09-29 从 42 个保留包恢复的 0.1–0.20.1 清单。原有条目及 `pack_sha256`、`script_sha256`、`decoded_texture_sha256`、`exported_resources` 保持不变。顶层 `recovery_date`、`method`、`validation` 仅描述这组恢复数据，不能套用到后续版本。详情见[历史恢复说明](HISTORY-RECOVERY.md)。
 - `local_playtests`：0.21 起的本地试玩包。`source_commit` 标识对应版本的源码提交，`report_date` 是原报告日期，`test_report` 是相对仓库根目录的证据路径。0.21.0–0.22.5 的 `pack_sha256`、`pack_bytes`、`zip_bytes` 保留原报告转录；0.22.6 起的新增条目来自本次核验。公开补发时重新计算的 PCK/ZIP 校验值单独记录在 `public_releases`。`github_release_published_at_report` 仅记录报告当时的发布状态。
-- `public_release_snapshot`：带核验日期的 GitHub 最新公开发行快照，提供发行页、附件和查询来源。当前快照为 0.25.0；旧快照保留在 `public_release_snapshot_history`。
+- `public_release_snapshot`：带核验日期的 GitHub 公开发行历史快照。本分支保留的附件核验快照为 0.25.0，旧快照在 `public_release_snapshot_history`；这不是当前最新主线版本声明。本轮仅确认主线 0.25.1 发行页存在，未重核其附件，故不重写历史附件索引。
 - 所有 PCK 哈希统一为 64 位小写十六进制。没有记录或重新计算过的 ZIP 哈希、脚本哈希与纹理哈希不填入，不使用空值或推测值代替证据。报告日期、Git 提交日期与实际公开发布时间分别对待。
+
+## 0.25.3 本地试玩
+
+四种水域构图已接入本地设置，默认选择仍为 713284。包位于 `aquatic_system/Releases/BaitbreakPixel-0.25.3`；源码、独立包与实际 EXE 已核验，校验值见 [WG-4 报告](../watergen/WG4_REPORT.md)。旧版本保留，本轮未合入主线觅食玩法，未发布新的 GitHub Release。
 
 ## 0.25.2 本地试玩
 

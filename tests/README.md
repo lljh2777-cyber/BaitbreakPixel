@@ -112,3 +112,6 @@ python3 tools/phase02_run_feeding.py --phase heldout --seed 31001 --rounds 100 -
 ## WG-3 可选水域接入
 
 `watergen_integration` 验证默认关闭、角色/联机限制、私有真值隔离、完整图层、原地图、失败回退与缓存；`watergen_native` 验证设置入口、五镜头/HUD、隐藏钩像素、暂停、重开和 960 个实际绘制 tick 的完整权威/RNG 等价。原生脚本同时采集 `_draw` CPU 提交与帧间隔，完整说明见 [水域接入](../docs/watergen/WG3_README.md)。新增套件进入 current/native；原有生成预览仍有独立私有 wrapper，不假定递归注册。
+
+
+WG-4（0.25.3）扩展上述两套测试：四种设置选择与实际画面、关闭时延迟生成、无效项、失败恢复、两套缓存/14 张存活纹理上限及驱逐后复现；960 tick 中循环切换构图，并覆盖摄食、缠线和抄网。默认源码与 PCK 的针对性执行见 [WG-4 报告](../docs/watergen/WG4_REPORT.md)。

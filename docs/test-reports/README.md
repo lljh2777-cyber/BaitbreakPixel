@@ -1,3 +1,4 @@
+- [0.25.3 四种水域构图切换与独立包验证](../watergen/WG4_REPORT.md)
 - [0.25.2 水域中部层次调整](../watergen/WG3_CENTER_REPORT.md)
 - [0.25.1 WG-3 水域接入与本地包验证](../watergen/WG3_REPORT.md)
 - [0.25.0 多鱼基础与环境鱼验证](PHASE03-AMBIENT-VALIDATION-0.25.0.md)

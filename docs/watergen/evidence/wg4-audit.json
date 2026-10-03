@@ -1,0 +1,995 @@
+{
+  "task_id": "WG-4",
+  "version": "0.25.3",
+  "development_base": "83d6ca5724a9241399b3e4aa5dbf03e3f2017b10",
+  "runtime_commit": "c7e24e1ef163820b06b4b013a1c9db6ef221b6b3",
+  "underlying_game_base": "c1e3946f0b8cf1afa7becf2b238c8297efda5dc8",
+  "fetched_feature_dev": "5e04115c8bad9861935b18045d2ffd4dc2b59388",
+  "upstream_gameplay_changes_merged": false,
+  "date": "2026-10-03",
+  "platform": "Windows",
+  "presets": {
+    "fern": 713284,
+    "ribbon": 2649,
+    "lily": 42,
+    "root": 731
+  },
+  "suites": {
+    "source": {
+      "tested_commit": "83d6ca5724a9241399b3e4aa5dbf03e3f2017b10",
+      "dirty": true,
+      "source_unchanged_during_run": true,
+      "results": [
+        {
+          "returncode": 0,
+          "timed_out": false,
+          "duration_seconds": 16.562,
+          "launch_error": false,
+          "passed": 43,
+          "failed": 0,
+          "count_basis": "summary",
+          "status": "passed",
+          "reason": "",
+          "suite": "watergen_integration",
+          "command": [
+            "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+            "--audio-driver",
+            "Dummy",
+            "--log-file",
+            "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-presets-source-final\\watergen_integration-engine.log",
+            "--headless",
+            "--path",
+            "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+            "--script",
+            "res://tests/watergen_integration.gd",
+            "--",
+            "--test-profile",
+            "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-presets-source-final\\captures\\watergen_integration"
+          ],
+          "log": "watergen_integration.log",
+          "archived_log": "docs\\watergen\\evidence\\wg4-source-watergen_integration.txt",
+          "log_sha256": "506a11b53ebf0d752dc951948fd96774b9ae90819fdbec1479336b365cc76a79",
+          "archived_log_sha256": "103847a0949fd340986744cfc5c07c00b89409f45e31415abecac854533a87ae"
+        },
+        {
+          "returncode": 0,
+          "timed_out": false,
+          "duration_seconds": 41.703,
+          "launch_error": false,
+          "passed": 90,
+          "failed": 0,
+          "count_basis": "summary",
+          "status": "passed",
+          "reason": "",
+          "suite": "watergen_native",
+          "command": [
+            "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+            "--audio-driver",
+            "Dummy",
+            "--log-file",
+            "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-presets-source-final\\watergen_native-engine.log",
+            "--rendering-method",
+            "gl_compatibility",
+            "--path",
+            "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+            "--script",
+            "res://tests/watergen_native.gd",
+            "--",
+            "--test-profile",
+            "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-presets-source-final\\captures\\watergen_native"
+          ],
+          "log": "watergen_native.log",
+          "archived_log": "docs\\watergen\\evidence\\wg4-source-watergen_native.txt",
+          "log_sha256": "234ec0806ea8d61099e7cdffad1e9cc6570ee551a7998a2d189726cd7b211b85",
+          "archived_log_sha256": "597df6b1b5c7597ccdb95f51c4694fb3ab42d249ee6947ac9415c404961539dc"
+        }
+      ],
+      "manifest": "artifacts\\watergen\\wg4-presets-source-final\\run-manifest.json",
+      "manifest_sha256": "8a3335d7633fb99a95b2e91b48069c82f4cfd91d3ccba21eaef8a28ce97348a5",
+      "tested_runtime_and_tests_match_delivery_commit": true,
+      "dirty_diff_sha256": "51a8e816f65b43c26603fc10140570c3cda2bbdd317ef3c5a875d89e0bdf49ab"
+    },
+    "pack": {
+      "tested_commit": "c7e24e1ef163820b06b4b013a1c9db6ef221b6b3",
+      "dirty": false,
+      "source_unchanged_during_run": true,
+      "results": [
+        {
+          "returncode": 0,
+          "timed_out": false,
+          "duration_seconds": 19.36,
+          "launch_error": false,
+          "passed": 43,
+          "failed": 0,
+          "count_basis": "summary",
+          "status": "passed",
+          "reason": "",
+          "suite": "watergen_integration",
+          "command": [
+            "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+            "--audio-driver",
+            "Dummy",
+            "--log-file",
+            "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-presets-pack\\watergen_integration-engine.log",
+            "--headless",
+            "--main-pack",
+            "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.3\\BaitbreakPixel.pck",
+            "--script",
+            "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\watergen_integration.gd",
+            "--",
+            "--test-profile",
+            "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-presets-pack\\captures\\watergen_integration"
+          ],
+          "log": "watergen_integration.log",
+          "archived_log": "docs\\watergen\\evidence\\wg4-pack-watergen_integration.txt",
+          "log_sha256": "506a11b53ebf0d752dc951948fd96774b9ae90819fdbec1479336b365cc76a79",
+          "archived_log_sha256": "103847a0949fd340986744cfc5c07c00b89409f45e31415abecac854533a87ae"
+        },
+        {
+          "returncode": 0,
+          "timed_out": false,
+          "duration_seconds": 44.328,
+          "launch_error": false,
+          "passed": 90,
+          "failed": 0,
+          "count_basis": "summary",
+          "status": "passed",
+          "reason": "",
+          "suite": "watergen_native",
+          "command": [
+            "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+            "--audio-driver",
+            "Dummy",
+            "--log-file",
+            "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-presets-pack\\watergen_native-engine.log",
+            "--rendering-method",
+            "gl_compatibility",
+            "--main-pack",
+            "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.3\\BaitbreakPixel.pck",
+            "--script",
+            "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\tests\\watergen_native.gd",
+            "--",
+            "--test-profile",
+            "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-presets-pack\\captures\\watergen_native"
+          ],
+          "log": "watergen_native.log",
+          "archived_log": "docs\\watergen\\evidence\\wg4-pack-watergen_native.txt",
+          "log_sha256": "234ec0806ea8d61099e7cdffad1e9cc6570ee551a7998a2d189726cd7b211b85",
+          "archived_log_sha256": "597df6b1b5c7597ccdb95f51c4694fb3ab42d249ee6947ac9415c404961539dc"
+        }
+      ],
+      "manifest": "artifacts\\watergen\\wg4-presets-pack\\run-manifest.json",
+      "manifest_sha256": "f7e8740c74c60f11bb609c37015af6f06bdd3b0549ed3a07a1877027db4c4310",
+      "tested_runtime_and_tests_match_delivery_commit": true,
+      "dirty_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "regression": {
+      "tested_commit": "83d6ca5724a9241399b3e4aa5dbf03e3f2017b10",
+      "dirty": true,
+      "source_unchanged_during_run": true,
+      "results": [
+        {
+          "status": "passed",
+          "command": [
+            "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+            "--path",
+            "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+            "--audio-driver",
+            "Dummy",
+            "--script",
+            "res://tests/visuals.gd",
+            "--",
+            "--test-profile",
+            "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-regression\\captures\\visuals-fern",
+            "--water-appearance=fern"
+          ],
+          "log": "visuals-fern.log",
+          "returncode": 0,
+          "timed_out": false,
+          "launch_error": null,
+          "passed": 2,
+          "failed": 0,
+          "duration_seconds": 8.422,
+          "log_sha256": "6631013beb8263da7602bcfd5e4b894eaf543880497663eef43249d1c867b994",
+          "count_basis": "log_markers",
+          "reason": "",
+          "archived_log": "docs\\watergen\\evidence\\wg4-regression-visuals-fern.txt",
+          "archived_log_sha256": "5cd03fdd60fdfda10363e94bd8a623dfd8cde6b5250990882328e563b6e76e66"
+        },
+        {
+          "status": "passed",
+          "command": [
+            "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+            "--path",
+            "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+            "--audio-driver",
+            "Dummy",
+            "--script",
+            "res://tests/rules_native_v019.gd",
+            "--",
+            "--test-profile",
+            "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-regression\\captures\\rules_native_v019-fern",
+            "--water-appearance=fern"
+          ],
+          "log": "rules_native_v019-fern.log",
+          "returncode": 0,
+          "timed_out": false,
+          "launch_error": null,
+          "passed": 8,
+          "failed": 0,
+          "duration_seconds": 5.187,
+          "log_sha256": "a58881d5d11980a5233ced61a8c296ca549c421306fdb13001a87e8c5b393f52",
+          "count_basis": "summary",
+          "reason": "",
+          "archived_log": "docs\\watergen\\evidence\\wg4-regression-rules_native_v019-fern.txt",
+          "archived_log_sha256": "5a33cc09e27fb8e7fb4d9705b1010ee075eca8c6d63cae46346f92d5ecc3db53"
+        },
+        {
+          "status": "passed",
+          "command": [
+            "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+            "--path",
+            "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+            "--audio-driver",
+            "Dummy",
+            "--headless",
+            "--script",
+            "res://tests/network_rules_v012.gd",
+            "--",
+            "--test-profile",
+            "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-regression\\captures\\network_rules_v012-fern",
+            "--water-appearance=fern"
+          ],
+          "log": "network_rules_v012-fern.log",
+          "returncode": 0,
+          "timed_out": false,
+          "launch_error": null,
+          "passed": 26,
+          "failed": 0,
+          "duration_seconds": 0.875,
+          "log_sha256": "31499215c36341349c170955e25bbd9de3c658701c29b7b4875060263445adb2",
+          "count_basis": "summary",
+          "reason": "",
+          "archived_log": "docs\\watergen\\evidence\\wg4-regression-network_rules_v012-fern.txt",
+          "archived_log_sha256": "309cf7eddd056062fedb67f8e0ca25517244a73e995db1f4184291a78fba09b6"
+        },
+        {
+          "status": "passed",
+          "command": [
+            "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+            "--path",
+            "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+            "--audio-driver",
+            "Dummy",
+            "--headless",
+            "--script",
+            "res://tests/phase03_npc_observation.gd",
+            "--",
+            "--test-profile",
+            "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-regression\\captures\\phase03_npc_observation-fern",
+            "--water-appearance=fern"
+          ],
+          "log": "phase03_npc_observation-fern.log",
+          "returncode": 0,
+          "timed_out": false,
+          "launch_error": null,
+          "passed": 209,
+          "failed": 0,
+          "duration_seconds": 0.922,
+          "log_sha256": "c74aec86f811479d722789b9f708ef04b665dba6ce20749fc2bb6038dcc79a0a",
+          "count_basis": "summary",
+          "reason": "",
+          "archived_log": "docs\\watergen\\evidence\\wg4-regression-phase03_npc_observation-fern.txt",
+          "archived_log_sha256": "afe1f6d701aa73f1c59d6bd49f5ba8c5b6554d4999b43b7ca2af6b7bb1623599"
+        },
+        {
+          "status": "passed",
+          "command": [
+            "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+            "--path",
+            "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+            "--audio-driver",
+            "Dummy",
+            "--script",
+            "res://tests/phase02_bait_native.gd",
+            "--",
+            "--test-profile",
+            "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-regression\\captures\\phase02_bait_native-fern",
+            "--water-appearance=fern"
+          ],
+          "log": "phase02_bait_native-fern.log",
+          "returncode": 0,
+          "timed_out": false,
+          "launch_error": null,
+          "passed": 78,
+          "failed": 0,
+          "duration_seconds": 6.125,
+          "log_sha256": "ce07ad9d7f64283f30f9cc56f0ffecbaff0a89f6c53eee8757e35bf2406c853a",
+          "count_basis": "summary",
+          "reason": "",
+          "archived_log": "docs\\watergen\\evidence\\wg4-regression-phase02_bait_native-fern.txt",
+          "archived_log_sha256": "9ca843d43990f3d5f92a2ec0cfabae5d80d3c57851a53cadcd52f98e8d3a8f18"
+        },
+        {
+          "status": "passed",
+          "command": [
+            "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+            "--path",
+            "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+            "--audio-driver",
+            "Dummy",
+            "--script",
+            "res://tests/phase02_bait_native.gd",
+            "--",
+            "--test-profile",
+            "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-regression\\captures\\phase02_bait_native-ribbon",
+            "--water-appearance=ribbon"
+          ],
+          "log": "phase02_bait_native-ribbon.log",
+          "returncode": 0,
+          "timed_out": false,
+          "launch_error": null,
+          "passed": 78,
+          "failed": 0,
+          "duration_seconds": 6.516,
+          "log_sha256": "7fd2525e6a11bdef89ced73599af8d7f01aa66f972fc5d052e0d62a27f2ea850",
+          "count_basis": "summary",
+          "reason": "",
+          "archived_log": "docs\\watergen\\evidence\\wg4-regression-phase02_bait_native-ribbon.txt",
+          "archived_log_sha256": "051b6bdaaac30528d3f3064f31fdc260da9741f8bdb65eb4a2536d36b36318ce"
+        },
+        {
+          "status": "passed",
+          "command": [
+            "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+            "--path",
+            "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+            "--audio-driver",
+            "Dummy",
+            "--script",
+            "res://tests/phase02_bait_native.gd",
+            "--",
+            "--test-profile",
+            "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-regression\\captures\\phase02_bait_native-lily",
+            "--water-appearance=lily"
+          ],
+          "log": "phase02_bait_native-lily.log",
+          "returncode": 0,
+          "timed_out": false,
+          "launch_error": null,
+          "passed": 78,
+          "failed": 0,
+          "duration_seconds": 6.234,
+          "log_sha256": "55caeb0c81e526796753e159b5905e0bb52171794230df7846ce4b6928d7319b",
+          "count_basis": "summary",
+          "reason": "",
+          "archived_log": "docs\\watergen\\evidence\\wg4-regression-phase02_bait_native-lily.txt",
+          "archived_log_sha256": "e26c4ee9e33ff5383eda64c66ccb5a15674445343f94c66b4febec922f05941f"
+        },
+        {
+          "status": "passed",
+          "command": [
+            "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+            "--path",
+            "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+            "--audio-driver",
+            "Dummy",
+            "--script",
+            "res://tests/phase02_bait_native.gd",
+            "--",
+            "--test-profile",
+            "--capture-output-directory=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-regression\\captures\\phase02_bait_native-root",
+            "--water-appearance=root"
+          ],
+          "log": "phase02_bait_native-root.log",
+          "returncode": 0,
+          "timed_out": false,
+          "launch_error": null,
+          "passed": 78,
+          "failed": 0,
+          "duration_seconds": 6.203,
+          "log_sha256": "7677e4aba4175655805774aa27d56e9e055868cbf301363979ac74a771fbd23b",
+          "count_basis": "summary",
+          "reason": "",
+          "archived_log": "docs\\watergen\\evidence\\wg4-regression-phase02_bait_native-root.txt",
+          "archived_log_sha256": "bb311e7b3b797eb9586e0c2ea74aafa217d6615a47d461547b58f542e3557807"
+        }
+      ],
+      "manifest": "artifacts\\watergen\\wg4-regression\\classified-manifest.json",
+      "manifest_sha256": "dac52bc04adca8d8fc66f754b0aff4f154e1e97a489599fdd492efe9b1d3c652",
+      "tested_runtime_and_tests_match_delivery_commit": true,
+      "diff_sha256": "db1d4f4a2126a1a65740dd7a978b88858ee941ecff20679edeb8484fa5b06324",
+      "classification_note": "Reclassified unchanged raw logs with tools/run_tests.py::classify. The private run_wg0 wrapper required passed/failed summaries, while visuals.gd intentionally emits completion PASS markers. Original manifest retained.",
+      "original_manifest_sha256": "def445c25d3412b5e06edee4f27dc6f41903cb1bd0bc54093ae376083cd0f1dc"
+    }
+  },
+  "pack_resources": {
+    "engine": {
+      "build": "official",
+      "hash": "ed1daf0bf001b61586d9930840f2f1394092c079",
+      "hex": 263938,
+      "major": 4,
+      "minor": 7,
+      "patch": 2,
+      "status": "stable",
+      "string": "4.7.2-stable (official)",
+      "timestamp": 0
+    },
+    "files_sha256": {
+      "data/watergen/forest_pond.json": "4d799357a7a1b1efdd3775dd027979a0f964a1549fc5824d8226d41b13cb82c9",
+      "data/watergen/forest_pond_atmosphere.json": "9ca1aa621ac4530a48ae87e085af0e6447814e1af079698cf832106aaa10c0f5",
+      "data/watergen/forest_pond_dynamic.json": "ccadf548a869c60afc34b95b80d7aa196001d28b899f239a6a6eb7460239d55e",
+      "data/watergen/legacy_baseline.json": "284575ea3792bd0b4c0f500bd1c630e753b3ef5f7d3f49be0572aa9012e40634",
+      "data/watergen/source_baseline.json": "63f7b0eb4da464932dfcc6132a6b67315d2285ebddc43f4b062603a5491d6111",
+      "data/watergen/visual_profile.schema.json": "e72e8d9b7056a8e22a6e1309d7f0cb38aaa9bc9c8449beeb776c54ba79d88635",
+      "scripts/angler_brain.gd": "0cf8cd83aa58fa0d38a000badc1726ecba81011ae9445f415c3e6ba43903582d",
+      "scripts/angler_controller.gd": "cf870f0d5277403a54ee51ee6e7e5b8f1dee032241636046e505974567136a7a",
+      "scripts/angler_hand.gd": "f5db4b118381c8f4e5cb5c606aab3b01231f04ae23bb33a499550dbab68eb17a",
+      "scripts/angler_network_observation.gd": "cfd369dd483b1714face849b3dd66680c39a27f4609b657c69b36e3a933d18d5",
+      "scripts/angler_rig.gd": "7d4e11a24cec34a172f2e1ec92b7e99745ed4df380f52badee0dad3cb45863b4",
+      "scripts/angler_visual.gd": "220f2896ef24c9342bfc7b5b5cbc76c0b2169b78e2d20dae8acae559ff612529",
+      "scripts/effort_check.gd": "c693244b6a0703a9218f88afc83d47f1521adedc7901390f1aae504829c1ede6",
+      "scripts/fish_brain.gd": "1de20533cba63e62839d5e7646ecc194ba3d38bfb00ec7da8490207ad1c65fc3",
+      "scripts/fish_instinct.gd": "0e915d74eefd04b1711b2896b174181a9623f8a74a6b6425dfbfd4d09029ddc8",
+      "scripts/fish_network_observation.gd": "8978ca3e5e298a7fdfa07b1e4707c50a778dbce908c7dc1aca1554f3b1d8d2f7",
+      "scripts/fish_observation.gd": "78f2fdab4df5091a2d78ab59dc6f00b62d7226a977f5711bc6c220b71c73c83a",
+      "scripts/fish_suspicion.gd": "b2398e40a6d0694339f87ab9659c42a2b14a7c941c224abdf51a3b69810d9ed1",
+      "scripts/fish_winding.gd": "b0bb3762ac5323a7457c4e747e6c76079b063605098039ddd35aa08b5bf72823",
+      "scripts/food_profile.gd": "0dbc7b16a19dec0cf943d1efe499f293207e69925cad7d8af77230f5176a9b44",
+      "scripts/game_commands.gd": "f83cdf0aefc7fcfaa4bf18d6b3966629d17f27709edb65f6208937a160c01ca4",
+      "scripts/game_rules.gd": "5d58b745ad3b6872ab1cca1375dcda28c4c2df2bafce47ce7bb7422806c0a311",
+      "scripts/grass_binding.gd": "bfc09fa96e18db82d25467042b9daf9e2339b3748fc45445c97d629c68a8f1c4",
+      "scripts/hook_gauge.gd": "4fe42c7690fa40f42e970af97eb26915793ec166c01b06da3ea21eb1fb692593",
+      "scripts/line_motion.gd": "dc3ec74204ff97dc61b4ec6cd0cfafb37792c4a7f8fad41533d735c3f1432735",
+      "scripts/local_input.gd": "5a688916328d4cdb0337e26d2906df79efaf6f8498e0eef91b219920bded018c",
+      "scripts/menu.gd": "24d5ac1fb7cdb428627f72647c86798f0bd9d79b3a5d2837bdbef3594ee41c4b",
+      "scripts/net_motion.gd": "03f50c4915c97c0c8b4af15547086f35e013461dae9e5df3a376817c6b2720da",
+      "scripts/net_observation.gd": "75eaa7ca26b3a39b7bb9836514f45ec219fa9f793491147f5c6ec624d0354c8a",
+      "scripts/net_simulation.gd": "51f93ef76345d0a5c2bbdb96a9665efac4505371f1f8f5f04ffd6fb4eeb8c47d",
+      "scripts/net_visual.gd": "aee8baa45953d779c446696aca27f8a8f6080f94db63d4c037182b17decef6f5",
+      "scripts/network_presentation.gd": "8a7591b0cf79702b8136fdaa73802b245d12185fb8dbdb90eb1b0ca6c8046afd",
+      "scripts/network_protocol.gd": "c62805b51d71b85ffa53ea1802b252e89b79519d3de0b8ab9a6b63de788d6a54",
+      "scripts/network_session.gd": "b9b93b6597b069dbbc3f4a38e9ad5e6ae0df20474535ba25d5182db81eee6924",
+      "scripts/npc_fish_brain.gd": "4f68d295ae8dde16cef03b9b9364a87fbfcb89c9e9f42221186415dced1e1756",
+      "scripts/npc_fish_public_state.gd": "534e92f5e1311c30b4cceeb4a6a56393cd6a020d1a5fca177df89dd5c09a1dbd",
+      "scripts/npc_fish_state.gd": "a3e8129da6c95a0e8b235cbf4343af3a0d0c90ce134970e41fd1f16679569faf",
+      "scripts/pixel_art.gd": "f294ca6a656ba43fb793aaaa2d738fd3824fc89630086898a364e29a35d2a3ed",
+      "scripts/pond.gd": "6cb9c3da2a77e012a48c5e6c26acb5e70c1bee1bd8772c8664c72e653ae86fdd",
+      "scripts/pond_camera.gd": "2170a1430fe074b9f6113e196a25d77b76eaffaee678e4a6f03969a33a8e3614",
+      "scripts/pond_depth_art.gd": "387aec1492eff7d2a0ef846798091ebc60bdafeba6edd16760ce9ac759be5b31",
+      "scripts/pond_layout.gd": "3d9405536a8a02e5002dbe9ed2d0cab1591ac04f0b9628050c1881106871174f",
+      "scripts/pond_plant_art.gd": "e3f95151f229c4a6d6425ae144358dbb3a728046d5e416f548afbb74a8c4512e",
+      "scripts/pond_scenery.gd": "7c27432ba0dbbc00d1528d3638e47f79bc1bb2c7dc79deed606e1bcea90c37e6",
+      "scripts/pond_view.gd": "fa0088d1c458a22624c7c2f72d13b0cc7d7b3e0116a7ba54900774293067f435",
+      "scripts/pond_water_art.gd": "c875541049c29e6817cfedc7767e63b43888ab8cc6d5745b98e40a8aec31fdad",
+      "scripts/pond_wood_art.gd": "bd042f616dfe75bbe007f92bab72fc34c414a6489631da7f7d5ff62190bd598b",
+      "scripts/reel_hand.gd": "6c4e2e9391dc2a9092ebcbd8d3cd2d52b62beb1ea5236b6fa50b2cbb460be3f3",
+      "scripts/rope.gd": "2e30152e65b00f39fe25324b992afd39925acfadd80b64dce385df865d69fe42",
+      "scripts/round_stats.gd": "4d3dce30f657b43ed127904fa78a6f26952d13db4f11e70614962ead66b24c8c",
+      "scripts/rules_catalog.gd": "f205ab9e285b01aafdfd6ebb7b0eafc802f5989b8f00e508db28cfdfc3f57c72",
+      "scripts/rules_settings.gd": "ad6b2bca83710ad92f8477da83151a21f57d00d8979b81a864f7824f7383885b",
+      "scripts/rules_store.gd": "7256c0290b916d215ca8e5693f0e819e76429ac9367c3b36d6a392310df2acf8",
+      "scripts/shore_view.gd": "ea0ce62ef0b4fd621ba77d6c8d7413dd2acb4ab0423ee15c78dbba602e25965e",
+      "scripts/sound.gd": "e26674ed0be1337c53838e95e32e04452131bba5610b50fb24add73304d3b9c0",
+      "scripts/suction_feel.gd": "9d291d1db447505cc56dfe70618ce8ccb35dec60b2e0779665926de2d1b0a05a",
+      "scripts/watergen/adapters/pond_v2_context.gd": "effd76237494be25828961198f6c2b128b999e60ab222d9a468246054e856325",
+      "scripts/watergen/pond_water_appearance.gd": "065fc59ff460f385e3c54255b00733d8d75dcf2cf408bd9b73dd4f24ea25ed71",
+      "scripts/watergen/public_map_context.gd": "948e6a290219f228171affbece1248054cbe8f59eac73baf26445822cab5da8f",
+      "scripts/watergen/water_atmosphere.gd": "8cce552ee7f379cfcded51318ce422fa95435ceb301b1556ce552208e068c8fe",
+      "scripts/watergen/water_dynamic_baker.gd": "8c514c8055c14383d3746156353a84b9eed28933fa4eb1bcfabdf353e6cb3219",
+      "scripts/watergen/water_dynamic_cache.gd": "eae71a9fffe55abfa1933d7ea88d61e4910e18223b3906d8703fed2f9a7d84c3",
+      "scripts/watergen/water_dynamic_generator.gd": "0dba7725932bfe045398a3a84edb8aa7dca5eae73c7e843283444014b859176a",
+      "scripts/watergen/water_foliage.gd": "8a72732df83c8664bfd6b8b629075ba9942bae2d285a8b6ef007495e473420c2",
+      "scripts/watergen/water_raster.gd": "55a13a45a697358b2df53dd1905cf954a9f429a13f26d947227be2876e3d287d",
+      "scripts/watergen/water_visual_baker.gd": "8ed04a35a085156277307762e2ad01d790649e45f0450c9a8a72fccae7861671",
+      "scripts/watergen/water_visual_cache.gd": "779fce892cd031fe2f594df4f18272170b89c4ca81f15c80dafdcdd271c218a7",
+      "scripts/watergen/water_visual_frame.gd": "4973ca935db83b4457941dd0f472004bea1d2591354de9e350132c0c87733508",
+      "scripts/watergen/water_visual_generator.gd": "d47aa51175d122cc21317fa0ac4f34ca81d4f192b5a09513bab5528126701f7b",
+      "scripts/watergen/water_visual_profile.gd": "d64458055b3d71ae5f16e90b4ba52d8fbc266e8675ed624436cb6b17e6e5a2bd",
+      "scripts/watergen/water_visual_seed.gd": "37715a68ad8f30d364ecbb5fecaa83fd9c23061b9731f83ee70e6c556653e625",
+      "scripts/world_simulation.gd": "5fcadfecd405f1b01a7041a49e68e3206da13baddd3c0676235381454b6d92f4",
+      "scripts/world_snapshot.gd": "e5277948127976a7258a63205107d8d08976fc81c72109313c43e43f0f8b5f28"
+    },
+    "ok": true,
+    "tools_tests_preview_excluded": true,
+    "version": "0.25.3"
+  },
+  "package_audit": {
+    "results": [
+      {
+        "returncode": 0,
+        "timed_out": false,
+        "duration_seconds": 0.406,
+        "launch_error": false,
+        "passed": 1,
+        "failed": 0,
+        "count_basis": "summary",
+        "status": "passed",
+        "reason": "",
+        "name": "pack-inspection",
+        "command": [
+          "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+          "--headless",
+          "--main-pack",
+          "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.3\\BaitbreakPixel.pck",
+          "--script",
+          "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-delivery\\inspect_pack.gd",
+          "--",
+          "--manifest-output=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-delivery\\pack-final\\pack-resources.json"
+        ]
+      },
+      {
+        "returncode": 0,
+        "timed_out": false,
+        "duration_seconds": 1.688,
+        "launch_error": false,
+        "passed": 1,
+        "failed": 0,
+        "count_basis": "summary",
+        "status": "passed",
+        "reason": "",
+        "name": "identity-source",
+        "command": [
+          "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+          "--script",
+          "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-delivery\\visual_identity.gd",
+          "--",
+          "--manifest-output=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-delivery\\pack-final\\identity-source.json"
+        ]
+      },
+      {
+        "returncode": 0,
+        "timed_out": false,
+        "duration_seconds": 1.531,
+        "launch_error": false,
+        "passed": 1,
+        "failed": 0,
+        "count_basis": "summary",
+        "status": "passed",
+        "reason": "",
+        "name": "identity-pack",
+        "command": [
+          "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+          "--headless",
+          "--main-pack",
+          "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.3\\BaitbreakPixel.pck",
+          "--script",
+          "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-delivery\\visual_identity.gd",
+          "--",
+          "--manifest-output=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-delivery\\pack-final\\identity-pack.json"
+        ]
+      },
+      {
+        "returncode": 0,
+        "timed_out": false,
+        "duration_seconds": 5.422,
+        "launch_error": false,
+        "passed": 0,
+        "failed": 0,
+        "count_basis": "log_markers",
+        "status": "passed",
+        "reason": "",
+        "capture_present": true,
+        "version_present": true,
+        "mode_present": true,
+        "name": "exe-menu",
+        "command": [
+          "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.3\\BaitbreakPixel.exe",
+          "--audio-driver",
+          "Dummy",
+          "--log-file",
+          "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-delivery\\pack-final\\exe-menu-engine.log",
+          "--",
+          "--test-profile",
+          "--capture-menu",
+          "--capture-output=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-delivery\\pack-final\\exe-menu.png"
+        ]
+      },
+      {
+        "returncode": 0,
+        "timed_out": false,
+        "duration_seconds": 4.953,
+        "launch_error": false,
+        "passed": 0,
+        "failed": 0,
+        "count_basis": "log_markers",
+        "status": "passed",
+        "reason": "",
+        "capture_present": true,
+        "version_present": true,
+        "mode_present": true,
+        "name": "exe-fern",
+        "command": [
+          "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.3\\BaitbreakPixel.exe",
+          "--audio-driver",
+          "Dummy",
+          "--log-file",
+          "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-delivery\\pack-final\\exe-fern-engine.log",
+          "--",
+          "--test-profile",
+          "--capture-game",
+          "--capture-output=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-delivery\\pack-final\\exe-fern.png",
+          "--water-appearance=fern"
+        ]
+      },
+      {
+        "returncode": 0,
+        "timed_out": false,
+        "duration_seconds": 4.469,
+        "launch_error": false,
+        "passed": 0,
+        "failed": 0,
+        "count_basis": "log_markers",
+        "status": "passed",
+        "reason": "",
+        "capture_present": true,
+        "version_present": true,
+        "mode_present": true,
+        "name": "exe-ribbon",
+        "command": [
+          "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.3\\BaitbreakPixel.exe",
+          "--audio-driver",
+          "Dummy",
+          "--log-file",
+          "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-delivery\\pack-final\\exe-ribbon-engine.log",
+          "--",
+          "--test-profile",
+          "--capture-game",
+          "--capture-output=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-delivery\\pack-final\\exe-ribbon.png",
+          "--water-appearance=ribbon"
+        ]
+      },
+      {
+        "returncode": 0,
+        "timed_out": false,
+        "duration_seconds": 4.688,
+        "launch_error": false,
+        "passed": 0,
+        "failed": 0,
+        "count_basis": "log_markers",
+        "status": "passed",
+        "reason": "",
+        "capture_present": true,
+        "version_present": true,
+        "mode_present": true,
+        "name": "exe-lily",
+        "command": [
+          "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.3\\BaitbreakPixel.exe",
+          "--audio-driver",
+          "Dummy",
+          "--log-file",
+          "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-delivery\\pack-final\\exe-lily-engine.log",
+          "--",
+          "--test-profile",
+          "--capture-game",
+          "--capture-output=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-delivery\\pack-final\\exe-lily.png",
+          "--water-appearance=lily"
+        ]
+      },
+      {
+        "returncode": 0,
+        "timed_out": false,
+        "duration_seconds": 4.578,
+        "launch_error": false,
+        "passed": 0,
+        "failed": 0,
+        "count_basis": "log_markers",
+        "status": "passed",
+        "reason": "",
+        "capture_present": true,
+        "version_present": true,
+        "mode_present": true,
+        "name": "exe-root",
+        "command": [
+          "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.3\\BaitbreakPixel.exe",
+          "--audio-driver",
+          "Dummy",
+          "--log-file",
+          "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-delivery\\pack-final\\exe-root-engine.log",
+          "--",
+          "--test-profile",
+          "--capture-game",
+          "--capture-output=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-delivery\\pack-final\\exe-root.png",
+          "--water-appearance=root"
+        ]
+      },
+      {
+        "returncode": 0,
+        "timed_out": false,
+        "duration_seconds": 3.828,
+        "launch_error": false,
+        "passed": 0,
+        "failed": 0,
+        "count_basis": "log_markers",
+        "status": "passed",
+        "reason": "",
+        "capture_present": true,
+        "version_present": true,
+        "mode_present": true,
+        "name": "exe-legacy",
+        "command": [
+          "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.3\\BaitbreakPixel.exe",
+          "--audio-driver",
+          "Dummy",
+          "--log-file",
+          "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-delivery\\pack-final\\exe-legacy-engine.log",
+          "--",
+          "--test-profile",
+          "--capture-game",
+          "--capture-output=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-delivery\\pack-final\\exe-legacy.png",
+          "--water-appearance=legacy"
+        ]
+      },
+      {
+        "returncode": 0,
+        "timed_out": false,
+        "duration_seconds": 3.86,
+        "launch_error": false,
+        "passed": 0,
+        "failed": 0,
+        "count_basis": "log_markers",
+        "status": "passed",
+        "reason": "",
+        "capture_present": true,
+        "version_present": true,
+        "mode_present": true,
+        "name": "exe-invalid",
+        "command": [
+          "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.3\\BaitbreakPixel.exe",
+          "--audio-driver",
+          "Dummy",
+          "--log-file",
+          "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-delivery\\pack-final\\exe-invalid-engine.log",
+          "--",
+          "--test-profile",
+          "--capture-game",
+          "--capture-output=E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg4-delivery\\pack-final\\exe-invalid.png",
+          "--water-appearance=invalid"
+        ]
+      }
+    ],
+    "resource_count": 73,
+    "source_matches": true,
+    "visual_identity_matches": true,
+    "package_files": {
+      "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.3\\BaitbreakPixel.exe": {
+        "bytes": 180858888,
+        "sha256": "ab1824f85bfd8e0e4128182c000c4003a3e042245b2967848d089b2a04b22424"
+      },
+      "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.3\\BaitbreakPixel.pck": {
+        "bytes": 2343592,
+        "sha256": "d9da1b8fb8516874cb5c619a002202d88c6c501492a7ab461f5bdf12f442e02e"
+      },
+      "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.3\\GODOT-NOTICES.txt": {
+        "bytes": 111024,
+        "sha256": "de6c9dd426fdfe811566375029bebf88f4bc75df6bf3c105c87006c3e3fadf09"
+      },
+      "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.3\\开始试玩.txt": {
+        "bytes": 10670,
+        "sha256": "21b8cdcf810bbfbbfe9c4f83b78f89b0e3439f51e60f1a1be127e9e64ebc2a50"
+      },
+      "E:\\Fish_catches_people\\aquatic_system\\Releases\\BaitbreakPixel-0.25.3.zip": {
+        "bytes": 89620167,
+        "sha256": "f393425be09b7c89b5e49f522d04f54c2e49f4a68da2df62b7420cc9663325ab"
+      }
+    },
+    "ok": true
+  },
+  "source_pack_png_equal": {
+    "angler-legacy.png": true,
+    "angler-selected.png": true,
+    "fallback.png": true,
+    "feeding-0.png": true,
+    "feeding-159.png": true,
+    "feeding-30.png": true,
+    "feeding-80.png": true,
+    "fish-legacy.png": true,
+    "fish-selected.png": true,
+    "generated-1250-100.png": true,
+    "generated-1250-450.png": true,
+    "generated-640-240.png": true,
+    "generated-66-100.png": true,
+    "generated-66-450.png": true,
+    "generated-free.png": true,
+    "legacy-1250-100.png": true,
+    "legacy-1250-450.png": true,
+    "legacy-640-240.png": true,
+    "legacy-66-100.png": true,
+    "legacy-66-450.png": true,
+    "net-0.png": true,
+    "net-159.png": true,
+    "net-30.png": true,
+    "net-80.png": true,
+    "observation-legacy.png": false,
+    "observation-selected.png": false,
+    "preset-fern.png": true,
+    "preset-lily.png": true,
+    "preset-ribbon.png": true,
+    "preset-root.png": true,
+    "settings-generated.png": true,
+    "wrapping-0.png": true,
+    "wrapping-159.png": true,
+    "wrapping-30.png": true,
+    "wrapping-80.png": true
+  },
+  "observation_difference_note": "33/35 screenshots identical across source and pack. Both observation screenshots differ only in A marker y-position inside (189,235)-(243,303), driven by get_global_mouse_position in net_observation.gd:68. Within each run, legacy/selected observation images are identical. This is not classified as cross-run pixel equality.",
+  "observation_legacy_selected_equal": {
+    "source": true,
+    "pack": true
+  },
+  "default_713284_matches_0252": {
+    "equal": true,
+    "previous_png_sha256": "e8af90e2220303e94d4d570596c8e641d6ae1a0f174e540d51b252a7c41e650b",
+    "current_png_sha256": "e8af90e2220303e94d4d570596c8e641d6ae1a0f174e540d51b252a7c41e650b"
+  },
+  "zip_contents_equal": {
+    "BaitbreakPixel-0.25.3/开始试玩.txt": true,
+    "BaitbreakPixel-0.25.3/BaitbreakPixel.exe": true,
+    "BaitbreakPixel-0.25.3/BaitbreakPixel.pck": true,
+    "BaitbreakPixel-0.25.3/GODOT-NOTICES.txt": true
+  },
+  "performance": {
+    "source": {
+      "cache_counts": [
+        18,
+        15,
+        15,
+        105
+      ],
+      "engine": {
+        "build": "official",
+        "hash": "ed1daf0bf001b61586d9930840f2f1394092c079",
+        "hex": 263938,
+        "major": 4,
+        "minor": 7,
+        "patch": 2,
+        "status": "stable",
+        "string": "4.7.2-stable (official)",
+        "timestamp": 0
+      },
+      "gpu": "AMD Radeon(TM) Graphics",
+      "measurement": "Frame intervals include pacing/scheduling. draw_cpu_us times inherited production _draw command submission, not GPU execution.",
+      "preparation_us": {
+        "bake": 722168,
+        "plan": 7130,
+        "upload_api": 2124
+      },
+      "preset_preparation_us": {
+        "fern": {
+          "bake": 722168,
+          "plan": 7130,
+          "upload_api": 2124
+        },
+        "lily": {
+          "bake": 724096,
+          "plan": 7193,
+          "upload_api": 1922
+        },
+        "ribbon": {
+          "bake": 700223,
+          "plan": 6406,
+          "upload_api": 2046
+        },
+        "root": {
+          "bake": 679003,
+          "plan": 6630,
+          "upload_api": 1877
+        }
+      },
+      "renderer": "gl_compatibility",
+      "resident_bundles": 2,
+      "frame_cost_summary": [
+        {
+          "generated": false,
+          "draw_cpu_us": {
+            "samples": 180,
+            "median": 2189.5,
+            "p95": 3748
+          },
+          "frame_interval_us": {
+            "samples": 180,
+            "median": 16713.0,
+            "p95": 17976
+          }
+        },
+        {
+          "generated": true,
+          "draw_cpu_us": {
+            "samples": 180,
+            "median": 2454.5,
+            "p95": 3931
+          },
+          "frame_interval_us": {
+            "samples": 180,
+            "median": 16630.5,
+            "p95": 19188
+          }
+        }
+      ]
+    },
+    "pack": {
+      "cache_counts": [
+        18,
+        15,
+        15,
+        105
+      ],
+      "engine": {
+        "build": "official",
+        "hash": "ed1daf0bf001b61586d9930840f2f1394092c079",
+        "hex": 263938,
+        "major": 4,
+        "minor": 7,
+        "patch": 2,
+        "status": "stable",
+        "string": "4.7.2-stable (official)",
+        "timestamp": 0
+      },
+      "gpu": "AMD Radeon(TM) Graphics",
+      "measurement": "Frame intervals include pacing/scheduling. draw_cpu_us times inherited production _draw command submission, not GPU execution.",
+      "preparation_us": {
+        "bake": 869296,
+        "plan": 9359,
+        "upload_api": 7974
+      },
+      "preset_preparation_us": {
+        "fern": {
+          "bake": 869296,
+          "plan": 9359,
+          "upload_api": 7974
+        },
+        "lily": {
+          "bake": 803608,
+          "plan": 8299,
+          "upload_api": 2273
+        },
+        "ribbon": {
+          "bake": 762286,
+          "plan": 7298,
+          "upload_api": 4477
+        },
+        "root": {
+          "bake": 767426,
+          "plan": 9384,
+          "upload_api": 2525
+        }
+      },
+      "renderer": "gl_compatibility",
+      "resident_bundles": 2,
+      "frame_cost_summary": [
+        {
+          "generated": false,
+          "draw_cpu_us": {
+            "samples": 180,
+            "median": 3261.5,
+            "p95": 4830
+          },
+          "frame_interval_us": {
+            "samples": 180,
+            "median": 16777.0,
+            "p95": 18784
+          }
+        },
+        {
+          "generated": true,
+          "draw_cpu_us": {
+            "samples": 180,
+            "median": 3286.5,
+            "p95": 4991
+          },
+          "frame_interval_us": {
+            "samples": 180,
+            "median": 16698.5,
+            "p95": 18280
+          }
+        }
+      ]
+    }
+  },
+  "live_cache_limit_evidence": "watergen_integration.gd follows weak references over 20 preset changes; at most 2 resident bundles / 14 live textures. cache_counts records cumulative creations, not resident allocations.",
+  "human_acceptance": "WAITING_FOR_PLAYTEST for WG-4 selection interaction; previous WG-PF-304 confirmed only.",
+  "log_archive_note": "Reviewable log copies use UTF-8/LF; one empty NETWORK_PHASE field had a trailing space removed. Original logs remain untouched. log_sha256 identifies original artifacts; archived_log_sha256 identifies text copies."
+}

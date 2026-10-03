@@ -1,3 +1,4 @@
+- [0.25.3 四种水域构图切换](watergen/WG4_README.md) · [验证与本地包](watergen/WG4_REPORT.md)
 - [0.25.2 水域中部层次调整](watergen/WG3_CENTER_REPORT.md)
 - [0.25.1 可选水域试玩](watergen/WG3_README.md) · [接入验证](watergen/WG3_REPORT.md)
 - [0.25.0 环境鱼架构](architecture/PHASE03-AMBIENT-FISH.md) · [验证与人工试玩](test-reports/PHASE03-AMBIENT-VALIDATION-0.25.0.md)
