@@ -2,19 +2,19 @@
 
 一个 2D 像素风格的人鱼对抗游戏：小鱼在水下觅食、缠线和逃脱，钓鱼人在岸边控竿、收放线与抄网。支持单机挑战、自由练习和一人对一鱼的局域网联机。
 
-**当前源码：0.24.6（进一步收紧自动咬食） · 公开 Windows 试玩包：0.24.5** · Windows x64 · Godot 4.7.2
+**当前源码与公开 Windows 试玩版本：0.24.6（进一步收紧自动咬食）** · Windows x64 · Godot 4.7.2
 
-0.24.6 源码将默认咬食半径从 12 px 进一步缩到 10 px，成功后冷却从 0.60 秒延长到 0.80 秒；吸力渐变与 4/6/8 容量不变。个人档案修订 3 逐项迁移上一版默认值，保留其他自定义值、较早修订已明确保存的旧值和命名方案。本次仅提交源码，不生成新试玩包。见[本次验证与人工试玩](docs/test-reports/PHASE02-BITE-TUNING-0.24.6.md)。
+0.24.6 Windows 试玩包的默认咬食半径从 12 px 进一步缩到 10 px，成功后冷却从 0.60 秒延长到 0.80 秒；吸力渐变与 4/6/8 容量不变。个人档案修订 3 逐项迁移上一版默认值，保留其他自定义值、较早修订已明确保存的旧值和命名方案。本版 ZIP 已生成、核对并公开发布。见[本次验证与人工试玩](docs/test-reports/PHASE02-BITE-TUNING-0.24.6.md)。
 
 ## 下载试玩
 
 本版沿用 0.24.4 的渐变吸力，散粒实际移动、剥离和整饵位移目标共用同一距离场；此前[距离修正验证](docs/test-reports/PHASE02-DISTANCE-VALIDATION.md)保留为历史记录。
 
-### 公开 Windows 试玩包：0.24.5
+### 公开 Windows 试玩包：0.24.6
 
-从 [v0.24.5 发行页](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.24.5)下载 [BaitbreakPixel-0.24.5.zip](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.24.5/BaitbreakPixel-0.24.5.zip)，解压后运行 `BaitbreakPixel.exe`。EXE 与同目录 PCK 保持在一起，玩家无需安装 Godot。小鱼嘴边有食物时自动咬食，左键吸食；完整操作见包内说明。
+从 [v0.24.6 发行页](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.24.6)下载 [BaitbreakPixel-0.24.6.zip](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.24.6/BaitbreakPixel-0.24.6.zip)，解压后运行 `BaitbreakPixel.exe`。EXE 与同目录 PCK 保持在一起，玩家无需安装 Godot。小鱼嘴边有食物时自动咬食，左键吸食；完整操作见包内说明。
 
-截至 2026-10-03 已逐版发布 **0.21.0–0.24.5，共 18 个 Release**，每版均附 ZIP 和 `SHA256SUMS.txt`。其他版本见 [全部 Releases](https://github.com/lljh2777-cyber/BaitbreakPixel/releases)，核对结果见 [0.24.5 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.5.md)、[0.24.4 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.4.md)、[0.24.3 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.3.md)、[0.24.2 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.2.md)及[此前 14 版发布记录](docs/test-reports/GITHUB-RELEASES-2026-10-02.md)。0.24.5 仍用于人工试玩，发布包不代表已经完成人工手感与平衡验收。
+截至 2026-10-03 已逐版发布 **0.21.0–0.24.6，共 19 个 Release**，每版均附 ZIP 和 `SHA256SUMS.txt`。其他版本见 [全部 Releases](https://github.com/lljh2777-cyber/BaitbreakPixel/releases)，核对结果见 [0.24.6 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.6.md)、[0.24.5 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.5.md)、[0.24.4 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.4.md)、[0.24.3 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.3.md)、[0.24.2 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.2.md)及[此前 14 版发布记录](docs/test-reports/GITHUB-RELEASES-2026-10-02.md)。0.24.6 仍用于人工试玩，发布包不代表已经完成人工手感与平衡验收。
 
 ### Phase 2.3：0.24.6 摄食选择最终人工门
 
@@ -22,7 +22,7 @@
 
 0.24.3 的 100 个留出种子、300 局比较曾发现远处吸食策略占优，原结果保留。0.24.4 重用相同种子调参比较后，样本均值未发现单一策略全面支配，但远距吸食/混合胜率下降、对局变长；这不是新的留出验证，也不能证明平衡或手感通过。0.24.6 本次仅调整距离和冷却，未重跑完整策略平衡实验；上述结果属于此前版本。
 
-0.24.6 请用 Godot 4.7.2 运行当前源码，按[本轮咬食微调与最终试玩清单](docs/test-reports/PHASE02-BITE-TUNING-0.24.6.md)比较远处吸食、贴近和混合选择。已发布的 0.24.5 包仍为 12 px / 0.60 秒，不能验证本轮默认值。自动统计只能发现问题，不能代替手感验收；停在最终人工门，只有用户明确确认 Phase 2 可以结束才允许进入 Phase 3。
+解压 0.24.6 ZIP 后运行 `BaitbreakPixel.exe`，按[本轮咬食微调与最终试玩清单](docs/test-reports/PHASE02-BITE-TUNING-0.24.6.md)比较远处吸食、贴近和混合选择。本地试玩目录为 `Releases/BaitbreakPixel-0.24.6`。自动统计只能发现问题，不能代替手感验收；停在最终人工门，只有用户明确确认 Phase 2 可以结束才允许进入 Phase 3。
 
 实现与统计定义见[摄食平衡边界](docs/architecture/PHASE02-FEEDING-BALANCE.md)。此前[三种饵型报告](docs/test-reports/PHASE02-BAIT-VALIDATION.md)与[P2.1 报告](docs/test-reports/PHASE02-BITE-VALIDATION.md)保留原始结果。
 
