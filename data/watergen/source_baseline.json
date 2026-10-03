@@ -1,8 +1,8 @@
 {
   "document_commit": "a4a1f538860cb37741a49ccd9fdb078d7b39b8b0",
-  "source_commit": "9c447e7210987472d108ce284b9df5cd057f2dc7",
+  "source_commit": "282595e98a4184895db217c298d1e2cbf4ecd140",
   "source_branch": "feature/dev",
-  "source_version": "0.24.5",
+  "source_version": "0.24.6",
   "mode": "legacy-wg0",
   "profile_id": null,
   "visual_seed": null
