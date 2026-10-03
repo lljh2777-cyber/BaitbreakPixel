@@ -38,7 +38,8 @@ func render(name: String = "") -> Image:
 
 func setup_fixture() -> void:
 	game.reset(false,"fish"); game.menu.close()
-	game.reset_world({"ruleset":"survival","seed":8231,"rules":{"water_strength":0,"timer_enabled":false,"satiety_decay":0,"instinct_max_strength":0}})
+	# Isolate the legacy Bite pixel contract; ambient NPC motion has its own suite.
+	game.reset_world({"ruleset":"survival","seed":8231,"npc_count":0,"rules":{"water_strength":0,"timer_enabled":false,"satiety_decay":0,"instinct_max_strength":0}})
 	freeze(game)
 	game.fish=Vector2(700,210); game.fish_before=game.fish; game.aim=Vector2.RIGHT; game.velocity=Vector2.ZERO
 	game.elapsed=2.0; game.power=0.35; game.feeding=false; game.notice_age=0; game.hook_cooldown=1000

@@ -2,6 +2,7 @@ extends SceneTree
 const World=preload("res://scripts/world_simulation.gd")
 const Motion=preload("res://scripts/net_motion.gd")
 const Visual=preload("res://scripts/net_visual.gd")
+const AnglerPublic=preload("res://scripts/angler_network_observation.gd")
 const Presentation=preload("res://scripts/network_presentation.gd")
 var passed:=0
 var failed:=0
@@ -71,9 +72,10 @@ func test_network(caught: bool) -> void:
 	for tick in 180:
 		w.advance_tick({},{})
 		if w.net_state==desired and w.net_age>0.45: break
-	var a: Dictionary=w.capture_snapshot()
+	var a: Dictionary=AnglerPublic.capture(w)
 	w.advance_tick({},{}); w.advance_tick({},{})
-	var b: Dictionary=w.capture_snapshot()
+	var b: Dictionary=AnglerPublic.capture(w)
+	var source_a:=var_to_bytes(a); var source_b:=var_to_bytes(b); var authority_before:=var_to_bytes(w.capture_snapshot())
 	var presenter:=Presentation.new(); presenter.accept(a,0); presenter.accept(b,1)
 	var display: Node2D=presenter.sample(1+presenter.interval*0.5)
 	var delay: float=w.NET_SETTLE if caught else 0.0
@@ -84,6 +86,7 @@ func test_network(caught: bool) -> void:
 		var fish: Vector2=display.net_pos+display.net_catch_offset.lerp(display.net_bag_offset(),smoothstep(0,1,display.net_age/display.NET_SETTLE))
 		check(display.fish.distance_to(fish)<0.001,"network: captured fish stays attached to interpolated bag")
 	check(var_to_bytes(a)==var_to_bytes(presenter.previous) and var_to_bytes(b)==var_to_bytes(presenter.current),"network %s: source snapshots remain immutable" % desired)
+	check(var_to_bytes(a)==source_a and var_to_bytes(b)==source_b and var_to_bytes(w.capture_snapshot())==authority_before,"network sampling leaves both caller-owned wire snapshots and original authority byte-identical")
 	presenter.dispose(); w.free()
 
 func test_reset_and_frame_rates() -> void:
@@ -129,11 +132,13 @@ func test_corner() -> void:
 		else: high=mid
 	var time: float=(low+high)*0.5*w.net_retract_duration
 	w.net_age=time-1.0/60; w.net_pos=w._net_retract_point(w.net_age/w.net_retract_duration)
-	var a: Dictionary=w.capture_snapshot()
+	var a: Dictionary=AnglerPublic.capture(w)
 	w.net_age=time+1.0/60; w.net_pos=w._net_retract_point(w.net_age/w.net_retract_duration); w.simulation_tick+=2
-	var b: Dictionary=w.capture_snapshot()
+	var b: Dictionary=AnglerPublic.capture(w)
+	var source_a:=var_to_bytes(a); var source_b:=var_to_bytes(b); var authority_before:=var_to_bytes(w.capture_snapshot())
 	var presenter:=Presentation.new(); presenter.accept(a,0); presenter.accept(b,1)
 	var display: Node2D=presenter.sample(1+presenter.interval*0.5)
 	check(display.net_pos.distance_to(w.net_from)<0.001,"network: interpolation reaches the real path corner instead of cutting diagonally")
 	check(display.net_pos.distance_to(Vector2(a.state.net_pos).lerp(b.state.net_pos,0.5))>0.5,"corner fixture distinguishes path sampling from unsafe linear interpolation")
+	check(var_to_bytes(a)==source_a and var_to_bytes(b)==source_b and var_to_bytes(w.capture_snapshot())==authority_before,"network sampling leaves both caller-owned wire snapshots and original authority byte-identical")
 	presenter.dispose(); w.free()

@@ -1,3 +1,5 @@
+- [0.25.0 环境鱼架构](architecture/PHASE03-AMBIENT-FISH.md) · [验证与人工试玩](test-reports/PHASE03-AMBIENT-VALIDATION-0.25.0.md)
+
 # 文档导航
 
 [返回项目首页](../README.md)
@@ -20,6 +22,7 @@
 
 ## 验证与历史
 
+- [0.25.0 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.25.0.md)
 - [0.24.6 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.24.6.md)
 - [0.24.5 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.24.5.md)
 - [0.24.4 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.24.4.md)

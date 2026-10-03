@@ -10,9 +10,26 @@ const MEDIUM_DISTANCE := 160.0
 const FAR_POSITION_STEP := 16.0
 const VISUAL_GRAIN_FIELDS: Array[String] = ["offset","pos","layer","fleck","free","eaten","visual_kind"]
 
+# Preserve the exact legacy player keys, values and insertion order. Caller-supplied
+# observer records may contain private AI state, so never duplicate them wholesale.
+const SELF_FIELDS: Array[String] = ["fish_id","position","mouth","aim","velocity","stamina","stamina_ratio","caution_state","satiety","satiety_band","instinct_drive","score","power","feeding"]
+
+static func player_self(world: Node2D) -> Dictionary:
+	return {"fish_id":int(world.fish_id),"position":Vector2(world.fish),"mouth":world.mouth(),
+		"aim":Vector2(world.aim),"velocity":Vector2(world.velocity),"stamina":float(world.stamina),"stamina_ratio":world.stamina_ratio(),"caution_state":world.caution_state,"satiety":float(world.satiety),"satiety_band":world.satiety_band(),"instinct_drive":float(world.instinct_drive),
+		"score":float(world.score),"power":float(world.power),"feeding":bool(world.feeding)}
+
 static func build(world: Node2D, include_visuals: bool = true) -> Dictionary:
+	return build_for(world,player_self(world),include_visuals)
+
+static func build_for(world: Node2D, observer_state: Dictionary, include_visuals: bool = true) -> Dictionary:
+	var public_self: Dictionary={}
+	for key: String in SELF_FIELDS: public_self[key]=observer_state[key]
+	# The self contract contains only scalar/vector/string/bool public facts.
+	# Detach it even when a future caller retains and edits its observer dictionary.
+	public_self=public_self.duplicate(true)
 	var observed: Array[Dictionary]=[]
-	var fish_position: Vector2=world.fish
+	var fish_position: Vector2=public_self.position
 	for bait: Dictionary in world.baits:
 		var facts:=_facts(bait,fish_position)
 		if facts.visible_count==0: continue
@@ -26,11 +43,7 @@ static func build(world: Node2D, include_visuals: bool = true) -> Dictionary:
 			"hints":hints,"has_attached_food":facts.attached,"food_position":food}
 		if include_visuals: entry.visual=_visual(bait,facts)
 		observed.append(entry)
-	return {"tick":int(world.simulation_tick),
-		"self":{"fish_id":int(world.fish_id),"position":fish_position,"mouth":world.mouth(),
-			"aim":Vector2(world.aim),"velocity":Vector2(world.velocity),"stamina":float(world.stamina),"stamina_ratio":world.stamina_ratio(),"caution_state":world.caution_state,"satiety":float(world.satiety),"satiety_band":world.satiety_band(),"instinct_drive":float(world.instinct_drive),
-			"score":float(world.score),"power":float(world.power),"feeding":bool(world.feeding)},
-		"perceived_baits":observed}
+	return {"tick":int(world.simulation_tick),"self":public_self,"perceived_baits":observed}
 
 static func distance_band(distance: float) -> String:
 	if distance<=NEAR_DISTANCE: return "near"

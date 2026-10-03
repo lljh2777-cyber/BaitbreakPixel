@@ -1,6 +1,7 @@
 extends SceneTree
 const World=preload("res://scripts/world_simulation.gd")
 const Session=preload("res://scripts/network_session.gd")
+const AnglerPublic=preload("res://scripts/angler_network_observation.gd")
 const Protocol=preload("res://scripts/network_protocol.gd")
 var game: Node2D
 var session: Node
@@ -76,17 +77,21 @@ func run() -> void:
 	check(not game.restore_snapshot(invalid) and game.capture_snapshot()==original,"malformed nested food records cannot partially change the world")
 	invalid=game.capture_snapshot(); invalid.state.qte="unknown"
 	check(not game.restore_snapshot(invalid),"unknown state machine values are rejected")
-	session.local_role="angler" # This fixture intentionally tests authoritative replay payloads.
-	var packet := {"kind":"state","v":Protocol.VERSION,"session":session.session_id,"round":1,"seq":10,"phase":"playing","countdown":0.0,"ack":5,"snapshot":Protocol.pack_state(original)}
+	# Fragment transport uses the actual role wire contract; authority restore
+	# validation above deliberately keeps the separate full replay snapshots.
+	session.local_role="angler"
+	var projected:=AnglerPublic.capture(game)
+	var original_bytes:=var_to_bytes(original); var projected_bytes:=var_to_bytes(projected)
+	var packet := {"kind":"state","v":Protocol.VERSION,"session":session.session_id,"round":1,"seq":10,"phase":"playing","countdown":0.0,"ack":5,"snapshot":Protocol.pack_state(projected)}
 	var pieces := chunks(packet)
 	session.received_state_seq=-1
 	for index in range(pieces.size()-1,0,-1): session._receive_chunk(pieces[index]); session._receive_chunk(pieces[index])
-	check(session.received_state_seq==-1,"incomplete and duplicate fragments do not apply partial snapshots")
+	check(session.received_state_seq==-1 and game.capture_snapshot()==original,"incomplete and duplicate fragments do not apply partial snapshots")
 	session._receive_chunk(pieces[0])
-	check(session.received_state_seq==10 and game.capture_snapshot()==original,"out-of-order fragments assemble one complete authoritative state")
+	check(session.received_state_seq==10 and AnglerPublic.capture(game)==projected,"out-of-order fragments assemble one complete angler presentation state")
 	for piece in pieces: session._receive_chunk(piece)
 	check(session.received_state_seq==10,"a completed old snapshot cannot replay")
-	packet.seq=11; packet.snapshot=Protocol.pack_state(original)
+	packet.seq=11; packet.snapshot=Protocol.pack_state(projected)
 	pieces=chunks(packet)
 	for piece in pieces: session._receive_chunk(piece)
 	check(session.received_state_seq==11,"a later full snapshot recovers without retransmitting earlier losses")
@@ -94,6 +99,7 @@ func run() -> void:
 	var before: Dictionary=game.capture_snapshot()
 	displayed.fish+=Vector2(15,0)
 	check(game.capture_snapshot()==before,"presentation interpolation cannot mutate authority state")
+	check(var_to_bytes(original)==original_bytes and var_to_bytes(projected)==projected_bytes,"fragment assembly and render sampling leave original authority and wire input snapshots byte-identical")
 	check(Protocol.decode(PackedByteArray([1,2])).is_empty(),"truncated packet is rejected before Variant decoding")
 	var too_deep: Variant=0
 	for index in 14: too_deep=[too_deep]

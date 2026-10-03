@@ -1,3 +1,5 @@
+- [0.25.0 多鱼基础与环境鱼验证](PHASE03-AMBIENT-VALIDATION-0.25.0.md)
+
 - [0.23.0 Phase 0–1 开发与验证（2026-10-02，人工玩法验收仍开放）](PHASE01-VALIDATION.md)
 
 # 测试报告
@@ -8,6 +10,7 @@
 
 报告按版本由新到旧排列，记录当时的测试环境、范围和结果。旧版玩法断言可能已经退役；复现时请结合对应版本。
 
+- [0.25.0 Windows 试玩包与发布核验](GITHUB-RELEASE-0.25.0.md)
 - [0.24.6 Windows 试玩包与发布核验](GITHUB-RELEASE-0.24.6.md)
 - [0.24.5 Windows 试玩包与发布核验](GITHUB-RELEASE-0.24.5.md)
 - [0.24.4 Windows 试玩包与发布核验](GITHUB-RELEASE-0.24.4.md)

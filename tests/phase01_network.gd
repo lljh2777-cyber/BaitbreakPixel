@@ -2,6 +2,7 @@ extends SceneTree
 
 const Main=preload("res://scenes/main.tscn")
 const World=preload("res://scripts/world_simulation.gd")
+const AnglerNetwork=preload("res://scripts/angler_network_observation.gd")
 const FishNetwork=preload("res://scripts/fish_network_observation.gd")
 const FishObservation=preload("res://scripts/fish_observation.gd")
 const Session=preload("res://scripts/network_session.gd")
@@ -139,7 +140,14 @@ func pure_checks() -> void:
 	receiving._receive_chunk(pieces[0])
 	check(receiving.received_state_seq==state.seq and no_private(receiving.presentation.current),"out-of-order chunk path reconstructs only sanitized fish state")
 	sender.remote_role="angler"
-	check(Protocol.unpack_state(sender._state_packet("state").snapshot)==authority.capture_snapshot(),"angler peer retains authoritative-compatible state")
+	var angler_wire:=Protocol.unpack_state(sender._state_packet("state").snapshot)
+	check(angler_wire==AnglerNetwork.capture(authority),"angler peer uses its NPC-public role projection")
+	check(AnglerNetwork.apply(receiver,angler_wire),"angler projection applies through the separate validated adapter")
+	var original_angler: Dictionary=authority.capture_snapshot()
+	var received_angler: Dictionary=receiver.capture_snapshot()
+	for key: String in ["npc_fishes","next_fish_id","hook_target_fish_id"]:
+		original_angler.state.erase(key); received_angler.state.erase(key)
+	check(received_angler==original_angler,"angler adapter preserves every preexisting non-NPC authority field, rig and RNG value")
 	receiving.presentation.dispose(); sender.presentation.dispose(); receiving.free(); sender.free(); present.dispose(); authority.free(); receiver.free(); replay.free()
 
 func frame() -> void:

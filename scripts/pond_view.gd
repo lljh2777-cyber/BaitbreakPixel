@@ -31,11 +31,13 @@ static func satiety_bar_width(value: float) -> float:
 	return STATUS_BAR_WIDTH*clampf(value/100.0,0,1)
 var game: Node2D
 const FishObservation=preload("res://scripts/fish_observation.gd")
+const NPCFishPublic=preload("res://scripts/npc_fish_public_state.gd")
 var fish_observation: Dictionary={}
 var world: Node2D
 var angler_visual := AnglerVisual.new()
 var shore := Shore.new()
 var fish_texture: Texture2D
+var npc_textures: Array[Texture2D]=[]
 var gauge_texture: Texture2D
 var bobber_texture: Texture2D
 var font: SystemFont
@@ -47,6 +49,7 @@ func _ready() -> void:
 	shore.hand.prepare(self)
 	shore.reel_hand.prepare(self)
 	fish_texture = Art.fish()
+	for variant in 3: npc_textures.append(Art.npc_fish(variant))
 	gauge_texture = Gauge.metal_texture()
 	bobber_texture = Gauge.bobber_texture()
 	props=Art.scene_props()
@@ -95,6 +98,7 @@ func _draw() -> void:
 
 func _world(t: float) -> void:
 	Scenery.background(self,world,t)
+	_npc_fishes(t)
 	_winding_fish(t,false)
 	_baits(t,true)
 	if not line_frame.grass.is_empty(): _line_back()
@@ -108,6 +112,30 @@ func _world(t: float) -> void:
 	_plants(t,false)
 	Scenery.foreground(self)
 	Scenery.nest(self,world,t)
+
+func _npc_fishes(t: float) -> void:
+	# Project authority and network replicas through exactly the same allowlist.
+	# Draw behind cover and every player-fish pass, including the winding pose.
+	for fish: Dictionary in NPCFishPublic.capture(world.npc_fishes):
+		var position: Vector2=Vector2(fish.position).round()
+		if not Rect2(camera_offset-Vector2(24,24),Camera.VIEW_SIZE+Vector2(48,48)).has_point(position): continue
+		var direction: Vector2=fish.aim
+		var tilt:=direction.angle()
+		var flip:=1.0
+		if direction.x<0:
+			tilt-=PI
+			flip=-1.0
+		var speed: float=Vector2(fish.velocity).length()
+		var phase: float=t*(5.0+minf(speed,60.0)*0.13)+int(fish.fish_id)*1.71
+		var transform:=Transform2D(tilt,Vector2(flip,1),0,position-camera_offset)
+		var texture: Texture2D=npc_textures[int(fish.visual_variant)]
+		# The body remains on its real position. Only the attached tail flexes.
+		var tail:=Transform2D(sin(phase)*(0.08+minf(speed/60.0,1.0)*0.15),Vector2(-4,0))
+		draw_set_transform_matrix(transform*tail)
+		draw_texture_rect_region(texture,Rect2(-6,-5,6,10),Rect2(0,0,6,10))
+		draw_set_transform_matrix(transform)
+		draw_texture_rect_region(texture,Rect2(-4,-5,14,10),Rect2(6,0,14,10))
+		draw_set_transform(-camera_offset)
 
 func _navigation() -> void:
 	if game.menu.visible: return
