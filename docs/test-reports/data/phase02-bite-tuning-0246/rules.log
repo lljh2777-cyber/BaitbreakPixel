@@ -1,0 +1,260 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+RULE_PASS | old feeding defaults migrate sequentially without resetting preferences: 0/18.0/0.4
+RULE_PASS | old feeding defaults migrate sequentially without resetting preferences: 0/18.0/0.6
+RULE_PASS | old feeding defaults migrate sequentially without resetting preferences: 0/14.0/0.4
+RULE_PASS | old feeding defaults migrate sequentially without resetting preferences: 0/14.0/0.6
+RULE_PASS | old feeding defaults migrate sequentially without resetting preferences: 0/12.0/0.4
+RULE_PASS | old feeding defaults migrate sequentially without resetting preferences: 0/12.0/0.6
+RULE_PASS | custom legacy range/cadence remain unchanged: 0
+RULE_PASS | cadence migrates independently of custom range: 0
+RULE_PASS | cadence migrates independently of custom range: 0
+RULE_PASS | range migrates independently of custom cadence: 0
+RULE_PASS | range migrates independently of custom cadence: 0
+RULE_PASS | range migrates independently of custom cadence: 0
+RULE_PASS | old feeding defaults migrate sequentially without resetting preferences: 1/14.0/0.4
+RULE_PASS | old feeding defaults migrate sequentially without resetting preferences: 1/14.0/0.6
+RULE_PASS | old feeding defaults migrate sequentially without resetting preferences: 1/12.0/0.4
+RULE_PASS | old feeding defaults migrate sequentially without resetting preferences: 1/12.0/0.6
+RULE_PASS | custom legacy range/cadence remain unchanged: 1
+RULE_PASS | cadence migrates independently of custom range: 1
+RULE_PASS | cadence migrates independently of custom range: 1
+RULE_PASS | range migrates independently of custom cadence: 1
+RULE_PASS | range migrates independently of custom cadence: 1
+RULE_PASS | old feeding defaults migrate sequentially without resetting preferences: 2/12.0/0.6
+RULE_PASS | custom legacy range/cadence remain unchanged: 2
+RULE_PASS | cadence migrates independently of custom range: 2
+RULE_PASS | range migrates independently of custom cadence: 2
+RULE_PASS | unstamped legacy defaults chain through all three migrations
+RULE_PASS | revision1 explicit18 is not treated as unstamped legacy default
+RULE_PASS | revision2 explicit older defaults survive: 14.0
+RULE_PASS | revision2 explicit older defaults survive: 18.0
+RULE_PASS | revision2 preserves explicit14 while updating the .6 default independently
+RULE_PASS | revision2 preserves explicit .4 while updating the 12 default independently
+RULE_PASS | missing personal fields use current defaults
+RULE_PASS | new explicit values survive stamped save/load: 10.0/0.4
+RULE_PASS | named/imported rules retain explicit values: 10.0/0.4
+RULE_PASS | new explicit values survive stamped save/load: 10.0/0.6
+RULE_PASS | named/imported rules retain explicit values: 10.0/0.6
+RULE_PASS | new explicit values survive stamped save/load: 10.0/0.8
+RULE_PASS | named/imported rules retain explicit values: 10.0/0.8
+RULE_PASS | new explicit values survive stamped save/load: 12.0/0.4
+RULE_PASS | named/imported rules retain explicit values: 12.0/0.4
+RULE_PASS | new explicit values survive stamped save/load: 12.0/0.6
+RULE_PASS | named/imported rules retain explicit values: 12.0/0.6
+RULE_PASS | new explicit values survive stamped save/load: 12.0/0.8
+RULE_PASS | named/imported rules retain explicit values: 12.0/0.8
+RULE_PASS | new explicit values survive stamped save/load: 14.0/0.4
+RULE_PASS | named/imported rules retain explicit values: 14.0/0.4
+RULE_PASS | new explicit values survive stamped save/load: 14.0/0.6
+RULE_PASS | named/imported rules retain explicit values: 14.0/0.6
+RULE_PASS | new explicit values survive stamped save/load: 14.0/0.8
+RULE_PASS | named/imported rules retain explicit values: 14.0/0.8
+RULE_PASS | new explicit values survive stamped save/load: 18.0/0.4
+RULE_PASS | named/imported rules retain explicit values: 18.0/0.4
+RULE_PASS | new explicit values survive stamped save/load: 18.0/0.6
+RULE_PASS | named/imported rules retain explicit values: 18.0/0.6
+RULE_PASS | new explicit values survive stamped save/load: 18.0/0.8
+RULE_PASS | named/imported rules retain explicit values: 18.0/0.8
+RULE_PASS | default normalization keeps exact defaults and zero false modifications
+RULE_PASS | catalog keys are unique
+RULE_PASS | all min settings remain valid after cross-field constraints
+RULE_PASS | all min settings simulate and restore without invalid values
+RULE_PASS | all max settings remain valid after cross-field constraints
+RULE_PASS | all max settings simulate and restore without invalid values
+RULE_PASS | roundtrip bite_range
+RULE_PASS | roundtrip bite_cooldown
+RULE_PASS | roundtrip bite_intake
+RULE_PASS | roundtrip bait_safe_min
+RULE_PASS | roundtrip hook_danger
+RULE_PASS | roundtrip bait_hook_probability
+RULE_PASS | roundtrip bait_danger_min
+RULE_PASS | roundtrip bait_danger_max
+RULE_PASS | roundtrip suspicion_decay
+RULE_PASS | roundtrip suspicion_motion_weight
+RULE_PASS | roundtrip suspicion_disturbance_weight
+RULE_PASS | roundtrip instinct_strength
+RULE_PASS | roundtrip instinct_start_threshold
+RULE_PASS | roundtrip instinct_max_strength
+RULE_PASS | roundtrip hunger_enabled
+RULE_PASS | roundtrip satiety_start
+RULE_PASS | roundtrip satiety_decay
+RULE_PASS | roundtrip satiety_low_threshold
+RULE_PASS | roundtrip satiety_critical_threshold
+RULE_PASS | roundtrip satiety_starving_threshold
+RULE_PASS | roundtrip satiety_food_value
+RULE_PASS | roundtrip satiety_recovery_min
+RULE_PASS | roundtrip food_goal
+RULE_PASS | roundtrip practice_goal
+RULE_PASS | roundtrip time_limit
+RULE_PASS | roundtrip home_hold
+RULE_PASS | roundtrip stamina_max
+RULE_PASS | roundtrip stamina_initial
+RULE_PASS | roundtrip stamina_recovery
+RULE_PASS | roundtrip stamina_delay
+RULE_PASS | roundtrip sprint_drain
+RULE_PASS | roundtrip resist_drain
+RULE_PASS | roundtrip food_recovery
+RULE_PASS | roundtrip sprint_restart
+RULE_PASS | roundtrip fatigue_threshold
+RULE_PASS | roundtrip fatigue_speed
+RULE_PASS | roundtrip swim_speed
+RULE_PASS | roundtrip slow_speed
+RULE_PASS | roundtrip sprint_speed
+RULE_PASS | roundtrip swim_accel
+RULE_PASS | roundtrip sprint_accel
+RULE_PASS | roundtrip feeding_speed
+RULE_PASS | roundtrip suction_range
+RULE_PASS | roundtrip suction_mouth
+RULE_PASS | roundtrip suction_spread
+RULE_PASS | roundtrip suction_initial
+RULE_PASS | roundtrip pellet_speed
+RULE_PASS | roundtrip pellet_detach
+RULE_PASS | roundtrip pellet_rate
+RULE_PASS | roundtrip bait_points
+RULE_PASS | roundtrip hook_scale
+RULE_PASS | roundtrip bite_radius
+RULE_PASS | roundtrip hook_suction
+RULE_PASS | roundtrip hook_immunity
+RULE_PASS | roundtrip bait_cycle
+RULE_PASS | roundtrip bait_refill
+RULE_PASS | roundtrip angler_speed
+RULE_PASS | roundtrip reel_speed
+RULE_PASS | roundtrip release_speed
+RULE_PASS | roundtrip line_response
+RULE_PASS | roundtrip line_force
+RULE_PASS | roundtrip line_pull
+RULE_PASS | roundtrip auto_reel
+RULE_PASS | roundtrip auto_release
+RULE_PASS | roundtrip auto_gain
+RULE_PASS | roundtrip auto_tension
+RULE_PASS | roundtrip line_elastic
+RULE_PASS | roundtrip line_max
+RULE_PASS | roundtrip line_free_max
+RULE_PASS | roundtrip cast_depth
+RULE_PASS | roundtrip tension_low
+RULE_PASS | roundtrip slack_hold
+RULE_PASS | roundtrip tension_high
+RULE_PASS | roundtrip break_hold
+RULE_PASS | roundtrip slack_retry
+RULE_PASS | roundtrip landing_hold
+RULE_PASS | roundtrip landing_lift
+RULE_PASS | roundtrip wrap_seconds
+RULE_PASS | roundtrip wrap_retry
+RULE_PASS | roundtrip wrap_slack
+RULE_PASS | roundtrip wrap_pull
+RULE_PASS | roundtrip wrap_spool
+RULE_PASS | roundtrip untangle_min
+RULE_PASS | roundtrip untangle_max
+RULE_PASS | roundtrip unwind_seconds
+RULE_PASS | roundtrip untangle_cooldown
+RULE_PASS | roundtrip untangle_force
+RULE_PASS | roundtrip untangle_recover
+RULE_PASS | roundtrip net_scale
+RULE_PASS | roundtrip net_manual_warning
+RULE_PASS | roundtrip net_manual_speed
+RULE_PASS | roundtrip net_cooldown
+RULE_PASS | roundtrip net_first
+RULE_PASS | roundtrip net_interval
+RULE_PASS | roundtrip net_observe_time
+RULE_PASS | roundtrip net_reach
+RULE_PASS | roundtrip net_sight
+RULE_PASS | roundtrip net_min_path
+RULE_PASS | roundtrip net_max_path
+RULE_PASS | roundtrip net_push
+RULE_PASS | roundtrip net_slow_time
+RULE_PASS | roundtrip net_slow_factor
+RULE_PASS | roundtrip water_strength
+RULE_PASS | roundtrip vegetation_speed
+RULE_PASS | roundtrip cover_opacity
+RULE_PASS | roundtrip ai_entry_skill
+RULE_PASS | roundtrip ai_escape_skill
+RULE_PASS | roundtrip ai_effort_skill
+RULE_PASS | roundtrip ai_reaction
+RULE_PASS | roundtrip timer_enabled
+RULE_PASS | roundtrip qte_entry_lead
+RULE_PASS | roundtrip qte_entry_sweep
+RULE_PASS | roundtrip qte_entry_window
+RULE_PASS | roundtrip qte_entry_random
+RULE_PASS | roundtrip qte_entry_zone
+RULE_PASS | roundtrip qte_slack_lead
+RULE_PASS | roundtrip qte_slack_sweep
+RULE_PASS | roundtrip qte_slack_window
+RULE_PASS | roundtrip qte_slack_random
+RULE_PASS | roundtrip qte_slack_zone
+RULE_PASS | roundtrip qte_wrap_lead
+RULE_PASS | roundtrip qte_wrap_sweep
+RULE_PASS | roundtrip qte_wrap_window
+RULE_PASS | roundtrip qte_wrap_random
+RULE_PASS | roundtrip qte_wrap_zone
+RULE_PASS | roundtrip qte_fish_effort_lead
+RULE_PASS | roundtrip qte_fish_effort_sweep
+RULE_PASS | roundtrip qte_fish_effort_window
+RULE_PASS | roundtrip qte_fish_effort_random
+RULE_PASS | roundtrip qte_fish_effort_zone
+RULE_PASS | roundtrip fish_effort_frequency
+RULE_PASS | roundtrip fish_effort_boost
+RULE_PASS | roundtrip fish_effort_weak
+RULE_PASS | roundtrip fish_effort_boost_seconds
+RULE_PASS | roundtrip fish_effort_weak_seconds
+RULE_PASS | roundtrip qte_angler_effort_lead
+RULE_PASS | roundtrip qte_angler_effort_sweep
+RULE_PASS | roundtrip qte_angler_effort_window
+RULE_PASS | roundtrip qte_angler_effort_random
+RULE_PASS | roundtrip qte_angler_effort_zone
+RULE_PASS | roundtrip angler_effort_frequency
+RULE_PASS | roundtrip angler_effort_boost
+RULE_PASS | roundtrip angler_effort_weak
+RULE_PASS | roundtrip angler_effort_boost_seconds
+RULE_PASS | roundtrip angler_effort_weak_seconds
+RULE_PASS | roundtrip qte_untangle_lead
+RULE_PASS | roundtrip qte_untangle_sweep
+RULE_PASS | roundtrip qte_untangle_window
+RULE_PASS | roundtrip qte_untangle_random
+RULE_PASS | roundtrip qte_untangle_zone
+RULE_PASS | invalid values fall back and dependent thresholds, food and QTE windows stay feasible
+RULE_PASS | stamina capacity and initial percentage are distinct
+RULE_PASS | custom stamina drain is real points per second
+RULE_PASS | fatigue uses configured capacity
+RULE_PASS | custom recovery restores real points
+RULE_PASS | swim speed changes displacement
+RULE_PASS | suction range changes real feeding volume
+RULE_PASS | bait yield scales every layer without changing particle geometry
+RULE_PASS | manual reel settings control physical actuator
+RULE_PASS | custom reeling affects unhooked line length
+RULE_PASS | challenge honors configured reeling instead of silently overriding with defaults
+RULE_PASS | green fraction comes from window seconds divided by custom sweep
+RULE_PASS | active QTE holds its captured timing
+RULE_PASS | active long QTE snapshot restores independently of future rules
+RULE_PASS | long sweep still accepts correct input after old 2.4 second limit
+RULE_PASS | command validation supports allowed long QTE ages
+RULE_PASS | independent regular QTE: entry
+RULE_PASS | independent regular QTE: slack
+RULE_PASS | independent regular QTE: wrap
+RULE_PASS | independent fish effort speed and strength persist in state
+RULE_PASS | independent angler effort speed and strength persist in state
+RULE_PASS | custom low threshold and wait trigger slack QTE
+RULE_PASS | custom break timer does not fire early
+RULE_PASS | continuous high tension uses custom break time
+RULE_PASS | untangle interval follows independent configured bounds
+RULE_PASS | custom unwind duration also drives rod and line presentation phase
+RULE_PASS | net collision and warning radii scale together
+RULE_PASS | net route warning uses custom capture size
+RULE_PASS | unlimited-time rounds never trigger timeout
+RULE_PASS | custom food goal and return duration settle the round
+RULE_PASS | old profile timings and practice values migrate
+RULE_PASS | new profile schema has a stable roundtrip
+RULE_PASS | first-use missing preset directory lists no presets without errors or filesystem changes
+RULE_PASS | named preset saves and reloads JSON
+RULE_PASS | preset name cannot escape its directory
+RULE_PASS | unsupported and unknown import values are rejected
+RULE_PASS | invalid rule snapshot cannot partially overwrite world
+PIXEL_READY | asymmetric-2d | 640x360 | v0.24.6 | playtest-gate-phase02-feeding-balance
+RULE_PASS | returning from rules preserves the settings back destination
+RULE_PASS | settings category builds real editable controls from catalog
+RULE_PASS | saving settings leaves current world and QTE unchanged
+RULE_PASS | next challenge applies saved rules
+RULE_PASS | client shows host rules as read-only
+RULE_PASS | host rules never overwrite offline preferences when saving audio/profile
+RULE_PASS | leaving room restores local saved rules
+RULES_V020 | passed=256 | failed=0

@@ -8,6 +8,7 @@
 
 报告按版本由新到旧排列，记录当时的测试环境、范围和结果。旧版玩法断言可能已经退役；复现时请结合对应版本。
 
+- [0.24.6 Windows 试玩包与发布核验](GITHUB-RELEASE-0.24.6.md)
 - [0.24.5 Windows 试玩包与发布核验](GITHUB-RELEASE-0.24.5.md)
 - [0.24.4 Windows 试玩包与发布核验](GITHUB-RELEASE-0.24.4.md)
 - [0.24.3 Windows 试玩包与发布核验](GITHUB-RELEASE-0.24.3.md)
@@ -77,3 +78,5 @@
 - [0.24.4 distance tuning and manual gate](PHASE02-DISTANCE-VALIDATION.md)
 
 - [0.24.5 mouth range/cadence tuning and manual gate](PHASE02-BITE-TUNING-VALIDATION.md)
+
+- [0.24.6 tighter/slower automatic bite validation and manual gate](PHASE02-BITE-TUNING-0.24.6.md)

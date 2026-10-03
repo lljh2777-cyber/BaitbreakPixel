@@ -1,0 +1,54 @@
+{
+  "profile": "current",
+  "pack": null,
+  "results": [
+    {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 4.83,
+      "launch_error": false,
+      "passed": 0,
+      "failed": 0,
+      "count_basis": "log_markers",
+      "status": "passed",
+      "reason": "",
+      "suite": "editor-import",
+      "log": "import.log"
+    },
+    {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 4.235,
+      "launch_error": false,
+      "passed": 23,
+      "failed": 0,
+      "count_basis": "summary",
+      "status": "passed",
+      "reason": "",
+      "suite": "phase02_bite_native",
+      "registry_status": "current",
+      "log": "phase02_bite_native.log",
+      "command": [
+        "/workspace/shared/baitbreak-toolchain-472/Godot_v4.7.2-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "/workspace/shared/baitbreak-0246-native-final",
+        "--script",
+        "res://tests/phase02_bite_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=/workspace/shared/baitbreak-0246-native-final/focused-20261003T0134Z/captures/phase02_bite_native"
+      ]
+    }
+  ],
+  "counts": {
+    "passed": 2,
+    "failed": 0,
+    "timeout": 0,
+    "blocked": 0,
+    "retired": 0
+  }
+}

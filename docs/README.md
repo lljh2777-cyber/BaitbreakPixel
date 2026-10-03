@@ -20,6 +20,7 @@
 
 ## 验证与历史
 
+- [0.24.6 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.24.6.md)
 - [0.24.5 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.24.5.md)
 - [0.24.4 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.24.4.md)
 - [0.24.3 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.24.3.md)
@@ -52,3 +53,5 @@
 - [0.24.4 distance tuning and manual gate](test-reports/PHASE02-DISTANCE-VALIDATION.md)
 
 - [0.24.5 mouth range/cadence tuning and manual gate](test-reports/PHASE02-BITE-TUNING-VALIDATION.md)
+
+- [0.24.6 tighter/slower automatic bite validation and manual gate](test-reports/PHASE02-BITE-TUNING-0.24.6.md)
