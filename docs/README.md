@@ -20,6 +20,7 @@
 
 ## 验证与历史
 
+- [0.24.6 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.24.6.md)
 - [0.24.5 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.24.5.md)
 - [0.24.4 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.24.4.md)
 - [0.24.3 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.24.3.md)
