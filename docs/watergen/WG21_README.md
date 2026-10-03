@@ -2,6 +2,8 @@
 
 本轮只迭代独立水域预览。用户明确要求「暂不接入试玩」，保持碰撞、交互几何和玩法不变；没有生产集成或发布包。
 
+[交付报告与验证](WG21_REPORT.md) · [四种子与前后对照画廊](../../artifacts/watergen/wg21-final-02/gallery.html) · [10 秒动态样片](../../artifacts/watergen/wg21-final-02/atmosphere.mp4)
+
 启动 `tools/watergen/Open-Dynamic-Preview.ps1`，默认加载 `forest_pond_atmosphere.json` / `wg-2.1`，种子仍为 713284，初始镜头为左下。原 `forest_pond_dynamic.json` / `wg-2.0` 保留。
 
 | 按键 | 功能 |
