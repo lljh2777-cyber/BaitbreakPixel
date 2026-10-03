@@ -2,6 +2,8 @@ extends RefCounted
 
 # A separate render-only world. The latest authority state is never interpolated in place.
 const World=preload("res://scripts/world_simulation.gd")
+const NPCPublic=preload("res://scripts/npc_fish_public_state.gd")
+const AnglerNetworkObservation=preload("res://scripts/angler_network_observation.gd")
 const FishNetworkObservation=preload("res://scripts/fish_network_observation.gd")
 var world := World.new()
 var previous: Dictionary={}
@@ -12,12 +14,23 @@ var interval := 1.0/30.0
 func clear() -> void:
 	previous.clear()
 	current.clear()
+	world.npc_fishes.clear()
 
 func accept(snapshot: Dictionary, now: float, role: String = "angler") -> bool:
-	var accepted: bool=FishNetworkObservation.apply(world,snapshot) if role=="fish" else world.restore_snapshot(snapshot)
+	var accepted: bool=false
+	if role=="fish": accepted=FishNetworkObservation.apply(world,snapshot)
+	elif snapshot.get("format")==AnglerNetworkObservation.FORMAT: accepted=AnglerNetworkObservation.apply(world,snapshot)
+	else: accepted=world.restore_snapshot(snapshot) # Local authority-preview compatibility only.
 	if not accepted: return false
 	previous=current if current.get("format","")==snapshot.get("format","") else {}
 	current=snapshot.duplicate(true)
+	# Render history never holds private NPC replay state, even for local previews.
+	current.state.npc_fishes=NPCPublic.capture(world.npc_fishes)
+	current.state.erase("next_fish_id")
+	current.state.erase("hook_target_fish_id")
+	world.npc_fishes.assign(NPCPublic.capture(world.npc_fishes))
+	world.next_fish_id=2
+	world.hook_target_fish_id=-1
 	if not previous.is_empty(): interval=clampf((snapshot.state.simulation_tick-previous.state.simulation_tick)/60.0,1.0/60,0.15)
 	received_at=now
 	return true
@@ -28,6 +41,7 @@ func sample(now: float) -> Node2D:
 	var b: Dictionary=current.state
 	var check_roles: Array=["fish"] if current.get("format")==FishNetworkObservation.FORMAT else ["fish","angler"]
 	var ratio := clampf((now-received_at)/interval,0,1)
+	_sample_npc_fishes(a.npc_fishes,b.npc_fishes,ratio)
 	world.elapsed=lerpf(a.elapsed,b.elapsed,ratio)
 	world.power=lerpf(a.power,b.power,ratio)
 	# Snap on a new discrete action; only interpolate decay inside that action.
@@ -96,6 +110,20 @@ func sample(now: float) -> Node2D:
 				world.fish=world.net_pos+world.net_catch_offset.lerp(world.net_bag_offset(),smoothstep(0,1,world.net_age/world.NET_SETTLE))
 	if world.hooked==world.HookState.HOOKED: world._rebuild_rope()
 	return world
+
+func _sample_npc_fishes(old_states: Array, latest_states: Array, ratio: float) -> void:
+	var by_id: Dictionary={}
+	for old: Dictionary in old_states: by_id[old.fish_id]=old
+	var sampled: Array[Dictionary]=NPCPublic.capture(latest_states)
+	for state: Dictionary in sampled:
+		if not by_id.has(state.fish_id): continue # New/replacement/reactivated identity snaps.
+		var old: Dictionary=by_id[state.fish_id]
+		# Cosmetic identity changes are discrete; never morph unrelated silhouettes.
+		if old.visual_variant!=state.visual_variant: continue
+		state.position=Vector2(old.position).lerp(state.position,ratio)
+		state.velocity=Vector2(old.velocity).lerp(state.velocity,ratio)
+		state.aim=Vector2(old.aim).slerp(state.aim,ratio).normalized()
+	world.npc_fishes.assign(sampled)
 
 func dispose() -> void:
 	if is_instance_valid(world): world.free()

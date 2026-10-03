@@ -51,7 +51,7 @@ func pure_checks() -> void:
 	populate(world)
 	var replay:=World.new(); replay.reset_world({"seed":8})
 	var saved: Dictionary=world.capture_snapshot()
-	check(saved.schema==14 and Snapshot.SCHEMA==14 and saved.bait_profile_version==3,"authority preserves schema 14 with a mandatory bait-profile extension guard")
+	check(saved.schema==15 and Snapshot.SCHEMA==15 and saved.bait_profile_version==3,"authority preserves schema 15 with a mandatory bait-profile extension guard")
 	check(replay.restore_snapshot(saved) and replay.capture_snapshot()==saved,"all bait and fragment kinds survive exact authority roundtrip")
 	for tick in 50:
 		world.advance_tick({"move":Vector2.UP},{})
@@ -120,7 +120,7 @@ func pure_checks() -> void:
 	bad=saved.duplicate(true); bad.bait_profile_version=2
 	reject_authority(world,bad,"P2.3 uniform transport cannot replay under distance-gradient physics")
 	bad=saved.duplicate(true); bad.erase("bait_profile_version")
-	reject_authority(world,bad,"pre-profile schema 14 snapshot is explicitly rejected")
+	reject_authority(world,bad,"pre-profile schema 15 snapshot is explicitly rejected")
 	bad=public.duplicate(true); bad.erase("bait_profile_version")
 	reject_public(replay,bad,"pre-profile fish snapshot is explicitly rejected")
 	var view:=Presentation.new()

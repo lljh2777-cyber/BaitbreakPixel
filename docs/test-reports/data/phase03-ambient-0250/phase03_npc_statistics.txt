@@ -1,0 +1,10 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+NPC_PERFORMANCE | role=fish | npc_count=0 | tick_mean_us=671.699 | tick_p95_us=997 | authority_bytes_mean=62755.4 | role_bytes_mean=31223.8 | deflate_bytes_mean=5463.9 | packet_bytes_mean=5753.8 | chunked_bytes_mean=7577.8
+NPC_PERFORMANCE | role=fish | npc_count=3 | tick_mean_us=696.683 | tick_p95_us=1020 | authority_bytes_mean=64806.8 | role_bytes_mean=31763.8 | deflate_bytes_mean=5626.4 | packet_bytes_mean=5916.2 | chunked_bytes_mean=7740.2
+NPC_PERFORMANCE | role=fish | npc_count=6 | tick_mean_us=786.803 | tick_p95_us=1386 | authority_bytes_mean=66858.6 | role_bytes_mean=32303.8 | deflate_bytes_mean=5738.9 | packet_bytes_mean=6028.8 | chunked_bytes_mean=7852.8
+NPC_PERFORMANCE | role=angler | npc_count=0 | tick_mean_us=734.122 | tick_p95_us=1026 | authority_bytes_mean=63051.6 | role_bytes_mean=63095.6 | deflate_bytes_mean=7990.5 | packet_bytes_mean=8280.0 | chunked_bytes_mean=10788.0
+NPC_PERFORMANCE | role=angler | npc_count=3 | tick_mean_us=777.305 | tick_p95_us=1134 | authority_bytes_mean=65103.0 | role_bytes_mean=63635.6 | deflate_bytes_mean=8157.6 | packet_bytes_mean=8447.0 | chunked_bytes_mean=10955.0
+NPC_PERFORMANCE | role=angler | npc_count=6 | tick_mean_us=833.818 | tick_p95_us=1483 | authority_bytes_mean=67154.8 | role_bytes_mean=64175.6 | deflate_bytes_mean=8270.7 | packet_bytes_mean=8560.4 | chunked_bytes_mean=11068.4
+NPC_PERFORMANCE_ARTIFACT | res://artifacts/phase03-npc-statistics.json
+PHASE03_NPC_STATISTICS_TESTS | passed=380 | failed=0

@@ -51,6 +51,57 @@ static func fish() -> Texture2D:
 		"...........dddddd......."],
 		{"d":"985436", "f":"e6a448", "h":"ffd879", "l":"f3c780", "p":"fff0b5", "w":"fff6d3", "b":"132a38"})
 
+# Ambient ecology shares a quiet palette. Variants alter only the silhouette and
+# markings; the golden player remains larger, brighter and more expressive.
+static func npc_fish(variant: int) -> Texture2D:
+	var rows: Array[String]
+	match clampi(variant,0,2):
+		0:
+			rows=[
+				"..........dd........",
+				".........dffd.......",
+				".dd....ddffffdddd...",
+				".dfd.ddffffffffffdd.",
+				"..dfdffffhhhhfffefdd",
+				"..dfdfffffffffffffd.",
+				".dfd.ddfhhhhhhhffdd.",
+				".dd....ddddffdddd...",
+				"...........dd.......",
+				"...................."]
+		1:
+			rows=[
+				"...........dd.......",
+				".........ddffdd.....",
+				".dd....ddffffffdd...",
+				"..dfd.ddffpffpfffdd.",
+				"...dfdffffpffpffefdd",
+				"...dfdffffpffpffffd.",
+				"..dfd.ddhhhhhhhhhdd.",
+				".dd....ddfffffddd...",
+				".........ddfdd......",
+				"...........d........"]
+		_:
+			rows=[
+				"..........ddd.......",
+				".........dfffdd.....",
+				"........dffffffdd...",
+				".dd...ddffpffpfffdd.",
+				".dfdddfffffffffefdd.",
+				".dfffdffpffpffffffd.",
+				".dfdddffffhhhhfffdd.",
+				".dd...ddhhhhhhhhdd..",
+				"........ddfffddd....",
+				"..........ddd......."]
+	return sprite(rows,{"d":"325c65","f":"6b9390","h":"9cafa0","p":"4c777d","e":"253e49"})
+
+# Shore and observation silhouettes intentionally omit the underwater markings
+# and eyes. This is presentation geometry, never an NPC collision or hit shape.
+static func npc_shadow(variant: int) -> PackedVector2Array:
+	match clampi(variant,0,2):
+		0: return PackedVector2Array([Vector2(9,0),Vector2(4,-3),Vector2(-4,-3),Vector2(-6,-1),Vector2(-10,-4),Vector2(-8,0),Vector2(-10,4),Vector2(-6,1),Vector2(-4,3),Vector2(4,3)])
+		1: return PackedVector2Array([Vector2(9,0),Vector2(3,-4),Vector2(-3,-4),Vector2(-6,-1),Vector2(-10,-4),Vector2(-8,0),Vector2(-10,4),Vector2(-6,1),Vector2(-3,4),Vector2(3,4)])
+		_: return PackedVector2Array([Vector2(8,0),Vector2(3,-4),Vector2(-2,-5),Vector2(-5,-3),Vector2(-6,-1),Vector2(-10,-3),Vector2(-10,3),Vector2(-6,1),Vector2(-5,3),Vector2(-2,5),Vector2(3,4)])
+
 static func reed() -> Texture2D:
 	return sprite([
 		"....tt..........", "....tt.......t..", "....tt......tt..", "....ss......tt..",

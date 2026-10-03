@@ -13,7 +13,7 @@ Windows 可使用 `D:\python\python.exe`；用 `--godot "引擎可执行文件�
 
 ## 注册表与状态
 
-[`suite_registry.json`](suite_registry.json) 显式登记全部 103 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
+[`suite_registry.json`](suite_registry.json) 显式登记全部 111 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
 
 - `current`：当前有效的回归门禁；不按文件名版本新旧决定。`--profile current` 运行无窗口套件，`--profile native` 运行图形套件。已重新验证的 effort、net_animation、rules_network 等较早版本仍在当前门禁中
 - `historical`：当前检出复现了失败的诊断套件。保留原断言，失败仍返回非零；这不是“已证明所有断言过时”，更不是通过。具体原因和结果见[维护报告](../docs/test-reports/TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md)
@@ -39,7 +39,7 @@ python3 tools/run_tests.py --suite shore_native_v015
 
 ## 原生与打包截图
 
-所有 34 个使用原生画面、且会写 PNG 的脚本都接受：
+所有 35 个使用原生画面、且会写 PNG 的脚本都接受：
 
 ```sh
 godot --path . --script res://tests/wood_fade_native.gd -- --test-profile --capture-output-directory=/absolute/writable/captures
@@ -47,7 +47,7 @@ godot --path . --script res://tests/wood_fade_native.gd -- --test-profile --capt
 
 默认路径不变。目录会创建，空值、建目录失败、PNG 写入失败都返回非零。5 个旧脚本继续支持 `--visual-output=`，同时提供时以 `--capture-output-directory=` 为准。
 
-计数说明：35 个脚本使用原生渲染/画面回读，其中 `reel_hand_native_v016` 只验证像素连通性，不写图片。另一个会写图的 `plant_art` 是无窗口图像测试：默认不写图，保留 `--preview=文件名`，也支持公共目录参数生成 `plant-art-preview.png`；显式 `--preview` 优先。因此所有 35 个会写图片的入口均有可写路径选择，不需要给不写文件的测试增加空参数。
+计数说明：36 个脚本使用原生渲染/画面回读，其中 `reel_hand_native_v016` 只验证像素连通性，不写图片。另一个会写图的 `plant_art` 是无窗口图像测试：默认不写图，保留 `--preview=文件名`，也支持公共目录参数生成 `plant-art-preview.png`；显式 `--preview` 优先。因此所有 36 个会写图片的入口均有可写路径选择，不需要给不写文件的测试增加空参数。
 
 发行 PCK 故意不包含 `tests/` 和 `tools/`。运行器用外部绝对 `--script` 加载测试，让 `res://scripts/` 和素材来自包内：
 
@@ -71,15 +71,15 @@ python3 tools/run_tests.py --profile native --pack /path/to/BaitbreakPixel.pck -
 
 ## Phase 2.1 Bite 垂直切片
 
-`phase02_bite` 验证无按键自动咬食、冷却后持续近距再咬、空处无反馈、摄入上限、范围边界、稳定排序、Bite 对 Suck 的优先级、恢复与真实钩尖接触；`phase02_bite_network` 验证移除命令位、schema14 回放、倒计时验证与鱼端裁剪，并通过真实 ENet 鱼客户端验证自动咬食、近距重复与钩尖接触结果。`phase02_bite_native` 验证就绪/空处/远距/摄入/冷却画面及隐藏钩像素等价。自动通过不替代用户的手感与双端人工试玩。
+`phase02_bite` 验证无按键自动咬食、冷却后持续近距再咬、空处无反馈、摄入上限、范围边界、稳定排序、Bite 对 Suck 的优先级、恢复与真实钩尖接触；`phase02_bite_network` 验证移除命令位、schema15 回放、倒计时验证与鱼端裁剪，并通过真实 ENet 鱼客户端验证自动咬食、近距重复与钩尖接触结果。`phase02_bite_native` 验证就绪/空处/远距/摄入/冷却画面及隐藏钩像素等价。自动通过不替代用户的手感与双端人工试玩。
 
 ## Phase 2.2 饵型基础
 
-`phase02_bait_types` 覆盖三类型分配、原食物预算、生命周期、混合旧散粒、schema14 重放，以及固定种子范围的初始/重挂钩型独立性诊断；`phase02_food_profiles` 验证集中定义、不可变配置和分数/饱食分离。`phase02_observation` 与 `phase02_bait_network` 验证合法线索、严格裁剪、版本门和回放；`phase02_bait_native` 捕获三类型、部分吃掉/散落/吸动和 safe/hooked 像素等价。P2.3 已加入类型效率差异；测试通过不能替代人工辨识度与最终平衡确认。
+`phase02_bait_types` 覆盖三类型分配、原食物预算、生命周期、混合旧散粒、schema15 重放，以及固定种子范围的初始/重挂钩型独立性诊断；`phase02_food_profiles` 验证集中定义、不可变配置和分数/饱食分离。`phase02_observation` 与 `phase02_bait_network` 验证合法线索、严格裁剪、版本门和回放；`phase02_bait_native` 捕获三类型、部分吃掉/散落/吸动和 safe/hooked 像素等价。P2.3 已加入类型效率差异；测试通过不能替代人工辨识度与最终平衡确认。
 
 ## Phase 2.3 摄食选择
 
-`phase02_feeding_balance` 覆盖整粒 4/6/8 摄入、混合旧散粒预算、重复计分保护、饱食倍率、真实吸动/剥离/碎散物理、schema14 回放、新统计保密与嵌套校验。`phase02_feeding_policies` 验证纯观察策略、自动咬食语义、隐藏真值等价命令和真实 60 Hz 重放。后者引用不打包的 tools，PCK 模式明确 BLOCKED。
+`phase02_feeding_balance` 覆盖整粒 4/6/8 摄入、混合旧散粒预算、重复计分保护、饱食倍率、真实吸动/剥离/碎散物理、schema15 回放、新统计保密与嵌套校验。`phase02_feeding_policies` 验证纯观察策略、自动咬食语义、隐藏真值等价命令和真实 60 Hz 重放。后者引用不打包的 tools，PCK 模式明确 BLOCKED。
 
 现有 `bait_suction_v0212`、`feeding_feel_v022` 与 Bite 基准 fixture 显式固定 Cluster，以继续验证原始曲线和基础容量，断言不放宽；各类型差异另有独立用例。
 
@@ -91,3 +91,20 @@ python3 tools/phase02_run_feeding.py --phase heldout --seed 31001 --rounds 100 -
 ```
 
 默认真实 60 Hz、370 秒上限，运行前后验证源码哈希；留出种子不得与 pilot 重叠，源码/控制器及时间上限须保持一致。`SuckOnly` 只是远处吸食偏好，不会禁用嘴边自动咬食。比较保留所有输局、未终局与不利结果；无 QTE/解钩技巧，因此不能当成熟练玩家胜率。结果和最终人工门见 [P2.3 验证报告](../docs/test-reports/PHASE02-FEEDING-VALIDATION.md)。
+
+## Phase 3.0 + 3.1 环境鱼
+
+0.25.0 将权威 schema14 明确升级到 schema15；旧版拒绝恢复，FoodProfile guard3 保持。当前 Phase 1/2 套件继续验证已有摄食、QTE、Hook、隐私与玩家体感基础；仅把有意升级的 schema 断言更新为15，不放宽玩法断言。
+
+新增 8 个 current 套件：
+
+- `phase03_npc_entities`：实体唯一性、稳定 ID、确定性合法生成、移除后新 ID、数组重排
+- `phase03_npc_rng`：0/3/6 NPC 下所有非 NPC 权威值和主 RNG 一致，Hook/QTE/refill 轨迹，以及隐藏真值等价
+- `phase03_npc_observation`：独立 legacy player fixture 的字段、值、顺序与字节等价；多观察者距离、公开 self 和隐藏线索
+- `phase03_npc_snapshot`：schema15 全量恢复、RNG/计时/转向重放、嵌套字段与非法未来行为的原子拒绝
+- `phase03_npc_ambient`：3×180 模拟秒的合法水域、慢频决策/连续积分、暂停与终局、软避让和无摄食/胜负影响
+- `phase03_npc_network`：严格 NPC 公共字段、鱼/钓鱼人投影、稳定 ID 插值，以及两个角色真实 ENet、移除/替换和断开重连
+- `phase03_npc_statistics`：0/3/6 的 simulation time、snapshot bytes、公开包压缩前/后字节；不把测量当作长期性能保证
+- `phase03_npc_native`：原生三种外观、玩家最上层、公开副本/隐藏真值像素等价、岸边和观察视角，以及0/3/6冻结帧耗时
+
+正式门禁：`python3 tools/run_tests.py --import --profile current` 与 `--profile native`；渲染脚本需真实图形环境。当前报告见[0.25.0 验证](../docs/test-reports/PHASE03-AMBIENT-VALIDATION-0.25.0.md)。P3.2 尚未开放，未登记空壳 foraging/social/hook_target 测试来假装后续阶段已完成。

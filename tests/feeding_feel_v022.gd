@@ -1,5 +1,6 @@
 extends SceneTree
 const World=preload("res://scripts/world_simulation.gd")
+const AnglerPublic=preload("res://scripts/angler_network_observation.gd")
 const Presentation=preload("res://scripts/network_presentation.gd")
 var passed:=0
 var failed:=0
@@ -82,14 +83,16 @@ func run() -> void:
 		check(not clone.restore_snapshot(captured),"previous schema cannot omit intake feedback state")
 		w.free(); clone.free()
 	var w:=fresh(0.35); step(w,24)
-	var before: Dictionary=w.capture_snapshot(); var after: Dictionary=before.duplicate(true)
+	var before: Dictionary=AnglerPublic.capture(w); var after: Dictionary=before.duplicate(true)
 	before.state.simulation_tick=10; after.state.simulation_tick=12
 	before.state.power=0.35; after.state.power=1.0
 	before.state.baits[0].suction_offset=Vector2(-4,0); after.state.baits[0].suction_offset=Vector2(-16,0)
+	var source_before:=var_to_bytes(before); var source_after:=var_to_bytes(after); var authority_before:=var_to_bytes(w.capture_snapshot())
 	var renderer:=Presentation.new(); renderer.accept(before,10); renderer.accept(after,10.1)
 	var visual: Node2D=renderer.sample(10.1+1.0/60)
 	check(absf(visual.power-0.675)<0.0001 and Vector2(visual.baits[0].suction_offset).distance_to(Vector2(-10,0))<0.001,"remote power and bait deformation interpolate together")
-	check(renderer.current==after,"remote presentation never changes the authoritative feedback snapshot")
+	check(renderer.current==after,"remote presentation never changes the accepted wire feedback snapshot")
+	check(var_to_bytes(before)==source_before and var_to_bytes(after)==source_after and var_to_bytes(w.capture_snapshot())==authority_before,"remote sampling preserves both caller-owned wire snapshots and original authority bytes")
 	renderer.dispose(); w.free()
 	print("FEEDING_FEEL_V022 | passed=",passed," | failed=",failed)
 	quit(1 if failed else 0)

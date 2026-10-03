@@ -3,6 +3,7 @@ extends Node
 signal changed
 const Rules=preload("res://scripts/game_rules.gd")
 const Protocol=preload("res://scripts/network_protocol.gd")
+const AnglerNetworkObservation=preload("res://scripts/angler_network_observation.gd")
 const Presentation=preload("res://scripts/network_presentation.gd")
 const FishNetworkObservation=preload("res://scripts/fish_network_observation.gd")
 const QTE_HISTORY_TICKS := 15
@@ -301,7 +302,7 @@ func _receive_start(packet: Dictionary) -> void:
 	if not packet.get("snapshot") is Dictionary: return
 	if not Rules.valid(packet.config.get("rules")) or (local_role=="fish" and not FishNetworkObservation.config_valid(packet.config)): fail("开局规则无效"); return
 	var snapshot := Protocol.unpack_state(packet.snapshot)
-	if snapshot.is_empty() or (local_role=="fish" and not FishNetworkObservation.valid(game,snapshot)): fail("初始世界数据无效"); return
+	if snapshot.is_empty() or not (FishNetworkObservation.valid(game,snapshot) if local_role=="fish" else AnglerNetworkObservation.valid(game,snapshot)): fail("初始世界数据无效"); return
 	round_id=packet.round
 	_reset_round()
 	config=packet.config
@@ -456,11 +457,11 @@ func _peer_config() -> Dictionary:
 	return FishNetworkObservation.public_config(config) if remote_role=="fish" else config.duplicate(true)
 
 func _apply_remote_state(snapshot: Dictionary) -> bool:
-	return FishNetworkObservation.apply(game,snapshot) if local_role=="fish" else game.restore_snapshot(snapshot)
+	return FishNetworkObservation.apply(game,snapshot) if local_role=="fish" else AnglerNetworkObservation.apply(game,snapshot)
 
 func _state_packet(kind: String) -> Dictionary:
 	state_seq+=1
-	var snapshot: Dictionary=FishNetworkObservation.capture(game) if remote_role=="fish" else game.capture_snapshot()
+	var snapshot: Dictionary=FishNetworkObservation.capture(game) if remote_role=="fish" else AnglerNetworkObservation.capture(game)
 	return {"kind":kind,"session":session_id,"round":round_id,"seq":state_seq,"snapshot":Protocol.pack_state(snapshot),
 		"phase":status,"countdown":countdown,"ack":applied_input_seq}
 

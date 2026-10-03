@@ -1,3 +1,5 @@
+- [0.25.0 多鱼基础与环境鱼验证](PHASE03-AMBIENT-VALIDATION-0.25.0.md)
+
 - [0.23.0 Phase 0–1 开发与验证（2026-10-02，人工玩法验收仍开放）](PHASE01-VALIDATION.md)
 
 # 测试报告

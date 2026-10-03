@@ -1,0 +1,59 @@
+{
+  "as_run_manifest": "source-manifest.json",
+  "as_run_manifest_sha256": "de66306f624ca55c27e7a15681cfba63aac53d7833bc194fda21a0f629b1fd59",
+  "verified_file_count": 402,
+  "frozen_copy_unchanged": true,
+  "runtime_scenes_assets_native_tests_runner_and_registry_match_current_source": true,
+  "non_native_source_deltas": [
+    {
+      "path": "tests/network_rules_v012.gd",
+      "as_run_sha256": "b40bcaeb1479350953a8b3e94962f83e16d22c60bd50bdb64aa92b9bf4fa3ca9",
+      "current_source_sha256": "fab79e159a5e32e8aec558d642a7908d04f3ff8fc1e903313ed18493d0eeea58",
+      "scope": "headless test only; not run by native profile"
+    },
+    {
+      "path": "tests/phase03_npc_snapshot.gd",
+      "as_run_sha256": "3ec678ca9ae73384db6347bd4fe3c6f1ad059192cae62b1e51a5f8d2ab21064b",
+      "current_source_sha256": "66ae8e77f1ffdb961a6467dc2aaf730f06a87bff386a5d732e76d44fb2eaffa4",
+      "scope": "headless test only; not run by native profile"
+    },
+    {
+      "path": "tests/phase03_npc_ambient.gd",
+      "as_run_sha256": "bbc2de26794666972f1170bd1847ed2a8c68656bc2e8ca2be23f9277b958cf60",
+      "current_source_sha256": "2a5b80a753bcd97dfb5fc31d03963a426359bf3a7acd54ffe81d649a31983c7b",
+      "scope": "headless test only; not run by native profile"
+    },
+    {
+      "path": "tests/phase03_npc_rng.gd",
+      "as_run_sha256": "9889e242bc95e6f104094b488999157f029d88b4cf230c9fe30dc7265b31d6bf",
+      "current_source_sha256": "7c0763998d85f7791080614e0033fa820a3bb66de629ff587b20ea4745abd31e",
+      "scope": "headless test only; not run by native profile"
+    },
+    {
+      "path": "tests/phase03_npc_statistics.gd",
+      "as_run_sha256": "38c010ea3c927120ea669139ccb6f6384b17e7bad2f9690b9faa42750edecc20",
+      "current_source_sha256": "2137709177d307d07ce218d6c96ab1ba5657b7cbe2b1a15489e87a4956e8c75d",
+      "scope": "headless test only; not run by native profile"
+    }
+  ],
+  "npc_capture_png_identical_to_initial_full_run": {
+    "fish-hidden-truth.png": true,
+    "fish-public-replica.png": true,
+    "observation-ambient-shadow.png": true,
+    "fish-three-ambient.png": true,
+    "fish-variant-0.png": true,
+    "fish-count-6.png": true,
+    "fish-no-npcs.png": true,
+    "fish-count-0.png": true,
+    "fish-count-3.png": true,
+    "shore-no-npcs.png": true,
+    "shore-hidden-truth.png": true,
+    "observation-hidden-truth.png": true,
+    "observation-no-npcs.png": true,
+    "fish-player-in-front.png": true,
+    "shore-ambient-shadows.png": true,
+    "fish-variant-1.png": true,
+    "fish-variant-2.png": true
+  },
+  "note": "The frozen run and original manifest remain immutable. Only listed headless test sources changed during native validation; they were not consumed by this profile. Native rerun followed an explicit isolated Bite fixture change (npc_count=0), preserving all old assertions. Initial failed run is retained separately at baitbreak-p31-native-final-1."
+}

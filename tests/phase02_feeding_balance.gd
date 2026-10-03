@@ -34,7 +34,7 @@ func _initialize() -> void:
 		w._consume_grain(w.baits[0].grains[0],false,"bite")
 		check(w.round_stats==before,"counted grain cannot duplicate intake stats")
 		var snapshot: Dictionary=w.capture_snapshot(); var replay:=World.new(); replay.reset_world()
-		check(replay.restore_snapshot(snapshot),"schema14 tuned profile and nested stats restore")
+		check(replay.restore_snapshot(snapshot),"schema15 tuned profile and nested stats restore")
 		for tick in 40: w.advance_tick({},{}); replay.advance_tick({},{})
 		check(var_to_bytes(w.capture_snapshot())==var_to_bytes(replay.capture_snapshot()),"whole-grain budget has no unsnapshotted residue")
 		var public:=Public.capture(w)
