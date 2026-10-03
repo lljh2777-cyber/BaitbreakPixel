@@ -142,7 +142,10 @@ func interaction_replays() -> void:
 func run() -> void:
 	if not prepare_capture_output(): quit(2); return
 	game = Main.instantiate(); root.add_child(game); game.capture_mode = "wg3-native"
+	# Preserve the production sibling order: the menu must remain above the view.
+	var view_index: int = game.view.get_index()
 	game.view.free(); game.view = TimedView.new(); game.view.game = game; game.add_child(game.view)
+	game.move_child(game.view, view_index)
 	setup()
 	check(not game.view.water_appearance.enabled, "ordinary entry defaults to legacy")
 	var before: PackedByteArray = var_to_bytes(game.capture_snapshot())
