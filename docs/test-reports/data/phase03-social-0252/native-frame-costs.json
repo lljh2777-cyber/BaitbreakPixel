@@ -1,0 +1,29 @@
+{
+	"adapter": "llvmpipe (LLVM 19.1.7, 256 bits)",
+	"display_server": "X11",
+	"measurement": "Wall-clock redraw-to-frame-post-draw on a frozen native 640x360 scene; includes display pacing and scheduler, not isolated GPU or simulation cost",
+	"renderer": "gl_compatibility",
+	"results": [
+		{
+			"mean_ms": 16.1122,
+			"npc_count": 0,
+			"p50_ms": 15.717,
+			"p95_ms": 24.037,
+			"samples": 45
+		},
+		{
+			"mean_ms": 16.4387777777778,
+			"npc_count": 3,
+			"p50_ms": 16.505,
+			"p95_ms": 22.669,
+			"samples": 45
+		},
+		{
+			"mean_ms": 16.9941111111111,
+			"npc_count": 6,
+			"p50_ms": 16.719,
+			"p95_ms": 25.743,
+			"samples": 45
+		}
+	]
+}

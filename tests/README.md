@@ -13,7 +13,7 @@ Windows 可使用 `D:\python\python.exe`；用 `--godot "引擎可执行文件�
 
 ## 注册表与状态
 
-[`suite_registry.json`](suite_registry.json) 显式登记全部 114 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
+[`suite_registry.json`](suite_registry.json) 显式登记全部 116 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
 
 - `current`：当前有效的回归门禁；不按文件名版本新旧决定。`--profile current` 运行无窗口套件，`--profile native` 运行图形套件。已重新验证的 effort、net_animation、rules_network 等较早版本仍在当前门禁中
 - `historical`：当前检出复现了失败的诊断套件。保留原断言，失败仍返回非零；这不是“已证明所有断言过时”，更不是通过。具体原因和结果见[维护报告](../docs/test-reports/TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md)
@@ -117,4 +117,14 @@ python3 tools/phase02_run_feeding.py --phase heldout --seed 31001 --rounds 100 -
 - 既有 snapshot/network/statistics/native 套件增加实际抢食、私有字段/统计、真实 ENet 消耗同步和摄食画面
 - 自动策略对照：`NoNPC` / `PassiveNPC` / `ForagingNPC`，使用原 P2 Mixed，仅用于发现极端失衡；完整复现与限制见 [实验协议](../tools/phase03_competition_protocol.md)
 
-权威 schema15、FoodProfile guard3 保持；新增配置/内部字段严格检查，所以旧 0.25.0 快照明确拒绝，网络 exact-build=0.25.1，angler NPC 公共投影 guard2。P3.3/P3.4 不提前启用。当前[报告与人工门](../docs/test-reports/PHASE03-FORAGING-VALIDATION-0.25.1.md)。
+权威 schema15、FoodProfile guard3 保持；新增配置/内部字段严格检查，所以旧 0.25.0 快照明确拒绝，网络 exact-build=0.25.1，angler NPC 公共投影 guard2。该阶段当时未启用 P3.3/P3.4；用户随后确认 P3.2 试玩通过。历史[报告与人工门](../docs/test-reports/PHASE03-FORAGING-VALIDATION-0.25.1.md)。
+
+
+## Phase 3.3 社会线索
+
+- `phase03_npc_social_brain`：短暂 HESITATE/FLEE、饥饿 COMPETE、连续线索锁存与恢复、危险事件年龄/距离、边界逃离、输入/RNG隔离及严格私有状态
+- `phase03_npc_social`：NPC专用观察边界、附近公开动作/实际危险结果、玩家警惕隔离、隐藏真值配对与真实60Hz食物摄入
+- snapshot/network/native原套件扩展到三种社会行为：生产意图生成、严格字段/旧快照拒绝、回放、双角色真实ENet及像素等价
+- `tools/phase03_social_diagnostics.gd` 与 `tools/phase03_analyze_social.py`：离线行为/真实钩关系诊断，显式区分自然模拟与配对干预，报告类别数量、简单分类器/基准和>90–95%审查标记
+
+仍为schema15、FoodProfile guard3；新增私有字段与世界事件严格校验，旧0.25.1快照拒绝。网络exact-build0.25.2，angler投影guard3，NPC公共六字段不扩展。只有运动/摄食结果可见，没有数值警惕HUD。P3.4与多竿不在本轮。当前[验证与人工门](../docs/test-reports/PHASE03-SOCIAL-VALIDATION-0.25.2.md)。

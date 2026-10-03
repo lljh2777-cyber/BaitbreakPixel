@@ -4,6 +4,7 @@ extends RefCounted
 # decision hints add detail with proximity without classifying food as safe/dangerous.
 # Never copy whole bait/grain records: new authority fields stay private by default.
 const Layout=preload("res://scripts/pond_layout.gd")
+const Feeding=preload("res://scripts/fish_feeding.gd")
 const FoodProfile=preload("res://scripts/food_profile.gd")
 const NEAR_DISTANCE := 64.0
 const MEDIUM_DISTANCE := 160.0
@@ -44,6 +45,40 @@ static func build_for(world: Node2D, observer_state: Dictionary, include_visuals
 		if include_visuals: entry.visual=_visual(bait,facts)
 		observed.append(entry)
 	return {"tick":int(world.simulation_tick),"self":public_self,"perceived_baits":observed}
+
+# NPC opt-in extension: player build()/build_for() retain their exact legacy
+# shape, and player suspicion never consumes another fish's private emotions.
+# Capture actions before moving any NPC so array order cannot create new cues.
+static func social_fish(world: Node2D) -> Array[Dictionary]:
+	var visible: Array[Dictionary]=[{"fish_id":int(world.fish_id),"position":Vector2(world.fish),
+		"mouth":world.mouth(),"feeding":bool(world.feeding) or float(world.bite_feedback_age)>0.0}]
+	for npc: Dictionary in world.npc_fishes:
+		if not bool(npc.get("active",true)): continue
+		# Suction and a just-completed bite are physical feeding actions, not
+		# target selection, satiety, suspicion, or a promise the food is safe.
+		visible.append({"fish_id":int(npc.fish_id),"position":Vector2(npc.position),
+			"mouth":Feeding.mouth(Vector2(npc.position),Vector2(npc.aim)),
+			"feeding":bool(npc.get("feeding",false)) or float(npc.get("bite_cooldown",0.0))>0.65})
+	visible.sort_custom(func(a: Dictionary,b: Dictionary) -> bool: return a.fish_id<b.fish_id)
+	return visible
+
+static func build_social_for(world: Node2D, observer_state: Dictionary, include_visuals: bool=false, public_fish: Variant=null) -> Dictionary:
+	var observation:=build_for(world,observer_state,include_visuals)
+	var position: Vector2=observation.self.position
+	var feeding_fish: Array[Dictionary]=[]
+	var sources: Array=social_fish(world) if public_fish==null else public_fish
+	for other: Dictionary in sources:
+		if int(other.fish_id)==int(observation.self.fish_id) or not bool(other.feeding): continue
+		if position.distance_to(Vector2(other.position))>MEDIUM_DISTANCE: continue
+		feeding_fish.append({"fish_id":int(other.fish_id),"position":Vector2(other.position),
+			"mouth":Vector2(other.mouth),"feeding":true})
+	var danger_events: Array[Dictionary]=[]
+	var event: Dictionary=world.public_hook_cue
+	var age:=int(world.simulation_tick)-int(event.tick)
+	if int(event.tick)>=0 and age>=0 and age<=45 and position.distance_to(Vector2(event.position))<=150.0:
+		danger_events.append({"tick":int(event.tick),"position":Vector2(event.position)})
+	observation.social_cues={"feeding_fish":feeding_fish,"danger_events":danger_events}
+	return observation
 
 static func distance_band(distance: float) -> String:
 	if distance<=NEAR_DISTANCE: return "near"

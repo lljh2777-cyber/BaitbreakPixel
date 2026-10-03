@@ -39,6 +39,9 @@ var fish_id := 1
 var next_fish_id := 2
 var npc_fishes: Array[Dictionary]=[]
 var npc_foraging_enabled := true
+var npc_social_enabled := true
+# Realized visible player-hook result, not a bait label or diagnostic truth log.
+var public_hook_cue: Dictionary={"tick":-1,"position":Vector2.ZERO}
 # Reserved for P3.4 only. Existing player HookState is still authoritative.
 var hook_target_fish_id := -1
 var rod_id := 1
@@ -460,6 +463,8 @@ func reset_world(config: Dictionary = {}) -> void:
 	next_fish_id=2
 	npc_fishes.clear()
 	npc_foraging_enabled=bool(config.get("npc_foraging_enabled",true))
+	npc_social_enabled=bool(config.get("npc_social_enabled",true))
+	public_hook_cue={"tick":-1,"position":Vector2.ZERO}
 	hook_target_fish_id=-1
 	rod_id=1
 	next_bait_id=1
@@ -621,7 +626,8 @@ func _tick_npc_fishes(delta: float) -> void:
 	for npc: Dictionary in npc_fishes:
 		if npc.active: neighbors.append({"fish_id":int(npc.fish_id),"position":Vector2(npc.position)})
 	neighbors.sort_custom(func(a: Dictionary,b: Dictionary) -> bool: return a.fish_id<b.fish_id)
-	var environment: Dictionary={"bounds":Layout.fish_bounds(NPCFishState.RADIUS),"neighbors":neighbors,"foraging_enabled":npc_foraging_enabled}
+	var public_fish:=Observation.social_fish(self)
+	var environment: Dictionary={"bounds":Layout.fish_bounds(NPCFishState.RADIUS),"neighbors":neighbors,"foraging_enabled":npc_foraging_enabled,"social_enabled":npc_social_enabled}
 	for npc: Dictionary in npc_fishes:
 		if not npc.active: continue
 		npc.behavior_age+=delta
@@ -634,7 +640,7 @@ func _tick_npc_fishes(delta: float) -> void:
 			var local_rng:=RandomNumberGenerator.new()
 			local_rng.seed=npc.brain_seed
 			local_rng.state=npc.brain_rng_state
-			var perception:=Observation.build_for(self,NPCFishState.observer(npc,rules),false)
+			var perception:=Observation.build_social_for(self,NPCFishState.observer(npc,rules),false,public_fish)
 			var intent:=NPCFishBrain.decide(perception,npc.duplicate(true),environment,rules,NPCFishState.DECISION_SECONDS,local_rng)
 			npc.brain_rng_state=local_rng.state
 			npc.steering=Vector2(intent.move).limit_length(1.0)
@@ -654,6 +660,7 @@ func _tick_npc_fishes(delta: float) -> void:
 				npc.focus_bait_id=int(intent.focus_bait_id)
 				npc.risk_tolerance=float(intent.risk_tolerance)
 				npc.caution_state=String(intent.caution_state)
+				for field: String in NPCFishState.SOCIAL_MEMORY_FIELDS: npc[field]=intent[field]
 				for id in npc.suspicion_by_bait.keys():
 					if bait_slot(int(id))<0:
 						npc.suspicion_by_bait.erase(id); npc.caution_by_bait.erase(id)
@@ -1249,6 +1256,7 @@ func _attach_hook() -> void:
 	landing = false
 	# Props are pass-through cover; only the pond perimeter constrains swimming.
 	fish = fish.clamp(Layout.fish_bounds(17).position,Layout.fish_bounds(17).end)
+	public_hook_cue={"tick":simulation_tick,"position":Vector2(fish)}
 	wraps.clear()
 	wrap_target = -1
 	_rebuild_rope()

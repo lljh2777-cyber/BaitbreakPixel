@@ -4,6 +4,7 @@ const Main=preload("res://scenes/main.tscn")
 const World=preload("res://scripts/world_simulation.gd")
 const Public=preload("res://scripts/fish_network_observation.gd")
 const AnglerPublic=preload("res://scripts/angler_network_observation.gd")
+const NPCState=preload("res://scripts/npc_fish_state.gd")
 const NPCPublic=preload("res://scripts/npc_fish_public_state.gd")
 const Protocol=preload("res://scripts/network_protocol.gd")
 const Presentation=preload("res://scripts/network_presentation.gd")
@@ -20,6 +21,7 @@ func check(ok: bool, label: String) -> void:
 func private_free(value: Variant) -> bool:
 	if value is Dictionary:
 		for key in value:
+			if key in NPCState.SOCIAL_MEMORY_FIELDS: return false
 			if key in ["brain_seed","brain_rng_state","target_bait_id","suspicion_by_bait","caution_by_bait","focus_bait_id","risk_tolerance","behavior_state","behavior_age","respawn_age","decision_age","wander_heading","steering","turn_age","decision_weights","future_secret","feeding","power","bite_cooldown","intent_aim","satiety"]: return false
 			if not private_free(value[key]): return false
 	elif value is Array:
@@ -47,9 +49,10 @@ func pure_checks() -> void:
 	var shore:=AnglerPublic.capture(world)
 	check(saved.schema==15 and saved.state.npc_fishes.size()==3,"schema15 authority has three ambient NPC records")
 	check(projection.npc_profile_version==1 and projection.state.npc_fishes.size()==3 and Public.valid(receiver,projection),"fish projection has guarded three-NPC public extension")
-	check(shore.format==AnglerPublic.FORMAT and shore.npc_profile_version==2 and AnglerPublic.valid(receiver,shore),"angler projection validates its independent NPC privacy guard")
+	check(shore.format==AnglerPublic.FORMAT and shore.npc_profile_version==3 and AnglerPublic.valid(receiver,shore),"angler projection validates its independent NPC privacy guard")
 	check(NPCPublic.valid(projection.state.npc_fishes) and private_free(projection.state.npc_fishes) and private_free(shore.state.npc_fishes),"both roles carry only six allowlisted NPC presentation facts")
-	check(not projection.state.has("npc_foraging_enabled") and not shore.state.has("npc_foraging_enabled"),"private foraging configuration never crosses either role wire")
+	for key: String in ["npc_foraging_enabled","npc_social_enabled","public_hook_cue"]:
+		check(not projection.state.has(key) and not shore.state.has(key),"private NPC world configuration/cue never crosses either role wire: "+key)
 	for key: String in NPC_STAT_FIELDS:
 		check(not projection.state.round_stats.has(key) and not shore.state.round_stats.has(key),"both roles omit private NPC aggregate: "+key)
 	check(not projection.state.has("next_fish_id") and not projection.state.has("hook_target_fish_id") and not shore.state.has("next_fish_id") and not shore.state.has("hook_target_fish_id"),"NPC allocators and reserved hook target never cross either wire")
@@ -66,7 +69,10 @@ func pure_checks() -> void:
 		npc.suspicion_by_bait={17:0.9}; npc.caution_by_bait={17:"ALARMED"}; npc.risk_tolerance=0.8
 		npc.behavior_state="FEED"; npc.behavior_age=993.0; npc.future_secret={"brain_rng_state":12}
 		npc.feeding=true; npc.power=0.93; npc.bite_cooldown=0.1; npc.intent_aim=-npc.aim; npc.satiety=3.0
+		for key: String in NPCState.SOCIAL_MEMORY_FIELDS: npc[key]={"private_canary":0.99}
 	world.npc_foraging_enabled=not world.npc_foraging_enabled
+	world.npc_social_enabled=not world.npc_social_enabled
+	world.public_hook_cue={"tick":int(world.simulation_tick),"position":Vector2(600,200)}
 	world.round_stats.npc_food_consumed=7.0; world.round_stats.npc_food_by_type.cluster=7.0
 	world.round_stats.npc_feeding_events=3; world.round_stats.player_npc_food_contests=2; world.round_stats.npc_target_switches=5
 	check(Public.capture(world)==projection and AnglerPublic.capture(world)==shore,"neither role exposes NPC hidden decisions, RNG or future nested private fields")
@@ -86,7 +92,7 @@ func pure_checks() -> void:
 			reject(receiver,missing,role,"missing NPC "+key)
 			var nested:=source.duplicate(true); nested.state.npc_fishes[0][key]={"brain_seed":17}
 			reject(receiver,nested,role,"private dictionary nested inside "+key)
-		for key: String in ["brain_seed","brain_rng_state","target_bait_id","suspicion_by_bait","risk_tolerance","decision_weights","future_secret","active","behavior_state","feeding","power","bite_cooldown","intent_aim","satiety"]:
+		for key: String in ["brain_seed","brain_rng_state","target_bait_id","suspicion_by_bait","risk_tolerance","decision_weights","future_secret","active","behavior_state","feeding","power","bite_cooldown","intent_aim","satiety"]+NPCState.SOCIAL_MEMORY_FIELDS:
 			var bad:=source.duplicate(true); bad.state.npc_fishes[0][key]={"value":0}
 			reject(receiver,bad,role,"extra NPC key "+key)
 		for invalid in [0,1,-1,2.0,"2",null]:
@@ -102,10 +108,10 @@ func pure_checks() -> void:
 		for invalid in [-1,3,0.0,"0",null]:
 			var bad:=source.duplicate(true); bad.state.npc_fishes[0].visual_variant=invalid
 			reject(receiver,bad,role,"invalid visual variant "+str(invalid))
-		for invalid in ["FLEE","WANDER","",&"swim",0,null]:
+		for invalid in ["HESITATE","FLEE","COMPETE","WANDER","",&"swim",0,null]:
 			var bad:=source.duplicate(true); bad.state.npc_fishes[0].animation_state=invalid
 			reject(receiver,bad,role,"non-public animation state "+str(invalid))
-		for invalid in [0,3,1 if role=="angler" else 2,1.0,2.0,"1",null]:
+		for invalid in [0,4,1 if role=="angler" else 3,2,1.0,3.0,"1",null]:
 			var bad:=source.duplicate(true); bad.npc_profile_version=invalid
 			reject(receiver,bad,role,"incompatible NPC extension guard "+str(invalid))
 		var bad:=source.duplicate(true); bad.erase("npc_profile_version")
@@ -120,7 +126,7 @@ func pure_checks() -> void:
 		for index in 4:
 			var extra: Dictionary=bad.state.npc_fishes[0].duplicate(true); extra.fish_id=100+index; bad.state.npc_fishes.append(extra)
 		reject(receiver,bad,role,"more than six NPCs")
-		for key: String in ["next_fish_id","hook_target_fish_id","brain_rng_state","npc_foraging_enabled"]:
+		for key: String in ["next_fish_id","hook_target_fish_id","brain_rng_state","npc_foraging_enabled","npc_social_enabled","public_hook_cue"]:
 			bad=source.duplicate(true); bad.state[key]=7
 			reject(receiver,bad,role,"extra top-level NPC authority key "+key)
 		for key: String in NPC_STAT_FIELDS:
@@ -205,6 +211,7 @@ func live_checks(host_role: String, port: int) -> void:
 	check(transported.format==(Public.FORMAT if role=="fish" else AnglerPublic.FORMAT) and private_free(transported.state.npc_fishes),"real ENet "+role+" wire uses role projection with no NPC AI internals")
 	check(private_free(client.npc_fishes) and private_free(client.network.presentation.current.state.npc_fishes) and private_free(client.network.display_world().npc_fishes),"real ENet "+role+" client and render history contain no private NPC state")
 	await live_foraging_checks(role)
+	await live_social_checks(role)
 	var old_id: int=host.npc_fishes[0].fish_id
 	host.npc_fishes.remove_at(0)
 	var replacement_id: int=host.spawn_npc()
@@ -266,6 +273,41 @@ func live_foraging_checks(role: String) -> void:
 	for key: String in NPC_STAT_FIELDS:
 		check(not packet.state.round_stats.has(key) and not client.network.presentation.current.state.round_stats.has(key),"real ENet "+role+" omits populated private aggregate "+key)
 	check(client.npc_fishes==NPCPublic.capture(host.npc_fishes) and private_free(client.network.display_world().npc_fishes),"real ENet "+role+" feeding presentation has current public geometry and no private intent")
+
+func live_social_checks(role: String) -> void:
+	for behavior: String in ["HESITATE","FLEE","COMPETE"]:
+		host.fish=Vector2(970,310); host.fish_before=host.fish; host.aim=Vector2.RIGHT; host.feeding=false
+		for index in host.npc_fishes.size():
+			var npc: Dictionary=host.npc_fishes[index]
+			var defaults:=NPCState.fresh(int(npc.fish_id),int(npc.brain_seed),Vector2(650,200),Vector2.RIGHT,int(npc.brain_rng_state))
+			for key: String in NPCState.SOCIAL_MEMORY_FIELDS: npc[key]=defaults[key]
+			npc.position=Vector2(650,200) if index==0 else Vector2(280+index*320,120)
+			npc.velocity=Vector2.ZERO; npc.aim=Vector2.RIGHT; npc.intent_aim=Vector2.RIGHT; npc.steering=Vector2.ZERO
+			npc.decision_age=0.0; npc.feeding=false; npc.power=0.0; npc.target_bait_id=-1; npc.focus_bait_id=-1
+			npc.suspicion_by_bait={}; npc.caution_by_bait={}; npc.caution_state="CALM"; npc.behavior_state="WANDER"; npc.satiety=25.0
+		for bait: Dictionary in host.baits:
+			bait.active=false; bait.hook=false; bait.motion_velocity=Vector2.ZERO
+			for grain: Dictionary in bait.grains: grain.eaten=true
+		var bait: Dictionary=host.baits[0]
+		var food:=Vector2(730,200) if behavior=="COMPETE" else Vector2(700,200)
+		bait.pos=food; bait.home=food
+		var grain: Dictionary=bait.grains[0]
+		grain.eaten=false; grain.free=true; grain.pos=food; grain.points=1.0
+		bait.motion_velocity=Vector2(6,0) if behavior=="HESITATE" else Vector2(22,0) if behavior=="FLEE" else Vector2.ZERO
+		if behavior=="COMPETE":
+			host.fish=Vector2(710,200); host.fish_before=host.fish; host.feeding=true
+		var before:=NPCPublic.capture(host.npc_fishes)
+		for tick in 6: host._tick_npc_fishes(World.TICK_SECONDS)
+		check(host.npc_fishes[0].behavior_state==behavior,"real ENet "+role+" fixture enters actual public-cue "+behavior)
+		host.network._send_state(true)
+		for tick in 6: await frame()
+		var packet: Dictionary=Protocol.unpack_state(host.network._state_packet("state").snapshot)
+		check(client.npc_fishes==NPCPublic.capture(host.npc_fishes) and before!=client.npc_fishes,"real ENet "+role+" carries actual "+behavior+" motion as public geometry")
+		check(NPCPublic.valid(packet.state.npc_fishes) and private_free(packet.state.npc_fishes),"real ENet "+role+" "+behavior+" carries only six swim fields")
+		check(private_free(client.npc_fishes) and private_free(client.network.presentation.current.state.npc_fishes) and private_free(client.network.display_world().npc_fishes),"real ENet "+role+" "+behavior+" client/history/display hold no social private state")
+		for key: String in ["npc_social_enabled","public_hook_cue"]:
+			check(not packet.state.has(key) and not client.network.presentation.current.state.has(key),"real ENet "+role+" "+behavior+" excludes private authority "+key)
+		check(host.hook_target_fish_id==-1 and host.npc_fishes.size()==3,"real ENet "+role+" "+behavior+" adds no NPC hook/capture outcome")
 
 func cleanup_peers() -> void:
 	if is_instance_valid(host): host.network.close(); host.queue_free()

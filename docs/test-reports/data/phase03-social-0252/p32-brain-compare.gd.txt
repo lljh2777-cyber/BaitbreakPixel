@@ -1,0 +1,38 @@
+extends SceneTree
+const Current=preload("res://scripts/npc_fish_brain.gd")
+const State=preload("res://scripts/npc_fish_state.gd")
+const Layout=preload("res://scripts/pond_layout.gd")
+const Rules=preload("res://scripts/game_rules.gd")
+const Profile=preload("res://scripts/food_profile.gd")
+func _initialize() -> void:
+	var legacy=load("res://artifacts/phase03-social-brain-focused/p32-brain-frozen.gd")
+	var rng:=RandomNumberGenerator.new(); rng.seed=667192
+	var rules: Dictionary=Rules.defaults()
+	var passed:=0; var failed:=0
+	for index in 1600:
+		var record:=State.fresh(2,99,Vector2(rng.randf_range(50,1200),rng.randf_range(100,390)),Vector2.RIGHT,98)
+		record.satiety=rng.randf_range(0,100)
+		record.wander_heading=Vector2.RIGHT.rotated(rng.randf_range(-PI,PI))
+		record.velocity=record.wander_heading*rng.randf_range(0,State.SPEED)
+		record.turn_age=rng.randf_range(0,2.0) if index%2==0 else 0.0
+		record.behavior_state=["WANDER","APPROACH_FOOD","FEED"][index%3]
+		record.target_bait_id=3 if index%3>0 else -1
+		record.suspicion_by_bait={3:rng.randf()}; record.caution_by_bait={3:"UNEASY"}
+		var foods: Array=[]
+		for i in 3:
+			var profile: Dictionary=Profile.get_profile(Profile.TYPES[i])
+			var point: Vector2=record.position+Vector2.RIGHT.rotated(rng.randf_range(-PI,PI))*rng.randf_range(0,520)
+			foods.append({"bait_id":i+3,"band":"near","distance":record.position.distance_to(point),"food_position":point,"has_attached_food":index%4!=0,"hints":{"smell":"food","shape_hint":profile.shape_hint,"smell_hint":profile.smell_hint,"motion":{"velocity":Vector2(rng.randf_range(0,30),0),"water_drift":Vector2.ZERO},"disturbances":{"recent_motion":index%7==0}}})
+		var view: Dictionary={"tick":index,"self":State.observer(record,rules),"perceived_baits":foods,"social_cues":{"feeding_fish":[{"fish_id":1,"feeding":true,"position":record.position,"mouth":foods[0].food_position}],"danger_events":[{"tick":index,"position":record.position+Vector2(5,0)}]}}
+		var env: Dictionary={"bounds":Layout.fish_bounds(State.RADIUS),"neighbors":[{"fish_id":1,"position":record.position+Vector2(15,0)}],"foraging_enabled":true,"social_enabled":false}
+		var a:=RandomNumberGenerator.new(); a.seed=index+85
+		var b:=RandomNumberGenerator.new(); b.seed=index+85
+		var old: Dictionary=legacy.decide(view,record,env,rules,State.DECISION_SECONDS,a)
+		var current:=Current.decide(view,record,env,rules,State.DECISION_SECONDS,b)
+		for key: String in State.SOCIAL_MEMORY_FIELDS: current.erase(key)
+		if var_to_bytes(old)==var_to_bytes(current) and a.state==b.state: passed+=1
+		else:
+			failed+=1
+			push_error("LEGACY_COMPARE_FAIL | "+str(index))
+	print("LEGACY_COMPARE | passed=%d | failed=%d" % [passed,failed])
+	quit(0 if failed==0 else 1)

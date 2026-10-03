@@ -634,6 +634,16 @@
       "status": "current",
       "mode": "headless",
       "timeout_seconds": 120
+    },
+    "phase03_npc_social": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 180
+    },
+    "phase03_npc_social_brain": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 180
     }
   }
 }

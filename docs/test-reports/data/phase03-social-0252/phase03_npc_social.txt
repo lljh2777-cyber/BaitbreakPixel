@@ -1,0 +1,28 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+NPC_SOCIAL_PASS | legacy player and ordinary observer builders gain no social or private fields
+NPC_SOCIAL_PASS | NPC sees nearby player's genuine visible feeding action
+NPC_SOCIAL_PASS | nearby fish presence/private intent alone is not a feeding cue
+NPC_SOCIAL_PASS | remote feeding action is outside social perception
+NPC_SOCIAL_PASS | hidden bait hook flag alone creates no public danger event
+NPC_SOCIAL_PASS | mouth contact before actual attachment does not invent hooked-fish outcome
+NPC_SOCIAL_PASS | actual local player attachment creates observable outcome evidence
+NPC_SOCIAL_PASS | danger evidence contains only public tick/location, no bait truth or target identity
+NPC_SOCIAL_PASS | social observation mutations cannot edit authoritative public-event memory
+NPC_SOCIAL_PASS | actual but remote hook outcome is not omniscient NPC evidence
+NPC_SOCIAL_PASS | local outcome expires after bounded 45-tick observation window
+NPC_SOCIAL_PASS | player perception remains byte-equivalent under arbitrary NPC private feelings
+NPC_SOCIAL_PASS | render projection never turns NPC private state into labels, color, animation or intent tags
+NPC_SOCIAL_PASS | both role payloads remain unchanged under NPC private-feeling contamination
+NPC_SOCIAL_PASS | both wire NPC records exclude social evidence, hook truth and private behavior tags
+NPC_SOCIAL_PASS | actual player suspicion update does not incorporate NPC private alarm
+NPC_SOCIAL_PASS | 180 paired live NPC observations remain identical when only bait hook truth is flipped
+NPC_SOCIAL_PASS | same visible scenes yield identical NPC behavior, target, movement, feeding, memory and RNG before physics diverges
+NPC_SOCIAL_PASS | legal public cues can produce hesitation/fleeing on truly unhooked food (false positive witness)
+NPC_SOCIAL_PASS | NPC can approach or feed on truly hooked food (false negative witness)
+NPC_SOCIAL_PASS | starving NPC can continue a food attempt despite motion evidence
+NPC_SOCIAL_PASS | genuine nearby feeding action can elicit competition through production NPC authority
+NPC_SOCIAL_PASS | full 60 Hz quiet counterfactual continues through real food physics without hidden hook-dependent NPC actions
+NPC_SOCIAL_PASS | counterfactual includes genuine autonomous intake, not only static intent checks
+NPC_SOCIAL_PASS | social extension preserves 10 px Bite, 0.8 s cooldown and default population three
+PHASE03_NPC_SOCIAL_TESTS | passed=25 | failed=0

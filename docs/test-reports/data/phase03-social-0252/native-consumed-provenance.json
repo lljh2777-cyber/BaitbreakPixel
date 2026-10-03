@@ -1,0 +1,22 @@
+{
+  "native_consumed_files_compared": 151,
+  "native_consumed_changed": [],
+  "native_consumed_match": true,
+  "other_manifest_changes": {
+    "tests/runner/test_phase03_social.py": {
+      "before": "da6ee3696b37a066244bee719948870a949b3136d58e31c3e2dbb1c3ac5f1f93",
+      "after": "bcb04d4c2ee6d640987a2fdc2cffe7e10beff2ab12d8856cd796ecb118731071"
+    },
+    "tools/phase03_analyze_social.py": {
+      "before": "058cf2e17c44207fbf991b18f2e3bacdd5c7f1cb5bb52354118456d1d2938cf5",
+      "after": "c1bd1745ba008acc9cb9c5884dfaec02de06fcef8a25f491c67a8de30f3ea6b7"
+    },
+    "tools/phase03_social_protocol.md": {
+      "before": null,
+      "after": "eb0bbb30e8be9572efb567a8123d20653a250c8076742bbfb7d8443de830c70d"
+    }
+  },
+  "other_changes_explanation": "Only the social measurement analyzer, its Python tests, and protocol document changed while native ran. None is loaded by the native profile. Original pre/post manifests remain unchanged.",
+  "engine_path": "/workspace/shared/baitbreak-toolchain-472/Godot_v4.7.2-stable_linux.x86_64",
+  "engine_sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+}
