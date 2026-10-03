@@ -8,6 +8,10 @@ const MAX_COUNT := 6
 const RADIUS := 10.0
 const SPEED := 38.0
 const DECISION_SECONDS := 0.12
+const FLEE_SECONDS := 1.2
+const SOCIAL_RECOVERY_SECONDS := 2.4
+const COMPETE_SECONDS := 0.6
+const SOCIAL_MEMORY_FIELDS: Array[String]=["social_reaction_left","social_recovery_left","social_origin","social_bait_id","social_motion_level","social_danger_tick","social_compete_left"]
 # These are main-game spawn regions, not additions to the shared map ABI.
 const SPAWN_REGIONS := [Rect2(135,108,150,190),Rect2(470,106,175,200),Rect2(875,112,230,200)]
 
@@ -20,7 +24,9 @@ static func fresh(identity: int, seed: int, position: Vector2, heading: Vector2,
 		"target_bait_id":-1,"satiety":70.0,"focus_bait_id":-1,"suspicion_by_bait":{},"caution_by_bait":{},
 		"risk_tolerance":0.0,"caution_state":"CALM","brain_seed":seed,"brain_rng_state":rng_state,"respawn_age":0.0,
 		"decision_age":0.0,"wander_heading":heading,"turn_age":0.0,"steering":heading,
-		"feeding":false,"power":0.0,"bite_cooldown":0.0,"intent_aim":heading}
+		"feeding":false,"power":0.0,"bite_cooldown":0.0,"intent_aim":heading,
+		"social_reaction_left":0.0,"social_recovery_left":0.0,"social_origin":Vector2.ZERO,"social_bait_id":-1,
+		"social_motion_level":0,"social_danger_tick":-1,"social_compete_left":0.0}
 
 static func observer(state: Dictionary, rules: Dictionary) -> Dictionary:
 	return {"fish_id":int(state.fish_id),"position":Vector2(state.position),"mouth":Feeding.mouth(Vector2(state.position),Vector2(state.aim)),
@@ -42,7 +48,7 @@ static func valid(record: Variant, next_id: int) -> bool:
 	for key in reference:
 		if not record.has(key) or typeof(record[key])!=typeof(reference[key]): return false
 	if record.fish_id<2 or record.fish_id>=next_id or record.brain_seed<0: return false
-	if record.visual_variant<0 or record.visual_variant>2 or record.behavior_state not in ["WANDER","APPROACH_FOOD","FEED"]: return false
+	if record.visual_variant<0 or record.visual_variant>2 or record.behavior_state not in ["WANDER","APPROACH_FOOD","FEED","HESITATE","FLEE","COMPETE"]: return false
 	if not record.position.is_finite() or not Layout.fish_bounds(RADIUS).has_point(record.position): return false
 	if not record.velocity.is_finite() or record.velocity.length()>SPEED+0.001: return false
 	for key in ["aim","wander_heading","intent_aim"]:
@@ -67,10 +73,27 @@ static func valid(record: Variant, next_id: int) -> bool:
 		var caution: Variant=record.caution_by_bait[id]
 		if not caution is String or caution not in ["CALM","UNEASY","ALARMED"]: return false
 	if record.focus_bait_id!=-1 and not record.suspicion_by_bait.has(record.focus_bait_id): return false
-	if record.behavior_state=="WANDER":
+	for pair: Array in [["social_reaction_left",FLEE_SECONDS],["social_recovery_left",SOCIAL_RECOVERY_SECONDS],["social_compete_left",COMPETE_SECONDS]]:
+		var value: float=record[pair[0]]
+		if not is_finite(value) or value<0.0 or value>float(pair[1])+0.000001: return false
+	if not record.social_origin.is_finite(): return false
+	if record.social_bait_id!=-1 and record.social_bait_id<1: return false
+	if record.social_motion_level<0 or record.social_motion_level>2 or record.social_danger_tick< -1: return false
+	var reacting: bool=record.behavior_state in ["HESITATE","FLEE"]
+	if reacting!=(record.social_reaction_left>0.0): return false
+	if reacting and record.social_recovery_left<record.social_reaction_left: return false
+	if record.behavior_state=="HESITATE" and (record.social_bait_id<1 or record.social_reaction_left>0.840001): return false
+	if not reacting and (record.social_origin!=Vector2.ZERO or record.social_bait_id!=-1): return false
+	if reacting and record.social_compete_left!=0.0: return false
+	if record.behavior_state=="COMPETE" and record.social_compete_left<=0.0: return false
+	if record.social_compete_left>0.0 and record.behavior_state not in ["APPROACH_FOOD","COMPETE","FEED"]: return false
+	if record.behavior_state in ["WANDER","FLEE"]:
 		if record.target_bait_id!=-1 or record.feeding: return false
+	elif record.behavior_state=="HESITATE":
+		if record.feeding: return false
+		if record.target_bait_id!=-1 and (record.target_bait_id!=record.social_bait_id or not record.suspicion_by_bait.has(record.target_bait_id)): return false
 	elif record.target_bait_id<1 or not record.suspicion_by_bait.has(record.target_bait_id): return false
 	if record.feeding and record.behavior_state!="FEED": return false
-	# A P3.1 WANDER/100 record is still meaningful with explicit new fields, but
-	# incomplete old wire records and future social/respawn states stay rejected.
+	# Current-shape WANDER/100 remains meaningful. Missing social memory and
+	# future capture/respawn states are rejected rather than silently migrated.
 	return true

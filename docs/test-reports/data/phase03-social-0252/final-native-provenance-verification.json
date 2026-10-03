@@ -1,0 +1,29 @@
+{
+  "native_files_checked": 151,
+  "native_consumed_changed": [],
+  "native_consumed_match": true,
+  "all_pre_manifest_changes_to_final": {
+    "tests/phase01_network.gd": {
+      "before": "e497ea7fbed4bd39248d501877f0c1cf5021d14285b9ea14ff8e754e369f1690",
+      "after": "15f92bfd0868079c772d28bda3a352de1302459ec2c511595a53f6477f68e1ec"
+    },
+    "tests/runner/test_phase03_social.py": {
+      "before": "da6ee3696b37a066244bee719948870a949b3136d58e31c3e2dbb1c3ac5f1f93",
+      "after": "bcb04d4c2ee6d640987a2fdc2cffe7e10beff2ab12d8856cd796ecb118731071"
+    },
+    "tests/tackle_dynamics_v021.gd": {
+      "before": "a20195162b7ab1791fb0fb5e6923de212571870991b253b76ef6054cd284f445",
+      "after": "07acbe934550925010860aa198b38722a170cb4b2b8efeb73bf653b1e1fa7262"
+    },
+    "tools/phase03_analyze_social.py": {
+      "before": "058cf2e17c44207fbf991b18f2e3bacdd5c7f1cb5bb52354118456d1d2938cf5",
+      "after": "d1868b377c463726709558a96214d63d654a5e661d22689130398b547eab8113"
+    },
+    "tools/phase03_diagnose_supply.gd.uid": {
+      "before": "16216583fa512d456b019ee6721d233e2f6183bda64faa32ed958db80812833c",
+      "after": null
+    }
+  },
+  "new_measurement_file": "tools/phase03_social_protocol.md",
+  "explanation": "Two corrected headless fixtures, social offline Python measurement changes, and removal of an untracked generated UID do not affect native execution. Runtime/assets/scenes/native tests/runner/registry match. Final full current profile reruns corrected headless fixtures; all Python checks reran after analyzer changes."
+}

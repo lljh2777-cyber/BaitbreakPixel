@@ -1,0 +1,667 @@
+{
+  "counterfactual_pairs": 720,
+  "datasets": {
+    "counterfactual": {
+      "behavior_truth": {
+        "APPROACH_FOOD": {
+          "hooked": 108,
+          "rows": 216,
+          "unhooked": 108
+        },
+        "COMPETE": {
+          "hooked": 16,
+          "rows": 32,
+          "unhooked": 16
+        },
+        "FEED": {
+          "hooked": 228,
+          "rows": 456,
+          "unhooked": 228
+        },
+        "FLEE": {
+          "hooked": 264,
+          "rows": 528,
+          "unhooked": 264
+        },
+        "HESITATE": {
+          "hooked": 76,
+          "rows": 152,
+          "unhooked": 76
+        },
+        "WANDER": {
+          "hooked": 28,
+          "rows": 56,
+          "unhooked": 28
+        }
+      },
+      "classes": {
+        "hooked": 720,
+        "unhooked": 720
+      },
+      "classifier": {
+        "accuracy": 0.5,
+        "balanced_accuracy": 0.5,
+        "behavior_truth": {
+          "APPROACH_FOOD": {
+            "hooked": 108,
+            "unhooked": 108
+          },
+          "COMPETE": {
+            "hooked": 16,
+            "unhooked": 16
+          },
+          "FEED": {
+            "hooked": 228,
+            "unhooked": 228
+          },
+          "FLEE": {
+            "hooked": 264,
+            "unhooked": 264
+          },
+          "HESITATE": {
+            "hooked": 76,
+            "unhooked": 76
+          },
+          "WANDER": {
+            "hooked": 28,
+            "unhooked": 28
+          }
+        },
+        "confusion": {
+          "fn": 360,
+          "fp": 0,
+          "tn": 360,
+          "tp": 0
+        },
+        "features": [
+          "offline_behavior_state",
+          "feeding_intent",
+          "public_speed_bin_10px"
+        ],
+        "flags": [],
+        "heldout_class_seed_support": {
+          "hooked": 2,
+          "unhooked": 2
+        },
+        "heldout_classes": {
+          "hooked": 360,
+          "unhooked": 360
+        },
+        "heldout_majority_baseline": 0.5,
+        "heldout_rows": 720,
+        "heldout_seeds": [
+          63203,
+          63204
+        ],
+        "sufficient_support": true,
+        "train_classes": {
+          "hooked": 360,
+          "unhooked": 360
+        },
+        "train_rows": 720,
+        "train_seeds": [
+          63201,
+          63202
+        ],
+        "unseen_feature_rows": 0
+      },
+      "false_negative_approach_or_feed_hooked": 352,
+      "false_positive_avoidance_unhooked": 340,
+      "predictive_without_witnessed_result": {
+        "accuracy": 0.5,
+        "balanced_accuracy": 0.5,
+        "behavior_truth": {
+          "APPROACH_FOOD": {
+            "hooked": 96,
+            "unhooked": 96
+          },
+          "COMPETE": {
+            "hooked": 16,
+            "unhooked": 16
+          },
+          "FEED": {
+            "hooked": 228,
+            "unhooked": 228
+          },
+          "FLEE": {
+            "hooked": 132,
+            "unhooked": 132
+          },
+          "HESITATE": {
+            "hooked": 76,
+            "unhooked": 76
+          },
+          "WANDER": {
+            "hooked": 28,
+            "unhooked": 28
+          }
+        },
+        "confusion": {
+          "fn": 288,
+          "fp": 0,
+          "tn": 288,
+          "tp": 0
+        },
+        "features": [
+          "offline_behavior_state",
+          "feeding_intent",
+          "public_speed_bin_10px"
+        ],
+        "flags": [],
+        "heldout_class_seed_support": {
+          "hooked": 2,
+          "unhooked": 2
+        },
+        "heldout_classes": {
+          "hooked": 288,
+          "unhooked": 288
+        },
+        "heldout_majority_baseline": 0.5,
+        "heldout_rows": 576,
+        "heldout_seeds": [
+          63203,
+          63204
+        ],
+        "sufficient_support": true,
+        "train_classes": {
+          "hooked": 288,
+          "unhooked": 288
+        },
+        "train_rows": 576,
+        "train_seeds": [
+          63201,
+          63202
+        ],
+        "unseen_feature_rows": 0
+      },
+      "rows": 1440,
+      "starving_risk_with_motion_cues": 8,
+      "witnessed_result": {
+        "accuracy": 0.5,
+        "balanced_accuracy": 0.5,
+        "behavior_truth": {
+          "APPROACH_FOOD": {
+            "hooked": 12,
+            "unhooked": 12
+          },
+          "COMPETE": {
+            "hooked": 0,
+            "unhooked": 0
+          },
+          "FEED": {
+            "hooked": 0,
+            "unhooked": 0
+          },
+          "FLEE": {
+            "hooked": 132,
+            "unhooked": 132
+          },
+          "HESITATE": {
+            "hooked": 0,
+            "unhooked": 0
+          },
+          "WANDER": {
+            "hooked": 0,
+            "unhooked": 0
+          }
+        },
+        "confusion": {
+          "fn": 72,
+          "fp": 0,
+          "tn": 72,
+          "tp": 0
+        },
+        "features": [
+          "offline_behavior_state",
+          "feeding_intent",
+          "public_speed_bin_10px"
+        ],
+        "flags": [],
+        "heldout_class_seed_support": {
+          "hooked": 2,
+          "unhooked": 2
+        },
+        "heldout_classes": {
+          "hooked": 72,
+          "unhooked": 72
+        },
+        "heldout_majority_baseline": 0.5,
+        "heldout_rows": 144,
+        "heldout_seeds": [
+          63203,
+          63204
+        ],
+        "sufficient_support": true,
+        "train_classes": {
+          "hooked": 72,
+          "unhooked": 72
+        },
+        "train_rows": 144,
+        "train_seeds": [
+          63201,
+          63202
+        ],
+        "unseen_feature_rows": 0
+      }
+    },
+    "natural": {
+      "behavior_truth": {
+        "APPROACH_FOOD": {
+          "hooked": 315,
+          "rows": 688,
+          "unhooked": 373
+        },
+        "COMPETE": {
+          "hooked": 37,
+          "rows": 156,
+          "unhooked": 119
+        },
+        "FEED": {
+          "hooked": 29,
+          "rows": 157,
+          "unhooked": 128
+        },
+        "FLEE": {
+          "hooked": 25,
+          "rows": 40,
+          "unhooked": 15
+        },
+        "HESITATE": {
+          "hooked": 91,
+          "rows": 180,
+          "unhooked": 89
+        },
+        "WANDER": {
+          "hooked": 331,
+          "rows": 498,
+          "unhooked": 167
+        }
+      },
+      "classes": {
+        "hooked": 828,
+        "unhooked": 891
+      },
+      "classifier": {
+        "accuracy": 0.33,
+        "balanced_accuracy": 0.5132839066367485,
+        "behavior_truth": {
+          "APPROACH_FOOD": {
+            "hooked": 315,
+            "unhooked": 373
+          },
+          "COMPETE": {
+            "hooked": 37,
+            "unhooked": 119
+          },
+          "FEED": {
+            "hooked": 29,
+            "unhooked": 128
+          },
+          "FLEE": {
+            "hooked": 25,
+            "unhooked": 15
+          },
+          "HESITATE": {
+            "hooked": 91,
+            "unhooked": 89
+          },
+          "WANDER": {
+            "hooked": 331,
+            "unhooked": 167
+          }
+        },
+        "confusion": {
+          "fn": 601,
+          "fp": 2,
+          "tn": 276,
+          "tp": 21
+        },
+        "features": [
+          "offline_behavior_state",
+          "feeding_intent",
+          "public_speed_bin_10px"
+        ],
+        "flags": [],
+        "heldout_class_seed_support": {
+          "hooked": 3,
+          "unhooked": 3
+        },
+        "heldout_classes": {
+          "hooked": 622,
+          "unhooked": 278
+        },
+        "heldout_majority_baseline": 0.6911111111111111,
+        "heldout_rows": 900,
+        "heldout_seeds": [
+          63304,
+          63305,
+          63306
+        ],
+        "sufficient_support": true,
+        "train_classes": {
+          "hooked": 206,
+          "unhooked": 613
+        },
+        "train_rows": 819,
+        "train_seeds": [
+          63301,
+          63302,
+          63303
+        ],
+        "unseen_feature_rows": 1
+      },
+      "false_negative_approach_or_feed_hooked": 381,
+      "false_positive_avoidance_unhooked": 104,
+      "predictive_without_witnessed_result": {
+        "accuracy": 0.3340832395950506,
+        "balanced_accuracy": 0.5135878204146993,
+        "behavior_truth": {
+          "APPROACH_FOOD": {
+            "hooked": 314,
+            "unhooked": 373
+          },
+          "COMPETE": {
+            "hooked": 37,
+            "unhooked": 119
+          },
+          "FEED": {
+            "hooked": 29,
+            "unhooked": 128
+          },
+          "FLEE": {
+            "hooked": 20,
+            "unhooked": 15
+          },
+          "HESITATE": {
+            "hooked": 91,
+            "unhooked": 89
+          },
+          "WANDER": {
+            "hooked": 326,
+            "unhooked": 167
+          }
+        },
+        "confusion": {
+          "fn": 590,
+          "fp": 2,
+          "tn": 276,
+          "tp": 21
+        },
+        "features": [
+          "offline_behavior_state",
+          "feeding_intent",
+          "public_speed_bin_10px"
+        ],
+        "flags": [],
+        "heldout_class_seed_support": {
+          "hooked": 3,
+          "unhooked": 3
+        },
+        "heldout_classes": {
+          "hooked": 611,
+          "unhooked": 278
+        },
+        "heldout_majority_baseline": 0.6872890888638921,
+        "heldout_rows": 889,
+        "heldout_seeds": [
+          63304,
+          63305,
+          63306
+        ],
+        "sufficient_support": true,
+        "train_classes": {
+          "hooked": 206,
+          "unhooked": 613
+        },
+        "train_rows": 819,
+        "train_seeds": [
+          63301,
+          63302,
+          63303
+        ],
+        "unseen_feature_rows": 0
+      },
+      "rows": 1719,
+      "starving_risk_with_motion_cues": 0,
+      "witnessed_result": {
+        "accuracy": 0.0,
+        "balanced_accuracy": null,
+        "behavior_truth": {
+          "APPROACH_FOOD": {
+            "hooked": 1,
+            "unhooked": 0
+          },
+          "COMPETE": {
+            "hooked": 0,
+            "unhooked": 0
+          },
+          "FEED": {
+            "hooked": 0,
+            "unhooked": 0
+          },
+          "FLEE": {
+            "hooked": 5,
+            "unhooked": 0
+          },
+          "HESITATE": {
+            "hooked": 0,
+            "unhooked": 0
+          },
+          "WANDER": {
+            "hooked": 5,
+            "unhooked": 0
+          }
+        },
+        "confusion": {
+          "fn": 11,
+          "fp": 0,
+          "tn": 0,
+          "tp": 0
+        },
+        "features": [
+          "offline_behavior_state",
+          "feeding_intent",
+          "public_speed_bin_10px"
+        ],
+        "flags": [
+          "INSUFFICIENT_CLASS_OR_SEED_SUPPORT",
+          "HIGH_MAJORITY_BASELINE"
+        ],
+        "heldout_class_seed_support": {
+          "hooked": 1,
+          "unhooked": 0
+        },
+        "heldout_classes": {
+          "hooked": 11,
+          "unhooked": 0
+        },
+        "heldout_majority_baseline": 1.0,
+        "heldout_rows": 11,
+        "heldout_seeds": [
+          63306
+        ],
+        "sufficient_support": false,
+        "train_classes": {
+          "hooked": 0,
+          "unhooked": 0
+        },
+        "train_rows": 0,
+        "train_seeds": [],
+        "unseen_feature_rows": 11
+      }
+    }
+  },
+  "evidence": {
+    "episodes": [
+      {
+        "completed": true,
+        "dataset": "natural",
+        "hook_events": 0,
+        "npc_food": 36.45,
+        "npc_hook_count": null,
+        "player_food": 23.55,
+        "reason": "net",
+        "seed": 63301,
+        "split": "train",
+        "ticks": 1301,
+        "winner": "angler",
+        "wrong_catches": null
+      },
+      {
+        "completed": false,
+        "dataset": "natural",
+        "hook_events": 0,
+        "npc_food": 20.85,
+        "npc_hook_count": null,
+        "player_food": 19.5,
+        "reason": "",
+        "seed": 63302,
+        "split": "train",
+        "ticks": 1800,
+        "winner": "",
+        "wrong_catches": null
+      },
+      {
+        "completed": false,
+        "dataset": "natural",
+        "hook_events": 0,
+        "npc_food": 4.8,
+        "npc_hook_count": null,
+        "player_food": 25.2,
+        "reason": "",
+        "seed": 63303,
+        "split": "train",
+        "ticks": 1800,
+        "winner": "",
+        "wrong_catches": null
+      },
+      {
+        "completed": false,
+        "dataset": "natural",
+        "hook_events": 0,
+        "npc_food": 38.55,
+        "npc_hook_count": null,
+        "player_food": 15.6,
+        "reason": "",
+        "seed": 63304,
+        "split": "heldout",
+        "ticks": 1800,
+        "winner": "",
+        "wrong_catches": null
+      },
+      {
+        "completed": false,
+        "dataset": "natural",
+        "hook_events": 0,
+        "npc_food": 27.6,
+        "npc_hook_count": null,
+        "player_food": 18.0,
+        "reason": "",
+        "seed": 63305,
+        "split": "heldout",
+        "ticks": 1800,
+        "winner": "",
+        "wrong_catches": null
+      },
+      {
+        "completed": false,
+        "dataset": "natural",
+        "hook_events": 1,
+        "npc_food": 42.0,
+        "npc_hook_count": null,
+        "player_food": 25.8,
+        "reason": "",
+        "seed": 63306,
+        "split": "heldout",
+        "ticks": 1800,
+        "winner": "",
+        "wrong_catches": null
+      }
+    ],
+    "first_seed": 63301,
+    "gzip_bytes": 50939,
+    "gzip_mtime": 0,
+    "gzip_sha256": "c0b48fc8517b2e9acd5165333403d28761fe1d32d891f65316f190311765ee7a",
+    "harness_wall_seconds": 12.088,
+    "max_ticks": 1800,
+    "methodology": {
+      "association": "Current target, then live social_bait_id when available, else nearest publicly observed food. Fallback is an association, not proof that this food caused the reaction.",
+      "classifier": "Behavior state is private offline instrumentation, an optimistic recognition proxy. Real players see movement, never these state tags.",
+      "counterfactual": "4 fixed seeds x 3 hunger levels x 5 scenes x 12 actual NPC decision updates x 2 labels; shared bait physics held constant intentionally. Full NPC records including intent, memory and RNG must match each label pair.",
+      "limits": "Small diagnostic, temporally correlated repeated samples, seed-grouped train/heldout split; no human win-rate, cue-classifier generalization or P3.2 replacement claim. Insufficient classes must not be called safe. P3.4 NPC hooks remain unimplemented.",
+      "natural": "Real default survival challenge, three NPCs, unchanged detached P2 Mixed player and AnglerBrain; all bounded seeds/outcomes retained.",
+      "truth_boundary": "Truth is joined only after production authority decisions. Rows never enter observation, AI, render, network or replay state.",
+      "witness_window": "Separate predictive from witnessed-result rows whenever this NPC retained a witnessed danger tick within 45 visible-event ticks plus the production social-recovery duration. Counterfactual visible_outcome rows are always in the witnessed family."
+    },
+    "natural_seeds": 6,
+    "python_analysis_tests": 12,
+    "raw_bytes": 1454720,
+    "raw_file": "PHASE03-SOCIAL-DIAGNOSTIC.json.gz",
+    "raw_json_sha256": "f155f1e040d2fb09776e7ceefa5922bb38aa93b8cee9746784493aa79204e0dc",
+    "registered_social_integration_assertions": 25,
+    "retains_all_rows": true,
+    "rows": 3159,
+    "sample_every_ticks": 18,
+    "source_stable": true,
+    "unlabeled_samples": 0
+  },
+  "format": "phase03-social-analysis-v1",
+  "interpretation": "Review flags are diagnostics, not proof of cheating or human-readable certainty. Repeated frames are correlated; no frame-level confidence interval is claimed. Counterfactual and natural estimates stay separate.",
+  "source_hashes": {
+    "res://scripts/angler_brain.gd": "0cf8cd83aa58fa0d38a000badc1726ecba81011ae9445f415c3e6ba43903582d",
+    "res://scripts/angler_controller.gd": "cf870f0d5277403a54ee51ee6e7e5b8f1dee032241636046e505974567136a7a",
+    "res://scripts/angler_hand.gd": "f5db4b118381c8f4e5cb5c606aab3b01231f04ae23bb33a499550dbab68eb17a",
+    "res://scripts/angler_network_observation.gd": "252a146d1217027b9f4d227af5b27a5c611b313b152b6c9c767217a8e7818baf",
+    "res://scripts/angler_rig.gd": "7d4e11a24cec34a172f2e1ec92b7e99745ed4df380f52badee0dad3cb45863b4",
+    "res://scripts/angler_visual.gd": "220f2896ef24c9342bfc7b5b5cbc76c0b2169b78e2d20dae8acae559ff612529",
+    "res://scripts/effort_check.gd": "c693244b6a0703a9218f88afc83d47f1521adedc7901390f1aae504829c1ede6",
+    "res://scripts/fish_brain.gd": "1de20533cba63e62839d5e7646ecc194ba3d38bfb00ec7da8490207ad1c65fc3",
+    "res://scripts/fish_feeding.gd": "0178b71a0ee72918aedb223e3236ecb7112aac4b59d8dc86b7ff10856c5cbe60",
+    "res://scripts/fish_instinct.gd": "0e915d74eefd04b1711b2896b174181a9623f8a74a6b6425dfbfd4d09029ddc8",
+    "res://scripts/fish_network_observation.gd": "8978ca3e5e298a7fdfa07b1e4707c50a778dbce908c7dc1aca1554f3b1d8d2f7",
+    "res://scripts/fish_observation.gd": "155fcf155c9fcfa32ec125455b6ee067a0bfd7e9df95238d36bd61cb1858d00d",
+    "res://scripts/fish_suspicion.gd": "b2398e40a6d0694339f87ab9659c42a2b14a7c941c224abdf51a3b69810d9ed1",
+    "res://scripts/fish_winding.gd": "b0bb3762ac5323a7457c4e747e6c76079b063605098039ddd35aa08b5bf72823",
+    "res://scripts/food_profile.gd": "0dbc7b16a19dec0cf943d1efe499f293207e69925cad7d8af77230f5176a9b44",
+    "res://scripts/game_commands.gd": "f83cdf0aefc7fcfaa4bf18d6b3966629d17f27709edb65f6208937a160c01ca4",
+    "res://scripts/game_rules.gd": "5d58b745ad3b6872ab1cca1375dcda28c4c2df2bafce47ce7bb7422806c0a311",
+    "res://scripts/grass_binding.gd": "bfc09fa96e18db82d25467042b9daf9e2339b3748fc45445c97d629c68a8f1c4",
+    "res://scripts/hook_gauge.gd": "4fe42c7690fa40f42e970af97eb26915793ec166c01b06da3ea21eb1fb692593",
+    "res://scripts/line_motion.gd": "dc3ec74204ff97dc61b4ec6cd0cfafb37792c4a7f8fad41533d735c3f1432735",
+    "res://scripts/local_input.gd": "5a688916328d4cdb0337e26d2906df79efaf6f8498e0eef91b219920bded018c",
+    "res://scripts/menu.gd": "f11229f990b56f0195eb9f692b61e4bdb588aff9f8d298e1f2582e5423e1f159",
+    "res://scripts/net_motion.gd": "03f50c4915c97c0c8b4af15547086f35e013461dae9e5df3a376817c6b2720da",
+    "res://scripts/net_observation.gd": "75eaa7ca26b3a39b7bb9836514f45ec219fa9f793491147f5c6ec624d0354c8a",
+    "res://scripts/net_simulation.gd": "51f93ef76345d0a5c2bbdb96a9665efac4505371f1f8f5f04ffd6fb4eeb8c47d",
+    "res://scripts/net_visual.gd": "aee8baa45953d779c446696aca27f8a8f6080f94db63d4c037182b17decef6f5",
+    "res://scripts/network_presentation.gd": "8a7591b0cf79702b8136fdaa73802b245d12185fb8dbdb90eb1b0ca6c8046afd",
+    "res://scripts/network_protocol.gd": "b96f31bc97fecca14e40ac8ffd4733477e95b24d6056ddf241378cbb1cf3f73f",
+    "res://scripts/network_session.gd": "b9b93b6597b069dbbc3f4a38e9ad5e6ae0df20474535ba25d5182db81eee6924",
+    "res://scripts/npc_fish_brain.gd": "6fd3c26b85f23e34d055f3904a27e11cb5adac30ee55866cf971f58215af731a",
+    "res://scripts/npc_fish_public_state.gd": "534e92f5e1311c30b4cceeb4a6a56393cd6a020d1a5fca177df89dd5c09a1dbd",
+    "res://scripts/npc_fish_state.gd": "107d62424bed9aacbe317d401bee4625ae660a42d43b766bed0365f30cc88a90",
+    "res://scripts/pixel_art.gd": "f294ca6a656ba43fb793aaaa2d738fd3824fc89630086898a364e29a35d2a3ed",
+    "res://scripts/pond.gd": "3859b106cec5a01a24f32f1dbd168c2d553a5fcb265987e3a809e36f4ea65dce",
+    "res://scripts/pond_camera.gd": "2170a1430fe074b9f6113e196a25d77b76eaffaee678e4a6f03969a33a8e3614",
+    "res://scripts/pond_depth_art.gd": "387aec1492eff7d2a0ef846798091ebc60bdafeba6edd16760ce9ac759be5b31",
+    "res://scripts/pond_layout.gd": "3d9405536a8a02e5002dbe9ed2d0cab1591ac04f0b9628050c1881106871174f",
+    "res://scripts/pond_plant_art.gd": "e3f95151f229c4a6d6425ae144358dbb3a728046d5e416f548afbb74a8c4512e",
+    "res://scripts/pond_scenery.gd": "2897e3eb6c3e4a0cad142ec7d212129e4e99f7057053170d12da6e6c7b03ef87",
+    "res://scripts/pond_view.gd": "a0a1a14025913997c3c72704b69af42fa88510431cae6e350c6abfa248e37f87",
+    "res://scripts/pond_water_art.gd": "c875541049c29e6817cfedc7767e63b43888ab8cc6d5745b98e40a8aec31fdad",
+    "res://scripts/pond_wood_art.gd": "bd042f616dfe75bbe007f92bab72fc34c414a6489631da7f7d5ff62190bd598b",
+    "res://scripts/reel_hand.gd": "6c4e2e9391dc2a9092ebcbd8d3cd2d52b62beb1ea5236b6fa50b2cbb460be3f3",
+    "res://scripts/rope.gd": "2e30152e65b00f39fe25324b992afd39925acfadd80b64dce385df865d69fe42",
+    "res://scripts/round_stats.gd": "f8065e73622f0ad115e97e624099e6055a1ce1271990f85f48d8bb46902de3a5",
+    "res://scripts/rules_catalog.gd": "f205ab9e285b01aafdfd6ebb7b0eafc802f5989b8f00e508db28cfdfc3f57c72",
+    "res://scripts/rules_settings.gd": "ad6b2bca83710ad92f8477da83151a21f57d00d8979b81a864f7824f7383885b",
+    "res://scripts/rules_store.gd": "7256c0290b916d215ca8e5693f0e819e76429ac9367c3b36d6a392310df2acf8",
+    "res://scripts/shore_view.gd": "ea0ce62ef0b4fd621ba77d6c8d7413dd2acb4ab0423ee15c78dbba602e25965e",
+    "res://scripts/sound.gd": "e26674ed0be1337c53838e95e32e04452131bba5610b50fb24add73304d3b9c0",
+    "res://scripts/suction_feel.gd": "9d291d1db447505cc56dfe70618ce8ccb35dec60b2e0779665926de2d1b0a05a",
+    "res://scripts/world_simulation.gd": "2411924f5db829a06395eaa80f4aa20506157e09103d49fd0d192aa9aaed2bc2",
+    "res://scripts/world_snapshot.gd": "ff50a4585d45262c7e86e2c31520540217123c683b1ba3c2f9f055cb3b3e93e8",
+    "res://tools/phase02_feeding_policy.gd": "533976956a9e2186baf1da6ed321680e0f9304842d1d5813c8fa4977df919912",
+    "res://tools/phase03_social_diagnostics.gd": "94c75e56532e801177c204c6f5ecd17bfef40a69d368109b8a1245fcc087cf91"
+  }
+}

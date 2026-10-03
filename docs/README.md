@@ -1,3 +1,4 @@
+- [0.25.2 社会线索架构](architecture/PHASE03-SOCIAL-CUES.md) · [验证与人工试玩](test-reports/PHASE03-SOCIAL-VALIDATION-0.25.2.md)
 - [0.25.1 抢食竞争架构](architecture/PHASE03-FORAGING.md) · [验证与人工试玩](test-reports/PHASE03-FORAGING-VALIDATION-0.25.1.md)
 - [0.25.0 环境鱼架构](architecture/PHASE03-AMBIENT-FISH.md) · [验证与人工试玩](test-reports/PHASE03-AMBIENT-VALIDATION-0.25.0.md)
 

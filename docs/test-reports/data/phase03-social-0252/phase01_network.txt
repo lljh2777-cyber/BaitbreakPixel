@@ -1,0 +1,63 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PHASE01_NETWORK_PASS | explicit fish presentation schema validates
+PHASE01_NETWORK_PASS | recursive fish payload excludes hooks, tackle tags, seeds, scores, and reserves
+PHASE01_NETWORK_PASS | opponent check timing and target are private; only realized force is public
+PHASE01_NETWORK_PASS | fish presentation cannot enter authoritative replay restore
+PHASE01_NETWORK_PASS | validated fish data uses its separate presentation apply API
+PHASE01_NETWORK_PASS | fish game adapter retains only sanitized bait dictionaries
+PHASE01_NETWORK_PASS | sanitized world builds the same public fish perception as authority
+PHASE01_NETWORK_PASS | invisible reserves have no hidden home, future grains, or motion
+PHASE01_NETWORK_PASS | hidden-only truth, opponent timing, and future fields cannot change fish payload
+PHASE01_NETWORK_PASS | authoritative schema remains restorable after projection
+PHASE01_NETWORK_PASS | authority still restores full seeds and hidden hook truth
+PHASE01_NETWORK_PASS | projection does not weaken deterministic authority replay
+PHASE01_NETWORK_PASS | unexpected hidden bait fields are rejected without partial mutation
+PHASE01_NETWORK_PASS | authority seeds cannot be smuggled into fish schema
+PHASE01_NETWORK_PASS | future nested fields are rejected, not blindly copied
+PHASE01_NETWORK_PASS | malformed visible grains are rejected atomically
+PHASE01_NETWORK_PASS | duplicate public bait identities are rejected
+PHASE01_NETWORK_PASS | invalid timing denominator is rejected
+PHASE01_NETWORK_PASS | invalid nested check enum is rejected
+PHASE01_NETWORK_PASS | invalid caution enum is rejected
+PHASE01_NETWORK_PASS | invalid physical interpolation duration is rejected
+PHASE01_NETWORK_PASS | nonfinite position is rejected
+PHASE01_NETWORK_PASS | oversized visible grain arrays are rejected
+PHASE01_NETWORK_PASS | render-only world accepts fish schema
+PHASE01_NETWORK_PASS | malformed presentation cannot replace render history
+PHASE01_NETWORK_PASS | fish interpolation never fabricates hook keys
+PHASE01_NETWORK_PASS | render interpolation cannot mutate latest public game state
+PHASE01_NETWORK_PASS | fish room/start configuration has an explicit seed-free allowlist
+PHASE01_NETWORK_PASS | seed-bearing configuration is rejected on fish receive
+PHASE01_NETWORK_PASS | start packet uses fish projection before encoding
+PHASE01_NETWORK_PASS | state packet uses fish projection before encoding
+NETWORK_PHASE | host=false | playing | 
+PHASE01_NETWORK_PASS | reliable state path applies only fish presentation
+PHASE01_NETWORK_PASS | incomplete duplicate chunks cannot partially apply fish state
+PHASE01_NETWORK_PASS | out-of-order chunk path reconstructs only sanitized fish state
+PHASE01_NETWORK_PASS | angler peer uses its NPC-public role projection
+PHASE01_NETWORK_PASS | angler projection applies through the separate validated adapter
+PHASE01_NETWORK_PASS | angler adapter preserves every preexisting non-NPC authority field, rig and RNG value
+PIXEL_READY | asymmetric-2d | 640x360 | v0.25.2 | playtest-gate-phase03-social
+PIXEL_READY | asymmetric-2d | 640x360 | v0.25.2 | playtest-gate-phase03-social
+NETWORK_PHASE | host=true | waiting | 房间已创建，等待另一位玩家
+NETWORK_PHASE | host=false | connecting | 正在连接房主…
+PHASE01_NETWORK_PASS | real ENet fish peer connects
+NETWORK_PHASE | host=false | waiting | 已进入房间，双方准备后开始
+PHASE01_NETWORK_PASS | actual welcome config is seed-free
+NETWORK_PHASE | host=true | starting | 等待对方载入池塘…
+NETWORK_PHASE | host=false | starting | 等待房主开始…
+NETWORK_PHASE | host=true | countdown | 
+NETWORK_PHASE | host=false | countdown | 
+NETWORK_PHASE | host=true | playing | 
+NETWORK_PHASE | host=false | playing | 
+PHASE01_NETWORK_PASS | actual fish start/game/render worlds contain no hidden hooks or seeds
+PHASE01_NETWORK_PASS | public deployed food motion remains synchronized through chunks
+PHASE01_NETWORK_PASS | observed attachment remains playable without receiving hook truth
+PHASE01_NETWORK_PASS | sanitized presentation still draws the attached public line
+PIXEL_RESULT | role=angler | success=true | score=2.4 | seconds=1.23333333333333 | reason=net
+NETWORK_PHASE | host=true | finished | 
+NETWORK_PHASE | host=false | finished | 
+PIXEL_RESULT | role=fish | success=false | score=2.4 | seconds=1.23333333333333 | reason=net
+PHASE01_NETWORK_PASS | sanitized reliable result reaches fish result screen
+PHASE01_NETWORK_TESTS | passed=44 | failed=0

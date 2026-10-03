@@ -145,7 +145,7 @@ func pure_checks() -> void:
 	check(AnglerNetwork.apply(receiver,angler_wire),"angler projection applies through the separate validated adapter")
 	var original_angler: Dictionary=authority.capture_snapshot()
 	var received_angler: Dictionary=receiver.capture_snapshot()
-	for key: String in ["npc_fishes","next_fish_id","hook_target_fish_id","npc_foraging_enabled"]:
+	for key: String in ["npc_fishes","next_fish_id","hook_target_fish_id","npc_foraging_enabled","npc_social_enabled","public_hook_cue"]:
 		original_angler.state.erase(key); received_angler.state.erase(key)
 	for key: String in World.Stats.NPC_FIELDS:
 		original_angler.state.round_stats.erase(key); received_angler.state.round_stats.erase(key)

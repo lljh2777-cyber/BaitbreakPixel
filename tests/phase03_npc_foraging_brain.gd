@@ -133,8 +133,8 @@ func intent_checks() -> void:
 	var choice_b:=decide(record,[bait(Vector2(300,200),"cluster",4),bait(Vector2(300,200),"cluster",5)])
 	check(choice_a==choice_b and choice_a.target_bait_id==4,"equal food choices resolve by stable public identity")
 	var source:=FileAccess.get_file_as_string("res://scripts/npc_fish_brain.gd")
-	for forbidden: String in ["world.",".hook","truth_events","_enter_hook","_attach_hook","refill_hook_bait","HESITATE","FLEE","COMPETE"]:
-		check(not source.contains(forbidden),"brain avoids authority/social dependency: "+forbidden)
+	for forbidden: String in ["world.",".hook","truth_events","_enter_hook","_attach_hook","refill_hook_bait","HOOKED","CAPTURED","respawn"]:
+		check(not source.contains(forbidden),"brain avoids authority/future-capture dependency: "+forbidden)
 
 func state_checks() -> void:
 	var record:=npc()
@@ -158,7 +158,7 @@ func state_checks() -> void:
 		for value in [NAN,INF,-0.01,"0",0]:
 			var bad:=record.duplicate(true); bad[field]=value
 			check(not State.valid(bad,3),"reject malformed finite scalar "+field+"="+str(value))
-	for pair: Array in [["satiety",100.01],["power",1.01],["bite_cooldown",0.81],["risk_tolerance",0.61],["feeding",1],["intent_aim",Vector2.ZERO],["intent_aim",Vector2(NAN,0)],["behavior_state","FLEE"],["suspicion_by_bait",{3:NAN}],["suspicion_by_bait",{"3":0.2}],["suspicion_by_bait",{3:1}],["caution_by_bait",{3:"SECRET"}],["caution_by_bait",{}],["focus_bait_id",8],["target_bait_id",8]]:
+	for pair: Array in [["satiety",100.01],["power",1.01],["bite_cooldown",0.81],["risk_tolerance",0.61],["feeding",1],["intent_aim",Vector2.ZERO],["intent_aim",Vector2(NAN,0)],["behavior_state","HOOKED"],["suspicion_by_bait",{3:NAN}],["suspicion_by_bait",{"3":0.2}],["suspicion_by_bait",{3:1}],["caution_by_bait",{3:"SECRET"}],["caution_by_bait",{}],["focus_bait_id",8],["target_bait_id",8]]:
 		var bad:=record.duplicate(true); bad[pair[0]]=pair[1]
 		check(not State.valid(bad,3),"reject illegal NPC shape or range: "+str(pair))
 	for key: String in ["feeding","power","bite_cooldown","intent_aim"]:

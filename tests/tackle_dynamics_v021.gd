@@ -4,6 +4,7 @@ const Shore=preload("res://scripts/shore_view.gd")
 const Hand=preload("res://scripts/angler_hand.gd")
 const Left=preload("res://scripts/reel_hand.gd")
 const Presentation=preload("res://scripts/network_presentation.gd")
+const AnglerPublic=preload("res://scripts/angler_network_observation.gd")
 var passed:=0
 var failed:=0
 func _initialize() -> void: call_deferred("run")
@@ -75,7 +76,11 @@ func run() -> void:
 	w.match_paused=false
 	for frame in 50: w.advance_tick({"move":Vector2.DOWN},{})
 	check(w.angler.reel_hand_amount==0,"letting go smoothly returns the left hand off screen")
-	var older:Dictionary=w.capture_snapshot(); var newer:Dictionary=older.duplicate(true)
+	# Synthetic network timestamps belong to the role projection, not a full
+	# authority replay containing real event/decision timestamps.
+	var before_wire:PackedByteArray=var_to_bytes(w.capture_snapshot())
+	var older:Dictionary=AnglerPublic.capture(w); var newer:Dictionary=older.duplicate(true)
+	check(before_wire==var_to_bytes(w.capture_snapshot()),"role projection preserves the source authority including private social events")
 	older.state.simulation_tick=10; newer.state.simulation_tick=12
 	older.rig.surface_live=true; newer.rig.surface_live=true
 	older.rig.surface_x=100.0; newer.rig.surface_x=200.0
@@ -83,7 +88,8 @@ func run() -> void:
 	older.rig.release_phase=TAU-0.06; newer.rig.release_phase=0.06
 	older.rig.reel_hand_mode=-1; newer.rig.reel_hand_mode=-1
 	older.rig.reel_hand_amount=0.2; newer.rig.reel_hand_amount=0.6
-	var presentation=Presentation.new(); presentation.accept(older,10.0); presentation.accept(newer,10.1)
+	var presentation=Presentation.new()
+	check(presentation.accept(older,10.0,"angler") and presentation.accept(newer,10.1,"angler"),"synthetic tackle frames pass the actual angler role validator")
 	var visual:Node2D=presentation.sample(10.1+1.0/60)
 	check(absf(visual.angler.surface_x-150)<0.001 and absf(visual.angler.reel_hand_amount-0.4)<0.001,"remote float and reaching hand interpolate between network frames")
 	check(absf(angle_difference(0,visual.angler.reel_phase))<0.001 and absf(angle_difference(0,visual.angler.release_phase))<0.001,"remote reel phases cross 360 degrees without spinning backwards")
