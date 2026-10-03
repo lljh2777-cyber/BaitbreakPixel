@@ -6,7 +6,7 @@ const Frame = preload("res://scripts/watergen/water_visual_frame.gd")
 const Atmosphere = preload("res://scripts/watergen/water_atmosphere.gd")
 const VERSION := "wg-2.1"
 const LEGACY_VERSION := "wg-2.0"
-const RASTER_SPEC := "rgba8-rich-foliage-strips-v2"
+const RASTER_SPEC := "rgba8-rich-foliage-atlas-v2"
 const LEGACY_RASTER_SPEC := "rgba8-padded-stem-strips-v1"
 
 static func validate(profile: Variant) -> Dictionary:

@@ -238,6 +238,7 @@ func capture() -> void:
 		seed_index = index % 4
 		eviction_refs.append(weakref(current.bundle.layers.water.texture))
 		if not _select_seed(): return
+		print("WG2_SWITCH_PREPARED | ", index + 1)
 		current.images.clear()
 		_frame(Vector2(320, 60), 2)
 		await render()

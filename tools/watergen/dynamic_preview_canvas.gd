@@ -27,9 +27,12 @@ func _layer(name: String) -> void:
 		if animation.layer != name: continue
 		var texture: Texture2D = animation.texture
 		var origin := Vector2(animation.origin_px[0], animation.origin_px[1])
+		var region: Array = animation.get("region_px", [0, 0, texture.get_width(), texture.get_height()])
+		var screen_origin := origin + Frame.layer_offset(camera_offset, bundle.parallax_compensation[name])
+		if not Rect2(screen_origin, Vector2(region[2], region[3])).grow(animation.get("amplitude", 2.0) + 1).intersects(get_viewport_rect()): continue
 		# Merge identically shifted rows, preserving the original nearest-pixel result.
-		for band in Frame.bands(animation, texture.get_height(), visual_time):
-			draw_texture_rect_region(texture, Rect2(origin + Vector2(band.shift, band.row), Vector2(texture.get_width(), band.height)), Rect2(0, band.row, texture.get_width(), band.height))
+		for band in Frame.bands(animation, region[3], visual_time):
+			draw_texture_rect_region(texture, Rect2(origin + Vector2(band.shift, band.row), Vector2(region[2], band.height)), Rect2(region[0], region[1] + band.row, region[2], band.height))
 
 func _draw() -> void:
 	if bundle.is_empty(): return

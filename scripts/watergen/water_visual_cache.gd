@@ -44,11 +44,17 @@ func prepare(map: Dictionary, profile: Dictionary, visual_seed: int) -> Dictiona
 		layers[layer] = {"texture": ImageTexture.create_from_image(data.image), "origin_px": data.origin_px, "rgba_sha256": data.rgba_sha256}
 		texture_count += 1
 	var animations: Array = []
+	var atlas: ImageTexture
+	if baked.has("animation_atlas"):
+		atlas = ImageTexture.create_from_image(baked.animation_atlas)
+		texture_count += 1
 	for data in baked.get("animations", []):
 		var animation: Dictionary = data.duplicate()
 		animation.erase("image")
-		animation["texture"] = ImageTexture.create_from_image(data.image)
-		texture_count += 1
+		if atlas != null: animation["texture"] = atlas
+		else:
+			animation["texture"] = ImageTexture.create_from_image(data.image)
+			texture_count += 1
 		animations.append(animation)
 	upload_count += 1
 	var bundle := {"cache_key": cache_key, "layers": layers, "animations": animations, "parallax_compensation": plan.parallax_compensation.duplicate(true)}

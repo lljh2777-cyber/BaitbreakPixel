@@ -50,7 +50,30 @@ static func bake(plan: Dictionary) -> Dictionary:
 				"animated_root": animations.append(_root(object, layer.name, plan.palette))
 				"leaf_litter": Foliage.litter(image, local, plan.palette)
 		layers[layer.name] = {"image": image, "origin_px": layer.origin_px.duplicate(), "rgba_sha256": Raster.digest(image)}
-	return {"ok": true, "code": "OK", "layers": layers, "animations": animations}
+	var result := {"ok": true, "code": "OK", "layers": layers, "animations": animations}
+	if version == Generator.VERSION: result["animation_atlas"] = _atlas(animations)
+	return result
+
+static func _atlas(animations: Array) -> Image:
+	# One GPU texture for all small patches avoids frequent texture changes.
+	var x := 2
+	var y := 2
+	var row_height := 0
+	for animation in animations:
+		var image: Image = animation.image
+		if x + image.get_width() + 2 > 1024:
+			x = 2
+			y += row_height + 4
+			row_height = 0
+		animation["region_px"] = [x, y, image.get_width(), image.get_height()]
+		x += image.get_width() + 4
+		row_height = maxi(row_height, image.get_height())
+	var atlas := Image.create(1024, maxi(4, y + row_height + 2), false, Image.FORMAT_RGBA8)
+	atlas.fill(Color.TRANSPARENT)
+	for animation in animations:
+		var image: Image = animation.image
+		atlas.blit_rect(image, Rect2i(Vector2i.ZERO, image.get_size()), Vector2i(animation.region_px[0], animation.region_px[1]))
+	return atlas
 
 static func _stem(object: Dictionary, layer: String, palette: Dictionary) -> Dictionary:
 	var stem: Dictionary = object.stem

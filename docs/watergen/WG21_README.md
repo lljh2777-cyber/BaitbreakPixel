@@ -30,7 +30,7 @@
 
 默认共 18 处装饰动态：6 株远景草、8 株中景草、2 株前景草、2 组上缘垂根。草从底端生长，垂根从顶端生长，各自锚点固定；最大位移分别为 4 / 3 / 3 / 3 px，周期与相位错开。显式时间仍可暂停、seek 和重复采样。物理力、碰撞和交互目标不随它们变化。
 
-每个动态对象只烘焙一张小图，最多保留两个 bundle。绘制时根据弯曲曲线的整数位移阈值合并相邻像素行，每个对象最多 5 次绘制；不再逐行重复计算正弦，也不逐帧创建图像或纹理。测试将合并结果与逐像素行定义比较，避免用精度换性能。
+每个动态对象只烘焙一张小图，18 张小图合入一张带透明间隔的图集上传，最多保留两个 bundle。绘制时先排除视口外的对象，再根据弯曲曲线的整数位移阈值合并相邻像素行，每个可见对象最多 5 次绘制；不再逐行重复计算正弦，也不逐帧创建图像或纹理。测试将合并结果与逐像素行定义比较，并检查图集区域与原小图逐字节一致，避免用精度换性能。
 
 ## 基线和版本
 
@@ -42,7 +42,7 @@
 ## 私有验证
 
 ```powershell
-& D:\python\python.exe tools/watergen/run_wg2.py --godot 'E:\chrome下载\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe' --mode all --clip --run-id wg21-final-01 --timeout 240
+& D:\python\python.exe tools/watergen/run_wg2.py --godot 'E:\chrome下载\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe' --mode all --clip --run-id wg21-final-02 --timeout 240
 ```
 
 使用新 run-id 复跑；已有产物不覆盖。`--baseline` 运行旧 WG-2.0，`--test-seconds 1` 是 smoke，不能冒充 60 秒验收。`--clip` 输出 100 张 1280×480 帧，显式时间 0–9.9 秒，可用 ffmpeg 编成 10 fps 视频；实际预览随显示帧率绘制。视频只是便于查看，精确像素验证使用原始 PNG/RGBA。

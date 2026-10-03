@@ -42,6 +42,11 @@ func run() -> void:
 		check(Map.canonical(plan) == Map.canonical(Generator.generate(map, profile, seed).plan), "repeat layout " + str(seed))
 		var baked := Baker.bake(plan)
 		check(baked.ok and baked.animations.size() == 18, "18 bounded decorative patches " + str(seed))
+		var atlas_exact := true
+		for animation in baked.animations:
+			var r: Array = animation.region_px
+			atlas_exact = atlas_exact and baked.animation_atlas.get_region(Rect2i(r[0], r[1], r[2], r[3])).get_data() == animation.image.get_data()
+		check(atlas_exact, "atlas preserves every patch pixel")
 		var anchored := true
 		var bounded := true
 		var equivalent := true
