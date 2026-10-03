@@ -2661,28 +2661,43 @@
     }
   },
   "images_sha256": {
-    "docs\\watergen\\images\\wg5-wood-before.png": "b96834ef3c2b30cded79618b1bbe21ea674a06a9e9d965df0ccf85c76f1f0a6b",
-    "docs\\watergen\\images\\wg5-wood-after.png": "477df0f30a5276fd93da23de67b786078d72061f3113366db40d62ba739c45fc",
-    "docs\\watergen\\images\\wg5-stone-before.png": "829637c3630c5e6122cead8a8c5d087c50d4baea8cff008c527386fc8426fd90",
-    "docs\\watergen\\images\\wg5-stone-after.png": "13c2ccc32b9946060eea40b35f2cbc12980b1549ab6d60312f79faa5a99e2c9d",
-    "docs\\watergen\\images\\wg5-plants-before.png": "5ac9182bd168927113d00e94c09f8447c554cc923f0ed7c65771bb56c38da8aa",
-    "docs\\watergen\\images\\wg5-plants-after.png": "3c2196c85ab56e69d459f449f2341e16407ef432188b784f324d9720a404a2ed"
+    "docs/watergen/images/wg5-wood-before.png": "b96834ef3c2b30cded79618b1bbe21ea674a06a9e9d965df0ccf85c76f1f0a6b",
+    "docs/watergen/images/wg5-wood-after.png": "477df0f30a5276fd93da23de67b786078d72061f3113366db40d62ba739c45fc",
+    "docs/watergen/images/wg5-stone-before.png": "829637c3630c5e6122cead8a8c5d087c50d4baea8cff008c527386fc8426fd90",
+    "docs/watergen/images/wg5-stone-after.png": "13c2ccc32b9946060eea40b35f2cbc12980b1549ab6d60312f79faa5a99e2c9d",
+    "docs/watergen/images/wg5-plants-before.png": "5ac9182bd168927113d00e94c09f8447c554cc923f0ed7c65771bb56c38da8aa",
+    "docs/watergen/images/wg5-plants-after.png": "3c2196c85ab56e69d459f449f2341e16407ef432188b784f324d9720a404a2ed"
   },
   "logs_sha256": {
-    "docs\\watergen\\evidence\\wg5-source-final-import.txt": "264ef98dfb0c4fd7e4d05e84bdf8ba2fea539b85cee59c43f19f693b0c979e22",
-    "docs\\watergen\\evidence\\wg5-source-final-watergen_integration.txt": "945e2e16ce23ad9c18606e88c5fa63dd317aa741dd55145d424ce213ccfd0a7a",
-    "docs\\watergen\\evidence\\wg5-source-final-watergen_native.txt": "b002b6a3fa3f2837847f763cd19fe0527cf0477da75b869d633fd3c6780cfd79",
-    "docs\\watergen\\evidence\\wg5-regression-final-materials.txt": "9bca427e1b21029fd97d36eea8393494822ad6eb27c000fc50d74cc2c5da935f",
-    "artifacts\\watergen\\wg5-regression-final\\plant_art.log": "e8a147e5b796c78d7ddc9235feaf23eeba21cdac40f5fc7f3cef8a2f8c3a62a2",
-    "docs\\watergen\\evidence\\wg5-regression-final-grass_binding.txt": "c4e2c886eab121baca2cf5293f9415228bc8c2628d98b019c493a6540898f9c7",
-    "docs\\watergen\\evidence\\wg5-regression-final-wood_fade.txt": "0521ff305ee2bcf2f273fd552fbdf4f942b4cd0a79cf56903a98d2d8b245df2e",
-    "docs\\watergen\\evidence\\wg5-regression-final-food.txt": "96491c267326a8823eeceeefc1ed6670ecd7d79bdca1a2440869cc13411439c6",
-    "docs\\watergen\\evidence\\wg5-regression-final-material-captures.txt": "3269bb884836fad43feb6c93cd5eb29a5017d51cde35d8391385ef3c79c05132",
-    "docs\\watergen\\evidence\\wg5-pack-watergen_integration.txt": "945e2e16ce23ad9c18606e88c5fa63dd317aa741dd55145d424ce213ccfd0a7a",
-    "docs\\watergen\\evidence\\wg5-pack-watergen_native.txt": "b002b6a3fa3f2837847f763cd19fe0527cf0477da75b869d633fd3c6780cfd79",
-    "docs\\watergen\\evidence\\wg5-pack-material-materials.txt": "9bca427e1b21029fd97d36eea8393494822ad6eb27c000fc50d74cc2c5da935f"
+    "docs/watergen/evidence/wg5-source-final-import.txt": "ec38b643fc46c52e4e3c0d1e4dc39fd984769c59df413dc042e4cccbbc39ac19",
+    "docs/watergen/evidence/wg5-source-final-watergen_integration.txt": "1a939ebbb3fa8848c89b4837f21f6c36bbe55470bd193f49a3ba495b4562d8d1",
+    "docs/watergen/evidence/wg5-source-final-watergen_native.txt": "fcc6490652dc12925b6ffacada60bc1b9217f35b915571e576f0299fbcefbcfc",
+    "docs/watergen/evidence/wg5-regression-final-materials.txt": "bb8d3dbfca8a162871bad9fce2aace12e19bcd69b2a3f92cebe8073c2f50e435",
+    "artifacts/watergen/wg5-regression-final/plant_art.log": "e8a147e5b796c78d7ddc9235feaf23eeba21cdac40f5fc7f3cef8a2f8c3a62a2",
+    "docs/watergen/evidence/wg5-regression-final-grass_binding.txt": "e91cb95ebbd0ab4264593eb348097f1b6b2c65fb262bf8d88627855de9ce74f5",
+    "docs/watergen/evidence/wg5-regression-final-wood_fade.txt": "afbcae82f79029515300429f63186a4e0d88bd93abe0fe79237edaeb69730a01",
+    "docs/watergen/evidence/wg5-regression-final-food.txt": "83c1cf77b5de675e69abd95652ca3ac10b1378eb69ca51ea1854bbf37e2e72cb",
+    "docs/watergen/evidence/wg5-regression-final-material-captures.txt": "da31a3c7dc81e4c942b2aaef5753b1d2ac8b74bbef4d3d060860f372ca03b627",
+    "docs/watergen/evidence/wg5-pack-watergen_integration.txt": "1a939ebbb3fa8848c89b4837f21f6c36bbe55470bd193f49a3ba495b4562d8d1",
+    "docs/watergen/evidence/wg5-pack-watergen_native.txt": "fcc6490652dc12925b6ffacada60bc1b9217f35b915571e576f0299fbcefbcfc",
+    "docs/watergen/evidence/wg5-pack-material-materials.txt": "bb8d3dbfca8a162871bad9fce2aace12e19bcd69b2a3f92cebe8073c2f50e435"
   },
   "human_acceptance": "WAITING_FOR_PLAYTEST",
   "full_registry_rerun": false,
-  "capture_method": "Same seeded scene and fixed camera, swapping original/enhanced sprite materials; water and game state identical."
+  "capture_method": "Same seeded scene and fixed camera, swapping original/enhanced sprite materials; water and game state identical.",
+  "raw_logs_sha256": {
+    "artifacts/watergen/wg5-source-final/import.log": "264ef98dfb0c4fd7e4d05e84bdf8ba2fea539b85cee59c43f19f693b0c979e22",
+    "artifacts/watergen/wg5-source-final/watergen_integration.log": "945e2e16ce23ad9c18606e88c5fa63dd317aa741dd55145d424ce213ccfd0a7a",
+    "artifacts/watergen/wg5-source-final/watergen_native.log": "b002b6a3fa3f2837847f763cd19fe0527cf0477da75b869d633fd3c6780cfd79",
+    "artifacts/watergen/wg5-regression-final/materials.log": "9bca427e1b21029fd97d36eea8393494822ad6eb27c000fc50d74cc2c5da935f",
+    "artifacts/watergen/wg5-regression-final/plant_art.log": "e8a147e5b796c78d7ddc9235feaf23eeba21cdac40f5fc7f3cef8a2f8c3a62a2",
+    "artifacts/watergen/wg5-regression-final/grass_binding.log": "c4e2c886eab121baca2cf5293f9415228bc8c2628d98b019c493a6540898f9c7",
+    "artifacts/watergen/wg5-regression-final/wood_fade.log": "0521ff305ee2bcf2f273fd552fbdf4f942b4cd0a79cf56903a98d2d8b245df2e",
+    "artifacts/watergen/wg5-regression-final/food.log": "96491c267326a8823eeceeefc1ed6670ecd7d79bdca1a2440869cc13411439c6",
+    "artifacts/watergen/wg5-regression-final/material-captures.log": "3269bb884836fad43feb6c93cd5eb29a5017d51cde35d8391385ef3c79c05132",
+    "artifacts/watergen/wg5-pack/watergen_integration.log": "945e2e16ce23ad9c18606e88c5fa63dd317aa741dd55145d424ce213ccfd0a7a",
+    "artifacts/watergen/wg5-pack/watergen_native.log": "b002b6a3fa3f2837847f763cd19fe0527cf0477da75b869d633fd3c6780cfd79",
+    "artifacts/watergen/wg5-pack-material/materials.log": "9bca427e1b21029fd97d36eea8393494822ad6eb27c000fc50d74cc2c5da935f"
+  },
+  "log_copy_normalization": "Evidence text copies use LF and trim trailing whitespace; original artifact logs are unchanged and their byte digests are in raw_logs_sha256."
 }
