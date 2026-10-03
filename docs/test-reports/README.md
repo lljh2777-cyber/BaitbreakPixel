@@ -8,6 +8,7 @@
 
 报告按版本由新到旧排列，记录当时的测试环境、范围和结果。旧版玩法断言可能已经退役；复现时请结合对应版本。
 
+- [0.24.4 Windows 试玩包与发布核验](GITHUB-RELEASE-0.24.4.md)
 - [0.24.3 Windows 试玩包与发布核验](GITHUB-RELEASE-0.24.3.md)
 - [0.24.2 Windows 试玩包与发布核验](GITHUB-RELEASE-0.24.2.md)
 - [2026-10-02 GitHub 逐版补发与 Windows 包核验](GITHUB-RELEASES-2026-10-02.md)

@@ -1,3 +1,7 @@
+# 2026-10-03 · v0.24.4 Windows 试玩包发布
+
+已发布 [v0.24.4](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.24.4)，包含 14 px 自动咬食、渐变吸力及旧个人规则迁移。Windows 当前源码回归、针对性独立包画面及 EXE 启动通过；原始调参比较和负面结果保留，Phase 2 最终人工门继续开放，未推进 Phase 3。验证范围与校验值见[发布记录](../test-reports/GITHUB-RELEASE-0.24.4.md)。后文“未打包”保留原开发阶段状态。
+
 # 2026-10-02 · v0.24.4 源码手感修正
 
 - 默认自动咬食 18→14 px；旧个人档案旧默认一次性迁移，保留其他规则
