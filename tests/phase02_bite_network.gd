@@ -70,6 +70,16 @@ func pure_checks() -> void:
 	var extra=projection.duplicate(true); extra.state.bite_hook_roll=0.5
 	check(not Public.valid(replay,extra),"public Bite fields remain a strict allowlist")
 	view.dispose(); w.free(); replay.free()
+	# Guard3 snapshots carry explicit rules; changing defaults must not migrate replay.
+	w=fresh(); replay=World.new(); replay.reset_world()
+	w.rules.bite_range=14.0; w.rules.bite_cooldown=0.4
+	w.advance_tick({}, {})
+	var old_defaults: Dictionary=w.capture_snapshot()
+	check(old_defaults.bait_profile_version==3 and replay.restore_snapshot(old_defaults) and replay.rule("bite_range")==14.0 and replay.rule("bite_cooldown")==0.4,"guard3 restores old explicit defaults without personal-profile migration")
+	for tick in 60:
+		w.advance_tick({}, {}); replay.advance_tick({}, {})
+	check(w.capture_snapshot()==replay.capture_snapshot() and replay.score==8,"old-default guard3 snapshot preserves deterministic repeated-intake replay")
+	w.free(); replay.free()
 	queue_checks()
 func queue_checks() -> void:
 	var w=fresh(); var session=Session.new()
@@ -135,7 +145,7 @@ func live_checks() -> void:
 	check(not client.baits[1].has("hook") and not client.network.presentation.current.has("rng_seed"),"real automatic Bite result remains hook-private")
 	for tick in 35: await frame()
 	check(host.score==8 and client.score==8,"neutral remote ticks automatically repeat after cooldown and take the remaining four grains")
-	for tick in 30: await frame()
+	for tick in 42: await frame()
 	check(host.score==8 and client.score==8 and host.bite_cooldown==0 and client.bite_cooldown==0 and client.bite_feedback_age==0,"empty authority and remote view settle quietly after the repeated intake")
 	# Use the unchanged physical contact route and observe its public result.
 	var bait:Dictionary=host.baits[1]

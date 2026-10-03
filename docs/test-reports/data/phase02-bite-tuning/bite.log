@@ -1,0 +1,60 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+BITE_PASS | automatic Bite uses 12px, four grains, 0.60s cooldown and 0.18s feedback
+BITE_PASS | neutral tick automatically includes mouth-local boundary and excludes outside
+BITE_PASS | automatic intake uses shared score/satiety and starts exact feedback durations
+BITE_PASS | one accepted automatic intake emits exactly one Bite cue
+BITE_PASS | cooldown blocks immediate intake and duplicate feedback
+BITE_PASS | same grain identity cannot award twice through automatic Bite
+BITE_PASS | already-counted food alone cannot advertise a fresh intake
+BITE_PASS | Suck cannot re-award a grain already counted by Bite
+BITE_PASS | single neutral tick takes only four nearest grains
+BITE_PASS | staying beside food repeats automatically until the remaining grains are consumed
+BITE_PASS | repeat cadence is deterministic and respects the 0.60s cooldown
+BITE_PASS | repeat emits one Bite cue per successful intake only
+BITE_PASS | cooldown and animation expire once food is exhausted
+BITE_PASS | empty/far neutral ticks never animate, sound, reward or cool down: (0.0, 0.0)
+BITE_PASS | nearby food triggers immediately after quiet ticks: (0.0, 0.0)
+BITE_PASS | empty/far neutral ticks never animate, sound, reward or cool down: (24.0, 0.0)
+BITE_PASS | nearby food triggers immediately after quiet ticks: (24.0, 0.0)
+BITE_PASS | empty/far neutral ticks never animate, sound, reward or cool down: (80.0, 0.0)
+BITE_PASS | nearby food triggers immediately after quiet ticks: (80.0, 0.0)
+BITE_PASS | pause freezes automatic intake and both feedback countdowns
+BITE_PASS | ended match freezes automatic intake and both feedback countdowns
+BITE_PASS | restart clears automatic Bite state
+BITE_PASS | eligible automatic Bite wins over held Suck on the same tick
+BITE_PASS | Suck works during automatic Bite cooldown
+BITE_PASS | far food leaves held Suck active to draw food toward the mouth
+BITE_PASS | Suck outside Bite range creates no false Bite feedback
+BITE_PASS | Suck drawing food into mouth range lets automatic Bite take at most four in the same tick
+BITE_PASS | swimming into mouth range triggers automatic Bite in the same tick
+BITE_PASS | swimming away before arbitration retains Suck without a false automatic Bite
+BITE_PASS | attached food at the suction/recoil boundary cannot starve automatic intake
+BITE_PASS | automatic ties resolve bait_id then grain array order
+BITE_PASS | undeployed attached reserve food cannot trigger automatic intake
+BITE_PASS | active attached food is automatically bitten without suction peeling
+BITE_PASS | mouth rejects automatic Bite on a real tick
+BITE_PASS | landing rejects automatic Bite on a real tick
+BITE_PASS | caught rejects automatic Bite on a real tick
+BITE_PASS | finished rejects automatic Bite on a real tick
+BITE_PASS | paused rejects automatic Bite on a real tick
+BITE_PASS | returning rejects automatic Bite on a real tick
+BITE_PASS | successful automatic Bite adds no movement lunge
+BITE_PASS | automatic Bite does not pull or teleport other food
+BITE_PASS | no Bite input action or F binding is registered
+BITE_PASS | F press/echo/release cannot produce a Bite command
+BITE_PASS | F press/echo/release cannot produce a Bite command
+BITE_PASS | F press/echo/release cannot produce a Bite command
+BITE_PASS | angler F cannot leak a fish Bite flag
+BITE_PASS | F is irrelevant to fish focus-resume neutral gating
+BITE_PASS | normal no-Bite local input still triggers automatic mouth intake
+BITE_PASS | pre-contact safe/hooked food yields identical full fish observation
+BITE_PASS | pre-contact safe/hooked food yields identical complete public packet
+BITE_PASS | safe/hooked automatic intake behaves equally before physical contact
+BITE_PASS | automatic Bite adds no probabilistic hook activation
+BITE_PASS | pre-contact automatic Bite consumes no hook RNG
+BITE_PASS | real physical hook contact still enters mouth QTE without a Bite key
+BITE_PASS | physical hook contact takes precedence over automatic intake reward
+BITE_PASS | physical contact does not advertise successful automatic intake
+BITE_PASS | later-bait physical contact cancels earlier-bait deferred Suck and automatic intake
+BITE | passed=57 | failed=0

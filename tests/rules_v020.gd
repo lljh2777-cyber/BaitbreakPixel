@@ -150,11 +150,25 @@ func application_checks() -> void:
 func feeding_default_migration() -> void:
 	var file:=ConfigFile.new()
 	file.set_value("rules","version",Rules.VERSION)
-	file.set_value("rules","values",{"bite_range":18.0,"water_strength":0.0})
-	var values:=Store.load_profile(file)
-	check(values.bite_range==14.0 and values.water_strength==0.0,"legacy 18 migrates narrowly, preserving other preferences")
-	file.set_value("rules","values",{"bite_range":20.0})
-	check(Store.load_profile(file).bite_range==20.0,"custom legacy range remains unchanged")
-	values.bite_range=18.0
-	Store.save_profile(file,values)
-	check(file.get_value("rules","feeding_defaults_version")==1 and Store.load_profile(file).bite_range==18.0,"new explicit 18 survives stamped save/load")
+	for revision in [0,1]:
+		file.set_value("rules","feeding_defaults_version",revision)
+		for old_range in ([18.0,14.0] if revision==0 else [14.0]):
+			file.set_value("rules","values",{"bite_range":old_range,"bite_cooldown":0.4,"water_strength":0.0})
+			var values:=Store.load_profile(file)
+			check(values.bite_range==12.0 and values.bite_cooldown==0.6 and values.water_strength==0.0,"old feeding defaults migrate sequentially without resetting preferences: "+str(revision)+"/"+str(old_range))
+		file.set_value("rules","values",{"bite_range":20.0,"bite_cooldown":0.5,"water_strength":0.0})
+		var custom:=Store.load_profile(file)
+		check(custom.bite_range==20.0 and custom.bite_cooldown==0.5 and custom.water_strength==0.0,"custom legacy range/cadence remain unchanged: "+str(revision))
+		file.set_value("rules","values",{"bite_range":20.0,"bite_cooldown":0.4})
+		check(Store.load_profile(file).bite_range==20.0 and Store.load_profile(file).bite_cooldown==0.6,"cadence migrates independently of custom range")
+		file.set_value("rules","values",{"bite_range":14.0,"bite_cooldown":0.5})
+		check(Store.load_profile(file).bite_range==12.0 and Store.load_profile(file).bite_cooldown==0.5,"range migrates independently of custom cadence")
+	file.set_value("rules","feeding_defaults_version",1)
+	file.set_value("rules","values",{"bite_range":18.0,"bite_cooldown":0.5})
+	check(Store.load_profile(file).bite_range==18.0,"revision1 explicit18 is not treated as unstamped legacy default")
+	for old_range in [14.0,18.0]:
+		var explicit:=Rules.normalize({"bite_range":old_range,"bite_cooldown":0.4})
+		Store.save_profile(file,explicit)
+		check(file.get_value("rules","feeding_defaults_version")==2 and Store.load_profile(file)==explicit,"new explicit old values survive stamped save/load: "+str(old_range))
+	var preset:=Rules.parse_document(Rules.document({"bite_range":14.0,"bite_cooldown":0.4}))
+	check(not preset.has("error") and preset.values.bite_range==14.0 and preset.values.bite_cooldown==0.4,"named/imported rules retain explicit old defaults")

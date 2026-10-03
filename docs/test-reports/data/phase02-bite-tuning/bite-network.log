@@ -1,0 +1,148 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+BITE_NETWORK_PASS | fish command has no Bite action bit
+BITE_NETWORK_PASS | obsolete Bite field is discarded: true
+BITE_NETWORK_PASS | obsolete Bite field is discarded: false
+BITE_NETWORK_PASS | obsolete Bite field is discarded: true
+BITE_NETWORK_PASS | obsolete Bite field is discarded: []
+BITE_NETWORK_PASS | obsolete Bite field is discarded: {  }
+BITE_NETWORK_PASS | obsolete Bite field is discarded: <null>
+BITE_NETWORK_PASS | obsolete Bite field is discarded: 1
+BITE_NETWORK_PASS | obsolete Bite field is discarded: 2
+BITE_NETWORK_PASS | obsolete Bite field is discarded: -1
+BITE_NETWORK_PASS | wire sanitization discards obsolete Bite but preserves held Suck
+BITE_NETWORK_PASS | angler command cannot acquire Bite
+BITE_NETWORK_PASS | schema14 captures in-flight automatic Bite from a neutral tick
+BITE_NETWORK_PASS | restore in-flight Bite snapshot
+BITE_NETWORK_PASS | wire/replay deterministic tick 0
+BITE_NETWORK_PASS | wire/replay deterministic tick 1
+BITE_NETWORK_PASS | wire/replay deterministic tick 2
+BITE_NETWORK_PASS | wire/replay deterministic tick 3
+BITE_NETWORK_PASS | wire/replay deterministic tick 4
+BITE_NETWORK_PASS | wire/replay deterministic tick 5
+BITE_NETWORK_PASS | wire/replay deterministic tick 6
+BITE_NETWORK_PASS | wire/replay deterministic tick 7
+BITE_NETWORK_PASS | wire/replay deterministic tick 8
+BITE_NETWORK_PASS | wire/replay deterministic tick 9
+BITE_NETWORK_PASS | wire/replay deterministic tick 10
+BITE_NETWORK_PASS | wire/replay deterministic tick 11
+BITE_NETWORK_PASS | wire/replay deterministic tick 12
+BITE_NETWORK_PASS | wire/replay deterministic tick 13
+BITE_NETWORK_PASS | wire/replay deterministic tick 14
+BITE_NETWORK_PASS | wire/replay deterministic tick 15
+BITE_NETWORK_PASS | wire/replay deterministic tick 16
+BITE_NETWORK_PASS | wire/replay deterministic tick 17
+BITE_NETWORK_PASS | wire/replay deterministic tick 18
+BITE_NETWORK_PASS | wire/replay deterministic tick 19
+BITE_NETWORK_PASS | wire/replay deterministic tick 20
+BITE_NETWORK_PASS | wire/replay deterministic tick 21
+BITE_NETWORK_PASS | wire/replay deterministic tick 22
+BITE_NETWORK_PASS | wire/replay deterministic tick 23
+BITE_NETWORK_PASS | wire/replay deterministic tick 24
+BITE_NETWORK_PASS | wire/replay deterministic tick 25
+BITE_NETWORK_PASS | wire/replay deterministic tick 26
+BITE_NETWORK_PASS | wire/replay deterministic tick 27
+BITE_NETWORK_PASS | wire/replay deterministic tick 28
+BITE_NETWORK_PASS | wire/replay deterministic tick 29
+BITE_NETWORK_PASS | wire/replay deterministic tick 30
+BITE_NETWORK_PASS | wire/replay deterministic tick 31
+BITE_NETWORK_PASS | wire/replay deterministic tick 32
+BITE_NETWORK_PASS | wire/replay deterministic tick 33
+BITE_NETWORK_PASS | wire/replay deterministic tick 34
+BITE_NETWORK_PASS | wire/replay deterministic tick 35
+BITE_NETWORK_PASS | wire/replay deterministic tick 36
+BITE_NETWORK_PASS | wire/replay deterministic tick 37
+BITE_NETWORK_PASS | wire/replay deterministic tick 38
+BITE_NETWORK_PASS | wire/replay deterministic tick 39
+BITE_NETWORK_PASS | wire/replay deterministic tick 40
+BITE_NETWORK_PASS | wire/replay deterministic tick 41
+BITE_NETWORK_PASS | wire/replay deterministic tick 42
+BITE_NETWORK_PASS | wire/replay deterministic tick 43
+BITE_NETWORK_PASS | wire/replay deterministic tick 44
+BITE_NETWORK_PASS | wire/replay deterministic tick 45
+BITE_NETWORK_PASS | wire/replay deterministic tick 46
+BITE_NETWORK_PASS | wire/replay deterministic tick 47
+BITE_NETWORK_PASS | wire/replay deterministic tick 48
+BITE_NETWORK_PASS | wire/replay deterministic tick 49
+BITE_NETWORK_PASS | wire/replay deterministic tick 50
+BITE_NETWORK_PASS | wire/replay deterministic tick 51
+BITE_NETWORK_PASS | wire/replay deterministic tick 52
+BITE_NETWORK_PASS | wire/replay deterministic tick 53
+BITE_NETWORK_PASS | wire/replay deterministic tick 54
+BITE_NETWORK_PASS | wire/replay deterministic tick 55
+BITE_NETWORK_PASS | wire/replay deterministic tick 56
+BITE_NETWORK_PASS | wire/replay deterministic tick 57
+BITE_NETWORK_PASS | wire/replay deterministic tick 58
+BITE_NETWORK_PASS | wire/replay deterministic tick 59
+BITE_NETWORK_PASS | wire/replay deterministic tick 60
+BITE_NETWORK_PASS | wire/replay deterministic tick 61
+BITE_NETWORK_PASS | wire/replay deterministic tick 62
+BITE_NETWORK_PASS | wire/replay deterministic tick 63
+BITE_NETWORK_PASS | wire/replay deterministic tick 64
+BITE_NETWORK_PASS | wire/replay deterministic tick 65
+BITE_NETWORK_PASS | wire/replay deterministic tick 66
+BITE_NETWORK_PASS | wire/replay deterministic tick 67
+BITE_NETWORK_PASS | wire/replay deterministic tick 68
+BITE_NETWORK_PASS | wire/replay deterministic tick 69
+BITE_NETWORK_PASS | schema14 replay repeats automatic intake and preserves exact rewards without Bite input
+BITE_NETWORK_PASS | authority rejects malformed bite_cooldown atomically: -0.1
+BITE_NETWORK_PASS | authority rejects malformed bite_cooldown atomically: nan
+BITE_NETWORK_PASS | authority rejects malformed bite_cooldown atomically: inf
+BITE_NETWORK_PASS | authority rejects malformed bite_cooldown atomically: 0
+BITE_NETWORK_PASS | authority rejects malformed bite_cooldown atomically: 999.0
+BITE_NETWORK_PASS | authority requires bite_cooldown
+BITE_NETWORK_PASS | authority rejects malformed bite_feedback_age atomically: -0.1
+BITE_NETWORK_PASS | authority rejects malformed bite_feedback_age atomically: nan
+BITE_NETWORK_PASS | authority rejects malformed bite_feedback_age atomically: inf
+BITE_NETWORK_PASS | authority rejects malformed bite_feedback_age atomically: 0
+BITE_NETWORK_PASS | authority rejects malformed bite_feedback_age atomically: 999.0
+BITE_NETWORK_PASS | authority requires bite_feedback_age
+BITE_NETWORK_PASS | old snapshot cannot masquerade as Bite schema
+BITE_NETWORK_PASS | restore source for public projection
+BITE_NETWORK_PASS | public schema accepts Bite state
+BITE_NETWORK_PASS | public projection carries neutral Bite feedback
+BITE_NETWORK_PASS | Bite feedback adds no hook/RNG leak
+BITE_NETWORK_PASS | fish presentation reproduces score/satiety
+BITE_NETWORK_PASS | render-only fish world receives Bite feedback
+BITE_NETWORK_PASS | public rejects malformed bite_cooldown atomically: -0.1
+BITE_NETWORK_PASS | public rejects malformed bite_cooldown atomically: nan
+BITE_NETWORK_PASS | public rejects malformed bite_cooldown atomically: 0
+BITE_NETWORK_PASS | public rejects malformed bite_cooldown atomically: 999.0
+BITE_NETWORK_PASS | public rejects malformed bite_feedback_age atomically: -0.1
+BITE_NETWORK_PASS | public rejects malformed bite_feedback_age atomically: nan
+BITE_NETWORK_PASS | public rejects malformed bite_feedback_age atomically: 0
+BITE_NETWORK_PASS | public rejects malformed bite_feedback_age atomically: 999.0
+BITE_NETWORK_PASS | public Bite fields remain a strict allowlist
+BITE_NETWORK_PASS | guard3 restores old explicit defaults without personal-profile migration
+BITE_NETWORK_PASS | old-default guard3 snapshot preserves deterministic repeated-intake replay
+BITE_NETWORK_PASS | remote queue strips obsolete Bite and preserves latest held movement/Suck
+BITE_NETWORK_PASS | held remote state has no Bite edge to replay
+BITE_NETWORK_PASS | duplicate sequence stays rejected without introducing Bite
+BITE_NETWORK_PASS | neutral sequenced remote input automatically eats nearby food on authority
+BITE_NETWORK_PASS | eight-command bounded drain never recreates an obsolete Bite field
+BITE_NETWORK_PASS | deferred held Suck survives bounded queue drain
+BITE_NETWORK_PASS | expired input lease clears stale held input and has no Bite bit
+PIXEL_READY | asymmetric-2d | 640x360 | v0.24.5 | playtest-gate-phase02-feeding-balance
+PIXEL_READY | asymmetric-2d | 640x360 | v0.24.5 | playtest-gate-phase02-feeding-balance
+NETWORK_PHASE | host=true | waiting | 房间已创建，等待另一位玩家
+NETWORK_PHASE | host=false | connecting | 正在连接房主…
+BITE_NETWORK_PASS | real ENet fish peer connects
+NETWORK_PHASE | host=false | waiting | 已进入房间，双方准备后开始
+NETWORK_PHASE | host=true | starting | 等待对方载入池塘…
+NETWORK_PHASE | host=false | starting | 等待房主开始…
+NETWORK_PHASE | host=true | countdown | 
+NETWORK_PHASE | host=false | countdown | 
+NETWORK_PHASE | host=true | playing | 
+NETWORK_PHASE | host=false | playing | 
+BITE_NETWORK_PASS | fish receives prepared empty public world
+BITE_NETWORK_PASS | real ENet neutral empty ticks produce no Bite feedback
+BITE_NETWORK_PASS | real ENet authority automatically takes four nearby grains without a key command
+BITE_NETWORK_PASS | actual ENet public result carries automatic score and satiety
+BITE_NETWORK_PASS | actual ENet state carries successful automatic Bite countdown and snap
+BITE_NETWORK_PASS | real automatic Bite result remains hook-private
+BITE_NETWORK_PASS | neutral remote ticks automatically repeat after cooldown and take the remaining four grains
+BITE_NETWORK_PASS | empty authority and remote view settle quietly after the repeated intake
+BITE_NETWORK_PASS | real physical hook contact reaches remote fish mouth QTE with neutral input
+BITE_NETWORK_PASS | physical contact preempts automatic food reward and exposes no hidden hook field
+BITE_NETWORK_PASS | real contact result cannot pretend an automatic intake succeeded
+BITE_NETWORK | passed=134 | failed=0

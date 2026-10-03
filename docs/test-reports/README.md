@@ -74,3 +74,5 @@
 - [P2.2 饵型验证与人工试玩门](PHASE02-BAIT-VALIDATION.md)
 
 - [0.24.4 distance tuning and manual gate](PHASE02-DISTANCE-VALIDATION.md)
+
+- [0.24.5 mouth range/cadence tuning and manual gate](PHASE02-BITE-TUNING-VALIDATION.md)

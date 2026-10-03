@@ -2,7 +2,7 @@ extends RefCounted
 
 # Persistence boundary. Simulation never reads user files or touches preferences.
 const Rules = preload("res://scripts/game_rules.gd")
-const FEEDING_DEFAULTS_VERSION := 1
+const FEEDING_DEFAULTS_VERSION := 2
 
 static func load_profile(file: ConfigFile) -> Dictionary:
 	if int(file.get_value("rules","version",0)) in [1,Rules.VERSION]:
@@ -11,8 +11,13 @@ static func load_profile(file: ConfigFile) -> Dictionary:
 		values=values.duplicate(true)
 		# Legacy saves cannot distinguish the old built-in 18 from an explicit 18.
 		# Migrate that value once; preserve every other custom rule.
-		if int(file.get_value("rules","feeding_defaults_version",0))<FEEDING_DEFAULTS_VERSION and values.get("bite_range")==18.0:
+		var revision := int(file.get_value("rules","feeding_defaults_version",0))
+		if revision<1 and values.get("bite_range")==18.0:
 			values.bite_range=14.0
+		# Revision 2 changes only prior defaults, once; explicit later saves persist.
+		if revision<2:
+			if values.get("bite_range")==14.0: values.bite_range=12.0
+			if values.get("bite_cooldown")==0.4: values.bite_cooldown=0.6
 		return Rules.normalize(values)
 	var old := {}
 	for key in ["line_sensitivity","line_force","effort_frequency","effort_window","effort_boost","effort_weak"]:

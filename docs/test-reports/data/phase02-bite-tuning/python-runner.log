@@ -1,0 +1,57 @@
+test_capture_success_cannot_overwrite_failure (test_capture_contract.CaptureContractTests.test_capture_success_cannot_overwrite_failure) ... ok
+test_every_renderer_capture_producer_supports_override (test_capture_contract.CaptureContractTests.test_every_renderer_capture_producer_supports_override) ... ok
+test_render_only_reel_hand_needs_no_capture_option (test_capture_contract.CaptureContractTests.test_render_only_reel_hand_needs_no_capture_option) ... ok
+test_direct_retired_suite_exits_fast_nonzero (test_godot_runner.GodotFailureTests.test_direct_retired_suite_exits_fast_nonzero) ... ok
+test_preset_file_collision_still_reports_engine_error (test_godot_runner.GodotFailureTests.test_preset_file_collision_still_reports_engine_error) ... ok
+test_real_parse_error_fails (test_godot_runner.GodotFailureTests.test_real_parse_error_fails) ... ok
+test_runtime_abort_cannot_hang_runner (test_godot_runner.GodotFailureTests.test_runtime_abort_cannot_hang_runner) ... ok
+test_continuous_alpha_summary (test_run_tests.ClassificationTests.test_continuous_alpha_summary) ... ok
+test_empty_success_is_not_test_success (test_run_tests.ClassificationTests.test_empty_success_is_not_test_success) ... ok
+test_engine_error_after_summary_is_not_green (test_run_tests.ClassificationTests.test_engine_error_after_summary_is_not_green) ... ok
+test_failed_count_even_with_zero_exit (test_run_tests.ClassificationTests.test_failed_count_even_with_zero_exit) ... ok
+test_legacy_pass_marker (test_run_tests.ClassificationTests.test_legacy_pass_marker) ... ok
+test_nonzero_exit_even_with_good_summary (test_run_tests.ClassificationTests.test_nonzero_exit_even_with_good_summary) ... ok
+test_parse_error_with_zero_exit_is_not_green (test_run_tests.ClassificationTests.test_parse_error_with_zero_exit_is_not_green) ... ok
+test_passed_only_legacy_summary (test_run_tests.ClassificationTests.test_passed_only_legacy_summary) ... ok
+test_script_error_with_zero_exit_is_not_green (test_run_tests.ClassificationTests.test_script_error_with_zero_exit_is_not_green) ... ok
+test_timeout_even_after_good_summary (test_run_tests.ClassificationTests.test_timeout_even_after_good_summary) ... ok
+test_valid_summary (test_run_tests.ClassificationTests.test_valid_summary) ... ok
+test_keyboard_interrupt_cleans_process_tree (test_run_tests.ProcessTests.test_keyboard_interrupt_cleans_process_tree) ... ok
+test_missing_executable_is_blocked (test_run_tests.ProcessTests.test_missing_executable_is_blocked) ... ok
+test_normal_process (test_run_tests.ProcessTests.test_normal_process) ... ok
+test_timeout_cleans_child_holding_pipe (test_run_tests.ProcessTests.test_timeout_cleans_child_holding_pipe) ... ok
+test_timeout_is_bounded (test_run_tests.ProcessTests.test_timeout_is_bounded) ... ok
+test_historical_failures_still_selectable (test_run_tests.RegistryTests.test_historical_failures_still_selectable) ... ok
+test_invalid_timeout_rejected (test_run_tests.RegistryTests.test_invalid_timeout_rejected) ... usage: python3 -m unittest [-h] [--godot GODOT]
+                           [--profile {current,native,historical,all-headless}]
+                           [--suite SUITE] [--timeout TIMEOUT]
+                           [--output-directory OUTPUT_DIRECTORY] [--pack PACK]
+                           [--import] [--list]
+python3 -m unittest: error: --timeout must be finite and greater than zero
+usage: python3 -m unittest [-h] [--godot GODOT]
+                           [--profile {current,native,historical,all-headless}]
+                           [--suite SUITE] [--timeout TIMEOUT]
+                           [--output-directory OUTPUT_DIRECTORY] [--pack PACK]
+                           [--import] [--list]
+python3 -m unittest: error: --timeout must be finite and greater than zero
+usage: python3 -m unittest [-h] [--godot GODOT]
+                           [--profile {current,native,historical,all-headless}]
+                           [--suite SUITE] [--timeout TIMEOUT]
+                           [--output-directory OUTPUT_DIRECTORY] [--pack PACK]
+                           [--import] [--list]
+python3 -m unittest: error: --timeout must be finite and greater than zero
+usage: python3 -m unittest [-h] [--godot GODOT]
+                           [--profile {current,native,historical,all-headless}]
+                           [--suite SUITE] [--timeout TIMEOUT]
+                           [--output-directory OUTPUT_DIRECTORY] [--pack PACK]
+                           [--import] [--list]
+python3 -m unittest: error: --timeout must be finite and greater than zero
+ok
+test_registry_covers_every_source_suite (test_run_tests.RegistryTests.test_registry_covers_every_source_suite) ... ok
+test_retirement_is_explicit_and_replacement_recorded (test_run_tests.RegistryTests.test_retirement_is_explicit_and_replacement_recorded) ... ok
+test_unknown_suite_fails (test_run_tests.RegistryTests.test_unknown_suite_fails) ... ok
+
+----------------------------------------------------------------------
+Ran 28 tests in 3.010s
+
+OK

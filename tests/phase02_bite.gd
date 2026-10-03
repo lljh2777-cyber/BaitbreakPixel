@@ -30,13 +30,13 @@ func key_event(pressed: bool=true, echo: bool=false) -> InputEventKey:
 	return event
 func _initialize() -> void:
 	var w=fresh()
-	check(w.rule("bite_range")==14 and w.rule("bite_intake")==4 and is_equal_approx(w.rule("bite_cooldown"),0.4) and is_equal_approx(w.BITE_FEEDBACK_SECONDS,0.18),"automatic Bite uses 14px, four grains, 0.40s cooldown and 0.18s feedback")
+	check(w.rule("bite_range")==12 and w.rule("bite_intake")==4 and is_equal_approx(w.rule("bite_cooldown"),0.6) and is_equal_approx(w.BITE_FEEDBACK_SECONDS,0.18),"automatic Bite uses 12px, four grains, 0.60s cooldown and 0.18s feedback")
 	var cues:Array[String]=[]
 	w.feedback_requested.connect(func(cue: String) -> void: cues.append(cue))
-	var inside=food(w,0,0,Vector2(13.9,0)); var edge=food(w,0,1,Vector2(14,0)); var outside=food(w,0,2,Vector2(14.01,0))
+	var inside=food(w,0,0,Vector2(11.9,0)); var edge=food(w,0,1,Vector2(12,0)); var outside=food(w,0,2,Vector2(12.01,0))
 	w.advance_tick({},{})
 	check(inside.eaten and edge.eaten and not outside.eaten,"neutral tick automatically includes mouth-local boundary and excludes outside")
-	check(w.score==2 and w.satiety>50 and is_equal_approx(w.bite_cooldown,0.4) and is_equal_approx(w.bite_feedback_age,0.18),"automatic intake uses shared score/satiety and starts exact feedback durations")
+	check(w.score==2 and w.satiety>50 and is_equal_approx(w.bite_cooldown,0.6) and is_equal_approx(w.bite_feedback_age,0.18),"automatic intake uses shared score/satiety and starts exact feedback durations")
 	check(cues==["bite"],"one accepted automatic intake emits exactly one Bite cue")
 	var score:float=w.score; w._attempt_bite()
 	check(w.score==score and not outside.eaten and cues==["bite"],"cooldown blocks immediate intake and duplicate feedback")
@@ -99,7 +99,7 @@ func repeat_checks() -> void:
 	var last_intake_tick:int=w.simulation_tick
 	var intervals:Array[int]=[]
 	var rewards:Array[int]=[eaten(w)]
-	for tick in 80:
+	for tick in 120:
 		var before:int=eaten(w)
 		w.advance_tick({},{})
 		if eaten(w)!=before:
@@ -107,7 +107,7 @@ func repeat_checks() -> void:
 			last_intake_tick=w.simulation_tick
 			rewards.append(eaten(w))
 	check(rewards==[4,8,10],"staying beside food repeats automatically until the remaining grains are consumed")
-	check(intervals.size()==2 and intervals[0]==intervals[1] and intervals[0]*w.TICK_SECONDS>=0.4-0.000001 and intervals[0]*w.TICK_SECONDS<=0.4+w.TICK_SECONDS+0.000001,"repeat cadence is deterministic and respects the 0.40s cooldown")
+	check(intervals.size()==2 and intervals[0]==intervals[1] and intervals[0]*w.TICK_SECONDS>=0.6-0.000001 and intervals[0]*w.TICK_SECONDS<=0.6+w.TICK_SECONDS+0.000001,"repeat cadence is deterministic and respects the 0.60s cooldown")
 	check(cues==["bite","bite","bite"],"repeat emits one Bite cue per successful intake only")
 	check(w.bite_cooldown==0 and w.bite_feedback_age==0,"cooldown and animation expire once food is exhausted")
 	w.free()
@@ -145,11 +145,11 @@ func priority_checks() -> void:
 	check(w.feeding and w.baits[0].grains[0].pos.distance_to(w.mouth())<before.distance_to(w.mouth()),"far food leaves held Suck active to draw food toward the mouth")
 	check(w.bite_feedback_age==0 and w.bite_cooldown==0,"Suck outside Bite range creates no false Bite feedback")
 	w.free(); w=fresh()
-	for i in 5: food(w,0,i,Vector2(14.1+i*0.1,0))
+	for i in 5: food(w,0,i,Vector2(12.1+i*0.1,0))
 	w.advance_tick({"suck":true},{})
 	check(eaten(w)==4 and not w.feeding and w.bite_feedback_age>0,"Suck drawing food into mouth range lets automatic Bite take at most four in the same tick")
 	w.free(); w=fresh()
-	var approaching=food(w,0,0,Vector2(14.1,0))
+	var approaching=food(w,0,0,Vector2(12.1,0))
 	w.velocity=Vector2(120,0)
 	w.advance_tick({"move":Vector2.RIGHT},{})
 	check(approaching.eaten and w.score==1,"swimming into mouth range triggers automatic Bite in the same tick")
@@ -159,8 +159,8 @@ func priority_checks() -> void:
 	check(not retreating.eaten and w.feeding and w.bite_cooldown==0 and w.bite_feedback_age==0,"swimming away before arbitration retains Suck without a false automatic Bite")
 	w.free(); w=fresh()
 	var bait:Dictionary=w.baits[0]
-	bait.active=true; bait.home=w.mouth()+Vector2(14.2,0); bait.suction_offset=Vector2(-0.4,0); bait.pos=bait.home+bait.suction_offset
-	var attached=food(w,0,0,Vector2(17.8,0),false); attached.offset=Vector2.ZERO
+	bait.active=true; bait.home=w.mouth()+Vector2(12.2,0); bait.suction_offset=Vector2(-0.4,0); bait.pos=bait.home+bait.suction_offset
+	var attached=food(w,0,0,Vector2(15.8,0),false); attached.offset=Vector2.ZERO
 	w.advance_tick({"suck":true},{})
 	check(attached.eaten and w.score==1 and not w.feeding,"attached food at the suction/recoil boundary cannot starve automatic intake")
 	w.free()

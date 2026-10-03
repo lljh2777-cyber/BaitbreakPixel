@@ -1,3 +1,11 @@
+# 0.24.5 mouth tuning addendum
+
+Default mouth radius14→12px; accepted-intake cooldown.40→.60s. Capacity4/6/8, smooth suction field, all profile multipliers, hook physics, maps and RNG unchanged. Developer cooldown range now .30–.80s.
+
+Authority schema14/guard3 and public guard1 remain: physics code is identical and snapshots carry explicit normalized rules/countdowns, so prior guard3 snapshots keep their original14/.4 values and replay semantics. Network peers require exact build0.24.5. Only personal ConfigFile profiles migrate old defaults sequentially at feeding-defaults revision2; named presets and snapshot rules are not migrated. Unstamped18 follows18→14→12; stamped revision1 explicit18 survives. Prior14/.4 migrate independently; new revision2 saves retain later explicit old values. Old hand-entered values identical to old defaults cannot be distinguished and migrate once.
+
+See [bounded validation and open manual gate](../test-reports/PHASE02-BITE-TUNING-VALIDATION.md). No new full-balance claim or Phase3 work.
+
 # 0.24.4 distance tuning addendum
 
 Automatic Bite defaults to 14 px. The original longitudinal field 1−0.4d (60% at far edge) is replaced by t²(3−2t), t=1−clamp(depth/range,0,1). Existing cone length, width, lateral factor and physical hook-contact radius are unchanged. Loose-grain velocity now includes this same field once; peel progress and whole-bait displacement target already used it. Body target remains limited by mouth distance and existing response speed; stronger field does not imply larger actual displacement after reaching the mouth.

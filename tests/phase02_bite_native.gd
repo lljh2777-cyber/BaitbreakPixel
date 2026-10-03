@@ -77,13 +77,13 @@ func run() -> void:
 	check(far.get_region(Rect2i(350,188,12,12)).get_data()==far_ready.get_region(Rect2i(350,188,12,12)).get_data(),"far automatic tick does not visually remove unreachable food")
 	check(not game.baits[0].grains[0].eaten and game.score==0 and game.bite_cooldown==0 and game.bite_feedback_age==0,"far food is not collected and incurs no accepted cooldown")
 	check(far.get_region(Rect2i(272,31,80,17)).get_data()==far_ready.get_region(Rect2i(272,31,80,17)).get_data(),"far automatic tick leaves ready hint unchanged")
-	# The former 18px range must no longer accept a visually separated grain.
-	setup_fixture(); put_food(Vector2(16,0))
-	var outside_14:=await render("bite-outside-14-ready")
+	# The former 14px range must no longer accept a visually separated grain.
+	setup_fixture(); put_food(Vector2(13,0))
+	var outside_12:=await render("bite-outside-12-ready")
 	game.advance_tick({}, {}); game.elapsed=2.0
-	var outside_14_idle:=await render("bite-outside-14-idle")
-	check(not game.baits[0].grains[0].eaten and game.score==0 and game.bite_cooldown==0 and game.bite_feedback_age==0,"16px grain remains outside the actual 14px automatic Bite range")
-	check(outside_14.get_data()==outside_14_idle.get_data(),"outside-14px automatic tick has no false food disappearance, jaw contact, or HUD success")
+	var outside_12_idle:=await render("bite-outside-12-idle")
+	check(not game.baits[0].grains[0].eaten and game.score==0 and game.bite_cooldown==0 and game.bite_feedback_age==0,"13px grain remains outside the actual 12px automatic Bite range")
+	check(outside_12.get_data()==outside_12_idle.get_data(),"outside-12px automatic tick has no false food disappearance, jaw contact, or HUD success")
 	setup_fixture(); put_food(Vector2(7,0),4)
 	var offered:=await render("bite-food-ready")
 	game.advance_tick({}, {}); game.elapsed=2.0
@@ -99,6 +99,17 @@ func run() -> void:
 	check(recovered.get_region(Rect2i(272,31,80,17)).get_data()==ready.get_region(Rect2i(272,31,80,17)).get_data(),"cooldown recovery restores automatic Bite hint")
 	check(active.get_region(Rect2i(366,0,274,49)).get_data()==cooling.get_region(Rect2i(366,0,274,49)).get_data(),"jaw animation does not disturb neighboring HUD")
 	check(active.get_region(Rect2i(272,0,80,30)).get_data()==recovered.get_region(Rect2i(272,0,80,30)).get_data(),"Bite hint stays clear of suction label and power bar")
+	setup_fixture(); put_food(Vector2(1,0),8)
+	game.advance_tick({}, {})
+	for tick in 24: game.advance_tick({}, {})
+	game.elapsed=2.0
+	var delayed:=await render("bite-still-cooling-at-040")
+	check(game.score==4 and game.bite_cooldown>0,"native actual simulation does not repeat at former .40s cadence")
+	for tick in 12: game.advance_tick({}, {})
+	game.elapsed=2.0
+	var repeated_bite:=await render("bite-repeat-at-060")
+	check(game.score==8 and game.bite_feedback_age>0 and is_equal_approx(game.bite_cooldown,0.6),"native actual simulation repeats at .60s with four remaining grains")
+	check(delayed.get_region(Rect2i(285,160,75,65)).get_data()!=repeated_bite.get_region(Rect2i(285,160,75,65)).get_data(),".60s repeat visibly restarts jaw feedback")
 	for state in ["ready","active","cooldown"]:
 		setup_fixture(); put_food(Vector2(7,0),4)
 		if state!="ready": game.advance_tick({}, {}); game.elapsed=2.0
