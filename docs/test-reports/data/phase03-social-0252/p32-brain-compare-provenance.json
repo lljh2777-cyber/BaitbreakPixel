@@ -1,0 +1,9 @@
+{
+  "baseline_commit": "5e04115c8bad9861935b18045d2ffd4dc2b59388",
+  "baseline_source": "scripts/npc_fish_brain.gd",
+  "baseline_sha256": "7b8eb629b97f2c224730e2f88f12551bc004af9e2de451f2884b0b17f2ecd261",
+  "comparison_harness_sha256": "052ced082c6dc0243d08c3ca01f6ac7504fd59d5145ad56bf3647559ecca1d9c",
+  "current_brain_sha256": "6fd3c26b85f23e34d055f3904a27e11cb5adac30ee55866cf971f58215af731a",
+  "assertion": "1600 deterministic varied fixtures; social_enabled=false; all original intent bytes and NPC-local RNG states equal frozen P3.2 source",
+  "command": "XDG_DATA_HOME=/tmp/baitbreak-social-brain-data XDG_CACHE_HOME=/tmp/baitbreak-social-brain-cache /workspace/shared/baitbreak-toolchain-472/Godot_v4.7.2-stable_linux.x86_64 --headless --path . --script res://artifacts/phase03-social-brain-focused/p32-brain-compare.gd"
+}

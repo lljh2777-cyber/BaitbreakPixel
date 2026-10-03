@@ -13,7 +13,7 @@ Windows 可使用 `D:\python\python.exe`；用 `--godot "引擎可执行文件�
 
 ## 注册表与状态
 
-[`suite_registry.json`](suite_registry.json) 显式登记全部 113 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
+[`suite_registry.json`](suite_registry.json) 显式登记全部 124 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
 
 - `current`：当前有效的回归门禁；不按文件名版本新旧决定。`--profile current` 运行无窗口套件，`--profile native` 运行图形套件。已重新验证的 effort、net_animation、rules_network 等较早版本仍在当前门禁中
 - `historical`：当前检出复现了失败的诊断套件。保留原断言，失败仍返回非零；这不是“已证明所有断言过时”，更不是通过。具体原因和结果见[维护报告](../docs/test-reports/TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md)
@@ -39,7 +39,7 @@ python3 tools/run_tests.py --suite shore_native_v015
 
 ## 原生与打包截图
 
-所有 36 个使用原生画面、且会写 PNG 的脚本都接受：
+所有 38 个使用原生画面、且会写 PNG 的脚本都接受：
 
 ```sh
 godot --path . --script res://tests/wood_fade_native.gd -- --test-profile --capture-output-directory=/absolute/writable/captures
@@ -47,7 +47,7 @@ godot --path . --script res://tests/wood_fade_native.gd -- --test-profile --capt
 
 默认路径不变。目录会创建，空值、建目录失败、PNG 写入失败都返回非零。5 个旧脚本继续支持 `--visual-output=`，同时提供时以 `--capture-output-directory=` 为准。
 
-计数说明：37 个脚本使用原生渲染/画面回读，其中 `reel_hand_native_v016` 只验证像素连通性，不写图片。另一个会写图的 `plant_art` 是无窗口图像测试：默认不写图，保留 `--preview=文件名`，也支持公共目录参数生成 `plant-art-preview.png`；显式 `--preview` 优先。因此所有 37 个会写图片的入口均有可写路径选择，不需要给不写文件的测试增加空参数。
+计数说明：39 个脚本使用原生渲染/画面回读，其中 `reel_hand_native_v016` 只验证像素连通性，不写图片。另一个会写图的 `plant_art` 是无窗口图像测试：默认不写图，保留 `--preview=文件名`，也支持公共目录参数生成 `plant-art-preview.png`；显式 `--preview` 优先。因此所有 39 个会写图片的入口均有可写路径选择，不需要给不写文件的测试增加空参数。
 
 发行 PCK 故意不包含 `tests/` 和 `tools/`。运行器用外部绝对 `--script` 加载测试，让 `res://scripts/` 和素材来自包内：
 
@@ -107,7 +107,47 @@ python3 tools/phase02_run_feeding.py --phase heldout --seed 31001 --rounds 100 -
 - `phase03_npc_statistics`：0/3/6 的 simulation time、snapshot bytes、公开包压缩前/后字节；不把测量当作长期性能保证
 - `phase03_npc_native`：原生三种外观、玩家最上层、公开副本/隐藏真值像素等价、岸边和观察视角，以及0/3/6冻结帧耗时
 
-正式门禁：`python3 tools/run_tests.py --import --profile current` 与 `--profile native`；渲染脚本需真实图形环境。当前报告见[0.25.0 验证](../docs/test-reports/PHASE03-AMBIENT-VALIDATION-0.25.0.md)。P3.2 尚未开放，未登记空壳 foraging/social/hook_target 测试来假装后续阶段已完成。
+正式门禁：`python3 tools/run_tests.py --import --profile current` 与 `--profile native`；渲染脚本需真实图形环境。历史结果见[0.25.0 验证](../docs/test-reports/PHASE03-AMBIENT-VALIDATION-0.25.0.md)。本轮保留显式 PassiveNPC 控制，以继续验证环境游动和玩家主随机源隔离。
+
+## Phase 3.2 抢食竞争
+
+- `phase03_npc_foraging_brain`：独立旧游动对照、合法公共线索、饱食/风险/摄食频率、确定性和输入不可变
+- `phase03_npc_foraging`：玩家/NPC 共用 mouth/Bite 容量与冷却、吸食物理、真实归属/去重、远处吸食者不补充其他鱼的剥离预算、隐藏真值等价
+- `phase03_food_reachability`：1,000 distinct seeds × 生存/对战 × 挑战/练习 = 4,000 场景，反复 NPC 耗尽后通过既有补给给出不降低目标的玩家摄食见证；结构可达性，不是自动获胜或熟练玩家保证
+- 既有 snapshot/network/statistics/native 套件增加实际抢食、私有字段/统计、真实 ENet 消耗同步和摄食画面
+- 自动策略对照：`NoNPC` / `PassiveNPC` / `ForagingNPC`，使用原 P2 Mixed，仅用于发现极端失衡；完整复现与限制见 [实验协议](../tools/phase03_competition_protocol.md)
+
+权威 schema15、FoodProfile guard3 保持；新增配置/内部字段严格检查，所以旧 0.25.0 快照明确拒绝，网络 exact-build=0.25.1，angler NPC 公共投影 guard2。该阶段当时未启用 P3.3/P3.4；用户随后确认 P3.2 试玩通过。历史[报告与人工门](../docs/test-reports/PHASE03-FORAGING-VALIDATION-0.25.1.md)。
+
+
+## Phase 3.3 社会线索
+
+- `phase03_npc_social_brain`：短暂 HESITATE/FLEE、饥饿 COMPETE、连续线索锁存与恢复、危险事件年龄/距离、边界逃离、输入/RNG隔离及严格私有状态
+- `phase03_npc_social`：NPC专用观察边界、附近公开动作/实际危险结果、玩家警惕隔离、隐藏真值配对与真实60Hz食物摄入
+- snapshot/network/native原套件扩展到三种社会行为：生产意图生成、严格字段/旧快照拒绝、回放、双角色真实ENet及像素等价
+- `tools/phase03_social_diagnostics.gd` 与 `tools/phase03_analyze_social.py`：离线行为/真实钩关系诊断，显式区分自然模拟与配对干预，报告类别数量、简单分类器/基准和>90–95%审查标记
+
+仍为schema15、FoodProfile guard3；新增私有字段与世界事件严格校验，旧0.25.1快照拒绝。网络exact-build0.25.2，angler投影guard3，NPC公共六字段不扩展。只有运动/摄食结果可见，没有数值警惕HUD。P3.4与多竿不在本轮。当前[验证与人工门](../docs/test-reports/PHASE03-SOCIAL-VALIDATION-0.25.2.md)。
+
+## Phase 3.4 钓错目标
+
+- `phase03_npc_hook_target`：真实嘴部/相对扫掠、稳定目标与线端、玩家继续摄食/回巢、正常 W/S、独立 RNG、逃脱/断线/捕获/延迟新 ID 重生、暂停/终局与接触前隐私
+- 原 snapshot/network 套件扩展到 Hook 全生命周期、严格非法状态原子拒绝、两个角色真实 ENet 与目标切换表现
+- `phase03_npc_hook_native`：原生鱼/岸边/观察镜头的 NPC 中钩/提鱼/捕获/逃脱/断线、正确线端、公共副本和未接触隐藏真值像素等价
+- `tools/phase03_run_hook_diagnostics.py`：NoNPC / PassiveNPC / ForagingNPC / HookableNPC 四组同种子实际 60 Hz 对照，含 Hook/钓错鱼及有限观察窗，不代替人工平衡
+
+Authority schema15；旧 0.25.2 缺少 Hook 生命周期字段的快照明确拒绝。网络 exact-build0.25.3，鱼端 NPC guard2、钓鱼人 guard4。当前[验证与人工门](../docs/test-reports/PHASE03-HOOK-VALIDATION-0.25.3.md)。
+
+
+## 0.25.4 · P3.4 上钩开局与 NPC 收近修正
+
+- `player_hook_entry`：准备阶段按键与最后一帧边界、没有输入缓存、原绿区/超时、移动后缠线准入、接触/张力中断、原回合终局原因、snapshot 重放
+- `player_hook_network`：远端鱼与钓鱼人真实 ENet 准备/成功流程、同批警告与可见按键归属、历史年龄/编号/重放守卫
+- `player_hook_entry_native`：重复入口/缠线、真实键盘长按/重复、暂停和失焦恢复、重开、原生画面与接触中断提示
+- `phase03_npc_hook_pacing`：浅/中/深与横向偏移的真实接触后连续收近、正常 W/S、完整提鱼动画、松线与持续高张力断线，不将 NPC 捕获算玩家终局
+
+网络 exact-build0.25.4；authority schema15、鱼端 NPC guard2、钓鱼人 guard4 不改。本轮只提交源码，不新建 Windows 包；[验证与人工复测](../docs/test-reports/PHASE03-HOOK-FIX-0.25.4.md)。
+
 
 ## WG-3 可选水域接入
 
@@ -115,3 +155,5 @@ python3 tools/phase02_run_feeding.py --phase heldout --seed 31001 --rounds 100 -
 
 
 WG-4（0.25.3）扩展上述两套测试：四种设置选择与实际画面、关闭时延迟生成、无效项、失败恢复、两套缓存/14 张存活纹理上限及驱逐后复现；960 tick 中循环切换构图，并覆盖摄食、缠线和抄网。默认源码与 PCK 的针对性执行见 [WG-4 报告](../docs/watergen/WG4_REPORT.md)。
+
+WG-5 增加私有 `tests/watergen/cover_materials.gd` 契约及材质原生对照入口。0.25.6 同步后，顶层注册表同时保留上游 NPC/QTE 与 watergen 套件。

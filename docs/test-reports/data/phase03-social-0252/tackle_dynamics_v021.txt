@@ -1,0 +1,31 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+TACKLE_PASS | rod moves first; water entry point cannot follow instantly
+TACKLE_PASS | inertial line naturally crosses to both sides during left/right reversal
+TACKLE_PASS | line stays attached to the actual tip and the independently moving float
+TACKLE_PASS | stopping the rod retains float momentum without a teleport or velocity reset
+TACKLE_PASS | water-resistance integration agrees at 30/60/120 Hz
+TACKLE_PASS | W deploys the winding hand while hooked and actually reeling
+TACKLE_PASS | winding fingers share the crank knob's exact moving anchor
+TACKLE_PASS | reel phase integrates actual speed smoothly
+TACKLE_PASS | W to S retracts and repositions the hand instead of snapping poses
+TACKLE_PASS | pay-out fingers hold the reel adjuster; they do not wind backwards
+TACKLE_PASS | paying out leaves the crank phase stationary
+TACKLE_PASS | float velocity and both hand phases survive snapshot round trips
+TACKLE_PASS | restored tackle feedback replays deterministically
+TACKLE_PASS | pause freezes float and hand animation
+TACKLE_PASS | letting go smoothly returns the left hand off screen
+TACKLE_PASS | role projection preserves the source authority including private social events
+TACKLE_PASS | synthetic tackle frames pass the actual angler role validator
+TACKLE_PASS | remote float and reaching hand interpolate between network frames
+TACKLE_PASS | remote reel phases cross 360 degrees without spinning backwards
+TACKLE_PASS | W animates the winding hand before any fish bites
+TACKLE_PASS | S switches to the pay-out gesture before a bite
+TACKLE_PASS | free pay-out advances the spool phase without reversing the crank
+TACKLE_PASS | letting go before a bite also stops and retracts the hand
+TACKLE_PASS | entry QTE suppresses stale free-spool motion while reeling is locked
+TACKLE_PASS | the hooked spool takes over the same animation after the bite
+TACKLE_PASS | after escape the free rig keeps supporting pay-out animation
+TACKLE_PASS | a fully paid-out free line does not show endless spooling
+TACKLE_PASS | cached speed cannot animate an undeployed or retrieved rig
+TACKLE_V016 | passed=28 | failed=0 | first_rod=0.31838989257812 | first_float=0.00015258789062 | dt_positions=[426.595017317242, 426.595017317242, 426.595017317242]

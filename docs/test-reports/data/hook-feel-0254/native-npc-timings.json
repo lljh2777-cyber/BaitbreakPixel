@@ -1,0 +1,25 @@
+{
+	"engine": "4.7.2-stable (official)",
+	"frame_policy": "one ordinary 60 Hz simulation tick per renderer frame; still captures pause only presentation",
+	"rendered": true,
+	"rows": [
+		{
+			"control": "reel",
+			"landing_seconds": 7.38333333333333,
+			"max_hooked_step": 1.4420166015625,
+			"outcome": "captured",
+			"player_match_over": false,
+			"terminal_seconds": 8.43333333333333,
+			"wrong_catches": 1
+		},
+		{
+			"control": "auto_reel",
+			"landing_seconds": 11.0,
+			"max_hooked_step": 0.82682991027832,
+			"outcome": "captured",
+			"player_match_over": false,
+			"terminal_seconds": 12.05,
+			"wrong_catches": 1
+		}
+	]
+}

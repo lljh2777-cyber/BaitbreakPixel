@@ -3,6 +3,7 @@ extends SceneTree
 const Main = preload("res://scenes/main.tscn")
 const Camera = preload("res://scripts/pond_camera.gd")
 const Art = preload("res://scripts/pixel_art.gd")
+const NPCState = preload("res://scripts/npc_fish_state.gd")
 const NPCPublic = preload("res://scripts/npc_fish_public_state.gd")
 const Shore = preload("res://scripts/shore_view.gd")
 const POINTS: Array[Vector2] = [Vector2(600,150),Vector2(770,145),Vector2(850,230)]
@@ -89,7 +90,7 @@ func same_hud(a: Image, b: Image) -> bool:
 
 func toggle_private_truth() -> void:
 	# Deliberate render-only canaries, never advanced or accepted as a save.
-	# Even unsupported future private state must be absent at this boundary.
+	# Public geometry is the only NPC rendering contract in every private state.
 	for bait in game.baits:
 		bait.hook=not bait.hook; bait.hook_id=9000+int(bait.bait_id) if bait.hook else 0
 	for fish in game.npc_fishes:
@@ -98,7 +99,9 @@ func toggle_private_truth() -> void:
 		fish.target_bait_id=987; fish.focus_bait_id=987
 		fish.risk_tolerance=0.999; fish.satiety=1.0
 		fish.suspicion_by_bait={987:0.999}; fish.caution_by_bait={987:0.999}
-		fish.caution_state="ALARMED"; fish.behavior_state="FLEE"; fish.behavior_age=999.0
+		fish.caution_state="ALARMED"; fish.behavior_state="FEED"; fish.behavior_age=999.0
+		fish.feeding=true; fish.power=0.95; fish.bite_cooldown=0.4; fish.intent_aim=-fish.aim
+		for key: String in NPCState.SOCIAL_MEMORY_FIELDS: fish[key]={"private_render_canary":987}
 
 func run() -> void:
 	if not prepare_capture_output(): quit(2); return
@@ -165,6 +168,8 @@ func run() -> void:
 			if overlap.get_pixelv(origin+Vector2i(x,y))!=empty.get_pixelv(origin+Vector2i(x,y)): player_unchanged=false
 	check(opaque_count>100 and player_unchanged,"all opaque player pixels stay in front when an NPC overlaps the protagonist")
 	await check_shore_views()
+	await check_actual_foraging()
+	await check_actual_social()
 	await record_frame_costs()
 	print("NPC_NATIVE | passed=",passed," | failed=",failed)
 	quit(1 if failed else 0)
@@ -199,6 +204,87 @@ func check_shore_views() -> void:
 	check(approximate.get_data()==(await render("observation-hidden-truth")).get_data(),"net observation shadows are blind to private hook and brain truth")
 	game.npc_fishes[0].position=Vector2(1260,400)
 	check(observing_empty.get_data()==(await render()).get_data(),"NPC beyond existing net sight is not rendered in observation mode")
+
+func check_actual_foraging() -> void:
+	setup_fixture(); place_fishes(1)
+	var npc: Dictionary=game.npc_fishes[0]
+	npc.position=Vector2(600,200); npc.velocity=Vector2.ZERO; npc.aim=Vector2.RIGHT
+	npc.intent_aim=Vector2.RIGHT; npc.steering=Vector2.ZERO; npc.decision_age=0.0
+	var grain: Dictionary=game.baits[0].grains[0]
+	grain.eaten=false; grain.free=true; grain.pos=npc.position+Vector2(12,0); grain.points=1.0
+	await render("fish-npc-food-before")
+	var score_before: float=game.score
+	for tick in 120:
+		game.advance_tick({}, {})
+		if grain.eaten: break
+	check(grain.eaten and game.round_stats.npc_food_consumed==1.0,"native authority NPC actually consumes the visible food fixture")
+	check(game.score==score_before and game.round_stats.food_consumed==0 and game.hook_count==0,"native NPC food intake gives no player award or hook event")
+	check(npc.behavior_state=="FEED" and npc.bite_cooldown>0,"native capture contains real feeding state and pending bite cooldown")
+	var consumed:=await render("fish-npc-food-consumed")
+	var actual: Dictionary=game.capture_snapshot()
+	# Restore only the food's visible presence at the exact same tick to localize
+	# its disappearance independently of animation, fish motion or HUD time.
+	grain.eaten=false
+	var visible:=await render("fish-npc-food-visible-control")
+	grain.eaten=true
+	var center:=Vector2i(Camera.to_screen(grain.pos,game,"fish").round())
+	var food_region:=Rect2i(center-Vector2i(6,6),Vector2i(13,13))
+	var bounds:=difference_bounds(consumed,visible)
+	check(bounds.has_area() and food_region.encloses(bounds),"actual consumed-food pixels disappear only at the food's visible position")
+	check(game.capture_snapshot()==actual,"food visibility control restores exact native authority")
+	var authority: Array[Dictionary]=game.npc_fishes.duplicate(true)
+	toggle_private_truth()
+	check(consumed.get_data()==(await render("fish-npc-feeding-hidden-truth")).get_data(),"actual feeding pixels are invariant to private hook, feeding intent, power, cooldown and AI memory")
+	game.npc_fishes=NPCPublic.capture(authority)
+	check(consumed.get_data()==(await render("fish-npc-fed-public-replica")).get_data(),"fed NPC public-only replica preserves exactly the same native pixels")
+
+func setup_social_fixture(behavior: String) -> void:
+	setup_fixture(); place_fishes(1)
+	game.fish=Vector2(700,260); game.fish_before=game.fish; game.aim=Vector2.RIGHT
+	var npc: Dictionary=game.npc_fishes[0]
+	npc.position=Vector2(650,200); npc.velocity=Vector2.ZERO; npc.aim=Vector2.RIGHT
+	npc.intent_aim=Vector2.RIGHT; npc.steering=Vector2.ZERO; npc.decision_age=0.0; npc.satiety=25.0
+	var bait: Dictionary=game.baits[0]
+	var food:=Vector2(730,200) if behavior=="COMPETE" else Vector2(700,200)
+	bait.pos=food; bait.home=food
+	var grain: Dictionary=bait.grains[0]
+	grain.eaten=false; grain.free=true; grain.pos=food; grain.points=1.0
+	for other: Dictionary in game.baits: other.motion_velocity=Vector2.ZERO
+	bait.motion_velocity=Vector2(6,0) if behavior=="HESITATE" else Vector2(22,0) if behavior=="FLEE" else Vector2.ZERO
+	if behavior=="COMPETE":
+		game.fish=Vector2(710,200); game.fish_before=game.fish; game.feeding=true
+	game._tick_npc_fishes(1.0/60.0)
+
+func check_actual_social() -> void:
+	for behavior: String in ["HESITATE","FLEE","COMPETE"]:
+		setup_social_fixture(behavior)
+		var npc: Dictionary=game.npc_fishes[0]
+		check(npc.behavior_state==behavior,"native public-cue fixture enters actual "+behavior)
+		var original: Dictionary=game.capture_snapshot()
+		check(game.restore_snapshot(original),"native "+behavior+" fixture obeys exact authority snapshot contract")
+		for role: String in ["fish","angler","observation"]:
+			check(game.restore_snapshot(original),"native "+behavior+" restores fixture before "+role+" view")
+			game.player_role="fish" if role=="fish" else "angler"; game.angler.x=640
+			game.net_action.observing=role=="observation"
+			var visible:=await render("social-"+behavior.to_lower()+"-"+role)
+			var authority: Array[Dictionary]=game.npc_fishes.duplicate(true)
+			var before: Dictionary=game.capture_snapshot()
+			check(visible.get_data()==(await render()).get_data() and before==game.capture_snapshot(),"native "+behavior+" "+role+" fixed-tick render is pure and deterministic")
+			toggle_private_truth()
+			check(visible.get_data()==(await render("social-"+behavior.to_lower()+"-"+role+"-hidden")).get_data(),"native "+behavior+" "+role+" is blind to hidden hooks, numeric caution, targets and social timers")
+			game.npc_fishes=NPCPublic.capture(authority)
+			check(visible.get_data()==(await render("social-"+behavior.to_lower()+"-"+role+"-public")).get_data(),"native "+behavior+" "+role+" six-field swim replica is pixel-identical")
+			game.npc_fishes.clear()
+			var empty:=await render()
+			check(same_hud(visible,empty),"native "+behavior+" "+role+" adds no numeric NPC caution, labels or HUD widgets")
+			check(visible.get_data()!=empty.get_data(),"native "+behavior+" "+role+" has a visible physical fish/shadow")
+		check(game.restore_snapshot(original),"restore native social movement authority "+behavior)
+		game.player_role="fish"
+		var before_position: Vector2=game.npc_fishes[0].position
+		for tick in 24: game._tick_npc_fishes(1.0/60.0)
+		await render("social-"+behavior.to_lower()+"-motion-later")
+		check(game.npc_fishes[0].position!=before_position,"native "+behavior+" cue continues through authority motion rather than a status label")
+		check(game.hook_count==0 and game.hook_target_fish_id==-1 and game.npc_fishes.size()==1 and game.npc_fishes[0].active,"native "+behavior+" introduces no NPC Hook or capture")
 
 func record_frame_costs() -> void:
 	setup_fixture()

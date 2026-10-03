@@ -1,0 +1,31 @@
+{
+  "format": "npc-hook-fix-evidence-manifest-v1",
+  "sha256": {
+    "docs/test-reports/data/hook-feel-0254/natural-diagnostic-comparison.json": "0adb4cbccf689b36a8035e38bc431e77d15012525a80394bc8c3651678106c4c",
+    "docs/test-reports/data/hook-feel-0254/natural-diagnostic-provenance.json": "20e0d07342f5f90db2fa171fefd81f61691a59cb5d6ad7c4224d0e81df10ef7f",
+    "docs/test-reports/data/hook-feel-0254/natural-diagnostic-rounds.json": "f3a2f317923bda4f24ca40c45b81ecc146bdb8d75609d31a450eae6688ac0233",
+    "docs/test-reports/data/hook-feel-0254/natural-diagnostic-run.txt": "b55d3b52f1199e2ec40bdaa4e2d9df33a7d82f4849470e4dee4f1101bdc93ad8",
+    "docs/test-reports/data/hook-feel-0254/natural-diagnostic-summary.json": "05e204cc7314e87aeae734764df1b33486f99fd200ce5d1c98b660729dc16aee",
+    "docs/test-reports/data/hook-feel-0254/natural-pilot-comparison.json": "6eb68d025a46436e003273ad746f9d1623429d8026267a8957d36da0c2dbf4e0",
+    "docs/test-reports/data/hook-feel-0254/natural-pilot-provenance.json": "1be6f6b250afe470fa4d6bf4eef0129a94fb6051e8ba2bbb3b0ab0a615250a6f",
+    "docs/test-reports/data/hook-feel-0254/natural-pilot-rounds.json": "4ad9dc815afc1d5a41e6036969615a864b4271d1f44c6f27105dbf8ad3db6fb0",
+    "docs/test-reports/data/hook-feel-0254/natural-pilot-summary.json": "50d3373084b96ca959af86586c8faae38ad90789af3165722770085213f031ec",
+    "docs/test-reports/data/hook-feel-0254/natural-source-comparison.json": "26b8833095a0c62cd86759a1c2de327c4e046cb5d29176b8d72e1e2df5c7e344",
+    "docs/test-reports/data/hook-feel-0254/natural-source-verification.json": "20cbb791a312bc93494332cfd67e126c103278aeaec8573b7a79ca828154f26f",
+    "docs/test-reports/data/hook-feel-0254/npc-default-break-diagnostic.txt": "24bbd51693edb859e6c063ef68e7b40d882ec8544547dbb0abedff1e102c3592",
+    "docs/test-reports/data/hook-feel-0254/npc-empty-food-64418-probe.gd.txt": "984357ca10b6129bad2998fba20779af5f73d9beaaef16b3925dad4406678eb9",
+    "docs/test-reports/data/hook-feel-0254/npc-empty-food-64418.txt": "7c2aba035a07732b4ea849c993b3ddefa09efd4f2d893003ff7c65b6e4e9d103",
+    "docs/test-reports/data/hook-feel-0254/npc-natural-diagnostic.md": "c036a7b86ad8f951a483cd756713aaf83be74ac094018cdc82ff745f730838d3",
+    "docs/test-reports/data/hook-feel-0254/npc-pacing-after-provenance.json": "5781625b46da43b49ad558007fd83aa4fbfc373baa10cb8c45b79129f4c5ea12",
+    "docs/test-reports/data/hook-feel-0254/npc-pacing-after.json": "b13118f7a9a08b4503c621301836f330b7f847553950b8f15eaee09de9a2c0d4",
+    "docs/test-reports/data/hook-feel-0254/npc-pacing-baseline-gate-summary.json": "f6fe99d0ccc9a039c8b0120376c7fa9e9ab067c130f21a25764624f8b46ca942",
+    "docs/test-reports/data/hook-feel-0254/npc-pacing-baseline-gate.txt": "3e0a2b24d29d94ca14cb9b932ed2a669e8e62a0e5a7c536360a67c5cb38e2205",
+    "docs/test-reports/data/hook-feel-0254/npc-pacing-baseline-source.json": "37a58b6d195fa9c22fa038552dc6b5a0c3986bcc397e29ac82c17a4ebb3dc8ce",
+    "docs/test-reports/data/hook-feel-0254/npc-pacing-before-provenance.json": "8bc6cb72722b38added83adbbceff42509328fa6f2cf73ed3ba3928c273e59bf",
+    "docs/test-reports/data/hook-feel-0254/npc-pacing-before.json": "bd185b17ec7b2de6b98b65917f911dd32efb9d0774d02cbd091fd8aa4c9fef87",
+    "docs/test-reports/data/hook-feel-0254/npc-pacing-comparison.json": "3e338af0b267394c4a752d12fa22f2c09d117fffac598ae8ec3e12862ee1248c",
+    "docs/test-reports/data/hook-feel-0254/npc-pacing-final-gate-summary.json": "ff74179c127c472c22f966350f6d21f99e72ea81f7e5c995dff5c13447d44915",
+    "docs/test-reports/data/hook-feel-0254/npc-pacing-final-gate.txt": "339ecbbbcf141a0ebb98ef5e4657913a81ece1fde75739b650cdcb2f3c07135b",
+    "docs/test-reports/data/hook-feel-0254/npc-pacing.md": "4b90040520a34af168f5f751398b8cdd93929c61165351cdd7158c8bfe4def50"
+  }
+}

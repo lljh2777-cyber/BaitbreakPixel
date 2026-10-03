@@ -5,6 +5,8 @@ const Suction = preload("res://scripts/suction_feel.gd")
 const FoodProfile = preload("res://scripts/food_profile.gd")
 const NPCFishState = preload("res://scripts/npc_fish_state.gd")
 const NPCFishBrain = preload("res://scripts/npc_fish_brain.gd")
+const NPCHook = preload("res://scripts/npc_hook.gd")
+const FishFeeding = preload("res://scripts/fish_feeding.gd")
 var rules := Rules.defaults()
 var qte_timing := Rules.qte(Rules.defaults(),"entry")
 
@@ -37,7 +39,14 @@ const MAX_LINE_LENGTH := 720.0
 var fish_id := 1
 var next_fish_id := 2
 var npc_fishes: Array[Dictionary]=[]
-# Reserved for P3.4 only. Existing player HookState is still authoritative.
+var npc_foraging_enabled := true
+var npc_social_enabled := true
+var npc_hook_enabled := true
+var npc_hook: Dictionary=NPCHook.fresh()
+var public_npc_hook_result: Dictionary=NPCHook.fresh_result()
+# Realized visible hook result, not a bait label or diagnostic truth log.
+var public_hook_cue: Dictionary={"tick":-1,"position":Vector2.ZERO}
+# One line owner. HookState remains the existing player-only authority.
 var hook_target_fish_id := -1
 var rod_id := 1
 var next_bait_id := 1
@@ -251,7 +260,8 @@ func _tick_efforts(delta: float, fish_input: Dictionary, angler_input: Dictionar
 		var command: Dictionary=fish_input if role=="fish" else angler_input
 		if state.active:
 			state.age+=delta
-			var pressed: bool=command.qte
+			var at: float=command.qte_at_age if command.qte_at_age>=0 else state.age-delta
+			var pressed: bool=command.qte and at>=float(state.lead)
 			command.qte=false # One Space judges one check; never also starts wrapping.
 			if pressed or state.age>=float(state.lead)+float(state.sweep)+qte_grace_seconds:
 				var good := Effort.finish(state,pressed,command.get("qte_at_age",-1.0),rng)
@@ -342,8 +352,10 @@ func _tick_untangle(delta: float, command: Dictionary) -> void:
 	if untangle_phase=="check":
 		var state: Dictionary=effort_checks.angler
 		state.age+=delta
-		if command.qte or state.age>=float(state.lead)+float(state.sweep)+qte_grace_seconds:
-			_judge_untangle(command.qte,command.qte_at_age,"张力不合适" if not command.qte_condition_valid else "")
+		var at: float=command.qte_at_age if command.qte_at_age>=0 else state.age-delta
+		var pressed: bool=command.qte and at>=float(state.lead)
+		if pressed or state.age>=float(state.lead)+float(state.sweep)+qte_grace_seconds:
+			_judge_untangle(pressed,command.qte_at_age,"张力不合适" if not command.qte_condition_valid else "")
 	elif untangle_phase=="unwind":
 		wraps[-1].progress=maxf(0.0,1.0-untangle_age/rule("unwind_seconds"))
 		if untangle_age>=rule("unwind_seconds"):
@@ -417,6 +429,9 @@ func effort_tuning(role: String = "fish", kind: String = "effort") -> Dictionary
 	return tuning
 
 func tug_status() -> String:
+	if hook_target_fish_id>1:
+		if tension<rule("tension_low"): return "松线机会"
+		return "正在收近" if reel_speed< -0.5 else "鱼正在挣扎"
 	if hooked!=HookState.HOOKED: return ""
 	if tension<rule("tension_low"): return "松线机会"
 	var target := line_anchor(bound_bait) if wraps.is_empty() else Vector2(wraps[-1].entry)
@@ -457,6 +472,12 @@ func reset_world(config: Dictionary = {}) -> void:
 	fish_id=1
 	next_fish_id=2
 	npc_fishes.clear()
+	npc_foraging_enabled=bool(config.get("npc_foraging_enabled",true))
+	npc_social_enabled=bool(config.get("npc_social_enabled",true))
+	npc_hook_enabled=bool(config.get("npc_hook_enabled",true)) and npc_foraging_enabled
+	npc_hook=NPCHook.fresh()
+	public_npc_hook_result=NPCHook.fresh_result()
+	public_hook_cue={"tick":-1,"position":Vector2.ZERO}
 	hook_target_fish_id=-1
 	rod_id=1
 	next_bait_id=1
@@ -607,41 +628,98 @@ func spawn_npc() -> int:
 	# Never fall back to an unvalidated location. A failed allocation stays spent.
 	if not found: return -1
 	var heading:=Vector2.RIGHT.rotated(local_rng.randf_range(-PI,PI))
-	npc_fishes.append(NPCFishState.fresh(identity,seed,position,heading,local_rng.state))
+	var state:=NPCFishState.fresh(identity,seed,position,heading,local_rng.state)
+	if not npc_foraging_enabled: state.satiety=100.0
+	npc_fishes.append(state)
 	return identity
 
+func npc_by_id(identity: int) -> Dictionary:
+	for npc: Dictionary in npc_fishes:
+		if int(npc.fish_id)==identity: return npc
+	return {}
+
+func line_hooked() -> bool:
+	return hooked==HookState.HOOKED or npc_hook.phase in ["hooked","landing"]
+
+func line_landing() -> bool:
+	return landing or npc_hook.phase=="landing"
+
+func hook_target_mouth() -> Vector2:
+	if hook_target_fish_id>1:
+		var npc:=npc_by_id(hook_target_fish_id)
+		if not npc.is_empty(): return FishFeeding.mouth(npc.position,npc.aim)
+	return mouth()
+
 func _tick_npc_fishes(delta: float) -> void:
-	# Simultaneous detached public geometry avoids array-order feedback.
+	NPCHook.respawn(self,delta)
+	# Read a simultaneous detached public geometry; apply feeding in stable ID order.
 	var neighbors: Array[Dictionary]=[{"fish_id":fish_id,"position":fish}]
 	for npc: Dictionary in npc_fishes:
 		if npc.active: neighbors.append({"fish_id":int(npc.fish_id),"position":Vector2(npc.position)})
 	neighbors.sort_custom(func(a: Dictionary,b: Dictionary) -> bool: return a.fish_id<b.fish_id)
-	var environment: Dictionary={"bounds":Layout.fish_bounds(NPCFishState.RADIUS),"neighbors":neighbors}
+	var public_fish:=Observation.social_fish(self)
+	var environment: Dictionary={"bounds":Layout.fish_bounds(NPCFishState.RADIUS),"neighbors":neighbors,"foraging_enabled":npc_foraging_enabled,"social_enabled":npc_social_enabled}
 	for npc: Dictionary in npc_fishes:
 		if not npc.active: continue
+		npc.hook_immunity=maxf(0.0,npc.hook_immunity-delta)
+		if int(npc.fish_id)==hook_target_fish_id: continue
 		npc.behavior_age+=delta
+		npc.bite_cooldown=maxf(0,npc.bite_cooldown-delta)
+		if npc_foraging_enabled:
+			# Ecology appetite remains meaningful even when player hunger assistance is off.
+			npc.satiety=clampf(npc.satiety-rule("satiety_decay")*delta,0,100)
 		npc.decision_age=maxf(0,npc.decision_age-delta)
 		if npc.decision_age<=0:
 			var local_rng:=RandomNumberGenerator.new()
 			local_rng.seed=npc.brain_seed
 			local_rng.state=npc.brain_rng_state
-			var perception:=Observation.build_for(self,NPCFishState.observer(npc,rules),false)
-			var memory: Dictionary={"wander_heading":npc.wander_heading,"turn_age":npc.turn_age}
-			var intent:=NPCFishBrain.decide(perception,memory,environment,rules,NPCFishState.DECISION_SECONDS,local_rng)
+			var perception:=Observation.build_social_for(self,NPCFishState.observer(npc,rules),false,public_fish)
+			var intent:=NPCFishBrain.decide(perception,npc.duplicate(true),environment,rules,NPCFishState.DECISION_SECONDS,local_rng)
 			npc.brain_rng_state=local_rng.state
 			npc.steering=Vector2(intent.move).limit_length(1.0)
+			npc.intent_aim=Vector2(intent.aim).normalized() if Vector2(intent.aim).length()>0.001 else npc.aim
 			npc.wander_heading=Vector2(intent.wander_heading)
 			npc.turn_age=float(intent.turn_age)
 			npc.decision_age=NPCFishState.DECISION_SECONDS
-			# P3.1 accepts movement only; no food/Hook or score path is wired.
-			npc.behavior_state="WANDER"
-			npc.target_bait_id=-1
+			if npc.behavior_state!=intent.state: npc.behavior_age=0.0
+			if int(intent.target_bait_id)!=npc.target_bait_id and int(intent.target_bait_id)>=0: round_stats.npc_target_switches+=1
+			npc.behavior_state=String(intent.state)
+			npc.target_bait_id=int(intent.target_bait_id)
+			npc.feeding=bool(intent.suck)
+			npc.power=float(intent.get("power",0.65)) if npc.feeding else 0.0
+			if npc_foraging_enabled:
+				npc.suspicion_by_bait=intent.values
+				npc.caution_by_bait=intent.bands
+				npc.focus_bait_id=int(intent.focus_bait_id)
+				npc.risk_tolerance=float(intent.risk_tolerance)
+				npc.caution_state=String(intent.caution_state)
+				for field: String in NPCFishState.SOCIAL_MEMORY_FIELDS: npc[field]=intent[field]
+				for id in npc.suspicion_by_bait.keys():
+					if bait_slot(int(id))<0:
+						npc.suspicion_by_bait.erase(id); npc.caution_by_bait.erase(id)
 		npc.velocity=Vector2(npc.velocity).move_toward(Vector2(npc.steering)*NPCFishState.SPEED,delta*48.0)
 		var bounds: Rect2=environment.bounds
-		# End is excluded by Rect2.has_point; stay strictly inside the legal body bounds.
 		npc.position=(Vector2(npc.position)+Vector2(npc.velocity)*delta).clamp(bounds.position,bounds.end-Vector2.ONE*0.001)
-		if Vector2(npc.velocity).length()>0.1:
-			npc.aim=Vector2(npc.aim).slerp(Vector2(npc.velocity).normalized(),minf(1.0,delta*5.0)).normalized()
+		var look: Vector2=npc.intent_aim if npc_foraging_enabled and npc.behavior_state!="WANDER" else Vector2(npc.velocity).normalized()
+		if (look.length()>0.1 if npc_foraging_enabled and npc.behavior_state!="WANDER" else Vector2(npc.velocity).length()>0.1): npc.aim=Vector2(npc.aim).slerp(look,minf(1.0,delta*5.0)).normalized()
+
+func _ordered_npc_fishes() -> Array[Dictionary]:
+	var ordered: Array[Dictionary]=npc_fishes.duplicate()
+	ordered.sort_custom(func(a: Dictionary,b: Dictionary) -> bool: return a.fish_id<b.fish_id)
+	return ordered
+
+func _step_npc_feeding(delta: float) -> void:
+	if not npc_foraging_enabled: return
+	for npc: Dictionary in _ordered_npc_fishes():
+		if not npc.active or int(npc.fish_id)==hook_target_fish_id: continue
+		var pending: Array[Dictionary]=[]
+		if npc.feeding:
+			for bait: Dictionary in baits:
+				_pull_food(bait,delta,FishFeeding.mouth(npc.position,npc.aim),npc.aim,npc.power,pending)
+		var previous: float=round_stats.npc_food_consumed
+		if _attempt_bite(npc): continue
+		for grain: Dictionary in pending: _consume_grain(grain,false,"suck",npc)
+		if round_stats.npc_food_consumed>previous: round_stats.npc_feeding_events+=1
 
 func line_anchor(index: int) -> Vector2:
 	if uses_mobile_tackle(): return angler.anchor()
@@ -756,10 +834,10 @@ func redeploy_bait(index: int) -> void:
 	baits[index].age=0.0
 
 func mouth() -> Vector2:
-	return fish + aim * 10
+	return FishFeeding.mouth(fish,aim)
 
 func _tip(index: int) -> Vector2:
-	return mouth() if bound_bait == index and hooked != HookState.FREE else Vector2(baits[index].pos) + Vector2(2, 1).rotated(baits[index].angle)
+	return hook_target_mouth() if bound_bait == index and (hooked != HookState.FREE or hook_target_fish_id>1) else Vector2(baits[index].pos) + Vector2(2, 1).rotated(baits[index].angle)
 
 func hook_point(index: int, local: Vector2) -> Vector2:
 	return _tip(index)+(local*rule("hook_scale")).rotated(baits[index].angle)
@@ -772,12 +850,7 @@ func water_velocity(point: Vector2) -> Vector2:
 	return Vector2(cos(elapsed*0.75+point.y*0.007)*3.75+cos(elapsed*1.25+point.x*0.005)*1.25,cos(elapsed*0.95+point.x*0.008)*2.375)*water_strength
 
 func strength(point: Vector2) -> float:
-	var local := point - mouth()
-	var depth := local.dot(aim)
-	var side := absf(local.cross(aim))
-	if depth < 0 or depth > rule("suction_range") or side > rule("suction_mouth") + depth * rule("suction_spread"): return 0
-	# Smooth longitudinal field: full at mouth, half at midrange, zero at edge.
-	return Suction.distance_gain(depth / rule("suction_range")) * (1 - 0.2 * side / (rule("suction_mouth") + depth * rule("suction_spread")))
+	return FishFeeding.strength(point,mouth(),aim,rules)
 
 func _collision(point: Vector2, radius: float) -> bool:
 	for solid in SOLIDS:
@@ -886,19 +959,21 @@ func _begin_wrap() -> bool:
 	low_age = 0
 	return true
 
-func _fail_wrap() -> void:
-	_finish_qte_visual(false)
+func _fail_wrap(message: String = "", judged: bool = true) -> void:
+	_finish_qte_visual(false,message,judged)
 	qte = ""
 	wrap_target = -1
 	wrap_retry = rule("wrap_retry")
 	result_flash = 0.7
 	result_good = false
-	notice = "缠线失败 · 仍然上钩，可稍后再试"
+	notice = message+" · 保持接触后再试" if not message.is_empty() else "缠线失败 · 仍然上钩，可稍后再试"
 	notice_age = 2
 	play_feedback("fail")
 
 func _commit_wrap() -> void:
-	if not touching_target(wrap_target) or target_is_wrapped(wrap_target): _fail_wrap(); return
+	if not touching_target(wrap_target) or target_is_wrapped(wrap_target):
+		_fail_wrap("离开障碍 · 缠线中断",qte_age>=float(qte_timing.lead))
+		return
 	var coil := Layout.coil_at(targets[wrap_target],fish)
 	coil.target = wrap_target
 	wraps.append(coil)
@@ -929,6 +1004,9 @@ func visible_coil(wrap: Dictionary) -> PackedVector2Array:
 	return points
 
 func _rebuild_rope() -> void:
+	if hook_target_fish_id>1:
+		rope_path=PackedVector2Array([line_anchor(bound_bait),hook_target_mouth()])
+		return
 	if hooked!=HookState.HOOKED: return
 	rope_path = PackedVector2Array([line_anchor(bound_bait)])
 	for wrap in wraps:
@@ -945,9 +1023,13 @@ func step(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: 
 
 func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bool, dash: bool = false, slow: bool = false, qte_pressed: bool = false, qte_at_age: float = -1) -> void:
 	if match_paused or match_over or not is_finite(delta) or delta<=0: return
+	var npc_previous_mouth: Dictionary={}
+	for npc: Dictionary in npc_fishes:
+		if npc.active: npc_previous_mouth[int(npc.fish_id)]=FishFeeding.mouth(npc.position,npc.aim)
 	_tick_npc_fishes(delta)
 	simulation_tick+=1
 	elapsed += delta
+	NPCHook.step(self,delta)
 	if rules.hunger_enabled: satiety=clampf(satiety-rule("satiety_decay")*delta,0,100)
 	var perception:=Observation.build(self,false)
 	var interpretation:=Suspicion.update(suspicion_by_bait,caution_by_bait,perception,delta,rules,focus_bait_id)
@@ -981,9 +1063,6 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 		_step_landing(delta)
 		return
 	_update_contacts(delta)
-	var began_wrap := false
-	# An active check owns Space. Its judgment must never start or replace another check.
-	if qte_pressed and qte.is_empty(): began_wrap = _begin_wrap()
 	sprinting = false
 	resisting = false
 	feeding = sucking and hooked!=HookState.MOUTH and net_state!="caught"
@@ -1010,6 +1089,10 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 	_update_contacts(delta)
 	_step_net(delta)
 	if match_over or net_state=="caught": return
+	# Start against the contact that survived this tick's real movement and net.
+	# Opening before pull used to create and fail a wrap before a single frame.
+	var began_wrap := false
+	if qte_pressed and qte.is_empty(): began_wrap = _begin_wrap()
 	var was_free := hooked == HookState.FREE
 	if hooked == HookState.MOUTH:
 		_step_qte(delta, qte_pressed,qte_at_age)
@@ -1020,11 +1103,12 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 	# automatic mouth-range intake can own this tick without double feeding.
 	if feeding: round_stats.suck_attempts+=1 # Eligible suction simulation ticks, not clicks.
 	var sucked_grains: Array[Dictionary]=[]
-	for index in baits.size(): _step_bait(index, delta, feeding and hooked!=HookState.MOUTH, previous_mouth, true, sucked_grains)
+	for index in baits.size(): _step_bait(index, delta, feeding and hooked!=HookState.MOUTH, previous_mouth, true, sucked_grains, npc_previous_mouth)
 	if _attempt_bite():
 		feeding=false
 	elif hooked!=HookState.MOUTH:
 		for grain in sucked_grains: _consume_grain(grain)
+	_step_npc_feeding(delta)
 	if hooked != HookState.FREE: returning = false
 	if interact and was_free and hooked == HookState.FREE and can_home(): returning = not returning
 	if returning and can_home():
@@ -1039,7 +1123,7 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 		return
 	_step_supply(delta)
 
-func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2, defer_intake: bool=false, pending_intake: Array[Dictionary]=[]) -> void:
+func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2, defer_intake: bool=false, pending_intake: Array[Dictionary]=[], npc_previous_mouth: Dictionary={}) -> void:
 	var bait := baits[index]
 	var profile:=FoodProfile.get_profile(bait.bait_type)
 	var old_tip := Vector2(bait.tip_before)
@@ -1051,53 +1135,82 @@ func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2, def
 		bait.pos=Vector2(bait.pos)-Vector2(bait.suction_offset)
 		if uses_mobile_tackle() and bait.tackle and not bait.removed and bound_bait!=index:
 			angler.step_free_hook(self,index,delta)
-		elif bound_bait==index and hooked!=HookState.FREE:
-			bait.pos=mouth()-Vector2(2,1).rotated(bait.angle)
+		elif bound_bait==index and (hooked!=HookState.FREE or hook_target_fish_id>1):
+			bait.pos=hook_target_mouth()-Vector2(2,1).rotated(bait.angle)
 			bait.suction_offset=Vector2.ZERO
 		else:
 			var flutter:=Vector2(sin(elapsed*5.0+float(bait.drift_phase)),cos(elapsed*3.0+float(bait.drift_phase))*0.5)*float(bait.flutter_amplitude)*water_strength
 			var target: Vector2 = bait.home + water_offset(bait.home)+flutter
 			bait.angle = sin(elapsed*0.75+bait.home.y*0.007)*0.16*water_strength
 			bait.pos = Vector2(bait.pos).move_toward(target, delta * 44)
-		if bound_bait!=index or hooked==HookState.FREE:
-			_step_bait_suction(bait,delta,sucking)
-		if bait.active and bait.hook and not bait.removed and hooked == HookState.FREE and hook_cooldown <= 0 and net_state!="caught":
-			var relative := _tip(index) - mouth() - aim * 3
-			var before := old_tip - old_mouth - aim * 3
-			if _segment_distance(before, relative, Vector2.ZERO) < rule("bite_radius"):
+		if bound_bait!=index or (hooked==HookState.FREE and hook_target_fish_id<0):
+			_step_bait_suction(bait,delta,sucking,_body_suction_source(bait,sucking))
+		if bait.active and bait.hook and not bait.removed and hooked==HookState.FREE and hook_target_fish_id<0 and net_state!="caught":
+			if hook_cooldown<=0 and FishFeeding.hook_contact(old_tip,_tip(index),old_mouth,mouth(),aim,rule("bite_radius")):
 				_enter_hook(index)
-				sucking = false
-	var layer := 3
-	for grain in bait.grains:
-		if not grain.eaten and not grain.free: layer = mini(layer, grain.layer)
-	bait.budget = minf(2, float(bait.budget) + delta * (8 + 20 * power)*rule("pellet_rate")/28.0*float(profile.fragmentation)) if sucking else 0.0
-	for grain in bait.grains:
+				sucking=false
+			elif npc_hook_enabled:
+				for npc: Dictionary in _ordered_npc_fishes():
+					if not npc.active or npc.hook_immunity>0: continue
+					var origin:=FishFeeding.mouth(npc.position,npc.aim)
+					var before: Vector2=npc_previous_mouth.get(int(npc.fish_id),origin)
+					if FishFeeding.hook_contact(old_tip,_tip(index),before,origin,npc.aim,rule("bite_radius")):
+						NPCHook.enter(self,index,npc)
+						break
+	for grain: Dictionary in bait.grains:
 		if grain.eaten: continue
-		if not grain.free: grain.pos = Vector2(bait.pos) + Vector2(grain.offset).rotated(bait.angle)
-		else: grain.pos = Vector2(grain.pos)+water_velocity(grain.pos)*delta*1.15
-		if not sucking or (not bait.active and not grain.free): continue
-		var pull := strength(grain.pos)
-		if pull <= 0: continue
-		if grain.free:
-			grain.pos = Vector2(grain.pos).move_toward(mouth(), delta * pull * rule("pellet_speed") * Suction.pellet_gain(power)*float(FoodProfile.get_profile(grain.visual_kind).suction_efficiency))
-			if Vector2(grain.pos).distance_to(mouth()) < 4:
-				if defer_intake: pending_intake.append(grain)
-				else: _consume_grain(grain)
-		elif grain.layer == layer:
-			grain.progress += delta * pull * Suction.peel_gain(power,grain.layer) * rule("pellet_detach")*float(profile.suction_efficiency)
-			if grain.progress >= 1 and bait.budget >= 1:
-				grain.free = true
-				bait.budget -= 1
+		if not grain.free: grain.pos=Vector2(bait.pos)+Vector2(grain.offset).rotated(bait.angle)
+		else: grain.pos=Vector2(grain.pos)+water_velocity(grain.pos)*delta*1.15
+	if sucking:
+		var intake: Array[Dictionary]=[]
+		if defer_intake: intake=pending_intake
+		_pull_food(bait,delta,mouth(),aim,power,intake)
+		if not defer_intake:
+			for grain: Dictionary in intake: _consume_grain(grain)
+	elif _body_suction_source(bait,false).is_empty(): bait.budget=0.0
+
 	if delta>0:
 		bait.motion_velocity=(Vector2(bait.pos)-Vector2(bait.suction_offset)-old_position)/delta
 		if (Vector2(bait.motion_velocity)-water_velocity(bait.pos)).length()>8: bait.last_disturbance_tick=simulation_tick
 	bait.tip_before = _tip(index)
 
-# Shared accounting preserves Suck's existing per-grain values and de-duplication.
-func _consume_grain(grain: Dictionary, sound: bool = true, action: String = "suck") -> void:
+# Only feeding is repeated per consumer; bait/water/hook motion runs once per tick.
+func _pull_food(bait: Dictionary, delta: float, origin: Vector2, direction: Vector2, pull_power: float, pending: Array[Dictionary]) -> void:
+	var profile:=FoodProfile.get_profile(bait.bait_type)
+	var layer:=3
+	for grain: Dictionary in bait.grains:
+		if not grain.eaten and not grain.free: layer=mini(layer,grain.layer)
+	var attached_in_reach:=false
+	for grain: Dictionary in bait.grains:
+		if bait.active and not grain.eaten and not grain.free and grain.layer==layer and FishFeeding.strength(grain.pos,origin,direction,rules)>0:
+			attached_in_reach=true
+			break
+	# Credit only actual outer-layer peeling, never a remote consumer or old
+	# loose survivors retained in the same record after a refill.
+	if attached_in_reach: bait.budget=minf(2,float(bait.budget)+delta*(8+20*pull_power)*rule("pellet_rate")/28.0*float(profile.fragmentation))
+	for grain: Dictionary in bait.grains:
+		if grain.eaten or (not bait.active and not grain.free): continue
+		var pull:=FishFeeding.strength(grain.pos,origin,direction,rules)
+		if pull<=0: continue
+		if grain.free:
+			grain.pos=Vector2(grain.pos).move_toward(origin,delta*pull*rule("pellet_speed")*Suction.pellet_gain(pull_power)*float(FoodProfile.get_profile(grain.visual_kind).suction_efficiency))
+			if Vector2(grain.pos).distance_to(origin)<4: pending.append(grain)
+		elif grain.layer==layer:
+			grain.progress+=delta*pull*Suction.peel_gain(pull_power,grain.layer)*rule("pellet_detach")*float(profile.suction_efficiency)
+			if grain.progress>=1 and bait.budget>=1:
+				grain.free=true
+				bait.budget-=1
+
+# Shared de-duplication, distinct owners. NPC points never enter player score/HUD.
+func _consume_grain(grain: Dictionary, sound: bool = true, action: String = "suck", npc: Dictionary = {}) -> void:
+	if grain.eaten or counted.has(grain.id): return
 	grain.eaten=true
-	if counted.has(grain.id): return
 	counted[grain.id]=true
+	if not npc.is_empty():
+		npc.satiety=clampf(npc.satiety+float(grain.points)*rule("satiety_food_value")*float(FoodProfile.get_profile(grain.visual_kind).satiety_scale),0,100)
+		round_stats.npc_food_consumed+=float(grain.points)
+		round_stats.npc_food_by_type[grain.visual_kind]+=float(grain.points)
+		return
 	score+=float(grain.points)
 	Stats.intake(round_stats,grain.visual_kind,float(grain.points),action,simulation_tick)
 	if rules.hunger_enabled: satiety=clampf(satiety+float(grain.points)*rule("satiety_food_value")*float(FoodProfile.get_profile(grain.visual_kind).satiety_scale),0,100)
@@ -1109,57 +1222,65 @@ func _can_bite() -> bool:
 	return not (match_paused or match_over or landing or returning or net_state=="caught" or hooked==HookState.MOUTH or bite_cooldown>0)
 
 func _bite_candidates() -> Array[Dictionary]:
-	# Eligibility never inspects hidden hook truth.
-	var candidates: Array[Dictionary]=[]
-	var origin:=mouth()
-	var radius_squared:=pow(rule("bite_range"),2)
-	for bait in baits:
-		for order in bait.grains.size():
-			var grain: Dictionary=bait.grains[order]
-			if grain.eaten or counted.has(grain.id) or (not bait.active and not grain.free): continue
-			var distance:=origin.distance_squared_to(Vector2(grain.pos))
-			if distance<=radius_squared:
-				candidates.append({"distance":distance,"bait_id":int(bait.bait_id),"order":order,"grain":grain})
-	candidates.sort_custom(func(a: Dictionary,b: Dictionary) -> bool:
-		if a.distance!=b.distance: return a.distance<b.distance
-		if a.bait_id!=b.bait_id: return a.bait_id<b.bait_id
-		return a.order<b.order)
-	return candidates
+	return FishFeeding.candidates(baits,counted,mouth(),rule("bite_range"))
 
-func _attempt_bite() -> bool:
-	# Ordinary swept mouth/tip contact resolves before automatic intake.
-	if not _can_bite(): return false
-	var candidates:=_bite_candidates()
+func _attempt_bite(npc: Dictionary = {}) -> bool:
+	# One physical candidate/capacity/cooldown path for both owners. Player swept
+	# hook contact has already resolved for both actors before either can eat.
+	var player:=npc.is_empty()
+	if player:
+		if not _can_bite(): return false
+	elif not npc_foraging_enabled or not npc.active or int(npc.fish_id)==hook_target_fish_id or npc.behavior_state!="FEED" or npc.bite_cooldown>0 or match_paused or match_over: return false
+	var origin:=mouth() if player else FishFeeding.mouth(npc.position,npc.aim)
+	var candidates:=FishFeeding.candidates(baits,counted,origin,rule("bite_range"))
 	if candidates.is_empty(): return false
-	round_stats.bite_attempts+=1
-	var budget: float=rule("bite_intake")
-	var taken:=0
-	for candidate in candidates:
-		var cost:=1.0/float(FoodProfile.get_profile(candidate.grain.visual_kind).bite_efficiency)
-		if cost>budget+0.000001: break # Stable nearest-first; never skip an expensive grain.
-		budget-=cost
-		_consume_grain(candidate.grain,false,"bite")
-		taken+=1
-	if taken==0: return false
-	round_stats.bite_successes+=1
-	bite_feedback_age=BITE_FEEDBACK_SECONDS
-	play_feedback("bite")
-	bite_cooldown=rule("bite_cooldown")
+	if player: round_stats.bite_attempts+=1
+	var selected:=FishFeeding.bite_selection(candidates,rule("bite_intake"))
+	if selected.is_empty(): return false
+	for grain: Dictionary in selected: _consume_grain(grain,false,"bite",npc)
+	if player:
+		round_stats.bite_successes+=1
+		bite_feedback_age=BITE_FEEDBACK_SECONDS
+		play_feedback("bite")
+		bite_cooldown=rule("bite_cooldown")
+	else:
+		npc.bite_cooldown=rule("bite_cooldown")
+		round_stats.npc_feeding_events+=1
+		# A contest means player mouth could reach food the NPC actually obtained.
+		for grain: Dictionary in selected:
+			if mouth().distance_to(grain.pos)<=rule("bite_range"):
+				round_stats.player_npc_food_contests+=1
+				break
 	return true
 
-func _step_bait_suction(bait: Dictionary, delta: float, sucking: bool) -> void:
-	# Profile scales physical suction response, without any hidden-truth branch.
+func _body_suction_source(bait: Dictionary, player_sucking: bool) -> Dictionary:
+	var best: Dictionary={}
+	var best_pull:=strength(bait.pos)*Suction.body_gain(power) if player_sucking else 0.0
+	if npc_foraging_enabled:
+		for npc: Dictionary in _ordered_npc_fishes():
+			if not npc.active or not npc.feeding or int(npc.fish_id)==hook_target_fish_id: continue
+			var pull:=FishFeeding.strength(bait.pos,FishFeeding.mouth(npc.position,npc.aim),npc.aim,rules)*Suction.body_gain(npc.power)
+			if pull>best_pull: best=npc; best_pull=pull
+	return best
+
+func _step_bait_suction(bait: Dictionary, delta: float, sucking: bool, npc: Dictionary = {}) -> void:
+	var origin:=mouth() if npc.is_empty() else FishFeeding.mouth(npc.position,npc.aim)
+	var direction: Vector2=aim if npc.is_empty() else npc.aim
+	var pull_power: float=power if npc.is_empty() else npc.power
+	sucking=sucking or not npc.is_empty()
 	var base: Vector2=bait.pos
 	var target:=Vector2.ZERO
 	if sucking and _remaining(bait,true):
-		var reach:=strength(base)*Suction.body_gain(power)*26*rule("hook_suction")*float(FoodProfile.get_profile(bait.bait_type).suction_efficiency)
-		target=base.move_toward(mouth(),reach)-base
-	bait.suction_offset=Vector2(bait.suction_offset).move_toward(target,delta*(Suction.body_speed(power) if sucking else 38))
+		var reach:=FishFeeding.strength(base,origin,direction,rules)*Suction.body_gain(pull_power)*26*rule("hook_suction")*float(FoodProfile.get_profile(bait.bait_type).suction_efficiency)
+		target=base.move_toward(origin,reach)-base
+	bait.suction_offset=Vector2(bait.suction_offset).move_toward(target,delta*(Suction.body_speed(pull_power) if sucking else 38))
 	var bounds:=Layout.WATER.grow(-7)
 	bait.pos=(base+Vector2(bait.suction_offset)).clamp(bounds.position,bounds.end)
 	bait.suction_offset=Vector2(bait.pos)-base
 
 func _enter_hook(index: int) -> void:
+	if hook_target_fish_id>1: return
+	hook_target_fish_id=fish_id
 	# Context counters overlap: contact precedes automatic Bite and may interrupt it.
 	# These diagnose proximity, not a claim that Bite caused attachment.
 	if feeding: round_stats.suck_hook_contacts+=1
@@ -1174,6 +1295,8 @@ func _enter_hook(index: int) -> void:
 	returning = false
 
 func _attach_hook() -> void:
+	if hook_target_fish_id>1: return
+	hook_target_fish_id=fish_id
 	round_stats.hook_events+=1
 	for role in effort_checks: Effort.reset(effort_checks[role],rng.randf_range(1.2,2.8))
 	hooked = HookState.HOOKED
@@ -1186,6 +1309,7 @@ func _attach_hook() -> void:
 	landing = false
 	# Props are pass-through cover; only the pond perimeter constrains swimming.
 	fish = fish.clamp(Layout.fish_bounds(17).position,Layout.fish_bounds(17).end)
+	public_hook_cue={"tick":simulation_tick,"position":Vector2(fish)}
 	wraps.clear()
 	wrap_target = -1
 	_rebuild_rope()
@@ -1197,8 +1321,12 @@ func _step_qte(delta: float, qte_pressed: bool, judged_age: float = -1) -> void:
 	# Only the authority can supply an age verified against its own QTE history.
 	var age := judged_age if judged_age>=0 else qte_age
 	var progress := clampf((age-float(qte_timing.lead))/float(qte_timing.sweep),0,1)
-	if qte_pressed or qte_age >= float(qte_timing.lead)+float(qte_timing.sweep)+qte_grace_seconds:
-		var success := qte_pressed and age>=float(qte_timing.lead) and age<=float(qte_timing.lead)+float(qte_timing.sweep) and progress>=qte_zone and progress<=qte_zone+qte_width
+	# The warning hides the target: preparation input is consumed, never buffered
+	# or judged against an invisible zone. Network age is authority-verified.
+	var input_age := judged_age if judged_age>=0 else qte_age-delta
+	var pressed := qte_pressed and input_age>=float(qte_timing.lead)
+	if pressed or qte_age >= float(qte_timing.lead)+float(qte_timing.sweep)+qte_grace_seconds:
+		var success := pressed and age>=float(qte_timing.lead) and age<=float(qte_timing.lead)+float(qte_timing.sweep) and progress>=qte_zone and progress<=qte_zone+qte_width
 		result_flash = 0.7
 		result_good = success
 		if qte=="wrap":
@@ -1271,13 +1399,13 @@ func _step_line(delta: float, qte_pressed: bool, judged_age: float = -1) -> void
 			return
 	else: landing_age = 0
 	if qte=="wrap":
-		if not touching_target(wrap_target): _fail_wrap()
+		if not touching_target(wrap_target): _fail_wrap("离开障碍 · 缠线中断",qte_age>=float(qte_timing.lead))
 		else: _step_qte(delta,qte_pressed,judged_age)
 		return
 	if animating: return
 	if qte == "slack":
 		if tension >= rule("tension_low"):
-			_finish_qte_visual(false,"张力回升")
+			_finish_qte_visual(false,"张力回升",qte_age>=float(qte_timing.lead))
 			qte = ""
 			retry_age = rule("slack_retry")
 			low_age = 0
@@ -1305,6 +1433,9 @@ func _step_landing(delta: float) -> void:
 		notice_age = 4
 
 func _clear_hook() -> void:
+	# A player net recovery must never clear the independent NPC line owner.
+	if hook_target_fish_id>1: return
+	hook_target_fish_id=-1
 	_reset_untangle()
 	untangle_cooldown=0.0
 	for role in effort_checks: Effort.reset(effort_checks[role])
@@ -1353,16 +1484,17 @@ func _remaining(bait: Dictionary, attached_only: bool = false) -> bool:
 	return false
 
 func _step_supply(delta: float) -> void:
-	if not challenge or hooked != HookState.FREE or not net_state in ["wait", "rest"]: return
+	if (not challenge and (not npc_foraging_enabled or npc_fishes.is_empty())) or hooked != HookState.FREE or not net_state in ["wait", "rest"]: return
 	if cycle_phase.is_empty():
 		for index in baits.size():
-			if uses_mobile_tackle() and baits[index].tackle: continue
-			if baits[index].active and (baits[index].age >= rule("bait_cycle") or not _remaining(baits[index])):
+			if index==bound_bait or (uses_mobile_tackle() and baits[index].tackle): continue
+			if baits[index].removed or (baits[index].active and (baits[index].age >= rule("bait_cycle") or not _remaining(baits[index]))):
 				cycle_slot = index
 				cycle_phase = "warning"
 				cycle_age = 0
 				break
 	else:
+		if cycle_slot==bound_bait: return
 		cycle_age += delta
 		if cycle_phase == "warning" and cycle_age >= 2:
 			baits[cycle_slot].active = false

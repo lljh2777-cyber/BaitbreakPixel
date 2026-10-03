@@ -54,7 +54,7 @@ static func draw(view: Node2D, world: Node2D, t: float) -> void:
 	for bait in world.baits:
 		if bait.active and not bait.removed:
 			view.draw_rect(Rect2(Vector2(bait.pos).snapped(Vector2(2,2))-Vector2(2,2),Vector2(4,4)),Color("668579"))
-	if world.hooked!=world.HookState.FREE:
+	if world.hooked!=world.HookState.FREE or world.line_hooked():
 		var path: PackedVector2Array=world.rope_path
 		if path.size()>1: view.draw_polyline(path,Color(0.52,0.67,0.61,0.25),1)
 	# Reach boundary is independent of hidden fish information.

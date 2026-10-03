@@ -132,8 +132,14 @@ static func point_at(points: PackedVector2Array, distances: PackedFloat32Array, 
 
 static func build(world: Node2D, override: Dictionary={}, fish_pose: Dictionary={}) -> Dictionary:
 	var data := {"path":PackedVector2Array(),"front":[],"effects":[],"tail":PackedVector2Array(),"grass":[]}
-	if world.hooked!=world.HookState.HOOKED or world.bound_bait<0: return data
+	if not world.line_hooked() or world.bound_bait<0: return data
 	var previous: Vector2=world.line_anchor(world.bound_bait)
+	# The one rig can belong to either fish. NPCs never borrow the player
+	# winding pose, wraps or mouth; their public physical mouth is sufficient.
+	if world.hook_target_fish_id>1:
+		data.tail=strand(world,previous,world.hook_target_mouth(),world.rope_length)
+		append_piece(data,data.tail,false)
+		return data
 	var mouth: Vector2=world.mouth()
 	var fish_orbit: bool=fish_pose.get("active",false)
 	if fish_orbit: mouth=fish_pose.mouth

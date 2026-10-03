@@ -1,0 +1,1147 @@
+{
+  "format": "phase03-hook-comparison-v1",
+  "paired_seeds": 25,
+  "seeds": [
+    64401,
+    64402,
+    64403,
+    64404,
+    64405,
+    64406,
+    64407,
+    64408,
+    64409,
+    64410,
+    64411,
+    64412,
+    64413,
+    64414,
+    64415,
+    64416,
+    64417,
+    64418,
+    64419,
+    64420,
+    64421,
+    64422,
+    64423,
+    64424,
+    64425
+  ],
+  "modes": {
+    "NoNPC": {
+      "completed": 25,
+      "incomplete_seeds": [],
+      "outcome_reasons": {
+        "home": 10,
+        "landed": 5,
+        "net": 10
+      },
+      "metrics": {
+        "player_food": 51.198,
+        "npc_food": 0.0,
+        "hook_events": 0.24,
+        "hook_contacts": 0.24,
+        "duration": 71.54133333333057,
+        "player_hooked_seconds": 5.112666666666616,
+        "npc_hook_count": 0,
+        "npc_escapes": 0,
+        "npc_breaks": 0,
+        "wrong_catches": 0,
+        "npc_hooked_seconds": 0.0,
+        "lifecycle_events": 3.44,
+        "lifecycle_per_sim_minute": 2.6506775275247407,
+        "no_food_seconds": 0.0,
+        "longest_no_food_seconds": 0.0,
+        "longest_player_no_intake_seconds": 17.807333333333336,
+        "replacement_ids_allocated": 0,
+        "fish_win_fraction": 0.4,
+        "completion_fraction": 1.0,
+        "player_hook_fraction": 0.24,
+        "npc_hook_fraction": 0.0,
+        "wrong_catch_fraction": 0.0
+      },
+      "totals": {
+        "hook_events": 6,
+        "hook_contacts": 6,
+        "npc_hook_count": 0,
+        "npc_escapes": 0,
+        "npc_breaks": 0,
+        "wrong_catches": 0,
+        "lifecycle_events": 86,
+        "replacement_ids_allocated": 0
+      }
+    },
+    "PassiveNPC": {
+      "completed": 25,
+      "incomplete_seeds": [],
+      "outcome_reasons": {
+        "home": 10,
+        "landed": 5,
+        "net": 10
+      },
+      "metrics": {
+        "player_food": 51.198,
+        "npc_food": 0.0,
+        "hook_events": 0.24,
+        "hook_contacts": 0.24,
+        "duration": 71.54133333333057,
+        "player_hooked_seconds": 5.112666666666616,
+        "npc_hook_count": 0,
+        "npc_escapes": 0,
+        "npc_breaks": 0,
+        "wrong_catches": 0,
+        "npc_hooked_seconds": 0.0,
+        "lifecycle_events": 3.44,
+        "lifecycle_per_sim_minute": 2.6506775275247407,
+        "no_food_seconds": 0.0,
+        "longest_no_food_seconds": 0.0,
+        "longest_player_no_intake_seconds": 17.807333333333336,
+        "replacement_ids_allocated": 0,
+        "fish_win_fraction": 0.4,
+        "completion_fraction": 1.0,
+        "player_hook_fraction": 0.24,
+        "npc_hook_fraction": 0.0,
+        "wrong_catch_fraction": 0.0
+      },
+      "totals": {
+        "hook_events": 6,
+        "hook_contacts": 6,
+        "npc_hook_count": 0,
+        "npc_escapes": 0,
+        "npc_breaks": 0,
+        "wrong_catches": 0,
+        "lifecycle_events": 86,
+        "replacement_ids_allocated": 0
+      }
+    },
+    "ForagingNPC": {
+      "completed": 25,
+      "incomplete_seeds": [],
+      "outcome_reasons": {
+        "home": 7,
+        "landed": 6,
+        "net": 12
+      },
+      "metrics": {
+        "player_food": 46.344,
+        "npc_food": 76.48799999999999,
+        "hook_events": 0.28,
+        "hook_contacts": 0.28,
+        "duration": 64.0006666666643,
+        "player_hooked_seconds": 5.487999999999991,
+        "npc_hook_count": 0,
+        "npc_escapes": 0,
+        "npc_breaks": 0,
+        "wrong_catches": 0,
+        "npc_hooked_seconds": 0.0,
+        "lifecycle_events": 3.48,
+        "lifecycle_per_sim_minute": 2.99438313275484,
+        "no_food_seconds": 1.1973333333333347,
+        "longest_no_food_seconds": 1.1973333333333347,
+        "longest_player_no_intake_seconds": 16.417333333333332,
+        "replacement_ids_allocated": 0,
+        "fish_win_fraction": 0.28,
+        "completion_fraction": 1.0,
+        "player_hook_fraction": 0.28,
+        "npc_hook_fraction": 0.0,
+        "wrong_catch_fraction": 0.0
+      },
+      "totals": {
+        "hook_events": 7,
+        "hook_contacts": 7,
+        "npc_hook_count": 0,
+        "npc_escapes": 0,
+        "npc_breaks": 0,
+        "wrong_catches": 0,
+        "lifecycle_events": 87,
+        "replacement_ids_allocated": 0
+      }
+    },
+    "HookableNPC": {
+      "completed": 25,
+      "incomplete_seeds": [],
+      "outcome_reasons": {
+        "home": 7,
+        "landed": 7,
+        "net": 11
+      },
+      "metrics": {
+        "player_food": 50.412,
+        "npc_food": 61.15799999999997,
+        "hook_events": 0.32,
+        "hook_contacts": 0.32,
+        "duration": 64.61399999999762,
+        "player_hooked_seconds": 4.558666666666644,
+        "npc_hook_count": 1.16,
+        "npc_escapes": 0,
+        "npc_breaks": 0,
+        "wrong_catches": 1.12,
+        "npc_hooked_seconds": 5.665333333333372,
+        "lifecycle_events": 4.08,
+        "lifecycle_per_sim_minute": 3.4939953774182224,
+        "no_food_seconds": 1.1480000000000012,
+        "longest_no_food_seconds": 1.1480000000000012,
+        "longest_player_no_intake_seconds": 15.352,
+        "replacement_ids_allocated": 0.96,
+        "fish_win_fraction": 0.28,
+        "completion_fraction": 1.0,
+        "player_hook_fraction": 0.32,
+        "npc_hook_fraction": 0.76,
+        "wrong_catch_fraction": 0.72
+      },
+      "totals": {
+        "hook_events": 8,
+        "hook_contacts": 8,
+        "npc_hook_count": 29,
+        "npc_escapes": 0,
+        "npc_breaks": 0,
+        "wrong_catches": 28,
+        "lifecycle_events": 102,
+        "replacement_ids_allocated": 24
+      }
+    }
+  },
+  "paired_differences": {
+    "PassiveNPC minus NoNPC": {
+      "player_food": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      },
+      "npc_food": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      },
+      "hook_events": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "hook_contacts": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "duration": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      },
+      "player_hooked_seconds": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      },
+      "npc_hook_count": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "npc_escapes": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "npc_breaks": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "wrong_catches": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "npc_hooked_seconds": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      },
+      "lifecycle_events": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "lifecycle_per_sim_minute": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      },
+      "no_food_seconds": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      },
+      "longest_player_no_intake_seconds": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      },
+      "replacement_ids_allocated": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "fish_win_fraction": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      },
+      "completion_fraction": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      },
+      "player_hook_fraction": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      },
+      "npc_hook_fraction": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      },
+      "wrong_catch_fraction": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "ForagingNPC minus NoNPC": {
+      "player_food": {
+        "mean": -4.854,
+        "paired_bootstrap_95_percent": [
+          -10.553999999999998,
+          1.6019999999999999
+        ]
+      },
+      "npc_food": {
+        "mean": 76.48799999999999,
+        "paired_bootstrap_95_percent": [
+          63.50399999999999,
+          90.17999999999999
+        ]
+      },
+      "hook_events": {
+        "mean": 0.04,
+        "paired_bootstrap_95_percent": [
+          -0.2,
+          0.28
+        ]
+      },
+      "hook_contacts": {
+        "mean": 0.04,
+        "paired_bootstrap_95_percent": [
+          -0.2,
+          0.28
+        ]
+      },
+      "duration": {
+        "mean": -7.540666666666269,
+        "paired_bootstrap_95_percent": [
+          -16.406666666665757,
+          1.0639999999998713
+        ]
+      },
+      "player_hooked_seconds": {
+        "mean": 0.3753333333333741,
+        "paired_bootstrap_95_percent": [
+          -5.087999999999907,
+          5.531999999999989
+        ]
+      },
+      "npc_hook_count": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "npc_escapes": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "npc_breaks": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "wrong_catches": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "npc_hooked_seconds": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      },
+      "lifecycle_events": {
+        "mean": 0.04,
+        "paired_bootstrap_95_percent": [
+          -0.88,
+          0.96
+        ]
+      },
+      "lifecycle_per_sim_minute": {
+        "mean": 0.34370560523009924,
+        "paired_bootstrap_95_percent": [
+          -0.2053211177325251,
+          0.9195858265053987
+        ]
+      },
+      "no_food_seconds": {
+        "mean": 1.1973333333333347,
+        "paired_bootstrap_95_percent": [
+          0.1126666666666668,
+          3.0053333333333376
+        ]
+      },
+      "longest_no_food_seconds": {
+        "mean": 1.1973333333333347,
+        "paired_bootstrap_95_percent": [
+          0.122,
+          2.848000000000004
+        ]
+      },
+      "longest_player_no_intake_seconds": {
+        "mean": -1.390000000000003,
+        "paired_bootstrap_95_percent": [
+          -5.7600000000000025,
+          2.890666666666661
+        ]
+      },
+      "replacement_ids_allocated": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "fish_win_fraction": {
+        "mean": -0.12,
+        "paired_bootstrap_95_percent": [
+          -0.44,
+          0.16
+        ]
+      },
+      "completion_fraction": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      },
+      "player_hook_fraction": {
+        "mean": 0.04,
+        "paired_bootstrap_95_percent": [
+          -0.2,
+          0.28
+        ]
+      },
+      "npc_hook_fraction": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      },
+      "wrong_catch_fraction": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "HookableNPC minus NoNPC": {
+      "player_food": {
+        "mean": -0.7859999999999995,
+        "paired_bootstrap_95_percent": [
+          -8.280000000000001,
+          7.080000000000002
+        ]
+      },
+      "npc_food": {
+        "mean": 61.15799999999997,
+        "paired_bootstrap_95_percent": [
+          52.097999999999985,
+          71.24399999999994
+        ]
+      },
+      "hook_events": {
+        "mean": 0.08,
+        "paired_bootstrap_95_percent": [
+          -0.16,
+          0.32
+        ]
+      },
+      "hook_contacts": {
+        "mean": 0.08,
+        "paired_bootstrap_95_percent": [
+          -0.16,
+          0.32
+        ]
+      },
+      "duration": {
+        "mean": -6.927333333332956,
+        "paired_bootstrap_95_percent": [
+          -18.036666666665667,
+          4.014666666666429
+        ]
+      },
+      "player_hooked_seconds": {
+        "mean": -0.5539999999999723,
+        "paired_bootstrap_95_percent": [
+          -4.730666666666607,
+          3.4693333333333465
+        ]
+      },
+      "npc_hook_count": {
+        "mean": 1.16,
+        "paired_bootstrap_95_percent": [
+          0.8,
+          1.52
+        ]
+      },
+      "npc_escapes": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "npc_breaks": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "wrong_catches": {
+        "mean": 1.12,
+        "paired_bootstrap_95_percent": [
+          0.8,
+          1.52
+        ]
+      },
+      "npc_hooked_seconds": {
+        "mean": 5.665333333333372,
+        "paired_bootstrap_95_percent": [
+          3.8613333333333446,
+          7.436000000000096
+        ]
+      },
+      "lifecycle_events": {
+        "mean": 0.64,
+        "paired_bootstrap_95_percent": [
+          -0.44,
+          1.72
+        ]
+      },
+      "lifecycle_per_sim_minute": {
+        "mean": 0.8433178498934816,
+        "paired_bootstrap_95_percent": [
+          0.3403018346623099,
+          1.3662178824785116
+        ]
+      },
+      "no_food_seconds": {
+        "mean": 1.1480000000000012,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          3.08466666666667
+        ]
+      },
+      "longest_no_food_seconds": {
+        "mean": 1.1480000000000012,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          2.9966666666666706
+        ]
+      },
+      "longest_player_no_intake_seconds": {
+        "mean": -2.4553333333333347,
+        "paired_bootstrap_95_percent": [
+          -6.312666666666663,
+          1.3033333333333383
+        ]
+      },
+      "replacement_ids_allocated": {
+        "mean": 0.96,
+        "paired_bootstrap_95_percent": [
+          0.56,
+          1.4
+        ]
+      },
+      "fish_win_fraction": {
+        "mean": -0.12,
+        "paired_bootstrap_95_percent": [
+          -0.4,
+          0.16
+        ]
+      },
+      "completion_fraction": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      },
+      "player_hook_fraction": {
+        "mean": 0.08,
+        "paired_bootstrap_95_percent": [
+          -0.16,
+          0.32
+        ]
+      },
+      "npc_hook_fraction": {
+        "mean": 0.76,
+        "paired_bootstrap_95_percent": [
+          0.6,
+          0.92
+        ]
+      },
+      "wrong_catch_fraction": {
+        "mean": 0.72,
+        "paired_bootstrap_95_percent": [
+          0.56,
+          0.88
+        ]
+      }
+    },
+    "ForagingNPC minus PassiveNPC": {
+      "player_food": {
+        "mean": -4.854,
+        "paired_bootstrap_95_percent": [
+          -10.643999999999998,
+          1.7159999999999997
+        ]
+      },
+      "npc_food": {
+        "mean": 76.48799999999999,
+        "paired_bootstrap_95_percent": [
+          63.67199999999998,
+          90.53399999999999
+        ]
+      },
+      "hook_events": {
+        "mean": 0.04,
+        "paired_bootstrap_95_percent": [
+          -0.2,
+          0.32
+        ]
+      },
+      "hook_contacts": {
+        "mean": 0.04,
+        "paired_bootstrap_95_percent": [
+          -0.24,
+          0.32
+        ]
+      },
+      "duration": {
+        "mean": -7.540666666666269,
+        "paired_bootstrap_95_percent": [
+          -15.90266666666582,
+          1.3446666666665439
+        ]
+      },
+      "player_hooked_seconds": {
+        "mean": 0.3753333333333741,
+        "paired_bootstrap_95_percent": [
+          -4.945999999999939,
+          5.867333333333363
+        ]
+      },
+      "npc_hook_count": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "npc_escapes": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "npc_breaks": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "wrong_catches": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "npc_hooked_seconds": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      },
+      "lifecycle_events": {
+        "mean": 0.04,
+        "paired_bootstrap_95_percent": [
+          -0.84,
+          0.96
+        ]
+      },
+      "lifecycle_per_sim_minute": {
+        "mean": 0.34370560523009924,
+        "paired_bootstrap_95_percent": [
+          -0.18798416234033757,
+          0.9013541716186448
+        ]
+      },
+      "no_food_seconds": {
+        "mean": 1.1973333333333347,
+        "paired_bootstrap_95_percent": [
+          0.1126666666666668,
+          2.9466666666666708
+        ]
+      },
+      "longest_no_food_seconds": {
+        "mean": 1.1973333333333347,
+        "paired_bootstrap_95_percent": [
+          0.122,
+          2.9513333333333374
+        ]
+      },
+      "longest_player_no_intake_seconds": {
+        "mean": -1.390000000000003,
+        "paired_bootstrap_95_percent": [
+          -5.941999999999995,
+          2.973999999999991
+        ]
+      },
+      "replacement_ids_allocated": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "fish_win_fraction": {
+        "mean": -0.12,
+        "paired_bootstrap_95_percent": [
+          -0.44,
+          0.16
+        ]
+      },
+      "completion_fraction": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      },
+      "player_hook_fraction": {
+        "mean": 0.04,
+        "paired_bootstrap_95_percent": [
+          -0.24,
+          0.28
+        ]
+      },
+      "npc_hook_fraction": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      },
+      "wrong_catch_fraction": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "HookableNPC minus PassiveNPC": {
+      "player_food": {
+        "mean": -0.7859999999999995,
+        "paired_bootstrap_95_percent": [
+          -8.165999999999999,
+          6.888
+        ]
+      },
+      "npc_food": {
+        "mean": 61.15799999999997,
+        "paired_bootstrap_95_percent": [
+          51.85199999999999,
+          71.11199999999995
+        ]
+      },
+      "hook_events": {
+        "mean": 0.08,
+        "paired_bootstrap_95_percent": [
+          -0.16,
+          0.32
+        ]
+      },
+      "hook_contacts": {
+        "mean": 0.08,
+        "paired_bootstrap_95_percent": [
+          -0.16,
+          0.32
+        ]
+      },
+      "duration": {
+        "mean": -6.927333333332956,
+        "paired_bootstrap_95_percent": [
+          -18.28066666666564,
+          4.6939999999997015
+        ]
+      },
+      "player_hooked_seconds": {
+        "mean": -0.5539999999999723,
+        "paired_bootstrap_95_percent": [
+          -4.958666666666563,
+          3.335999999999984
+        ]
+      },
+      "npc_hook_count": {
+        "mean": 1.16,
+        "paired_bootstrap_95_percent": [
+          0.8,
+          1.52
+        ]
+      },
+      "npc_escapes": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "npc_breaks": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "wrong_catches": {
+        "mean": 1.12,
+        "paired_bootstrap_95_percent": [
+          0.76,
+          1.52
+        ]
+      },
+      "npc_hooked_seconds": {
+        "mean": 5.665333333333372,
+        "paired_bootstrap_95_percent": [
+          3.844000000000002,
+          7.540000000000057
+        ]
+      },
+      "lifecycle_events": {
+        "mean": 0.64,
+        "paired_bootstrap_95_percent": [
+          -0.44,
+          1.68
+        ]
+      },
+      "lifecycle_per_sim_minute": {
+        "mean": 0.8433178498934816,
+        "paired_bootstrap_95_percent": [
+          0.333138620144458,
+          1.3600503688500207
+        ]
+      },
+      "no_food_seconds": {
+        "mean": 1.1480000000000012,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          3.1800000000000037
+        ]
+      },
+      "longest_no_food_seconds": {
+        "mean": 1.1480000000000012,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          3.1653333333333373
+        ]
+      },
+      "longest_player_no_intake_seconds": {
+        "mean": -2.4553333333333347,
+        "paired_bootstrap_95_percent": [
+          -6.143333333333337,
+          0.9680000000000065
+        ]
+      },
+      "replacement_ids_allocated": {
+        "mean": 0.96,
+        "paired_bootstrap_95_percent": [
+          0.56,
+          1.4
+        ]
+      },
+      "fish_win_fraction": {
+        "mean": -0.12,
+        "paired_bootstrap_95_percent": [
+          -0.44,
+          0.2
+        ]
+      },
+      "completion_fraction": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      },
+      "player_hook_fraction": {
+        "mean": 0.08,
+        "paired_bootstrap_95_percent": [
+          -0.16,
+          0.32
+        ]
+      },
+      "npc_hook_fraction": {
+        "mean": 0.76,
+        "paired_bootstrap_95_percent": [
+          0.6,
+          0.92
+        ]
+      },
+      "wrong_catch_fraction": {
+        "mean": 0.72,
+        "paired_bootstrap_95_percent": [
+          0.56,
+          0.88
+        ]
+      }
+    },
+    "HookableNPC minus ForagingNPC": {
+      "player_food": {
+        "mean": 4.0680000000000005,
+        "paired_bootstrap_95_percent": [
+          -1.824,
+          10.47
+        ]
+      },
+      "npc_food": {
+        "mean": -15.330000000000018,
+        "paired_bootstrap_95_percent": [
+          -28.680000000000035,
+          -4.374000000000047
+        ]
+      },
+      "hook_events": {
+        "mean": 0.04,
+        "paired_bootstrap_95_percent": [
+          -0.12,
+          0.2
+        ]
+      },
+      "hook_contacts": {
+        "mean": 0.04,
+        "paired_bootstrap_95_percent": [
+          -0.12,
+          0.2
+        ]
+      },
+      "duration": {
+        "mean": 0.613333333333313,
+        "paired_bootstrap_95_percent": [
+          -4.85199999999972,
+          6.368666666666327
+        ]
+      },
+      "player_hooked_seconds": {
+        "mean": -0.9293333333333464,
+        "paired_bootstrap_95_percent": [
+          -4.069999999999991,
+          2.341999999999979
+        ]
+      },
+      "npc_hook_count": {
+        "mean": 1.16,
+        "paired_bootstrap_95_percent": [
+          0.84,
+          1.52
+        ]
+      },
+      "npc_escapes": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "npc_breaks": {
+        "mean": 0,
+        "paired_bootstrap_95_percent": [
+          0,
+          0
+        ]
+      },
+      "wrong_catches": {
+        "mean": 1.12,
+        "paired_bootstrap_95_percent": [
+          0.76,
+          1.52
+        ]
+      },
+      "npc_hooked_seconds": {
+        "mean": 5.665333333333372,
+        "paired_bootstrap_95_percent": [
+          3.886666666666686,
+          7.50933333333342
+        ]
+      },
+      "lifecycle_events": {
+        "mean": 0.6,
+        "paired_bootstrap_95_percent": [
+          0,
+          1.24
+        ]
+      },
+      "lifecycle_per_sim_minute": {
+        "mean": 0.4996122446633824,
+        "paired_bootstrap_95_percent": [
+          0.11684004755268433,
+          0.8846080136138247
+        ]
+      },
+      "no_food_seconds": {
+        "mean": -0.04933333333333358,
+        "paired_bootstrap_95_percent": [
+          -2.103333333333338,
+          2.341333333333337
+        ]
+      },
+      "longest_no_food_seconds": {
+        "mean": -0.04933333333333358,
+        "paired_bootstrap_95_percent": [
+          -2.103333333333338,
+          2.2440000000000038
+        ]
+      },
+      "longest_player_no_intake_seconds": {
+        "mean": -1.0653333333333317,
+        "paired_bootstrap_95_percent": [
+          -3.9073333333333236,
+          1.7199999999999962
+        ]
+      },
+      "replacement_ids_allocated": {
+        "mean": 0.96,
+        "paired_bootstrap_95_percent": [
+          0.56,
+          1.4
+        ]
+      },
+      "fish_win_fraction": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          -0.16,
+          0.16
+        ]
+      },
+      "completion_fraction": {
+        "mean": 0.0,
+        "paired_bootstrap_95_percent": [
+          0.0,
+          0.0
+        ]
+      },
+      "player_hook_fraction": {
+        "mean": 0.04,
+        "paired_bootstrap_95_percent": [
+          -0.12,
+          0.24
+        ]
+      },
+      "npc_hook_fraction": {
+        "mean": 0.76,
+        "paired_bootstrap_95_percent": [
+          0.6,
+          0.92
+        ]
+      },
+      "wrong_catch_fraction": {
+        "mean": 0.72,
+        "paired_bootstrap_95_percent": [
+          0.52,
+          0.88
+        ]
+      }
+    }
+  },
+  "note": "All outcomes retained; win fractions use all rounds, unfinished separately listed. Paired seed-bootstrap intervals describe this bounded autonomous sample, not human win rates or balance acceptance.",
+  "passive_control_mismatched_seeds": [],
+  "observed_hookable_events": 29,
+  "event_coverage_note": "Actual NPC hook events occurred; review outcomes and occupied time."
+}

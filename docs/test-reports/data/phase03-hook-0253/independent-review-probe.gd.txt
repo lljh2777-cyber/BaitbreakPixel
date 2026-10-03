@@ -1,0 +1,81 @@
+extends SceneTree
+const World=preload("res://scripts/world_simulation.gd")
+const FishWire=preload("res://scripts/fish_network_observation.gd")
+const AnglerWire=preload("res://scripts/angler_network_observation.gd")
+var failed:=0
+var checked:=0
+var receiver: Node2D
+func check(ok: bool,label: String) -> void:
+	checked+=1
+	if not ok: failed+=1; print("FAIL | ",label)
+func setup(mode: String="duel") -> Node2D:
+	var w:=World.new()
+	w.reset_world({"seed":20261003,"challenge":false,"ruleset":mode,"npc_count":1,"npc_foraging_enabled":true,"rules":{"water_strength":0.0,"hunger_enabled":false,"timer_enabled":false,"instinct_max_strength":0.0}})
+	w.fish=Vector2(1000,300); w.fish_before=w.fish; w.velocity=Vector2.ZERO
+	for b: Dictionary in w.baits:
+		b.active=false; b.hook=false
+		for grain: Dictionary in b.grains: grain.eaten=true
+	var n: Dictionary=w.npc_fishes[0]
+	n.position=Vector2(232,160); n.aim=Vector2.DOWN; n.intent_aim=Vector2.DOWN; n.velocity=Vector2.ZERO; n.steering=Vector2.ZERO; n.decision_age=0.12
+	var b: Dictionary=w.baits[1]
+	b.active=true; b.hook=true; b.hook_id=w.next_hook_id; w.next_hook_id+=1
+	b.pos=n.position+n.aim*13-Vector2(2,1); b.home=b.pos; b.angle=0.0; b.tip_before=b.pos+Vector2(2,1)
+	w.advance_tick({}, {})
+	check(w.hook_target_fish_id==n.fish_id,"fixture real NPC contact "+mode)
+	return w
+func valid(w: Node2D,label: String) -> void:
+	var s: Dictionary=w.capture_snapshot()
+	check(receiver.restore_snapshot(s),label+" snapshot accepts")
+	check(receiver.capture_snapshot()==s,label+" exact roundtrip")
+	check(FishWire.valid(receiver,FishWire.capture(w)),label+" fish wire accepts")
+	check(AnglerWire.valid(receiver,AnglerWire.capture(w)),label+" angler wire accepts")
+func _initialize() -> void:
+	receiver=World.new(); receiver.reset_world({})
+	for mode: String in ["duel","survival"]:
+		var w:=setup(mode)
+		var original_id: int=w.hook_target_fish_id
+		var old_phase: String=w.npc_hook.phase
+		var captures:=0
+		for t in 1500:
+			w.advance_tick({}, {"reel":true})
+			if t%30==0 or old_phase!=w.npc_hook.phase: valid(w,"%s tick %d phase %s" % [mode,t,w.npc_hook.phase])
+			old_phase=w.npc_hook.phase
+			if w.round_stats.wrong_catches>0: captures=1
+			if captures>0 and w.npc_fishes[0].active: break
+		check(captures==1,mode+" continuous W produces NPC capture")
+		check(w.npc_fishes[0].active and w.npc_fishes[0].fish_id>original_id,mode+" new-ID respawn follows capture")
+		check(not w.match_over and w.winner_role=="" and w.score==0 and w.hook_count==0,mode+" wrong catch preserves player scalars/outcome")
+		print("LIFECYCLE | ",mode," captures=",w.round_stats.wrong_catches," slips=",w.round_stats.npc_escapes," breaks=",w.round_stats.npc_breaks," active=",w.npc_fishes[0].active," id=",w.npc_fishes[0].fish_id)
+		w.free()
+	var w:=setup()
+	var target: int=w.hook_target_fish_id
+	var baseline: Dictionary=w.capture_snapshot()
+	check(not w.angler.deploy(w) and not w.angler.cast(w,Vector2(400,200)),"occupied NPC target blocks deploy/cast")
+	check(w.capture_snapshot()==baseline,"rejected cast/deploy no changes")
+	w.match_paused=true; baseline=w.capture_snapshot()
+	for t in 120: w.advance_tick({"move":Vector2.RIGHT},{"reel":true})
+	check(w.capture_snapshot()==baseline,"pause freezes NPC timers and whole authority")
+	w.match_paused=false
+	w.set_escape_timing(10.0,0.3,30.0)
+	w.net_pos=Vector2(500,180); w.net_from=w.net_pos; w.net_park=Vector2(500,39)
+	w.Net._catch_in_net(w)
+	for t in 360:
+		w.advance_tick({}, {})
+		if t%30==0: valid(w,"net concurrent "+str(t))
+		if w.net_state=="rest": break
+	check(w.net_state=="rest","practice net finishes player recovery")
+	check(w.hook_target_fish_id==target and w.npc_hook.phase=="hooked","practice net recovery preserves NPC target")
+	check(w.hooked==0 and not w.landing and w.qte=="","practice net recovery keeps player hook free")
+	w.finish(true,"home"); baseline=w.capture_snapshot()
+	for t in 120: w.advance_tick({}, {"release":true})
+	check(w.capture_snapshot()==baseline,"end freezes occupied NPC target")
+	w.free()
+	w=setup()
+	for t in 600:
+		w.advance_tick({}, {"release":true})
+		if t%30==0: valid(w,"release "+str(t))
+		if w.hook_target_fish_id==-1: break
+	check(w.round_stats.npc_escapes==1 and w.hooked==0 and w.hook_target_fish_id==-1,"normal S yields isolated NPC escape")
+	w.free(); receiver.free()
+	print("INDEPENDENT_REVIEW | checked=",checked," failed=",failed)
+	quit(1 if failed else 0)

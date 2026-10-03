@@ -1,0 +1,111 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ERROR: PLAYER_HOOK_NET_FAIL | regular batch warning_green: selects only the first valid visible history age, never client-forged age
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/tmp/player_hook_batch_only.gd:9)
+       [1] batch_checks (/tmp/player_hook_batch_only.gd:61)
+       [2] _initialize (/tmp/player_hook_batch_only.gd:72)
+ERROR: PLAYER_HOOK_NET_FAIL | regular batch warning_green: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/tmp/player_hook_batch_only.gd:9)
+       [1] batch_checks (/tmp/player_hook_batch_only.gd:67)
+       [2] _initialize (/tmp/player_hook_batch_only.gd:72)
+ERROR: PLAYER_HOOK_NET_FAIL | regular batch warning_green: accepted candidates are bounded and cannot replay as held input
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/tmp/player_hook_batch_only.gd:9)
+       [1] batch_checks (/tmp/player_hook_batch_only.gd:68)
+       [2] _initialize (/tmp/player_hook_batch_only.gd:72)
+PLAYER_HOOK_NET_PASS | regular batch visible_miss_green: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | regular batch visible_miss_green: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | regular batch visible_miss_green: accepted candidates are bounded and cannot replay as held input
+PLAYER_HOOK_NET_PASS | regular batch wrong_identity: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | regular batch wrong_identity: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | regular batch wrong_identity: accepted candidates are bounded and cannot replay as held input
+PLAYER_HOOK_NET_PASS | regular batch expired_history: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | regular batch expired_history: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | regular batch expired_history: accepted candidates are bounded and cannot replay as held input
+ERROR: PLAYER_HOOK_NET_FAIL | fish_effort batch warning_green: selects only the first valid visible history age, never client-forged age
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/tmp/player_hook_batch_only.gd:9)
+       [1] batch_checks (/tmp/player_hook_batch_only.gd:61)
+       [2] _initialize (/tmp/player_hook_batch_only.gd:72)
+ERROR: PLAYER_HOOK_NET_FAIL | fish_effort batch warning_green: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/tmp/player_hook_batch_only.gd:9)
+       [1] batch_checks (/tmp/player_hook_batch_only.gd:67)
+       [2] _initialize (/tmp/player_hook_batch_only.gd:72)
+ERROR: PLAYER_HOOK_NET_FAIL | fish_effort batch warning_green: accepted candidates are bounded and cannot replay as held input
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/tmp/player_hook_batch_only.gd:9)
+       [1] batch_checks (/tmp/player_hook_batch_only.gd:68)
+       [2] _initialize (/tmp/player_hook_batch_only.gd:72)
+PLAYER_HOOK_NET_PASS | fish_effort batch visible_miss_green: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | fish_effort batch visible_miss_green: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | fish_effort batch visible_miss_green: accepted candidates are bounded and cannot replay as held input
+PLAYER_HOOK_NET_PASS | fish_effort batch wrong_identity: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | fish_effort batch wrong_identity: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | fish_effort batch wrong_identity: accepted candidates are bounded and cannot replay as held input
+PLAYER_HOOK_NET_PASS | fish_effort batch expired_history: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | fish_effort batch expired_history: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | fish_effort batch expired_history: accepted candidates are bounded and cannot replay as held input
+ERROR: PLAYER_HOOK_NET_FAIL | angler_effort batch warning_green: selects only the first valid visible history age, never client-forged age
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/tmp/player_hook_batch_only.gd:9)
+       [1] batch_checks (/tmp/player_hook_batch_only.gd:61)
+       [2] _initialize (/tmp/player_hook_batch_only.gd:72)
+ERROR: PLAYER_HOOK_NET_FAIL | angler_effort batch warning_green: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/tmp/player_hook_batch_only.gd:9)
+       [1] batch_checks (/tmp/player_hook_batch_only.gd:67)
+       [2] _initialize (/tmp/player_hook_batch_only.gd:72)
+ERROR: PLAYER_HOOK_NET_FAIL | angler_effort batch warning_green: accepted candidates are bounded and cannot replay as held input
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/tmp/player_hook_batch_only.gd:9)
+       [1] batch_checks (/tmp/player_hook_batch_only.gd:68)
+       [2] _initialize (/tmp/player_hook_batch_only.gd:72)
+PLAYER_HOOK_NET_PASS | angler_effort batch visible_miss_green: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | angler_effort batch visible_miss_green: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | angler_effort batch visible_miss_green: accepted candidates are bounded and cannot replay as held input
+PLAYER_HOOK_NET_PASS | angler_effort batch wrong_identity: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | angler_effort batch wrong_identity: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | angler_effort batch wrong_identity: accepted candidates are bounded and cannot replay as held input
+PLAYER_HOOK_NET_PASS | angler_effort batch expired_history: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | angler_effort batch expired_history: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | angler_effort batch expired_history: accepted candidates are bounded and cannot replay as held input
+ERROR: PLAYER_HOOK_NET_FAIL | untangle batch warning_green: selects only the first valid visible history age, never client-forged age
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/tmp/player_hook_batch_only.gd:9)
+       [1] batch_checks (/tmp/player_hook_batch_only.gd:61)
+       [2] _initialize (/tmp/player_hook_batch_only.gd:72)
+ERROR: PLAYER_HOOK_NET_FAIL | untangle batch warning_green: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/tmp/player_hook_batch_only.gd:9)
+       [1] batch_checks (/tmp/player_hook_batch_only.gd:67)
+       [2] _initialize (/tmp/player_hook_batch_only.gd:72)
+ERROR: PLAYER_HOOK_NET_FAIL | untangle batch warning_green: accepted candidates are bounded and cannot replay as held input
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (/tmp/player_hook_batch_only.gd:9)
+       [1] batch_checks (/tmp/player_hook_batch_only.gd:68)
+       [2] _initialize (/tmp/player_hook_batch_only.gd:72)
+PLAYER_HOOK_NET_PASS | untangle batch visible_miss_green: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | untangle batch visible_miss_green: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | untangle batch visible_miss_green: accepted candidates are bounded and cannot replay as held input
+PLAYER_HOOK_NET_PASS | untangle batch wrong_identity: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | untangle batch wrong_identity: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | untangle batch wrong_identity: accepted candidates are bounded and cannot replay as held input
+PLAYER_HOOK_NET_PASS | untangle batch expired_history: selects only the first valid visible history age, never client-forged age
+PLAYER_HOOK_NET_PASS | untangle batch expired_history: fresh green succeeds, first visible miss is final, invalid candidate cannot judge
+PLAYER_HOOK_NET_PASS | untangle batch expired_history: accepted candidates are bounded and cannot replay as held input
+BATCH_ONLY | passed=36 | failed=12

@@ -1,0 +1,300 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+NPC_NETWORK_PASS | schema15 authority has three ambient NPC records
+NPC_NETWORK_PASS | fish projection has guarded three-NPC public extension
+NPC_NETWORK_PASS | angler projection validates its independent NPC privacy guard
+NPC_NETWORK_PASS | both roles carry only six allowlisted NPC presentation facts
+NPC_NETWORK_PASS | private foraging configuration never crosses either role wire
+NPC_NETWORK_PASS | both roles omit private NPC aggregate: npc_food_consumed
+NPC_NETWORK_PASS | both roles omit private NPC aggregate: npc_food_by_type
+NPC_NETWORK_PASS | both roles omit private NPC aggregate: npc_feeding_events
+NPC_NETWORK_PASS | both roles omit private NPC aggregate: player_npc_food_contests
+NPC_NETWORK_PASS | both roles omit private NPC aggregate: npc_target_switches
+NPC_NETWORK_PASS | NPC allocators and reserved hook target never cross either wire
+NPC_NETWORK_PASS | compressed protocol preserves role-projected NPC records
+NPC_NETWORK_PASS | compressed protocol preserves role-projected NPC records
+NPC_NETWORK_PASS | NPC projection is detached from authority and earlier payloads
+NPC_NETWORK_PASS | authority array reorder preserves canonical public ordering
+NPC_NETWORK_PASS | neither role exposes NPC hidden decisions, RNG or future nested private fields
+NPC_NETWORK_PASS | reset private-contamination fixture to exact authority
+NPC_NETWORK_PASS | fish application removes previously generated offline NPC secrets
+NPC_NETWORK_PASS | angler application removes previously generated offline NPC secrets
+NPC_NETWORK_PASS | fish atomically rejects non-array NPC list <null>
+NPC_NETWORK_PASS | fish atomically rejects non-array NPC list 1
+NPC_NETWORK_PASS | fish atomically rejects non-array NPC list {  }
+NPC_NETWORK_PASS | fish atomically rejects non-array NPC list fish
+NPC_NETWORK_PASS | fish atomically rejects non-array NPC list []
+NPC_NETWORK_PASS | fish atomically rejects non-record NPC <null>
+NPC_NETWORK_PASS | fish atomically rejects non-record NPC 1
+NPC_NETWORK_PASS | fish atomically rejects non-record NPC []
+NPC_NETWORK_PASS | fish atomically rejects non-record NPC fish
+NPC_NETWORK_PASS | fish atomically rejects missing NPC fish_id
+NPC_NETWORK_PASS | fish atomically rejects private dictionary nested inside fish_id
+NPC_NETWORK_PASS | fish atomically rejects missing NPC position
+NPC_NETWORK_PASS | fish atomically rejects private dictionary nested inside position
+NPC_NETWORK_PASS | fish atomically rejects missing NPC velocity
+NPC_NETWORK_PASS | fish atomically rejects private dictionary nested inside velocity
+NPC_NETWORK_PASS | fish atomically rejects missing NPC aim
+NPC_NETWORK_PASS | fish atomically rejects private dictionary nested inside aim
+NPC_NETWORK_PASS | fish atomically rejects missing NPC visual_variant
+NPC_NETWORK_PASS | fish atomically rejects private dictionary nested inside visual_variant
+NPC_NETWORK_PASS | fish atomically rejects missing NPC animation_state
+NPC_NETWORK_PASS | fish atomically rejects private dictionary nested inside animation_state
+NPC_NETWORK_PASS | fish atomically rejects extra NPC key brain_seed
+NPC_NETWORK_PASS | fish atomically rejects extra NPC key brain_rng_state
+NPC_NETWORK_PASS | fish atomically rejects extra NPC key target_bait_id
+NPC_NETWORK_PASS | fish atomically rejects extra NPC key suspicion_by_bait
+NPC_NETWORK_PASS | fish atomically rejects extra NPC key risk_tolerance
+NPC_NETWORK_PASS | fish atomically rejects extra NPC key decision_weights
+NPC_NETWORK_PASS | fish atomically rejects extra NPC key future_secret
+NPC_NETWORK_PASS | fish atomically rejects extra NPC key active
+NPC_NETWORK_PASS | fish atomically rejects extra NPC key behavior_state
+NPC_NETWORK_PASS | fish atomically rejects extra NPC key feeding
+NPC_NETWORK_PASS | fish atomically rejects extra NPC key power
+NPC_NETWORK_PASS | fish atomically rejects extra NPC key bite_cooldown
+NPC_NETWORK_PASS | fish atomically rejects extra NPC key intent_aim
+NPC_NETWORK_PASS | fish atomically rejects extra NPC key satiety
+NPC_NETWORK_PASS | fish atomically rejects invalid NPC identity 0
+NPC_NETWORK_PASS | fish atomically rejects invalid NPC identity 1
+NPC_NETWORK_PASS | fish atomically rejects invalid NPC identity -1
+NPC_NETWORK_PASS | fish atomically rejects invalid NPC identity 2.0
+NPC_NETWORK_PASS | fish atomically rejects invalid NPC identity 2
+NPC_NETWORK_PASS | fish atomically rejects invalid NPC identity <null>
+NPC_NETWORK_PASS | fish atomically rejects invalid NPC position (nan, 1.0)
+NPC_NETWORK_PASS | fish atomically rejects invalid NPC position (inf, 2.0)
+NPC_NETWORK_PASS | fish atomically rejects invalid NPC position (100001.0, 0.0)
+NPC_NETWORK_PASS | fish atomically rejects invalid NPC position [1, 2]
+NPC_NETWORK_PASS | fish atomically rejects invalid NPC position <null>
+NPC_NETWORK_PASS | fish atomically rejects invalid NPC velocity (nan, 1.0)
+NPC_NETWORK_PASS | fish atomically rejects invalid NPC velocity (inf, 2.0)
+NPC_NETWORK_PASS | fish atomically rejects invalid NPC velocity (100001.0, 0.0)
+NPC_NETWORK_PASS | fish atomically rejects invalid NPC velocity [1, 2]
+NPC_NETWORK_PASS | fish atomically rejects invalid NPC velocity <null>
+NPC_NETWORK_PASS | fish atomically rejects invalid NPC aim (nan, 1.0)
+NPC_NETWORK_PASS | fish atomically rejects invalid NPC aim (inf, 2.0)
+NPC_NETWORK_PASS | fish atomically rejects invalid NPC aim (100001.0, 0.0)
+NPC_NETWORK_PASS | fish atomically rejects invalid NPC aim [1, 2]
+NPC_NETWORK_PASS | fish atomically rejects invalid NPC aim <null>
+NPC_NETWORK_PASS | fish atomically rejects non-unit NPC aim
+NPC_NETWORK_PASS | fish atomically rejects non-unit NPC aim
+NPC_NETWORK_PASS | fish atomically rejects invalid visual variant -1
+NPC_NETWORK_PASS | fish atomically rejects invalid visual variant 3
+NPC_NETWORK_PASS | fish atomically rejects invalid visual variant 0.0
+NPC_NETWORK_PASS | fish atomically rejects invalid visual variant 0
+NPC_NETWORK_PASS | fish atomically rejects invalid visual variant <null>
+NPC_NETWORK_PASS | fish atomically rejects non-public animation state FLEE
+NPC_NETWORK_PASS | fish atomically rejects non-public animation state WANDER
+NPC_NETWORK_PASS | fish atomically rejects non-public animation state 
+NPC_NETWORK_PASS | fish atomically rejects non-public animation state swim
+NPC_NETWORK_PASS | fish atomically rejects non-public animation state 0
+NPC_NETWORK_PASS | fish atomically rejects non-public animation state <null>
+NPC_NETWORK_PASS | fish atomically rejects incompatible NPC extension guard 0
+NPC_NETWORK_PASS | fish atomically rejects incompatible NPC extension guard 3
+NPC_NETWORK_PASS | fish atomically rejects incompatible NPC extension guard 2
+NPC_NETWORK_PASS | fish atomically rejects incompatible NPC extension guard 1.0
+NPC_NETWORK_PASS | fish atomically rejects incompatible NPC extension guard 2.0
+NPC_NETWORK_PASS | fish atomically rejects incompatible NPC extension guard 1
+NPC_NETWORK_PASS | fish atomically rejects incompatible NPC extension guard <null>
+NPC_NETWORK_PASS | fish atomically rejects missing NPC extension guard
+NPC_NETWORK_PASS | fish atomically rejects duplicate stable NPC identity
+NPC_NETWORK_PASS | fish atomically rejects NPC outside legal water
+NPC_NETWORK_PASS | fish atomically rejects unbounded NPC velocity
+NPC_NETWORK_PASS | fish atomically rejects more than six NPCs
+NPC_NETWORK_PASS | fish atomically rejects extra top-level NPC authority key next_fish_id
+NPC_NETWORK_PASS | fish atomically rejects extra top-level NPC authority key hook_target_fish_id
+NPC_NETWORK_PASS | fish atomically rejects extra top-level NPC authority key brain_rng_state
+NPC_NETWORK_PASS | fish atomically rejects extra top-level NPC authority key npc_foraging_enabled
+NPC_NETWORK_PASS | fish atomically rejects private NPC statistics smuggled into role payload: npc_food_consumed
+NPC_NETWORK_PASS | fish atomically rejects private NPC statistics smuggled into role payload: npc_food_by_type
+NPC_NETWORK_PASS | fish atomically rejects private NPC statistics smuggled into role payload: npc_feeding_events
+NPC_NETWORK_PASS | fish atomically rejects private NPC statistics smuggled into role payload: player_npc_food_contests
+NPC_NETWORK_PASS | fish atomically rejects private NPC statistics smuggled into role payload: npc_target_switches
+NPC_NETWORK_PASS | fish supports zero NPCs
+NPC_NETWORK_PASS | fish zero-NPC snapshot removes prior records
+NPC_NETWORK_PASS | angler atomically rejects non-array NPC list <null>
+NPC_NETWORK_PASS | angler atomically rejects non-array NPC list 1
+NPC_NETWORK_PASS | angler atomically rejects non-array NPC list {  }
+NPC_NETWORK_PASS | angler atomically rejects non-array NPC list fish
+NPC_NETWORK_PASS | angler atomically rejects non-array NPC list []
+NPC_NETWORK_PASS | angler atomically rejects non-record NPC <null>
+NPC_NETWORK_PASS | angler atomically rejects non-record NPC 1
+NPC_NETWORK_PASS | angler atomically rejects non-record NPC []
+NPC_NETWORK_PASS | angler atomically rejects non-record NPC fish
+NPC_NETWORK_PASS | angler atomically rejects missing NPC fish_id
+NPC_NETWORK_PASS | angler atomically rejects private dictionary nested inside fish_id
+NPC_NETWORK_PASS | angler atomically rejects missing NPC position
+NPC_NETWORK_PASS | angler atomically rejects private dictionary nested inside position
+NPC_NETWORK_PASS | angler atomically rejects missing NPC velocity
+NPC_NETWORK_PASS | angler atomically rejects private dictionary nested inside velocity
+NPC_NETWORK_PASS | angler atomically rejects missing NPC aim
+NPC_NETWORK_PASS | angler atomically rejects private dictionary nested inside aim
+NPC_NETWORK_PASS | angler atomically rejects missing NPC visual_variant
+NPC_NETWORK_PASS | angler atomically rejects private dictionary nested inside visual_variant
+NPC_NETWORK_PASS | angler atomically rejects missing NPC animation_state
+NPC_NETWORK_PASS | angler atomically rejects private dictionary nested inside animation_state
+NPC_NETWORK_PASS | angler atomically rejects extra NPC key brain_seed
+NPC_NETWORK_PASS | angler atomically rejects extra NPC key brain_rng_state
+NPC_NETWORK_PASS | angler atomically rejects extra NPC key target_bait_id
+NPC_NETWORK_PASS | angler atomically rejects extra NPC key suspicion_by_bait
+NPC_NETWORK_PASS | angler atomically rejects extra NPC key risk_tolerance
+NPC_NETWORK_PASS | angler atomically rejects extra NPC key decision_weights
+NPC_NETWORK_PASS | angler atomically rejects extra NPC key future_secret
+NPC_NETWORK_PASS | angler atomically rejects extra NPC key active
+NPC_NETWORK_PASS | angler atomically rejects extra NPC key behavior_state
+NPC_NETWORK_PASS | angler atomically rejects extra NPC key feeding
+NPC_NETWORK_PASS | angler atomically rejects extra NPC key power
+NPC_NETWORK_PASS | angler atomically rejects extra NPC key bite_cooldown
+NPC_NETWORK_PASS | angler atomically rejects extra NPC key intent_aim
+NPC_NETWORK_PASS | angler atomically rejects extra NPC key satiety
+NPC_NETWORK_PASS | angler atomically rejects invalid NPC identity 0
+NPC_NETWORK_PASS | angler atomically rejects invalid NPC identity 1
+NPC_NETWORK_PASS | angler atomically rejects invalid NPC identity -1
+NPC_NETWORK_PASS | angler atomically rejects invalid NPC identity 2.0
+NPC_NETWORK_PASS | angler atomically rejects invalid NPC identity 2
+NPC_NETWORK_PASS | angler atomically rejects invalid NPC identity <null>
+NPC_NETWORK_PASS | angler atomically rejects invalid NPC position (nan, 1.0)
+NPC_NETWORK_PASS | angler atomically rejects invalid NPC position (inf, 2.0)
+NPC_NETWORK_PASS | angler atomically rejects invalid NPC position (100001.0, 0.0)
+NPC_NETWORK_PASS | angler atomically rejects invalid NPC position [1, 2]
+NPC_NETWORK_PASS | angler atomically rejects invalid NPC position <null>
+NPC_NETWORK_PASS | angler atomically rejects invalid NPC velocity (nan, 1.0)
+NPC_NETWORK_PASS | angler atomically rejects invalid NPC velocity (inf, 2.0)
+NPC_NETWORK_PASS | angler atomically rejects invalid NPC velocity (100001.0, 0.0)
+NPC_NETWORK_PASS | angler atomically rejects invalid NPC velocity [1, 2]
+NPC_NETWORK_PASS | angler atomically rejects invalid NPC velocity <null>
+NPC_NETWORK_PASS | angler atomically rejects invalid NPC aim (nan, 1.0)
+NPC_NETWORK_PASS | angler atomically rejects invalid NPC aim (inf, 2.0)
+NPC_NETWORK_PASS | angler atomically rejects invalid NPC aim (100001.0, 0.0)
+NPC_NETWORK_PASS | angler atomically rejects invalid NPC aim [1, 2]
+NPC_NETWORK_PASS | angler atomically rejects invalid NPC aim <null>
+NPC_NETWORK_PASS | angler atomically rejects non-unit NPC aim
+NPC_NETWORK_PASS | angler atomically rejects non-unit NPC aim
+NPC_NETWORK_PASS | angler atomically rejects invalid visual variant -1
+NPC_NETWORK_PASS | angler atomically rejects invalid visual variant 3
+NPC_NETWORK_PASS | angler atomically rejects invalid visual variant 0.0
+NPC_NETWORK_PASS | angler atomically rejects invalid visual variant 0
+NPC_NETWORK_PASS | angler atomically rejects invalid visual variant <null>
+NPC_NETWORK_PASS | angler atomically rejects non-public animation state FLEE
+NPC_NETWORK_PASS | angler atomically rejects non-public animation state WANDER
+NPC_NETWORK_PASS | angler atomically rejects non-public animation state 
+NPC_NETWORK_PASS | angler atomically rejects non-public animation state swim
+NPC_NETWORK_PASS | angler atomically rejects non-public animation state 0
+NPC_NETWORK_PASS | angler atomically rejects non-public animation state <null>
+NPC_NETWORK_PASS | angler atomically rejects incompatible NPC extension guard 0
+NPC_NETWORK_PASS | angler atomically rejects incompatible NPC extension guard 3
+NPC_NETWORK_PASS | angler atomically rejects incompatible NPC extension guard 1
+NPC_NETWORK_PASS | angler atomically rejects incompatible NPC extension guard 1.0
+NPC_NETWORK_PASS | angler atomically rejects incompatible NPC extension guard 2.0
+NPC_NETWORK_PASS | angler atomically rejects incompatible NPC extension guard 1
+NPC_NETWORK_PASS | angler atomically rejects incompatible NPC extension guard <null>
+NPC_NETWORK_PASS | angler atomically rejects missing NPC extension guard
+NPC_NETWORK_PASS | angler atomically rejects duplicate stable NPC identity
+NPC_NETWORK_PASS | angler atomically rejects NPC outside legal water
+NPC_NETWORK_PASS | angler atomically rejects unbounded NPC velocity
+NPC_NETWORK_PASS | angler atomically rejects more than six NPCs
+NPC_NETWORK_PASS | angler atomically rejects extra top-level NPC authority key next_fish_id
+NPC_NETWORK_PASS | angler atomically rejects extra top-level NPC authority key hook_target_fish_id
+NPC_NETWORK_PASS | angler atomically rejects extra top-level NPC authority key brain_rng_state
+NPC_NETWORK_PASS | angler atomically rejects extra top-level NPC authority key npc_foraging_enabled
+NPC_NETWORK_PASS | angler atomically rejects private NPC statistics smuggled into role payload: npc_food_consumed
+NPC_NETWORK_PASS | angler atomically rejects private NPC statistics smuggled into role payload: npc_food_by_type
+NPC_NETWORK_PASS | angler atomically rejects private NPC statistics smuggled into role payload: npc_feeding_events
+NPC_NETWORK_PASS | angler atomically rejects private NPC statistics smuggled into role payload: player_npc_food_contests
+NPC_NETWORK_PASS | angler atomically rejects private NPC statistics smuggled into role payload: npc_target_switches
+NPC_NETWORK_PASS | angler supports zero NPCs
+NPC_NETWORK_PASS | angler zero-NPC snapshot removes prior records
+NPC_NETWORK_PASS | presentation accepts reordered NPC snapshots
+NPC_NETWORK_PASS | NPC position/velocity/heading interpolate by stable identity
+NPC_NETWORK_PASS | array reorder cannot swap unrelated NPC trajectories
+NPC_NETWORK_PASS | interpolation neither mutates received snapshot nor holds private AI state
+NPC_NETWORK_PASS | replacement NPC identity accepted
+NPC_NETWORK_PASS | removed fish disappears and replacement snaps without inherited interpolation
+NPC_NETWORK_PASS | inactive/absent public NPCs disappear immediately
+NPC_NETWORK_PASS | reactivated identity after absence has no ghost trajectory
+NPC_NETWORK_PASS | invalid presentation packet cannot replace history
+NPC_NETWORK_PASS | disconnect clears both NPC histories and displayed list
+NPC_NETWORK_PASS | local authority-preview compatibility strips private NPC state before rendering
+NPC_NETWORK_PASS | angler role preview retains only projected NPC records
+PIXEL_READY | asymmetric-2d | 640x360 | v0.25.1 | playtest-gate-phase03-foraging
+PIXEL_READY | asymmetric-2d | 640x360 | v0.25.1 | playtest-gate-phase03-foraging
+NETWORK_PHASE | host=true | waiting | 房间已创建，等待另一位玩家
+NETWORK_PHASE | host=false | connecting | 正在连接房主…
+NPC_NETWORK_PASS | real ENet fish client connects
+NETWORK_PHASE | host=false | waiting | 已进入房间，双方准备后开始
+NETWORK_PHASE | host=true | starting | 等待对方载入池塘…
+NETWORK_PHASE | host=false | starting | 等待房主开始…
+NETWORK_PHASE | host=true | countdown | 
+NETWORK_PHASE | host=false | countdown | 
+NETWORK_PHASE | host=true | playing | 
+NETWORK_PHASE | host=false | playing | 
+NPC_NETWORK_PASS | real ENet fish receives three ambient fish
+NPC_NETWORK_PASS | real ENet fish receives actual authority NPC movement
+NPC_NETWORK_PASS | real ENet fish wire uses role projection with no NPC AI internals
+NPC_NETWORK_PASS | real ENet fish client and render history contain no private NPC state
+NPC_NETWORK_PASS | real ENet fish receives visible food before NPC consumption
+NPC_NETWORK_PASS | real ENet fish authority NPC consumes actual food
+NPC_NETWORK_PASS | real ENet fish replicates food depletion without a player award
+NPC_NETWORK_PASS | real ENet fish feeding wire retains only public swimming records
+NPC_NETWORK_PASS | real ENet fish omits populated private aggregate npc_food_consumed
+NPC_NETWORK_PASS | real ENet fish omits populated private aggregate npc_food_by_type
+NPC_NETWORK_PASS | real ENet fish omits populated private aggregate npc_feeding_events
+NPC_NETWORK_PASS | real ENet fish omits populated private aggregate player_npc_food_contests
+NPC_NETWORK_PASS | real ENet fish omits populated private aggregate npc_target_switches
+NPC_NETWORK_PASS | real ENet fish feeding presentation has current public geometry and no private intent
+NPC_NETWORK_PASS | real ENet fish replaces stable NPC ID without reusing its slot
+NPC_NETWORK_PASS | real ENet fish canonical records survive authority reorder
+NPC_NETWORK_PASS | real ENet fish hides inactive NPC without sending private respawn timers
+NPC_NETWORK_PASS | real ENet fish disconnect removes stale NPC render state
+NETWORK_PHASE | host=true | waiting | 房间已创建，等待另一位玩家
+NETWORK_PHASE | host=false | connecting | 正在连接房主…
+NPC_NETWORK_PASS | real ENet fish reconnects to fresh session
+NETWORK_PHASE | host=false | waiting | 已进入房间，双方准备后开始
+NETWORK_PHASE | host=true | starting | 等待对方载入池塘…
+NETWORK_PHASE | host=false | starting | 等待房主开始…
+NETWORK_PHASE | host=true | countdown | 
+NETWORK_PHASE | host=false | countdown | 
+NETWORK_PHASE | host=true | playing | 
+NETWORK_PHASE | host=false | playing | 
+NPC_NETWORK_PASS | real ENet fish fresh round resets IDs and receives only new public fish
+PIXEL_READY | asymmetric-2d | 640x360 | v0.25.1 | playtest-gate-phase03-foraging
+PIXEL_READY | asymmetric-2d | 640x360 | v0.25.1 | playtest-gate-phase03-foraging
+NETWORK_PHASE | host=true | waiting | 房间已创建，等待另一位玩家
+NETWORK_PHASE | host=false | connecting | 正在连接房主…
+NPC_NETWORK_PASS | real ENet angler client connects
+NETWORK_PHASE | host=false | waiting | 已进入房间，双方准备后开始
+NETWORK_PHASE | host=true | starting | 等待对方载入池塘…
+NETWORK_PHASE | host=false | starting | 等待房主开始…
+NETWORK_PHASE | host=true | countdown | 
+NETWORK_PHASE | host=false | countdown | 
+NETWORK_PHASE | host=true | playing | 
+NETWORK_PHASE | host=false | playing | 
+NPC_NETWORK_PASS | real ENet angler receives three ambient fish
+NPC_NETWORK_PASS | real ENet angler receives actual authority NPC movement
+NPC_NETWORK_PASS | real ENet angler wire uses role projection with no NPC AI internals
+NPC_NETWORK_PASS | real ENet angler client and render history contain no private NPC state
+NPC_NETWORK_PASS | real ENet angler receives visible food before NPC consumption
+NPC_NETWORK_PASS | real ENet angler authority NPC consumes actual food
+NPC_NETWORK_PASS | real ENet angler replicates food depletion without a player award
+NPC_NETWORK_PASS | real ENet angler feeding wire retains only public swimming records
+NPC_NETWORK_PASS | real ENet angler omits populated private aggregate npc_food_consumed
+NPC_NETWORK_PASS | real ENet angler omits populated private aggregate npc_food_by_type
+NPC_NETWORK_PASS | real ENet angler omits populated private aggregate npc_feeding_events
+NPC_NETWORK_PASS | real ENet angler omits populated private aggregate player_npc_food_contests
+NPC_NETWORK_PASS | real ENet angler omits populated private aggregate npc_target_switches
+NPC_NETWORK_PASS | real ENet angler feeding presentation has current public geometry and no private intent
+NPC_NETWORK_PASS | real ENet angler replaces stable NPC ID without reusing its slot
+NPC_NETWORK_PASS | real ENet angler canonical records survive authority reorder
+NPC_NETWORK_PASS | real ENet angler hides inactive NPC without sending private respawn timers
+NPC_NETWORK_PASS | real ENet angler disconnect removes stale NPC render state
+NETWORK_PHASE | host=true | waiting | 房间已创建，等待另一位玩家
+NETWORK_PHASE | host=false | connecting | 正在连接房主…
+NPC_NETWORK_PASS | real ENet angler reconnects to fresh session
+NETWORK_PHASE | host=false | waiting | 已进入房间，双方准备后开始
+NETWORK_PHASE | host=true | starting | 等待对方载入池塘…
+NETWORK_PHASE | host=false | starting | 等待房主开始…
+NETWORK_PHASE | host=true | countdown | 
+NETWORK_PHASE | host=false | countdown | 
+NETWORK_PHASE | host=true | playing | 
+NETWORK_PHASE | host=false | playing | 
+NPC_NETWORK_PASS | real ENet angler fresh round resets IDs and receives only new public fish
+PHASE03_NPC_NETWORK_TESTS | passed=257 | failed=0

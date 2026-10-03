@@ -1,0 +1,125 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+PIXEL_READY | asymmetric-2d | 640x360 | v0.25.2 | playtest-gate-phase03-social
+NPC_NATIVE_PASS | default world supplies three authority NPCs
+NPC_NATIVE_PASS | ambient ecology preserves native 640x360 pixel canvas
+NPC_NATIVE_PASS | fixed-tick NPC rendering is exactly deterministic
+NPC_NATIVE_PASS | rendering preserves authority, NPC brain state, and world RNG
+NPC_NATIVE_PASS | stable fish IDs preserve animation when the array is reordered
+NPC_NATIVE_PASS | overlapping NPC draw order is stable by identity rather than array index
+NPC_NATIVE_PASS | public-only NPC records produce the same fish-view pixels as authority
+NPC_NATIVE_PASS | hidden hooks, RNG, targets, satiety, suspicion and private behavior do not change NPC pixels
+NPC_NATIVE_PASS | ambient fish do not add names, bars, icons, or HUD state
+NPC_NATIVE_PASS | variant 0 is visibly fish-sized at its real position
+NPC_NATIVE_PASS | variant 0 has no pixels, status markers or trails outside its physical sprite
+NPC_NATIVE_PASS | variant 0 remains smaller than the 24x12 player fish
+NPC_NATIVE_PASS | inactive variant 0 has no lingering sprite
+NPC_NATIVE_PASS | variant 0 follows authority movement exactly without a detached shadow
+NPC_NATIVE_PASS | variant 1 is visibly fish-sized at its real position
+NPC_NATIVE_PASS | variant 1 has no pixels, status markers or trails outside its physical sprite
+NPC_NATIVE_PASS | variant 1 remains smaller than the 24x12 player fish
+NPC_NATIVE_PASS | inactive variant 1 has no lingering sprite
+NPC_NATIVE_PASS | variant 1 follows authority movement exactly without a detached shadow
+NPC_NATIVE_PASS | variant 2 is visibly fish-sized at its real position
+NPC_NATIVE_PASS | variant 2 has no pixels, status markers or trails outside its physical sprite
+NPC_NATIVE_PASS | variant 2 remains smaller than the 24x12 player fish
+NPC_NATIVE_PASS | inactive variant 2 has no lingering sprite
+NPC_NATIVE_PASS | variant 2 follows authority movement exactly without a detached shadow
+NPC_NATIVE_PASS | variants [0, 1] have distinct silhouettes or markings at the same position
+NPC_NATIVE_PASS | variants [0, 2] have distinct silhouettes or markings at the same position
+NPC_NATIVE_PASS | variants [1, 2] have distinct silhouettes or markings at the same position
+NPC_NATIVE_PASS | all opaque player pixels stay in front when an NPC overlaps the protagonist
+NPC_NATIVE_PASS | shore view contains visible ambient fish shadows
+NPC_NATIVE_PASS | shore NPCs do not expose identity or status in the HUD
+NPC_NATIVE_PASS | shore differences stay inside projected underwater shadow band
+NPC_NATIVE_PASS | shore shadows remain identical under private hook and AI changes
+NPC_NATIVE_PASS | shore public replica matches authority without private fields
+NPC_NATIVE_PASS | existing net observation can reveal an NPC using legal visibility
+NPC_NATIVE_PASS | net observation stays on approximate 3px position grid, without exact-position icons
+NPC_NATIVE_PASS | net observation shadows are blind to private hook and brain truth
+NPC_NATIVE_PASS | NPC beyond existing net sight is not rendered in observation mode
+NPC_NATIVE_PASS | native authority NPC actually consumes the visible food fixture
+NPC_NATIVE_PASS | native NPC food intake gives no player award or hook event
+NPC_NATIVE_PASS | native capture contains real feeding state and pending bite cooldown
+NPC_NATIVE_PASS | actual consumed-food pixels disappear only at the food's visible position
+NPC_NATIVE_PASS | food visibility control restores exact native authority
+NPC_NATIVE_PASS | actual feeding pixels are invariant to private hook, feeding intent, power, cooldown and AI memory
+NPC_NATIVE_PASS | fed NPC public-only replica preserves exactly the same native pixels
+NPC_NATIVE_PASS | native public-cue fixture enters actual HESITATE
+NPC_NATIVE_PASS | native HESITATE fixture obeys exact authority snapshot contract
+NPC_NATIVE_PASS | native HESITATE restores fixture before fish view
+NPC_NATIVE_PASS | native HESITATE fish fixed-tick render is pure and deterministic
+NPC_NATIVE_PASS | native HESITATE fish is blind to hidden hooks, numeric caution, targets and social timers
+NPC_NATIVE_PASS | native HESITATE fish six-field swim replica is pixel-identical
+NPC_NATIVE_PASS | native HESITATE fish adds no numeric NPC caution, labels or HUD widgets
+NPC_NATIVE_PASS | native HESITATE fish has a visible physical fish/shadow
+NPC_NATIVE_PASS | native HESITATE restores fixture before angler view
+NPC_NATIVE_PASS | native HESITATE angler fixed-tick render is pure and deterministic
+NPC_NATIVE_PASS | native HESITATE angler is blind to hidden hooks, numeric caution, targets and social timers
+NPC_NATIVE_PASS | native HESITATE angler six-field swim replica is pixel-identical
+NPC_NATIVE_PASS | native HESITATE angler adds no numeric NPC caution, labels or HUD widgets
+NPC_NATIVE_PASS | native HESITATE angler has a visible physical fish/shadow
+NPC_NATIVE_PASS | native HESITATE restores fixture before observation view
+NPC_NATIVE_PASS | native HESITATE observation fixed-tick render is pure and deterministic
+NPC_NATIVE_PASS | native HESITATE observation is blind to hidden hooks, numeric caution, targets and social timers
+NPC_NATIVE_PASS | native HESITATE observation six-field swim replica is pixel-identical
+NPC_NATIVE_PASS | native HESITATE observation adds no numeric NPC caution, labels or HUD widgets
+NPC_NATIVE_PASS | native HESITATE observation has a visible physical fish/shadow
+NPC_NATIVE_PASS | restore native social movement authority HESITATE
+NPC_NATIVE_PASS | native HESITATE cue continues through authority motion rather than a status label
+NPC_NATIVE_PASS | native HESITATE introduces no NPC Hook or capture
+NPC_NATIVE_PASS | native public-cue fixture enters actual FLEE
+NPC_NATIVE_PASS | native FLEE fixture obeys exact authority snapshot contract
+NPC_NATIVE_PASS | native FLEE restores fixture before fish view
+NPC_NATIVE_PASS | native FLEE fish fixed-tick render is pure and deterministic
+NPC_NATIVE_PASS | native FLEE fish is blind to hidden hooks, numeric caution, targets and social timers
+NPC_NATIVE_PASS | native FLEE fish six-field swim replica is pixel-identical
+NPC_NATIVE_PASS | native FLEE fish adds no numeric NPC caution, labels or HUD widgets
+NPC_NATIVE_PASS | native FLEE fish has a visible physical fish/shadow
+NPC_NATIVE_PASS | native FLEE restores fixture before angler view
+NPC_NATIVE_PASS | native FLEE angler fixed-tick render is pure and deterministic
+NPC_NATIVE_PASS | native FLEE angler is blind to hidden hooks, numeric caution, targets and social timers
+NPC_NATIVE_PASS | native FLEE angler six-field swim replica is pixel-identical
+NPC_NATIVE_PASS | native FLEE angler adds no numeric NPC caution, labels or HUD widgets
+NPC_NATIVE_PASS | native FLEE angler has a visible physical fish/shadow
+NPC_NATIVE_PASS | native FLEE restores fixture before observation view
+NPC_NATIVE_PASS | native FLEE observation fixed-tick render is pure and deterministic
+NPC_NATIVE_PASS | native FLEE observation is blind to hidden hooks, numeric caution, targets and social timers
+NPC_NATIVE_PASS | native FLEE observation six-field swim replica is pixel-identical
+NPC_NATIVE_PASS | native FLEE observation adds no numeric NPC caution, labels or HUD widgets
+NPC_NATIVE_PASS | native FLEE observation has a visible physical fish/shadow
+NPC_NATIVE_PASS | restore native social movement authority FLEE
+NPC_NATIVE_PASS | native FLEE cue continues through authority motion rather than a status label
+NPC_NATIVE_PASS | native FLEE introduces no NPC Hook or capture
+NPC_NATIVE_PASS | native public-cue fixture enters actual COMPETE
+NPC_NATIVE_PASS | native COMPETE fixture obeys exact authority snapshot contract
+NPC_NATIVE_PASS | native COMPETE restores fixture before fish view
+NPC_NATIVE_PASS | native COMPETE fish fixed-tick render is pure and deterministic
+NPC_NATIVE_PASS | native COMPETE fish is blind to hidden hooks, numeric caution, targets and social timers
+NPC_NATIVE_PASS | native COMPETE fish six-field swim replica is pixel-identical
+NPC_NATIVE_PASS | native COMPETE fish adds no numeric NPC caution, labels or HUD widgets
+NPC_NATIVE_PASS | native COMPETE fish has a visible physical fish/shadow
+NPC_NATIVE_PASS | native COMPETE restores fixture before angler view
+NPC_NATIVE_PASS | native COMPETE angler fixed-tick render is pure and deterministic
+NPC_NATIVE_PASS | native COMPETE angler is blind to hidden hooks, numeric caution, targets and social timers
+NPC_NATIVE_PASS | native COMPETE angler six-field swim replica is pixel-identical
+NPC_NATIVE_PASS | native COMPETE angler adds no numeric NPC caution, labels or HUD widgets
+NPC_NATIVE_PASS | native COMPETE angler has a visible physical fish/shadow
+NPC_NATIVE_PASS | native COMPETE restores fixture before observation view
+NPC_NATIVE_PASS | native COMPETE observation fixed-tick render is pure and deterministic
+NPC_NATIVE_PASS | native COMPETE observation is blind to hidden hooks, numeric caution, targets and social timers
+NPC_NATIVE_PASS | native COMPETE observation six-field swim replica is pixel-identical
+NPC_NATIVE_PASS | native COMPETE observation adds no numeric NPC caution, labels or HUD widgets
+NPC_NATIVE_PASS | native COMPETE observation has a visible physical fish/shadow
+NPC_NATIVE_PASS | restore native social movement authority COMPETE
+NPC_NATIVE_PASS | native COMPETE cue continues through authority motion rather than a status label
+NPC_NATIVE_PASS | native COMPETE introduces no NPC Hook or capture
+NPC_NATIVE_PASS | 0 NPC frame-cost sampling preserves simulation
+NPC_NATIVE_PASS | 3 NPC frame-cost sampling preserves simulation
+NPC_NATIVE_PASS | 6 NPC frame-cost sampling preserves simulation
+NPC_NATIVE_PASS | 0/3/6 NPC native frame-cost report recorded
+NPC_NATIVE_FRAME_COSTS | {"adapter":"llvmpipe (LLVM 19.1.7, 256 bits)","display_server":"X11","measurement":"Wall-clock redraw-to-frame-post-draw on a frozen native 640x360 scene; includes display pacing and scheduler, not isolated GPU or simulation cost","renderer":"gl_compatibility","results":[{"mean_ms":16.1122,"npc_count":0,"p50_ms":15.717,"p95_ms":24.037,"samples":45},{"mean_ms":16.4387777777778,"npc_count":3,"p50_ms":16.505,"p95_ms":22.669,"samples":45},{"mean_ms":16.9941111111111,"npc_count":6,"p50_ms":16.719,"p95_ms":25.743,"samples":45}]}
+NPC_NATIVE | passed=117 | failed=0

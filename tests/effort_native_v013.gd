@@ -59,7 +59,10 @@ func run() -> void:
 		state.result_age=0; await capture(role+"-boost")
 		game.Effort.reset(state); game.Effort.open(state,game.rng)
 		state.age=0.1; await key(KEY_SPACE,true); await tick(1,role); await key(KEY_SPACE,false)
-		check(not state.good and state.multiplier==0.6,role+" early Space briefly weakens the correct side")
+		check(state.active and state.result_age==0 and state.multiplier==1.0,role+" warning-period Space leaves the hidden timing check active")
+		await process_frame
+		state.age=state.lead+0.02; await key(KEY_SPACE,true); await tick(1,role); await key(KEY_SPACE,false)
+		check(not state.good and state.multiplier==0.6,role+" visible off-zone Space briefly weakens the correct side")
 		await capture(role+"-failure")
 	fresh("fish"); game._open_qte("wrap"); game.qte_age=0.6
 	await capture("wrap-random")

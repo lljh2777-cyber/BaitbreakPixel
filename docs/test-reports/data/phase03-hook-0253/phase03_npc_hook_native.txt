@@ -1,0 +1,93 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+PIXEL_READY | asymmetric-2d | 640x360 | v0.25.3 | playtest-gate-phase03-hook
+NPC_HOOK_NATIVE_PASS | real mouth contact selects an NPC in the native scene
+NPC_HOOK_NATIVE_PASS | NPC hook leaves the protagonist free and creates no player winding or landing pose
+NPC_HOOK_NATIVE_PASS | native line uses the bound rod anchor and exact NPC mouth
+NPC_HOOK_NATIVE_PASS | NPC line does not target the player's mouth or inherit player wrap effects
+NPC_HOOK_NATIVE_PASS | line follows moving and turning NPC without displacing player authority
+NPC_HOOK_NATIVE_PASS | hooked fish retains native pixel canvas
+NPC_HOOK_NATIVE_PASS | hooked fish rendering is deterministic and authority-neutral
+NPC_HOOK_NATIVE_PASS | hooked fish ignores uncontacted hook truth, NPC AI and private struggle timers
+NPC_HOOK_NATIVE_PASS | hooked fish public-only NPC geometry and phase produce identical pixels
+NPC_HOOK_NATIVE_PASS | hooked fish private/public controls restore exact authority
+NPC_HOOK_NATIVE_PASS | hooked angler retains native pixel canvas
+NPC_HOOK_NATIVE_PASS | hooked angler rendering is deterministic and authority-neutral
+NPC_HOOK_NATIVE_PASS | hooked angler ignores uncontacted hook truth, NPC AI and private struggle timers
+NPC_HOOK_NATIVE_PASS | hooked angler public-only NPC geometry and phase produce identical pixels
+NPC_HOOK_NATIVE_PASS | hooked angler private/public controls restore exact authority
+NPC_HOOK_NATIVE_PASS | hooked observation retains native pixel canvas
+NPC_HOOK_NATIVE_PASS | hooked observation rendering is deterministic and authority-neutral
+NPC_HOOK_NATIVE_PASS | hooked observation ignores uncontacted hook truth, NPC AI and private struggle timers
+NPC_HOOK_NATIVE_PASS | hooked observation public-only NPC geometry and phase produce identical pixels
+NPC_HOOK_NATIVE_PASS | hooked observation private/public controls restore exact authority
+NPC_HOOK_NATIVE_PASS | a hooked NPC adds no NPC names, status bars or fish-player HUD
+NPC_HOOK_NATIVE_PASS | all opaque protagonist pixels remain in front of hooked NPC
+NPC_HOOK_NATIVE_PASS | real mouth contact selects an NPC in the native scene
+NPC_HOOK_NATIVE_PASS | NPC crosses the real landing gate without landing the protagonist
+NPC_HOOK_NATIVE_PASS | physical lift moves the NPC alone
+NPC_HOOK_NATIVE_PASS | landing line stays attached to the lifted NPC mouth
+NPC_HOOK_NATIVE_PASS | shore float follows lifted target rather than player
+NPC_HOOK_NATIVE_PASS | landing fish retains native pixel canvas
+NPC_HOOK_NATIVE_PASS | landing fish rendering is deterministic and authority-neutral
+NPC_HOOK_NATIVE_PASS | landing fish ignores uncontacted hook truth, NPC AI and private struggle timers
+NPC_HOOK_NATIVE_PASS | landing fish public-only NPC geometry and phase produce identical pixels
+NPC_HOOK_NATIVE_PASS | landing fish private/public controls restore exact authority
+NPC_HOOK_NATIVE_PASS | landing angler retains native pixel canvas
+NPC_HOOK_NATIVE_PASS | landing angler rendering is deterministic and authority-neutral
+NPC_HOOK_NATIVE_PASS | landing angler ignores uncontacted hook truth, NPC AI and private struggle timers
+NPC_HOOK_NATIVE_PASS | landing angler public-only NPC geometry and phase produce identical pixels
+NPC_HOOK_NATIVE_PASS | landing angler private/public controls restore exact authority
+NPC_HOOK_NATIVE_PASS | landing observation retains native pixel canvas
+NPC_HOOK_NATIVE_PASS | landing observation rendering is deterministic and authority-neutral
+NPC_HOOK_NATIVE_PASS | landing observation ignores uncontacted hook truth, NPC AI and private struggle timers
+NPC_HOOK_NATIVE_PASS | landing observation public-only NPC geometry and phase produce identical pixels
+NPC_HOOK_NATIVE_PASS | landing observation private/public controls restore exact authority
+NPC_HOOK_NATIVE_PASS | completed native lift removes the captured NPC and records capture
+NPC_HOOK_NATIVE_PASS | wrong catch leaves the main match and player running
+NPC_HOOK_NATIVE_PASS | capture leaves no orphan NPC line
+NPC_HOOK_NATIVE_PASS | captured fish has no lingering NPC sprite, shadow or overlay
+NPC_HOOK_NATIVE_PASS | captured angler has no lingering NPC sprite, shadow or overlay
+NPC_HOOK_NATIVE_PASS | native capture respawns an active fish with a fresh identity
+NPC_HOOK_NATIVE_PASS | real mouth contact selects an NPC in the native scene
+NPC_HOOK_NATIVE_PASS | native escaped authority detaches the target without removing the fish
+NPC_HOOK_NATIVE_PASS | native escaped clears all target line and lift geometry
+NPC_HOOK_NATIVE_PASS | native escaped leaves the player and match unchanged
+NPC_HOOK_NATIVE_PASS | escaped fish retains native pixel canvas
+NPC_HOOK_NATIVE_PASS | escaped fish rendering is deterministic and authority-neutral
+NPC_HOOK_NATIVE_PASS | escaped fish ignores uncontacted hook truth, NPC AI and private struggle timers
+NPC_HOOK_NATIVE_PASS | escaped fish public-only NPC geometry and phase produce identical pixels
+NPC_HOOK_NATIVE_PASS | escaped fish private/public controls restore exact authority
+NPC_HOOK_NATIVE_PASS | escaped angler retains native pixel canvas
+NPC_HOOK_NATIVE_PASS | escaped angler rendering is deterministic and authority-neutral
+NPC_HOOK_NATIVE_PASS | escaped angler ignores uncontacted hook truth, NPC AI and private struggle timers
+NPC_HOOK_NATIVE_PASS | escaped angler public-only NPC geometry and phase produce identical pixels
+NPC_HOOK_NATIVE_PASS | escaped angler private/public controls restore exact authority
+NPC_HOOK_NATIVE_PASS | escaped observation retains native pixel canvas
+NPC_HOOK_NATIVE_PASS | escaped observation rendering is deterministic and authority-neutral
+NPC_HOOK_NATIVE_PASS | escaped observation ignores uncontacted hook truth, NPC AI and private struggle timers
+NPC_HOOK_NATIVE_PASS | escaped observation public-only NPC geometry and phase produce identical pixels
+NPC_HOOK_NATIVE_PASS | escaped observation private/public controls restore exact authority
+NPC_HOOK_NATIVE_PASS | real mouth contact selects an NPC in the native scene
+NPC_HOOK_NATIVE_PASS | native broken authority detaches the target without removing the fish
+NPC_HOOK_NATIVE_PASS | native broken clears all target line and lift geometry
+NPC_HOOK_NATIVE_PASS | native broken leaves the player and match unchanged
+NPC_HOOK_NATIVE_PASS | broken fish retains native pixel canvas
+NPC_HOOK_NATIVE_PASS | broken fish rendering is deterministic and authority-neutral
+NPC_HOOK_NATIVE_PASS | broken fish ignores uncontacted hook truth, NPC AI and private struggle timers
+NPC_HOOK_NATIVE_PASS | broken fish public-only NPC geometry and phase produce identical pixels
+NPC_HOOK_NATIVE_PASS | broken fish private/public controls restore exact authority
+NPC_HOOK_NATIVE_PASS | broken angler retains native pixel canvas
+NPC_HOOK_NATIVE_PASS | broken angler rendering is deterministic and authority-neutral
+NPC_HOOK_NATIVE_PASS | broken angler ignores uncontacted hook truth, NPC AI and private struggle timers
+NPC_HOOK_NATIVE_PASS | broken angler public-only NPC geometry and phase produce identical pixels
+NPC_HOOK_NATIVE_PASS | broken angler private/public controls restore exact authority
+NPC_HOOK_NATIVE_PASS | broken observation retains native pixel canvas
+NPC_HOOK_NATIVE_PASS | broken observation rendering is deterministic and authority-neutral
+NPC_HOOK_NATIVE_PASS | broken observation ignores uncontacted hook truth, NPC AI and private struggle timers
+NPC_HOOK_NATIVE_PASS | broken observation public-only NPC geometry and phase produce identical pixels
+NPC_HOOK_NATIVE_PASS | broken observation private/public controls restore exact authority
+NPC_HOOK_NATIVE | passed=86 | failed=0

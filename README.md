@@ -2,29 +2,31 @@
 
 一个 2D 像素风格的人鱼对抗游戏：小鱼在水下觅食、缠线和逃脱，钓鱼人在岸边控竿、收放线与抄网。支持单机挑战、自由练习和一人对一鱼的局域网联机。
 
-**当前源码与本地包：0.25.5（水域分支 · 木石与水草材质）** · Godot 4.7.2
+**当前源码与本地包：0.25.6（水域与最新 dev 整合）** · Godot 4.7.2
 
-开启「生成水域 · 本地小鱼视角」后，木头增加树皮与藻层、石块增加矿物纹理、水草增加叶面明暗。四种构图和默认种子 713284 保持不变，沿用 0.25.4 中上层近远景；轮廓、碰撞、淡出和玩法不变。关闭开关即时恢复原画面；联机、岸上和抄网观察沿用原环境。[使用与范围](docs/watergen/WG5_README.md) · [画面对照与验证](docs/watergen/WG5_REPORT.md)。本地包位于 `Releases/BaitbreakPixel-0.25.5`。
+已合入 `feature/dev @ dfdd9af72e3700c4b82fcf32419ff998231d7ef9`：NPC 抢食、社会反应、NPC 中钩，以及玩家 QTE 入口和 NPC 收鱼速度修复。保留 watergen 四种构图、默认种子 713284、中上层近远景和木石草叶材质。设置中的「生成水域 · 本地小鱼视角」默认关闭；联机、岸上和抄网观察使用原环境。整合后的本地包为 `Releases/BaitbreakPixel-0.25.6`，联机双方须使用同一版本。
 
-底层仍为已确认的 P3.0/P3.1 游戏版本；已核对上游 `feature/dev @ 6a2f124`，本次未合入后续 NPC 觅食和社交行为。
+水域功能见 [使用说明](docs/watergen/WG5_README.md)，合并与检查记录见 [0.25.6 同步报告](docs/watergen/DEV_SYNC_0.25.6.md)。此前水域 0.25.1–0.25.5 与主线同号公开包的历史记录分别保留。
 
-用户已确认 0.24.6 手感合适，Phase 2 关闭。0.25.0 新增 3 条独立游动的环境鱼、多鱼 ID、独立随机源、schema15 重放与双角色公共表现；玩家现有 10 px 自动咬食、0.80 秒间隔、渐变吸力和 4/6/8 容量保持不变。NPC 本轮只游动与软避让，不抢食、不上钩、不影响胜负。
+用户已确认 0.25.2 社会线索试玩通过。0.25.3 让 NPC 真实误咬钩、自动挣扎、逃脱、断线或被拉起。钓错 NPC 不结束比赛；玩家可趁机吃饵、回巢，钓鱼人需要重新部署。NPC 捕获后暂离生态，延迟生成新 ID 的鱼。
 
-历史基线：0.25.0 Windows ZIP 已构建、验证并公开发布；解压后运行 `BaitbreakPixel.exe`，核对菜单显示 0.25.0。详见[架构边界](docs/architecture/PHASE03-AMBIENT-FISH.md)与[验证和人工试玩清单](docs/test-reports/PHASE03-AMBIENT-VALIDATION-0.25.0.md)。完成 P3.0+P3.1 后停止，等用户确认才进入 P3.2；Phase 4 继续锁定。
+0.25.4 根据试玩反馈修正 QTE 准备阶段误判、缠线开局顺序与 NPC 拉起节奏；详见[修正与人工复测清单](docs/test-reports/PHASE03-HOOK-FIX-0.25.4.md)。0.25.4 Windows ZIP 已构建、验证并公开发布；解压后运行 `BaitbreakPixel.exe`，核对菜单显示 0.25.4。[钓错目标架构](docs/architecture/PHASE03-WRONG-HOOK-TARGET.md)和原验证报告保留历史范围。P3.4 完成后 STOP，等待人工试玩；P3.5 整体平衡、NPC 抄网与 Phase 4 多竿不在本轮。
+
+玩家 10 px 自动咬食、0.80 秒间隔、4/6/8 容量和已确认的抢食/补饵规则保持。NPC 继续真实消耗食物、增加自身饱食，不增加玩家分数、不参与胜负。玩家原 QTE、缠线、松线、断线、张力和提鱼保持。
 
 ## 下载试玩
 
 本版沿用 0.24.4 的渐变吸力，散粒实际移动、剥离和整饵位移目标共用同一距离场；此前[距离修正验证](docs/test-reports/PHASE02-DISTANCE-VALIDATION.md)保留为历史记录。
 
-### 历史公开基线：0.25.0
+### 公开 Windows 试玩包：0.25.4
 
-从 [v0.25.0 发行页](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.25.0)下载 [BaitbreakPixel-0.25.0.zip](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.25.0/BaitbreakPixel-0.25.0.zip)，解压后运行 `BaitbreakPixel.exe`。EXE 与同目录 PCK 保持在一起，玩家无需安装 Godot。小鱼嘴边有食物时自动咬食，左键吸食；完整操作见包内说明。
+从 [v0.25.4 发行页](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.25.4)下载 [BaitbreakPixel-0.25.4.zip](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.25.4/BaitbreakPixel-0.25.4.zip)，解压后运行 `BaitbreakPixel.exe`。EXE 与同目录 PCK 保持在一起，玩家无需安装 Godot。小鱼嘴边有食物时自动咬食，左键吸食；完整操作见包内说明。
 
-截至 0.25.0 的历史核对记录已逐版发布 **0.21.0–0.25.0，共 20 个 Release**，每版均附 ZIP 和 `SHA256SUMS.txt`。其他版本见 [全部 Releases](https://github.com/lljh2777-cyber/BaitbreakPixel/releases)，核对结果见 [0.25.0 发布记录](docs/test-reports/GITHUB-RELEASE-0.25.0.md)、[0.24.6 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.6.md)、[0.24.5 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.5.md)、[0.24.4 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.4.md)、[0.24.3 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.3.md)、[0.24.2 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.2.md)及[此前 14 版发布记录](docs/test-reports/GITHUB-RELEASES-2026-10-02.md)。0.24.6 发行记录保留其发布当时的验证边界；用户随后已确认手感并允许进入 Phase 3。
+截至 2026-10-03 已逐版发布 **0.21.0–0.25.4，共 24 个 Release**，每版均附 ZIP 和 `SHA256SUMS.txt`。其他版本见 [全部 Releases](https://github.com/lljh2777-cyber/BaitbreakPixel/releases)，核对结果见 [0.25.4 发布记录](docs/test-reports/GITHUB-RELEASE-0.25.4.md)、[0.25.3 发布记录](docs/test-reports/GITHUB-RELEASE-0.25.3.md)、[0.25.2 发布记录](docs/test-reports/GITHUB-RELEASE-0.25.2.md)、[0.25.1 发布记录](docs/test-reports/GITHUB-RELEASE-0.25.1.md)、[0.25.0 发布记录](docs/test-reports/GITHUB-RELEASE-0.25.0.md)、[0.24.6 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.6.md)、[0.24.5 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.5.md)、[0.24.4 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.4.md)、[0.24.3 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.3.md)、[0.24.2 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.2.md)及[此前 14 版发布记录](docs/test-reports/GITHUB-RELEASES-2026-10-02.md)。0.24.6 发行记录保留其发布当时的验证边界；用户随后已确认手感并允许进入 Phase 3。
 
 ### Phase 2.3：已由用户人工关闭
 
-用户于 2026-10-03 确认目前手感合适并进入 Phase 3。此前各版的自动统计、未通过项与人工门记录保留原文，不能把后续确认回写为当时已通过。现行环境鱼人工清单见上方 0.25.0 报告。
+用户于 2026-10-03 确认目前手感合适并进入 Phase 3。此前各版的自动统计、未通过项与人工门记录保留原文，不能把后续确认回写为当时已通过。0.25.0 环境鱼、0.25.1 抢食和 0.25.2 社会线索均已由用户试玩确认；现行人工复测清单见上方 0.25.4 报告。
 
 实现与统计定义见[摄食平衡边界](docs/architecture/PHASE02-FEEDING-BALANCE.md)。此前[三种饵型报告](docs/test-reports/PHASE02-BAIT-VALIDATION.md)与[P2.1 报告](docs/test-reports/PHASE02-BITE-VALIDATION.md)保留原始结果。
 
@@ -67,7 +69,7 @@
 .\Build-Pixel.ps1 -GodotDirectory 'D:\Tools\Godot_v4.7.2-stable_win64.exe'
 ```
 
-该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.25.5` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
+该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.25.6` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
 
 当前测试入口、套件状态和产物目录配置见 [测试运行指南](tests/README.md)。核心抄网逻辑检查示例（替换为本机引擎路径）：
 
@@ -75,7 +77,7 @@
 & 'D:\Tools\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe' --headless --path . --script res://tests/net_v021.gd -- --test-profile
 ```
 
-测试使用独立配置；带原生画面截图的脚本需要图形窗口，不使用 `--headless`。本次检查见 [2026-10-02 维护报告](docs/test-reports/TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md)；此前 Windows 试玩包的验证保留在 [0.22.5 原始报告](docs/test-reports/TEST-REPORT-0.22.5.md)。
+测试使用独立配置；带原生画面截图的脚本需要图形窗口，不使用 `--headless`。本次检查见 [0.25.4 修正报告](docs/test-reports/PHASE03-HOOK-FIX-0.25.4.md)；此前 Windows 试玩包的验证保留在 [0.22.5 原始报告](docs/test-reports/TEST-REPORT-0.22.5.md)。
 
 ## 项目结构与文档
 

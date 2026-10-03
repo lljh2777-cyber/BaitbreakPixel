@@ -1,0 +1,27 @@
+extends "res://tests/phase03_npc_native.gd"
+
+func run() -> void:
+	if not prepare_capture_output(): quit(2); return
+	game=Main.instantiate(); root.add_child(game); game.capture_mode="phase03_social_compete_preview"
+	setup_social_fixture("COMPETE")
+	game.fish=Vector2(740,238); game.fish_before=game.fish; game.aim=Vector2.UP
+	game.power=0.05; game.feeding=true
+	for index in 12:
+		var grain: Dictionary=game.baits[0].grains[index]
+		grain.eaten=false; grain.free=true; grain.pos=Vector2(730,200)+Vector2(index%3,index/3)*2.0; grain.points=1.0
+	game.npc_fishes[0].decision_age=0.0
+	game._tick_npc_fishes(1.0/60.0)
+	DisplayServer.window_set_title("P3.3 native public-cue preview: COMPETE to FEED")
+	print("COMPETE_PREVIEW_BEGIN | actual=",game.npc_fishes[0].behavior_state," | fixture=nearby visible slow suction over 12 loose grains")
+	await render("competition-000")
+	await create_timer(2.0).timeout
+	for tick in 480:
+		game.advance_tick({"suck":true},{})
+		game.view.queue_redraw()
+		if tick in [23,59,119,239,479]:
+			print("COMPETE_PREVIEW_TICK | tick=",tick+1," | actual=",game.npc_fishes[0].behavior_state," | position=",game.npc_fishes[0].position," | NPC_food=",game.round_stats.npc_food_consumed," | player_food=",game.score)
+			await render("competition-%03d" % (tick+1))
+		await create_timer(1.0/60.0).timeout
+	check(game.npc_fishes.size()==1 and game.npc_fishes[0].active and game.hook_target_fish_id==-1,"competition preview leaves NPC active and unhooked")
+	print("COMPETE_PREVIEW | passed=",passed," | failed=",failed)
+	quit(1 if failed else 0)

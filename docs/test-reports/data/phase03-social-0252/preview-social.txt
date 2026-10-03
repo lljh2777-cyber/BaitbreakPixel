@@ -1,0 +1,25 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+PIXEL_READY | asymmetric-2d | 640x360 | v0.25.2 | playtest-gate-phase03-social
+SOCIAL_PREVIEW_BEGIN | expected=HESITATE | actual=HESITATE
+SOCIAL_PREVIEW_TICK | expected=HESITATE | tick=24 | actual=HESITATE | position=(650.892, 197.6546) | food=0.0
+SOCIAL_PREVIEW_TICK | expected=HESITATE | tick=90 | actual=FEED | position=(658.6089, 195.0034) | food=0.0
+SOCIAL_PREVIEW_TICK | expected=HESITATE | tick=180 | actual=FEED | position=(659.9518, 195.1607) | food=0.0
+SOCIAL_PREVIEW_TICK | expected=HESITATE | tick=360 | actual=WANDER | position=(595.8275, 153.187) | food=1.0
+NPC_NATIVE_PASS | preview leaves NPC active and unhooked: HESITATE
+SOCIAL_PREVIEW_BEGIN | expected=FLEE | actual=FLEE
+SOCIAL_PREVIEW_TICK | expected=FLEE | tick=24 | actual=FLEE | position=(645.6667, 200.0) | food=0.0
+SOCIAL_PREVIEW_TICK | expected=FLEE | tick=90 | actual=APPROACH_FOOD | position=(607.1722, 200.0) | food=0.0
+SOCIAL_PREVIEW_TICK | expected=FLEE | tick=180 | actual=APPROACH_FOOD | position=(608.3722, 200.0) | food=0.0
+SOCIAL_PREVIEW_TICK | expected=FLEE | tick=360 | actual=FEED | position=(659.5514, 200.0) | food=0.0
+NPC_NATIVE_PASS | preview leaves NPC active and unhooked: FLEE
+SOCIAL_PREVIEW_BEGIN | expected=COMPETE | actual=COMPETE
+SOCIAL_PREVIEW_TICK | expected=COMPETE | tick=24 | actual=WANDER | position=(650.9871, 198.433) | food=0.0
+SOCIAL_PREVIEW_TICK | expected=COMPETE | tick=90 | actual=WANDER | position=(633.7138, 169.3287) | food=0.0
+SOCIAL_PREVIEW_TICK | expected=COMPETE | tick=180 | actual=WANDER | position=(584.2404, 146.4343) | food=0.0
+SOCIAL_PREVIEW_TICK | expected=COMPETE | tick=360 | actual=WANDER | position=(481.1648, 191.323) | food=0.0
+NPC_NATIVE_PASS | preview leaves NPC active and unhooked: COMPETE
+SOCIAL_PREVIEW | passed=3 | failed=0

@@ -1,0 +1,8 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+FOOD_REACHABILITY_CONFIG | {"challenge":true,"failed_seeds":[],"max_empty_supply_ticks":423,"minimum_lifecycle_events":5,"minimum_npc_food":180.0,"minimum_player_food":60.0,"ruleset":"survival","seeds":1000}
+FOOD_REACHABILITY_CONFIG | {"challenge":false,"failed_seeds":[],"max_empty_supply_ticks":423,"minimum_lifecycle_events":4,"minimum_npc_food":180.0,"minimum_player_food":30.0,"ruleset":"survival","seeds":1000}
+FOOD_REACHABILITY_CONFIG | {"challenge":true,"failed_seeds":[],"max_empty_supply_ticks":423,"minimum_lifecycle_events":5,"minimum_npc_food":150.0,"minimum_player_food":60.0,"ruleset":"duel","seeds":1000}
+FOOD_REACHABILITY_CONFIG | {"challenge":false,"failed_seeds":[],"max_empty_supply_ticks":423,"minimum_lifecycle_events":4,"minimum_npc_food":150.0,"minimum_player_food":30.0,"ruleset":"duel","seeds":1000}
+FOOD_REACHABILITY_ARTIFACT | res://artifacts/phase03-food-reachability.json
+PHASE03_FOOD_REACHABILITY_TESTS | passed=25 | failed=0

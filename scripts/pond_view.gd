@@ -141,7 +141,7 @@ func _world(t: float) -> void:
 func _npc_fishes(t: float) -> void:
 	# Project authority and network replicas through exactly the same allowlist.
 	# Draw behind cover and every player-fish pass, including the winding pose.
-	for fish: Dictionary in NPCFishPublic.capture(world.npc_fishes):
+	for fish: Dictionary in NPCFishPublic.capture(world.npc_fishes,world.hook_target_fish_id,world.npc_hook):
 		var position: Vector2=Vector2(fish.position).round()
 		if not Rect2(camera_offset-Vector2(24,24),Camera.VIEW_SIZE+Vector2(48,48)).has_point(position): continue
 		var direction: Vector2=fish.aim
@@ -151,11 +151,12 @@ func _npc_fishes(t: float) -> void:
 			tilt-=PI
 			flip=-1.0
 		var speed: float=Vector2(fish.velocity).length()
-		var phase: float=t*(5.0+minf(speed,60.0)*0.13)+int(fish.fish_id)*1.71
+		var struggling: bool=fish.animation_state in ["hooked","landing"]
+		var phase: float=t*((11.0 if struggling else 5.0)+minf(speed,60.0)*0.13)+int(fish.fish_id)*1.71
 		var transform:=Transform2D(tilt,Vector2(flip,1),0,position-camera_offset)
 		var texture: Texture2D=npc_textures[int(fish.visual_variant)]
 		# The body remains on its real position. Only the attached tail flexes.
-		var tail:=Transform2D(sin(phase)*(0.08+minf(speed/60.0,1.0)*0.15),Vector2(-4,0))
+		var tail:=Transform2D(sin(phase)*((0.16 if struggling else 0.08)+minf(speed/60.0,1.0)*0.15),Vector2(-4,0))
 		draw_set_transform_matrix(transform*tail)
 		draw_texture_rect_region(texture,Rect2(-6,-5,6,10),Rect2(0,0,6,10))
 		draw_set_transform_matrix(transform)
@@ -269,7 +270,7 @@ func _angler(t: float) -> void:
 func _angler_hud(_t: float) -> void:
 	draw_rect(Rect2(0,0,640,29),INK)
 	label_at(Vector2(12,19),"水下 · 抄网观察" if world.net_action.observing else "岸边 · 钓鱼人",13,GOLD)
-	var rig := "挂鱼 · 留意张力" if world.hooked==world.HookState.HOOKED else "浮漂下顿" if world.hooked==world.HookState.MOUTH else "正在下钩…" if world.angler.casting else "钩饵在水中" if Shore.rig_index(world)>=0 else "未下钩 · 按 Q"
+	var rig := "挂鱼 · 留意张力" if world.line_hooked() else "浮漂下顿" if world.hooked==world.HookState.MOUTH else "正在下钩…" if world.angler.casting else "钩饵在水中" if Shore.rig_index(world)>=0 else "未下钩 · 按 Q"
 	label_at(Vector2(140,19),rig,12,CREAM)
 	label_at(Vector2(360,19),"抄网 %.1fs" % world.angler.net_cooldown if world.angler.net_cooldown>0 else "E 观察 / 抄网",11,MINT)
 	var remaining := maxi(0,int(ceil(world.rule("time_limit")-world.clock)))
@@ -280,7 +281,7 @@ func _angler_hud(_t: float) -> void:
 	label_at(Vector2(584,350),"H 帮助",10,CREAM)
 	# Opponent checks remain autonomous; never invite the angler to press a fish QTE.
 	panel(Rect2(10,65,151,50))
-	if world.hooked==world.HookState.HOOKED:
+	if world.line_hooked():
 		var speed: float=world.angler.feedback_reel_speed(world)
 		var spool := "S 放线" if speed>0.5 else ("W 收线" if speed< -0.5 else "稳线")
 		label_at(Vector2(18,81),"张力 %d%% · %s" % [int(world.tension*100),spool],11,RED if world.tension>=world.rule("tension_high")-0.02 else CREAM)
@@ -391,6 +392,8 @@ func _line_vibration(path: PackedVector2Array) -> PackedVector2Array:
 	return points
 
 func _line_force_marks(path: PackedVector2Array) -> void:
+	# Player effort bonuses are not NPC struggle authority.
+	if world.hook_target_fish_id>1: return
 	if world.tension<world.rule("tension_low") or path.size()<2: return
 	var human: float=world.effort_multiplier("angler")
 	var fish_force: float=world.effort_multiplier("fish")

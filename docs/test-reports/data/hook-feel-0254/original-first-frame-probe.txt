@@ -1,0 +1,26 @@
+extends SceneTree
+const World=preload("res://scripts/world_simulation.gd")
+const DT=1.0/60
+func fixture() -> Node2D:
+ var g=World.new()
+ g.reset_world({"seed":64317,"ruleset":"survival","challenge":true,"npc_count":0,"npc_foraging_enabled":false,"rules":{"timer_enabled":false,"hunger_enabled":false,"water_strength":0.0,"instinct_max_strength":0.0}})
+ g.angler.auto_net=false
+ for bait in g.baits: bait.active=false
+ return g
+func outcome(g: Node2D) -> Dictionary:
+ return {"tick":g.simulation_tick,"qte":g.qte,"age":g.qte_age,"result":g.qte_result,"result_kind":g.qte_result_kind,"hooked":g.hooked,"match_over":g.match_over,"reason":g.reason,"net":g.net_state,"fish":g.fish,"fish_total":g.round_stats.fish_total,"landing":g.landing}
+func report(label: String, g: Node2D) -> void: print("AUDIT ",label," ",outcome(g))
+func _initialize():
+ var g=fixture(); g._enter_hook(0)
+ for i in range(143): g.advance_tick({},{})
+ report("entry_no_input_143",g); g.advance_tick({},{}); report("entry_no_input_144",g); g.free()
+ g=fixture(); g._enter_hook(0); g.advance_tick({"qte":true},{})
+ report("entry_first_tick_press",g); g.free()
+ g=fixture(); g.fish=Vector2(100,346.1); g.baits[0].attachment_anchor=Vector2(100,53); g._enter_hook(0); g._attach_hook(); g._update_contacts(0)
+ print("AUDIT wrap_pre ",{"target":g.contact_target,"touches":g.touching_target(g.contact_target),"pull":g.line_pull_velocity(),"fish":g.fish})
+ g.advance_tick({"qte":true},{}); report("wrap_boundary_first_tick",g); g.free()
+ g=fixture(); g.fish=Vector2(100,380); g.baits[0].attachment_anchor=Vector2(100,53); g._enter_hook(0); g._attach_hook(); g.advance_tick({"qte":true},{})
+ report("wrap_center_first_tick",g); g.advance_tick({"qte":true},{}); report("wrap_center_second_tick_press",g); g.free()
+ g=fixture(); g._enter_hook(0); g.rules.timer_enabled=true; g.clock=g.rule("time_limit")-DT*0.5; g.started=true; g.advance_tick({},{}); report("entry_near_round_timeout",g); g.free()
+ g=fixture(); g.fish=Vector2(200,200); g._enter_hook(0); g.net_state="sweep"; g.net_pos=Vector2(235,200); g.net_to=Vector2(280,200); g.net_from=Vector2(160,200); g.net_angle=0; g.net_action.admitted=true; g.net_trail=PackedVector2Array([g.net_pos]); g.advance_tick({},{}); report("entry_net_interruption",g); g.free()
+ quit()

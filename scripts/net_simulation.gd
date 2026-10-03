@@ -68,7 +68,7 @@ static func cancel_manual_net(g: Node2D) -> void:
 	if g.net_action.observing: end_observation(g)
 
 static func request_net(g: Node2D) -> void:
-	if g.match_over or g.landing: return
+	if g.match_over or g.line_landing(): return
 	if g.net_state in ["wait","rest"] and not g.net_action.observing:
 		g.net_queued=true
 		g.notice="抄网练习已准备 · 留意入水预警"; g.notice_age=2
@@ -255,7 +255,7 @@ static func busy(g: Node2D) -> bool:
 	return g.net_state in ["prepare","warning","sweep","miss","withdraw","caught"]
 
 static func begin_observation(g: Node2D) -> bool:
-	if g.match_over or g.match_paused or g.landing or g.angler.casting or busy(g) or g.angler.net_cooldown>0: return false
+	if g.match_over or g.match_paused or g.line_landing() or g.angler.casting or busy(g) or g.angler.net_cooldown>0: return false
 	if g.net_action.observing: return false
 	g.net_action.observing=true; g.net_action.age=0; g.net_action.has_a=false
 	g.net_action.ai=false; g.net_action.sample_live=false
@@ -267,7 +267,7 @@ static func end_observation(g: Node2D) -> void:
 	g.angler.net_cooldown=g.rule("net_cooldown")
 
 static func command(g: Node2D, events: Array) -> void:
-	if g.landing or g.match_over:
+	if g.line_landing() or g.match_over:
 		cancel_manual_net(g)
 		return
 	for event in events:

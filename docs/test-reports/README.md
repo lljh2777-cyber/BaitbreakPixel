@@ -3,6 +3,11 @@
 - [0.25.3 四种水域构图切换与独立包验证](../watergen/WG4_REPORT.md)
 - [0.25.2 水域中部层次调整](../watergen/WG3_CENTER_REPORT.md)
 - [0.25.1 WG-3 水域接入与本地包验证](../watergen/WG3_REPORT.md)
+
+- [0.25.4 上钩开局与 NPC 拉起修正](PHASE03-HOOK-FIX-0.25.4.md)
+- [0.25.3 钓错目标：验证与人工试玩](PHASE03-HOOK-VALIDATION-0.25.3.md)
+- [0.25.2 社会线索：验证与人工试玩](PHASE03-SOCIAL-VALIDATION-0.25.2.md)
+- [0.25.1 P3.2 抢食验证](PHASE03-FORAGING-VALIDATION-0.25.1.md)
 - [0.25.0 多鱼基础与环境鱼验证](PHASE03-AMBIENT-VALIDATION-0.25.0.md)
 
 - [0.23.0 Phase 0–1 开发与验证（2026-10-02，人工玩法验收仍开放）](PHASE01-VALIDATION.md)
@@ -15,6 +20,10 @@
 
 报告按版本由新到旧排列，记录当时的测试环境、范围和结果。旧版玩法断言可能已经退役；复现时请结合对应版本。
 
+- [0.25.4 Windows 试玩包与发布核验](GITHUB-RELEASE-0.25.4.md)
+- [0.25.3 Windows 试玩包与发布核验](GITHUB-RELEASE-0.25.3.md)
+- [0.25.2 Windows 试玩包与发布核验](GITHUB-RELEASE-0.25.2.md)
+- [0.25.1 Windows 试玩包与发布核验](GITHUB-RELEASE-0.25.1.md)
 - [0.25.0 Windows 试玩包与发布核验](GITHUB-RELEASE-0.25.0.md)
 - [0.24.6 Windows 试玩包与发布核验](GITHUB-RELEASE-0.24.6.md)
 - [0.24.5 Windows 试玩包与发布核验](GITHUB-RELEASE-0.24.5.md)

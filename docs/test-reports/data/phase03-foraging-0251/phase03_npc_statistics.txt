@@ -1,0 +1,16 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+NPC_PERFORMANCE | role=fish | npc_count=0 | foraging=false | tick_mean_us=633.383 | tick_p95_us=946 | authority_bytes_mean=63039.4 | role_bytes_mean=31223.8 | deflate_bytes_mean=5463.9 | packet_bytes_mean=5753.8 | chunked_bytes_mean=7577.8
+NPC_PERFORMANCE | role=fish | npc_count=3 | foraging=false | tick_mean_us=801.328 | tick_p95_us=1289 | authority_bytes_mean=65426.8 | role_bytes_mean=31763.8 | deflate_bytes_mean=5626.4 | packet_bytes_mean=5916.2 | chunked_bytes_mean=7740.2
+NPC_PERFORMANCE | role=fish | npc_count=6 | foraging=false | tick_mean_us=793.804 | tick_p95_us=1451 | authority_bytes_mean=67814.6 | role_bytes_mean=32303.8 | deflate_bytes_mean=5738.9 | packet_bytes_mean=6028.8 | chunked_bytes_mean=7852.8
+NPC_PERFORMANCE | role=fish | npc_count=0 | foraging=true | tick_mean_us=705.416 | tick_p95_us=1070 | authority_bytes_mean=63039.4 | role_bytes_mean=31223.8 | deflate_bytes_mean=5463.9 | packet_bytes_mean=5753.8 | chunked_bytes_mean=7577.8
+NPC_PERFORMANCE | role=fish | npc_count=3 | foraging=true | tick_mean_us=728.353 | tick_p95_us=1176 | authority_bytes_mean=66162.0 | role_bytes_mean=26951.4 | deflate_bytes_mean=5181.4 | packet_bytes_mean=5470.4 | chunked_bytes_mean=7169.0
+NPC_PERFORMANCE | role=fish | npc_count=6 | foraging=true | tick_mean_us=715.383 | tick_p95_us=1448 | authority_bytes_mean=69071.6 | role_bytes_mean=24463.8 | deflate_bytes_mean=4977.8 | packet_bytes_mean=5267.2 | chunked_bytes_mean=6863.2
+NPC_PERFORMANCE | role=angler | npc_count=0 | foraging=false | tick_mean_us=787.679 | tick_p95_us=1103 | authority_bytes_mean=63335.6 | role_bytes_mean=63095.6 | deflate_bytes_mean=7990.9 | packet_bytes_mean=8280.4 | chunked_bytes_mean=10788.4
+NPC_PERFORMANCE | role=angler | npc_count=3 | foraging=false | tick_mean_us=691.567 | tick_p95_us=1040 | authority_bytes_mean=65723.0 | role_bytes_mean=63635.6 | deflate_bytes_mean=8157.9 | packet_bytes_mean=8447.2 | chunked_bytes_mean=10955.2
+NPC_PERFORMANCE | role=angler | npc_count=6 | foraging=false | tick_mean_us=773.602 | tick_p95_us=1428 | authority_bytes_mean=68110.8 | role_bytes_mean=64175.6 | deflate_bytes_mean=8271.2 | packet_bytes_mean=8560.8 | chunked_bytes_mean=11068.8
+NPC_PERFORMANCE | role=angler | npc_count=0 | foraging=true | tick_mean_us=683.258 | tick_p95_us=1026 | authority_bytes_mean=63335.6 | role_bytes_mean=63095.6 | deflate_bytes_mean=7990.9 | packet_bytes_mean=8280.4 | chunked_bytes_mean=10788.4
+NPC_PERFORMANCE | role=angler | npc_count=3 | foraging=true | tick_mean_us=816.291 | tick_p95_us=1333 | authority_bytes_mean=66574.8 | role_bytes_mean=64089.6 | deflate_bytes_mean=8293.1 | packet_bytes_mean=8582.6 | chunked_bytes_mean=11090.6
+NPC_PERFORMANCE | role=angler | npc_count=6 | foraging=true | tick_mean_us=809.611 | tick_p95_us=1649 | authority_bytes_mean=69598.4 | role_bytes_mean=64906.2 | deflate_bytes_mean=8438.0 | packet_bytes_mean=8727.6 | chunked_bytes_mean=11235.6
+NPC_PERFORMANCE_ARTIFACT | res://artifacts/phase03-npc-statistics.json
+PHASE03_NPC_STATISTICS_TESTS | passed=2141 | failed=0

@@ -1,0 +1,89 @@
+test_capture_success_cannot_overwrite_failure (test_capture_contract.CaptureContractTests.test_capture_success_cannot_overwrite_failure) ... ok
+test_every_renderer_capture_producer_supports_override (test_capture_contract.CaptureContractTests.test_every_renderer_capture_producer_supports_override) ... ok
+test_render_only_reel_hand_needs_no_capture_option (test_capture_contract.CaptureContractTests.test_render_only_reel_hand_needs_no_capture_option) ... ok
+test_direct_retired_suite_exits_fast_nonzero (test_godot_runner.GodotFailureTests.test_direct_retired_suite_exits_fast_nonzero) ... ok
+test_preset_file_collision_still_reports_engine_error (test_godot_runner.GodotFailureTests.test_preset_file_collision_still_reports_engine_error) ... ok
+test_real_parse_error_fails (test_godot_runner.GodotFailureTests.test_real_parse_error_fails) ... ok
+test_runtime_abort_cannot_hang_runner (test_godot_runner.GodotFailureTests.test_runtime_abort_cannot_hang_runner) ... ok
+test_duplicate_mode_seed (test_phase03_competition.ComparisonGuards.test_duplicate_mode_seed) ... ok
+test_duration_must_be_real_ticks (test_phase03_competition.ComparisonGuards.test_duration_must_be_real_ticks) ... ok
+test_goal_mismatch (test_phase03_competition.ComparisonGuards.test_goal_mismatch) ... ok
+test_missing_mode (test_phase03_competition.ComparisonGuards.test_missing_mode) ... ok
+test_missing_requested_seed (test_phase03_competition.ComparisonGuards.test_missing_requested_seed) ... ok
+test_npc_type_total (test_phase03_competition.ComparisonGuards.test_npc_type_total) ... ok
+test_passive_difference_retained (test_phase03_competition.ComparisonGuards.test_passive_difference_retained) ... ok
+test_player_type_total (test_phase03_competition.ComparisonGuards.test_player_type_total) ... ok
+test_unimplemented_metric_is_not_fake_zero (test_phase03_competition.ComparisonGuards.test_unimplemented_metric_is_not_fake_zero) ... ok
+test_unknown_mode (test_phase03_competition.ComparisonGuards.test_unknown_mode) ... ok
+test_valid_complete_pair (test_phase03_competition.ComparisonGuards.test_valid_complete_pair) ... ok
+test_heldout_rejects_pilot_seed_overlap (test_phase03_competition.ProvenanceAndMergeGuards.test_heldout_rejects_pilot_seed_overlap) ... ok
+test_heldout_rejects_source_change (test_phase03_competition.ProvenanceAndMergeGuards.test_heldout_rejects_source_change) ... ok
+test_merge_complete_disjoint_shards (test_phase03_competition.ProvenanceAndMergeGuards.test_merge_complete_disjoint_shards) ... ok
+test_merge_horizon_mismatch (test_phase03_competition.ProvenanceAndMergeGuards.test_merge_horizon_mismatch) ... ok
+test_merge_overlapping_seeds (test_phase03_competition.ProvenanceAndMergeGuards.test_merge_overlapping_seeds) ... ok
+test_merge_rejects_missing_pair (test_phase03_competition.ProvenanceAndMergeGuards.test_merge_rejects_missing_pair) ... ok
+test_merge_rejects_source_unstable (test_phase03_competition.ProvenanceAndMergeGuards.test_merge_rejects_source_unstable) ... ok
+test_merge_rejects_unsuccessful (test_phase03_competition.ProvenanceAndMergeGuards.test_merge_rejects_unsuccessful) ... ok
+test_merge_source_mismatch (test_phase03_competition.ProvenanceAndMergeGuards.test_merge_source_mismatch) ... ok
+test_balanced_identical_cues_are_chance (test_phase03_social.SocialDiagnosticTests.test_balanced_identical_cues_are_chance) ... ok
+test_complete_counterfactuals_accepted (test_phase03_social.SocialDiagnosticTests.test_complete_counterfactuals_accepted) ... ok
+test_duplicate_row_rejected (test_phase03_social.SocialDiagnosticTests.test_duplicate_row_rejected) ... ok
+test_identity_hunger_and_truth_are_not_classifier_features (test_phase03_social.SocialDiagnosticTests.test_identity_hunger_and_truth_are_not_classifier_features) ... ok
+test_imbalanced_majority_is_not_balanced_evidence (test_phase03_social.SocialDiagnosticTests.test_imbalanced_majority_is_not_balanced_evidence) ... ok
+test_missing_partner_rejected (test_phase03_social.SocialDiagnosticTests.test_missing_partner_rejected) ... ok
+test_observable_difference_rejected (test_phase03_social.SocialDiagnosticTests.test_observable_difference_rejected) ... ok
+test_seed_split_leak_rejected (test_phase03_social.SocialDiagnosticTests.test_seed_split_leak_rejected) ... ok
+test_single_class_never_reports_safe (test_phase03_social.SocialDiagnosticTests.test_single_class_never_reports_safe) ... ok
+test_source_change_rejected (test_phase03_social.SocialDiagnosticTests.test_source_change_rejected) ... ok
+test_state_oracle_triggers_critical_review (test_phase03_social.SocialDiagnosticTests.test_state_oracle_triggers_critical_review) ... ok
+test_witnessed_results_are_partitioned_from_prediction (test_phase03_social.SocialDiagnosticTests.test_witnessed_results_are_partitioned_from_prediction) ... ok
+test_continuous_alpha_summary (test_run_tests.ClassificationTests.test_continuous_alpha_summary) ... ok
+test_empty_success_is_not_test_success (test_run_tests.ClassificationTests.test_empty_success_is_not_test_success) ... ok
+test_engine_error_after_summary_is_not_green (test_run_tests.ClassificationTests.test_engine_error_after_summary_is_not_green) ... ok
+test_failed_count_even_with_zero_exit (test_run_tests.ClassificationTests.test_failed_count_even_with_zero_exit) ... ok
+test_legacy_pass_marker (test_run_tests.ClassificationTests.test_legacy_pass_marker) ... ok
+test_nonzero_exit_even_with_good_summary (test_run_tests.ClassificationTests.test_nonzero_exit_even_with_good_summary) ... ok
+test_parse_error_with_zero_exit_is_not_green (test_run_tests.ClassificationTests.test_parse_error_with_zero_exit_is_not_green) ... ok
+test_passed_only_legacy_summary (test_run_tests.ClassificationTests.test_passed_only_legacy_summary) ... ok
+test_script_error_with_zero_exit_is_not_green (test_run_tests.ClassificationTests.test_script_error_with_zero_exit_is_not_green) ... ok
+test_timeout_even_after_good_summary (test_run_tests.ClassificationTests.test_timeout_even_after_good_summary) ... ok
+test_valid_summary (test_run_tests.ClassificationTests.test_valid_summary) ... ok
+test_keyboard_interrupt_cleans_process_tree (test_run_tests.ProcessTests.test_keyboard_interrupt_cleans_process_tree) ... ok
+test_missing_executable_is_blocked (test_run_tests.ProcessTests.test_missing_executable_is_blocked) ... ok
+test_normal_process (test_run_tests.ProcessTests.test_normal_process) ... ok
+test_timeout_cleans_child_holding_pipe (test_run_tests.ProcessTests.test_timeout_cleans_child_holding_pipe) ... ok
+test_timeout_is_bounded (test_run_tests.ProcessTests.test_timeout_is_bounded) ... ok
+test_historical_failures_still_selectable (test_run_tests.RegistryTests.test_historical_failures_still_selectable) ... ok
+test_invalid_timeout_rejected (test_run_tests.RegistryTests.test_invalid_timeout_rejected) ... usage: python3 -m unittest [-h] [--godot GODOT]
+                           [--profile {current,native,historical,all-headless}]
+                           [--suite SUITE] [--timeout TIMEOUT]
+                           [--output-directory OUTPUT_DIRECTORY] [--pack PACK]
+                           [--import] [--list]
+python3 -m unittest: error: --timeout must be finite and greater than zero
+usage: python3 -m unittest [-h] [--godot GODOT]
+                           [--profile {current,native,historical,all-headless}]
+                           [--suite SUITE] [--timeout TIMEOUT]
+                           [--output-directory OUTPUT_DIRECTORY] [--pack PACK]
+                           [--import] [--list]
+python3 -m unittest: error: --timeout must be finite and greater than zero
+usage: python3 -m unittest [-h] [--godot GODOT]
+                           [--profile {current,native,historical,all-headless}]
+                           [--suite SUITE] [--timeout TIMEOUT]
+                           [--output-directory OUTPUT_DIRECTORY] [--pack PACK]
+                           [--import] [--list]
+python3 -m unittest: error: --timeout must be finite and greater than zero
+usage: python3 -m unittest [-h] [--godot GODOT]
+                           [--profile {current,native,historical,all-headless}]
+                           [--suite SUITE] [--timeout TIMEOUT]
+                           [--output-directory OUTPUT_DIRECTORY] [--pack PACK]
+                           [--import] [--list]
+python3 -m unittest: error: --timeout must be finite and greater than zero
+ok
+test_registry_covers_every_source_suite (test_run_tests.RegistryTests.test_registry_covers_every_source_suite) ... ok
+test_retirement_is_explicit_and_replacement_recorded (test_run_tests.RegistryTests.test_retirement_is_explicit_and_replacement_recorded) ... ok
+test_unknown_suite_fails (test_run_tests.RegistryTests.test_unknown_suite_fails) ... ok
+
+----------------------------------------------------------------------
+Ran 60 tests in 3.971s
+
+OK

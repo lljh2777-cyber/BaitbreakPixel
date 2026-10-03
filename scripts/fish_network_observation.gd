@@ -14,7 +14,7 @@ const FORMAT := "fish-presentation"
 const SCHEMA := 1
 # Required extension guard: schema 1 alone predates public bait archetypes.
 const BAIT_PROFILE_VERSION := 1
-const NPC_PROFILE_VERSION := 1
+const NPC_PROFILE_VERSION := 2
 const MAP_ID := "pond_v2"
 const STATE_FIELDS := [
 	"fish_id","rod_id","rules","net_action","qte_timing","fish","manual_net",
@@ -34,6 +34,7 @@ const STATE_FIELDS := [
 	"net_retract_duration","net_splash","net_splash_at","net_last_position","net_motion","net_warning_shape",
 	"ruleset","match_over","winner_role","match_paused","simulation_tick","qte_id","qte_grace_seconds",
 	"effort_checks","round_stats","net_capture","npc_fishes",
+	"hook_target_fish_id","npc_hook","public_npc_hook_result",
 ]
 const RIG_FIELDS := [
 	"x","spool","casting","cast_age","cast_from","cast_to","net_cooldown","net_held",
@@ -72,7 +73,9 @@ static func capture(world: Node2D) -> Dictionary:
 	var rig: Dictionary={}
 	for key in STATE_FIELDS: state[key]=world.get(key)
 	for key in RIG_FIELDS: rig[key]=world.angler.get(key)
-	state.npc_fishes=NPCPublic.capture(world.npc_fishes)
+	state.npc_fishes=NPCPublic.capture(world.npc_fishes,world.hook_target_fish_id,world.npc_hook)
+	state.npc_hook=NPCPublic.capture_hook(world.npc_hook)
+	state.public_npc_hook_result=NPCPublic.capture_result(world.public_npc_hook_result)
 	state.rules=Rules.normalize(world.rules)
 	state.net_action=_pick(world.net_action,NET_FIELDS)
 	state.qte_timing=_pick(world.qte_timing,QTE_FIELDS)
@@ -131,7 +134,7 @@ static func valid(world: Node2D, snapshot: Dictionary) -> bool:
 	var state: Dictionary=snapshot.state
 	var rig: Dictionary=snapshot.rig
 	if not _properties(world,state,STATE_FIELDS) or not _properties(world.angler,rig,RIG_FIELDS): return false
-	if not NPCPublic.valid(state.npc_fishes,state.fish_id): return false
+	if not NPCPublic.valid(state.npc_fishes,state.fish_id) or not NPCPublic.valid_hook_state(state): return false
 	if not Rules.valid(state.rules): return false
 	if not _record(state.qte_timing,Rules.qte(Rules.defaults(),"entry"),QTE_FIELDS): return false
 	if state.qte_timing.lead<0 or state.qte_timing.lead>2 or state.qte_timing.sweep<0.5 or state.qte_timing.sweep>8: return false
@@ -221,7 +224,10 @@ static func apply(world: Node2D, snapshot: Dictionary) -> bool:
 	world.supply_queue.clear()
 	world.counted.clear()
 	world.next_fish_id=2
-	world.hook_target_fish_id=-1
+	world.npc_foraging_enabled=false
+	world.npc_social_enabled=false
+	world.npc_hook_enabled=false
+	world.public_hook_cue={"tick":-1,"position":Vector2.ZERO}
 	world.next_bait_id=1
 	world.next_hook_id=1
 	world.bait_batch=0

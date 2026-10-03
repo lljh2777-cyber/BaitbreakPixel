@@ -1,0 +1,15 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+PIXEL_READY | asymmetric-2d | 640x360 | v0.25.4 | playtest-gate-phase03-hook-fix
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+HELD_DIAG | kind=focus menu=false qte=entry result_age=0.0 held=true gate=true final_transform=[X: (2.0, 0.0), Y: (0.0, 2.0), O: (0.0, 0.0)]
+PLAYER_HOOK_NATIVE_PASS | focus held Space remains blocked across resume/reset
+PLAYER_HOOK_NATIVE_PASS | focus re-arms only after neutral input then a fresh press
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+HELD_DIAG | kind=restart menu=false qte=entry result_age=0.0 held=true gate=true final_transform=[X: (2.0, 0.0), Y: (0.0, 2.0), O: (0.0, 0.0)]
+PLAYER_HOOK_NATIVE_PASS | restart held Space remains blocked across resume/reset
+PLAYER_HOOK_NATIVE_PASS | restart re-arms only after neutral input then a fresh press
+PLAYER_HOOK_NATIVE | passed=6 | failed=0

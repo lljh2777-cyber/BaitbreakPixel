@@ -69,7 +69,10 @@ func run() -> void:
 		check(w.untangle_phase.is_empty() and w.untangle_cooldown>0 and not w.effort_checks.angler.active,"recovery ends but cooldown prevents spam")
 		w.free()
 	w=fresh(); w.advance_tick({}, {"untangle":true}); w.advance_tick({}, {"qte":true})
-	check(w.untangle_phase=="recover" and not w.effort_checks.angler.good,"pressing during the warning fails")
+	check(w.untangle_phase=="check" and w.effort_checks.angler.active and w.round_stats.angler_total==0,"warning press is consumed without judging a hidden target")
+	w.effort_checks.angler.age=float(w.effort_checks.angler.lead)+0.02
+	w.advance_tick({}, {"qte":true})
+	check(w.untangle_phase=="recover" and not w.effort_checks.angler.good,"visible off-zone press fails and retains the coil")
 	w.free(); w=fresh(); w.advance_tick({}, {"untangle":true})
 	for frame in 150: w.advance_tick({}, {})
 	check(w.untangle_phase=="recover" and w.wraps.size()==1,"unanswered check times out and leaves coil")

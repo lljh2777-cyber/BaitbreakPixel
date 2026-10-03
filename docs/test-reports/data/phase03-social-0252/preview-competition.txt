@@ -1,0 +1,14 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+PIXEL_READY | asymmetric-2d | 640x360 | v0.25.2 | playtest-gate-phase03-social
+COMPETE_PREVIEW_BEGIN | actual=COMPETE | fixture=nearby visible slow suction over 12 loose grains
+COMPETE_PREVIEW_TICK | tick=24 | actual=COMPETE | position=(654.6797, 200.0261) | NPC_food=0.0 | player_food=0.0
+COMPETE_PREVIEW_TICK | tick=60 | actual=COMPETE | position=(674.2524, 200.8956) | NPC_food=0.0 | player_food=0.0
+COMPETE_PREVIEW_TICK | tick=120 | actual=FEED | position=(692.2911, 203.4265) | NPC_food=0.0 | player_food=9.0
+COMPETE_PREVIEW_TICK | tick=240 | actual=WANDER | position=(681.1515, 191.2643) | NPC_food=0.0 | player_food=12.0
+COMPETE_PREVIEW_TICK | tick=480 | actual=WANDER | position=(542.2703, 148.6899) | NPC_food=0.0 | player_food=12.0
+NPC_NATIVE_PASS | competition preview leaves NPC active and unhooked
+COMPETE_PREVIEW | passed=1 | failed=0

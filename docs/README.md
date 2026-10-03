@@ -3,6 +3,11 @@
 - [0.25.3 四种水域构图切换](watergen/WG4_README.md) · [验证与本地包](watergen/WG4_REPORT.md)
 - [0.25.2 水域中部层次调整](watergen/WG3_CENTER_REPORT.md)
 - [0.25.1 可选水域试玩](watergen/WG3_README.md) · [接入验证](watergen/WG3_REPORT.md)
+
+- [0.25.4 上钩开局与 NPC 拉起修正](test-reports/PHASE03-HOOK-FIX-0.25.4.md)
+- [0.25.3 钓错目标架构](architecture/PHASE03-WRONG-HOOK-TARGET.md) · [验证与人工试玩](test-reports/PHASE03-HOOK-VALIDATION-0.25.3.md)
+- [0.25.2 社会线索架构](architecture/PHASE03-SOCIAL-CUES.md) · [验证与人工试玩](test-reports/PHASE03-SOCIAL-VALIDATION-0.25.2.md)
+- [0.25.1 抢食竞争架构](architecture/PHASE03-FORAGING.md) · [验证与人工试玩](test-reports/PHASE03-FORAGING-VALIDATION-0.25.1.md)
 - [0.25.0 环境鱼架构](architecture/PHASE03-AMBIENT-FISH.md) · [验证与人工试玩](test-reports/PHASE03-AMBIENT-VALIDATION-0.25.0.md)
 
 # 文档导航
@@ -27,6 +32,10 @@
 
 ## 验证与历史
 
+- [0.25.4 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.25.4.md)
+- [0.25.3 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.25.3.md)
+- [0.25.2 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.25.2.md)
+- [0.25.1 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.25.1.md)
 - [0.25.0 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.25.0.md)
 - [0.24.6 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.24.6.md)
 - [0.24.5 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.24.5.md)

@@ -1,0 +1,20 @@
+extends "res://tests/phase03_npc_native.gd"
+
+func run() -> void:
+	if not prepare_capture_output(): quit(2); return
+	game=Main.instantiate(); root.add_child(game); game.capture_mode="phase03_social_preview"
+	for behavior: String in ["HESITATE","FLEE","COMPETE"]:
+		setup_social_fixture(behavior)
+		DisplayServer.window_set_title("P3.3 native public-cue preview: "+behavior)
+		print("SOCIAL_PREVIEW_BEGIN | expected=",behavior," | actual=",game.npc_fishes[0].behavior_state)
+		await render("preview-"+behavior.to_lower()+"-000")
+		for tick in 360:
+			game.advance_tick({}, {})
+			game.view.queue_redraw()
+			if tick in [23,89,179,359]:
+				print("SOCIAL_PREVIEW_TICK | expected=",behavior," | tick=",tick+1," | actual=",game.npc_fishes[0].behavior_state," | position=",game.npc_fishes[0].position," | food=",game.round_stats.npc_food_consumed)
+				await render("preview-"+behavior.to_lower()+"-%03d" % (tick+1))
+			await create_timer(1.0/60.0).timeout
+		check(game.npc_fishes.size()==1 and game.npc_fishes[0].active and game.hook_target_fish_id==-1,"preview leaves NPC active and unhooked: "+behavior)
+	print("SOCIAL_PREVIEW | passed=",passed," | failed=",failed)
+	quit(1 if failed else 0)

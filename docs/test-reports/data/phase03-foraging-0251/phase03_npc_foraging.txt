@@ -1,0 +1,4 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+HIDDEN_TRUTH_TRACE | npc_food=12.0 state=APPROACH_FOOD mouth=(269.6247, 151.7025) target=(668.0, 200.0) progress=1.00660356415563
+PHASE03_NPC_FORAGING_TESTS | passed=80 | failed=0
