@@ -1,3 +1,11 @@
+# 0.24.6 mouth tuning addendum
+
+Default mouth radius 12→10 px; accepted-intake cooldown .60→.80 s. Continuous availability now permits a nominal 1.25 rather than 1.667 bites/second (25% fewer repeat opportunities). Capacity 4/6/8, .18 s feedback, smooth suction field, all profile multipliers, physical hook contact, maps and RNG remain unchanged. Existing developer bounds already include both new defaults.
+
+Authority schema 14/guard 3 and public guard 1 remain unchanged; explicit snapshot rules/countdowns preserve prior 14/.4 and 12/.6 replay. Live peers require exact build 0.24.6. Personal ConfigFile migration revision 3 independently changes prior 12/.6 defaults to 10/.8. Earlier unstamped 18→14→12→10 and .4→.6→.8 migrations still chain; revision-1 explicit 18 and revision-2 explicit 14/18/.4 remain intact. New revision-3 explicit old settings and named/imported presets persist. Preexisting custom values identical to that profile revision's old defaults cannot be distinguished and migrate once.
+
+See [bounded validation and open manual gate](../test-reports/PHASE02-BITE-TUNING-0.24.6.md). Source-only, no new package or full-balance claim; no Phase 3 work. Earlier addenda below remain historical.
+
 # 0.24.5 mouth tuning addendum
 
 Default mouth radius14→12px; accepted-intake cooldown.40→.60s. Capacity4/6/8, smooth suction field, all profile multipliers, hook physics, maps and RNG unchanged. Developer cooldown range now .30–.80s.
