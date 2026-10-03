@@ -1,3 +1,4 @@
+- [0.25.1 可选水域试玩](watergen/WG3_README.md) · [接入验证](watergen/WG3_REPORT.md)
 - [0.25.0 环境鱼架构](architecture/PHASE03-AMBIENT-FISH.md) · [验证与人工试玩](test-reports/PHASE03-AMBIENT-VALIDATION-0.25.0.md)
 
 # 文档导航

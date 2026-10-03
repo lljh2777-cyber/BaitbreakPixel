@@ -4,6 +4,15 @@ const Camera = preload("res://scripts/pond_camera.gd")
 const Scenery = preload("res://scripts/pond_scenery.gd")
 var camera_offset := Vector2.ZERO
 var water_layers: Dictionary = {}
+const WaterAppearance = preload("res://scripts/watergen/pond_water_appearance.gd")
+var water_appearance := WaterAppearance.new()
+var generated_water_active := false
+var water_visual_time := 0.0
+
+func set_water_appearance(enabled: bool, profile_override: Variant = null) -> bool:
+	var ok := water_appearance.select(enabled, profile_override)
+	queue_redraw()
+	return ok
 
 const Art = preload("res://scripts/pixel_art.gd")
 const Layout = preload("res://scripts/pond_layout.gd")
@@ -73,6 +82,8 @@ func _draw() -> void:
 	if not is_instance_valid(game): return
 	world=game.network.display_world() if is_instance_valid(game.network) and game.network.active() and game.shared_session else game
 	var t: float = world.elapsed
+	water_visual_time = t
+	generated_water_active = water_appearance.enabled and WaterAppearance.eligible(game.player_role, game.shared_session, is_instance_valid(game.network) and game.network.active())
 	line_frame=line_motion.sample(world)
 	net_frame=net_motion.sample(world)
 	if game.player_role=="angler":
