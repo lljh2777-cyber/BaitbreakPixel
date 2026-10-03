@@ -51,6 +51,8 @@ func replay(mode: String) -> void:
 	var hook_seen := false
 	var qte_seen := false
 	for tick in 240:
+		if tick % 60 == 0:
+			game.view.set_water_preset(game.view.WaterAppearance.PRESETS[tick / 60].id)
 		for w in [game, reference]:
 			if tick == 20: w._enter_hook(0)
 			if tick == 35 and w.hooked != w.HookState.HOOKED: w._attach_hook()
@@ -74,6 +76,7 @@ func replay(mode: String) -> void:
 
 func frame_costs() -> void:
 	setup()
+	game.view.set_water_preset("fern")
 	for enabled in [false, true]:
 		game.view.set_water_appearance(enabled)
 		for warm in 60: game.view.queue_redraw(); await process_frame
@@ -91,6 +94,7 @@ func frame_costs() -> void:
 func interaction_replays() -> void:
 	for scenario in ["feeding", "wrapping", "net"]:
 		setup("fish", "duel" if scenario != "feeding" else "survival")
+		game.view.set_water_preset({"feeding":"lily", "wrapping":"ribbon", "net":"root"}[scenario])
 		if scenario == "feeding":
 			game.hook_cooldown = 1000
 			for bait in game.baits:
@@ -152,9 +156,24 @@ func run() -> void:
 	game.menu.open("settings")
 	var toggle: CheckButton = game.menu.find_child("GeneratedWater", true, false)
 	check(is_instance_valid(toggle) and not toggle.button_pressed, "settings exposes explicit opt-in")
+	var picker: OptionButton = game.menu.find_child("WaterPreset", true, false)
+	check(is_instance_valid(picker) and picker.item_count == 4 and picker.selected == 0, "settings offers four named presets with fern selected")
 	toggle.button_pressed = true
 	var cold_preparation: Dictionary = game.view.water_appearance.preparation.duplicate()
 	check(game.view.water_appearance.enabled and before == var_to_bytes(game.capture_snapshot()), "settings toggle prepares without touching authority")
+	var preset_pixels: Array[PackedByteArray] = []
+	var preset_times: Dictionary = {}
+	for index in picker.item_count:
+		picker.select(index); picker.item_selected.emit(index)
+		var preset: Dictionary = game.view.WaterAppearance.PRESETS[index]
+		check(game.view.water_appearance.enabled and game.view.water_appearance.visual_seed() == preset.seed and before == var_to_bytes(game.capture_snapshot()), "UI preset " + preset.id + " changes appearance without changing authority")
+		preset_times[preset.id] = game.view.water_appearance.preparation.duplicate()
+		game.menu.hide()
+		var picture := await render("preset-" + preset.id)
+		check(not preset_pixels.has(picture.get_data()), "preset " + preset.id + " has a distinct production picture")
+		preset_pixels.append(picture.get_data())
+		game.menu.show()
+	picker.select(0); picker.item_selected.emit(0)
 	await render("settings-generated")
 	game.menu.close()
 	var cache = game.view.water_appearance.cache
@@ -181,6 +200,10 @@ func run() -> void:
 	for role in ["angler", "fish"]:
 		setup(role, "duel")
 		if role == "fish": game.shared_session = true
+		if role == "fish":
+			game.menu.open("settings")
+			check(game.menu.find_child("GeneratedWater", true, false).disabled and game.menu.find_child("WaterPreset", true, false).disabled, "shared session disables both appearance controls")
+			game.menu.close()
 		game.view.set_water_appearance(false); var legacy := await render(role + "-legacy")
 		game.view.set_water_appearance(true); var selected := await render(role + "-selected")
 		check(not game.view.generated_water_active and legacy.get_data() == selected.get_data(), "ineligible " + role + " remains exact legacy")
@@ -201,6 +224,8 @@ func run() -> void:
 	await interaction_replays()
 	await frame_costs()
 	var report := {"engine":Engine.get_version_info(),"renderer":RenderingServer.get_current_rendering_method(),"gpu":RenderingServer.get_video_adapter_name(),"measurement":"Frame intervals include pacing/scheduling. draw_cpu_us times inherited production _draw command submission, not GPU execution.", "preparation_us":cold_preparation, "frame_costs":metrics, "cache_counts":[cache.plan_count,cache.bake_count,cache.upload_count,cache.texture_count]}
+	report["preset_preparation_us"] = preset_times
+	report["resident_bundles"] = cache.bundles.size()
 	var file := FileAccess.open(output.path_join("wg3-evidence.json"),FileAccess.WRITE)
 	check(file != null,"evidence writable")
 	if file: file.store_string(JSON.stringify(report,"\t")); file.close()

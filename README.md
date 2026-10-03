@@ -2,24 +2,24 @@
 
 一个 2D 像素风格的人鱼对抗游戏：小鱼在水下觅食、缠线和逃脱，钓鱼人在岸边控竿、收放线与抄网。支持单机挑战、自由练习和一人对一鱼的局域网联机。
 
-**当前源码：0.25.2（WG-3 可选水域，等待人工试玩）** · Godot 4.7.2
-**当前公开 Windows 试玩包：0.25.0**，历史发行记录继续保留。
+**当前源码：0.25.3（水域分支 · 四种构图选择）** · Godot 4.7.2
+**本分支本地包：0.25.3**。主线另有 [0.25.1 觅食版](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.25.1)，本轮水域继续沿用已确认的 0.25.2 玩法基线。
 
-0.25.2 本地试玩增加「设置 → 蕨叶水域 · 本地小鱼视角」，沿用 713284，默认关闭，本次启动有效。生成失败完整回退；联机、岸上和抄网观察保持原环境。碰撞、摄食、鱼线和 NPC 玩法不变。[使用与适配说明](docs/watergen/WG3_README.md) · [中部丰富度调整](docs/watergen/WG3_CENTER_REPORT.md) · [首次接入验证](docs/watergen/WG3_REPORT.md)。本地包使用 `Releases/BaitbreakPixel-0.25.2`，不代表已发布新 GitHub Release。
+0.25.3 在设置中提供四种构图：蕨叶庭 713284（默认选择）、长叶湾 2649、浮叶荫 42、垂根岸 731。打开「生成水域 · 本地小鱼视角」后可用下拉框切换；本次启动有效，联机和岸上沿用原环境。碰撞、摄食、鱼线和 NPC 玩法不变。[使用与范围](docs/watergen/WG4_README.md) · [验证报告](docs/watergen/WG4_REPORT.md)。本地包位于 `Releases/BaitbreakPixel-0.25.3`。
 
 用户已确认 0.24.6 手感合适，Phase 2 关闭。0.25.0 新增 3 条独立游动的环境鱼、多鱼 ID、独立随机源、schema15 重放与双角色公共表现；玩家现有 10 px 自动咬食、0.80 秒间隔、渐变吸力和 4/6/8 容量保持不变。NPC 本轮只游动与软避让，不抢食、不上钩、不影响胜负。
 
-0.25.0 Windows ZIP 已构建、验证并公开发布；解压后运行 `BaitbreakPixel.exe`，核对菜单显示 0.25.0。详见[架构边界](docs/architecture/PHASE03-AMBIENT-FISH.md)与[验证和人工试玩清单](docs/test-reports/PHASE03-AMBIENT-VALIDATION-0.25.0.md)。完成 P3.0+P3.1 后停止，等用户确认才进入 P3.2；Phase 4 继续锁定。
+历史基线：0.25.0 Windows ZIP 已构建、验证并公开发布；解压后运行 `BaitbreakPixel.exe`，核对菜单显示 0.25.0。详见[架构边界](docs/architecture/PHASE03-AMBIENT-FISH.md)与[验证和人工试玩清单](docs/test-reports/PHASE03-AMBIENT-VALIDATION-0.25.0.md)。完成 P3.0+P3.1 后停止，等用户确认才进入 P3.2；Phase 4 继续锁定。
 
 ## 下载试玩
 
 本版沿用 0.24.4 的渐变吸力，散粒实际移动、剥离和整饵位移目标共用同一距离场；此前[距离修正验证](docs/test-reports/PHASE02-DISTANCE-VALIDATION.md)保留为历史记录。
 
-### 公开 Windows 试玩包：0.25.0
+### 历史公开基线：0.25.0
 
 从 [v0.25.0 发行页](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.25.0)下载 [BaitbreakPixel-0.25.0.zip](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.25.0/BaitbreakPixel-0.25.0.zip)，解压后运行 `BaitbreakPixel.exe`。EXE 与同目录 PCK 保持在一起，玩家无需安装 Godot。小鱼嘴边有食物时自动咬食，左键吸食；完整操作见包内说明。
 
-截至 2026-10-03 已逐版发布 **0.21.0–0.25.0，共 20 个 Release**，每版均附 ZIP 和 `SHA256SUMS.txt`。其他版本见 [全部 Releases](https://github.com/lljh2777-cyber/BaitbreakPixel/releases)，核对结果见 [0.25.0 发布记录](docs/test-reports/GITHUB-RELEASE-0.25.0.md)、[0.24.6 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.6.md)、[0.24.5 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.5.md)、[0.24.4 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.4.md)、[0.24.3 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.3.md)、[0.24.2 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.2.md)及[此前 14 版发布记录](docs/test-reports/GITHUB-RELEASES-2026-10-02.md)。0.24.6 发行记录保留其发布当时的验证边界；用户随后已确认手感并允许进入 Phase 3。
+截至 0.25.0 的历史核对记录已逐版发布 **0.21.0–0.25.0，共 20 个 Release**，每版均附 ZIP 和 `SHA256SUMS.txt`。其他版本见 [全部 Releases](https://github.com/lljh2777-cyber/BaitbreakPixel/releases)，核对结果见 [0.25.0 发布记录](docs/test-reports/GITHUB-RELEASE-0.25.0.md)、[0.24.6 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.6.md)、[0.24.5 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.5.md)、[0.24.4 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.4.md)、[0.24.3 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.3.md)、[0.24.2 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.2.md)及[此前 14 版发布记录](docs/test-reports/GITHUB-RELEASES-2026-10-02.md)。0.24.6 发行记录保留其发布当时的验证边界；用户随后已确认手感并允许进入 Phase 3。
 
 ### Phase 2.3：已由用户人工关闭
 
@@ -66,7 +66,7 @@
 .\Build-Pixel.ps1 -GodotDirectory 'D:\Tools\Godot_v4.7.2-stable_win64.exe'
 ```
 
-该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.25.0` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
+该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.25.3` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
 
 当前测试入口、套件状态和产物目录配置见 [测试运行指南](tests/README.md)。核心抄网逻辑检查示例（替换为本机引擎路径）：
 

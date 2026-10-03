@@ -127,7 +127,7 @@ func _title(frame: Control) -> void:
 	button(frame,"设置",274,func(): open("settings"),false,124)
 	var quit := button(frame,"退出",274,func(): get_tree().quit(),false,124)
 	quit.position.x = 150
-	text(content,"0.25.2 · 可选水域 · 等待人工试玩",Vector2(341,280),10,Color("91afa7"))
+	text(content,"0.25.3 · 可选水域 · 等待人工试玩",Vector2(341,280),10,Color("91afa7"))
 	text(content,"小鱼 · 吃饵脱身",Vector2(391,119),18,GOLD)
 	text(content,"人类 · 收线抄网",Vector2(391,159),18,GOLD)
 	text(content,"独自练习 · 双人对战",Vector2(375,199),16,GOLD)
@@ -185,13 +185,13 @@ func _help(frame: Control) -> void:
 
 func _settings(frame: Control) -> void:
 	text(frame,"设置",Vector2(20,19),24)
-	var volume_label := text(frame,"音量 %d%%" % int(game.volume*100),Vector2(20,58),14)
+	var volume_label := text(frame,"音量 %d%%" % int(game.volume*100),Vector2(20,52),14)
 	var slider := HSlider.new()
 	slider.min_value = 0
 	slider.max_value = 100
 	slider.step = 1
 	slider.value = game.volume*100
-	slider.position = Vector2(20,84)
+	slider.position = Vector2(20,77)
 	slider.size = Vector2(326,23)
 	frame.add_child(slider)
 	slider.value_changed.connect(func(value: float):
@@ -199,22 +199,43 @@ func _settings(frame: Control) -> void:
 		game.apply_settings()
 		volume_label.text = "音量 %d%%" % int(value)
 	)
-	button(frame,"切换全屏 / 窗口",116,func(): game.fullscreen = not game.fullscreen; game.apply_settings())
+	button(frame,"切换全屏 / 窗口",106,func(): game.fullscreen = not game.fullscreen; game.apply_settings())
 	var water := CheckButton.new()
 	water.name = "GeneratedWater"
-	water.text = "蕨叶水域 · 本地小鱼视角"
-	water.position = Vector2(20,150)
+	water.text = "生成水域 · 本地小鱼视角"
+	water.position = Vector2(20,141)
 	water.size = Vector2(326,28)
 	water.button_pressed = game.view.water_appearance.enabled
 	water.disabled = game.shared_session or game.network.active()
 	frame.add_child(water)
-	var water_note := text(frame,"本次启动有效；联机及岸上沿用原水域",Vector2(20,181),10,Color("91afa7"))
+	var picker := OptionButton.new()
+	picker.name = "WaterPreset"
+	picker.position = Vector2(20,171)
+	picker.size = Vector2(326,27)
+	picker.add_theme_stylebox_override("normal",style(Color("203f49"),Color("527b7b")))
+	picker.add_theme_color_override("font_color",CREAM)
+	for preset in game.view.WaterAppearance.PRESETS:
+		picker.add_item("%s · %d" % [preset.label,preset.seed])
+	picker.select(game.view.WaterAppearance.preset_index(game.view.water_appearance.preset_id))
+	picker.disabled = water.disabled
+	frame.add_child(picker)
+	var water_note := text(frame,"本次启动有效；联机及岸上沿用原水域",Vector2(20,201),10,Color("91afa7"))
+	picker.item_selected.connect(func(index: int):
+		if not game.view.set_water_preset(game.view.WaterAppearance.PRESETS[index].id):
+			picker.select(game.view.WaterAppearance.preset_index(game.view.water_appearance.preset_id))
+			water.set_pressed_no_signal(game.view.water_appearance.enabled)
+			water_note.text = "水域准备失败，已恢复原水域"
+		else:
+			water_note.text = "本次启动有效；联机及岸上沿用原水域" if water.button_pressed else "构图已选；打开上方开关后生效"
+	)
 	water.toggled.connect(func(enabled: bool):
 		if not game.view.set_water_appearance(enabled):
 			water.set_pressed_no_signal(false)
 			water_note.text = "水域准备失败，已恢复原水域"
+		else:
+			water_note.text = "本次启动有效；联机及岸上沿用原水域"
 	)
-	button(frame,"查看房主玩法规则" if game.shared_session or game.network.active() else "玩法规则 · 128 项数值设置 · F3",207,func(): open("rules"))
+	button(frame,"查看房主玩法规则" if game.shared_session or game.network.active() else "玩法规则 · 128 项数值设置 · F3",216,func(): open("rules"))
 	button(frame,"保存并返回",251,func(): game.save_profile(); open(previous),true)
 
 func _rules(frame: Control, selected: String) -> void:

@@ -14,6 +14,11 @@ func set_water_appearance(enabled: bool, profile_override: Variant = null) -> bo
 	queue_redraw()
 	return ok
 
+func set_water_preset(id: String) -> bool:
+	var ok := water_appearance.choose_preset(id)
+	queue_redraw()
+	return ok
+
 const Art = preload("res://scripts/pixel_art.gd")
 const Layout = preload("res://scripts/pond_layout.gd")
 const Gauge = preload("res://scripts/hook_gauge.gd")

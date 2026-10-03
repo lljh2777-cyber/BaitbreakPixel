@@ -102,7 +102,11 @@ func _ready() -> void:
 	view.game = self
 	add_child(view)
 	# Local presentation opt-in only; never part of rules, snapshots or networking.
-	if "--water-appearance=fern" in OS.get_cmdline_user_args(): view.set_water_appearance(true)
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--water-appearance="):
+			var preset := argument.trim_prefix("--water-appearance=")
+			if preset == "legacy": view.set_water_appearance(false)
+			elif view.set_water_preset(preset): view.set_water_appearance(true)
 	menu = Menus.new()
 	menu.game = self
 	add_child(menu)
@@ -112,7 +116,7 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.25.2 | playtest-gate-wg3-water")
+	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.25.3 | playtest-gate-wg3-water")
 
 func _register_inputs() -> void:
 	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[], "use":[KEY_E], "slow":[KEY_Q], "qte":[KEY_SPACE], "untangle":[KEY_F]}

@@ -6,11 +6,40 @@ const Frame = preload("res://scripts/watergen/water_visual_frame.gd")
 const PROFILE_PATH := "res://data/watergen/forest_pond_atmosphere.json"
 const SOURCE_COMMIT := "c1e3946f0b8cf1afa7becf2b238c8297efda5dc8"
 const VISUAL_SEED := 713284
+const PRESETS := [
+	{"id":"fern", "label":"蕨叶庭", "seed":713284},
+	{"id":"ribbon", "label":"长叶湾", "seed":2649},
+	{"id":"lily", "label":"浮叶荫", "seed":42},
+	{"id":"root", "label":"垂根岸", "seed":731}
+]
 var cache := Cache.new()
 var bundle: Dictionary = {}
 var enabled := false
 var last_code := "LEGACY"
 var preparation: Dictionary = {}
+var preset_id := "fern"
+var prepared_seed := -1
+
+static func preset_index(id: String) -> int:
+	for index in PRESETS.size():
+		if PRESETS[index].id == id: return index
+	return -1
+
+func visual_seed() -> int:
+	return PRESETS[preset_index(preset_id)].seed
+
+func choose_preset(id: String) -> bool:
+	if preset_index(id) < 0:
+		last_code = "PRESET"
+		return false
+	if id == preset_id: return true
+	var previous := preset_id
+	preset_id = id
+	# Choosing while disabled costs nothing; enable prepares the chosen seed once.
+	if not enabled: return true
+	if select(true): return true
+	preset_id = previous
+	return false
 
 static func eligible(role: String, shared: bool, connected: bool) -> bool:
 	return role == "fish" and not shared and not connected
@@ -39,7 +68,8 @@ func select(value: bool, profile_override: Variant = null) -> bool:
 		last_code = "LEGACY"
 		return true
 	# Reopening settings, restarting and changing roles keep the same GPU bundle.
-	if profile_override == null and complete(bundle):
+	var seed := visual_seed()
+	if profile_override == null and prepared_seed == seed and complete(bundle):
 		enabled = true
 		last_code = "OK"
 		return true
@@ -50,15 +80,16 @@ func select(value: bool, profile_override: Variant = null) -> bool:
 		if parser.parse(FileAccess.get_file_as_string(PROFILE_PATH)) != OK: return fail("PROFILE_JSON")
 		profile = parser.data
 	if not profile is Dictionary: return fail("PROFILE_TYPE")
-	var result := cache.prepare(Adapter.build(SOURCE_COMMIT), profile, VISUAL_SEED)
+	var result := cache.prepare(Adapter.build(SOURCE_COMMIT), profile, seed)
 	if not result.ok: return fail(result.code)
 	if not complete(result.bundle): return fail("BUNDLE_INCOMPLETE")
 	# Activate atomically; discard CPU images/plan with the local result.
 	bundle = result.bundle
+	prepared_seed = seed
 	preparation = result.timing_us.duplicate()
 	enabled = true
 	last_code = "OK"
-	print("WATERGEN_READY | wg-2.1 | seed=", VISUAL_SEED, " | cache=", bundle.cache_key)
+	print("WATERGEN_READY | wg-2.1 | seed=", seed, " | cache=", bundle.cache_key)
 	return true
 
 func draw_slot(view: Node2D, name: String, camera: Vector2, time: float, clip := Rect2()) -> void:
