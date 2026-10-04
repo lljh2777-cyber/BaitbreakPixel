@@ -1,0 +1,6 @@
+{
+  "fern": {"terrain_style": "fern_channel", "terrain_relief": 58, "ridge_count": 3, "depression_count": 1, "center_clearance": 0.72, "bank_bias": -0.12},
+  "ribbon": {"terrain_style": "ribbon_slope", "terrain_relief": 78, "ridge_count": 2, "depression_count": 1, "center_clearance": 0.86, "bank_bias": -0.85},
+  "lily": {"terrain_style": "lily_basin", "terrain_relief": 42, "ridge_count": 3, "depression_count": 2, "center_clearance": 0.80, "bank_bias": 0.10},
+  "root": {"terrain_style": "root_shelf", "terrain_relief": 86, "ridge_count": 4, "depression_count": 1, "center_clearance": 0.68, "bank_bias": 0.90}
+}

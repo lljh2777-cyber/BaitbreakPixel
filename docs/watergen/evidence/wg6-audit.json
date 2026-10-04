@@ -1,0 +1,1305 @@
+{
+  "task_id": "WG-6.1",
+  "baseline_commit": "e333c90c46d03e6a9bf4080d758bb8e264548d8e",
+  "run_directory": "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg6-final-01",
+  "run_status": "PASS",
+  "source_unchanged_during_run": true,
+  "changed_existing_runtime_files": [],
+  "runtime_source_sha256": {
+    "Build-Pixel.ps1": "3236675f70228ab6d813617d3820f78d7c47fd55dccbe9fe33941d648c768665",
+    "data/watergen/forest_pond.json": "4d799357a7a1b1efdd3775dd027979a0f964a1549fc5824d8226d41b13cb82c9",
+    "data/watergen/forest_pond_atmosphere.json": "9ca1aa621ac4530a48ae87e085af0e6447814e1af079698cf832106aaa10c0f5",
+    "data/watergen/forest_pond_dynamic.json": "ccadf548a869c60afc34b95b80d7aa196001d28b899f239a6a6eb7460239d55e",
+    "data/watergen/legacy_baseline.json": "284575ea3792bd0b4c0f500bd1c630e753b3ef5f7d3f49be0572aa9012e40634",
+    "data/watergen/source_baseline.json": "63f7b0eb4da464932dfcc6132a6b67315d2285ebddc43f4b062603a5491d6111",
+    "data/watergen/terrain_profiles.json": "15d87ecf4038444039f64b43e7e1030d3e735c0f65952e332850b38fd1077291",
+    "data/watergen/visual_profile.schema.json": "e72e8d9b7056a8e22a6e1309d7f0cb38aaa9bc9c8449beeb776c54ba79d88635",
+    "docs/test-reports/PHASE0-BASELINE-1000.json": "971d2c409d336a98b99910b685fdcdfb11e304584c01e8ab5405aa619f406672",
+    "docs/test-reports/PHASE01-CAUTIOUS-1000.json": "5020b3b45962db1204da08b317ea393b5685702bc6584ae326d924adf8f7cd09",
+    "docs/test-reports/PHASE01-DISTANCE-1000.json": "11a901955a57f6694c1204ab5a366d219911e389e3e417c61f468c22fa345564",
+    "docs/test-reports/PHASE01-FIRST-POLICY-1000.json": "e7c1981fa3231994045e4b8beefbdbb9622855c652ba1e7a319c4edb5ad6f4dc",
+    "docs/test-reports/PHASE01-FIRST-POLICY-MANIFEST.json": "91b83b9d9c333bfe11067951cde812aec7f9958285c1f05f1da1689858d31d22",
+    "docs/test-reports/PHASE01-INFORMATION-DIAGNOSTIC.json": "204e85c8cc6982cd1827ca1596b53f0c1c25db7d2ba895af883942d1315a83fb",
+    "docs/test-reports/PHASE01-MATCHED-1000.json": "d75b111e16b35366ac232bca7856b38c78990dd294b4304e668436294f171c31",
+    "docs/test-reports/PHASE01-PILOT-50.json": "d51363d829f2db06e7c0e6db783ca0add1588facaa5149cb023abab6d69f9f9c",
+    "docs/test-reports/PHASE01-PROVENANCE.json": "1f5e5aa22e1f074f1197b7208930a4b085a91d4d15fbddd8aec5fa7e3369f67c",
+    "docs/test-reports/PHASE01-UNMATCHED-HELDOUT-1000.json": "c987195b311ebbff6c56d9a93175a829b41420b46005c6c8e9a126f92883fef2",
+    "docs/test-reports/PHASE03-SOCIAL-ANALYSIS.json": "0ad2f3e9ede1d0d90163ee01d7137f721ca62a001c40e1b68553d89e08132c6b",
+    "docs/test-reports/data/hook-feel-0254/headless-provenance.json": "9e206e50cf0c297d9b4da4e339becb71592476491668175dd66dcdc6f0fe8349",
+    "docs/test-reports/data/hook-feel-0254/headless-summary.json": "ceb94e9e7253b6dd0e9a8c320ae6142d4f14a5f88595a8f11b58a5455c9b70f3",
+    "docs/test-reports/data/hook-feel-0254/native-initial-provenance.json": "c2d8c7733775ebe093e8dcaf5577fd13b208f8ac4219ee32a6619ad2e5ae3330",
+    "docs/test-reports/data/hook-feel-0254/native-initial-summary.json": "4fc37d4237600f28df256510b2ad9cf10a583a2cbc6c3306abbee89f8e280ea3",
+    "docs/test-reports/data/hook-feel-0254/native-npc-review.gd": "d153062398e0adf0ff68f691b84ca6ce72da01043c1074234b6362d571d6472e",
+    "docs/test-reports/data/hook-feel-0254/native-npc-timings.json": "92224a5291345686129b8886aeee9e4dc82d72cc93932a4a89889458fdd4f1ab",
+    "docs/test-reports/data/hook-feel-0254/native-provenance.json": "b86e9aae25127d444359894a29337d4a18cdda1801ec28a28f77ab41c958a6c8",
+    "docs/test-reports/data/hook-feel-0254/native-source-after.json": "bbccc904531e572903b3d41b2e2af4dfcf27ef706ab62a215fc58d6fc7b1ce20",
+    "docs/test-reports/data/hook-feel-0254/native-source-before.json": "024dde1c948b3c7e98c07d60ecd5a5fb06d52ed9dc09c44d4f75e339e74de0d4",
+    "docs/test-reports/data/hook-feel-0254/native-summary.json": "f730833ae20347b39be51df9f35607409b11064aedd9ed4c5a13e515693de03a",
+    "docs/test-reports/data/hook-feel-0254/natural-diagnostic-comparison.json": "0adb4cbccf689b36a8035e38bc431e77d15012525a80394bc8c3651678106c4c",
+    "docs/test-reports/data/hook-feel-0254/natural-diagnostic-provenance.json": "20e0d07342f5f90db2fa171fefd81f61691a59cb5d6ad7c4224d0e81df10ef7f",
+    "docs/test-reports/data/hook-feel-0254/natural-diagnostic-rounds.json": "f3a2f317923bda4f24ca40c45b81ecc146bdb8d75609d31a450eae6688ac0233",
+    "docs/test-reports/data/hook-feel-0254/natural-diagnostic-summary.json": "05e204cc7314e87aeae734764df1b33486f99fd200ce5d1c98b660729dc16aee",
+    "docs/test-reports/data/hook-feel-0254/natural-pilot-comparison.json": "6eb68d025a46436e003273ad746f9d1623429d8026267a8957d36da0c2dbf4e0",
+    "docs/test-reports/data/hook-feel-0254/natural-pilot-provenance.json": "1be6f6b250afe470fa4d6bf4eef0129a94fb6051e8ba2bbb3b0ab0a615250a6f",
+    "docs/test-reports/data/hook-feel-0254/natural-pilot-rounds.json": "4ad9dc815afc1d5a41e6036969615a864b4271d1f44c6f27105dbf8ad3db6fb0",
+    "docs/test-reports/data/hook-feel-0254/natural-pilot-summary.json": "50d3373084b96ca959af86586c8faae38ad90789af3165722770085213f031ec",
+    "docs/test-reports/data/hook-feel-0254/natural-source-comparison.json": "26b8833095a0c62cd86759a1c2de327c4e046cb5d29176b8d72e1e2df5c7e344",
+    "docs/test-reports/data/hook-feel-0254/natural-source-verification.json": "20cbb791a312bc93494332cfd67e126c103278aeaec8573b7a79ca828154f26f",
+    "docs/test-reports/data/hook-feel-0254/npc-evidence-manifest.json": "a2132809be75062e82400731e23b4e92837dda0b0068d978fc0f0db6631e67ce",
+    "docs/test-reports/data/hook-feel-0254/npc-pacing-after-provenance.json": "5781625b46da43b49ad558007fd83aa4fbfc373baa10cb8c45b79129f4c5ea12",
+    "docs/test-reports/data/hook-feel-0254/npc-pacing-after.json": "b13118f7a9a08b4503c621301836f330b7f847553950b8f15eaee09de9a2c0d4",
+    "docs/test-reports/data/hook-feel-0254/npc-pacing-baseline-gate-summary.json": "f6fe99d0ccc9a039c8b0120376c7fa9e9ab067c130f21a25764624f8b46ca942",
+    "docs/test-reports/data/hook-feel-0254/npc-pacing-baseline-source.json": "37a58b6d195fa9c22fa038552dc6b5a0c3986bcc397e29ac82c17a4ebb3dc8ce",
+    "docs/test-reports/data/hook-feel-0254/npc-pacing-before-provenance.json": "8bc6cb72722b38added83adbbceff42509328fa6f2cf73ed3ba3928c273e59bf",
+    "docs/test-reports/data/hook-feel-0254/npc-pacing-before.json": "bd185b17ec7b2de6b98b65917f911dd32efb9d0774d02cbd091fd8aa4c9fef87",
+    "docs/test-reports/data/hook-feel-0254/npc-pacing-comparison.json": "3e338af0b267394c4a752d12fa22f2c09d117fffac598ae8ec3e12862ee1248c",
+    "docs/test-reports/data/hook-feel-0254/npc-pacing-final-gate-summary.json": "ff74179c127c472c22f966350f6d21f99e72ea81f7e5c995dff5c13447d44915",
+    "docs/test-reports/data/hook-feel-0254/player-hook-focused-provenance.json": "9404d4687937830312c39c24812c6f1f18f3754f125cc5b8ebfc5d11a749728d",
+    "docs/test-reports/data/hook-feel-0254/runtime-source-manifest.json": "385d4fe57b3a4538dff267f97abe95f0cd0e97f65f80932d476717c4f44f0cb4",
+    "docs/test-reports/data/phase02-bite-tuning-0246/headless-summary.json": "e37646c1a8941536ea48db79376e93d920a6409a5f01b5e8ec087e7427de806d",
+    "docs/test-reports/data/phase02-bite-tuning-0246/native-focused-summary.json": "3055db6091293e77bfbcda2cc5c2bb3b47b085f7000257d03e532b61d849e2fd",
+    "docs/test-reports/data/phase02-bite-tuning-0246/native-source-manifest.json": "13954f46bb59a6af4bcee56bf983c0e9e606bb9e0a645acd11b3dfb43abcffc1",
+    "docs/test-reports/data/phase02-bite-tuning-0246/native-summary.json": "47d5a183ad1230a90451595ad88085ad246b36bfff682037a93e63bf0715e5be",
+    "docs/test-reports/data/phase02-bite-tuning/headless-summary.json": "52a376a0fb45b54d520ff9282a9478f4a4bfac1e133df6511bfcb24309dcfa7d",
+    "docs/test-reports/data/phase02-bite-tuning/native-source-manifest.json": "5ea110b30fb2cba5313afd8e7261e18dd375dc507894368228f48314d71d2110",
+    "docs/test-reports/data/phase02-bite-tuning/native-summary.json": "037c8105ce184cc97ef7e764325c626b4392fcd1e67ec85e0e34953bc3fc22b0",
+    "docs/test-reports/data/phase02-distance/headless-summary.json": "65f244af79846bef7007357bd316523264a7b3a0762c17582af0b273602dd2d3",
+    "docs/test-reports/data/phase02-distance/native-summary.json": "45b263987e2ea94ee2e42335405e39a24caf44cb801d19d642a40600ad24c313",
+    "docs/test-reports/data/phase02-distance/tuning-100/comparison.json": "a113dfa48c7ad395d1a57427ded6a1deeddd5eae78bc3fe78bb114ec26cc5e36",
+    "docs/test-reports/data/phase02-distance/tuning-100/phase02_feeding_policy.gd": "533976956a9e2186baf1da6ed321680e0f9304842d1d5813c8fa4977df919912",
+    "docs/test-reports/data/phase02-distance/tuning-100/phase02_simulate_feeding.gd": "bab834ad8e75ad53558cfd3404ee2f7674e6fb81618f0cde88879711d1518f5f",
+    "docs/test-reports/data/phase02-distance/tuning-100/provenance.json": "be5edee94bf1b3629eaef548882381f5a07caebe9b6d0eb780c0063454c54952",
+    "docs/test-reports/data/phase02-distance/tuning-100/rounds.json": "8efa3afee2757c161468868691e8c91a77e86902320e84837148ddc965a51818",
+    "docs/test-reports/data/phase02-feeding/headless-gate-summary.json": "b018357b4dbd8194a67580e962a709e9e3a6ff4d05c65403c2f407f6a78dd539",
+    "docs/test-reports/data/phase02-feeding/heldout-100/comparison.json": "a6e005e5c49ab6d725d056b12c97915327f6eb6303d7e731192146cc0ce78fb5",
+    "docs/test-reports/data/phase02-feeding/heldout-100/provenance.json": "b33ace46978c631c5ae1fed8620bd7f0c5bbca55b4b5817d2869a9072fe1e779",
+    "docs/test-reports/data/phase02-feeding/heldout-100/rounds.json": "b8b9e792ff73b286ec49900ddf579b62ac7ffb9075a78e2de30c1200a7f68c5e",
+    "docs/test-reports/data/phase02-feeding/heldout-100/summary.json": "03e53025310d38c4dea50805be9d340c8a93d47811cfaecccbe0b0db27996191",
+    "docs/test-reports/data/phase02-feeding/heldout-extension-88/comparison.json": "32c10fd237a6fef0737d9c8caea5074593128475dfd9f16d16edbcc5d9940cff",
+    "docs/test-reports/data/phase02-feeding/heldout-extension-88/provenance.json": "c366efad9ec65ee7ac3b551a9da187ee60da6286c4f8b06a6a1342d857b6da31",
+    "docs/test-reports/data/phase02-feeding/heldout-extension-88/rounds.json": "0dfb247b2bdbf5a96ec8615fc5af799381eb56f7ebdff11a8127baecea3c35c8",
+    "docs/test-reports/data/phase02-feeding/heldout-extension-88/summary.json": "50654a884654f9d52eb77cb2cb5a0db70c756e0f50584abe754f656a325041ad",
+    "docs/test-reports/data/phase02-feeding/heldout-initial-12/comparison.json": "db9b1f83901a927d2d4e064772c1097f23acc6ced91a3aa568ffa2adaf00cbb4",
+    "docs/test-reports/data/phase02-feeding/heldout-initial-12/provenance.json": "c3a50bf67ed01d260dc023d5c7530b19d31a8cd3f0e68aeaf932a2b014ee57d2",
+    "docs/test-reports/data/phase02-feeding/heldout-initial-12/rounds.json": "e59c1d5291a8cc27d2cebfc1f738377b146907c89d8d5002279de7977c85927d",
+    "docs/test-reports/data/phase02-feeding/heldout-initial-12/summary.json": "d15f36a873185b266a545f0a73ff35acd8c4c4be3afad7ebfb38d666bd57ef61",
+    "docs/test-reports/data/phase02-feeding/initial-headless-gate-summary.json": "3f3b5181bed9fa6a3f2815e335755c54f4e7c1dc1d059d0bb88eaa34d00040b6",
+    "docs/test-reports/data/phase02-feeding/initial-native-gate-summary.json": "ab3d179b9fcf9cb1cc6e5c114a69fb93051daaa682cd03dd740e6c23dffce5aa",
+    "docs/test-reports/data/phase02-feeding/native-gate-summary.json": "d797d4c9cafdbd4152ee72c17fc348149b4b7247f8af3eacc52832dbdf05d130",
+    "docs/test-reports/data/phase02-feeding/pilot/comparison.json": "28e0a0b3ad5f21d71c40465f65455804918f5a43171dd316cbbc0c3335dd96f0",
+    "docs/test-reports/data/phase02-feeding/pilot/provenance.json": "ba73bbb0772b698e80ed2596ddcf66df475de5d31a7ba5b09ed39c1145793802",
+    "docs/test-reports/data/phase02-feeding/pilot/rounds.json": "362e02f9df658d6f50e0be62a20e66158b0324a2f13f52a1890169f1a2ac091d",
+    "docs/test-reports/data/phase02-feeding/pilot/summary.json": "c7d69b0e7985f27e39902f775d01a0e76005befc9d64e8ea1c94be68cd5ba8ef",
+    "docs/test-reports/data/phase03-ambient-0250/final-source-manifest.json": "6111b86bcfa121c9f925d4f4002b69383dc2a46e4935ac2391f5fd62e647295e",
+    "docs/test-reports/data/phase03-ambient-0250/headless-performance.json": "a030041351cd8a1d43d24ede31f3e1304f10554d2cb9e374e65cec432e8afbdf",
+    "docs/test-reports/data/phase03-ambient-0250/headless-summary.json": "6411f1dceca800433c8d6fb3eadcfd7911a5a4142be0b822c70eaf8fd8c21c40",
+    "docs/test-reports/data/phase03-ambient-0250/initial-headless-summary.json": "20c569ec58559becdf88c5bce88f7bb1361fcf8ebb37f8a990a0e0b6d08a2d5a",
+    "docs/test-reports/data/phase03-ambient-0250/initial-native-summary.json": "2f7e24559dc88874a5973d11987adf3e6434c9970065982dff538b8941b52e09",
+    "docs/test-reports/data/phase03-ambient-0250/native-frame-costs.json": "52c6632c2779c1b5be223ca396ee4ee54af17777fe60962e946cd545a398bf13",
+    "docs/test-reports/data/phase03-ambient-0250/native-provenance-verification.json": "dd69b3d6748beaaa5ec0f23ec440a35e0d4ffcbd8af2f9447020c5fe796e2272",
+    "docs/test-reports/data/phase03-ambient-0250/native-source-manifest.json": "de66306f624ca55c27e7a15681cfba63aac53d7833bc194fda21a0f629b1fd59",
+    "docs/test-reports/data/phase03-ambient-0250/native-summary.json": "82802dc268e70ecc488a14ede1d09c31f3a5f9538aaaa441f40df0df5cf69902",
+    "docs/test-reports/data/phase03-foraging-0251/competition-ForagingNPC.json": "d288dd90c1be887ec354eb4a753b49021a73b8ed84fb249d25b088e4d91042ac",
+    "docs/test-reports/data/phase03-foraging-0251/competition-NoNPC.json": "e5cbffac03f2564726da994b76d96851f2b28d04a95762de7dbfa3419327ae8c",
+    "docs/test-reports/data/phase03-foraging-0251/competition-PassiveNPC.json": "f095cd956f9f2856484114e4f81568af56055d2b44dc5dea3f495c85b087b6de",
+    "docs/test-reports/data/phase03-foraging-0251/competition-heldout-provenance.json": "64ce109add75760ad7e1236e6fc3a3277ce07c859bc2438697a3ccb41586bcff",
+    "docs/test-reports/data/phase03-foraging-0251/competition-heldout-summary.json": "53e3d0e74666c31079c6cb610afd6f87fac3d83939da1ad57601cac2b566a5f4",
+    "docs/test-reports/data/phase03-foraging-0251/competition-pilot-provenance.json": "0d9df6f77ea98ea9eca0cecb9c509bcf445fd33e72fbe04479bdcba58abea0f3",
+    "docs/test-reports/data/phase03-foraging-0251/competition-pilot-summary.json": "96d0f526c330096174f9238fc2daa5708578fd058e8db527ee200ad12964c392",
+    "docs/test-reports/data/phase03-foraging-0251/final-source-manifest.json": "c1a3f667628fd717b10aae2bdeb0a99f85dc28f3d400db1d709ef14ad13bfdf1",
+    "docs/test-reports/data/phase03-foraging-0251/food-reachability-summary.json": "8c10ad39d8fc1e734adcc06692b23d4b6a40bd656a0d54867afa108f773f2aca",
+    "docs/test-reports/data/phase03-foraging-0251/headless-performance.json": "882bf70187101bbf253163860a6cffec2e6e28bc887b5f3065b54fa564a6d3bc",
+    "docs/test-reports/data/phase03-foraging-0251/headless-summary.json": "7e462e3170e73ebd29af48afef077d8f8c267a5906dc41505feca4751ab09ab0",
+    "docs/test-reports/data/phase03-foraging-0251/initial-headless-summary.json": "b94bc8b3459c0614e25f34ab5bdec3d8a3d8fc2c2d0ad9f1d9f828d78ef77091",
+    "docs/test-reports/data/phase03-foraging-0251/native-frame-costs.json": "fd517195c9b4881d79fc6c94ccbd6eae0317466e2689af017bc46359c8631c61",
+    "docs/test-reports/data/phase03-foraging-0251/native-provenance-verification.json": "bfc16acd739ee50d632ad3390ecff518b87d49ecc1342a63adda5189833b8870",
+    "docs/test-reports/data/phase03-foraging-0251/native-source-manifest.json": "50ed3f232d35724dfa4ea62326bc80eac6476a2b28d7e8ac54d6574a5b09bfe8",
+    "docs/test-reports/data/phase03-foraging-0251/native-summary.json": "de15cc22879e2e3f55c57a5f32df077cd2ff237aefec1d3e6f1f53b65889be3d",
+    "docs/test-reports/data/phase03-foraging-0251/supply-eligibility-44009.json": "00fe79a88cb3207133b6ef025d250ad8953a55733ee3f6554d93630b9e0af2b9",
+    "docs/test-reports/data/phase03-foraging-0251/supply-eligibility-44072.json": "7d0f9f90067d4a5dcba7b797ee7a59dea08077854cac363203c95790e85ca1bc",
+    "docs/test-reports/data/phase03-foraging-0251/supply-provenance.json": "0fc5088a0766e99d90eeff891bd38b5506f661f967f6750b444446134658c652",
+    "docs/test-reports/data/phase03-hook-0253/diagnostic-heldout-comparison.json": "026704439b8f2068f626d293f2ad003af735d37251c71207c96afb772c5277d3",
+    "docs/test-reports/data/phase03-hook-0253/diagnostic-heldout-provenance.json": "c01623df29e93f04ec5846fba2ba19babfc7946193e6043f4884b4c8e047a1d0",
+    "docs/test-reports/data/phase03-hook-0253/diagnostic-heldout-rounds.json": "8cceaa2d86a55d9c846f905cd14c8ef49cdcc5bfad9f7fcde7c59ecbb51682a9",
+    "docs/test-reports/data/phase03-hook-0253/diagnostic-heldout-summary.json": "093564cb9ad5fff684d35458e7b988ef3d413ae827eaafbce2015cbd57f7a6cf",
+    "docs/test-reports/data/phase03-hook-0253/diagnostic-pilot-comparison.json": "5a7b032cfbeb3de2ddc88d5dc8b200ce86699b0995ab868ce568fe0bc4f52fc4",
+    "docs/test-reports/data/phase03-hook-0253/diagnostic-pilot-provenance.json": "b3b362ce865d6ad1a35391e95358f71f88d59d887ee787d4a4307272b938e3c0",
+    "docs/test-reports/data/phase03-hook-0253/diagnostic-pilot-rounds.json": "d9c036500ac2a1af1ca6148f3a45162ee912851553c3c3d9cd8dc6d036051951",
+    "docs/test-reports/data/phase03-hook-0253/diagnostic-pilot-summary.json": "ab5db0d9f9eebb274c194813691ea789e0550ddc78444dbb9ae03e56ca96df46",
+    "docs/test-reports/data/phase03-hook-0253/diagnostic-source-verification.json": "64d2547605f8fcb03c8c1e5a58ba77b630e17113914635731ef67d6288dbfdfd",
+    "docs/test-reports/data/phase03-hook-0253/headless-provenance.json": "232410f13fc3e40b63c615e05ecbfec9c1be66144a69124822d1da78ba9153f5",
+    "docs/test-reports/data/phase03-hook-0253/headless-summary.json": "c8d2bd6f7fe29358653296db310694dc17c6990ee6fb9544689419e7f014f185",
+    "docs/test-reports/data/phase03-hook-0253/independent-review.json": "83190f29fe6a8b08cba08b270c4f34f849744962f72c8db56ac024bbe11ce702",
+    "docs/test-reports/data/phase03-hook-0253/native-delivery-verification.json": "5ef221205a4a35f9345e60265f6786230ac295eedddeb3f3559d167360730405",
+    "docs/test-reports/data/phase03-hook-0253/native-frame-costs.json": "7cd5d39c58a935e3cf085940696037be02e58f590bb7fe7c159cb22e86963a53",
+    "docs/test-reports/data/phase03-hook-0253/native-provenance.json": "08c8e64a0f73f1f64e0d6c154fadce992d768ff71e8cae6e7f7fe479c3d132ec",
+    "docs/test-reports/data/phase03-hook-0253/native-source-manifest.json": "a687679be2d595ad8c829d2113eb86a148f4721f18a2105bbb052c40fde52c59",
+    "docs/test-reports/data/phase03-hook-0253/native-summary.json": "b75b64843e32d704e38a68f34b4113e60dd943bb926f8c8ec08722d0bad3ef34",
+    "docs/test-reports/data/phase03-hook-0253/native-warnings.json": "bd5ec7069ca8d6260a18c0c420b8e4da5e07a53c8be4747020887ae865daaf9a",
+    "docs/test-reports/data/phase03-hook-0253/runtime-source-manifest.json": "6189721248481672b26e4b5c330190358b731634c4a78629bd008603d4f94226",
+    "docs/test-reports/data/phase03-hook-0253/social-regression-analysis.json": "05ce38eec84e9b72871b4a69a4da0345c65526d40cf93de3d4d11527602a7df8",
+    "docs/test-reports/data/phase03-social-0252/final-native-provenance-verification.json": "6266623655a7c4133ec8fb4c8c85688485a9884a114a14926f6690d83fc69e85",
+    "docs/test-reports/data/phase03-social-0252/final-source-manifest.json": "50a5294bf911530606a73f879a0083727503adf9d518d8c7dbe6017db7557692",
+    "docs/test-reports/data/phase03-social-0252/headless-summary.json": "d91d21d74de1b60c13c91f84f100c2c655c99f32b73cb06bee681cc9c013be2f",
+    "docs/test-reports/data/phase03-social-0252/initial-headless-summary.json": "fb87eec7960ead0fe28903af9030589e65f302c3d79e74351a4f945bdf2deece",
+    "docs/test-reports/data/phase03-social-0252/native-after-source-manifest.json": "dce1645be2ba839b7f38c18140b9697f21ed8efa0be78e691591725a6e0c0d70",
+    "docs/test-reports/data/phase03-social-0252/native-consumed-provenance.json": "2edb0d3f1e0fad63615788ece8a42b566f8ab149f0863a7fe5a8b812c22caf64",
+    "docs/test-reports/data/phase03-social-0252/native-frame-costs.json": "c48e252107012424bbfffceefef8954fc018d88b57cccaa6d3461f25d0c0231a",
+    "docs/test-reports/data/phase03-social-0252/native-provenance-verification.json": "d041ad4858de0889f77679289f35d439ef062cf793e81cfe678e8cf126ad65d0",
+    "docs/test-reports/data/phase03-social-0252/native-source-manifest.json": "341b0e41d8b3c48f3203fac3ebcf66f7274749a0208fe389a2ab62ff3923ce76",
+    "docs/test-reports/data/phase03-social-0252/native-summary.json": "5987a41f1ce1fe4358bc48de2496275dda054a63b83b586ce6b81760739a545e",
+    "docs/test-reports/data/phase03-social-0252/p32-brain-compare-provenance.json": "c4594c605ec524d4c54a78c0dd944ee007f4ff07f9568d2fa610e9232fc02bb9",
+    "docs/watergen/evidence/dev-sync-0.25.6-audit.json": "f02f13885fae7699984be9f717cad2557187f67f862b4bd606462c25b3e4956b",
+    "docs/watergen/evidence/wg3-audit.json": "df08148a969debe33ca1c4e2242c9d95ad1070511ffd0d5ddeb85d34ed653efb",
+    "docs/watergen/evidence/wg3-center-audit.json": "80ada4bcd9d60049a91c8d734dd63b7ba82de79abc12fe463b91fd23c292588c",
+    "docs/watergen/evidence/wg3-frame-costs.json": "ebd8ba6e5a98ccb89d3574685c036b0768dfcec0fb4be5a15f41140bec7b570c",
+    "docs/watergen/evidence/wg3-run-manifest.json": "6a66592cdccd40885a6bc11f73df7a66f1627c7975949f6edb167a826168d539",
+    "docs/watergen/evidence/wg3-visual-identity.json": "59b4bfef99b9a16b0431d4523d0bc286da5d092e953b105076ceba1d8be20504",
+    "docs/watergen/evidence/wg4-audit.json": "f1aeebc2b59892b05e89c5dcfa3c93770b5c8f37f25d9903851b8c3140de3e8b",
+    "docs/watergen/evidence/wg4-pack-frame-costs.json": "b538d466401eb9d09ec38df7ca795823b284651eaad6b3a6ca0c24cd34de1a3f",
+    "docs/watergen/evidence/wg4-source-frame-costs.json": "37772ad1c59f45086257e4ed1c6c438aaa596faf4cb915472467d8e1d172b252",
+    "docs/watergen/evidence/wg4-upper-audit.json": "98b29e1a2c43f9874313f0fc7f16a4ae3f054c66de2b8ca25630a4e8b880f237",
+    "docs/watergen/evidence/wg4-upper-pack-frame-costs.json": "2302de31a42855c7014898a2d0b1e63d8aca9fcf5b82d099875fe96ac834b8da",
+    "docs/watergen/evidence/wg4-upper-source-frame-costs.json": "684ef32783d89248796cb346c4e2d35f77121c8223109e5745f5eb8a2a1f3e75",
+    "docs/watergen/evidence/wg5-audit.json": "b8b77c869bd4ab8dd2592dd68285bfc2874b1bc1b6d9d567206cd7b3ea23d20b",
+    "history/releases.json": "d97ec9cf6ff38b4abc30733e16dcb54b2d0391c76e6931b973ddf61f932be6be",
+    "project.godot": "ef03a07acf0b89ac18229c682775c25153c6a4a574bca3f701e7e0792997696a",
+    "scenes/main.tscn": "e93d9e0f585570e9ba621b471b93fd9b9db1a1265a9d92a4914e2525e8dd542f",
+    "scenes/watergen/dynamic_preview.tscn": "f5c4411c88d6af2fcebef94c5410e1ee5227b6c9d6735169d0623c918cc191fe",
+    "scenes/watergen/generated_preview.tscn": "08044e12a5ec1a82d49ee8f24785186b3eae31953ff2091b605d6634b04ddc39",
+    "scenes/watergen/preview.tscn": "9aaf6df0e5c396253831f471815fe5807c689b6b467f92f0084c1704a9f30777",
+    "scenes/watergen/terrain_preview.tscn": "fe8e1dddf304b3fd50afbfbc97299d9468c52362afc68f95346f252417c9780b",
+    "scripts/angler_brain.gd": "0cf8cd83aa58fa0d38a000badc1726ecba81011ae9445f415c3e6ba43903582d",
+    "scripts/angler_controller.gd": "cf870f0d5277403a54ee51ee6e7e5b8f1dee032241636046e505974567136a7a",
+    "scripts/angler_hand.gd": "f5db4b118381c8f4e5cb5c606aab3b01231f04ae23bb33a499550dbab68eb17a",
+    "scripts/angler_network_observation.gd": "40ce0453d366b08da1dd344dceaf60177c794f452ed6e18af96c889665cfb0a7",
+    "scripts/angler_rig.gd": "5ca54e3751b26e303846c44a0c9e0e606b2382928737d4df9d24ac7aad3bc4f1",
+    "scripts/angler_visual.gd": "274e0dff8051984f0fbe363badf2d3f85a693ea0342f2eb9572582f95f6fcee0",
+    "scripts/effort_check.gd": "c693244b6a0703a9218f88afc83d47f1521adedc7901390f1aae504829c1ede6",
+    "scripts/fish_brain.gd": "1de20533cba63e62839d5e7646ecc194ba3d38bfb00ec7da8490207ad1c65fc3",
+    "scripts/fish_feeding.gd": "c8f84d1a473e45e73d002684a08c62f95671c5c79a286d6409ddc80325c1c4a7",
+    "scripts/fish_instinct.gd": "0e915d74eefd04b1711b2896b174181a9623f8a74a6b6425dfbfd4d09029ddc8",
+    "scripts/fish_network_observation.gd": "61231951e4b4e005233d9be8ba28ea7dea1d2dd63ec79a31519846808cb85114",
+    "scripts/fish_observation.gd": "155fcf155c9fcfa32ec125455b6ee067a0bfd7e9df95238d36bd61cb1858d00d",
+    "scripts/fish_suspicion.gd": "b2398e40a6d0694339f87ab9659c42a2b14a7c941c224abdf51a3b69810d9ed1",
+    "scripts/fish_winding.gd": "b0bb3762ac5323a7457c4e747e6c76079b063605098039ddd35aa08b5bf72823",
+    "scripts/food_profile.gd": "0dbc7b16a19dec0cf943d1efe499f293207e69925cad7d8af77230f5176a9b44",
+    "scripts/game_commands.gd": "f83cdf0aefc7fcfaa4bf18d6b3966629d17f27709edb65f6208937a160c01ca4",
+    "scripts/game_rules.gd": "5d58b745ad3b6872ab1cca1375dcda28c4c2df2bafce47ce7bb7422806c0a311",
+    "scripts/grass_binding.gd": "bfc09fa96e18db82d25467042b9daf9e2339b3748fc45445c97d629c68a8f1c4",
+    "scripts/hook_gauge.gd": "4fe42c7690fa40f42e970af97eb26915793ec166c01b06da3ea21eb1fb692593",
+    "scripts/line_motion.gd": "1fb62671fdcaeeb88865c30ed09eabfa96982ad6cbe4a4455c1d74260f0d74eb",
+    "scripts/local_input.gd": "7612181f2ad849bc0e02c03eccb0044bf43a5b28812395b70a7b0d11fbacf5b2",
+    "scripts/menu.gd": "36ae792b7f720ccedc6571c3944e9190306d355274a33e071aa56863615476db",
+    "scripts/net_motion.gd": "03f50c4915c97c0c8b4af15547086f35e013461dae9e5df3a376817c6b2720da",
+    "scripts/net_observation.gd": "96a48927a93953154c5e642edaaf60dc47b61efe3e6b68bc2f0d7f432de75879",
+    "scripts/net_simulation.gd": "4a50a169994284b143b99a1808ea85443f51eddcd381a865026e8b69e012f5f5",
+    "scripts/net_visual.gd": "aee8baa45953d779c446696aca27f8a8f6080f94db63d4c037182b17decef6f5",
+    "scripts/network_presentation.gd": "c4f11e5391a354aa0b12cdb218ca9dc58ccc13c43608b357a456208c1df806bc",
+    "scripts/network_protocol.gd": "d34424de7c7f5082768b6880a8f04cb9b7983e227b8728f22f06a93c3cb8b4e9",
+    "scripts/network_session.gd": "2a5c14f897389b7dd1b9eb0dfc8b0e2dc8efb28097fa13a8cab6c2b743dda3ab",
+    "scripts/npc_fish_brain.gd": "6fd3c26b85f23e34d055f3904a27e11cb5adac30ee55866cf971f58215af731a",
+    "scripts/npc_fish_public_state.gd": "4b1c2530f6657b45e082e3db9a26262e292e6f0219e19be82eaa637500c0e763",
+    "scripts/npc_fish_state.gd": "9240abb57813474c1fa02e39e0fcda54fcd219f94ae3a01e9dcc2563bb850c64",
+    "scripts/npc_hook.gd": "ecbbe0ec9d216ea0d175ec436e0f0c4a6872b6aae8459b22ef2c74ab61df47a3",
+    "scripts/pixel_art.gd": "f294ca6a656ba43fb793aaaa2d738fd3824fc89630086898a364e29a35d2a3ed",
+    "scripts/pond.gd": "b5f009911178fce5928b0798aa2a28bacf41064b0ec0a029612e782f4d94691c",
+    "scripts/pond_camera.gd": "2170a1430fe074b9f6113e196a25d77b76eaffaee678e4a6f03969a33a8e3614",
+    "scripts/pond_depth_art.gd": "387aec1492eff7d2a0ef846798091ebc60bdafeba6edd16760ce9ac759be5b31",
+    "scripts/pond_layout.gd": "3d9405536a8a02e5002dbe9ed2d0cab1591ac04f0b9628050c1881106871174f",
+    "scripts/pond_plant_art.gd": "e3f95151f229c4a6d6425ae144358dbb3a728046d5e416f548afbb74a8c4512e",
+    "scripts/pond_scenery.gd": "7c27432ba0dbbc00d1528d3638e47f79bc1bb2c7dc79deed606e1bcea90c37e6",
+    "scripts/pond_view.gd": "0029f33fea2acc402398d871b4e80bfd7c1cf9462eacb5b9d4fbcca561da56b7",
+    "scripts/pond_water_art.gd": "c875541049c29e6817cfedc7767e63b43888ab8cc6d5745b98e40a8aec31fdad",
+    "scripts/pond_wood_art.gd": "bd042f616dfe75bbe007f92bab72fc34c414a6489631da7f7d5ff62190bd598b",
+    "scripts/reel_hand.gd": "7673e1a663aefe61388a607a172609e9ea242ce9d24f651007d777bc33334dcb",
+    "scripts/rope.gd": "2e30152e65b00f39fe25324b992afd39925acfadd80b64dce385df865d69fe42",
+    "scripts/round_stats.gd": "e160da86d8c31ee86c8dfdcf53caf122e97d3c03a019b97c8b984622d7c4a02f",
+    "scripts/rules_catalog.gd": "f205ab9e285b01aafdfd6ebb7b0eafc802f5989b8f00e508db28cfdfc3f57c72",
+    "scripts/rules_settings.gd": "ad6b2bca83710ad92f8477da83151a21f57d00d8979b81a864f7824f7383885b",
+    "scripts/rules_store.gd": "7256c0290b916d215ca8e5693f0e819e76429ac9367c3b36d6a392310df2acf8",
+    "scripts/shore_view.gd": "849f8e420783d01810361be8d128efe1bc3fe342cdff75dd2db0b6454d82ce2b",
+    "scripts/sound.gd": "e26674ed0be1337c53838e95e32e04452131bba5610b50fb24add73304d3b9c0",
+    "scripts/suction_feel.gd": "9d291d1db447505cc56dfe70618ce8ccb35dec60b2e0779665926de2d1b0a05a",
+    "scripts/watergen/adapters/pond_v2_context.gd": "effd76237494be25828961198f6c2b128b999e60ab222d9a468246054e856325",
+    "scripts/watergen/pond_water_appearance.gd": "065fc59ff460f385e3c54255b00733d8d75dcf2cf408bd9b73dd4f24ea25ed71",
+    "scripts/watergen/public_map_context.gd": "948e6a290219f228171affbece1248054cbe8f59eac73baf26445822cab5da8f",
+    "scripts/watergen/water_atmosphere.gd": "6db3630f5f6093e1bf0e3cdc474dca94fcb5ff5b7441ae9eb38d327916e625af",
+    "scripts/watergen/water_cover_materials.gd": "9151855aead6960a32fa42e611a8b91366d3ee049c45be9dd84d8291ad940768",
+    "scripts/watergen/water_dynamic_baker.gd": "86929ed78a555a75981216113a255cf8064a8a47f23734e93ecba52c0d0612ac",
+    "scripts/watergen/water_dynamic_cache.gd": "eae71a9fffe55abfa1933d7ea88d61e4910e18223b3906d8703fed2f9a7d84c3",
+    "scripts/watergen/water_dynamic_generator.gd": "3f67f400290e018b7dda1d78b7748611eb0ac2f4b68473ba913c12ed9621e523",
+    "scripts/watergen/water_foliage.gd": "417d32da2a4b1bc5f9193e7f9222491b1d792f3f8668b5bb5a6dedc9decdfbcc",
+    "scripts/watergen/water_raster.gd": "55a13a45a697358b2df53dd1905cf954a9f429a13f26d947227be2876e3d287d",
+    "scripts/watergen/water_terrain_baker.gd": "c259dcddc972d5e3686e503e9138a57a888633662a213774eab77213147aeefa",
+    "scripts/watergen/water_visual_baker.gd": "8ed04a35a085156277307762e2ad01d790649e45f0450c9a8a72fccae7861671",
+    "scripts/watergen/water_visual_cache.gd": "779fce892cd031fe2f594df4f18272170b89c4ca81f15c80dafdcdd271c218a7",
+    "scripts/watergen/water_visual_frame.gd": "4973ca935db83b4457941dd0f472004bea1d2591354de9e350132c0c87733508",
+    "scripts/watergen/water_visual_generator.gd": "d47aa51175d122cc21317fa0ac4f34ca81d4f192b5a09513bab5528126701f7b",
+    "scripts/watergen/water_visual_profile.gd": "d64458055b3d71ae5f16e90b4ba52d8fbc266e8675ed624436cb6b17e6e5a2bd",
+    "scripts/watergen/water_visual_seed.gd": "37715a68ad8f30d364ecbb5fecaa83fd9c23061b9731f83ee70e6c556653e625",
+    "scripts/watergen/water_visual_terrain.gd": "697bba0bad47816f75e2c08ee8fabd20f1eb54f0f32d394d921b51b2b522b134",
+    "scripts/world_simulation.gd": "766f5a1e68899f433f7e491354e7d1c0f739d8af649f6dd8049eeb13274e1860",
+    "scripts/world_snapshot.gd": "2a9702e3d9f6f2060165175666f83849ed36ecc52766e8a314316d4350ea924e",
+    "tests/angler_native_v010.gd": "318d0d91ee0ad8b4dc17bf0c9c32b621e489a75082c0af2d8259e41ccbec0d71",
+    "tests/angler_round_probe.gd": "555e8efb3ccad6a35be0d78d87d1d0ea4f2106eff32f50c8cb82a7184d93bbde",
+    "tests/angler_v010.gd": "833a900347dde2c205bd07ce1d569c9b95ff3445d97fcc5b0cecf67c66bd46cb",
+    "tests/architecture_v011.gd": "2170be9ba2b11a61b5bc52af3482d9573268f3248526c37a8c8ffb43648e8af0",
+    "tests/architecture_v020.gd": "fa3dfaac31f9ecb109c1d6943e34835f78b81edf936e2613e55408a9d0554781",
+    "tests/arm_motion_v0159.gd": "c27c32c2452a0a934d4fd0d208e28cde76aed923e8d80cf8187bac79aede2233",
+    "tests/bait_suction_native_v0211.gd": "2f393f3af64f3f05997484b44ef92da319c15a4fe4dba4d4ed2373d863380a39",
+    "tests/bait_suction_native_v0212.gd": "7dde3ebf4c4002e5fa088b4ebfdcdc19db1aec21270315c066534c8d238c600d",
+    "tests/bait_suction_v0211.gd": "aae98de1b099bf179e3435283f65664e243e01122ef89e0bd76063fe01b590bd",
+    "tests/bait_suction_v0212.gd": "14d7855eb61f410390a153bf6fbde2768192bc7356ce3f2ef0fad88100807c30",
+    "tests/balance_native_v014.gd": "1e2af67ddb16d5974356d443857f2a49f6cd6b2017f6c680aa0da49eeadf7575",
+    "tests/balance_v014.gd": "974c53b38084b195896917f0fd5d7294e2dc7b9dc048561b0618b35ae988b9ce",
+    "tests/controls_v071.gd": "ef323b81b4624088fb16cd5da06ecc13c5297003254e3acfa9c44e36a13df7b4",
+    "tests/dual_role_native_v09.gd": "b5136766035f510df85b88607788fcc239d7d622afcc2ae99f8c076c2f83934e",
+    "tests/dual_role_v09.gd": "db16a666f0ced06af5f4b10eb077558384c2c421869f6d7d3b82e9158dbd9541",
+    "tests/effort_native_v013.gd": "dd926985bec6a93614fdccadf343bbf9b294d29b5969b4b23216586a59bc237f",
+    "tests/effort_peer_v013.gd": "c10ac8777b50dede549d0c77d898222ba771d80a99ed7d0e92d24128e425e6cd",
+    "tests/effort_v013.gd": "008f79be06f0a3eabc67dc2a8f6785ba6fd2bcfb40c4ce028415754febd67ef5",
+    "tests/feeding_feel_native_v022.gd": "d933b47fb61d44cdf04bb6efc3e993c652fa8c9ceb82b815327cf46189e437d4",
+    "tests/feeding_feel_v022.gd": "f704bc2e3ab81fe9cff1bbb2b33560767483c0cfb6f2a10822f88e861301044e",
+    "tests/feeding_movement_v0221.gd": "b8366303f5a41a6ec684d04c15b3bd628c239c6a7f69f4fbec38d7050cd89aa0",
+    "tests/fish_orbit_v0182.gd": "1788564ba8fd005306b345a2fb070c04bec99b97c1d06477798697c0c4437632",
+    "tests/fish_orbit_v021.gd": "6ee032dc30f61e7f79a1e6aa4f7b01837f8b6d290163ab8b95d393371e86c378",
+    "tests/grass_binding_v021.gd": "f0a3e9bebfb5f1f3bde228ad753f6e1f939a28a238f7c415a08ea787ea46d246",
+    "tests/hand_joint_native_v0156.gd": "ebba4a6b0ec6dee6c26cb5b9f9ce13ebaa9bedcabcce62604f0dc0faee589a24",
+    "tests/hand_rig_v0153.gd": "15e344015883341c8694ef3861c48a2219077f60fdbeb2384a67b4b41b009d3d",
+    "tests/hand_rig_v0154.gd": "15e344015883341c8694ef3861c48a2219077f60fdbeb2384a67b4b41b009d3d",
+    "tests/hand_rig_v0155.gd": "15e344015883341c8694ef3861c48a2219077f60fdbeb2384a67b4b41b009d3d",
+    "tests/hand_rig_v0156.gd": "15e344015883341c8694ef3861c48a2219077f60fdbeb2384a67b4b41b009d3d",
+    "tests/hand_rig_v0157.gd": "594de8c8222b2f938ddd811bdc4ef78787cafa36bf39f96bd530de421b6349a0",
+    "tests/hauling_v07.gd": "39ec6de9ea8cdbaa263ff9cb3cd01dce52ad6f9b534a2361675e817cd19d7e45",
+    "tests/line_motion_v0181.gd": "324c79a384c5aafff2fdac435a6c57ba8bd40c56ab0ce357bc25224f5e6cfd7e",
+    "tests/line_motion_v021.gd": "c84faaa5d2833ea5e9d111e58f824734830644dc9c90e9a15e6bb57113220fbe",
+    "tests/net_animation_capture_v0201.gd": "fa33fa86288099a4f859427358cc5ddadcff736e172846c673d1eb7e9344d17d",
+    "tests/net_animation_v0201.gd": "988f2376254a040be34bfaabace3e3cc88c892bbc3c0eaa3f543344e917d587e",
+    "tests/net_native_v020.gd": "32a08eb297bb35d3297327fbb81a2a3134e24764ebdc825f333d91405db945ff",
+    "tests/net_network_v020.gd": "b58513d0d1733a97dc02f76c6f1878fd9570c11a724d84dc5b9ca29c790ec200",
+    "tests/net_network_v021.gd": "d6022823848343dd73a5e102cb2d3e3cda0563628bf8ecc541c3933a5b85e617",
+    "tests/net_route_native_v0102.gd": "82077bb9006dcfe329e8ec68b00426d95cc3d096927a01e13c5f6d939c4d926a",
+    "tests/net_route_native_v011.gd": "396cf1cba3a117c4701417f31bdf54b7620bcb91552d7da328079d9753070fb2",
+    "tests/net_route_v0102.gd": "f21bbb267dee07152e65b39ae4541efa2fd5c8a19197ac46f0fa37f23456b9ee",
+    "tests/net_v020.gd": "b507c5ae60e1cde3dd0fb4a21446dec46c8f0704c78de5617884134ff9cfc779",
+    "tests/net_v021.gd": "c93ba69fb5e56409007aa844a6ad77c69f09e7c3456b0b90c8cd405cadbd956d",
+    "tests/nets_v06.gd": "59b64a6e0836a90c40d56031fc1941c2b7691f6b705d2786096284718503f868",
+    "tests/nets_v08.gd": "947a31cbd0488234b852c2483839a8e1f6d21338a5c51b4c427e4344d85fea1f",
+    "tests/network_peer_v012.gd": "a6f2f169a00234514c778f0c2f2efc4bafde72033cab7298749cbfb3162c71ff",
+    "tests/network_rules_v012.gd": "fab79e159a5e32e8aec558d642a7908d04f3ff8fc1e903313ed18493d0eeea58",
+    "tests/network_v012.gd": "2b2b084d63f580e2d545a04033a1278f788c66c98297dddcab27b3676caf51c4",
+    "tests/obstacle_art.gd": "077ff6d03e4b5794ece47da964b72c9b0287fa1beb539e75411044e5e665a58d",
+    "tests/obstacle_visuals_native.gd": "068c34db9ae1e68912c3e4a6ea393a59c83f588bda98bb0db6772a86821ea8d1",
+    "tests/phase01_entities.gd": "d8bfa92056265f53eb3f95e84c66cb68730f445d3dde2b5c7c91193892537925",
+    "tests/phase01_instinct.gd": "0140607688883892e8b3fc71afc1ea2572c3aad0107750bb17c588b498ca5f1c",
+    "tests/phase01_native.gd": "6cf1d951c9d52c838c954a76c9f5bd7c9f4aa2e23bfbcade9cd3a73eac967c23",
+    "tests/phase01_network.gd": "2def5006cdfb7e2d7096900143107e05d3766e69cea8c7200c3ba2d72c70e9f1",
+    "tests/phase01_observation.gd": "e2da41c3e52fd62dc6da3ae6bb19b98762d769a04cf8d14f403932e5bef6a502",
+    "tests/phase01_policies.gd": "e4342c6d9fe566e23dab233a083471a31ffe138b17d02717064bb9b2114ec5bb",
+    "tests/phase01_random_hooks.gd": "ada7c075166d5653c3dd73939880c7c17fa7aa77ffc3ca83516feb3e2e528997",
+    "tests/phase01_satiety.gd": "de8b4f5da25f14126c4ce5702dc6a2f9ac3216b05a81a3b0e7c4ffc1c8602efd",
+    "tests/phase01_statistics.gd": "39014d565bc181f530af9a33b8aad25f56b52e4f85a475e76614bb4b734a98a0",
+    "tests/phase01_suspicion.gd": "54b0bf9fc18f08d28b004cc98f61e2e17c345acba0d3b86b53187b4aa4a77f82",
+    "tests/phase02_bait_native.gd": "4ddbbee629c478225f4f9ed8545144fb11ff97339ae56eb60f26fea3ab901442",
+    "tests/phase02_bait_network.gd": "591dcb4abd8639c5a9e4b4d4c2d36152dba330dd7a9a09a555110e16c84c7638",
+    "tests/phase02_bait_types.gd": "eeeeae304b9361dacac16a632baf1596b8dc0730413d486ccd8575012f80662a",
+    "tests/phase02_bite.gd": "8043dc6ffef4d009b8b253cc0a5f3355e2346071e9cf59616c3c3a073a6b65c5",
+    "tests/phase02_bite_native.gd": "bc26f0ea11f76b165fbe75751a27b386620d06b0dfd8f99ad442c21c5eb0458a",
+    "tests/phase02_bite_network.gd": "5ad8b0f68e780b9a4b5cdfbcb9a83591bc4459ce1b76c32b45bb1d76177079e0",
+    "tests/phase02_feeding_balance.gd": "9eb6dd2beec373fefc02d7242ec02166e6a6834e384326431d304d4db4060b5b",
+    "tests/phase02_feeding_policies.gd": "df438aca7f279f39f2778b3fc19ae7138a8eaba0ac140251df6cb6c61826af44",
+    "tests/phase02_food_profiles.gd": "d0d46bf9344c93eba014a4cad4c7f7469344e4e56849506694ff9f497b9a118a",
+    "tests/phase02_observation.gd": "0f53598aefad6310961e56c01cb79cf02707a8386566c6b382d42bd4de1d3454",
+    "tests/phase03_food_reachability.gd": "c9b7d2ad8008117dcedab057ed2aca1d654156b836ccf5516812b22b720d781f",
+    "tests/phase03_npc_ambient.gd": "d9f45ecb44c8d2b74d6f488cc369cf878ed39eb51a19f88d08b46a0ae2db7f03",
+    "tests/phase03_npc_entities.gd": "980faf565bd7b8efa962e898c0a3c0dbb5858f79e30781808986880e2b43c95a",
+    "tests/phase03_npc_foraging.gd": "2a2cd51102b1e51dc5038eb6873d13af671efcba3391158d01e9bea12150ecbe",
+    "tests/phase03_npc_foraging_brain.gd": "581b4817ccb267c44a9a9b4d28368c863ee69f54dd213b003189256abef266b1",
+    "tests/phase03_npc_hook_native.gd": "2d028d8cfbf5b404b023e9c12c4a4eb511e2f9f79e1f711381c829fda0184a92",
+    "tests/phase03_npc_hook_pacing.gd": "794bf8900585204bb45df93a9f281ec4fdf75bf849048edb752e37717dc9bbdc",
+    "tests/phase03_npc_hook_target.gd": "d220879ccdaacb22c139a5919a03302b546bd66be287c6beca1c5542398f7f6c",
+    "tests/phase03_npc_native.gd": "b5e46ee72d8660f470cbf2490a60ab3ab857079bed859509d2c5d7f904d05e9d",
+    "tests/phase03_npc_network.gd": "a431d0069f7a214482bbafc8a8d8f769ceb83afcfa0e8b8d3160505bc36d077b",
+    "tests/phase03_npc_observation.gd": "b5f7a103f20f24b40f0cfdc6fab04a882b58ceaad4df63a101e52b1a10feb332",
+    "tests/phase03_npc_rng.gd": "e6a98dc92ebba4bdadb057d8ed97cd102eb96b010340bf19e9efb68185ca1b90",
+    "tests/phase03_npc_snapshot.gd": "2118d698ca8d9f8bc1d6898e645f0bfb1b53808feab04303b173370ecb14a535",
+    "tests/phase03_npc_social.gd": "f12bdbc2eb3599cc7445de7cfa18df137a8531a7461b1e8e69c3453dbc39e7f4",
+    "tests/phase03_npc_social_brain.gd": "45780f8259d0259db12a6fb005808c48b3bb7981553f1dfdcd72c340970d3a07",
+    "tests/phase03_npc_statistics.gd": "73cd3461d6453fad85987180da99d06a86c819b01bf52757bd194ecd75e61a7e",
+    "tests/phase15_controls.gd": "175af169892b602d7ef06fd88422d4f4b947d30fab9eecfbd1cd4c9d583fba0b",
+    "tests/phase15_native.gd": "7af3d2db31764406d7f9c12768dbcf355b73ef658f703c150d7ad96974bf015d",
+    "tests/plant_art.gd": "8fe20c223d42b552a840287ce2266bb932d9781d0a4ac89efd916c5e2aeba309",
+    "tests/player_hook_entry.gd": "1d407ae542c67415daed257bd028d54b359fe48b11da6a6b52cf468d5b4f1c72",
+    "tests/player_hook_entry_native.gd": "8744afb66febd986eb42f32eca9b54714a6bd72eb609ba1de8cc273b9e005112",
+    "tests/player_hook_network.gd": "1e003bcb7cb358c707f0b6d841d6bbf582112f08ac0ca960a5ea01624551e22e",
+    "tests/pond_native_v021.gd": "d3b7873b40818fe36d126a23ea4cbfc3c3d38581c9be3734869666809eeee675",
+    "tests/pond_v021.gd": "eded0ceec652be3d314fcc477e4ece24bdebbb56ef4e00be03ab6f65dff42304",
+    "tests/reel_hand_native_v016.gd": "9326b89b42ea65fa6fe7de09f02244af6e176c42448cdc09bd4c973d0ff07828",
+    "tests/reeling_native_v0122.gd": "dddd85b23209439915ee88c8be64fbca12adbd6def13d282e5bd6713dc405562",
+    "tests/reeling_v0122.gd": "d421a489cb410c91b5393de32e1ffcca24e6762cead5f6fba00fc302b03e1aae",
+    "tests/reference_tackle_v0158.gd": "196500c7072c6fe23d41dae32b8a5046e14aa8204844ca28b905e09985ec8fa1",
+    "tests/rod_load_v017.gd": "b670f0431267136800c6312136dbae564c60a602f4cf2288ed7c48c85a647851",
+    "tests/rules_native_v019.gd": "d97a55f5028ba581ed1a0b57267b3321a58cc21a1ecdf7846b99db00ae3845cf",
+    "tests/rules_network_v019.gd": "4e83e579ac0dc3723e605287f6d904e6c391394d4332e11e89f6a1c69709ed97",
+    "tests/rules_v019.gd": "81a6be2283b150f6d53dc89c2818ebe31f8b781be0920a645a2d0d2d0422fc0d",
+    "tests/rules_v020.gd": "c1c6183f106b6c1a549b71f45d99cdbdce26bb09fc94d1bbbcf01386ed221330",
+    "tests/runner/test_capture_contract.py": "4da08e8e1930c672ac8fad8188a09471f6829379d35186dba104f1bf247f5bb9",
+    "tests/runner/test_godot_runner.py": "e0cb21d53c4832e494b213925fe72926082a166df6807b6485c76fad599cce15",
+    "tests/runner/test_phase03_competition.py": "562d1c25b01f7c745895dff59eb6a0ad4a802880399cc760b0a45d523bcb20b3",
+    "tests/runner/test_phase03_hook_diagnostics.py": "f94b07182b3afdec2341b7c1e15d0d70b6e5727d3446d78ad93127ddaa852342",
+    "tests/runner/test_phase03_social.py": "bcb04d4c2ee6d640987a2fdc2cffe7e10beff2ab12d8856cd796ecb118731071",
+    "tests/runner/test_run_tests.py": "a6b8724dfbd2795300d3aae2ff37c99bd571332413dda37179a59d518048b0be",
+    "tests/shore_native_v015.gd": "e28a841609c1c6709c7d6435f38484dc8bd32e5e0c08a2697841e9f18ec336fa",
+    "tests/shore_v015.gd": "2bae4b4b22905431b33c4acbab9b972f9aee4c8baebca311520e9483a529a5df",
+    "tests/smoke.gd": "17071d74fc4d4f954c34e8d09341240b3fcc6c4ea83544eba0ef46b5b7917254",
+    "tests/suite_registry.json": "3c53d474de20a8166d7fca0da6fb38d7e27c6136c5f2e76f40c20c844e84ab1b",
+    "tests/tackle_dynamics_v016.gd": "8196e72358ed8218d07bfebfed1effecb500818f6f191b6d14304229b1c42bbd",
+    "tests/tackle_dynamics_v021.gd": "07acbe934550925010860aa198b38722a170cb4b2b8efeb73bf653b1e1fa7262",
+    "tests/untangle_native_v018.gd": "e57f738b7488b4d36d77c96b483648ae9dad27345f17712ed10eeb859a306052",
+    "tests/untangle_network_v018.gd": "9387ec27dd10a11cc6949c51896d121a88b990d0d924eae65d01282fe99ab780",
+    "tests/untangle_v018.gd": "5e8c6c474870565a290c79cc9b596222647750369bc43060447a74065de9b88d",
+    "tests/untangle_v020.gd": "90490ad328cb568e1c3ffae0c4e9ecb71f4b5d7929a5128e58e6fec5394dd18a",
+    "tests/untangle_v021.gd": "dc69171642409690ad3584e193d4197fbce04a6fc0eb15ee3eb49a7340c5c644",
+    "tests/visuals.gd": "53c0b21b705b4cbe0a3a342c5ee3cfef98a9941acb554c0072a40391d8b69dc6",
+    "tests/visuals_v03.gd": "1a44611641b471ea341875328b33539fee27e90bcd6a4d2c00f9837e8b3c7401",
+    "tests/visuals_v04.gd": "ff7842bf4d35305736e72d74504e812f8aa060e504d41e788bc021c944dd1acf",
+    "tests/visuals_v05.gd": "59fd5cd5b9d0489ee80876f63cec3b7db5cf0763eee26f3ea0d0b8e4244cb821",
+    "tests/water_art.gd": "c04728f5033c0de131aa87e8bc0dae6791ca5d05ac2b8c909079d325824ae502",
+    "tests/water_scenery_native.gd": "8377183ceb424c05c365ec1ce2aa0f402b20806cc99b991cdc306368f17296a9",
+    "tests/watergen/atmosphere_contract.gd": "829f4bcb70b5f1abe5976d59c53eaff0c7cb200281bfc641df9f839b5bb71f3d",
+    "tests/watergen/context_contract.gd": "898191290d061304dae012e825ed940c0342d6c400ac1ac1c019b8760d9aee9f",
+    "tests/watergen/cover_materials.gd": "510d04489ccd06b70e78efae38d660fbd3a1d33e4fe9db0315b348e4c1fa867c",
+    "tests/watergen/cover_materials_native.gd": "e68a97f9385d5011e20c4cd5419a87bf8b43b07e8109eddbc1303b93965fa352",
+    "tests/watergen/dynamic_contract.gd": "3970105ea57c96f9bc0ad2d129853768bc8d7f9f86ef0c7ec67fd16f3e59d297",
+    "tests/watergen/generation_contract.gd": "215e8a5328fa5ae84c540d097f9554ef38eb89ad7c14178bb593cb3a3a1424bc",
+    "tests/watergen/terrain_contract.gd": "5bded77fa650699614ba7626c36c35e087fe22842c6f2ef78b9c6ac296836c07",
+    "tests/watergen_integration.gd": "07e07505509cfc4718440e8cb3568e5a51e0441d725fedb53b5bb6cecb2e7474",
+    "tests/watergen_native.gd": "ed6d00e4ca786e49f9c34a4958585872b3013026422f1e98addb2ad929a2844c",
+    "tests/wood_fade.gd": "8d9ed1a6143ce315114c7809a523ef77c40a640ba22191a9277d78440543096d",
+    "tests/wood_fade_native.gd": "636a2e453bd7df9f85c2f5b72017b2895c5a329b631a546c1dc202830add741c",
+    "tests/wood_junctions.gd": "e26f54679fe099100eb03d1bf258cb1282666c6ba27c9abd13e6854113c68fea",
+    "tools/capture_angler_v0121.gd": "9d0db04b65b7596fee779369f0a4fdefd56f83b9727f2e51a09484c84e1af8b5",
+    "tools/capture_fish_orbit_v0182.gd": "d7a11ed43f1e04938bb0bec4b5e04469704992ffb41eee539c62d62f95af5972",
+    "tools/capture_grass_motion_v0183.gd": "1a9088bca1b8135c8df590c904d3e1614d2830a4fa55da6098685b0bf0aa788a",
+    "tools/capture_grass_v0183.gd": "2985810e8a12331f1071af072befc42bf3f0bb95af673337d9d7f6becc369c10",
+    "tools/capture_hand.gd": "e376cf24e9ce923ad9ff08c95ec24589ae6d81e91665be3c675268bba6d30c23",
+    "tools/capture_hand_motion.gd": "d412369fe0c00e88a7952f623f362b9ca2a05e4e3f3d76373c4bce194c7e428c",
+    "tools/capture_hand_scale_v0161.gd": "d5ceb1cd4e00a5ef488def8cb021442092ee1f376ed962f8305c9d4e9bc0f35c",
+    "tools/capture_line_motion_v0181.gd": "fdf3326017a61194bbe3ba319ac72e6aee6d6793134ca4458450c3bf2fdc5674",
+    "tools/capture_reel_v016.gd": "d6406b1fa8ada4f81ecd1562cb2e09e9abe6df7daf83e16382ddfc7199f0e139",
+    "tools/capture_rod_load_v017.gd": "6022fb1bd35f588f5f1d37d2ae28e8057e54cf3d1d8bb5e938ceec08f2c197f4",
+    "tools/compare_policies.py": "43bbe463dc3c6c1fb4fdff494683ac4f2b740a21236baa08f1a75272941bf970",
+    "tools/diagnose_observation.gd": "921bcefbfc48621dc4cef97f33ed0e131fa283a976836f75a941e756e3993074",
+    "tools/engine_notices.gd": "79480f89c72f35bab5216faedfe7982157b7d44beca62a93da13b218aa829548",
+    "tools/grass_unwind_baseline.gd": "2d648513b40517de312fe819776ab5ed31de82a8ff885d166efe8cfe33b8d709",
+    "tools/orbit_unwind_baseline.gd": "a5083741fbe29461848607d71be1f4ca2571c6a0c7e86b800934f23ef445200f",
+    "tools/phase02_compare_feeding.py": "10a19e2a46059d39bdc7b30f45b5fe8420d089e2115680deb5113e1f3c39bc34",
+    "tools/phase02_feeding_policy.gd": "533976956a9e2186baf1da6ed321680e0f9304842d1d5813c8fa4977df919912",
+    "tools/phase02_merge_feeding.py": "9a07e33cbd24393978fe08f96e08d9683560549aa980e0c3b8a79dae39c06fcf",
+    "tools/phase02_run_feeding.py": "9701d4402d90fbc955937c333ad22b780d84edc641f19442432deeeb4f50f2b5",
+    "tools/phase02_simulate_feeding.gd": "bab834ad8e75ad53558cfd3404ee2f7674e6fb81618f0cde88879711d1518f5f",
+    "tools/phase02_test_analysis.py": "2bdcefd3adbbfc00e05d64569623cde9bcbdd9c3f804bca0af662babfe066589",
+    "tools/phase03_analyze_social.py": "d1868b377c463726709558a96214d63d654a5e661d22689130398b547eab8113",
+    "tools/phase03_diagnose_supply.gd": "a3e70b7672cc61cde0ada9929fc2ec55f91fa1d3797a8aa13af2f31b637adf05",
+    "tools/phase03_hook_diagnostics.gd": "c79bb7dd1393d66d5247071b23f05b442084fad059d8181c5067be7239104870",
+    "tools/phase03_merge_competition.py": "ae968e78c72b445fa42f77a63165d82f90816d9a237e52e6862b3cf2f5550fc9",
+    "tools/phase03_npc_hook_pacing.gd": "5f76adaf2ac175762c47969764924f7f978feeb358b45b31e6ca871e2f5987c3",
+    "tools/phase03_run_competition.py": "c96f38a98b8e03609ad17fb19628dd2d5b22e4611d3a7ab854e2562eee820903",
+    "tools/phase03_run_hook_diagnostics.py": "fb31b66f0ba25548956543a260f383d296439a9b4a1e2c4dcb1317c62e489efd",
+    "tools/phase03_simulate_competition.gd": "534cbc37368c8bec265ca38403031551ee938692c7bf8a0cbedbabdb0cfb1d33",
+    "tools/phase03_social_diagnostics.gd": "78f9320090cecb2d7b255801e0ee84ee4e8bd5bc36e289890afbd95a43824562",
+    "tools/reel_probe_v0122.gd": "5b3cce88ae2159408375c8dee0bbd2d0ffd1389e459822a6d4be83b89fdcc230",
+    "tools/run_rounds.py": "ffd8afec40aa1a416d34b934d0f9a159e564f301f34d99a8172597efcfe599e6",
+    "tools/run_tests.py": "5ffa8848c531af3096e56f789e5dbc687ef85afad284bd5530e24f69168f04ae",
+    "tools/simulate_rounds.gd": "f5ada4ae70f2ad9dd8d0f623f896f13a00abcff10c630f2945e71e1e5eb0ca1b",
+    "tools/summarize_rounds.py": "004a8ca0198678ac772ea4f6c9a12bd35129a4f03837b257a2f23f98ccc7496b",
+    "tools/verify_policy_equivalence.gd": "42c1f2eab1f901816528da1a95a621bf4043e17a1accc4bd8ca96cf713d63bf1",
+    "tools/watergen/Open-Dynamic-Preview.ps1": "4ac8542c2b97aa5757bff2c38762aa77f623a0116e9aedf8f34658da672fd7bc",
+    "tools/watergen/Open-Generated-Preview.ps1": "0c1cbba0842cd002ecf4a9fdee5f918ab785f3e32f8e05ae7fb63d04e7152158",
+    "tools/watergen/Open-Preview.ps1": "e887493d2b59060486dcabd48528d7bbef4053b42f8cabb90ad13a223f70f539",
+    "tools/watergen/Open-Terrain-Preview.ps1": "49edf8ba7e9cf3630eb3d6fdf15253f436190b5494549495575f24411fde3581",
+    "tools/watergen/dynamic_preview_canvas.gd": "a5a02e021d3ac5804d15d4fd8bdc20413ca885e362a98fd67e85dab0bcf02fda",
+    "tools/watergen/dynamic_preview_controller.gd": "2fde1919659d24bd63886de17dafb9eef001b54754e9d1a3fce3ca50a696492d",
+    "tools/watergen/generated_preview_canvas.gd": "56dd60abec896390046f7925ccf1e1780e044cae7ab7124d1e48c93f280f7167",
+    "tools/watergen/generated_preview_controller.gd": "d3cfd3e2a4a7cb62e1fb10b6477b3729fef067550c14f0c4a3ec7c4a885f8340",
+    "tools/watergen/legacy_preview_canvas.gd": "b22f8097237a9218f4583aacb867e90c347b00cbdff4be45603b7cc22e7efd7e",
+    "tools/watergen/preview_controller.gd": "833a097e2de9d39afd4514c7c912286daf034333c36c668cecce1d1ca90a0a2e",
+    "tools/watergen/readability_fixtures.gd": "8735db02ac818938c3bfe05cf6bc4a4d54e087b30c2bcd360491848687e29e72",
+    "tools/watergen/run_wg0.py": "20f31b5d384db65dfdc6054083d18136d3fb4dbbe60a39884368b43e5502a4ba",
+    "tools/watergen/run_wg1.py": "c38ab1da2ef5c96be34b5e670762b18c480c19af1f3d2a2db493de032cec6b88",
+    "tools/watergen/run_wg2.py": "479b63bbcd840bc2e66d2f51d09bcf944f9adaaacc812d53c37e7cc2839ecb85",
+    "tools/watergen/run_wg3.py": "b51109af6d1f104b833d828e6ab0ea30fcdc977538c4ff500d1a37b74dc3090e",
+    "tools/watergen/run_wg6.py": "a117f27ba560df4e0f847576efe9cafb412a658168afe153a8bf4364a484de65",
+    "tools/watergen/terrain_legacy_canvas.gd": "ecad0c044c9e28c5e92a3234d363eef2322f41362ce32770db4e79a46a2075d4",
+    "tools/watergen/terrain_preview_cache.gd": "8b45b28ced8433d4838341bfbbfd07ef7ad70101e4e2570d2518f01d9e7420bf",
+    "tools/watergen/terrain_preview_controller.gd": "59ddd81ca5d602572aeb9df3e459a3e4b8a4f493efa763d024e9fed5d06a2118"
+  },
+  "tests": [
+    {
+      "status": "PASS",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg6-final-01\\headless-engine.log",
+        "--headless",
+        "--script",
+        "res://tests/watergen/terrain_contract.gd"
+      ],
+      "log": "headless.log",
+      "returncode": 0,
+      "timed_out": false,
+      "launch_error": null,
+      "passed": 131,
+      "failed": 0,
+      "duration_seconds": 24.344
+    },
+    {
+      "status": "PASS",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen\\artifacts\\watergen\\wg6-final-01\\native-engine.log",
+        "--scene",
+        "res://scenes/watergen/terrain_preview.tscn",
+        "--",
+        "--wg-output=E:/Fish_catches_people/aquatic_system/BaitbreakPixel-watergen/artifacts/watergen/wg6-final-01",
+        "--wg-capture"
+      ],
+      "log": "native.log",
+      "returncode": 0,
+      "timed_out": false,
+      "launch_error": null,
+      "passed": 295,
+      "failed": 0,
+      "duration_seconds": 58.406
+    }
+  ],
+  "native": {
+    "cache_counts": [
+      22,
+      21,
+      21,
+      147
+    ],
+    "cache_entries": 2,
+    "draw_cpu_us_median": 431,
+    "draw_cpu_us_p95": 632,
+    "engine": {
+      "build": "official",
+      "hash": "ed1daf0bf001b61586d9930840f2f1394092c079",
+      "hex": 263938,
+      "major": 4,
+      "minor": 7,
+      "patch": 2,
+      "status": "stable",
+      "string": "4.7.2-stable (official)",
+      "timestamp": 0
+    },
+    "eviction_verified": true,
+    "failed": 0,
+    "gpu": "AMD Radeon(TM) Graphics",
+    "human_acceptance": "NOT_RUN",
+    "map_public_digest": "ce6bd84149877c461f1765497b7aa7b58fe8e80abf74965e45b406824ac31b1d",
+    "moving_frames": 240,
+    "omissions": [
+      "live NPC/food/rope/net/HUD/QTE sessions",
+      "WG6 plants",
+      "animals",
+      "production integration"
+    ],
+    "passed": 294,
+    "performance_note": "Native preview draw submission only, not GPU/FPS or full-game frame time. Cold preparation includes terrain and existing environment; upload_api is not a GPU fence.",
+    "renderer": "gl_compatibility",
+    "results": [
+      {
+        "captures": [
+          {
+            "camera": [
+              0,
+              0
+            ],
+            "path": "full-0-0.png",
+            "rgba_sha256": "b2ade36dd89bbb71aab4a1dbd008fa47ff71bc69a24d51fd5d48f60c3da62818"
+          },
+          {
+            "camera": [
+              320,
+              60
+            ],
+            "path": "full-320-60.png",
+            "rgba_sha256": "8e34fc34b557eb134fa0bfe64693e32f0c967c2f42b4e4f31f68fecdcc2596fa"
+          },
+          {
+            "camera": [
+              640,
+              120
+            ],
+            "path": "full-640-120.png",
+            "rgba_sha256": "68abe9fa4ced5cb58dcd22ddf4bf59817520c873193836bc6855ec95ace034df"
+          },
+          {
+            "camera": [
+              0,
+              120
+            ],
+            "path": "full-0-120.png",
+            "rgba_sha256": "6709a4665b1962934ac6c1bbe6d2b94a9da5d0e7efe305e7548274c3031cf2ef"
+          },
+          {
+            "camera": [
+              640,
+              0
+            ],
+            "path": "full-640-0.png",
+            "rgba_sha256": "b5424cf5ab320b918cd9c63440713b1c8091af679408c0421b9285e0be1ae699"
+          },
+          {
+            "camera": [
+              0,
+              0
+            ],
+            "path": "terrain-0-0.png",
+            "rgba_sha256": "27b8fca04a9d959fd4990357f7f57a3f11c3014e46c335ebfd7c76f56fa39a20"
+          },
+          {
+            "camera": [
+              320,
+              60
+            ],
+            "path": "terrain-320-60.png",
+            "rgba_sha256": "7e3f7a4b2b66728da6b4cce7cb6fa3dc98dbdcdfb99465549d01c50df4e2aeda"
+          },
+          {
+            "camera": [
+              640,
+              120
+            ],
+            "path": "terrain-640-120.png",
+            "rgba_sha256": "4eeb918200c36cba19ec4911fa36a96be36a2e58f34201f5449581223d099772"
+          },
+          {
+            "camera": [
+              0,
+              120
+            ],
+            "path": "terrain-0-120.png",
+            "rgba_sha256": "ce11c74ebe3bbbfa4e9bf356b80d8c463e1b0f1d764b73bfcd21a8d715694e03"
+          },
+          {
+            "camera": [
+              640,
+              0
+            ],
+            "path": "terrain-640-0.png",
+            "rgba_sha256": "499417e53c4735d94c36b6ef87219f34a18c77c8e1a6c1f83a0210026ca46e0a"
+          },
+          {
+            "camera": [
+              0,
+              0
+            ],
+            "path": "before-0-0.png",
+            "rgba_sha256": "c38a0d1423f2c18f806e33cc2ec75102b571dfbebfd7a0e78c4f0e2052a291d5"
+          },
+          {
+            "camera": [
+              320,
+              60
+            ],
+            "path": "before-320-60.png",
+            "rgba_sha256": "b0f08e2a4b85f6892ce311d400b97fea7addbdc3011f1df7f4bae566435eaf76"
+          },
+          {
+            "camera": [
+              640,
+              120
+            ],
+            "path": "before-640-120.png",
+            "rgba_sha256": "564054819ea98219af11bf372ba7dbfba08ea625c592d8926b5d8c62a0fbdf62"
+          },
+          {
+            "camera": [
+              0,
+              120
+            ],
+            "path": "before-0-120.png",
+            "rgba_sha256": "a288b7fe6224707c7dc73cf778d4a0a043160985b5c7a7b13a14a7fdebce4bd2"
+          },
+          {
+            "camera": [
+              640,
+              0
+            ],
+            "path": "before-640-0.png",
+            "rgba_sha256": "b79409c0441b46268a0e8550aa8c55d0914301bf503226d611d1802ba5c9ab1e"
+          },
+          {
+            "camera": [
+              0,
+              0
+            ],
+            "path": "legacy-0-0.png",
+            "rgba_sha256": "e257e460c23fe8830a3344693752b336bd2b42102bf65e44d422e50a5f53a48f"
+          },
+          {
+            "camera": [
+              320,
+              60
+            ],
+            "path": "legacy-320-60.png",
+            "rgba_sha256": "39720e94743f3a36b2b8b45ad90cd55b56f2e119121b83eba7d4478f25c51942"
+          },
+          {
+            "camera": [
+              640,
+              120
+            ],
+            "path": "legacy-640-120.png",
+            "rgba_sha256": "e05b24fe1f0b9d09ccfe3ce4bd42cbe5bd1f5d21115a0672035fee46b465caf6"
+          },
+          {
+            "camera": [
+              0,
+              120
+            ],
+            "path": "legacy-0-120.png",
+            "rgba_sha256": "a1fc1698e299322b092f037176557719216a476a3dcefc5a535765e86633f2c3"
+          },
+          {
+            "camera": [
+              640,
+              0
+            ],
+            "path": "legacy-640-0.png",
+            "rgba_sha256": "6debd860b6b106d7bb4ad237fcca9ed07a98208dc572a60d434a5247eddfcff8"
+          }
+        ],
+        "preparation_us": {
+          "before": {
+            "bake": 944825,
+            "plan": 17374,
+            "upload_api": 2807
+          },
+          "full": {
+            "bake": 1947207,
+            "plan": 12872,
+            "upload_api": 3746
+          },
+          "terrain": {
+            "bake": 1814719,
+            "plan": 10173,
+            "upload_api": 3230
+          }
+        },
+        "preset": "fern",
+        "seed": 713284
+      },
+      {
+        "captures": [
+          {
+            "camera": [
+              0,
+              0
+            ],
+            "path": "full-0-0.png",
+            "rgba_sha256": "02ba18d310720f4c4e65dfe85baa3dde5ca2017fbf8909799f2577147c8432d7"
+          },
+          {
+            "camera": [
+              320,
+              60
+            ],
+            "path": "full-320-60.png",
+            "rgba_sha256": "1df4d8909a7d7dff578de6313282e84e365e9ebaaa97fdbcdd4ea167d5fca8f1"
+          },
+          {
+            "camera": [
+              640,
+              120
+            ],
+            "path": "full-640-120.png",
+            "rgba_sha256": "ee3ff7ce0befa3aa40c5a3f6bb4795a17b7b48481218f79b1322c89ed91e43fe"
+          },
+          {
+            "camera": [
+              0,
+              120
+            ],
+            "path": "full-0-120.png",
+            "rgba_sha256": "a44afa62ecf25cdd16926559310cdc52f50cc9ed97891c9e818a144a0dcc2c58"
+          },
+          {
+            "camera": [
+              640,
+              0
+            ],
+            "path": "full-640-0.png",
+            "rgba_sha256": "1ac2263933f249f3a9c5ba468d92e3b9e3d022cdc27e932a7c8c26b71d038523"
+          },
+          {
+            "camera": [
+              0,
+              0
+            ],
+            "path": "terrain-0-0.png",
+            "rgba_sha256": "86b547f9499393f2c870121168c3c3ca3a86871af9e0559bc1f3465ccf701932"
+          },
+          {
+            "camera": [
+              320,
+              60
+            ],
+            "path": "terrain-320-60.png",
+            "rgba_sha256": "ad90d4ad855906ca86d6f8b171cc1028a915cddc8bfc750b71d41271b598245c"
+          },
+          {
+            "camera": [
+              640,
+              120
+            ],
+            "path": "terrain-640-120.png",
+            "rgba_sha256": "391a1ac269f247e7f63d30dcab8b5ee174a2c0e9bb6f779678544fa89d747086"
+          },
+          {
+            "camera": [
+              0,
+              120
+            ],
+            "path": "terrain-0-120.png",
+            "rgba_sha256": "49ec40be88e3620ba1ef8bf522a866c07afb3b2b9ee5cc4b8fec623119c246c6"
+          },
+          {
+            "camera": [
+              640,
+              0
+            ],
+            "path": "terrain-640-0.png",
+            "rgba_sha256": "0019942671ea89b30b7888826781a0787846b9fd6532820f4a555027c9c86109"
+          },
+          {
+            "camera": [
+              0,
+              0
+            ],
+            "path": "before-0-0.png",
+            "rgba_sha256": "7db00927bdb86aa62c13d0ef8030898b65a0d9e9e2f0d4a6b1ec05c0c2b942f6"
+          },
+          {
+            "camera": [
+              320,
+              60
+            ],
+            "path": "before-320-60.png",
+            "rgba_sha256": "d7e80174f190d7610ad0d0517bd25060de46fafa893cde459a6841a1463d144d"
+          },
+          {
+            "camera": [
+              640,
+              120
+            ],
+            "path": "before-640-120.png",
+            "rgba_sha256": "d7b20ea48b9d8be265c96213ca79d064f7b0c6a1975074bceebe37be64046161"
+          },
+          {
+            "camera": [
+              0,
+              120
+            ],
+            "path": "before-0-120.png",
+            "rgba_sha256": "38e4c26dff4cec9e05ecded74c973e61ce5cfaed844cc10e8effa446d8a7f8ac"
+          },
+          {
+            "camera": [
+              640,
+              0
+            ],
+            "path": "before-640-0.png",
+            "rgba_sha256": "022fd0bb491af836e69db0d8b263886c95bcf497ba0ec35c7d9f5c7b56990cdd"
+          },
+          {
+            "camera": [
+              0,
+              0
+            ],
+            "path": "legacy-0-0.png",
+            "rgba_sha256": "e257e460c23fe8830a3344693752b336bd2b42102bf65e44d422e50a5f53a48f"
+          },
+          {
+            "camera": [
+              320,
+              60
+            ],
+            "path": "legacy-320-60.png",
+            "rgba_sha256": "39720e94743f3a36b2b8b45ad90cd55b56f2e119121b83eba7d4478f25c51942"
+          },
+          {
+            "camera": [
+              640,
+              120
+            ],
+            "path": "legacy-640-120.png",
+            "rgba_sha256": "e05b24fe1f0b9d09ccfe3ce4bd42cbe5bd1f5d21115a0672035fee46b465caf6"
+          },
+          {
+            "camera": [
+              0,
+              120
+            ],
+            "path": "legacy-0-120.png",
+            "rgba_sha256": "a1fc1698e299322b092f037176557719216a476a3dcefc5a535765e86633f2c3"
+          },
+          {
+            "camera": [
+              640,
+              0
+            ],
+            "path": "legacy-640-0.png",
+            "rgba_sha256": "6debd860b6b106d7bb4ad237fcca9ed07a98208dc572a60d434a5247eddfcff8"
+          }
+        ],
+        "preparation_us": {
+          "before": {
+            "bake": 992466,
+            "plan": 11647,
+            "upload_api": 2966
+          },
+          "full": {
+            "bake": 2253978,
+            "plan": 20859,
+            "upload_api": 4310
+          },
+          "terrain": {
+            "bake": 2169888,
+            "plan": 19467,
+            "upload_api": 2624
+          }
+        },
+        "preset": "ribbon",
+        "seed": 2649
+      },
+      {
+        "captures": [
+          {
+            "camera": [
+              0,
+              0
+            ],
+            "path": "full-0-0.png",
+            "rgba_sha256": "f5900153d0f39e45c46b44584c4504a955935e77c74867214df57abc849b9d41"
+          },
+          {
+            "camera": [
+              320,
+              60
+            ],
+            "path": "full-320-60.png",
+            "rgba_sha256": "b84ff4bc6b4920fa16f8856563fb855ba96f90330f334175fecb1fea728c9872"
+          },
+          {
+            "camera": [
+              640,
+              120
+            ],
+            "path": "full-640-120.png",
+            "rgba_sha256": "1b174d6c911590fa256d972f3d23e470029787798fc96450c2f7e704f8e961d0"
+          },
+          {
+            "camera": [
+              0,
+              120
+            ],
+            "path": "full-0-120.png",
+            "rgba_sha256": "a86bc42a5cb1c09449e1bd58a78fee8616b295b11260bb71069153aedfebd2ee"
+          },
+          {
+            "camera": [
+              640,
+              0
+            ],
+            "path": "full-640-0.png",
+            "rgba_sha256": "78db7b5a8fe29bab4a64c0061416b02948a6e4614f68b94dc062885ab21c096b"
+          },
+          {
+            "camera": [
+              0,
+              0
+            ],
+            "path": "terrain-0-0.png",
+            "rgba_sha256": "d1a5fd2a9469efc52fe25a66912245be5d71a0bc87855a95999d31cdb2d34de7"
+          },
+          {
+            "camera": [
+              320,
+              60
+            ],
+            "path": "terrain-320-60.png",
+            "rgba_sha256": "04677ffbc63456053bea2d7f87ee2bc770cce532a088e272bcff882aa87bd8aa"
+          },
+          {
+            "camera": [
+              640,
+              120
+            ],
+            "path": "terrain-640-120.png",
+            "rgba_sha256": "9e94f2307421fb314c85eaca398936c0543182482739d02a1f367493b9ef11d1"
+          },
+          {
+            "camera": [
+              0,
+              120
+            ],
+            "path": "terrain-0-120.png",
+            "rgba_sha256": "a18cf911a61ec72f51349c23fcb29336225a7f40f6e95b56a1c657861f9c2c82"
+          },
+          {
+            "camera": [
+              640,
+              0
+            ],
+            "path": "terrain-640-0.png",
+            "rgba_sha256": "ab1b94752d1d6c97aa650ad55950c9d4f2b26cb191bb32acf63f4c058b72440a"
+          },
+          {
+            "camera": [
+              0,
+              0
+            ],
+            "path": "before-0-0.png",
+            "rgba_sha256": "c486786180b33c472f20a291c028038691ca6311893182c8692f008631259aac"
+          },
+          {
+            "camera": [
+              320,
+              60
+            ],
+            "path": "before-320-60.png",
+            "rgba_sha256": "8d9f4d772cedc0300c7f109ef9618c18dfac64c70e3f6bcf9c0b5154fcabaebe"
+          },
+          {
+            "camera": [
+              640,
+              120
+            ],
+            "path": "before-640-120.png",
+            "rgba_sha256": "87cf3e3fa353eaf349669959d350a67e24e494f2d6048b41d3be2f4e06f2ac98"
+          },
+          {
+            "camera": [
+              0,
+              120
+            ],
+            "path": "before-0-120.png",
+            "rgba_sha256": "a4f08e382d061853476a8a2316bc94dbf2346252e9a62c455b87224a56723482"
+          },
+          {
+            "camera": [
+              640,
+              0
+            ],
+            "path": "before-640-0.png",
+            "rgba_sha256": "acb85689ac89f4756acb06a411b9ea09805624426bf8fcef7cce45e3e5121fd7"
+          },
+          {
+            "camera": [
+              0,
+              0
+            ],
+            "path": "legacy-0-0.png",
+            "rgba_sha256": "e257e460c23fe8830a3344693752b336bd2b42102bf65e44d422e50a5f53a48f"
+          },
+          {
+            "camera": [
+              320,
+              60
+            ],
+            "path": "legacy-320-60.png",
+            "rgba_sha256": "39720e94743f3a36b2b8b45ad90cd55b56f2e119121b83eba7d4478f25c51942"
+          },
+          {
+            "camera": [
+              640,
+              120
+            ],
+            "path": "legacy-640-120.png",
+            "rgba_sha256": "e05b24fe1f0b9d09ccfe3ce4bd42cbe5bd1f5d21115a0672035fee46b465caf6"
+          },
+          {
+            "camera": [
+              0,
+              120
+            ],
+            "path": "legacy-0-120.png",
+            "rgba_sha256": "a1fc1698e299322b092f037176557719216a476a3dcefc5a535765e86633f2c3"
+          },
+          {
+            "camera": [
+              640,
+              0
+            ],
+            "path": "legacy-640-0.png",
+            "rgba_sha256": "6debd860b6b106d7bb4ad237fcca9ed07a98208dc572a60d434a5247eddfcff8"
+          }
+        ],
+        "preparation_us": {
+          "before": {
+            "bake": 991786,
+            "plan": 12027,
+            "upload_api": 2834
+          },
+          "full": {
+            "bake": 2404882,
+            "plan": 11071,
+            "upload_api": 4631
+          },
+          "terrain": {
+            "bake": 2132371,
+            "plan": 16784,
+            "upload_api": 2365
+          }
+        },
+        "preset": "lily",
+        "seed": 42
+      },
+      {
+        "captures": [
+          {
+            "camera": [
+              0,
+              0
+            ],
+            "path": "full-0-0.png",
+            "rgba_sha256": "29ad16ef4e8fcdec22af4e324c21e8ae7656691750ad6a90702c8cd2d591433f"
+          },
+          {
+            "camera": [
+              320,
+              60
+            ],
+            "path": "full-320-60.png",
+            "rgba_sha256": "2ce993634628f09426514706bf8dc39b1cf1a9eec475ecb7a04b1a0b1d06a2c9"
+          },
+          {
+            "camera": [
+              640,
+              120
+            ],
+            "path": "full-640-120.png",
+            "rgba_sha256": "3145d4c1a63d3757cfde4317425b3fdeb7c6bb471c11c202cf70574ce5ddde35"
+          },
+          {
+            "camera": [
+              0,
+              120
+            ],
+            "path": "full-0-120.png",
+            "rgba_sha256": "6a65c4805425385f81b8ad4a92f44d4b171238f8fb92917274bd8b9b94320f32"
+          },
+          {
+            "camera": [
+              640,
+              0
+            ],
+            "path": "full-640-0.png",
+            "rgba_sha256": "9617a7d179058fcebe0a72a54abf64bb3bb4750b77b32c2cc838b2b38c21caa0"
+          },
+          {
+            "camera": [
+              0,
+              0
+            ],
+            "path": "terrain-0-0.png",
+            "rgba_sha256": "9bb08650d153f14285d42b9bb2ada8e582da0ca30a95c8920052088f506575d9"
+          },
+          {
+            "camera": [
+              320,
+              60
+            ],
+            "path": "terrain-320-60.png",
+            "rgba_sha256": "932548f6521664019ea8368be91eb1623814d8f840438875a0bc1a1dd1d69885"
+          },
+          {
+            "camera": [
+              640,
+              120
+            ],
+            "path": "terrain-640-120.png",
+            "rgba_sha256": "e4e02999077a54d0588e846dbb4af1a3d42690bb3e7f9608336950a691a038ae"
+          },
+          {
+            "camera": [
+              0,
+              120
+            ],
+            "path": "terrain-0-120.png",
+            "rgba_sha256": "8b17994390744ba65adc97ebc837f1f80b0f29873e175009a332685dca9365d0"
+          },
+          {
+            "camera": [
+              640,
+              0
+            ],
+            "path": "terrain-640-0.png",
+            "rgba_sha256": "52f227d0be0478b7eaa08fd5895f79fc900f059d7f2d07705ef3196ec4c80866"
+          },
+          {
+            "camera": [
+              0,
+              0
+            ],
+            "path": "before-0-0.png",
+            "rgba_sha256": "9eb5d51d1dd87924df54a4c437a34f7c32600dda31c4ddf7b4f65817d3f221a8"
+          },
+          {
+            "camera": [
+              320,
+              60
+            ],
+            "path": "before-320-60.png",
+            "rgba_sha256": "0ee101d6ecfd606116a9fed564abdb2e438b6a15edc4447971cb2064878186b3"
+          },
+          {
+            "camera": [
+              640,
+              120
+            ],
+            "path": "before-640-120.png",
+            "rgba_sha256": "2d131c7be97b2a06ba5af09aec20189bfcc05a4d6cd437bfdbac56fe85561e4b"
+          },
+          {
+            "camera": [
+              0,
+              120
+            ],
+            "path": "before-0-120.png",
+            "rgba_sha256": "de48ef518ce5c9c3913513957c3f170e5cf5fae25383b4edb25a7f32b9a9e31f"
+          },
+          {
+            "camera": [
+              640,
+              0
+            ],
+            "path": "before-640-0.png",
+            "rgba_sha256": "6fab9d66aac323346b0b967f7d73fc2fda280a991f287863c5075b74a3f3b686"
+          },
+          {
+            "camera": [
+              0,
+              0
+            ],
+            "path": "legacy-0-0.png",
+            "rgba_sha256": "e257e460c23fe8830a3344693752b336bd2b42102bf65e44d422e50a5f53a48f"
+          },
+          {
+            "camera": [
+              320,
+              60
+            ],
+            "path": "legacy-320-60.png",
+            "rgba_sha256": "39720e94743f3a36b2b8b45ad90cd55b56f2e119121b83eba7d4478f25c51942"
+          },
+          {
+            "camera": [
+              640,
+              120
+            ],
+            "path": "legacy-640-120.png",
+            "rgba_sha256": "e05b24fe1f0b9d09ccfe3ce4bd42cbe5bd1f5d21115a0672035fee46b465caf6"
+          },
+          {
+            "camera": [
+              0,
+              120
+            ],
+            "path": "legacy-0-120.png",
+            "rgba_sha256": "a1fc1698e299322b092f037176557719216a476a3dcefc5a535765e86633f2c3"
+          },
+          {
+            "camera": [
+              640,
+              0
+            ],
+            "path": "legacy-640-0.png",
+            "rgba_sha256": "6debd860b6b106d7bb4ad237fcca9ed07a98208dc572a60d434a5247eddfcff8"
+          }
+        ],
+        "preparation_us": {
+          "before": {
+            "bake": 992989,
+            "plan": 12415,
+            "upload_api": 3621
+          },
+          "full": {
+            "bake": 2388320,
+            "plan": 11696,
+            "upload_api": 4329
+          },
+          "terrain": {
+            "bake": 2342902,
+            "plan": 22346,
+            "upload_api": 3144
+          }
+        },
+        "preset": "root",
+        "seed": 731
+      }
+    ]
+  },
+  "logs": {
+    "headless": {
+      "raw_sha256": "916474ed3f083eaee39b338d1d5872dadbe8f4acd1355443e2deed38f8d75a65",
+      "committed_sha256": "95634f2dc9ab72319ea8bcb739dac4ca06d403b20394871bafc1318354a251fc",
+      "normalization": "LF; trailing whitespace stripped"
+    },
+    "native": {
+      "raw_sha256": "542fdaafaaafd8711a0a6673184a7a2a2c7e4661de9b6fe051347ddeaaa0349f",
+      "committed_sha256": "cbe87111925ccadd6bf8207b2438b6aeaf620d27dee6902294551ead2dbd3a7f",
+      "normalization": "LF; trailing whitespace stripped"
+    },
+    "editor-import": {
+      "raw_sha256": "e5ce2fab8d4714ef9512e744273028bb2f4601487aaa3dea170c3f6d914d063c",
+      "committed_sha256": "718b8367e36da9b2ff473b024dba7626b3412690ff94856893ed9b9ce8d55961",
+      "normalization": "LF; trailing whitespace stripped"
+    }
+  },
+  "images": {
+    "docs/watergen/images/wg6-fern-full-world.png": "263ad31f489c1ef805dbd8b3fec3c1a4d9457808fc48c493e6a14ed31a8f0668",
+    "docs/watergen/images/wg6-fern-terrain-world.png": "35128ef3eab8b33adc75498a229914c23efd4c45b9d5a6d28e7aa9c25ec416a1",
+    "docs/watergen/images/wg6-fern-full-320-60.png": "421837507fd66a1004b604be25a780e7807b22e945e7775d5d12d5cfe2d33be9",
+    "docs/watergen/images/wg6-fern-before-320-60.png": "5a6aad7678580de6ea92e0d22691298123732d8eee9184dafada893c2b8bc597",
+    "docs/watergen/images/wg6-ribbon-full-world.png": "6937b627b46037d630d3c7f255d0e7374fa077e47e427e65802596ecfaeecd5f",
+    "docs/watergen/images/wg6-ribbon-terrain-world.png": "9acc5545468e98f90a525b5b240c7c0a88b4ad6c53a77a14c29756e57840283c",
+    "docs/watergen/images/wg6-ribbon-full-320-60.png": "06e27791729c83c0c4416069a26bd86a87cb8a366eda98b4e4bbe9d696e40d4d",
+    "docs/watergen/images/wg6-ribbon-before-320-60.png": "6f3a22ebb35c79b8397acf4f0311eaf6bdf6c179a078cb221342be95cc91f467",
+    "docs/watergen/images/wg6-lily-full-world.png": "e04b7672e42233fbaf63e9754673c881a963b73ab9ca90b336d05cd545112b40",
+    "docs/watergen/images/wg6-lily-terrain-world.png": "33cc33b300fe9ede63fa658570beeab103fc34663ebee5c7a8189a2792f0c7a3",
+    "docs/watergen/images/wg6-lily-full-320-60.png": "238ee85dab6bf005f64e4374cb326226778a15817eb5739fe615c904cfb9eb49",
+    "docs/watergen/images/wg6-lily-before-320-60.png": "ce8ca0ba643397c512af24af4aa9f004138445ec5ebf1b91524d71e45cc5797c",
+    "docs/watergen/images/wg6-root-full-world.png": "e19b682eda3f8c68784f37669e8c805e04d0e4b603a78360f259f60e595a8b06",
+    "docs/watergen/images/wg6-root-terrain-world.png": "e7f44aab190f4d56a6ae98e8374dc290726e628e5296f83f4be8e9989ad719d3",
+    "docs/watergen/images/wg6-root-full-320-60.png": "a00ffc5cc257073eb90373ae4bf36eb1bc9788afa0f6869e7163e75380089c9f",
+    "docs/watergen/images/wg6-root-before-320-60.png": "836ad112f32fff9b111c418e6af896e744b07e0ed0db1eebfdeb8be0fbd9fd8c"
+  },
+  "human_acceptance": "NOT_RUN",
+  "stage_status": "WAITING_FOR_REVIEW",
+  "prior_failed_runs": {
+    "wg6-first-pass": "GDScript type inference errors; terminated and repaired",
+    "wg6-second-pass": "Legacy preview missing generated_water_active property; engine error scan correctly rejected the run",
+    "wg6-relief-review": "PASS before extra layer/alpha assertions"
+  },
+  "formal_version": "0.25.6",
+  "production_integration": false,
+  "unchanged_0256_packages": {
+    "BaitbreakPixel-0.25.6/BaitbreakPixel.pck": "e00f96205eea6e907efd979ebba7d40a6db4660ca5848add2a914d7ea035db1a",
+    "BaitbreakPixel-0.25.6.zip": "247da2290f95f9f88ba906a9df79d783c1d3cbd81eb636350d8cd970dff23a22"
+  }
+}

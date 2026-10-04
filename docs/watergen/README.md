@@ -1,5 +1,7 @@
 # Watergen WG-0：旧环境独立预览
 
+最新独立开发为 [WG-6.1 水下地势预览](WG6_README.md)，含四构图与五镜头对照；状态为 WAITING_FOR_REVIEW，正式试玩仍为 0.25.6。
+
 本文保留 WG-0 旧环境入口和原始 0.24.5 基线说明。当前可选试玩为 [0.25.6 dev 整合版](DEV_SYNC_0.25.6.md)，首次接入记录见 [WG3_README.md](WG3_README.md)（底层游戏基于 0.25.0）；独立视觉氛围预览见 [WG21_README.md](WG21_README.md)，此前动态阶段见 [WG2_README.md](WG2_README.md)，静态入口见 [WG1_README.md](WG1_README.md)。WG-0 入口自身仍只显示旧环境，不启动对局。
 
 ## 工作区与入口

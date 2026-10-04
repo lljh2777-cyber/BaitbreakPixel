@@ -1,0 +1,299 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 3.3.0 Core Profile Context 23.20.28.03.231124 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon(TM) Graphics
+
+WG6_NATIVE_PASS | isolated user directory
+WG6_NATIVE_PASS | cold legacy creates no terrain or WG5 resources
+WG6_NATIVE_PASS | write terrain-plan.json
+WG6_NATIVE_PASS | write full-world
+WG6_NATIVE_PASS | write full-0-0
+WG6_NATIVE_PASS | repeat frame full-0-0
+WG6_NATIVE_PASS | camera borders opaque full-0-0
+WG6_NATIVE_PASS | write full-320-60
+WG6_NATIVE_PASS | repeat frame full-320-60
+WG6_NATIVE_PASS | camera borders opaque full-320-60
+WG6_NATIVE_PASS | write full-640-120
+WG6_NATIVE_PASS | repeat frame full-640-120
+WG6_NATIVE_PASS | camera borders opaque full-640-120
+WG6_NATIVE_PASS | write full-0-120
+WG6_NATIVE_PASS | repeat frame full-0-120
+WG6_NATIVE_PASS | camera borders opaque full-0-120
+WG6_NATIVE_PASS | write full-640-0
+WG6_NATIVE_PASS | repeat frame full-640-0
+WG6_NATIVE_PASS | camera borders opaque full-640-0
+WG6_NATIVE_PASS | no camera-triggered generation or upload full
+WG6_NATIVE_PASS | write terrain-world
+WG6_NATIVE_PASS | write terrain-0-0
+WG6_NATIVE_PASS | repeat frame terrain-0-0
+WG6_NATIVE_PASS | camera borders opaque terrain-0-0
+WG6_NATIVE_PASS | write terrain-320-60
+WG6_NATIVE_PASS | repeat frame terrain-320-60
+WG6_NATIVE_PASS | camera borders opaque terrain-320-60
+WG6_NATIVE_PASS | write terrain-640-120
+WG6_NATIVE_PASS | repeat frame terrain-640-120
+WG6_NATIVE_PASS | camera borders opaque terrain-640-120
+WG6_NATIVE_PASS | write terrain-0-120
+WG6_NATIVE_PASS | repeat frame terrain-0-120
+WG6_NATIVE_PASS | camera borders opaque terrain-0-120
+WG6_NATIVE_PASS | write terrain-640-0
+WG6_NATIVE_PASS | repeat frame terrain-640-0
+WG6_NATIVE_PASS | camera borders opaque terrain-640-0
+WG6_NATIVE_PASS | no camera-triggered generation or upload terrain
+WG6_NATIVE_PASS | write before-world
+WG6_NATIVE_PASS | write before-0-0
+WG6_NATIVE_PASS | repeat frame before-0-0
+WG6_NATIVE_PASS | camera borders opaque before-0-0
+WG6_NATIVE_PASS | write before-320-60
+WG6_NATIVE_PASS | repeat frame before-320-60
+WG6_NATIVE_PASS | camera borders opaque before-320-60
+WG6_NATIVE_PASS | write before-640-120
+WG6_NATIVE_PASS | repeat frame before-640-120
+WG6_NATIVE_PASS | camera borders opaque before-640-120
+WG6_NATIVE_PASS | write before-0-120
+WG6_NATIVE_PASS | repeat frame before-0-120
+WG6_NATIVE_PASS | camera borders opaque before-0-120
+WG6_NATIVE_PASS | write before-640-0
+WG6_NATIVE_PASS | repeat frame before-640-0
+WG6_NATIVE_PASS | camera borders opaque before-640-0
+WG6_NATIVE_PASS | no camera-triggered generation or upload before
+WG6_NATIVE_PASS | write legacy-world
+WG6_NATIVE_PASS | write legacy-0-0
+WG6_NATIVE_PASS | repeat frame legacy-0-0
+WG6_NATIVE_PASS | camera borders opaque legacy-0-0
+WG6_NATIVE_PASS | write legacy-320-60
+WG6_NATIVE_PASS | repeat frame legacy-320-60
+WG6_NATIVE_PASS | camera borders opaque legacy-320-60
+WG6_NATIVE_PASS | write legacy-640-120
+WG6_NATIVE_PASS | repeat frame legacy-640-120
+WG6_NATIVE_PASS | camera borders opaque legacy-640-120
+WG6_NATIVE_PASS | write legacy-0-120
+WG6_NATIVE_PASS | repeat frame legacy-0-120
+WG6_NATIVE_PASS | camera borders opaque legacy-0-120
+WG6_NATIVE_PASS | write legacy-640-0
+WG6_NATIVE_PASS | repeat frame legacy-640-0
+WG6_NATIVE_PASS | camera borders opaque legacy-640-0
+WG6_NATIVE_PASS | no camera-triggered generation or upload legacy
+WG6_NATIVE_PASS | write terrain-plan.json
+WG6_NATIVE_PASS | write full-world
+WG6_NATIVE_PASS | write full-0-0
+WG6_NATIVE_PASS | repeat frame full-0-0
+WG6_NATIVE_PASS | camera borders opaque full-0-0
+WG6_NATIVE_PASS | write full-320-60
+WG6_NATIVE_PASS | repeat frame full-320-60
+WG6_NATIVE_PASS | camera borders opaque full-320-60
+WG6_NATIVE_PASS | write full-640-120
+WG6_NATIVE_PASS | repeat frame full-640-120
+WG6_NATIVE_PASS | camera borders opaque full-640-120
+WG6_NATIVE_PASS | write full-0-120
+WG6_NATIVE_PASS | repeat frame full-0-120
+WG6_NATIVE_PASS | camera borders opaque full-0-120
+WG6_NATIVE_PASS | write full-640-0
+WG6_NATIVE_PASS | repeat frame full-640-0
+WG6_NATIVE_PASS | camera borders opaque full-640-0
+WG6_NATIVE_PASS | no camera-triggered generation or upload full
+WG6_NATIVE_PASS | write terrain-world
+WG6_NATIVE_PASS | write terrain-0-0
+WG6_NATIVE_PASS | repeat frame terrain-0-0
+WG6_NATIVE_PASS | camera borders opaque terrain-0-0
+WG6_NATIVE_PASS | write terrain-320-60
+WG6_NATIVE_PASS | repeat frame terrain-320-60
+WG6_NATIVE_PASS | camera borders opaque terrain-320-60
+WG6_NATIVE_PASS | write terrain-640-120
+WG6_NATIVE_PASS | repeat frame terrain-640-120
+WG6_NATIVE_PASS | camera borders opaque terrain-640-120
+WG6_NATIVE_PASS | write terrain-0-120
+WG6_NATIVE_PASS | repeat frame terrain-0-120
+WG6_NATIVE_PASS | camera borders opaque terrain-0-120
+WG6_NATIVE_PASS | write terrain-640-0
+WG6_NATIVE_PASS | repeat frame terrain-640-0
+WG6_NATIVE_PASS | camera borders opaque terrain-640-0
+WG6_NATIVE_PASS | no camera-triggered generation or upload terrain
+WG6_NATIVE_PASS | write before-world
+WG6_NATIVE_PASS | write before-0-0
+WG6_NATIVE_PASS | repeat frame before-0-0
+WG6_NATIVE_PASS | camera borders opaque before-0-0
+WG6_NATIVE_PASS | write before-320-60
+WG6_NATIVE_PASS | repeat frame before-320-60
+WG6_NATIVE_PASS | camera borders opaque before-320-60
+WG6_NATIVE_PASS | write before-640-120
+WG6_NATIVE_PASS | repeat frame before-640-120
+WG6_NATIVE_PASS | camera borders opaque before-640-120
+WG6_NATIVE_PASS | write before-0-120
+WG6_NATIVE_PASS | repeat frame before-0-120
+WG6_NATIVE_PASS | camera borders opaque before-0-120
+WG6_NATIVE_PASS | write before-640-0
+WG6_NATIVE_PASS | repeat frame before-640-0
+WG6_NATIVE_PASS | camera borders opaque before-640-0
+WG6_NATIVE_PASS | no camera-triggered generation or upload before
+WG6_NATIVE_PASS | write legacy-world
+WG6_NATIVE_PASS | write legacy-0-0
+WG6_NATIVE_PASS | repeat frame legacy-0-0
+WG6_NATIVE_PASS | camera borders opaque legacy-0-0
+WG6_NATIVE_PASS | write legacy-320-60
+WG6_NATIVE_PASS | repeat frame legacy-320-60
+WG6_NATIVE_PASS | camera borders opaque legacy-320-60
+WG6_NATIVE_PASS | write legacy-640-120
+WG6_NATIVE_PASS | repeat frame legacy-640-120
+WG6_NATIVE_PASS | camera borders opaque legacy-640-120
+WG6_NATIVE_PASS | write legacy-0-120
+WG6_NATIVE_PASS | repeat frame legacy-0-120
+WG6_NATIVE_PASS | camera borders opaque legacy-0-120
+WG6_NATIVE_PASS | write legacy-640-0
+WG6_NATIVE_PASS | repeat frame legacy-640-0
+WG6_NATIVE_PASS | camera borders opaque legacy-640-0
+WG6_NATIVE_PASS | no camera-triggered generation or upload legacy
+WG6_NATIVE_PASS | write terrain-plan.json
+WG6_NATIVE_PASS | write full-world
+WG6_NATIVE_PASS | write full-0-0
+WG6_NATIVE_PASS | repeat frame full-0-0
+WG6_NATIVE_PASS | camera borders opaque full-0-0
+WG6_NATIVE_PASS | write full-320-60
+WG6_NATIVE_PASS | repeat frame full-320-60
+WG6_NATIVE_PASS | camera borders opaque full-320-60
+WG6_NATIVE_PASS | write full-640-120
+WG6_NATIVE_PASS | repeat frame full-640-120
+WG6_NATIVE_PASS | camera borders opaque full-640-120
+WG6_NATIVE_PASS | write full-0-120
+WG6_NATIVE_PASS | repeat frame full-0-120
+WG6_NATIVE_PASS | camera borders opaque full-0-120
+WG6_NATIVE_PASS | write full-640-0
+WG6_NATIVE_PASS | repeat frame full-640-0
+WG6_NATIVE_PASS | camera borders opaque full-640-0
+WG6_NATIVE_PASS | no camera-triggered generation or upload full
+WG6_NATIVE_PASS | write terrain-world
+WG6_NATIVE_PASS | write terrain-0-0
+WG6_NATIVE_PASS | repeat frame terrain-0-0
+WG6_NATIVE_PASS | camera borders opaque terrain-0-0
+WG6_NATIVE_PASS | write terrain-320-60
+WG6_NATIVE_PASS | repeat frame terrain-320-60
+WG6_NATIVE_PASS | camera borders opaque terrain-320-60
+WG6_NATIVE_PASS | write terrain-640-120
+WG6_NATIVE_PASS | repeat frame terrain-640-120
+WG6_NATIVE_PASS | camera borders opaque terrain-640-120
+WG6_NATIVE_PASS | write terrain-0-120
+WG6_NATIVE_PASS | repeat frame terrain-0-120
+WG6_NATIVE_PASS | camera borders opaque terrain-0-120
+WG6_NATIVE_PASS | write terrain-640-0
+WG6_NATIVE_PASS | repeat frame terrain-640-0
+WG6_NATIVE_PASS | camera borders opaque terrain-640-0
+WG6_NATIVE_PASS | no camera-triggered generation or upload terrain
+WG6_NATIVE_PASS | write before-world
+WG6_NATIVE_PASS | write before-0-0
+WG6_NATIVE_PASS | repeat frame before-0-0
+WG6_NATIVE_PASS | camera borders opaque before-0-0
+WG6_NATIVE_PASS | write before-320-60
+WG6_NATIVE_PASS | repeat frame before-320-60
+WG6_NATIVE_PASS | camera borders opaque before-320-60
+WG6_NATIVE_PASS | write before-640-120
+WG6_NATIVE_PASS | repeat frame before-640-120
+WG6_NATIVE_PASS | camera borders opaque before-640-120
+WG6_NATIVE_PASS | write before-0-120
+WG6_NATIVE_PASS | repeat frame before-0-120
+WG6_NATIVE_PASS | camera borders opaque before-0-120
+WG6_NATIVE_PASS | write before-640-0
+WG6_NATIVE_PASS | repeat frame before-640-0
+WG6_NATIVE_PASS | camera borders opaque before-640-0
+WG6_NATIVE_PASS | no camera-triggered generation or upload before
+WG6_NATIVE_PASS | write legacy-world
+WG6_NATIVE_PASS | write legacy-0-0
+WG6_NATIVE_PASS | repeat frame legacy-0-0
+WG6_NATIVE_PASS | camera borders opaque legacy-0-0
+WG6_NATIVE_PASS | write legacy-320-60
+WG6_NATIVE_PASS | repeat frame legacy-320-60
+WG6_NATIVE_PASS | camera borders opaque legacy-320-60
+WG6_NATIVE_PASS | write legacy-640-120
+WG6_NATIVE_PASS | repeat frame legacy-640-120
+WG6_NATIVE_PASS | camera borders opaque legacy-640-120
+WG6_NATIVE_PASS | write legacy-0-120
+WG6_NATIVE_PASS | repeat frame legacy-0-120
+WG6_NATIVE_PASS | camera borders opaque legacy-0-120
+WG6_NATIVE_PASS | write legacy-640-0
+WG6_NATIVE_PASS | repeat frame legacy-640-0
+WG6_NATIVE_PASS | camera borders opaque legacy-640-0
+WG6_NATIVE_PASS | no camera-triggered generation or upload legacy
+WG6_NATIVE_PASS | write terrain-plan.json
+WG6_NATIVE_PASS | write full-world
+WG6_NATIVE_PASS | write full-0-0
+WG6_NATIVE_PASS | repeat frame full-0-0
+WG6_NATIVE_PASS | camera borders opaque full-0-0
+WG6_NATIVE_PASS | write full-320-60
+WG6_NATIVE_PASS | repeat frame full-320-60
+WG6_NATIVE_PASS | camera borders opaque full-320-60
+WG6_NATIVE_PASS | write full-640-120
+WG6_NATIVE_PASS | repeat frame full-640-120
+WG6_NATIVE_PASS | camera borders opaque full-640-120
+WG6_NATIVE_PASS | write full-0-120
+WG6_NATIVE_PASS | repeat frame full-0-120
+WG6_NATIVE_PASS | camera borders opaque full-0-120
+WG6_NATIVE_PASS | write full-640-0
+WG6_NATIVE_PASS | repeat frame full-640-0
+WG6_NATIVE_PASS | camera borders opaque full-640-0
+WG6_NATIVE_PASS | no camera-triggered generation or upload full
+WG6_NATIVE_PASS | write terrain-world
+WG6_NATIVE_PASS | write terrain-0-0
+WG6_NATIVE_PASS | repeat frame terrain-0-0
+WG6_NATIVE_PASS | camera borders opaque terrain-0-0
+WG6_NATIVE_PASS | write terrain-320-60
+WG6_NATIVE_PASS | repeat frame terrain-320-60
+WG6_NATIVE_PASS | camera borders opaque terrain-320-60
+WG6_NATIVE_PASS | write terrain-640-120
+WG6_NATIVE_PASS | repeat frame terrain-640-120
+WG6_NATIVE_PASS | camera borders opaque terrain-640-120
+WG6_NATIVE_PASS | write terrain-0-120
+WG6_NATIVE_PASS | repeat frame terrain-0-120
+WG6_NATIVE_PASS | camera borders opaque terrain-0-120
+WG6_NATIVE_PASS | write terrain-640-0
+WG6_NATIVE_PASS | repeat frame terrain-640-0
+WG6_NATIVE_PASS | camera borders opaque terrain-640-0
+WG6_NATIVE_PASS | no camera-triggered generation or upload terrain
+WG6_NATIVE_PASS | write before-world
+WG6_NATIVE_PASS | write before-0-0
+WG6_NATIVE_PASS | repeat frame before-0-0
+WG6_NATIVE_PASS | camera borders opaque before-0-0
+WG6_NATIVE_PASS | write before-320-60
+WG6_NATIVE_PASS | repeat frame before-320-60
+WG6_NATIVE_PASS | camera borders opaque before-320-60
+WG6_NATIVE_PASS | write before-640-120
+WG6_NATIVE_PASS | repeat frame before-640-120
+WG6_NATIVE_PASS | camera borders opaque before-640-120
+WG6_NATIVE_PASS | write before-0-120
+WG6_NATIVE_PASS | repeat frame before-0-120
+WG6_NATIVE_PASS | camera borders opaque before-0-120
+WG6_NATIVE_PASS | write before-640-0
+WG6_NATIVE_PASS | repeat frame before-640-0
+WG6_NATIVE_PASS | camera borders opaque before-640-0
+WG6_NATIVE_PASS | no camera-triggered generation or upload before
+WG6_NATIVE_PASS | write legacy-world
+WG6_NATIVE_PASS | write legacy-0-0
+WG6_NATIVE_PASS | repeat frame legacy-0-0
+WG6_NATIVE_PASS | camera borders opaque legacy-0-0
+WG6_NATIVE_PASS | write legacy-320-60
+WG6_NATIVE_PASS | repeat frame legacy-320-60
+WG6_NATIVE_PASS | camera borders opaque legacy-320-60
+WG6_NATIVE_PASS | write legacy-640-120
+WG6_NATIVE_PASS | repeat frame legacy-640-120
+WG6_NATIVE_PASS | camera borders opaque legacy-640-120
+WG6_NATIVE_PASS | write legacy-0-120
+WG6_NATIVE_PASS | repeat frame legacy-0-120
+WG6_NATIVE_PASS | camera borders opaque legacy-0-120
+WG6_NATIVE_PASS | write legacy-640-0
+WG6_NATIVE_PASS | repeat frame legacy-640-0
+WG6_NATIVE_PASS | camera borders opaque legacy-640-0
+WG6_NATIVE_PASS | no camera-triggered generation or upload legacy
+WG6_NATIVE_PASS | WG5 reference sprites retain every alpha pixel, position and target
+WG6_NATIVE_PASS | write fern-readability-fixtures
+WG6_NATIVE_PASS | warm cache reuses texture identity without bake or upload
+WG6_NATIVE_PASS | two-bundle limit switch 0
+WG6_NATIVE_PASS | two-bundle limit switch 1
+WG6_NATIVE_PASS | two-bundle limit switch 2
+WG6_NATIVE_PASS | two-bundle limit switch 3
+WG6_NATIVE_PASS | two-bundle limit switch 4
+WG6_NATIVE_PASS | two-bundle limit switch 5
+WG6_NATIVE_PASS | two-bundle limit switch 6
+WG6_NATIVE_PASS | two-bundle limit switch 7
+WG6_NATIVE_PASS | evicted terrain textures released
+WG6_NATIVE_PASS | 240 moving frames without generation or uploads
+WG6_NATIVE_PASS | existing foliage still animates
+WG6_NATIVE_PASS | time seek restores pixels
+WG6_NATIVE_PASS | map targets/order and all inputs untouched
+WG6_NATIVE_PASS | write wg6-native-evidence.json
+WG6_NATIVE | passed=295 | failed=0

@@ -1,0 +1,134 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+WG6_CONTRACT_PASS | frozen PondLayout digest
+WG6_CONTRACT_PASS | reject invalid seed -1
+WG6_CONTRACT_PASS | reject invalid seed 2147483648
+WG6_CONTRACT_PASS | reject invalid seed 42.0
+WG6_CONTRACT_PASS | reject invalid seed 42
+WG6_CONTRACT_PASS | reject invalid seed <null>
+WG6_CONTRACT_PASS | reject malformed profile
+WG6_CONTRACT_PASS | reject malformed profile
+WG6_CONTRACT_PASS | reject malformed profile
+WG6_CONTRACT_PASS | reject terrain_relief -100
+WG6_CONTRACT_PASS | reject terrain_relief 99999
+WG6_CONTRACT_PASS | reject terrain_relief nan
+WG6_CONTRACT_PASS | reject terrain_relief inf
+WG6_CONTRACT_PASS | reject terrain_relief 3
+WG6_CONTRACT_PASS | reject ridge_count -100
+WG6_CONTRACT_PASS | reject ridge_count 99999
+WG6_CONTRACT_PASS | reject ridge_count nan
+WG6_CONTRACT_PASS | reject ridge_count inf
+WG6_CONTRACT_PASS | reject ridge_count 3
+WG6_CONTRACT_PASS | reject depression_count -100
+WG6_CONTRACT_PASS | reject depression_count 99999
+WG6_CONTRACT_PASS | reject depression_count nan
+WG6_CONTRACT_PASS | reject depression_count inf
+WG6_CONTRACT_PASS | reject depression_count 3
+WG6_CONTRACT_PASS | reject center_clearance -100
+WG6_CONTRACT_PASS | reject center_clearance 99999
+WG6_CONTRACT_PASS | reject center_clearance nan
+WG6_CONTRACT_PASS | reject center_clearance inf
+WG6_CONTRACT_PASS | reject center_clearance 3
+WG6_CONTRACT_PASS | reject bank_bias -100
+WG6_CONTRACT_PASS | reject bank_bias 99999
+WG6_CONTRACT_PASS | reject bank_bias nan
+WG6_CONTRACT_PASS | reject bank_bias inf
+WG6_CONTRACT_PASS | reject bank_bias 3
+WG6_CONTRACT_PASS | unknown/private field rejected
+WG6_CONTRACT_PASS | oversized map rejected before allocation
+WG6_CONTRACT_PASS | pure-value terrain plan fern
+WG6_CONTRACT_PASS | deterministic plan fern
+WG6_CONTRACT_PASS | profile budgets control macro composition fern
+WG6_CONTRACT_PASS | same style different seed changes geometry fern
+WG6_CONTRACT_PASS | ecology streams cannot perturb terrain fern
+WG6_CONTRACT_PASS | terrain cannot perturb existing atmosphere/foliage fern
+WG6_CONTRACT_PASS | broad smooth bounded relief fern far
+WG6_CONTRACT_PASS | broad smooth bounded relief fern middle
+WG6_CONTRACT_PASS | broad smooth bounded relief fern near
+WG6_CONTRACT_PASS | clear central bed fern
+WG6_CONTRACT_PASS | deterministic RGBA fern far
+WG6_CONTRACT_PASS | upper water/HUD stays free of terrain fern far
+WG6_CONTRACT_PASS | deterministic RGBA fern bed
+WG6_CONTRACT_PASS | upper water/HUD stays free of terrain fern bed
+WG6_CONTRACT_PASS | terrain wrapper retains original plant/light descriptors fern
+WG6_CONTRACT_PASS | comparison mode has a distinct cache key fern
+WG6_CONTRACT_PASS | WG6 leaves existing layer pixels intact fern water
+WG6_CONTRACT_PASS | WG6 leaves existing layer pixels intact fern surface
+WG6_CONTRACT_PASS | WG6 leaves existing layer pixels intact fern terrain
+WG6_CONTRACT_PASS | WG6 leaves existing layer pixels intact fern foreground
+WG6_CONTRACT_PASS | existing animation atlas remains byte-identical fern
+WG6_CONTRACT_PASS | only intended ground layers change fern
+WG6_CONTRACT_PASS | terrain-only has a distinct cache key fern
+WG6_CONTRACT_PASS | pure-value terrain plan ribbon
+WG6_CONTRACT_PASS | deterministic plan ribbon
+WG6_CONTRACT_PASS | profile budgets control macro composition ribbon
+WG6_CONTRACT_PASS | same style different seed changes geometry ribbon
+WG6_CONTRACT_PASS | ecology streams cannot perturb terrain ribbon
+WG6_CONTRACT_PASS | terrain cannot perturb existing atmosphere/foliage ribbon
+WG6_CONTRACT_PASS | broad smooth bounded relief ribbon far
+WG6_CONTRACT_PASS | broad smooth bounded relief ribbon middle
+WG6_CONTRACT_PASS | broad smooth bounded relief ribbon near
+WG6_CONTRACT_PASS | clear central bed ribbon
+WG6_CONTRACT_PASS | deterministic RGBA ribbon far
+WG6_CONTRACT_PASS | upper water/HUD stays free of terrain ribbon far
+WG6_CONTRACT_PASS | deterministic RGBA ribbon bed
+WG6_CONTRACT_PASS | upper water/HUD stays free of terrain ribbon bed
+WG6_CONTRACT_PASS | terrain wrapper retains original plant/light descriptors ribbon
+WG6_CONTRACT_PASS | comparison mode has a distinct cache key ribbon
+WG6_CONTRACT_PASS | WG6 leaves existing layer pixels intact ribbon water
+WG6_CONTRACT_PASS | WG6 leaves existing layer pixels intact ribbon surface
+WG6_CONTRACT_PASS | WG6 leaves existing layer pixels intact ribbon terrain
+WG6_CONTRACT_PASS | WG6 leaves existing layer pixels intact ribbon foreground
+WG6_CONTRACT_PASS | existing animation atlas remains byte-identical ribbon
+WG6_CONTRACT_PASS | only intended ground layers change ribbon
+WG6_CONTRACT_PASS | terrain-only has a distinct cache key ribbon
+WG6_CONTRACT_PASS | pure-value terrain plan lily
+WG6_CONTRACT_PASS | deterministic plan lily
+WG6_CONTRACT_PASS | profile budgets control macro composition lily
+WG6_CONTRACT_PASS | same style different seed changes geometry lily
+WG6_CONTRACT_PASS | ecology streams cannot perturb terrain lily
+WG6_CONTRACT_PASS | terrain cannot perturb existing atmosphere/foliage lily
+WG6_CONTRACT_PASS | broad smooth bounded relief lily far
+WG6_CONTRACT_PASS | broad smooth bounded relief lily middle
+WG6_CONTRACT_PASS | broad smooth bounded relief lily near
+WG6_CONTRACT_PASS | clear central bed lily
+WG6_CONTRACT_PASS | deterministic RGBA lily far
+WG6_CONTRACT_PASS | upper water/HUD stays free of terrain lily far
+WG6_CONTRACT_PASS | deterministic RGBA lily bed
+WG6_CONTRACT_PASS | upper water/HUD stays free of terrain lily bed
+WG6_CONTRACT_PASS | terrain wrapper retains original plant/light descriptors lily
+WG6_CONTRACT_PASS | comparison mode has a distinct cache key lily
+WG6_CONTRACT_PASS | WG6 leaves existing layer pixels intact lily water
+WG6_CONTRACT_PASS | WG6 leaves existing layer pixels intact lily surface
+WG6_CONTRACT_PASS | WG6 leaves existing layer pixels intact lily terrain
+WG6_CONTRACT_PASS | WG6 leaves existing layer pixels intact lily foreground
+WG6_CONTRACT_PASS | existing animation atlas remains byte-identical lily
+WG6_CONTRACT_PASS | only intended ground layers change lily
+WG6_CONTRACT_PASS | terrain-only has a distinct cache key lily
+WG6_CONTRACT_PASS | pure-value terrain plan root
+WG6_CONTRACT_PASS | deterministic plan root
+WG6_CONTRACT_PASS | profile budgets control macro composition root
+WG6_CONTRACT_PASS | same style different seed changes geometry root
+WG6_CONTRACT_PASS | ecology streams cannot perturb terrain root
+WG6_CONTRACT_PASS | terrain cannot perturb existing atmosphere/foliage root
+WG6_CONTRACT_PASS | broad smooth bounded relief root far
+WG6_CONTRACT_PASS | broad smooth bounded relief root middle
+WG6_CONTRACT_PASS | broad smooth bounded relief root near
+WG6_CONTRACT_PASS | clear central bed root
+WG6_CONTRACT_PASS | deterministic RGBA root far
+WG6_CONTRACT_PASS | upper water/HUD stays free of terrain root far
+WG6_CONTRACT_PASS | deterministic RGBA root bed
+WG6_CONTRACT_PASS | upper water/HUD stays free of terrain root bed
+WG6_CONTRACT_PASS | terrain wrapper retains original plant/light descriptors root
+WG6_CONTRACT_PASS | comparison mode has a distinct cache key root
+WG6_CONTRACT_PASS | WG6 leaves existing layer pixels intact root water
+WG6_CONTRACT_PASS | WG6 leaves existing layer pixels intact root surface
+WG6_CONTRACT_PASS | WG6 leaves existing layer pixels intact root terrain
+WG6_CONTRACT_PASS | WG6 leaves existing layer pixels intact root foreground
+WG6_CONTRACT_PASS | existing animation atlas remains byte-identical root
+WG6_CONTRACT_PASS | only intended ground layers change root
+WG6_CONTRACT_PASS | terrain-only has a distinct cache key root
+WG6_CONTRACT_PASS | four distinct raster compositions
+WG6_CONTRACT_PASS | generation/raster/output edits do not mutate inputs
+WG6_CONTRACT_PASS | authority geometry and interaction target order remain byte-identical
+WG6_CONTRACT | passed=131 | failed=0
