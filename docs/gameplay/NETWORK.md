@@ -1,6 +1,6 @@
-# 0.26.0 双人联机（开发版）
+# 0.26.0 双人联机
 
-本文对应 0.26.0 源码。双方同步同一 feature/dev 源码并用 Godot 4.7.2 运行；本轮不生成新 ZIP，公开 Windows 包仍为 0.25.5，不要与当前源码混连。P4.1 没有增加 map_ref 握手或迁移 Snapshot。
+本文对应 0.26.0 源码和公开 Windows 试玩包。双方从项目首页下载 0.26.0 ZIP，解压后运行，不要与旧版本混连。P4.1 没有增加 map_ref 握手或迁移 Snapshot。
 
 抄网操作、模块及规则迁移见 [NET-ARCHITECTURE.md](../architecture/NET-ARCHITECTURE.md)。
 
