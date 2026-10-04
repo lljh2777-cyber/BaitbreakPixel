@@ -58,6 +58,24 @@ def archive_files(archive: bytes) -> dict[str, str]:
         return {entry.name: sha(tar.extractfile(entry).read()) for entry in tar.getmembers() if entry.isfile()}
 
 
+def extract_baseline_archive(tar: tarfile.TarFile, destination: Path) -> None:
+    """Extract only contained regular files/directories on Python 3.11 too."""
+    root = destination.resolve()
+    entries = tar.getmembers()
+    for entry in entries:
+        target = (root / entry.name).resolve()
+        if (not target.is_relative_to(root) or "\\" in entry.name or ":" in entry.name
+                or not (entry.isfile() or entry.isdir())):
+            raise ValueError(f'Unsafe baseline archive entry: {entry.name}')
+    for entry in entries:
+        target = root / entry.name
+        if entry.isdir():
+            target.mkdir(parents=True, exist_ok=True)
+        else:
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(tar.extractfile(entry).read())
+
+
 def freeze(repo: Path, destination: Path, lock: dict) -> dict:
     archive = tracked_archive(repo)
     hashes = archive_files(archive)
@@ -75,7 +93,7 @@ def freeze(repo: Path, destination: Path, lock: dict) -> dict:
     else:
         destination.mkdir(parents=True)
         with tarfile.open(fileobj=io.BytesIO(archive), mode='r:') as tar:
-            tar.extractall(destination, filter='data')
+            extract_baseline_archive(tar, destination)
         write_json(destination / 'baseline-manifest.json', expected)
     verify_frozen(destination, hashes)
     return expected

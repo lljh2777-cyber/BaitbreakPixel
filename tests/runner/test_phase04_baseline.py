@@ -1,6 +1,8 @@
 """Fail-closed checks for the independent P4.0 baseline comparison driver."""
 from __future__ import annotations
 from pathlib import Path
+import io
+import tarfile
 import sys
 import tempfile
 import unittest
@@ -8,6 +10,38 @@ import unittest
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'tools'))
 import phase04_compare_baseline as probe
+
+
+class ArchiveExtractionTests(unittest.TestCase):
+    def archive(self, name, kind=tarfile.REGTYPE):
+        data = io.BytesIO()
+        with tarfile.open(fileobj=data, mode='w') as archive:
+            entry = tarfile.TarInfo(name)
+            entry.type = kind
+            if kind == tarfile.REGTYPE:
+                entry.size = 4
+                archive.addfile(entry, io.BytesIO(b'test'))
+            else:
+                entry.linkname = 'outside'
+                archive.addfile(entry)
+        data.seek(0)
+        return tarfile.open(fileobj=data)
+
+    def test_regular_nested_files_preserve_bytes(self):
+        with tempfile.TemporaryDirectory() as directory, self.archive('scripts/example.gd') as archive:
+            root = Path(directory)
+            probe.extract_baseline_archive(archive, root)
+            self.assertEqual((root / 'scripts/example.gd').read_bytes(), b'test')
+
+    def test_rejects_traversal_absolute_windows_paths_and_links(self):
+        for name, kind in [('..' + '/outside', tarfile.REGTYPE), ('/outside', tarfile.REGTYPE),
+                           ('C:/outside', tarfile.REGTYPE), ('scripts\\outside', tarfile.REGTYPE),
+                           ('link', tarfile.SYMTYPE), ('link', tarfile.LNKTYPE)]:
+            with self.subTest(name=name, kind=kind), tempfile.TemporaryDirectory() as directory, self.archive(name, kind) as archive:
+                root = Path(directory)
+                with self.assertRaises(ValueError):
+                    probe.extract_baseline_archive(archive, root)
+                self.assertEqual(list(root.iterdir()), [])
 
 
 class RuntimeContractTests(unittest.TestCase):
