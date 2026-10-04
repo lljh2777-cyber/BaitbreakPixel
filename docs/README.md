@@ -1,3 +1,4 @@
+- [0.26.0 地图数据契约](architecture/MAP-DEFINITION-CONTRACT.md) · [依赖审计](architecture/MAP-DEPENDENCY-AUDIT.md) · [验证与下一轮门](test-reports/PHASE04-MAP-FOUNDATION-0.26.0.md)
 - [0.25.5 整体生态平衡与最终人工门](test-reports/PHASE03-ECOLOGY-VALIDATION-0.25.5.md)
 - [0.25.4 上钩开局与 NPC 拉起修正](test-reports/PHASE03-HOOK-FIX-0.25.4.md)
 - [0.25.3 钓错目标架构](architecture/PHASE03-WRONG-HOOK-TARGET.md) · [验证与人工试玩](test-reports/PHASE03-HOOK-VALIDATION-0.25.3.md)

@@ -679,6 +679,21 @@
       "status": "current",
       "mode": "headless",
       "timeout_seconds": 180
+    },
+    "phase04_map_definition": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "phase04_map_validator": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
+    "phase04_map_baseline": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
     }
   }
 }
