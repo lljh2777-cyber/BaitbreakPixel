@@ -1,0 +1,337 @@
+{
+  "success": true,
+  "baseline_commit": "9d11fe8ae4bb7a49abe5fcd0e6f518ed0ebd3a92",
+  "baseline_tree": "377f935c054e6204d0b84075ef7b69cb72b5d6e1",
+  "archive_sha256": "eee55fe8c1df8b85cf941433591be4a02ad4eb65ef0c0009382cd2339399a2ee",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "engine_sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+  "source_stable": true,
+  "comparison": {
+    "success": true,
+    "differences": [],
+    "scenario_count": 8,
+    "input_ticks_per_build": 2100,
+    "checkpoint_count_per_build": 86,
+    "variant_byte_fields": [
+      "every_tick_authority",
+      "snapshot",
+      "FishObservation visual and decision",
+      "NPC social observations",
+      "NPC private state",
+      "bait",
+      "Hook/QTE/wrap",
+      "net",
+      "round stats",
+      "fish/angler wire",
+      "compressed authority"
+    ],
+    "known_baseline_fish_wire_rejections": []
+  },
+  "baseline_assertions": {
+    "passed": 1690,
+    "failed": 0
+  },
+  "current_assertions": {
+    "passed": 1690,
+    "failed": 0
+  },
+  "standalone_repeated_suite": {
+    "passed": 3388,
+    "failed": 0,
+    "summary": "artifacts/p40-standalone-official-472/summary.json"
+  },
+  "python_defense_tests": {
+    "passed": 7,
+    "failed": 0,
+    "log": "artifacts/p40-python-final.log"
+  },
+  "runtime_lock": {
+    "file_count": 130,
+    "identical_count": 126,
+    "metadata_only": [
+      {
+        "path": "project.godot",
+        "baseline_sha256": "8444233f1943ab26afa3ae8903c4e1bc37f0d682bbcb32d5e653c27dd4983916",
+        "current_sha256": "0f219469b4d330e7b86f8f99605685127d5e2573d4fbdea2c3aff6ef3a33f6e0",
+        "status": "exact_release_metadata_only"
+      },
+      {
+        "path": "scripts/menu.gd",
+        "baseline_sha256": "95eadf69c62a9b3aa35bad9de9832bcba20f057fbfb0c6b172c6e0bb906dfc27",
+        "current_sha256": "1f3e1a9aa70cc8d4415f2d02e11db8afad7f92f8b2f0ae34019be3e4d64a916c",
+        "status": "exact_release_metadata_only"
+      },
+      {
+        "path": "scripts/network_protocol.gd",
+        "baseline_sha256": "8a46e515cdb7335a597d0660bb810f1f6e15ac39dc24dea270f7481f26b5e98b",
+        "current_sha256": "5f1a8bfdc588702fdc3ce090cff2f2e9c6738339f6b17d9e8b70c47db6f28fe6",
+        "status": "exact_release_metadata_only"
+      },
+      {
+        "path": "scripts/pond.gd",
+        "baseline_sha256": "b5abd1ec05346de5248c7d696e5de60167e3d13521dad9708b4f437f59636127",
+        "current_sha256": "a9e289dfdbeca09713ebd408a78850a20675efe2e7f371f573da75157fe821e4",
+        "status": "exact_release_metadata_only"
+      }
+    ],
+    "new_map_sources": [
+      "scripts/maps/map_definition.gd",
+      "scripts/maps/map_definition.gd.uid",
+      "scripts/maps/map_registry.gd",
+      "scripts/maps/map_registry.gd.uid",
+      "scripts/maps/map_validator.gd",
+      "scripts/maps/map_validator.gd.uid",
+      "scripts/maps/pond_v2_map.gd",
+      "scripts/maps/pond_v2_map.gd.uid"
+    ],
+    "important_pairs": [
+      {
+        "path": "scripts/angler_network_observation.gd",
+        "baseline_sha256": "40ce0453d366b08da1dd344dceaf60177c794f452ed6e18af96c889665cfb0a7",
+        "current_sha256": "40ce0453d366b08da1dd344dceaf60177c794f452ed6e18af96c889665cfb0a7",
+        "status": "identical"
+      },
+      {
+        "path": "scripts/fish_network_observation.gd",
+        "baseline_sha256": "61231951e4b4e005233d9be8ba28ea7dea1d2dd63ec79a31519846808cb85114",
+        "current_sha256": "61231951e4b4e005233d9be8ba28ea7dea1d2dd63ec79a31519846808cb85114",
+        "status": "identical"
+      },
+      {
+        "path": "scripts/fish_observation.gd",
+        "baseline_sha256": "155fcf155c9fcfa32ec125455b6ee067a0bfd7e9df95238d36bd61cb1858d00d",
+        "current_sha256": "155fcf155c9fcfa32ec125455b6ee067a0bfd7e9df95238d36bd61cb1858d00d",
+        "status": "identical"
+      },
+      {
+        "path": "scripts/net_simulation.gd",
+        "baseline_sha256": "4a50a169994284b143b99a1808ea85443f51eddcd381a865026e8b69e012f5f5",
+        "current_sha256": "4a50a169994284b143b99a1808ea85443f51eddcd381a865026e8b69e012f5f5",
+        "status": "identical"
+      },
+      {
+        "path": "scripts/network_protocol.gd",
+        "baseline_sha256": "8a46e515cdb7335a597d0660bb810f1f6e15ac39dc24dea270f7481f26b5e98b",
+        "current_sha256": "5f1a8bfdc588702fdc3ce090cff2f2e9c6738339f6b17d9e8b70c47db6f28fe6",
+        "status": "exact_release_metadata_only"
+      },
+      {
+        "path": "scripts/network_session.gd",
+        "baseline_sha256": "2a5c14f897389b7dd1b9eb0dfc8b0e2dc8efb28097fa13a8cab6c2b743dda3ab",
+        "current_sha256": "2a5c14f897389b7dd1b9eb0dfc8b0e2dc8efb28097fa13a8cab6c2b743dda3ab",
+        "status": "identical"
+      },
+      {
+        "path": "scripts/pixel_art.gd",
+        "baseline_sha256": "f294ca6a656ba43fb793aaaa2d738fd3824fc89630086898a364e29a35d2a3ed",
+        "current_sha256": "f294ca6a656ba43fb793aaaa2d738fd3824fc89630086898a364e29a35d2a3ed",
+        "status": "identical"
+      },
+      {
+        "path": "scripts/pond_camera.gd",
+        "baseline_sha256": "2170a1430fe074b9f6113e196a25d77b76eaffaee678e4a6f03969a33a8e3614",
+        "current_sha256": "2170a1430fe074b9f6113e196a25d77b76eaffaee678e4a6f03969a33a8e3614",
+        "status": "identical"
+      },
+      {
+        "path": "scripts/pond_layout.gd",
+        "baseline_sha256": "3d9405536a8a02e5002dbe9ed2d0cab1591ac04f0b9628050c1881106871174f",
+        "current_sha256": "3d9405536a8a02e5002dbe9ed2d0cab1591ac04f0b9628050c1881106871174f",
+        "status": "identical"
+      },
+      {
+        "path": "scripts/pond_view.gd",
+        "baseline_sha256": "2b078fd396840ae621542c0f76c2d82f197228756be6a52c7e6777ff3ff3fcea",
+        "current_sha256": "2b078fd396840ae621542c0f76c2d82f197228756be6a52c7e6777ff3ff3fcea",
+        "status": "identical"
+      },
+      {
+        "path": "scripts/round_stats.gd",
+        "baseline_sha256": "e160da86d8c31ee86c8dfdcf53caf122e97d3c03a019b97c8b984622d7c4a02f",
+        "current_sha256": "e160da86d8c31ee86c8dfdcf53caf122e97d3c03a019b97c8b984622d7c4a02f",
+        "status": "identical"
+      },
+      {
+        "path": "scripts/shore_view.gd",
+        "baseline_sha256": "849f8e420783d01810361be8d128efe1bc3fe342cdff75dd2db0b6454d82ce2b",
+        "current_sha256": "849f8e420783d01810361be8d128efe1bc3fe342cdff75dd2db0b6454d82ce2b",
+        "status": "identical"
+      },
+      {
+        "path": "scripts/world_simulation.gd",
+        "baseline_sha256": "766f5a1e68899f433f7e491354e7d1c0f739d8af649f6dd8049eeb13274e1860",
+        "current_sha256": "766f5a1e68899f433f7e491354e7d1c0f739d8af649f6dd8049eeb13274e1860",
+        "status": "identical"
+      },
+      {
+        "path": "scripts/world_snapshot.gd",
+        "baseline_sha256": "2a9702e3d9f6f2060165175666f83849ed36ecc52766e8a314316d4350ea924e",
+        "current_sha256": "2a9702e3d9f6f2060165175666f83849ed36ecc52766e8a314316d4350ea924e",
+        "status": "identical"
+      }
+    ]
+  },
+  "diagnostic": {
+    "summary": "artifacts/p40-net-batch-publication-472/summary.json",
+    "probe": "tests/fixtures/phase04/net_batch_probe.gd",
+    "reproduced_identically": true,
+    "result": "Same-tick toggle plus two endpoints leaves net_action.age Int; fish wire valid/apply false through tick119. Separate-tick events maintain Float and valid/apply true. Authority and angler restore are true in both cases.",
+    "impact": "network_session._receive_state stops the round if a fish client receives this invalid state. Trigger incidence and real ENet delivery were not measured. Existing bug; no P4 runtime fix."
+  },
+  "artifacts": {
+    "comparison": "artifacts/p40-comparison-publication-472/summary.json",
+    "runtime_hashes": "artifacts/p40-comparison-publication-472/runtime-contract.json",
+    "baseline_trace": "artifacts/p40-comparison-publication-472/baseline.json",
+    "current_trace": "artifacts/p40-comparison-publication-472/current.json",
+    "engine_mismatch_negative": "artifacts/p40-engine-mismatch-negative/summary.json"
+  },
+  "scenario_outcomes": [
+    {
+      "name": "ambient_survival",
+      "outcome": {
+        "hook_events": 0,
+        "match_over": false,
+        "net_catches": 0,
+        "next_bait_id": 5,
+        "next_fish_id": 4,
+        "npc_food": 5.7,
+        "reason": "",
+        "score": 0.0,
+        "wrap_good": 0,
+        "wrong_catches": 0
+      },
+      "input_sha256": "16a5278b0b23d1658bfca47e6badd257479a37cc52a3fbf9338c0a7b254e0f70",
+      "authority_sha256": "8ce1cf1e557c8134554fa4b9f8a43454f3e3f213fbca463ba2e43d60492d4f22"
+    },
+    {
+      "name": "ambient_duel",
+      "outcome": {
+        "hook_events": 0,
+        "match_over": false,
+        "net_catches": 0,
+        "next_bait_id": 6,
+        "next_fish_id": 6,
+        "npc_food": 0.0,
+        "reason": "",
+        "score": 0.0,
+        "wrap_good": 0,
+        "wrong_catches": 0
+      },
+      "input_sha256": "2b08a5436229e356f4c600f8bddea8f010d4aed880f2f3fba8162454381fa78e",
+      "authority_sha256": "c27f7fd07a052cdb547842393e58c97213e080f2ccb1463b9caebf232e6cb34b"
+    },
+    {
+      "name": "feeding_refill",
+      "outcome": {
+        "hook_events": 0,
+        "match_over": false,
+        "net_catches": 0,
+        "next_bait_id": 6,
+        "next_fish_id": 5,
+        "npc_food": 4.0,
+        "reason": "",
+        "score": 4.0,
+        "wrap_good": 0,
+        "wrong_catches": 0
+      },
+      "input_sha256": "1bed7c0aae0a87d49fe156e7e982bc26aac722da441dd525f21f81497304c942",
+      "authority_sha256": "9e5265d6a1f68170aa4508d7fd815632aa8f16475190e4b83dc01d3aa4e1d5d9"
+    },
+    {
+      "name": "player_entry",
+      "outcome": {
+        "hook_events": 1,
+        "match_over": false,
+        "net_catches": 0,
+        "next_bait_id": 5,
+        "next_fish_id": 2,
+        "npc_food": 0.0,
+        "reason": "",
+        "score": 0.0,
+        "wrap_good": 0,
+        "wrong_catches": 0
+      },
+      "input_sha256": "d6196a2c0b71310cd91f4aee9cf5c819ad4c912acfa3ffbc5b8cf1f6576e0479",
+      "authority_sha256": "7b17dc757cecdf749987c32d0a66edc17c5648105e34dc128e6df7f233a5b2e8"
+    },
+    {
+      "name": "player_wrap",
+      "outcome": {
+        "hook_events": 1,
+        "match_over": false,
+        "net_catches": 0,
+        "next_bait_id": 5,
+        "next_fish_id": 2,
+        "npc_food": 0.0,
+        "reason": "",
+        "score": 0.0,
+        "wrap_good": 1,
+        "wrong_catches": 0
+      },
+      "input_sha256": "944ea6f8298532fdb82e854b4b30f92d5c3c3f183f032e52455387dc3905c913",
+      "authority_sha256": "4cf8144394253582fe4f6ec2bf74924f9386bd2ca48cd3949935eb924d700fbd"
+    },
+    {
+      "name": "npc_capture_respawn",
+      "outcome": {
+        "hook_events": 0,
+        "match_over": false,
+        "net_catches": 0,
+        "next_bait_id": 6,
+        "next_fish_id": 6,
+        "npc_food": 0.0,
+        "reason": "",
+        "score": 0.0,
+        "wrap_good": 0,
+        "wrong_catches": 1
+      },
+      "input_sha256": "8a99ced7c33c44bffec62b8767e420a460fb6d769e3fa9c6f1b138fe2d0370e7",
+      "authority_sha256": "3ab80a9cfb96ead165f397d75f3d2b54ba4d579e09d964b9416175e95654f059"
+    },
+    {
+      "name": "net_player",
+      "outcome": {
+        "hook_events": 0,
+        "match_over": false,
+        "net_catches": 1,
+        "next_bait_id": 5,
+        "next_fish_id": 5,
+        "npc_food": 0.0,
+        "reason": "",
+        "score": 0.0,
+        "wrap_good": 0,
+        "wrong_catches": 0
+      },
+      "input_sha256": "ec9f56aabb93e152774bbf01bff9c5d3d83cc33d6528c571ce587c31cac0e324",
+      "authority_sha256": "7edca9a041b2820de89e3b876c9f467b7d58ca3a3964b00f72d7b79923ceb150"
+    },
+    {
+      "name": "net_npc_only",
+      "outcome": {
+        "hook_events": 0,
+        "match_over": false,
+        "net_catches": 0,
+        "next_bait_id": 5,
+        "next_fish_id": 5,
+        "npc_food": 0.0,
+        "reason": "",
+        "score": 0.0,
+        "wrap_good": 0,
+        "wrong_catches": 0
+      },
+      "input_sha256": "ec9f56aabb93e152774bbf01bff9c5d3d83cc33d6528c571ce587c31cac0e324",
+      "authority_sha256": "0c967cec59e0aae336478b91490b226c921159c70b334770799531a5e81dd5d5"
+    }
+  ],
+  "raw_trace_files": {
+    "baseline.json": {
+      "sha256": "03261462a3dfe80659e625526b615988491dc8757fd75a711b9da23d91c94320",
+      "bytes": 124222
+    },
+    "current.json": {
+      "sha256": "03261462a3dfe80659e625526b615988491dc8757fd75a711b9da23d91c94320",
+      "bytes": 124222
+    }
+  },
+  "reproduce": "python3 tools/phase04_compare_baseline.py --godot <Godot4.7.2> --require-engine 4.7.2 --output artifacts/p40-reproduction"
+}

@@ -1,3 +1,12 @@
+# 2026-10-04 · v0.26.0 P4.0 + P4.1 地图数据基础
+
+- 用户明确通过 Phase 3；新路线先地图抽象，再交互地图生成，多竿/长期记忆后移
+- 冻结最新 0.25.5 基线并完整审计静态地图依赖；新增独立 value-only pond_v2 contract v1、稳定 hash、严格 validator 和仅内置地图 registry
+- 保留 18 木石 + 22 草目标顺序、6 饵位、3 个独立 GRASS 移动/观察区域、fade groups 和全部视觉 metadata
+- 运行游戏仍使用旧 PondLayout；不迁移 World、schema15、网络结构或画面，网络仅 exact-build 更新至 0.26.0
+- 仅提交推送，不创建试玩包或 Release；用户发布的 0.25.5 及 Windows 路径修正保留
+- [实施、验证与下一轮门](../test-reports/PHASE04-MAP-FOUNDATION-0.26.0.md)；完成后 STOP，P4.2 Authority MapContext 等待确认
+
 # 2026-10-04 · v0.25.5 Windows 试玩包发布
 
 已发布 v0.25.5，包含整体生态验证与最终试玩清单，玩法参数沿用 0.25.4。Windows 定向源码回归、七个针对性独立包套件和 EXE 启动通过。Phase 3 最终人工试玩门仍开放。验证与校验值见[发布记录](../test-reports/GITHUB-RELEASE-0.25.5.md)。后文源码阶段记录保持原样。

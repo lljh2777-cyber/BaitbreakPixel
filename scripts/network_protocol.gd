@@ -3,7 +3,7 @@ extends RefCounted
 const VERSION := 1
 const Layout=preload("res://scripts/pond_layout.gd")
 # Peers must share capture timing and the round-statistics snapshot schema.
-const BUILD := "0.25.5"
+const BUILD := "0.26.0"
 const DEFAULT_PORT := 24712
 const MAX_PACKET := 196608
 const MAX_STATE := 1048576

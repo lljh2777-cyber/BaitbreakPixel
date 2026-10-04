@@ -1,0 +1,48 @@
+{
+  "reproduced_identically": true,
+  "baseline_commit": "9d11fe8ae4bb7a49abe5fcd0e6f518ed0ebd3a92",
+  "engine": "4.7.2-stable (official)",
+  "probe_sha256": "f08aef18a9ba00e7190cc9493f94a2df61c5eaba2df9544292a86ae8f8d9b232",
+  "runs": {
+    "baseline": {
+      "command": [
+        "/workspace/scratch/5dc5a43a1104/baitbreak-toolchain-472/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/workspace/scratch/5dc5a43a1104/BaitbreakPixel/artifacts/p40-frozen-baseline-9d11fe8",
+        "--script",
+        "/workspace/scratch/5dc5a43a1104/BaitbreakPixel/artifacts/p40-net-batch-publication-472/net_batch_probe.gd",
+        "--",
+        "--test-profile",
+        "--output=/workspace/scratch/5dc5a43a1104/BaitbreakPixel/artifacts/p40-net-batch-publication-472/baseline.json"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 1.217,
+      "launch_error": false
+    },
+    "current": {
+      "command": [
+        "/workspace/scratch/5dc5a43a1104/baitbreak-toolchain-472/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/workspace/scratch/5dc5a43a1104/BaitbreakPixel",
+        "--script",
+        "/workspace/scratch/5dc5a43a1104/BaitbreakPixel/artifacts/p40-net-batch-publication-472/net_batch_probe.gd",
+        "--",
+        "--test-profile",
+        "--output=/workspace/scratch/5dc5a43a1104/BaitbreakPixel/artifacts/p40-net-batch-publication-472/current.json"
+      ],
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 0.917,
+      "launch_error": false
+    }
+  },
+  "result": "Same-tick toggle plus two endpoints leaves net_action.age Int; fish wire valid/apply false through tick119. Separate-tick events maintain Float and valid/apply true. Authority and angler restore are true in both cases.",
+  "impact": "network_session._receive_state stops the round if a fish client receives this invalid state. Trigger incidence and real ENet delivery were not measured. Existing bug; no P4 runtime fix."
+}

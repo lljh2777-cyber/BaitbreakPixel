@@ -13,7 +13,7 @@ Windows 可使用 `D:\python\python.exe`；用 `--godot "引擎可执行文件�
 
 ## 注册表与状态
 
-[`suite_registry.json`](suite_registry.json) 显式登记全部 123 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
+[`suite_registry.json`](suite_registry.json) 显式登记全部 126 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
 
 - `current`：当前有效的回归门禁；不按文件名版本新旧决定。`--profile current` 运行无窗口套件，`--profile native` 运行图形套件。已重新验证的 effort、net_animation、rules_network 等较早版本仍在当前门禁中
 - `historical`：当前检出复现了失败的诊断套件。保留原断言，失败仍返回非零；这不是“已证明所有断言过时”，更不是通过。具体原因和结果见[维护报告](../docs/test-reports/TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md)
@@ -154,3 +154,14 @@ Authority schema15；旧 0.25.2 缺少 Hook 生命周期字段的快照明确拒
 `phase03_ecology_balance` 覆盖正常 2/3/4 条密度下的集成生态、暂停/回放/隐私和连续捕获补鱼。默认仍为 3；不新增 NPC 抄网或多人胜利阵营。
 
 `tools/phase03_run_ecology.py` 运行四种生态状态 × 两种规则 × 挑战/练习 × 三种既有摄食策略的真实 60 Hz 配对矩阵，显式保留策略适配、未终局、补给准入、NPC 占线期间玩家摄食和成功补鱼。`phase03_ecology_analysis.py` 按种子整簇重采样，不把同种子多行当独立样本；完整范围见 [预声明协议](../tools/phase03_ecology_protocol.md)。通过不等于真人体验验收。
+
+
+## 0.26.0 · P4.0 + P4.1 地图数据基础
+
+- `phase04_map_definition`：独立 pond_v2 值 / 40 targets / fade groups / coils / GRASS 等价；固定 canonical hash、重排稳定、Authority / Presentation hash 边界、深层返回值隔离和零 RNG 消耗
+- `phase04_map_validator`：精确 schema、有限几何、四个最少生命周期饵位、非法 polygon / ID / 引用 / hash、循环 / Object / Callable / script-typed containers、输入不可变和 RNG 纯度
+- `phase04_map_baseline`：八个确定性场景的现行模拟 / snapshot / FishObservation / wire 守卫；这是 standalone 自检，不等于跨版本比较
+- `python3 tools/phase04_compare_baseline.py --godot <Godot4.7.2路径>`：从锁定的 0.25.5 Git tree 冻结基线，双端运行同一外部 harness，对照每 tick Authority 字节哈希、RNG 和详细 checkpoint；只允许精确声明的版本文字改动
+- `python3 -m unittest discover -s tests/runner -v`：包含不可变基线、源码 allowlist、harness 来源与失败拒绝检查
+
+游戏仍使用旧 PondLayout；schema15 / 网络格式 / 渲染不迁移。测试 fixture 只在 tests 中构造，Registry 不注册。历史全仓 globs 不计入当前通过；P4.2 与后续整体迁移未开始。范围、已知继承问题与人工抽查见 [0.26.0 报告](../docs/test-reports/PHASE04-MAP-FOUNDATION-0.26.0.md)。

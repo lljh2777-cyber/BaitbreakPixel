@@ -2,12 +2,12 @@
 
 一个 2D 像素风格的人鱼对抗游戏：小鱼在水下觅食、缠线和逃脱，钓鱼人在岸边控竿、收放线与抄网。支持单机挑战、自由练习和一人对一鱼的局域网联机。
 
-**当前源码：0.25.5（P3.5 整体生态平衡，等待最终人工试玩）** · Godot 4.7.2
+**当前源码：0.26.0（P4.0 + P4.1 地图数据基础）** · Godot 4.7.2
 **当前公开 Windows 试玩包：0.25.5**，历史发行记录继续保留。
 
 用户已确认 0.25.2 社会线索试玩通过。0.25.3 让 NPC 真实误咬钩、自动挣扎、逃脱、断线或被拉起。钓错 NPC 不结束比赛；玩家可趁机吃饵、回巢，钓鱼人需要重新部署。NPC 捕获后暂离生态，延迟生成新 ID 的鱼。
 
-用户已允许进入 P3.5。0.25.5 保留三条 NPC、既有抢食/社会反应、0.25.4 玩家 QTE 修正与 NPC 收近节奏，以跨模式、跨摄食策略的配对统计及完整回归检查整体生态，详见[生态平衡报告与最终试玩清单](docs/test-reports/PHASE03-ECOLOGY-VALIDATION-0.25.5.md)。0.25.5 Windows ZIP 已构建、验证并公开发布；解压后运行 `BaitbreakPixel.exe`，核对菜单显示 0.25.5。[钓错目标架构](docs/architecture/PHASE03-WRONG-HOOK-TARGET.md)及历史验证保留。完成后 STOP 等待 Phase 3 最终人工确认；NPC 抄网暂缓，Phase 4 多竿仍锁定。
+用户于 2026-10-04 确认“P3通过，开始下一阶段”。新路线为 Phase 4 地图抽象 → Phase 5 交互地图生成，多竿与长期记忆后移。0.26.0 仅完成 P4.0 依赖审计与 P4.1 MapDefinition / canonical hash / Validator / Registry；游戏仍由原 PondLayout 驱动，World、schema15、网络结构和画面不迁移，保留既有 QTE 修正与 NPC 收近节奏。详见[地图数据契约](docs/architecture/MAP-DEFINITION-CONTRACT.md)、[完整依赖审计](docs/architecture/MAP-DEPENDENCY-AUDIT.md)与[验证及下一轮门](docs/test-reports/PHASE04-MAP-FOUNDATION-0.26.0.md)。本轮只提交推送，不生成包或 Release；公开 Windows 试玩包继续为 0.25.5。完成后停在 P4.1，等待确认再进入 P4.2 Authority MapContext。
 
 玩家 10 px 自动咬食、0.80 秒间隔、4/6/8 容量和已确认的抢食/补饵规则保持。NPC 继续真实消耗食物、增加自身饱食，不增加玩家分数、不参与胜负。玩家原 QTE、缠线、松线、断线、张力和提鱼保持。
 
@@ -23,7 +23,7 @@
 
 ### Phase 2.3：已由用户人工关闭
 
-用户于 2026-10-03 确认目前手感合适并进入 Phase 3。此前各版的自动统计、未通过项与人工门记录保留原文，不能把后续确认回写为当时已通过。0.25.0 环境鱼、0.25.1 抢食和 0.25.2 社会线索均已由用户试玩确认；用户随后授权进入 P3.5；这不回写为对每一项 P3.4 手感的逐条验收。现行最终人工试玩清单见上方 0.25.5 报告。
+用户于 2026-10-03 确认目前手感合适并进入 Phase 3。此前各版的自动统计、未通过项与人工门记录保留原文，不能把后续确认回写为当时已通过。0.25.0 环境鱼、0.25.1 抢食和 0.25.2 社会线索均已由用户试玩确认；用户随后授权进入 P3.5；这不回写为对每一项 P3.4 手感的逐条验收。用户随后于 2026-10-04 明确通过 Phase 3；0.25.5 报告保留当时验证和人工门记录。
 
 实现与统计定义见[摄食平衡边界](docs/architecture/PHASE02-FEEDING-BALANCE.md)。此前[三种饵型报告](docs/test-reports/PHASE02-BAIT-VALIDATION.md)与[P2.1 报告](docs/test-reports/PHASE02-BITE-VALIDATION.md)保留原始结果。
 
@@ -66,7 +66,7 @@
 .\Build-Pixel.ps1 -GodotDirectory 'D:\Tools\Godot_v4.7.2-stable_win64.exe'
 ```
 
-该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.25.5` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
+该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.26.0` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
 
 当前测试入口、套件状态和产物目录配置见 [测试运行指南](tests/README.md)。核心抄网逻辑检查示例（替换为本机引擎路径）：
 
@@ -74,7 +74,7 @@
 & 'D:\Tools\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe' --headless --path . --script res://tests/net_v021.gd -- --test-profile
 ```
 
-测试使用独立配置；带原生画面截图的脚本需要图形窗口，不使用 `--headless`。本次检查见 [0.25.5 生态平衡报告](docs/test-reports/PHASE03-ECOLOGY-VALIDATION-0.25.5.md)；此前 Windows 试玩包的验证保留在 [0.22.5 原始报告](docs/test-reports/TEST-REPORT-0.22.5.md)。
+测试使用独立配置；带原生画面截图的脚本需要图形窗口，不使用 `--headless`。本次检查见 [0.26.0 地图基础报告](docs/test-reports/PHASE04-MAP-FOUNDATION-0.26.0.md)；此前 Windows 试玩包的验证保留在 [0.22.5 原始报告](docs/test-reports/TEST-REPORT-0.22.5.md)。
 
 ## 项目结构与文档
 
