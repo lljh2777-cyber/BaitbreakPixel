@@ -1,6 +1,6 @@
 # 0.25.5 双人联机（开发版）
 
-本文对应 0.25.5 源码。双方同步同一源码版本运行；本轮不新建 Windows 包，公开 Windows 试玩包仍为 0.25.4，不要混连。
+本文对应 0.25.5 源码及公开 Windows 试玩包。双方从项目首页下载 0.25.5 ZIP，解压后运行；不要与旧版本混连。
 
 抄网操作、模块及规则迁移见 [NET-ARCHITECTURE.md](../architecture/NET-ARCHITECTURE.md)。
 
