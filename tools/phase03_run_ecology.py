@@ -16,7 +16,7 @@ HARNESS_FILES = ('tools/phase03_ecology_diagnostics.gd', 'tools/phase02_feeding_
 
 def fingerprints(project=ROOT):
     paths = sorted((project / 'scripts').glob('*.gd')) + [project / p for p in HARNESS_FILES] + [project / 'project.godot']
-    return {str(p.relative_to(project)): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}
+    return {p.relative_to(project).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}
 
 def admit_pilot(pilot, seeds, hashes, max_ticks):
     if pilot.get('phase') != 'pilot' or pilot.get('success') is not True or pilot.get('source_stable') is not True:
