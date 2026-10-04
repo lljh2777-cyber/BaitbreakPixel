@@ -1,3 +1,4 @@
+- [0.26.4 P4.4–P4.6 地图抽象最终验证](PHASE04-MAP-FINAL-0.26.4.md)
 - [0.26.2 P4.3 Snapshot / Network MapRef](PHASE04-MAP-SNAPSHOT-NETWORK-0.26.2.md)
 - [0.26.1 P4.2 Authority MapContext](PHASE04-MAP-AUTHORITY-0.26.1.md)
 - [0.26.0 P4.0 + P4.1 地图数据基础](PHASE04-MAP-FOUNDATION-0.26.0.md)

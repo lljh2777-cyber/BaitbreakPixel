@@ -390,7 +390,7 @@ func tick(delta: float, local_command: Dictionary) -> void:
 			elif now()-last_snapshot_ms>=100: _send_state(false)
 		return
 	if status!="playing": return
-	var local := Protocol.input(local_role,local_command)
+	var local := Protocol.input(local_role,local_command,game.map_context)
 	if is_host:
 		var before := _check_identity()
 		var remote := _take_remote()
@@ -439,7 +439,7 @@ func receive_input(packet: Dictionary) -> void:
 		rejected_inputs+=1; return
 	if not packet.get("command") is Dictionary or not packet.get("events") is Array or packet.events.size()>Protocol.MAX_EVENTS or not packet.get("seen_tick") is int or not packet.get("qte_id") is int or not packet.get("gesture") is int: return
 	if remote_queue.size()>=120: fail("输入积压过多，请检查连接后重新开局"); return
-	var command := Protocol.input(remote_role,packet.command)
+	var command := Protocol.input(remote_role,packet.command,game.map_context)
 	command.net_events=[]
 	if remote_role=="angler":
 		for event in packet.events:
@@ -449,7 +449,7 @@ func receive_input(packet: Dictionary) -> void:
 			if event.get("kind") in ["toggle","cancel","suspend"]:
 				command.net_events.append({"kind":event.kind})
 			elif event.get("kind")=="point" and event.get("point") is Vector2 and event.point.is_finite():
-				command.net_events.append({"kind":"point","point":event.point.clamp(Vector2.ZERO,game.Layout.SIZE)})
+				command.net_events.append({"kind":"point","point":event.point.clamp(Vector2.ZERO,game.map_context.size)})
 			else: continue
 			remote_gesture=gid
 	received_input_seq=packet.seq

@@ -13,7 +13,7 @@ Windows 可使用 `D:\python\python.exe`；用 `--godot "引擎可执行文件�
 
 ## 注册表与状态
 
-[`suite_registry.json`](suite_registry.json) 显式登记全部 131 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
+[`suite_registry.json`](suite_registry.json) 显式登记全部 136 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
 
 - `current`：当前有效的回归门禁；不按文件名版本新旧决定。`--profile current` 运行无窗口套件，`--profile native` 运行图形套件。已重新验证的 effort、net_animation、rules_network 等较早版本仍在当前门禁中
 - `historical`：当前检出复现了失败的诊断套件。保留原断言，失败仍返回非零；这不是“已证明所有断言过时”，更不是通过。具体原因和结果见[维护报告](../docs/test-reports/TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md)
@@ -39,7 +39,7 @@ python3 tools/run_tests.py --suite shore_native_v015
 
 ## 原生与打包截图
 
-所有 37 个使用原生画面、且会写 PNG 的脚本都接受：
+所有 38 个使用原生画面、且会写 PNG 的脚本都接受：
 
 ```sh
 godot --path . --script res://tests/wood_fade_native.gd -- --test-profile --capture-output-directory=/absolute/writable/captures
@@ -47,7 +47,7 @@ godot --path . --script res://tests/wood_fade_native.gd -- --test-profile --capt
 
 默认路径不变。目录会创建，空值、建目录失败、PNG 写入失败都返回非零。5 个旧脚本继续支持 `--visual-output=`，同时提供时以 `--capture-output-directory=` 为准。
 
-计数说明：38 个脚本使用原生渲染/画面回读，其中 `reel_hand_native_v016` 只验证像素连通性，不写图片。另一个会写图的 `plant_art` 是无窗口图像测试：默认不写图，保留 `--preview=文件名`，也支持公共目录参数生成 `plant-art-preview.png`；显式 `--preview` 优先。因此所有 38 个会写图片的入口均有可写路径选择，不需要给不写文件的测试增加空参数。
+计数说明：39 个脚本使用原生渲染/画面回读，其中 `reel_hand_native_v016` 只验证像素连通性，不写图片。另一个会写图的 `plant_art` 是无窗口图像测试：默认不写图，保留 `--preview=文件名`，也支持公共目录参数生成 `plant-art-preview.png`；显式 `--preview` 优先。因此所有 39 个会写图片的入口均有可写路径选择，不需要给不写文件的测试增加空参数。
 
 发行 PCK 故意不包含 `tests/` 和 `tools/`。运行器用外部绝对 `--script` 加载测试，让 `res://scripts/` 和素材来自包内：
 
@@ -202,3 +202,9 @@ git archive --format=tar 8831f52ee7daae5d592282d5da432cbd67fccfb0 | tar -x -C ar
 已有冻结目录不要覆盖。工具读取 Git commit/tree、直接比较实际源字节并保存 scoped runtime diff；只有状态等价所需的数据 hash，无冗余全仓 SHA256 清单。最终独立内容审查仍不可用路径白名单替代。
 
 仅本轮 current profile 通过算通过；historical/retired/manual 不算。本轮未构建新游戏包、P4.4 未开始。详见 [0.26.2 报告](../docs/test-reports/PHASE04-MAP-SNAPSHOT-NETWORK-0.26.2.md)。
+
+## Phase 4 最终门
+
+新增 source-only 的 map_presentation、shore_projection、map_fixture、map_equivalence 和 map_native 套件，均已注册。原生 map_native 使用未注册的测试地图，故明确标记 pack_compatible=false；它不绕过发行包排除 tests/ 的规则。
+
+最终全状态对照使用 tools/phase04_compare_presentation.py，指定 --godot 和新的 --output-directory。基线固定7efe59b；需先以 git archive 将其解到 artifacts/p44-frozen-baseline-7efe59b，或通过 --baseline 指定同一提交的原样源码。驱动验证基线/输入脚本身份及运行期间源码稳定性，比较8场景2100tick与86检查点的完整Variant字节，不做字段排除或批量SHA256。原生完整RGBA对照和真实ENet门另列，自动结果不代替人工手感。

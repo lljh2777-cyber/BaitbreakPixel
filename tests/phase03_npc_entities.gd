@@ -45,7 +45,7 @@ func _initialize() -> void:
 				check(not seeds.has(npc.brain_seed) and npc.brain_seed==State.derive_seed(seed_value,npc.fish_id),"each stable ID has its own deterministic seed")
 				seeds[npc.brain_seed]=true
 				check(legal_spawn(a,npc),"legal spawn avoids home, active bait, body overlap and solid geometry mode=%s seed=%d id=%d" % [mode,seed_value,npc.fish_id])
-				check(State.valid(npc,a.next_fish_id),"fresh authority record validates")
+				check(State.valid(npc,a.next_fish_id,a.map_context.water),"fresh authority record validates")
 			check(a.fish_id==1 and a.hook_target_fish_id==-1 and a.next_fish_id==8,"player ID and reserved hook target stay inert")
 	var full: Dictionary=a.capture_snapshot()
 	check(a.spawn_npc()==-1 and a.capture_snapshot()==full,"full capacity rejects spawn without consuming any ID or RNG")

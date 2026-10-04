@@ -91,7 +91,7 @@ static func capture(world: Node2D) -> Dictionary:
 	state.baits=[]
 	for index in world.baits.size():
 		var bait: Dictionary=world.baits[index]
-		var facts:=Observation._facts(bait,world.fish)
+		var facts:=Observation._facts(bait,world.fish,world.map_context.water)
 		var visual:=Observation._visual(bait,facts)
 		var grains: Array[Dictionary]=[]
 		for grain in bait.grains:
@@ -204,7 +204,7 @@ static func valid(world: Node2D, snapshot: Dictionary) -> bool:
 			if not grain.free and grain.visual_kind!=bait.visual_kind: return false
 			grain_ids[grain.id]=true
 		# Public type/hint strings must match visible grains, never hidden reserves.
-		var facts:=Observation._facts(bait,state.fish)
+		var facts:=Observation._facts(bait,state.fish,context.water)
 		if bait.visual_kind!=facts.visual_kind or bait.shape_hint!=facts.shape_hint or bait.smell_hint!=facts.smell_hint: return false
 		if not bait.grains.is_empty() and not FoodProfile.valid_type(bait.visual_kind): return false
 	if rig.surface_x<0 or rig.surface_x>context.size.x or absf(rig.surface_velocity)>10000: return false

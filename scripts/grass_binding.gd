@@ -1,15 +1,19 @@
 extends RefCounted
 
-const Layout=preload("res://scripts/pond_layout.gd")
+const Presentation=preload("res://scripts/maps/map_presentation.gd")
 
 static func smooth(value: float) -> float:
 	var p:=clampf(value,0,1)
 	return p*p*(3-2*p)
 
 static func profile(world: Node2D, wrap: Dictionary, progress: float) -> Dictionary:
-	var index: int=int(wrap.target)-Layout.SOLIDS.size()
-	if index<0 or index>=Layout.PLANTS.size(): return {}
-	var plant: Dictionary=Layout.PLANTS[index]
+	var target: int=int(wrap.target)
+	if target<0 or target>=world.targets.size() or not world.targets[target].capabilities.grass_binding: return {}
+	var map := Presentation.for_context(world.map_context)
+	var index: int=map.plant_index_for_target(target)
+	if index<0: return {}
+	var plant: Dictionary=map.plant_for_target(target)
+	if plant.is_empty(): return {}
 	var y:=clampf(wrap.center.y,float(plant.y)-float(plant.height)+8,float(plant.y)-7)
 	var growth:=clampf((float(plant.y)-y)/float(plant.height),0,1)
 	var stem:=int(plant.stems)/2

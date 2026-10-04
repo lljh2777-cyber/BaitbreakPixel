@@ -15,7 +15,7 @@ func check(ok: bool, label: String) -> void:
 func tick(w: Node2D, command: Dictionary, frames: int=60, network: bool=false) -> void:
 	for n in frames:
 		var wire: Dictionary=Protocol.decode(Protocol.encode(command))
-		w.advance_tick({},Protocol.input("angler",wire) if network else command)
+		w.advance_tick({},Protocol.input("angler",wire,w.map_context) if network else command)
 func fresh(seed_value: int) -> Node2D:
 	var w=World.new()
 	w.reset_world({"ruleset":"duel","seed":seed_value,"rules":{"water_strength":0,"hunger_enabled":false,"timer_enabled":false}})
@@ -71,8 +71,8 @@ func _initialize() -> void:
 			check(is_equal_approx(w.angler.x,x),label+"A/D symmetric")
 			w.angler.x=18; tick(w,{"walk":-1.0},1,network)
 			check(w.angler.x==18,label+"left bound")
-			w.angler.x=w.Layout.SIZE.x-52; tick(w,{"walk":1.0},1,network)
-			check(w.angler.x==w.Layout.SIZE.x-52,label+"right bound")
+			w.angler.x=w.map_context.size.x-52; tick(w,{"walk":1.0},1,network)
+			check(w.angler.x==w.map_context.size.x-52,label+"right bound")
 			var p=Presentation.new()
 			check(p.accept(w.capture_snapshot(),1.0),label+"schema13 snapshot accepted")
 			check(Shore.rig_index(p.sample(1.0))==0 and p.world.angler.free_line_length==w.angler.free_line_length,label+"remote render retains physical ownership/spool")

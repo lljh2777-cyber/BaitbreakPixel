@@ -138,9 +138,9 @@ func intent_checks() -> void:
 
 func state_checks() -> void:
 	var record:=npc()
-	check(State.valid(record,3),"new record passes strict guard")
+	check(State.valid(record,3,Layout.WATER),"new record passes strict guard")
 	record.satiety=100.0
-	check(State.valid(record,3),"explicit current-shape WANDER/100 record remains valid")
+	check(State.valid(record,3,Layout.WATER),"explicit current-shape WANDER/100 record remains valid")
 	for value: float in [100.0,60.0,25.0,10.0,0.0]:
 		record.satiety=value
 		var observer:=State.observer(record,rules)
@@ -153,17 +153,17 @@ func state_checks() -> void:
 	check(State.observer(record,no_hunger).satiety_band=="NORMAL","disabled hunger reports NORMAL like player")
 	record=npc(); record.behavior_state="FEED"; record.target_bait_id=3; record.focus_bait_id=3
 	record.suspicion_by_bait={3:0.2}; record.caution_by_bait={3:"CALM"}; record.feeding=true; record.power=0.35; record.bite_cooldown=0.8
-	check(State.valid(record,3),"legal food intent and shared cooldown restore")
+	check(State.valid(record,3,Layout.WATER),"legal food intent and shared cooldown restore")
 	for field: String in ["satiety","power","bite_cooldown","risk_tolerance"]:
 		for value in [NAN,INF,-0.01,"0",0]:
 			var bad:=record.duplicate(true); bad[field]=value
-			check(not State.valid(bad,3),"reject malformed finite scalar "+field+"="+str(value))
+			check(not State.valid(bad,3,Layout.WATER),"reject malformed finite scalar "+field+"="+str(value))
 	for pair: Array in [["satiety",100.01],["power",1.01],["bite_cooldown",0.81],["risk_tolerance",0.61],["feeding",1],["intent_aim",Vector2.ZERO],["intent_aim",Vector2(NAN,0)],["behavior_state","HOOKED"],["suspicion_by_bait",{3:NAN}],["suspicion_by_bait",{"3":0.2}],["suspicion_by_bait",{3:1}],["caution_by_bait",{3:"SECRET"}],["caution_by_bait",{}],["focus_bait_id",8],["target_bait_id",8]]:
 		var bad:=record.duplicate(true); bad[pair[0]]=pair[1]
-		check(not State.valid(bad,3),"reject illegal NPC shape or range: "+str(pair))
+		check(not State.valid(bad,3,Layout.WATER),"reject illegal NPC shape or range: "+str(pair))
 	for key: String in ["feeding","power","bite_cooldown","intent_aim"]:
 		var bad:=record.duplicate(true); bad.erase(key)
-		check(not State.valid(bad,3),"missing new fields never silently migrate: "+key)
+		check(not State.valid(bad,3,Layout.WATER),"missing new fields never silently migrate: "+key)
 
 func _initialize() -> void:
 	passive_checks(); intent_checks(); state_checks()

@@ -19,9 +19,6 @@ const Suspicion=preload("res://scripts/fish_suspicion.gd")
 const Instinct=preload("res://scripts/fish_instinct.gd")
 const Stats = preload("res://scripts/round_stats.gd")
 const Rope = preload("res://scripts/rope.gd")
-# Compatibility facade for presentation and legacy callers.
-# Authority gameplay below must use the validated per-round map_context instead.
-const Layout = preload("res://scripts/pond_layout.gd")
 const MapContext = preload("res://scripts/maps/map_context.gd")
 const MapGeometry = preload("res://scripts/maps/map_geometry.gd")
 var _map_context: MapContext
@@ -41,7 +38,6 @@ enum HookState { FREE, MOUTH, HOOKED }
 var HOME: Vector2:
 	get: return map_context.home
 const TIME_LIMIT := 360.0
-const SOLIDS: Array = Layout.SOLIDS
 const NET_RIM := Vector2(8,24)
 const NET_CATCH := Vector2(8,24)
 const NET_SWEEP := 1.6
@@ -492,8 +488,8 @@ func reset_world(config: Dictionary = {}, definition: Variant = null) -> bool:
 	elif config.has("map_ref"):
 		loaded=MapContext.load_ref(config.map_ref)
 	else:
-		var map_id: Variant=config.get("map_id","pond_v2")
-		var revision: Variant=config.get("map_revision",1)
+		var map_id: Variant=config.get("map_id",MapContext.Registry.DEFAULT_MAP_ID)
+		var revision: Variant=config.get("map_revision",MapContext.Registry.DEFAULT_REVISION)
 		if not map_id is String or not revision is int:
 			map_errors=["map id and revision have invalid types"]
 			return false

@@ -1,3 +1,5 @@
+> 0.26.4 更新：本文保留原阶段的历史状态；P4.4–P4.6 的最终实现与已清理依赖见 [地图抽象最终架构](MAP-PRESENTATION-FINAL.md)。
+
 # P4.2 Authority MapContext · 0.26.1
 
 ## Scope and initialization

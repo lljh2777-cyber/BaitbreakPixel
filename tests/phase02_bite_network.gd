@@ -33,8 +33,9 @@ func pure_checks() -> void:
 	for value in [true,false,"true",[],{},null,1,2,-1]:
 		check(not Commands.fish({"bite":value},Vector2.RIGHT,0.35).has("bite"),"obsolete Bite field is discarded: "+str(value))
 	var wire:=Protocol.decode(Protocol.encode({"bite":true,"suck":true}))
-	check(not Protocol.input("fish",wire).has("bite") and Protocol.input("fish",wire).suck,"wire sanitization discards obsolete Bite but preserves held Suck")
-	check(not Protocol.input("angler",wire).has("bite"),"angler command cannot acquire Bite")
+	var context: RefCounted=World.MapContext.load_map().context
+	check(not Protocol.input("fish",wire,context).has("bite") and Protocol.input("fish",wire,context).suck,"wire sanitization discards obsolete Bite but preserves held Suck")
+	check(not Protocol.input("angler",wire,context).has("bite"),"angler command cannot acquire Bite")
 	var w=fresh(); var replay=World.new(); replay.reset_world()
 	w.advance_tick({},{})
 	var saved:Dictionary=w.capture_snapshot()
@@ -42,7 +43,7 @@ func pure_checks() -> void:
 	check(replay.restore_snapshot(saved),"restore in-flight Bite snapshot")
 	for tick in 70:
 		var command={"suck":tick==32}
-		w.advance_tick(command,{}); replay.advance_tick(Protocol.input("fish",Protocol.decode(Protocol.encode(command))),{})
+		w.advance_tick(command,{}); replay.advance_tick(Protocol.input("fish",Protocol.decode(Protocol.encode(command)),replay.map_context),{})
 		check(w.capture_snapshot()==replay.capture_snapshot(),"wire/replay deterministic tick "+str(tick))
 	check(w.score==8 and w.score==replay.score and w.satiety==replay.satiety,"schema16 replay repeats automatic intake and preserves exact rewards without Bite input")
 	for key in ["bite_cooldown","bite_feedback_age"]:

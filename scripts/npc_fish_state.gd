@@ -1,9 +1,8 @@
 extends RefCounted
 
 # Phase 3 authority records. Player scalar authority deliberately stays untouched.
-# Standalone callers retain the built-in defaults; snapshot validation supplies
-# the water bounds of its locally resolved map reference.
-const Layout=preload("res://scripts/pond_layout.gd")
+# Every validator caller supplies the selected map water explicitly, including
+# standalone tests. There is no fallback to an unrelated built-in map.
 const Feeding=preload("res://scripts/fish_feeding.gd")
 const DEFAULT_COUNT := 3
 const MAX_COUNT := 6
@@ -57,7 +56,7 @@ static func satiety_band(value: float, rules: Dictionary) -> String:
 	if value<=float(rules.satiety_low_threshold): return "HUNGRY"
 	return "NORMAL"
 
-static func valid(record: Variant, next_id: int, water: Rect2 = Layout.WATER) -> bool:
+static func valid(record: Variant, next_id: int, water: Rect2) -> bool:
 	if not record is Dictionary: return false
 	var reference:=fresh(2,1,Vector2.ZERO,Vector2.RIGHT,1)
 	if record.size()!=reference.size(): return false

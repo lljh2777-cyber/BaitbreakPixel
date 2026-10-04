@@ -50,7 +50,7 @@ func pure_checks() -> void:
 	check(saved.schema==16 and saved.state.npc_fishes.size()==3,"schema16 authority has three ambient NPC records")
 	check(projection.npc_profile_version==2 and projection.state.npc_fishes.size()==3 and Public.valid(receiver,projection),"fish projection has guarded three-NPC public extension")
 	check(shore.format==AnglerPublic.FORMAT and shore.npc_profile_version==4 and AnglerPublic.valid(receiver,shore),"angler projection validates its independent NPC privacy guard")
-	check(NPCPublic.valid(projection.state.npc_fishes) and private_free(projection.state.npc_fishes) and private_free(shore.state.npc_fishes),"both roles carry only six allowlisted NPC presentation facts")
+	check(NPCPublic.valid(projection.state.npc_fishes,world.fish_id,world.map_context.water) and private_free(projection.state.npc_fishes) and private_free(shore.state.npc_fishes),"both roles carry only six allowlisted NPC presentation facts")
 	for key: String in ["npc_foraging_enabled","npc_social_enabled","public_hook_cue","npc_hook_enabled"]:
 		check(not projection.state.has(key) and not shore.state.has(key),"private NPC world configuration/cue never crosses either role wire: "+key)
 	for key: String in NPC_STAT_FIELDS:
@@ -417,7 +417,7 @@ func live_social_checks(role: String) -> void:
 		for tick in 6: await frame()
 		var packet: Dictionary=Protocol.unpack_state(host.network._state_packet("state").snapshot)
 		check(client.npc_fishes==NPCPublic.capture(host.npc_fishes,host.hook_target_fish_id,host.npc_hook) and before!=client.npc_fishes,"real ENet "+role+" carries actual "+behavior+" motion as public geometry")
-		check(NPCPublic.valid(packet.state.npc_fishes) and private_free(packet.state.npc_fishes),"real ENet "+role+" "+behavior+" carries only six swim fields")
+		check(NPCPublic.valid(packet.state.npc_fishes,host.fish_id,host.map_context.water) and private_free(packet.state.npc_fishes),"real ENet "+role+" "+behavior+" carries only six swim fields")
 		check(private_free(client.npc_fishes) and private_free(client.network.presentation.current.state.npc_fishes) and private_free(client.network.display_world().npc_fishes),"real ENet "+role+" "+behavior+" client/history/display hold no social private state")
 		for key: String in ["npc_social_enabled","public_hook_cue"]:
 			check(not packet.state.has(key) and not client.network.presentation.current.state.has(key),"real ENet "+role+" "+behavior+" excludes private authority "+key)

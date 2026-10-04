@@ -12,6 +12,7 @@ func check(ok: bool, label: String) -> void:
 
 func _initialize() -> void:
 	var view := View.new()
+	view.prepare_map(View.Presentation.default_map().context) # Explicit golden-map setup before private raster helper.
 	var frames := 0
 	var preview := ""
 	var capture_directory := ""

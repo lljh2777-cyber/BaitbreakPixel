@@ -726,6 +726,41 @@
       "status": "current",
       "mode": "headless",
       "timeout_seconds": 120
+    },
+    "phase04_map_equivalence": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120,
+      "pack_compatible": false,
+      "pack_reason": "Phase4 source-only authored fixtures/equivalence; release PCK intentionally excludes tests."
+    },
+    "phase04_map_presentation": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120,
+      "pack_compatible": false,
+      "pack_reason": "Phase4 source-only authored fixtures/equivalence; release PCK intentionally excludes tests."
+    },
+    "phase04_shore_projection": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120,
+      "pack_compatible": false,
+      "pack_reason": "Phase4 source-only authored fixtures/equivalence; release PCK intentionally excludes tests."
+    },
+    "phase04_map_fixture": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120,
+      "pack_compatible": false,
+      "pack_reason": "Phase4 source-only authored fixtures/equivalence; release PCK intentionally excludes tests."
+    },
+    "phase04_map_native": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 120,
+      "pack_compatible": false,
+      "pack_reason": "Uses unregistered authored map fixture; release PCK intentionally excludes tests."
     }
   }
 }

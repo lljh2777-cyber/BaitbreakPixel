@@ -53,7 +53,7 @@ func run() -> void:
 	var motes: Dictionary={}; var valid:=true
 	for index in 82:
 		var point:=Water.mote(index); motes[point]=true
-		valid=valid and world.Layout.WATER.has_point(point)
+		valid=valid and world.map_context.water.has_point(point)
 	check(valid and motes.size()>70,"suspended motes stay in water without repeating a dense tile grid")
 	check(world.capture_snapshot()==state and var_to_bytes(world.targets)==targets,"art preparation cannot change RNG, targets, physics or network state")
 	world.free()

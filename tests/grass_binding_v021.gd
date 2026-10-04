@@ -1,4 +1,5 @@
 extends SceneTree
+const Legacy=preload("res://scripts/pond_layout.gd")
 const World=preload("res://scripts/world_simulation.gd")
 const Grass=preload("res://scripts/grass_binding.gd")
 const Motion=preload("res://scripts/line_motion.gd")
@@ -11,12 +12,12 @@ func check(ok:bool,label:String) -> void:
 func run() -> void:
 	var w=World.new(); w.reset_world({"ruleset":"duel","challenge":false,"water_strength":0})
 	w.fish=Vector2(150,260); w.baits[0].active=true; w._enter_hook(0); w._attach_hook()
-	for target in range(w.Layout.SOLIDS.size(),w.targets.size()):
+	for target in range(Legacy.SOLIDS.size(),w.targets.size()):
 		var bounds:Rect2=w.targets[target].bounds
 		var good_width:=true; var anchored:=true; var connected:=true; var immutable:=true; var reversible:=true
 		for y in [bounds.position.y+4,bounds.get_center().y,bounds.end.y-8]:
-			var coil:Dictionary=w.Layout.coil_at(w.targets[target],Vector2(bounds.get_center().x,y)); coil.target=target
-			w.wraps.assign([coil]); w.elapsed=4; w.fish=Vector2(bounds.get_center().x+16,minf(y+8,w.Layout.FLOOR-14))
+			var coil:Dictionary=w.MapGeometry.coil_at(w.targets[target],Vector2(bounds.get_center().x,y)); coil.target=target
+			w.wraps.assign([coil]); w.elapsed=4; w.fish=Vector2(bounds.get_center().x+16,minf(y+8,w.map_context.floor_y-14))
 			for reverse in [false,true]:
 				w.untangle_phase="unwind" if reverse else ""
 				for i in 31:
@@ -37,7 +38,7 @@ func run() -> void:
 		check(connected and immutable,"both directions keep a single connected route and unchanged physics: target %d" % target)
 		check(reversible,"one open helical turn has separate entry/exit instead of a floating closed ring: target %d" % target)
 	# The wider leaves must not determine the near-tip binding radius.
-	var c:Dictionary=w.Layout.coil_at(w.targets[w.Layout.SOLIDS.size()+1],Vector2(150,366)); c.target=w.Layout.SOLIDS.size()+1
+	var c:Dictionary=w.MapGeometry.coil_at(w.targets[Legacy.SOLIDS.size()+1],Vector2(150,366)); c.target=Legacy.SOLIDS.size()+1
 	var tip:=Grass.profile(w,c,1.0)
 	c.center.y=419
 	var base:=Grass.profile(w,c,1.0)

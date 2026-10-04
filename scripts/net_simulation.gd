@@ -30,7 +30,7 @@ static func _manual_net_exit(g: Node2D, point: Vector2) -> PackedVector2Array:
 	for solid in g.map_net_blockers:
 		for polygon in Geometry2D.offset_polygon(solid.polygon,g.net_rim().y+2,Geometry2D.JOIN_MITER):
 			expanded.append({"points":Array(polygon)})
-	var path: PackedVector2Array=g.Rope.solve(surface,point,expanded)
+	var path: PackedVector2Array=g.Rope.solve(surface,point,expanded,g.Rope.routing_limits(g.map_context))
 	path.reverse()
 	for index in range(1,path.size()):
 		if not _manual_net_lane_clear(g, path[index-1],path[index]): return PackedVector2Array()
@@ -259,7 +259,7 @@ static func busy(g: Node2D) -> bool:
 static func begin_observation(g: Node2D) -> bool:
 	if g.match_over or g.match_paused or g.line_landing() or g.angler.casting or busy(g) or g.angler.net_cooldown>0: return false
 	if g.net_action.observing: return false
-	g.net_action.observing=true; g.net_action.age=0; g.net_action.has_a=false
+	g.net_action.observing=true; g.net_action.age=0.0; g.net_action.has_a=false
 	g.net_action.ai=false; g.net_action.sample_live=false
 	g.notice="左键选起点，再选终点 · E 取消"; g.notice_age=1.5
 	return true

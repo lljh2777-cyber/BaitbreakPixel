@@ -12,7 +12,7 @@ func check(ok:bool,label:String) -> void:
 func fixture(target:int=0) -> Node2D:
 	var w=World.new(); w.reset_world({"ruleset":"duel","challenge":false,"water_strength":0})
 	w.fish=Vector2(382,245); w.baits[0].active=true; w._enter_hook(0); w._attach_hook()
-	var c:Dictionary=w.Layout.coil_at(w.targets[target],w.targets[target].bounds.get_center()); c.target=target; c.progress=1.0
+	var c:Dictionary=w.MapGeometry.coil_at(w.targets[target],w.targets[target].bounds.get_center()); c.target=target; c.progress=1.0
 	w.wraps.append(c); w.fish=Vector2(c.entry)+Vector2(50,3); w.fish_line_length=44
 	w.tension=0.4; w.rope_length=w.line_anchor(0).distance_to(w.mouth()); w._rebuild_rope()
 	return w
@@ -81,7 +81,7 @@ func run() -> void:
 		last=pose.hand.wrist; last_wrist=last
 	check(rigid and connected,"unwind arm sweep preserves shaft length, left fingers and line/rod joints")
 	check(grip_steps>0.05 and grip_steps<1.0 and first_wrist.distance_to(last_wrist)<0.001,"wrist moves smoothly and settles to the same pose without snapping")
-	var second:Dictionary=w.Layout.coil_at(w.targets[3],Vector2(265,270)); second.target=3; second.progress=0.5
+	var second:Dictionary=w.MapGeometry.coil_at(w.targets[3],Vector2(265,270)); second.target=3; second.progress=0.5
 	w.wraps[0].progress=1.0; w.wraps.append(second); w.untangle_phase=""
 	var multiple:=Motion.build(w)
 	check(multiple.front.size()==multiple.path.size()-1 and multiple.path[0]==w.line_anchor(0) and multiple.path[-1]==w.mouth(),"multiple wraps share a single connected route")

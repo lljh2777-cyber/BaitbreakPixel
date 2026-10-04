@@ -67,7 +67,7 @@ static func fish_pose(world: Node2D, frame: Dictionary) -> Dictionary:
 	var rim: Vector2=world.net_rim()
 	var u:=axis*rim.x
 	var v:=axis.orthogonal()*rim.y
-	var pole_start:=Vector2(world.angler.x+7,50) if world.manual_net else Vector2(world.net_from.x,40)
+	var pole_start:=Vector2(world.angler.x+7,world.map_context.water.position.y-18) if world.manual_net else Vector2(world.net_from.x,world.map_context.water.position.y-28)
 	var socket:=edge_toward(center,u,v,pole_start)
 	var settle: float=frame.settle
 	# Ellipse axes are periodic over PI. Rotate to the nearest hanging orientation;
@@ -80,13 +80,13 @@ static func fish_pose(world: Node2D, frame: Dictionary) -> Dictionary:
 		"socket":socket,"grip":pole_start,"caught":frame.caught,"shore":false}
 
 static func shore_pose(world: Node2D, frame: Dictionary) -> Dictionary:
-	var center:=Shore.to_screen(frame.center)
+	var center:=Shore.to_screen(frame.center,world)
 	var enter: float=frame.enter
 	var out: float=frame.out
 	# Lift the rigid hoop over the water, dip at A, then pull it towards the camera on exit.
 	center=Vector2(-64,385).lerp(center,enter)-Vector2(0,sin(enter*PI)*24)
 	center=center.lerp(Vector2(-68,412),out)
-	var scale: float=world.rule("net_scale")*lerpf(0.88,1.06,clampf((world.net_pos.y-55)/257.0,0,1))
+	var scale: float=world.rule("net_scale")*lerpf(0.88,1.06,clampf((world.net_pos.y-Shore.surface_y(world))/257.0,0,1))
 	var angle: float=-0.38+sin(world.net_angle)*0.16-(1-enter)*0.28-out*0.28
 	var u:=Vector2.from_angle(angle)*24*scale
 	var v:=Vector2.from_angle(angle).orthogonal()*12*scale
@@ -94,7 +94,7 @@ static func shore_pose(world: Node2D, frame: Dictionary) -> Dictionary:
 	grip.x=minf(grip.x,center.x-78) # Follow a near-left net without folding the shaft back across the wrist.
 	grip=Vector2(96,420).lerp(grip,enter).lerp(Vector2(34,427),out)
 	var socket:=edge_toward(center,u,v,grip)
-	var projected_drag:=Shore.to_screen(frame.center+frame.drag)-Shore.to_screen(frame.center)
+	var projected_drag:=Shore.to_screen(frame.center+frame.drag,world)-Shore.to_screen(frame.center,world)
 	var bag_offset:=Vector2(-7,18)+projected_drag*0.8
 	bag_offset=bag_offset.lerp(Vector2(0,22),frame.settle)
 	var bag:=center+bag_offset*scale

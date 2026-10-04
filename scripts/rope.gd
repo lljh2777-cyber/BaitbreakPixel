@@ -3,6 +3,7 @@ extends RefCounted
 # Clip against the actual clockwise convex silhouette, not an enclosing rectangle.
 static var _cache_key := 0
 static var _cache_anchor := Vector2(INF,INF)
+static var _cache_limits := Vector3(INF,INF,INF)
 static var _fixed_nodes: Array[Vector2] = []
 static var _fixed_links: Array = []
 
@@ -30,11 +31,23 @@ static func clear(a: Vector2, b: Vector2, obstacles: Array) -> bool:
 		if blocked(a, b, solid): return false
 	return true
 
-static func _prepare(anchor: Vector2, obstacles: Array) -> void:
+# Compatibility policy, not arbitrary-map reachability: the old net detour
+# solver only admitted vertices in its western/shallow window (9..631, y<=309).
+# Preserve that exact pond window as water-relative tuning. Do not silently
+# expand it while abstracting maps; a future routing redesign needs its own gate.
+# No lower Y filter is intentional: net exits can rise above the water surface.
+static func routing_limits(context: RefCounted) -> Vector3:
+	var water: Rect2=context.water
+	return Vector3(water.position.x+1.0,
+		water.position.x+float(water.size.x)*623.0/1264.0,
+		water.position.y+float(water.size.y)*241.0/363.0)
+
+static func _prepare(anchor: Vector2, obstacles: Array, limits: Vector3) -> void:
 	var key := hash(obstacles)
-	if key == _cache_key and anchor == _cache_anchor: return
+	if key == _cache_key and anchor == _cache_anchor and limits == _cache_limits: return
 	_cache_key = key
 	_cache_anchor = anchor
+	_cache_limits = limits
 	_fixed_nodes.assign([anchor])
 	_fixed_links.clear()
 	for solid in obstacles:
@@ -47,7 +60,7 @@ static func _prepare(anchor: Vector2, obstacles: Array) -> void:
 			var second := Vector2(outgoing.y,-outgoing.x)
 			var bisector := (first+second).normalized()
 			var point := vertex + bisector*(1.5/maxf(0.16,bisector.dot(first)))
-			if point.y > 309 or point.x < 9 or point.x > 631: continue
+			if point.y > limits.z or point.x < limits.x or point.x > limits.y: continue
 			var buried := false
 			for other in obstacles:
 				if Geometry2D.is_point_in_polygon(point,PackedVector2Array(other.points)): buried = true; break
@@ -60,9 +73,9 @@ static func _prepare(anchor: Vector2, obstacles: Array) -> void:
 				_fixed_links[first].append(Vector2(second,length))
 				_fixed_links[second].append(Vector2(first,length))
 
-static func solve(anchor: Vector2, end: Vector2, obstacles: Array) -> PackedVector2Array:
+static func solve(anchor: Vector2, end: Vector2, obstacles: Array, limits: Vector3) -> PackedVector2Array:
 	if clear(anchor, end, obstacles): return PackedVector2Array([anchor, end])
-	_prepare(anchor,obstacles)
+	_prepare(anchor,obstacles,limits)
 	var nodes: Array[Vector2] = _fixed_nodes.duplicate()
 	var links: Array = _fixed_links.duplicate(true)
 	var end_index := nodes.size()

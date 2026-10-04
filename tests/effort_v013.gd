@@ -106,5 +106,5 @@ func network_checks() -> void:
 		check(not net._take_remote().qte,role+" held network input does not repeat a judgment")
 		packet.seq=2; net.receive_input(packet)
 		check(not net._take_remote().qte,role+" resolved effort rejects replayed judgments")
-		check(Protocol.input(role,{"qte_at_age":1.3}).qte_at_age<0,role+" cannot supply a trusted timestamp directly")
+		check(Protocol.input(role,{"qte_at_age":1.3},game.map_context).qte_at_age<0,role+" cannot supply a trusted timestamp directly")
 	net.queue_free(); await process_frame

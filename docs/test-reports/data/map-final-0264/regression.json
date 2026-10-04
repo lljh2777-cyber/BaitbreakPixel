@@ -1,0 +1,723 @@
+{
+  "format": "phase04-final-current-regression-v1",
+  "version": "0.26.4",
+  "engine": "Godot 4.7.2.stable.official.ed1daf0bf",
+  "registry_entries": 136,
+  "headless_suites": 72,
+  "all_effective_current_suites_passed": true,
+  "summary_assertions": 271656,
+  "completion_markers": 0,
+  "results": [
+    {
+      "suite": "architecture_v020",
+      "status": "passed",
+      "passed": 60,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 9.098,
+      "registry_status": "current"
+    },
+    {
+      "suite": "bait_suction_v0212",
+      "status": "passed",
+      "passed": 41,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 1.468,
+      "registry_status": "current"
+    },
+    {
+      "suite": "effort_v013",
+      "status": "passed",
+      "passed": 31,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 3.374,
+      "registry_status": "current"
+    },
+    {
+      "suite": "feeding_feel_v022",
+      "status": "passed",
+      "passed": 29,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 1.22,
+      "registry_status": "current"
+    },
+    {
+      "suite": "feeding_movement_v0221",
+      "status": "passed",
+      "passed": 28,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 1.321,
+      "registry_status": "current"
+    },
+    {
+      "suite": "fish_orbit_v021",
+      "status": "passed",
+      "passed": 160,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 24.852,
+      "registry_status": "current"
+    },
+    {
+      "suite": "grass_binding_v021",
+      "status": "passed",
+      "passed": 70,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 15.076,
+      "registry_status": "current"
+    },
+    {
+      "suite": "line_motion_v021",
+      "status": "passed",
+      "passed": 29,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 2.726,
+      "registry_status": "current"
+    },
+    {
+      "suite": "net_animation_v0201",
+      "status": "passed",
+      "passed": 44,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 2.979,
+      "registry_status": "current"
+    },
+    {
+      "suite": "net_network_v020",
+      "status": "passed",
+      "passed": 13,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 18.932,
+      "registry_status": "current"
+    },
+    {
+      "suite": "net_network_v021",
+      "status": "passed",
+      "passed": 13,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 19.316,
+      "registry_status": "current"
+    },
+    {
+      "suite": "net_v021",
+      "status": "passed",
+      "passed": 43,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 2.326,
+      "registry_status": "current"
+    },
+    {
+      "suite": "network_rules_v012",
+      "status": "passed",
+      "passed": 26,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 0.668,
+      "registry_status": "current"
+    },
+    {
+      "suite": "obstacle_art",
+      "status": "passed",
+      "passed": 92,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 1.97,
+      "registry_status": "current"
+    },
+    {
+      "suite": "plant_art",
+      "status": "passed",
+      "passed": 16579,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 2.421,
+      "registry_status": "current"
+    },
+    {
+      "suite": "pond_v021",
+      "status": "passed",
+      "passed": 31,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 2.424,
+      "registry_status": "current"
+    },
+    {
+      "suite": "reeling_v0122",
+      "status": "passed",
+      "passed": 20,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 3.277,
+      "registry_status": "current"
+    },
+    {
+      "suite": "rod_load_v017",
+      "status": "passed",
+      "passed": 11,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 0.666,
+      "registry_status": "current"
+    },
+    {
+      "suite": "rules_network_v019",
+      "status": "passed",
+      "passed": 9,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 18.714,
+      "registry_status": "current"
+    },
+    {
+      "suite": "rules_v020",
+      "status": "passed",
+      "passed": 256,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 8.296,
+      "registry_status": "current"
+    },
+    {
+      "suite": "tackle_dynamics_v021",
+      "status": "passed",
+      "passed": 28,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 1.87,
+      "registry_status": "current"
+    },
+    {
+      "suite": "untangle_network_v018",
+      "status": "passed",
+      "passed": 6,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 13.051,
+      "registry_status": "current"
+    },
+    {
+      "suite": "untangle_v021",
+      "status": "passed",
+      "passed": 44,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 3.275,
+      "registry_status": "current"
+    },
+    {
+      "suite": "water_art",
+      "status": "passed",
+      "passed": 14,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 1.718,
+      "registry_status": "current"
+    },
+    {
+      "suite": "wood_fade",
+      "status": "passed",
+      "passed": 57,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 1.969,
+      "registry_status": "current"
+    },
+    {
+      "suite": "wood_junctions",
+      "status": "passed",
+      "passed": 20,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 2.584,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase01_entities",
+      "status": "passed",
+      "passed": 13,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 0.566,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase01_observation",
+      "status": "passed",
+      "passed": 22,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 0.466,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase01_statistics",
+      "status": "passed",
+      "passed": 13,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 1.218,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase01_satiety",
+      "status": "passed",
+      "passed": 14,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 0.465,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase01_instinct",
+      "status": "passed",
+      "passed": 81,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 0.465,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase01_suspicion",
+      "status": "passed",
+      "passed": 11,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 0.465,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase01_random_hooks",
+      "status": "passed",
+      "passed": 508,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 2.972,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase01_policies",
+      "status": "passed",
+      "passed": 5,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 0.465,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase01_network",
+      "status": "passed",
+      "passed": 44,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 13.051,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase15_controls",
+      "status": "passed",
+      "passed": 131,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 4.577,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase02_bite",
+      "status": "passed",
+      "passed": 57,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 1.42,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase02_bite_network",
+      "status": "passed",
+      "passed": 136,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 14.508,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase02_bait_types",
+      "status": "passed",
+      "passed": 6564,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 51.927,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase02_food_profiles",
+      "status": "passed",
+      "passed": 158,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 0.465,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase02_observation",
+      "status": "passed",
+      "passed": 59,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 0.466,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase02_bait_network",
+      "status": "passed",
+      "passed": 94,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 17.565,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase02_feeding_balance",
+      "status": "passed",
+      "passed": 204,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 1.417,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase02_feeding_policies",
+      "status": "passed",
+      "passed": 29,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 0.465,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase03_npc_observation",
+      "status": "passed",
+      "passed": 209,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 0.767,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase03_npc_network",
+      "status": "passed",
+      "passed": 497,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 42.989,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase03_npc_rng",
+      "status": "passed",
+      "passed": 7043,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 19.617,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase03_npc_entities",
+      "status": "passed",
+      "passed": 7274,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 5.681,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase03_npc_snapshot",
+      "status": "passed",
+      "passed": 5463,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 27.859,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase03_npc_ambient",
+      "status": "passed",
+      "passed": 194441,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 39.785,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase03_npc_statistics",
+      "status": "passed",
+      "passed": 2141,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 19.269,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase03_npc_foraging",
+      "status": "passed",
+      "passed": 80,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 13.323,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase03_food_reachability",
+      "status": "passed",
+      "passed": 25,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 288.154,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase03_npc_foraging_brain",
+      "status": "passed",
+      "passed": 397,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 0.266,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase03_npc_social",
+      "status": "passed",
+      "passed": 25,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 1.869,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase03_npc_social_brain",
+      "status": "passed",
+      "passed": 963,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 0.365,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase03_npc_hook_target",
+      "status": "passed",
+      "passed": 69,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 1.568,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase03_npc_hook_pacing",
+      "status": "passed",
+      "passed": 243,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 10.343,
+      "registry_status": "current"
+    },
+    {
+      "suite": "player_hook_entry",
+      "status": "passed",
+      "passed": 46,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 0.917,
+      "registry_status": "current"
+    },
+    {
+      "suite": "player_hook_network",
+      "status": "passed",
+      "passed": 76,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 30.951,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase03_ecology_balance",
+      "status": "passed",
+      "passed": 244,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 85.563,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase04_map_definition",
+      "status": "passed",
+      "passed": 808,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 0.566,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase04_map_validator",
+      "status": "passed",
+      "passed": 1863,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 0.567,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase04_map_context",
+      "status": "passed",
+      "passed": 2626,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 0.365,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase04_map_authority",
+      "status": "passed",
+      "passed": 1017,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 1.223,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase04_map_snapshot",
+      "status": "passed",
+      "passed": 295,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 3.373,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase04_map_network",
+      "status": "passed",
+      "passed": 276,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 9.746,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase04_snapshot_equivalence",
+      "status": "passed",
+      "passed": 8449,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 31.505,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase04_map_equivalence",
+      "status": "passed",
+      "passed": 7589,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 34.78,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase04_map_presentation",
+      "status": "passed",
+      "passed": 442,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 2.221,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase04_shore_projection",
+      "status": "passed",
+      "passed": 3036,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 3.775,
+      "registry_status": "current"
+    },
+    {
+      "suite": "phase04_map_fixture",
+      "status": "passed",
+      "passed": 122,
+      "failed": 0,
+      "count_basis": "summary",
+      "duration_seconds": 1.57,
+      "registry_status": "current"
+    }
+  ],
+  "initial_failure": {
+    "suite": "plant_art",
+    "status": "timeout",
+    "reason": "The old isolated test instantiated View and called its private raster helper without installing any map context; complete original assertions retained after one explicit default-golden-map preparation."
+  },
+  "rerun": {
+    "suite": "plant_art",
+    "status": "passed",
+    "passed": 16579,
+    "failed": 0,
+    "count_basis": "summary",
+    "duration_seconds": 2.775,
+    "registry_status": "current"
+  },
+  "source_evidence": {
+    "full_run_runtime_assets_unchanged": true,
+    "exact_single_setup_line_verified": true,
+    "all_other_relevant_source_bytes_unchanged": true,
+    "source_file_count": 445,
+    "method": "Final445-file direct source comparison: only one explicit plant test setup line and one shore test terminal newline differ. Both test suites rerun fully, all other source bytes unchanged. Initial complete-run diagnostics remain preserved.",
+    "only_changed_tests": [
+      "tests/plant_art.gd",
+      "tests/phase04_shore_projection.gd"
+    ]
+  },
+  "python": {
+    "passed": 270,
+    "failed": 0,
+    "method": "python3 -m unittest discover -s tests/runner -v"
+  },
+  "historical_diagnostic": {
+    "suite": "untangle_v020",
+    "baseline_passed": 43,
+    "baseline_failed": 1,
+    "current_passed": 43,
+    "current_failed": 1,
+    "included_in_current": false,
+    "replacement": "untangle_v021"
+  },
+  "final_test_cleanup": {
+    "reason": "Pre-publication whitespace check found one blank line at EOF in new shore-only test; removed that blank line, then reran its3036 assertions and plant_art16579 assertions. No runtime change.",
+    "reruns": [
+      {
+        "suite": "phase04_shore_projection",
+        "status": "passed",
+        "passed": 3036,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 3.775,
+        "registry_status": "current"
+      },
+      {
+        "suite": "plant_art",
+        "status": "passed",
+        "passed": 16579,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 2.421,
+        "registry_status": "current"
+      }
+    ],
+    "exact_newline_only_change_verified": true
+  }
+}

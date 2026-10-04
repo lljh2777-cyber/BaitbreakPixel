@@ -26,7 +26,7 @@ func identity_and_record_valid(world: Node2D, count: int) -> bool:
 	if world.npc_fishes.size()!=count: return false
 	var ids: Dictionary={}
 	for npc: Dictionary in world.npc_fishes:
-		if ids.has(npc.fish_id) or not State.valid(npc,world.next_fish_id): return false
+		if ids.has(npc.fish_id) or not State.valid(npc,world.next_fish_id,world.map_context.water): return false
 		ids[npc.fish_id]=true
 	return true
 

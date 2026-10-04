@@ -1,5 +1,4 @@
 extends RefCounted
-const Layout=preload("res://scripts/pond_layout.gd")
 const Grass=preload("res://scripts/grass_binding.gd")
 
 # A presentation-only lap. Input, tension, contact and net catches continue to
@@ -22,9 +21,9 @@ static func pose(world: Node2D) -> Dictionary:
 	var angle: float=-PI/2+TAU*turn
 	var blend:=smooth(p/0.14)*(1-smooth((p-0.86)/0.14))
 	var center: Vector2=wrap.center
-	center.y=clampf(center.y,85,Layout.FLOOR-21)
+	center.y=clampf(center.y,world.map_context.water.position.y+17,world.map_context.floor_y-21)
 	var radius:=Vector2(float(wrap.radii.x)+14,13)
-	radius.x=minf(radius.x,maxf(7,minf(center.x-9,Layout.SIZE.x-9-center.x)))
+	radius.x=minf(radius.x,maxf(7,minf(center.x-(world.map_context.water.position.x+1),world.map_context.water.end.x-1-center.x)))
 	var orbit:=center+Vector2(cos(angle),sin(angle))*radius
 	var position: Vector2=Vector2(world.fish).lerp(orbit,blend)
 	# Projected yaw: narrow gently while rounding either end of the obstacle,

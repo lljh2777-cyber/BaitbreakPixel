@@ -1,9 +1,9 @@
 extends RefCounted
 
 const VERSION := 1
-const Layout=preload("res://scripts/pond_layout.gd")
+const MapContext=preload("res://scripts/maps/map_context.gd")
 # Peers must share the exact build and validated built-in MapRef before play.
-const BUILD := "0.26.2"
+const BUILD := "0.26.4"
 const DEFAULT_PORT := 24712
 const MAX_PACKET := 196608
 const MAX_STATE := 1048576
@@ -54,17 +54,19 @@ static func unpack_state(packet: Dictionary) -> Dictionary:
 	var value: Variant=bytes_to_var(raw)
 	return value if value is Dictionary and safe_values(value) else {}
 
-static func input(role: String, raw: Dictionary) -> Dictionary:
+# Map bounds are an explicit input: wire sanitization must never silently use
+# another round's default pond geometry. No map lookup/hash runs per input tick.
+static func input(role: String, raw: Dictionary, context: MapContext) -> Dictionary:
 	if role=="fish":
 		var clean := Commands.fish(raw,Vector2.RIGHT,0.35)
 		clean.qte_at_age=-1.0 # Never trust a client's claimed timing or success.
 		return clean
-	var clean := Commands.angler(raw,Vector2(232,180))
+	var clean := Commands.angler(raw,context.water.position+Vector2(224,112))
 	clean.qte_at_age=-1.0
 	clean.qte_condition_valid=true # Authority derives conditions from its own history.
 	clean.auto_reel=false
 	clean.auto_net=false
-	clean.target=clean.target.clamp(Vector2(0,0),Layout.SIZE)
+	clean.target=clean.target.clamp(Vector2.ZERO,context.size)
 	if clean.net_events.size()>MAX_EVENTS: clean.net_events.resize(MAX_EVENTS)
 	return clean
 

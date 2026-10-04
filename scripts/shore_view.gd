@@ -3,7 +3,7 @@ extends RefCounted
 # A local presentation of the same 2D pond. The simulation and net routes stay in world coordinates.
 const Lake = preload("res://assets/first_person/sunset_lake.png")
 const LineMotion = preload("res://scripts/line_motion.gd")
-const Layout = preload("res://scripts/pond_layout.gd")
+const Presentation = preload("res://scripts/maps/map_presentation.gd")
 const Art = preload("res://scripts/pixel_art.gd")
 const NPCFishPublic = preload("res://scripts/npc_fish_public_state.gd")
 const Net = preload("res://scripts/net_simulation.gd")
@@ -13,7 +13,6 @@ var hand := Hand.new()
 var reel_hand := ReelHand.new()
 const SCALE := Vector2(0.925,0.35)
 const ORIGIN := Vector2(24,213)
-const WATER_LEVEL := 55.0
 const CREAM := Color("ffe5bc")
 const INK := Color("122b38")
 const MINT := Color("8de0bd")
@@ -21,20 +20,34 @@ const GOLD := Color("ffd379")
 const SHAFT_LENGTH := 109.58981932643195
 const SHAFT_SEGMENTS := 48
 
-static func projection_at(y: float) -> Vector2:
-	# Fixed perspective: the distant float lane is narrower than near water.
-	# This depends only on world depth, never on the angler, hand or line.
-	var near := clampf((y-WATER_LEVEL)/(Layout.FLOOR-1-WATER_LEVEL),0,1)
+static func _map(world: Node2D=null) -> RefCounted:
+	# Omitted-world calls are explicit legacy tooling compatibility. Production
+	# callers always pass the displayed world, including remote observations.
+	return Presentation.default_map().context if world==null else world.map_context
+
+static func surface_y(world: Node2D=null) -> float:
+	return _map(world).water.position.y-13.0
+
+static func projection_at(y: float, world: Node2D=null) -> Vector2:
+	# Pond-style perspective is presentation, while its depth comes from the map.
+	# Retain the exact operation order for the built-in pond's projected pixels.
+	var map := _map(world)
+	var surface: float=map.water.position.y-13.0
+	var near := clampf((y-surface)/(map.floor_y-1-surface),0,1)
 	return Vector2(lerpf(243,ORIGIN.x,near),lerpf(0.44,SCALE.x,near))
 
-static func to_screen(point: Vector2, _world: Node2D=null) -> Vector2:
-	var projection := projection_at(point.y)
-	return Vector2(projection.x+point.x*(640.0/Layout.SIZE.x)*projection.y,ORIGIN.y+(point.y-WATER_LEVEL)*(257.0/(Layout.FLOOR-1-WATER_LEVEL))*SCALE.y)
+static func to_screen(point: Vector2, world: Node2D=null) -> Vector2:
+	var map := _map(world)
+	var surface: float=map.water.position.y-13.0
+	var projection := projection_at(point.y,world)
+	return Vector2(projection.x+point.x*(640.0/map.size.x)*projection.y,ORIGIN.y+(point.y-surface)*(257.0/(map.floor_y-1-surface))*SCALE.y)
 
-static func to_world(point: Vector2, _world: Node2D=null) -> Vector2:
-	var y := (point.y-ORIGIN.y)/(SCALE.y*257.0/(Layout.FLOOR-1-WATER_LEVEL))+WATER_LEVEL
-	var projection := projection_at(y)
-	return Vector2((point.x-projection.x)/projection.y*(Layout.SIZE.x/640.0),y)
+static func to_world(point: Vector2, world: Node2D=null) -> Vector2:
+	var map := _map(world)
+	var surface: float=map.water.position.y-13.0
+	var y: float=(point.y-ORIGIN.y)/(SCALE.y*257.0/(map.floor_y-1-surface))+surface
+	var projection := projection_at(y,world)
+	return Vector2((point.x-projection.x)/projection.y*(map.size.x/640.0),y)
 
 static func projected(path: PackedVector2Array, world: Node2D=null) -> PackedVector2Array:
 	var result := PackedVector2Array()
@@ -55,7 +68,7 @@ static func tackle_pose(world: Node2D, t: float, motion: Dictionary={}) -> Dicti
 		var sweep: float=sin(TAU*LineMotion.smooth(motion.progress))*motion.strength
 		held_x+=sweep*(22.0 if motion.unwind else -9.0)
 		brace=clampf(brace+motion.strength*(0.13 if motion.unwind else 0.055),0,1)
-	var pose := Hand.pose(inverse_lerp(18,Layout.SIZE.x-52,held_x),t,reel_speed,brace)
+	var pose := Hand.pose(inverse_lerp(world.map_context.water.position.x+10,world.map_context.water.end.x-44,held_x),t,reel_speed,brace)
 	var rod := rod_points(pose,load,world.effort_multiplier("angler"),float_position(world,t,motion))
 	return {"hand":pose,"rod":rod,"tip":rod[-1],"load":load,"reel_speed":reel_speed}
 
@@ -67,7 +80,7 @@ static func rig_index(world: Node2D) -> int:
 	return -1
 
 static func float_position(world: Node2D, t: float, motion: Dictionary={}) -> Vector2:
-	if world.line_landing() or (world.net_state=="caught" and world.fish.y<WATER_LEVEL):
+	if world.line_landing() or (world.net_state=="caught" and world.fish.y<surface_y(world)):
 		return to_screen(world.hook_target_mouth() if world.line_landing() else world.mouth(),world)+Vector2(0,-3)
 	var anchor: Vector2=world.angler.anchor()
 	var index := rig_index(world)
@@ -79,7 +92,7 @@ static func float_position(world: Node2D, t: float, motion: Dictionary={}) -> Ve
 	if world.hooked==world.HookState.MOUTH: dip=3.5
 	if motion.is_empty(): motion=LineMotion.action(world)
 	if motion.active: dip+=sin(motion.progress*TAU)*motion.strength*(0.7 if motion.unwind else 1.25)
-	return Vector2(to_screen(Vector2(x,WATER_LEVEL),world).x,ORIGIN.y+sin(t*2.2)*0.6+dip)
+	return Vector2(to_screen(Vector2(x,surface_y(world)),world).x,ORIGIN.y+sin(t*2.2)*0.6+dip)
 
 static func ellipse(center: Vector2, radii: Vector2, count: int=32) -> PackedVector2Array:
 	var path := PackedVector2Array()
@@ -131,10 +144,13 @@ func _ghost(view: Node2D, path: PackedVector2Array, opacity: float, color: Color
 	view.draw_colored_polygon(path,Color(color,opacity))
 
 func _underwater(view: Node2D, world: Node2D, t: float) -> void:
-	for solid in Layout.SOLIDS:
+	var map := Presentation.for_context(world.map_context)
+	for solid in map.solids:
+		if not solid.shore_visible: continue
 		_ghost(view,projected(PackedVector2Array(solid.points),world),0.18 if solid.kind=="wood" else 0.14)
-	for index in Layout.PLANTS.size():
-		var plant: Dictionary=Layout.PLANTS[index]
+	for index in map.plants.size():
+		var plant: Dictionary=map.plants[index]
+		if not plant.shore_visible: continue
 		for stem in 3:
 			var x: float=plant.x+(stem-1)*5
 			var p := to_screen(Vector2(x,plant.y),world)
@@ -152,7 +168,7 @@ func _underwater(view: Node2D, world: Node2D, t: float) -> void:
 		view.draw_circle(p,2.5,Color(0.65,0.64,0.41,0.11))
 	_ambient_fishes(view,world,t)
 	var position := to_screen(world.fish,world)+Vector2(sin(t*1.3)*1.2,cos(t*1.7)*0.5)
-	var direction: Vector2=(to_screen(world.fish+world.aim)-to_screen(world.fish)).normalized()
+	var direction: Vector2=(to_screen(world.fish+world.aim,world)-to_screen(world.fish,world)).normalized()
 	var fish_shape := PackedVector2Array([Vector2(12,0),Vector2(5,-4),Vector2(-5,-4),Vector2(-9,-2),Vector2(-15,-5),Vector2(-13,0),Vector2(-15,5),Vector2(-9,2),Vector2(-5,4),Vector2(5,4)])
 	var fish_pose: Dictionary=view.line_frame.fish
 	if fish_pose.active:
@@ -169,7 +185,7 @@ func _underwater(view: Node2D, world: Node2D, t: float) -> void:
 		view.draw_texture(view.fish_texture,Vector2(-12,-6))
 		view.draw_set_transform(Vector2.ZERO)
 	else:
-		var depth := clampf((world.fish.y-80)/220,0,1)
+		var depth := clampf((world.fish.y-(world.map_context.water.position.y+12))/220,0,1)
 		_ghost(view,fish_shape,lerpf(0.44,0.17,depth)*(0.86+sin(t*1.6)*0.14))
 	# No eyes, hook-tip markers, bait particles, nest markers or exact opponent status above water.
 
@@ -198,7 +214,7 @@ func _ambient_fishes(view: Node2D, world: Node2D, t: float) -> void:
 			continue
 		var shape:=Art.npc_shadow(int(fish.visual_variant))
 		for index in shape.size(): shape[index]=position+shape[index].rotated(direction.angle())
-		var depth:=clampf((source.y-80)/220,0,1)
+		var depth:=clampf((source.y-(world.map_context.water.position.y+12))/220,0,1)
 		_ghost(view,shape,lerpf(0.44,0.17,depth)*(0.86+sin(phase)*0.14)*0.72)
 
 static func draw_observed_npcs(view: Node2D, world: Node2D) -> void:
@@ -250,7 +266,7 @@ func _tackle(view: Node2D, world: Node2D, t: float) -> void:
 				if reel_speed<0: travel=1.0-travel
 				var part: int=clampi(int(travel*(line.size()-2)),0,line.size()-2)
 				view.draw_line(line[part],line[part+1],GOLD if reel_speed<0 else MINT,2)
-		if not world.angler.casting and not world.line_landing() and not (world.net_state=="caught" and world.fish.y<WATER_LEVEL):
+		if not world.angler.casting and not world.line_landing() and not (world.net_state=="caught" and world.fish.y<surface_y(world)):
 			for ring in 2:
 				var age := fmod(t*0.6+ring*0.5,1)
 				view.draw_polyline(ellipse(float_at,Vector2(8+age*12,2+age*3)),Color(CREAM,(1-age)*0.44),1)

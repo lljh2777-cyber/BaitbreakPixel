@@ -62,7 +62,7 @@ func same_world_without_pause(before: Dictionary, world: Node2D) -> bool:
 	return before==after
 
 func pure_checks() -> void:
-	check(Protocol.BUILD=="0.26.2" and Fish.SCHEMA==2 and World.Snapshot.SCHEMA==16,"exact build, public fish schema2 and authority schema16 remain distinct")
+	check(Protocol.BUILD=="0.26.4" and Fish.SCHEMA==2 and World.Snapshot.SCHEMA==16,"exact build, public fish schema2 and authority schema16 remain distinct")
 	var authority:=World.new(); authority.reset_world({"seed":4262,"ruleset":"duel"})
 	var receiver:=World.new(); receiver.reset_world({"seed":9})
 	for role: String in ["fish","angler"]:
@@ -96,7 +96,7 @@ func pure_checks() -> void:
 	var object_array: Array[Object]=[]
 	var object_values: Dictionary[String,Object]={}
 	check(not Protocol.safe_values(object_array) and not Protocol.safe_values(object_values),"wire rejects even empty Object-typed container metadata")
-	check(NPCPublic.landing_bounds().position.y==39.0,"map-aware NPC landing validator preserves exact legacy lower edge")
+	check(NPCPublic.landing_bounds(authority.map_context.water).position.y==39.0,"map-aware NPC landing validator preserves exact legacy lower edge")
 	authority.free(); receiver.free()
 	# A connected socket or known session string is not a completed map handshake.
 	for kind: String in ["ready","start","start_ack","input","state","chunk","effects"]:

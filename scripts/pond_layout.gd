@@ -1,6 +1,8 @@
 extends RefCounted
 
-# One authoritative map, independent of the 640x360 viewport.
+# Legacy pond_v2 compatibility facade and independent golden-test data.
+# New gameplay code must not depend on this facade; use the installed MapContext.
+# Live simulation, networking and presentation no longer import this script.
 const SIZE := Vector2(1280,480)
 const FLOOR := 433.0
 const HOME := Vector2(60,401)
