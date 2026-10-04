@@ -99,7 +99,7 @@ func test_map_cache_contract(a: Node2D, b: Node2D) -> void:
 	var absent: bool = not payload.state.has("targets") and not payload.state.has("map_errors")
 	for name: String in WORLD_MAP_FIELDS: absent = absent and not payload.state.has(name)
 	for name: String in RIG_MAP_FIELDS: absent = absent and not payload.rig.has(name)
-	check(absent and payload.schema == 15, "schema15 explicitly excludes reconstructed map state without changing its wire shape")
+	check(absent and payload.schema == 16, "schema16 references the map while excluding reconstructed geometry from mutable state")
 	a.advance_tick({"move":Vector2.RIGHT}, {"walk":1.0})
 	check(map_cache_values(a) == caches and is_same(a.map_context, context) and is_same(a.targets, target_cache) and is_same(a.targets[0], target_record) and is_same(a.map_net_blockers, net_cache), "gameplay updates neither rebuild nor mutate static map caches")
 	check(a.restore_snapshot(payload) and same(a, b) and map_cache_values(a) == caches and is_same(a.map_context, context) and is_same(a.angler._map_context, context), "ordinary pond snapshot restore preserves its installed map and all derived caches")
@@ -164,12 +164,12 @@ func run() -> void:
 	a.reset_world(config()); a.baits[1].grains[0].free=true; a.baits[1].grains[1].eaten=true; a.score=3.5; a.counted[a.baits[1].grains[1].id]=true
 	roundtrip(a,b,"detached food and score ownership",90)
 	var valid: Dictionary=a.capture_snapshot()
-	# net_aim remains part of the schema-15 authority contract (retained from schema 13) even when the current
+	# net_aim remains part of the schema-16 authority contract (retained from schema 13) even when the current
 	# two-point net action no longer consumes the old drag target.
-	check(Snapshot.SCHEMA==15 and valid.state.has("net_aim"),"schema 15 retains legacy net_aim for same-build snapshot compatibility")
+	check(Snapshot.SCHEMA==16 and valid.state.has("net_aim"),"schema 16 retains legacy net_aim for same-build snapshot compatibility")
 	var legacy_aim: Dictionary=valid.duplicate(true)
 	legacy_aim.state.net_aim=Vector2(418,173)
-	check(b.restore_snapshot(legacy_aim) and b.capture_snapshot().state.net_aim==Vector2(418,173),"schema 15 roundtrips nondefault legacy net_aim without silently dropping it")
+	check(b.restore_snapshot(legacy_aim) and b.capture_snapshot().state.net_aim==Vector2(418,173),"schema 16 roundtrips nondefault legacy net_aim without silently dropping it")
 	b.restore_snapshot(valid)
 	var broken: Dictionary=valid.duplicate(true); broken.schema=999
 	check(not b.restore_snapshot(broken) and same(a,b),"unknown snapshot schema is rejected without partial changes")

@@ -1,0 +1,347 @@
+{
+  "baseline": {
+    "cases": [
+      {
+        "checkpoints": [
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": true,
+            "fish_wire_valid": true,
+            "net_age": 0.0,
+            "net_age_variant_type": "float",
+            "net_state": "wait",
+            "observing": false,
+            "tick": -1
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": false,
+            "fish_wire_valid": false,
+            "net_age": 0,
+            "net_age_variant_type": "int",
+            "net_state": "warning",
+            "observing": false,
+            "tick": 0
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": false,
+            "fish_wire_valid": false,
+            "net_age": 0,
+            "net_age_variant_type": "int",
+            "net_state": "warning",
+            "observing": false,
+            "tick": 1
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": false,
+            "fish_wire_valid": false,
+            "net_age": 0,
+            "net_age_variant_type": "int",
+            "net_state": "warning",
+            "observing": false,
+            "tick": 2
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": false,
+            "fish_wire_valid": false,
+            "net_age": 0,
+            "net_age_variant_type": "int",
+            "net_state": "sweep",
+            "observing": false,
+            "tick": 30
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": false,
+            "fish_wire_valid": false,
+            "net_age": 0,
+            "net_age_variant_type": "int",
+            "net_state": "sweep",
+            "observing": false,
+            "tick": 60
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": false,
+            "fish_wire_valid": false,
+            "net_age": 0,
+            "net_age_variant_type": "int",
+            "net_state": "withdraw",
+            "observing": false,
+            "tick": 119
+          }
+        ],
+        "input": "same-tick batch"
+      },
+      {
+        "checkpoints": [
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": true,
+            "fish_wire_valid": true,
+            "net_age": 0.0,
+            "net_age_variant_type": "float",
+            "net_state": "wait",
+            "observing": false,
+            "tick": -1
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": true,
+            "fish_wire_valid": true,
+            "net_age": 0.0166666666666667,
+            "net_age_variant_type": "float",
+            "net_state": "wait",
+            "observing": true,
+            "tick": 0
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": true,
+            "fish_wire_valid": true,
+            "net_age": 0.0333333333333333,
+            "net_age_variant_type": "float",
+            "net_state": "wait",
+            "observing": true,
+            "tick": 1
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": true,
+            "fish_wire_valid": true,
+            "net_age": 0.0333333333333333,
+            "net_age_variant_type": "float",
+            "net_state": "warning",
+            "observing": false,
+            "tick": 2
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": true,
+            "fish_wire_valid": true,
+            "net_age": 0.0333333333333333,
+            "net_age_variant_type": "float",
+            "net_state": "warning",
+            "observing": false,
+            "tick": 30
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": true,
+            "fish_wire_valid": true,
+            "net_age": 0.0333333333333333,
+            "net_age_variant_type": "float",
+            "net_state": "sweep",
+            "observing": false,
+            "tick": 60
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": true,
+            "fish_wire_valid": true,
+            "net_age": 0.0333333333333333,
+            "net_age_variant_type": "float",
+            "net_state": "withdraw",
+            "observing": false,
+            "tick": 119
+          }
+        ],
+        "input": "separate authority ticks"
+      }
+    ],
+    "engine": "4.7.2-stable (official)",
+    "scope": "Direct actual authority/wire capture/compression/apply reproduction; no actual ENet or frequency claim"
+  },
+  "current": {
+    "cases": [
+      {
+        "checkpoints": [
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": true,
+            "fish_wire_valid": true,
+            "net_age": 0.0,
+            "net_age_variant_type": "float",
+            "net_state": "wait",
+            "observing": false,
+            "tick": -1
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": false,
+            "fish_wire_valid": false,
+            "net_age": 0,
+            "net_age_variant_type": "int",
+            "net_state": "warning",
+            "observing": false,
+            "tick": 0
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": false,
+            "fish_wire_valid": false,
+            "net_age": 0,
+            "net_age_variant_type": "int",
+            "net_state": "warning",
+            "observing": false,
+            "tick": 1
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": false,
+            "fish_wire_valid": false,
+            "net_age": 0,
+            "net_age_variant_type": "int",
+            "net_state": "warning",
+            "observing": false,
+            "tick": 2
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": false,
+            "fish_wire_valid": false,
+            "net_age": 0,
+            "net_age_variant_type": "int",
+            "net_state": "sweep",
+            "observing": false,
+            "tick": 30
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": false,
+            "fish_wire_valid": false,
+            "net_age": 0,
+            "net_age_variant_type": "int",
+            "net_state": "sweep",
+            "observing": false,
+            "tick": 60
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": false,
+            "fish_wire_valid": false,
+            "net_age": 0,
+            "net_age_variant_type": "int",
+            "net_state": "withdraw",
+            "observing": false,
+            "tick": 119
+          }
+        ],
+        "input": "same-tick batch"
+      },
+      {
+        "checkpoints": [
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": true,
+            "fish_wire_valid": true,
+            "net_age": 0.0,
+            "net_age_variant_type": "float",
+            "net_state": "wait",
+            "observing": false,
+            "tick": -1
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": true,
+            "fish_wire_valid": true,
+            "net_age": 0.0166666666666667,
+            "net_age_variant_type": "float",
+            "net_state": "wait",
+            "observing": true,
+            "tick": 0
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": true,
+            "fish_wire_valid": true,
+            "net_age": 0.0333333333333333,
+            "net_age_variant_type": "float",
+            "net_state": "wait",
+            "observing": true,
+            "tick": 1
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": true,
+            "fish_wire_valid": true,
+            "net_age": 0.0333333333333333,
+            "net_age_variant_type": "float",
+            "net_state": "warning",
+            "observing": false,
+            "tick": 2
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": true,
+            "fish_wire_valid": true,
+            "net_age": 0.0333333333333333,
+            "net_age_variant_type": "float",
+            "net_state": "warning",
+            "observing": false,
+            "tick": 30
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": true,
+            "fish_wire_valid": true,
+            "net_age": 0.0333333333333333,
+            "net_age_variant_type": "float",
+            "net_state": "sweep",
+            "observing": false,
+            "tick": 60
+          },
+          {
+            "angler_wire_valid": true,
+            "authority_restore": true,
+            "fish_wire_apply": true,
+            "fish_wire_valid": true,
+            "net_age": 0.0333333333333333,
+            "net_age_variant_type": "float",
+            "net_state": "withdraw",
+            "observing": false,
+            "tick": 119
+          }
+        ],
+        "input": "separate authority ticks"
+      }
+    ],
+    "engine": "4.7.2-stable (official)",
+    "scope": "Direct actual authority/wire capture/compression/apply reproduction; no actual ENet or frequency claim"
+  },
+  "comparison": {
+    "success": true,
+    "differences": [],
+    "scope": "Synthetic toggle+two-points same tick retains inherited int-zero fish-wire rejection. Ordinary separate-tick input remains accepted; not repaired or normalized by P4.3."
+  }
+}

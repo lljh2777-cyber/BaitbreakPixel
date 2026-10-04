@@ -1,0 +1,849 @@
+{
+  "format": "phase04-map-snapshot-network-regression-v1",
+  "version": "0.26.2",
+  "checked_on": "2026-10-04",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "baseline_commit": "8831f52ee7daae5d592282d5da432cbd67fccfb0",
+  "headless": {
+    "suite_count": 68,
+    "assertions": 260467,
+    "failed": 0,
+    "rows": [
+      {
+        "suite": "architecture_v020",
+        "status": "passed",
+        "passed": 60,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 8.139,
+        "evidence_run": "final-network"
+      },
+      {
+        "suite": "bait_suction_v0212",
+        "status": "passed",
+        "passed": 41,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 1.469,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "effort_v013",
+        "status": "passed",
+        "passed": 31,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 3.824,
+        "evidence_run": "final-network"
+      },
+      {
+        "suite": "feeding_feel_v022",
+        "status": "passed",
+        "passed": 29,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 1.017,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "feeding_movement_v0221",
+        "status": "passed",
+        "passed": 28,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 1.217,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "fish_orbit_v021",
+        "status": "passed",
+        "passed": 160,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 22.785,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "grass_binding_v021",
+        "status": "passed",
+        "passed": 70,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 13.756,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "line_motion_v021",
+        "status": "passed",
+        "passed": 29,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 2.521,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "net_animation_v0201",
+        "status": "passed",
+        "passed": 44,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 2.974,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "net_network_v020",
+        "status": "passed",
+        "passed": 13,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 19.503,
+        "evidence_run": "final-network"
+      },
+      {
+        "suite": "net_network_v021",
+        "status": "passed",
+        "passed": 13,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 20.047,
+        "evidence_run": "final-network"
+      },
+      {
+        "suite": "net_v021",
+        "status": "passed",
+        "passed": 43,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 2.019,
+        "evidence_run": "final-network"
+      },
+      {
+        "suite": "network_rules_v012",
+        "status": "passed",
+        "passed": 26,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 0.666,
+        "evidence_run": "final-network"
+      },
+      {
+        "suite": "obstacle_art",
+        "status": "passed",
+        "passed": 92,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 1.935,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "plant_art",
+        "status": "passed",
+        "passed": 16579,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 1.221,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "pond_v021",
+        "status": "passed",
+        "passed": 31,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 2.322,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "reeling_v0122",
+        "status": "passed",
+        "passed": 20,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 3.275,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "rod_load_v017",
+        "status": "passed",
+        "passed": 11,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 0.666,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "rules_network_v019",
+        "status": "passed",
+        "passed": 9,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 18.32,
+        "evidence_run": "final-network"
+      },
+      {
+        "suite": "rules_v020",
+        "status": "passed",
+        "passed": 256,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 7.434,
+        "evidence_run": "final-network"
+      },
+      {
+        "suite": "tackle_dynamics_v021",
+        "status": "passed",
+        "passed": 28,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 1.869,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "untangle_network_v018",
+        "status": "passed",
+        "passed": 6,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 13.505,
+        "evidence_run": "final-network"
+      },
+      {
+        "suite": "untangle_v021",
+        "status": "passed",
+        "passed": 44,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 3.073,
+        "evidence_run": "final-network"
+      },
+      {
+        "suite": "water_art",
+        "status": "passed",
+        "passed": 14,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 1.468,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "wood_fade",
+        "status": "passed",
+        "passed": 57,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 1.671,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "wood_junctions",
+        "status": "passed",
+        "passed": 20,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 2.424,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase01_entities",
+        "status": "passed",
+        "passed": 13,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 0.569,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase01_observation",
+        "status": "passed",
+        "passed": 22,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 0.468,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase01_statistics",
+        "status": "passed",
+        "passed": 13,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 1.326,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase01_satiety",
+        "status": "passed",
+        "passed": 14,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 0.466,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase01_instinct",
+        "status": "passed",
+        "passed": 81,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 0.465,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase01_suspicion",
+        "status": "passed",
+        "passed": 11,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 0.466,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase01_random_hooks",
+        "status": "passed",
+        "passed": 508,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 3.178,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase01_policies",
+        "status": "passed",
+        "passed": 5,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 0.465,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase01_network",
+        "status": "passed",
+        "passed": 44,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 12.451,
+        "evidence_run": "final-network"
+      },
+      {
+        "suite": "phase15_controls",
+        "status": "passed",
+        "passed": 131,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 4.578,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase02_bite",
+        "status": "passed",
+        "passed": 57,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 1.419,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase02_bite_network",
+        "status": "passed",
+        "passed": 136,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 14.203,
+        "evidence_run": "final-network"
+      },
+      {
+        "suite": "phase02_bait_types",
+        "status": "passed",
+        "passed": 6564,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 49.233,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase02_food_profiles",
+        "status": "passed",
+        "passed": 158,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 0.365,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase02_observation",
+        "status": "passed",
+        "passed": 59,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 0.465,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase02_bait_network",
+        "status": "passed",
+        "passed": 94,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 17.313,
+        "evidence_run": "final-network"
+      },
+      {
+        "suite": "phase02_feeding_balance",
+        "status": "passed",
+        "passed": 204,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 1.318,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase02_feeding_policies",
+        "status": "passed",
+        "passed": 29,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 0.465,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase03_npc_observation",
+        "status": "passed",
+        "passed": 209,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 0.766,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase03_npc_network",
+        "status": "passed",
+        "passed": 497,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 43.026,
+        "evidence_run": "final-network"
+      },
+      {
+        "suite": "phase03_npc_rng",
+        "status": "passed",
+        "passed": 7043,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 19.534,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase03_npc_entities",
+        "status": "passed",
+        "passed": 7274,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 5.586,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase03_npc_snapshot",
+        "status": "passed",
+        "passed": 5463,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 26.404,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase03_npc_ambient",
+        "status": "passed",
+        "passed": 194441,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 37.142,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase03_npc_statistics",
+        "status": "passed",
+        "passed": 2141,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 18.015,
+        "evidence_run": "final-network"
+      },
+      {
+        "suite": "phase03_npc_foraging",
+        "status": "passed",
+        "passed": 80,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 13.52,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase03_food_reachability",
+        "status": "passed",
+        "passed": 25,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 269.739,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase03_npc_foraging_brain",
+        "status": "passed",
+        "passed": 397,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 0.265,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase03_npc_social",
+        "status": "passed",
+        "passed": 25,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 1.77,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase03_npc_social_brain",
+        "status": "passed",
+        "passed": 963,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 0.265,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase03_npc_hook_target",
+        "status": "passed",
+        "passed": 69,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 1.467,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase03_npc_hook_pacing",
+        "status": "passed",
+        "passed": 243,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 9.941,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "player_hook_entry",
+        "status": "passed",
+        "passed": 46,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 0.917,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "player_hook_network",
+        "status": "passed",
+        "passed": 76,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 30.525,
+        "evidence_run": "final-network"
+      },
+      {
+        "suite": "phase03_ecology_balance",
+        "status": "passed",
+        "passed": 244,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 81.933,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase04_map_definition",
+        "status": "passed",
+        "passed": 808,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 0.465,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase04_map_validator",
+        "status": "passed",
+        "passed": 1863,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 0.465,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase04_map_context",
+        "status": "passed",
+        "passed": 2626,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 0.366,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase04_map_authority",
+        "status": "passed",
+        "passed": 1017,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 1.017,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase04_map_snapshot",
+        "status": "passed",
+        "passed": 295,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 2.972,
+        "evidence_run": "full-current"
+      },
+      {
+        "suite": "phase04_map_network",
+        "status": "passed",
+        "passed": 276,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 9.194,
+        "evidence_run": "final-network"
+      },
+      {
+        "suite": "phase04_snapshot_equivalence",
+        "status": "passed",
+        "passed": 8449,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 30.052,
+        "evidence_run": "full-current"
+      }
+    ],
+    "replacement_not_addition": [
+      "architecture_v020",
+      "effort_v013",
+      "net_network_v020",
+      "net_network_v021",
+      "net_v021",
+      "network_rules_v012",
+      "phase01_network",
+      "phase02_bait_network",
+      "phase02_bite_network",
+      "phase03_npc_network",
+      "phase03_npc_statistics",
+      "phase04_map_network",
+      "player_hook_network",
+      "rules_network_v019",
+      "rules_v020",
+      "untangle_network_v018",
+      "untangle_v021"
+    ]
+  },
+  "final_network_source_stability": {
+    "stable": true,
+    "changed": [],
+    "method": "Direct before/after source bytes; no additional hash inventory",
+    "runtime_settled_since": "2026-10-04T11:17:54Z",
+    "scope": "Final rerun of all current Session/network tests and architecture after handshake reject-delivery fix. All other initial-current suites use unchanged runtime paths."
+  },
+  "native": {
+    "suite_count": 22,
+    "summary_assertions": 801,
+    "completion_markers": 2,
+    "failed": 0,
+    "rows": [
+      {
+        "suite": "bait_suction_native_v0211",
+        "status": "passed",
+        "passed": 7,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 3.627
+      },
+      {
+        "suite": "bait_suction_native_v0212",
+        "status": "passed",
+        "passed": 9,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 3.025
+      },
+      {
+        "suite": "effort_native_v013",
+        "status": "passed",
+        "passed": 25,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 3.424
+      },
+      {
+        "suite": "feeding_feel_native_v022",
+        "status": "passed",
+        "passed": 24,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 3.83
+      },
+      {
+        "suite": "hand_joint_native_v0156",
+        "status": "passed",
+        "passed": 84,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 1.569
+      },
+      {
+        "suite": "net_native_v020",
+        "status": "passed",
+        "passed": 9,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 4.427
+      },
+      {
+        "suite": "obstacle_visuals_native",
+        "status": "passed",
+        "passed": 16,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 4.385
+      },
+      {
+        "suite": "pond_native_v021",
+        "status": "passed",
+        "passed": 9,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 3.429
+      },
+      {
+        "suite": "reel_hand_native_v016",
+        "status": "passed",
+        "passed": 97,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 1.169
+      },
+      {
+        "suite": "reeling_native_v0122",
+        "status": "passed",
+        "passed": 10,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 6.387
+      },
+      {
+        "suite": "rules_native_v019",
+        "status": "passed",
+        "passed": 8,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 5.936
+      },
+      {
+        "suite": "untangle_native_v018",
+        "status": "passed",
+        "passed": 6,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 11.302
+      },
+      {
+        "suite": "visuals",
+        "status": "passed",
+        "passed": 2,
+        "failed": 0,
+        "count_basis": "log_markers",
+        "duration_seconds": 6.136
+      },
+      {
+        "suite": "water_scenery_native",
+        "status": "passed",
+        "passed": 19,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 3.529
+      },
+      {
+        "suite": "wood_fade_native",
+        "status": "passed",
+        "passed": 17,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 3.076
+      },
+      {
+        "suite": "phase01_native",
+        "status": "passed",
+        "passed": 16,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 2.924
+      },
+      {
+        "suite": "phase15_native",
+        "status": "passed",
+        "passed": 25,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 4.327
+      },
+      {
+        "suite": "phase02_bite_native",
+        "status": "passed",
+        "passed": 23,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 3.427
+      },
+      {
+        "suite": "phase02_bait_native",
+        "status": "passed",
+        "passed": 78,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 5.083
+      },
+      {
+        "suite": "phase03_npc_native",
+        "status": "passed",
+        "passed": 117,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 9.303
+      },
+      {
+        "suite": "phase03_npc_hook_native",
+        "status": "passed",
+        "passed": 86,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 6.133
+      },
+      {
+        "suite": "player_hook_entry_native",
+        "status": "passed",
+        "passed": 116,
+        "failed": 0,
+        "count_basis": "summary",
+        "duration_seconds": 7.706
+      }
+    ]
+  },
+  "python": {
+    "tests": 250,
+    "failed": 0,
+    "new_tamper_tests": 19
+  },
+  "editor_import": "passed",
+  "native_enet_ui": {
+    "assertions": 44,
+    "failed": 0,
+    "capture_count": 12
+  },
+  "source_review": "Snapshot, network and independent compatibility reviews complete; runtime diff confined to declared P4.3 paths and exact version markers",
+  "scope": "Only current registry profiles. Earlier same-name results replaced by final reruns, never summed. Historical/retired/manual and exports not claimed passed."
+}

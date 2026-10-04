@@ -2,12 +2,12 @@
 
 一个 2D 像素风格的人鱼对抗游戏：小鱼在水下觅食、缠线和逃脱，钓鱼人在岸边控竿、收放线与抄网。支持单机挑战、自由练习和一人对一鱼的局域网联机。
 
-**当前源码：0.26.1（P4.2 Authority MapContext）** · Godot 4.7.2
+**当前源码：0.26.2（P4.3 Snapshot / Network MapRef）** · Godot 4.7.2
 **当前公开 Windows 试玩包：0.26.1**，历史发行记录继续保留。
 
 用户已确认 0.25.2 社会线索试玩通过。0.25.3 让 NPC 真实误咬钩、自动挣扎、逃脱、断线或被拉起。钓错 NPC 不结束比赛；玩家可趁机吃饵、回巢，钓鱼人需要重新部署。NPC 捕获后暂离生态，延迟生成新 ID 的鱼。
 
-用户于 2026-10-04 确认 0.26.0 测试通过并继续。本轮 0.26.1 完成 P4.2：每局先验证并冻结 MapContext，再初始化玩家、NPC、饵与钓鱼人；权威几何、出生/回巢、抄网、观察和 AI 改读地图数据。pond_v2 的几何、随机序列与玩法保持，schema15、网络包结构和画面尚未迁移。详见[Authority Context 架构](docs/architecture/MAP-AUTHORITY-CONTEXT.md)、[验证与人工抽查](docs/test-reports/PHASE04-MAP-AUTHORITY-0.26.1.md)，旧[数据契约](docs/architecture/MAP-DEFINITION-CONTRACT.md)与[依赖审计](docs/architecture/MAP-DEPENDENCY-AUDIT.md)保留。0.26.1 Windows 试玩包已构建、验证并公开发布；解压后运行 BaitbreakPixel.exe，核对菜单 0.26.1。完成后停在 P4.2，等待确认再进入 P4.3 Snapshot / Network map_ref。新路线仍为 Phase 4 地图抽象 → Phase 5 交互地图生成，多竿与长期记忆后移。
+用户已确认 0.26.1 测试通过，本轮仅推进 P4.3：权威快照升级 schema16，以地图 ID、revision、contract_version 和 content_hash 恢复本机注册地图；联机握手和开局验证相同 MapRef，不匹配拒绝进入比赛。保持原 pond_v2、玩法、随机序列和画面。详见[地图存档与联机契约](docs/architecture/MAP-SNAPSHOT-NETWORK.md)和[本轮验证与人工门](docs/test-reports/PHASE04-MAP-SNAPSHOT-NETWORK-0.26.2.md)。本轮只提交推送源码，不生成包或 Release；公开 Windows 试玩包仍为用户已发布的 0.26.1。完成后停在 P4.3，确认后再进入 P4.4 Presentation Migration。新路线仍为地图抽象 → 交互地图生成，多竿与长期记忆后移。
 
 玩家 10 px 自动咬食、0.80 秒间隔、4/6/8 容量和已确认的抢食/补饵规则保持。NPC 继续真实消耗食物、增加自身饱食，不增加玩家分数、不参与胜负。玩家原 QTE、缠线、松线、断线、张力和提鱼保持。
 
@@ -66,7 +66,7 @@
 .\Build-Pixel.ps1 -GodotDirectory 'D:\Tools\Godot_v4.7.2-stable_win64.exe'
 ```
 
-该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.26.0` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
+该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.26.2` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
 
 当前测试入口、套件状态和产物目录配置见 [测试运行指南](tests/README.md)。核心抄网逻辑检查示例（替换为本机引擎路径）：
 
@@ -74,7 +74,7 @@
 & 'D:\Tools\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe' --headless --path . --script res://tests/net_v021.gd -- --test-profile
 ```
 
-测试使用独立配置；带原生画面截图的脚本需要图形窗口，不使用 `--headless`。本次检查见 [0.26.0 地图基础报告](docs/test-reports/PHASE04-MAP-FOUNDATION-0.26.0.md)；此前 Windows 试玩包的验证保留在 [0.22.5 原始报告](docs/test-reports/TEST-REPORT-0.22.5.md)。
+测试使用独立配置；带原生画面截图的脚本需要图形窗口，不使用 `--headless`。本次检查见 [0.26.2 地图存档与联机报告](docs/test-reports/PHASE04-MAP-SNAPSHOT-NETWORK-0.26.2.md)；此前 Windows 试玩包的验证保留在 [0.22.5 原始报告](docs/test-reports/TEST-REPORT-0.22.5.md)。
 
 ## 项目结构与文档
 

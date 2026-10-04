@@ -52,6 +52,7 @@ func measure(role: String, count: int, foraging_enabled: bool=true) -> Dictionar
 	var session:=Session.new()
 	session.game=world; session.remote_role=role; session.local_role="angler" if role=="fish" else "fish"
 	session.session_id="phase03-measurement"; session.round_id=1; session.status="playing"
+	session._select_map(); session.map_validated=true; session.is_host=true # Measure the complete current packet identity.
 	for tick in WARMUP_TICKS:
 		var input:=commands(role,tick)
 		world.advance_tick(input[0],input[1])

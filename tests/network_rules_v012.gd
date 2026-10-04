@@ -23,6 +23,8 @@ func fresh() -> void:
 	session.remote_role="fish"
 	session.session_id="rules-test"
 	session.round_id=1
+	# Queue tests begin after a verified map handshake; adversarial pre-handshake gates have their own suite.
+	session._select_map(); session.map_validated=true; session.is_host=true; session.status="playing"
 
 func input_packet(sequence: int, tick_id: int, qte_id: int) -> Dictionary:
 	return {"session":session.session_id,"round":1,"seq":sequence,"command":{"qte":true,"qte_at_age":0.0},"seen_tick":tick_id,"qte_id":qte_id,"events":[],"gesture":0}
@@ -79,10 +81,10 @@ func run() -> void:
 	check(not game.restore_snapshot(invalid),"unknown state machine values are rejected")
 	# Fragment transport uses the actual role wire contract; authority restore
 	# validation above deliberately keeps the separate full replay snapshots.
-	session.local_role="angler"
+	session.local_role="angler"; session.is_host=false
 	var projected:=AnglerPublic.capture(game)
 	var original_bytes:=var_to_bytes(original); var projected_bytes:=var_to_bytes(projected)
-	var packet := {"kind":"state","v":Protocol.VERSION,"session":session.session_id,"round":1,"seq":10,"phase":"playing","countdown":0.0,"ack":5,"snapshot":Protocol.pack_state(projected)}
+	var packet := {"kind":"state","v":Protocol.VERSION,"session":session.session_id,"round":1,"seq":10,"phase":"playing","countdown":0.0,"ack":5,"build":Protocol.BUILD,"map_ref":session.map_ref.duplicate(true),"snapshot":Protocol.pack_state(projected)}
 	var pieces := chunks(packet)
 	session.received_state_seq=-1
 	for index in range(pieces.size()-1,0,-1): session._receive_chunk(pieces[index]); session._receive_chunk(pieces[index])

@@ -19,7 +19,7 @@ const Suspicion=preload("res://scripts/fish_suspicion.gd")
 const Instinct=preload("res://scripts/fish_instinct.gd")
 const Stats = preload("res://scripts/round_stats.gd")
 const Rope = preload("res://scripts/rope.gd")
-# Compatibility facade for the unmigrated schema15/network and presentation APIs.
+# Compatibility facade for presentation and legacy callers.
 # Authority gameplay below must use the validated per-round map_context instead.
 const Layout = preload("res://scripts/pond_layout.gd")
 const MapContext = preload("res://scripts/maps/map_context.gd")
@@ -253,6 +253,14 @@ func _install_map_context(context: MapContext) -> void:
 	map_vegetation_drag_zones=context.vegetation_drag_zones
 	_npc_spawn_regions=NPCFishState.spawn_regions(context.water)
 
+# Install only after a snapshot/public-state adapter has validated its entire
+# value tree and resolved its MapRef locally. No actor reset, signal or RNG use.
+func _install_snapshot_map_context(context: MapContext) -> void:
+	if map_context == null or context.map_ref != map_context.map_ref:
+		_install_map_context(context)
+		angler.configure_map(context)
+	map_errors=[]
+
 # Compatibility properties above are aliases only; no duplicate tuning state.
 func rule(key: String) -> float: return float(rules[key])
 func stamina_ratio() -> float: return clampf(stamina/rule("stamina_max"),0,1)
@@ -481,6 +489,8 @@ func reset_world(config: Dictionary = {}, definition: Variant = null) -> bool:
 	var loaded: Dictionary
 	if definition != null:
 		loaded=MapContext.from_definition(definition)
+	elif config.has("map_ref"):
+		loaded=MapContext.load_ref(config.map_ref)
 	else:
 		var map_id: Variant=config.get("map_id","pond_v2")
 		var revision: Variant=config.get("map_revision",1)

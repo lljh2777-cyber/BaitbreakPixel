@@ -134,6 +134,8 @@ func run() -> void:
 func network_checks() -> void:
 	var w=fresh(); var session=Session.new(); root.add_child(session); session.game=w
 	session.remote_role="angler"; session.session_id="untangle-test"; session.round_id=1
+	# Shared current wrapper exercises queue timing after map verification.
+	session._select_map(); session.map_validated=true; session.is_host=true; session.status="playing"
 	w.advance_tick({}, {"untangle":true}); green(w); w.effort_checks.angler.age+=w.TICK_SECONDS
 	w.simulation_tick=100; session._remember_qte(); w.simulation_tick=112; w.effort_checks.angler.age+=0.2
 	var packet:Dictionary={"session":session.session_id,"round":1,"seq":1,"command":{"qte":true},"seen_tick":100,"qte_id":w.effort_checks.angler.id,"check_kind":"effort","events":[],"gesture":0}

@@ -691,9 +691,10 @@
       "timeout_seconds": 120
     },
     "phase04_map_baseline": {
-      "status": "current",
+      "status": "historical",
       "mode": "headless",
-      "timeout_seconds": 120
+      "timeout_seconds": 120,
+      "reason": "Frozen schema15 P4.0/P4.2 witness retained byte-for-byte for its historical Git baselines. Current schema16 coverage is phase04_snapshot_equivalence; do not count this old-schema entry as passing current."
     },
     "phase04_map_context": {
       "status": "current",
@@ -706,6 +707,25 @@
       "timeout_seconds": 120,
       "pack_compatible": false,
       "pack_reason": "Uses test-only map fixture; release PCK intentionally excludes tests. Run against source."
+    },
+    "phase04_map_snapshot": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120,
+      "pack_compatible": false,
+      "pack_reason": "Uses unregistered test-only authority map fixture; release PCK intentionally excludes tests. Run against source."
+    },
+    "phase04_map_network": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120,
+      "pack_compatible": false,
+      "pack_reason": "Uses test-only map ENet peer helper; release PCK intentionally excludes tests. Run against source."
+    },
+    "phase04_snapshot_equivalence": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
     }
   }
 }

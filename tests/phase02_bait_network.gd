@@ -51,7 +51,7 @@ func pure_checks() -> void:
 	populate(world)
 	var replay:=World.new(); replay.reset_world({"seed":8})
 	var saved: Dictionary=world.capture_snapshot()
-	check(saved.schema==15 and Snapshot.SCHEMA==15 and saved.bait_profile_version==3,"authority preserves schema 15 with a mandatory bait-profile extension guard")
+	check(saved.schema==16 and Snapshot.SCHEMA==16 and saved.bait_profile_version==3,"authority uses schema 16 with a mandatory bait-profile extension guard")
 	check(replay.restore_snapshot(saved) and replay.capture_snapshot()==saved,"all bait and fragment kinds survive exact authority roundtrip")
 	for tick in 50:
 		world.advance_tick({"move":Vector2.UP},{})

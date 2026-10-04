@@ -148,6 +148,8 @@ func test_input_and_network() -> void:
 	check(source.net_events.size()==1 and source.net_events[0].kind=="toggle","E is a discrete action and left release sends no cancel")
 	var session:=Session.new(); session.game=w; root.add_child(session)
 	session.session_id="net20"; session.round_id=1; session.remote_role="angler"
+	# Shared current wrapper exercises net events after map verification.
+	session._select_map(); session.map_validated=true; session.is_host=true; session.status="playing"
 	var packet := {"session":"net20","round":1,"seq":1,"command":{},"events":[{"kind":"toggle","gesture":1},{"kind":"point","point":Vector2(210,140),"gesture":2}],"seen_tick":0,"qte_id":0,"gesture":2}
 	session.receive_input(packet)
 	var command: Dictionary=session._take_remote()

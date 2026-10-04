@@ -1,0 +1,389 @@
+{
+  "format": "phase04-snapshot-comparison-v1",
+  "success": true,
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "working_source_stable": true,
+  "frozen_source_stable": true,
+  "changed_during_run": [],
+  "source_contract": {
+    "success": true,
+    "errors": [],
+    "changed_runtime_paths": [
+      "project.godot",
+      "scripts/angler_network_observation.gd",
+      "scripts/fish_network_observation.gd",
+      "scripts/maps/map_context.gd",
+      "scripts/maps/map_registry.gd",
+      "scripts/menu.gd",
+      "scripts/network_protocol.gd",
+      "scripts/network_session.gd",
+      "scripts/npc_fish_public_state.gd",
+      "scripts/npc_fish_state.gd",
+      "scripts/pond.gd",
+      "scripts/world_simulation.gd",
+      "scripts/world_snapshot.gd"
+    ],
+    "note": "Path admission is not human code review. Exact scoped Git diff is retained; unchanged runtime and historical evidence are direct byte comparisons, without redundant SHA256 inventory."
+  },
+  "comparison": {
+    "success": true,
+    "differences": [],
+    "scenario_count": 8,
+    "input_ticks_per_build": 2100,
+    "checkpoint_count_per_build": 86,
+    "raw_snapshot_envelope_byte_delta": [
+      168
+    ],
+    "exact_fields": [
+      "every-tick state/rig/RNG",
+      "snapshot_sha256",
+      "fish_observation_sha256",
+      "fish_decision_observation_sha256",
+      "npc_observations_sha256",
+      "npcs_sha256",
+      "bait_sha256",
+      "hook_qte_wrap_sha256",
+      "net_sha256",
+      "stats_sha256",
+      "fish_wire_sha256",
+      "angler_wire_sha256",
+      "packed_authority_sha256",
+      "RNG seed/state",
+      "witnesses/outcomes"
+    ],
+    "exclusions": "Only exact schema15→16 (fish1→2) and map_id→registry-verified map_ref envelopes; no gameplay field, private boundary, ordering or number normalization"
+  },
+  "inherited_net_comparison": {
+    "success": true,
+    "differences": [],
+    "scope": "Synthetic toggle+two-points same tick retains inherited int-zero fish-wire rejection. Ordinary separate-tick input remains accepted; not repaired or normalized by P4.3."
+  },
+  "scope": "Identical external harness and immutable baseline, exact input tapes, gameplay and public payload bytes; full unmodified restore/replay. No renderer, live ENet, export, statistical ecology, or human-playtest claim.",
+  "baseline": {
+    "commit": "8831f52ee7daae5d592282d5da432cbd67fccfb0",
+    "tree": "c90e98d2e07d20b5cf0c8742fba5818758813939"
+  },
+  "registry_ref": {
+    "content_hash": "794aea6774b6a6626a1f56a58a1e0db0811c30eb60ac35eb9c2f472788fa5ef4",
+    "contract_version": 1,
+    "id": "pond_v2",
+    "revision": 1
+  },
+  "scenarios": [
+    {
+      "scenario": {
+        "challenge": true,
+        "count": 2,
+        "mode": "survival",
+        "name": "ambient_survival",
+        "seed": 17401,
+        "ticks": 240
+      },
+      "exact_input_trace": true,
+      "exact_every_tick_authority": true,
+      "every_tick_payload_sha256": "05a3ad55ef772cc037f7c3aeb1ce3885a1fcbc0896870c5f9ac9c0c286ec1e0e",
+      "input_trace_sha256": "16a5278b0b23d1658bfca47e6badd257479a37cc52a3fbf9338c0a7b254e0f70",
+      "checkpoint_count": 10,
+      "witnesses": {
+        "attached": false,
+        "entry": false,
+        "net_sweep": false,
+        "net_warning": false,
+        "npc_hooked": false,
+        "npc_landing": false,
+        "npc_replaced": false,
+        "qte": false,
+        "refill": false,
+        "wrap": false
+      },
+      "outcome": {
+        "hook_events": 0,
+        "match_over": false,
+        "net_catches": 0,
+        "next_bait_id": 5,
+        "next_fish_id": 4,
+        "npc_food": 5.7,
+        "reason": "",
+        "score": 0.0,
+        "wrap_good": 0,
+        "wrong_catches": 0
+      }
+    },
+    {
+      "scenario": {
+        "challenge": false,
+        "count": 4,
+        "mode": "duel",
+        "name": "ambient_duel",
+        "seed": 17402,
+        "ticks": 240
+      },
+      "exact_input_trace": true,
+      "exact_every_tick_authority": true,
+      "every_tick_payload_sha256": "94475eedf78ff92a5643a010eab429899ea1fe257c534e8fa2dcdb633848bd13",
+      "input_trace_sha256": "2b08a5436229e356f4c600f8bddea8f010d4aed880f2f3fba8162454381fa78e",
+      "checkpoint_count": 10,
+      "witnesses": {
+        "attached": false,
+        "entry": false,
+        "net_sweep": false,
+        "net_warning": false,
+        "npc_hooked": false,
+        "npc_landing": false,
+        "npc_replaced": false,
+        "qte": false,
+        "refill": false,
+        "wrap": false
+      },
+      "outcome": {
+        "hook_events": 0,
+        "match_over": false,
+        "net_catches": 0,
+        "next_bait_id": 6,
+        "next_fish_id": 6,
+        "npc_food": 0.0,
+        "reason": "",
+        "score": 0.0,
+        "wrap_good": 0,
+        "wrong_catches": 0
+      }
+    },
+    {
+      "scenario": {
+        "challenge": false,
+        "count": 3,
+        "mode": "duel",
+        "name": "feeding_refill",
+        "seed": 17403,
+        "ticks": 180
+      },
+      "exact_input_trace": true,
+      "exact_every_tick_authority": true,
+      "every_tick_payload_sha256": "aca4ffa14798b3658dd7361f5b0e8643954d93994c1a0637626ba1f2eb85418f",
+      "input_trace_sha256": "1bed7c0aae0a87d49fe156e7e982bc26aac722da441dd525f21f81497304c942",
+      "checkpoint_count": 8,
+      "witnesses": {
+        "attached": false,
+        "entry": false,
+        "net_sweep": false,
+        "net_warning": false,
+        "npc_hooked": false,
+        "npc_landing": false,
+        "npc_replaced": false,
+        "qte": false,
+        "refill": true,
+        "wrap": false
+      },
+      "outcome": {
+        "hook_events": 0,
+        "match_over": false,
+        "net_catches": 0,
+        "next_bait_id": 6,
+        "next_fish_id": 5,
+        "npc_food": 4.0,
+        "reason": "",
+        "score": 4.0,
+        "wrap_good": 0,
+        "wrong_catches": 0
+      }
+    },
+    {
+      "scenario": {
+        "challenge": true,
+        "count": 0,
+        "mode": "survival",
+        "name": "player_entry",
+        "seed": 64317,
+        "ticks": 180
+      },
+      "exact_input_trace": true,
+      "exact_every_tick_authority": true,
+      "every_tick_payload_sha256": "3c8ee20fd67beb50e359fbc154ebf3933b3ed82555d9a9d58d69f2b17c2a3a4a",
+      "input_trace_sha256": "d6196a2c0b71310cd91f4aee9cf5c819ad4c912acfa3ffbc5b8cf1f6576e0479",
+      "checkpoint_count": 8,
+      "witnesses": {
+        "attached": true,
+        "entry": true,
+        "net_sweep": false,
+        "net_warning": false,
+        "npc_hooked": false,
+        "npc_landing": false,
+        "npc_replaced": false,
+        "qte": true,
+        "refill": false,
+        "wrap": false
+      },
+      "outcome": {
+        "hook_events": 1,
+        "match_over": false,
+        "net_catches": 0,
+        "next_bait_id": 5,
+        "next_fish_id": 2,
+        "npc_food": 0.0,
+        "reason": "",
+        "score": 0.0,
+        "wrap_good": 0,
+        "wrong_catches": 0
+      }
+    },
+    {
+      "scenario": {
+        "challenge": true,
+        "count": 0,
+        "mode": "survival",
+        "name": "player_wrap",
+        "seed": 64317,
+        "ticks": 120
+      },
+      "exact_input_trace": true,
+      "exact_every_tick_authority": true,
+      "every_tick_payload_sha256": "49f7a3d8df519ea6ede35d8fe729a366c9fe77e366962053398b9dcaa46d90c1",
+      "input_trace_sha256": "944ea6f8298532fdb82e854b4b30f92d5c3c3f183f032e52455387dc3905c913",
+      "checkpoint_count": 6,
+      "witnesses": {
+        "attached": true,
+        "entry": false,
+        "net_sweep": false,
+        "net_warning": false,
+        "npc_hooked": false,
+        "npc_landing": false,
+        "npc_replaced": false,
+        "qte": true,
+        "refill": false,
+        "wrap": true
+      },
+      "outcome": {
+        "hook_events": 1,
+        "match_over": false,
+        "net_catches": 0,
+        "next_bait_id": 5,
+        "next_fish_id": 2,
+        "npc_food": 0.0,
+        "reason": "",
+        "score": 0.0,
+        "wrap_good": 1,
+        "wrong_catches": 0
+      }
+    },
+    {
+      "scenario": {
+        "challenge": false,
+        "count": 3,
+        "mode": "duel",
+        "name": "npc_capture_respawn",
+        "seed": 64317,
+        "ticks": 900
+      },
+      "exact_input_trace": true,
+      "exact_every_tick_authority": true,
+      "every_tick_payload_sha256": "81084c9dae927b8bfbc124b14e8a3eace935cc51543d4089e1f137cc56e1764f",
+      "input_trace_sha256": "8a99ced7c33c44bffec62b8767e420a460fb6d769e3fa9c6f1b138fe2d0370e7",
+      "checkpoint_count": 32,
+      "witnesses": {
+        "attached": false,
+        "entry": false,
+        "net_sweep": false,
+        "net_warning": false,
+        "npc_hooked": true,
+        "npc_landing": true,
+        "npc_replaced": true,
+        "qte": false,
+        "refill": false,
+        "wrap": false
+      },
+      "outcome": {
+        "hook_events": 0,
+        "match_over": false,
+        "net_catches": 0,
+        "next_bait_id": 6,
+        "next_fish_id": 6,
+        "npc_food": 0.0,
+        "reason": "",
+        "score": 0.0,
+        "wrap_good": 0,
+        "wrong_catches": 1
+      }
+    },
+    {
+      "scenario": {
+        "challenge": true,
+        "count": 3,
+        "mode": "duel",
+        "name": "net_player",
+        "seed": 75401,
+        "ticks": 120
+      },
+      "exact_input_trace": true,
+      "exact_every_tick_authority": true,
+      "every_tick_payload_sha256": "211ac4ec79b6c491f472ee4d9a153a5f1b6c6e188ad8cb4923486b5d4769b74e",
+      "input_trace_sha256": "ec9f56aabb93e152774bbf01bff9c5d3d83cc33d6528c571ce587c31cac0e324",
+      "checkpoint_count": 6,
+      "witnesses": {
+        "attached": false,
+        "entry": false,
+        "net_sweep": true,
+        "net_warning": true,
+        "npc_hooked": false,
+        "npc_landing": false,
+        "npc_replaced": false,
+        "qte": false,
+        "refill": false,
+        "wrap": false
+      },
+      "outcome": {
+        "hook_events": 0,
+        "match_over": false,
+        "net_catches": 1,
+        "next_bait_id": 5,
+        "next_fish_id": 5,
+        "npc_food": 0.0,
+        "reason": "",
+        "score": 0.0,
+        "wrap_good": 0,
+        "wrong_catches": 0
+      }
+    },
+    {
+      "scenario": {
+        "challenge": true,
+        "count": 3,
+        "mode": "duel",
+        "name": "net_npc_only",
+        "seed": 75401,
+        "ticks": 120
+      },
+      "exact_input_trace": true,
+      "exact_every_tick_authority": true,
+      "every_tick_payload_sha256": "5113fd34b51665f0962d524ddec78c028fb77d2acff4b9c6f556bff4f9715dc4",
+      "input_trace_sha256": "ec9f56aabb93e152774bbf01bff9c5d3d83cc33d6528c571ce587c31cac0e324",
+      "checkpoint_count": 6,
+      "witnesses": {
+        "attached": false,
+        "entry": false,
+        "net_sweep": true,
+        "net_warning": true,
+        "npc_hooked": false,
+        "npc_landing": false,
+        "npc_replaced": false,
+        "qte": false,
+        "refill": false,
+        "wrap": false
+      },
+      "outcome": {
+        "hook_events": 0,
+        "match_over": false,
+        "net_catches": 0,
+        "next_bait_id": 5,
+        "next_fish_id": 5,
+        "npc_food": 0.0,
+        "reason": "",
+        "score": 0.0,
+        "wrap_good": 0,
+        "wrong_catches": 0
+      }
+    }
+  ],
+  "raw_capture_restore_replay_assertions_per_build": 4222,
+  "evidence_scope": "Readable focused results. Complete local run reports are reproducible using checked-in harness and immutable Git baseline; no compressed logs or redundant source hash inventory.",
+  "final_runtime_scope": "Includes ack/countdown preflight and bounded handshake rejection drain"
+}

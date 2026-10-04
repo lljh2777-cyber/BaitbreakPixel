@@ -44,7 +44,7 @@ func _process(_delta: float) -> bool:
 		if completed_at==0: check(false,game.network.message)
 		finish(); return false
 	if now-began>18000: check(false,"peer check timed out"); finish(); return false
-	if game.network.status=="waiting" and game.network.remote_id!=0 and not ready_sent:
+	if game.network.status=="waiting" and game.network.remote_id!=0 and game.network.map_validated and not ready_sent:
 		ready_sent=true; game.network.set_ready(true)
 	if game.network.status!="playing": return false
 	if not started:

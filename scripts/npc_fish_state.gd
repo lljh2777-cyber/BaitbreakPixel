@@ -1,7 +1,8 @@
 extends RefCounted
 
 # Phase 3 authority records. Player scalar authority deliberately stays untouched.
-# Schema15 record validation remains built-in-only until the P4.3 map-ref gate.
+# Standalone callers retain the built-in defaults; snapshot validation supplies
+# the water bounds of its locally resolved map reference.
 const Layout=preload("res://scripts/pond_layout.gd")
 const Feeding=preload("res://scripts/fish_feeding.gd")
 const DEFAULT_COUNT := 3
@@ -56,7 +57,7 @@ static func satiety_band(value: float, rules: Dictionary) -> String:
 	if value<=float(rules.satiety_low_threshold): return "HUNGRY"
 	return "NORMAL"
 
-static func valid(record: Variant, next_id: int) -> bool:
+static func valid(record: Variant, next_id: int, water: Rect2 = Layout.WATER) -> bool:
 	if not record is Dictionary: return false
 	var reference:=fresh(2,1,Vector2.ZERO,Vector2.RIGHT,1)
 	if record.size()!=reference.size(): return false
@@ -65,8 +66,10 @@ static func valid(record: Variant, next_id: int) -> bool:
 	if record.fish_id<2 or record.fish_id>=next_id or record.brain_seed<0: return false
 	if record.visual_variant<0 or record.visual_variant>2 or record.behavior_state not in ["WANDER","APPROACH_FOOD","FEED","HESITATE","FLEE","COMPETE","HOOKED","LANDING","CAPTURED"]: return false
 	var on_line: bool=record.behavior_state in ["HOOKED","LANDING","CAPTURED"]
-	var bounds: Rect2=Layout.fish_bounds(RADIUS)
-	if record.behavior_state in ["LANDING","CAPTURED"]: bounds=Rect2(Vector2(bounds.position.x,39),Vector2(bounds.size.x,bounds.end.y-39))
+	var bounds: Rect2=water.grow(-RADIUS)
+	if record.behavior_state in ["LANDING","CAPTURED"]:
+		var landing_y: float=water.position.y-29
+		bounds=Rect2(Vector2(bounds.position.x,landing_y),Vector2(bounds.size.x,bounds.end.y-landing_y))
 	if not record.position.is_finite() or not bounds.has_point(record.position): return false
 	if not record.velocity.is_finite() or record.velocity.length()>(HOOK_SPEED_LIMIT if on_line else SPEED)+0.001: return false
 	if not is_finite(record.hook_immunity) or record.hook_immunity<0.0 or record.hook_immunity>HOOK_IMMUNITY_SECONDS: return false

@@ -13,7 +13,7 @@ Windows 可使用 `D:\python\python.exe`；用 `--godot "引擎可执行文件�
 
 ## 注册表与状态
 
-[`suite_registry.json`](suite_registry.json) 显式登记全部 128 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
+[`suite_registry.json`](suite_registry.json) 显式登记全部 131 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
 
 - `current`：当前有效的回归门禁；不按文件名版本新旧决定。`--profile current` 运行无窗口套件，`--profile native` 运行图形套件。已重新验证的 effort、net_animation、rules_network 等较早版本仍在当前门禁中
 - `historical`：当前检出复现了失败的诊断套件。保留原断言，失败仍返回非零；这不是“已证明所有断言过时”，更不是通过。具体原因和结果见[维护报告](../docs/test-reports/TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md)
@@ -175,3 +175,30 @@ Authority schema15；旧 0.25.2 缺少 Hook 生命周期字段的快照明确拒
 - 旧 `phase04_compare_baseline.py` 保留为 P4.1 历史门，其“所有 consumer 不可改”规则有意不适用于 P4.2；不得放宽它或把当前运行失败伪报为通过。当前 standalone `phase04_map_baseline` 仍是注册回归之一
 
 仅声明当前 profile，通过不包括 historical/retired/manual。schema15 和公开网络仅支持原 pond；不同地图持久化/握手属于 P4.3，Presentation 属于 P4.4，剩余 Rope 固定路由节点边界属于后续硬编码清理。详见[本轮验证](../docs/test-reports/PHASE04-MAP-AUTHORITY-0.26.1.md)。
+
+
+## 0.26.2 · P4.3 Snapshot / Network MapRef
+
+- `phase04_map_snapshot`：严格四字段 MapRef、本机 Registry 解析、schema16 精确 roundtrip/replay、schema15 明确拒绝、恶意/嵌套/循环/typed-container 拒绝，以及 fixture→pond 的原子地图/状态恢复
+- `phase04_map_network`：鱼端 schema2 / 钓鱼人 schema16 的本机公开地图、两种角色真实 ENet、hello/welcome/start/ack 的 exact-build+MapRef、未知/缺失/错误 revision/contract/hash 和握手前伪造对局数据拒绝；测试 peer helper 不进入发行包
+- `phase04_snapshot_equivalence`：当前 standalone 自检；外部 `tools/phase04_compare_snapshot.py` 才负责 0.26.1 冻结源码与 0.26.2 的真实跨版本对照。验证原八场景/相同输入、每 tick 状态/rig/RNG、观察、Hook/QTE/wrap/NPC/net/stats、公开投影与完整回放；仅排除事先严格核验的两个顶层 schema/map 身份字段，不归一化玩法字段
+- `python3 -m unittest discover -s tests/runner -v` 包含新比较器的缺字段、错误元数据、输入/检查点/随机状态变化和非法源码范围拒绝
+
+原 `phase04_map_baseline` 与 P4.1/P4.2 外部工具保留历史 schema15 字节契约，该入口标记为 historical，须在锁定历史 Git 基线运行；当前替代门具有原样的场景/setup/commands/intervention 输入带。旧 timing/queue 单元 fixture 显式从已验证地图后的 host/playing 状态开始；原有断言全部保留，真正 ENet 测试仍执行完整握手，不把单元前置状态当成传输验证。
+
+复现跨版本门（绝对引擎路径推荐）：
+
+```sh
+python3 tools/phase04_compare_snapshot.py --godot /path/to/Godot_v4.7.2-stable_linux.x86_64 --baseline artifacts/p43-frozen-baseline-8831f52 --output artifacts/p43-equivalence-recheck
+```
+
+基线来自 `8831f52ee7daae5d592282d5da432cbd67fccfb0` 的 immutable Git archive，包含用户已发布的 0.26.1 文档，runtime 与 `92b9010` 相同。首次在仓库根目录创建新的空目录，再解包这个已验证 Git 提交：
+
+```sh
+mkdir -p artifacts/p43-frozen-baseline-8831f52
+git archive --format=tar 8831f52ee7daae5d592282d5da432cbd67fccfb0 | tar -x -C artifacts/p43-frozen-baseline-8831f52
+```
+
+已有冻结目录不要覆盖。工具读取 Git commit/tree、直接比较实际源字节并保存 scoped runtime diff；只有状态等价所需的数据 hash，无冗余全仓 SHA256 清单。最终独立内容审查仍不可用路径白名单替代。
+
+仅本轮 current profile 通过算通过；historical/retired/manual 不算。本轮未构建新游戏包、P4.4 未开始。详见 [0.26.2 报告](../docs/test-reports/PHASE04-MAP-SNAPSHOT-NETWORK-0.26.2.md)。

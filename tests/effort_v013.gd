@@ -89,6 +89,8 @@ func run() -> void:
 
 func network_checks() -> void:
 	var net=Session.new(); net.game=game; root.add_child(net)
+	# Isolated timing unit starts at the verified/playing host boundary.
+	net._select_map(); net.map_validated=true; net.is_host=true; net.status="playing"
 	for role in ["fish","angler"]:
 		fresh(); game.qte_grace_seconds=0.25
 		var state: Dictionary=game.effort_checks[role]

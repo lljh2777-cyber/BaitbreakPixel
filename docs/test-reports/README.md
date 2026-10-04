@@ -1,3 +1,4 @@
+- [0.26.2 P4.3 Snapshot / Network MapRef](PHASE04-MAP-SNAPSHOT-NETWORK-0.26.2.md)
 - [0.26.1 P4.2 Authority MapContext](PHASE04-MAP-AUTHORITY-0.26.1.md)
 - [0.26.0 P4.0 + P4.1 地图数据基础](PHASE04-MAP-FOUNDATION-0.26.0.md)
 - [0.25.5 整体生态平衡与最终人工门](PHASE03-ECOLOGY-VALIDATION-0.25.5.md)

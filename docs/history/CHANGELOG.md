@@ -1,3 +1,7 @@
+# 2026-10-04 · v0.26.2 P4.3 地图存档与联机
+
+用户确认 0.26.1 后，仅推进 Snapshot schema16 / MapRef 和网络地图握手。恢复与开局要求本机地图 ID、revision、contract_version、content_hash 一致；旧 schema15 明确拒绝，地图不匹配不进入比赛。现有 pond_v2、隐私边界、RNG、玩法与画面保持。仅提交推送，不构建游戏包或 Release；公开 Windows 包仍为 0.26.1。完成后停在 P4.3，等待确认再做 P4.4。详见[本轮报告](../test-reports/PHASE04-MAP-SNAPSHOT-NETWORK-0.26.2.md)。
+
 # 2026-10-04 · v0.26.1 Windows 试玩包发布
 
 已发布 v0.26.1，Authority 迁移到每局固定的 MapContext，现有池塘和玩法保持，P4.3 尚未开始。Windows 完整 current 源码回归、发行包定向检查及 EXE 启动通过；Python 工具测试 19 项通过、1 项因符号链接权限受阻。详见[发布核验记录](../test-reports/GITHUB-RELEASE-0.26.1.md)。历史记录保持原样。

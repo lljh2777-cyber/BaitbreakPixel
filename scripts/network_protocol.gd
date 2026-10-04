@@ -2,8 +2,8 @@ extends RefCounted
 
 const VERSION := 1
 const Layout=preload("res://scripts/pond_layout.gd")
-# Peers must share capture timing and the round-statistics snapshot schema.
-const BUILD := "0.26.1"
+# Peers must share the exact build and validated built-in MapRef before play.
+const BUILD := "0.26.2"
 const DEFAULT_PORT := 24712
 const MAX_PACKET := 196608
 const MAX_STATE := 1048576
@@ -19,11 +19,13 @@ static func safe_values(value: Variant, depth: int = 0) -> bool:
 		TYPE_VECTOR2: return value.is_finite() and absf(value.x)<100000 and absf(value.y)<100000
 		TYPE_PACKED_BYTE_ARRAY: return value.size()<=MAX_PACKET
 		TYPE_ARRAY,TYPE_PACKED_VECTOR2_ARRAY:
+			if value is Array and value.is_typed() and value.get_typed_builtin()==TYPE_OBJECT: return false
 			if value.size()>8192: return false
 			for item in value:
 				if not safe_values(item,depth+1): return false
 			return true
 		TYPE_DICTIONARY:
+			if value.get_typed_key_builtin()==TYPE_OBJECT or value.get_typed_value_builtin()==TYPE_OBJECT: return false
 			if value.size()>8192: return false
 			for key in value:
 				if not (key is String or key is StringName or key is int) or not safe_values(value[key],depth+1): return false

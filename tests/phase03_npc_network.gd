@@ -47,7 +47,7 @@ func pure_checks() -> void:
 	var saved: Dictionary=world.capture_snapshot()
 	var projection:=Public.capture(world)
 	var shore:=AnglerPublic.capture(world)
-	check(saved.schema==15 and saved.state.npc_fishes.size()==3,"schema15 authority has three ambient NPC records")
+	check(saved.schema==16 and saved.state.npc_fishes.size()==3,"schema16 authority has three ambient NPC records")
 	check(projection.npc_profile_version==2 and projection.state.npc_fishes.size()==3 and Public.valid(receiver,projection),"fish projection has guarded three-NPC public extension")
 	check(shore.format==AnglerPublic.FORMAT and shore.npc_profile_version==4 and AnglerPublic.valid(receiver,shore),"angler projection validates its independent NPC privacy guard")
 	check(NPCPublic.valid(projection.state.npc_fishes) and private_free(projection.state.npc_fishes) and private_free(shore.state.npc_fishes),"both roles carry only six allowlisted NPC presentation facts")
