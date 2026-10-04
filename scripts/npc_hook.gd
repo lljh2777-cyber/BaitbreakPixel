@@ -4,7 +4,6 @@ extends RefCounted
 # This module acts only AFTER real mouth contact; it is not a decision input.
 const State=preload("res://scripts/npc_fish_state.gd")
 const Feeding=preload("res://scripts/fish_feeding.gd")
-const Layout=preload("res://scripts/pond_layout.gd")
 # A wrong target should cost a short handling window, not a full player tug.
 # Scale inward spool and physical pull together; payout and failure windows stay
 # unchanged, and the player actuator/rules are never modified.
@@ -84,7 +83,7 @@ static func step(world: Node2D, delta: float) -> void:
 	if state.phase=="landing":
 		state.landing_age+=delta
 		var ratio:=clampf(state.landing_age/world.rule("landing_lift"),0,1)
-		npc.position=Vector2(state.landing_from).lerp(Vector2(world.line_anchor(world.bound_bait).x,39),ratio*ratio)
+		npc.position=Vector2(state.landing_from).lerp(Vector2(world.line_anchor(world.bound_bait).x,world.map_context.water.position.y-29),ratio*ratio)
 		npc.velocity=Vector2.ZERO
 		world._rebuild_rope()
 		if ratio>=1: capture(world)
@@ -110,7 +109,7 @@ static func step(world: Node2D, delta: float) -> void:
 	var pull: Vector2=-away*world.rule("line_pull")*RETRIEVAL_GAIN*load*sqrt(tuning.y)
 	npc.velocity=Vector2(npc.velocity).move_toward(struggle,delta*70.0)
 	var motion: Vector2=(Vector2(npc.velocity)+pull+world.water_velocity(npc.position)).limit_length(State.HOOK_SPEED_LIMIT)
-	var bounds:=Layout.fish_bounds(State.RADIUS)
+	var bounds: Rect2=world.map_context.fish_bounds(State.RADIUS)
 	npc.position=(Vector2(npc.position)+motion*delta).clamp(bounds.position,bounds.end-Vector2.ONE*0.001)
 	# Match the existing mobile tackle's finite elastic reach, without wraps.
 	if world.uses_mobile_tackle() and tuning.y>0:
@@ -130,7 +129,7 @@ static func step(world: Node2D, delta: float) -> void:
 	if state.low_age>=world.slack_hold_seconds+0.65:
 		release(world,false)
 		return
-	if not world.Net.busy(world) and npc.position.y<91 and absf(npc.position.x-anchor.x)<30 and world.tension>=world.rule("tension_low"):
+	if not world.Net.busy(world) and npc.position.y<world.map_context.water.position.y+23 and absf(npc.position.x-anchor.x)<30 and world.tension>=world.rule("tension_low"):
 		state.landing_age+=delta
 		if state.landing_age>=world.rule("landing_hold"):
 			world.Net.cancel_manual_net(world)

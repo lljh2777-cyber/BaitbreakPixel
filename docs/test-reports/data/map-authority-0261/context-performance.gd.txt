@@ -1,0 +1,21 @@
+extends SceneTree
+const Context = preload("res://scripts/maps/map_context.gd")
+func _init() -> void:
+	var start := Time.get_ticks_usec()
+	for iteration in 100:
+		var result := Context.load_map()
+		if not result.valid: quit(1); return
+	var build_usec := Time.get_ticks_usec()-start
+	var context: RefCounted=Context.load_map().context
+	var id: String=context.interaction_targets[0].id
+	start=Time.get_ticks_usec()
+	for iteration in 10000:
+		context.fish_bounds(12)
+		context.feature_bounds(id)
+		context.touches_feature(id,Vector2(334,240),12)
+	var query_usec:=Time.get_ticks_usec()-start
+	var report: Dictionary={"engine":Engine.get_version_info().string,"build_count":100,"validated_context_build_usec":build_usec,"query_iterations":10000,"three_cached_queries_usec":query_usec,"scope":"single local timing diagnostic; no cross-machine performance guarantee"}
+	var file:=FileAccess.open("res://artifacts/p42-context-perf/result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify(report,"\t")+"\n")
+	print(JSON.stringify(report))
+	quit(0)

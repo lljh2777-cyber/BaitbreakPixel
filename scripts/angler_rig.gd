@@ -1,8 +1,8 @@
 extends RefCounted
 
 # Human controls feed the shared simulation; free hooks use an inertial tether.
-var x := 206.0
-var cursor := Vector2(232,180)
+var x := 0.0
+var cursor := Vector2.ZERO
 var spool := 0.0
 var auto_reel := false
 var auto_net := false
@@ -19,11 +19,11 @@ var needs_neutral := false
 var hook_velocity := Vector2.ZERO
 var free_line_length := 132.0
 var free_reel_speed := 0.0
-var previous_anchor := Vector2(232,48)
-var anchor_before := Vector2(232,48)
+var previous_anchor := Vector2.ZERO
+var anchor_before := Vector2.ZERO
 var line_sway := 0.0
 var sway_speed := 0.0
-var surface_x := 232.0
+var surface_x := 0.0
 var surface_velocity := 0.0
 var surface_live := false
 var reel_phase := 0.0
@@ -32,13 +32,38 @@ var reel_hand_mode := 0
 var reel_hand_amount := 0.0
 var rod_load := 0.0
 var rod_lift := 0.0
-const Layout = preload("res://scripts/pond_layout.gd")
+# Configured before reset by the world. Margins preserve the existing tackle
+# rules relative to the selected water/floor; these are not map dimensions.
+var _map_context: RefCounted
+var _walk_limits := Vector2.ZERO
+var _surface_limits := Vector2.ZERO
+var _cast_bounds := Rect2()
+var _cursor_bounds := Rect2()
+var _hook_bounds := Rect2()
+var _anchor_y := 0.0
+var _surface_current_y := 0.0
+
+func configure_map(context: RefCounted) -> void:
+	_map_context=context
+	var water: Rect2=context.water
+	_walk_limits=Vector2(water.position.x+10,water.end.x-44)
+	_surface_limits=Vector2(water.position.x+12,water.end.x-12)
+	_cast_bounds=Rect2(water.position+Vector2(30,32),Vector2.ZERO)
+	_cast_bounds.end=Vector2(water.end.x-30,context.floor_y-29)
+	_cursor_bounds=Rect2(water.position+Vector2(22,12),Vector2.ZERO)
+	_cursor_bounds.end=Vector2(water.end.x-22,context.floor_y-19)
+	_hook_bounds=Rect2(water.position+Vector2(12,11),Vector2.ZERO)
+	_hook_bounds.end=Vector2(water.end.x-12,context.floor_y-14)
+	_anchor_y=water.position.y-20
+	_surface_current_y=water.position.y-8
+
 const Rules = preload("res://scripts/game_rules.gd")
 const CAST_SECONDS := 0.7
 
 func reset() -> void:
-	x=206
-	cursor=Vector2(232,180)
+	assert(_map_context!=null,"configure_map must precede angler reset")
+	x=clampf(_map_context.water.position.x+198,_walk_limits.x,_walk_limits.y)
+	cursor=(_map_context.water.position+Vector2(224,112)).clamp(_cursor_bounds.position,_cursor_bounds.end)
 	spool=0
 	auto_reel=false
 	auto_net=false
@@ -113,13 +138,13 @@ func step_tackle_feedback(game: Node2D, delta: float) -> void:
 		var count := maxi(1,ceili(delta*120))
 		for part in count:
 			var dt := delta/count
-			var current:float=game.water_velocity(Vector2(surface_x,60)).x
+			var current:float=game.water_velocity(Vector2(surface_x,_surface_current_y)).x
 			var relative := surface_velocity-current
 			var drag := relative*(4.5+absf(relative)*0.025)
 			surface_velocity+=((goal-surface_x)*(4.5+load*13)-drag)*dt
 			surface_x+=surface_velocity*dt
-			if surface_x<20 or surface_x>Layout.SIZE.x-20:
-				surface_x=clampf(surface_x,20,Layout.SIZE.x-20); surface_velocity=0
+			if surface_x<_surface_limits.x or surface_x>_surface_limits.y:
+				surface_x=clampf(surface_x,_surface_limits.x,_surface_limits.y); surface_velocity=0
 	var speed:=feedback_reel_speed(game)
 	var desired := 0
 	if not game.Net.busy(game) and absf(speed)>0.5:
@@ -133,7 +158,7 @@ func step_tackle_feedback(game: Node2D, delta: float) -> void:
 	reel_hand_amount=move_toward(reel_hand_amount,1.0 if reaching else 0.0,delta*(5 if reaching else 6))
 	if reel_hand_amount==0: reel_hand_mode=desired
 
-func anchor() -> Vector2: return Vector2(x+26,48)
+func anchor() -> Vector2: return Vector2(x+26,_anchor_y)
 
 func projectile() -> Vector2:
 	var ratio := clampf(cast_age/CAST_SECONDS,0,1)
@@ -165,7 +190,7 @@ func cast(game: Node2D, point: Vector2) -> bool:
 		if bait.tackle: bait.active=false
 	cast_index=index
 	cast_from=anchor()
-	cast_to=point.clamp(Vector2(38,100),Vector2(Layout.SIZE.x-38,Layout.FLOOR-29))
+	cast_to=point.clamp(_cast_bounds.position,_cast_bounds.end)
 	cast_age=0
 	casting=true
 	cast_cooldown=1.2
@@ -185,9 +210,9 @@ func update(game: Node2D, delta: float, command: Dictionary) -> void:
 	cast_cooldown=maxf(0,cast_cooldown-delta)
 	net_cooldown=maxf(0,net_cooldown-delta)
 	var raw_cursor := Vector2(command.get("target",cursor))
-	cursor=raw_cursor.clamp(Vector2(30,80),Vector2(Layout.SIZE.x-30,Layout.FLOOR-19))
+	cursor=raw_cursor.clamp(_cursor_bounds.position,_cursor_bounds.end)
 	anchor_before=anchor()
-	if not game.line_landing() and game.net_state!="caught": x=clampf(x+clampf(float(command.get("walk",0)),-1,1)*game.rule("angler_speed")*delta,18,Layout.SIZE.x-52)
+	if not game.line_landing() and game.net_state!="caught": x=clampf(x+clampf(float(command.get("walk",0)),-1,1)*game.rule("angler_speed")*delta,_walk_limits.x,_walk_limits.y)
 	var bank_speed := (anchor().x-anchor_before.x)/maxf(delta,0.001)
 	var count := maxi(1,ceili(delta*120))
 	for part in count:
@@ -243,7 +268,7 @@ func step_free_hook(game: Node2D, index: int, delta: float) -> void:
 			position=attachment+normal*free_line_length
 			var outward := (hook_velocity-bank_velocity).dot(normal)-free_reel_speed
 			if outward>0: hook_velocity-=normal*outward
-		var bounded := position.clamp(Vector2(20,79),Vector2(Layout.SIZE.x-20,Layout.FLOOR-14))
+		var bounded := position.clamp(_hook_bounds.position,_hook_bounds.end)
 		if not is_equal_approx(bounded.x,position.x): hook_velocity.x=0
 		if not is_equal_approx(bounded.y,position.y): hook_velocity.y=0
 		position=bounded

@@ -1,0 +1,1873 @@
+{
+  "format": "phase04-authority-native-controlled-pixels-v1",
+  "compared_at": "2026-10-04T09:36:16.754265+00:00",
+  "baseline_commit": "0a3e5af3dc3ca26f0909644505ff24a1de1fe06d",
+  "engine_sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+  "native_provenance": "artifacts/p42-independent-native-audited-pair/provenance.json",
+  "cursor_control": "Two external subclass wrappers pin live OS mouse to logical noninteractive HUD(4,4) before each NPC/NPC-hook render, wait one frame, then call original super.render. Unchanged assertions and image bytes, no masking. Wood/net use original harnesses.",
+  "frozen_source_stable": true,
+  "working_source_stable": true,
+  "baseline_assertions": 229,
+  "current_assertions": 229,
+  "suites": [
+    "phase03_npc_native",
+    "phase03_npc_hook_native",
+    "wood_fade_native",
+    "net_native_v020"
+  ],
+  "pair_count": 106,
+  "missing_current": [],
+  "missing_baseline": [],
+  "pixel_identical_count": 106,
+  "different_pairs": [],
+  "different_pixels_total": 0,
+  "pairs": [
+    {
+      "path": "net_native_v020/net-committed-shore-v020.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "aefd98100fe055239bcbf94e73a86da19a0acf347fbeb84c23b31e116c8783c1",
+      "current_file_sha256": "aefd98100fe055239bcbf94e73a86da19a0acf347fbeb84c23b31e116c8783c1",
+      "baseline_rgba_sha256": "1d807242c09bce3f7cc2f91551ecf3e6bea0ee95054bf2274b6c0df4c6725128",
+      "current_rgba_sha256": "1d807242c09bce3f7cc2f91551ecf3e6bea0ee95054bf2274b6c0df4c6725128"
+    },
+    {
+      "path": "net_native_v020/net-observe-blocked-v020.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "e03c602d6b17128d514d4f20434563767a9c71c703a2666771f48649c657845e",
+      "current_file_sha256": "e03c602d6b17128d514d4f20434563767a9c71c703a2666771f48649c657845e",
+      "baseline_rgba_sha256": "8e43a419b018d276889f8a2d0fc48f7f05c95b3f2bc2edacc7baf472f14ea547",
+      "current_rgba_sha256": "8e43a419b018d276889f8a2d0fc48f7f05c95b3f2bc2edacc7baf472f14ea547"
+    },
+    {
+      "path": "net_native_v020/net-observe-hooked-v020.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "5bc6f0fa7278c5683c9034c791831b360d4f6dd766d2b4a6410c05fff4c9940e",
+      "current_file_sha256": "5bc6f0fa7278c5683c9034c791831b360d4f6dd766d2b4a6410c05fff4c9940e",
+      "baseline_rgba_sha256": "5c1ecd41ff28fa9a5df91368071fd0c8523ecc27c2aecb75752224a73ffbbe0f",
+      "current_rgba_sha256": "5c1ecd41ff28fa9a5df91368071fd0c8523ecc27c2aecb75752224a73ffbbe0f"
+    },
+    {
+      "path": "net_native_v020/net-settings-v020.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "1f75a3721a69df16eb4143ee31571b9951d0c7104234cf72e5b6f2a15bb18f52",
+      "current_file_sha256": "1f75a3721a69df16eb4143ee31571b9951d0c7104234cf72e5b6f2a15bb18f52",
+      "baseline_rgba_sha256": "315cbcd87825a1407966b4ab8448b8e758cd7308978ee37f5e5c5cc85dc46cdb",
+      "current_rgba_sha256": "315cbcd87825a1407966b4ab8448b8e758cd7308978ee37f5e5c5cc85dc46cdb"
+    },
+    {
+      "path": "net_native_v020/net-shore-v020.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "b415ac38dff6799243be259740764b1979f30d7c23d3b2b241e6bffff0618dae",
+      "current_file_sha256": "b415ac38dff6799243be259740764b1979f30d7c23d3b2b241e6bffff0618dae",
+      "baseline_rgba_sha256": "0e8c05c533950bc303f801ef394f7b57ccd82cb5003d6fc86fe40fdb9bf59dd4",
+      "current_rgba_sha256": "0e8c05c533950bc303f801ef394f7b57ccd82cb5003d6fc86fe40fdb9bf59dd4"
+    },
+    {
+      "path": "net_native_v020/net-sweep-fish-v020.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "50db7b9df81d58ee77795a242926ef0f67467d57cca3b6b80f55d4b675b954da",
+      "current_file_sha256": "50db7b9df81d58ee77795a242926ef0f67467d57cca3b6b80f55d4b675b954da",
+      "baseline_rgba_sha256": "73ce664483250365fb9b6ef8f73fe9f6b0cf638597bb20f39e3742573ba43b4f",
+      "current_rgba_sha256": "73ce664483250365fb9b6ef8f73fe9f6b0cf638597bb20f39e3742573ba43b4f"
+    },
+    {
+      "path": "net_native_v020/net-sweep-shore-v020.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "731c4da2d2e3865af97fc5608d4139d8d2e49047d5c4fd8ea10d719eca4c27fc",
+      "current_file_sha256": "731c4da2d2e3865af97fc5608d4139d8d2e49047d5c4fd8ea10d719eca4c27fc",
+      "baseline_rgba_sha256": "79c63d326a95576c9b4f9e5b66e3eb750a3bda93c0776040f9f84804423f7d7b",
+      "current_rgba_sha256": "79c63d326a95576c9b4f9e5b66e3eb750a3bda93c0776040f9f84804423f7d7b"
+    },
+    {
+      "path": "phase03_npc_hook_native/broken-angler-hidden.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "5c4c7dd0f569cabe69b0463c320df7ca6628d7b77c5a7ef20fa4d5d65ceec35b",
+      "current_file_sha256": "5c4c7dd0f569cabe69b0463c320df7ca6628d7b77c5a7ef20fa4d5d65ceec35b",
+      "baseline_rgba_sha256": "410b4d4e4e371117a7ab4c9a2dc52670f46ab6e16cf00b4ae7a1ead8d9ebabf0",
+      "current_rgba_sha256": "410b4d4e4e371117a7ab4c9a2dc52670f46ab6e16cf00b4ae7a1ead8d9ebabf0"
+    },
+    {
+      "path": "phase03_npc_hook_native/broken-angler-public.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "5c4c7dd0f569cabe69b0463c320df7ca6628d7b77c5a7ef20fa4d5d65ceec35b",
+      "current_file_sha256": "5c4c7dd0f569cabe69b0463c320df7ca6628d7b77c5a7ef20fa4d5d65ceec35b",
+      "baseline_rgba_sha256": "410b4d4e4e371117a7ab4c9a2dc52670f46ab6e16cf00b4ae7a1ead8d9ebabf0",
+      "current_rgba_sha256": "410b4d4e4e371117a7ab4c9a2dc52670f46ab6e16cf00b4ae7a1ead8d9ebabf0"
+    },
+    {
+      "path": "phase03_npc_hook_native/broken-angler.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "5c4c7dd0f569cabe69b0463c320df7ca6628d7b77c5a7ef20fa4d5d65ceec35b",
+      "current_file_sha256": "5c4c7dd0f569cabe69b0463c320df7ca6628d7b77c5a7ef20fa4d5d65ceec35b",
+      "baseline_rgba_sha256": "410b4d4e4e371117a7ab4c9a2dc52670f46ab6e16cf00b4ae7a1ead8d9ebabf0",
+      "current_rgba_sha256": "410b4d4e4e371117a7ab4c9a2dc52670f46ab6e16cf00b4ae7a1ead8d9ebabf0"
+    },
+    {
+      "path": "phase03_npc_hook_native/broken-fish-hidden.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "45b8a3111eace41dff9506094afb1cca0a81c4c9fa9aaf529ffb15d8de2beeb4",
+      "current_file_sha256": "45b8a3111eace41dff9506094afb1cca0a81c4c9fa9aaf529ffb15d8de2beeb4",
+      "baseline_rgba_sha256": "170c71938de571ae7294b5a1166b251c8f13e1e48080680705a25f783f93e743",
+      "current_rgba_sha256": "170c71938de571ae7294b5a1166b251c8f13e1e48080680705a25f783f93e743"
+    },
+    {
+      "path": "phase03_npc_hook_native/broken-fish-public.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "45b8a3111eace41dff9506094afb1cca0a81c4c9fa9aaf529ffb15d8de2beeb4",
+      "current_file_sha256": "45b8a3111eace41dff9506094afb1cca0a81c4c9fa9aaf529ffb15d8de2beeb4",
+      "baseline_rgba_sha256": "170c71938de571ae7294b5a1166b251c8f13e1e48080680705a25f783f93e743",
+      "current_rgba_sha256": "170c71938de571ae7294b5a1166b251c8f13e1e48080680705a25f783f93e743"
+    },
+    {
+      "path": "phase03_npc_hook_native/broken-fish.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "45b8a3111eace41dff9506094afb1cca0a81c4c9fa9aaf529ffb15d8de2beeb4",
+      "current_file_sha256": "45b8a3111eace41dff9506094afb1cca0a81c4c9fa9aaf529ffb15d8de2beeb4",
+      "baseline_rgba_sha256": "170c71938de571ae7294b5a1166b251c8f13e1e48080680705a25f783f93e743",
+      "current_rgba_sha256": "170c71938de571ae7294b5a1166b251c8f13e1e48080680705a25f783f93e743"
+    },
+    {
+      "path": "phase03_npc_hook_native/broken-observation-hidden.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "ef5ec46406906424d28693e739d2b4876739c9c436935992d24bdf83c568c11c",
+      "current_file_sha256": "ef5ec46406906424d28693e739d2b4876739c9c436935992d24bdf83c568c11c",
+      "baseline_rgba_sha256": "99836b4337598a79010761b04cb53d39d19d88c205da26d4306bbf6dcaf09f7d",
+      "current_rgba_sha256": "99836b4337598a79010761b04cb53d39d19d88c205da26d4306bbf6dcaf09f7d"
+    },
+    {
+      "path": "phase03_npc_hook_native/broken-observation-public.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "ef5ec46406906424d28693e739d2b4876739c9c436935992d24bdf83c568c11c",
+      "current_file_sha256": "ef5ec46406906424d28693e739d2b4876739c9c436935992d24bdf83c568c11c",
+      "baseline_rgba_sha256": "99836b4337598a79010761b04cb53d39d19d88c205da26d4306bbf6dcaf09f7d",
+      "current_rgba_sha256": "99836b4337598a79010761b04cb53d39d19d88c205da26d4306bbf6dcaf09f7d"
+    },
+    {
+      "path": "phase03_npc_hook_native/broken-observation.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "ef5ec46406906424d28693e739d2b4876739c9c436935992d24bdf83c568c11c",
+      "current_file_sha256": "ef5ec46406906424d28693e739d2b4876739c9c436935992d24bdf83c568c11c",
+      "baseline_rgba_sha256": "99836b4337598a79010761b04cb53d39d19d88c205da26d4306bbf6dcaf09f7d",
+      "current_rgba_sha256": "99836b4337598a79010761b04cb53d39d19d88c205da26d4306bbf6dcaf09f7d"
+    },
+    {
+      "path": "phase03_npc_hook_native/captured-angler.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "13d7e6524de0ce943d960d15f60343be70fc61e30bc0014539b349d88968b5f0",
+      "current_file_sha256": "13d7e6524de0ce943d960d15f60343be70fc61e30bc0014539b349d88968b5f0",
+      "baseline_rgba_sha256": "461251da303a85a02d27defd435ac3de721a30fee49656fc0314640a4fcf99a4",
+      "current_rgba_sha256": "461251da303a85a02d27defd435ac3de721a30fee49656fc0314640a4fcf99a4"
+    },
+    {
+      "path": "phase03_npc_hook_native/captured-fish.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "0df5f8648d3116e5752d274f3410fde1cdb455ed39be844abf8174ed8e26e09b",
+      "current_file_sha256": "0df5f8648d3116e5752d274f3410fde1cdb455ed39be844abf8174ed8e26e09b",
+      "baseline_rgba_sha256": "03ad75f3e76d706cce464dbd0ebfba0e9fa44f912ae484fd03a05a373b60bb8c",
+      "current_rgba_sha256": "03ad75f3e76d706cce464dbd0ebfba0e9fa44f912ae484fd03a05a373b60bb8c"
+    },
+    {
+      "path": "phase03_npc_hook_native/escaped-angler-hidden.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "f42dbbed89c250fde4520a2e140d3654c3055f57777581b442e2532b910aa93b",
+      "current_file_sha256": "f42dbbed89c250fde4520a2e140d3654c3055f57777581b442e2532b910aa93b",
+      "baseline_rgba_sha256": "bc9303502ee7febf25258ea3f19b5d869d6a9cd0a8e8786c76663b2316779b4a",
+      "current_rgba_sha256": "bc9303502ee7febf25258ea3f19b5d869d6a9cd0a8e8786c76663b2316779b4a"
+    },
+    {
+      "path": "phase03_npc_hook_native/escaped-angler-public.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "f42dbbed89c250fde4520a2e140d3654c3055f57777581b442e2532b910aa93b",
+      "current_file_sha256": "f42dbbed89c250fde4520a2e140d3654c3055f57777581b442e2532b910aa93b",
+      "baseline_rgba_sha256": "bc9303502ee7febf25258ea3f19b5d869d6a9cd0a8e8786c76663b2316779b4a",
+      "current_rgba_sha256": "bc9303502ee7febf25258ea3f19b5d869d6a9cd0a8e8786c76663b2316779b4a"
+    },
+    {
+      "path": "phase03_npc_hook_native/escaped-angler.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "f42dbbed89c250fde4520a2e140d3654c3055f57777581b442e2532b910aa93b",
+      "current_file_sha256": "f42dbbed89c250fde4520a2e140d3654c3055f57777581b442e2532b910aa93b",
+      "baseline_rgba_sha256": "bc9303502ee7febf25258ea3f19b5d869d6a9cd0a8e8786c76663b2316779b4a",
+      "current_rgba_sha256": "bc9303502ee7febf25258ea3f19b5d869d6a9cd0a8e8786c76663b2316779b4a"
+    },
+    {
+      "path": "phase03_npc_hook_native/escaped-fish-hidden.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "dbc4f880f2f0fb784200c530177b42fdb70cfd74836e32d27b906a9cf325b8a9",
+      "current_file_sha256": "dbc4f880f2f0fb784200c530177b42fdb70cfd74836e32d27b906a9cf325b8a9",
+      "baseline_rgba_sha256": "e61770543caa6ee46f389985733532fa5379613e8eeb6f2f7f0c9dbd818e396d",
+      "current_rgba_sha256": "e61770543caa6ee46f389985733532fa5379613e8eeb6f2f7f0c9dbd818e396d"
+    },
+    {
+      "path": "phase03_npc_hook_native/escaped-fish-public.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "dbc4f880f2f0fb784200c530177b42fdb70cfd74836e32d27b906a9cf325b8a9",
+      "current_file_sha256": "dbc4f880f2f0fb784200c530177b42fdb70cfd74836e32d27b906a9cf325b8a9",
+      "baseline_rgba_sha256": "e61770543caa6ee46f389985733532fa5379613e8eeb6f2f7f0c9dbd818e396d",
+      "current_rgba_sha256": "e61770543caa6ee46f389985733532fa5379613e8eeb6f2f7f0c9dbd818e396d"
+    },
+    {
+      "path": "phase03_npc_hook_native/escaped-fish.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "dbc4f880f2f0fb784200c530177b42fdb70cfd74836e32d27b906a9cf325b8a9",
+      "current_file_sha256": "dbc4f880f2f0fb784200c530177b42fdb70cfd74836e32d27b906a9cf325b8a9",
+      "baseline_rgba_sha256": "e61770543caa6ee46f389985733532fa5379613e8eeb6f2f7f0c9dbd818e396d",
+      "current_rgba_sha256": "e61770543caa6ee46f389985733532fa5379613e8eeb6f2f7f0c9dbd818e396d"
+    },
+    {
+      "path": "phase03_npc_hook_native/escaped-observation-hidden.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "b8717b5fe3149b679f8bdef2ac031150cf83ccf495387f36fa0227ad32c70179",
+      "current_file_sha256": "b8717b5fe3149b679f8bdef2ac031150cf83ccf495387f36fa0227ad32c70179",
+      "baseline_rgba_sha256": "e2fab80b1d438821b6a527d34287019edbc12b6c2fe8926c9ac9c9ab52983900",
+      "current_rgba_sha256": "e2fab80b1d438821b6a527d34287019edbc12b6c2fe8926c9ac9c9ab52983900"
+    },
+    {
+      "path": "phase03_npc_hook_native/escaped-observation-public.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "b8717b5fe3149b679f8bdef2ac031150cf83ccf495387f36fa0227ad32c70179",
+      "current_file_sha256": "b8717b5fe3149b679f8bdef2ac031150cf83ccf495387f36fa0227ad32c70179",
+      "baseline_rgba_sha256": "e2fab80b1d438821b6a527d34287019edbc12b6c2fe8926c9ac9c9ab52983900",
+      "current_rgba_sha256": "e2fab80b1d438821b6a527d34287019edbc12b6c2fe8926c9ac9c9ab52983900"
+    },
+    {
+      "path": "phase03_npc_hook_native/escaped-observation.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "b8717b5fe3149b679f8bdef2ac031150cf83ccf495387f36fa0227ad32c70179",
+      "current_file_sha256": "b8717b5fe3149b679f8bdef2ac031150cf83ccf495387f36fa0227ad32c70179",
+      "baseline_rgba_sha256": "e2fab80b1d438821b6a527d34287019edbc12b6c2fe8926c9ac9c9ab52983900",
+      "current_rgba_sha256": "e2fab80b1d438821b6a527d34287019edbc12b6c2fe8926c9ac9c9ab52983900"
+    },
+    {
+      "path": "phase03_npc_hook_native/hooked-angler-hidden.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "59f86c21ff0cbb7bf9de53ebb32c2382e43eefd22806ebe893450d510a458d3a",
+      "current_file_sha256": "59f86c21ff0cbb7bf9de53ebb32c2382e43eefd22806ebe893450d510a458d3a",
+      "baseline_rgba_sha256": "e88d6a0a3d1dbb3ae8156b5a8b6161fc46a785f941f6f754fcd59f39aaf2c2db",
+      "current_rgba_sha256": "e88d6a0a3d1dbb3ae8156b5a8b6161fc46a785f941f6f754fcd59f39aaf2c2db"
+    },
+    {
+      "path": "phase03_npc_hook_native/hooked-angler-public.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "59f86c21ff0cbb7bf9de53ebb32c2382e43eefd22806ebe893450d510a458d3a",
+      "current_file_sha256": "59f86c21ff0cbb7bf9de53ebb32c2382e43eefd22806ebe893450d510a458d3a",
+      "baseline_rgba_sha256": "e88d6a0a3d1dbb3ae8156b5a8b6161fc46a785f941f6f754fcd59f39aaf2c2db",
+      "current_rgba_sha256": "e88d6a0a3d1dbb3ae8156b5a8b6161fc46a785f941f6f754fcd59f39aaf2c2db"
+    },
+    {
+      "path": "phase03_npc_hook_native/hooked-angler.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "59f86c21ff0cbb7bf9de53ebb32c2382e43eefd22806ebe893450d510a458d3a",
+      "current_file_sha256": "59f86c21ff0cbb7bf9de53ebb32c2382e43eefd22806ebe893450d510a458d3a",
+      "baseline_rgba_sha256": "e88d6a0a3d1dbb3ae8156b5a8b6161fc46a785f941f6f754fcd59f39aaf2c2db",
+      "current_rgba_sha256": "e88d6a0a3d1dbb3ae8156b5a8b6161fc46a785f941f6f754fcd59f39aaf2c2db"
+    },
+    {
+      "path": "phase03_npc_hook_native/hooked-fish-hidden.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "93f25e811a885015dbf4f6c506e4f3b1a079af26fc1771e9070dcd6a6ae83586",
+      "current_file_sha256": "93f25e811a885015dbf4f6c506e4f3b1a079af26fc1771e9070dcd6a6ae83586",
+      "baseline_rgba_sha256": "9de7abf6b72bd9eca75d05c9671f529bcc832a686d3b8077f37ae4ad5b5e8239",
+      "current_rgba_sha256": "9de7abf6b72bd9eca75d05c9671f529bcc832a686d3b8077f37ae4ad5b5e8239"
+    },
+    {
+      "path": "phase03_npc_hook_native/hooked-fish-public.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "93f25e811a885015dbf4f6c506e4f3b1a079af26fc1771e9070dcd6a6ae83586",
+      "current_file_sha256": "93f25e811a885015dbf4f6c506e4f3b1a079af26fc1771e9070dcd6a6ae83586",
+      "baseline_rgba_sha256": "9de7abf6b72bd9eca75d05c9671f529bcc832a686d3b8077f37ae4ad5b5e8239",
+      "current_rgba_sha256": "9de7abf6b72bd9eca75d05c9671f529bcc832a686d3b8077f37ae4ad5b5e8239"
+    },
+    {
+      "path": "phase03_npc_hook_native/hooked-fish.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "93f25e811a885015dbf4f6c506e4f3b1a079af26fc1771e9070dcd6a6ae83586",
+      "current_file_sha256": "93f25e811a885015dbf4f6c506e4f3b1a079af26fc1771e9070dcd6a6ae83586",
+      "baseline_rgba_sha256": "9de7abf6b72bd9eca75d05c9671f529bcc832a686d3b8077f37ae4ad5b5e8239",
+      "current_rgba_sha256": "9de7abf6b72bd9eca75d05c9671f529bcc832a686d3b8077f37ae4ad5b5e8239"
+    },
+    {
+      "path": "phase03_npc_hook_native/hooked-observation-hidden.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "d3d94d21e1e3ebc24e0a71e4433fd1bc04f34369daaf35e0936497fdbaab2993",
+      "current_file_sha256": "d3d94d21e1e3ebc24e0a71e4433fd1bc04f34369daaf35e0936497fdbaab2993",
+      "baseline_rgba_sha256": "09126ae25de620f677fa89ea25e0102dc20f39d5d416f039c3ba5cb086883557",
+      "current_rgba_sha256": "09126ae25de620f677fa89ea25e0102dc20f39d5d416f039c3ba5cb086883557"
+    },
+    {
+      "path": "phase03_npc_hook_native/hooked-observation-public.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "d3d94d21e1e3ebc24e0a71e4433fd1bc04f34369daaf35e0936497fdbaab2993",
+      "current_file_sha256": "d3d94d21e1e3ebc24e0a71e4433fd1bc04f34369daaf35e0936497fdbaab2993",
+      "baseline_rgba_sha256": "09126ae25de620f677fa89ea25e0102dc20f39d5d416f039c3ba5cb086883557",
+      "current_rgba_sha256": "09126ae25de620f677fa89ea25e0102dc20f39d5d416f039c3ba5cb086883557"
+    },
+    {
+      "path": "phase03_npc_hook_native/hooked-observation.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "d3d94d21e1e3ebc24e0a71e4433fd1bc04f34369daaf35e0936497fdbaab2993",
+      "current_file_sha256": "d3d94d21e1e3ebc24e0a71e4433fd1bc04f34369daaf35e0936497fdbaab2993",
+      "baseline_rgba_sha256": "09126ae25de620f677fa89ea25e0102dc20f39d5d416f039c3ba5cb086883557",
+      "current_rgba_sha256": "09126ae25de620f677fa89ea25e0102dc20f39d5d416f039c3ba5cb086883557"
+    },
+    {
+      "path": "phase03_npc_hook_native/hooked-player-in-front.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "1c68e40646e8e1aef823499da599bfe3c31152ecfdb6f2a997676551a9e29350",
+      "current_file_sha256": "1c68e40646e8e1aef823499da599bfe3c31152ecfdb6f2a997676551a9e29350",
+      "baseline_rgba_sha256": "42e1efca88e6b90f38534ff7f84f4df0604fd35098bd92fdb94b28e86ba0d333",
+      "current_rgba_sha256": "42e1efca88e6b90f38534ff7f84f4df0604fd35098bd92fdb94b28e86ba0d333"
+    },
+    {
+      "path": "phase03_npc_hook_native/landing-angler-hidden.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "744ac80413ef32c2c3ccc5f80b78d29c9ecfa5c14421becb5d3de57feda4e226",
+      "current_file_sha256": "744ac80413ef32c2c3ccc5f80b78d29c9ecfa5c14421becb5d3de57feda4e226",
+      "baseline_rgba_sha256": "657c2f9516a1a231a7a531d8833bbc0831ff38250ac8a58cfff2e6b474ea0e2a",
+      "current_rgba_sha256": "657c2f9516a1a231a7a531d8833bbc0831ff38250ac8a58cfff2e6b474ea0e2a"
+    },
+    {
+      "path": "phase03_npc_hook_native/landing-angler-public.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "744ac80413ef32c2c3ccc5f80b78d29c9ecfa5c14421becb5d3de57feda4e226",
+      "current_file_sha256": "744ac80413ef32c2c3ccc5f80b78d29c9ecfa5c14421becb5d3de57feda4e226",
+      "baseline_rgba_sha256": "657c2f9516a1a231a7a531d8833bbc0831ff38250ac8a58cfff2e6b474ea0e2a",
+      "current_rgba_sha256": "657c2f9516a1a231a7a531d8833bbc0831ff38250ac8a58cfff2e6b474ea0e2a"
+    },
+    {
+      "path": "phase03_npc_hook_native/landing-angler.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "744ac80413ef32c2c3ccc5f80b78d29c9ecfa5c14421becb5d3de57feda4e226",
+      "current_file_sha256": "744ac80413ef32c2c3ccc5f80b78d29c9ecfa5c14421becb5d3de57feda4e226",
+      "baseline_rgba_sha256": "657c2f9516a1a231a7a531d8833bbc0831ff38250ac8a58cfff2e6b474ea0e2a",
+      "current_rgba_sha256": "657c2f9516a1a231a7a531d8833bbc0831ff38250ac8a58cfff2e6b474ea0e2a"
+    },
+    {
+      "path": "phase03_npc_hook_native/landing-fish-hidden.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "958247a8d3b6bc1c6a79e4ad69801fd373b4a3e3f7d6f53e867f2159d88c2f55",
+      "current_file_sha256": "958247a8d3b6bc1c6a79e4ad69801fd373b4a3e3f7d6f53e867f2159d88c2f55",
+      "baseline_rgba_sha256": "98b9047af0be9cb49a6cc6197774ca372a349e69e133a70f4615ee8c58c01e52",
+      "current_rgba_sha256": "98b9047af0be9cb49a6cc6197774ca372a349e69e133a70f4615ee8c58c01e52"
+    },
+    {
+      "path": "phase03_npc_hook_native/landing-fish-public.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "958247a8d3b6bc1c6a79e4ad69801fd373b4a3e3f7d6f53e867f2159d88c2f55",
+      "current_file_sha256": "958247a8d3b6bc1c6a79e4ad69801fd373b4a3e3f7d6f53e867f2159d88c2f55",
+      "baseline_rgba_sha256": "98b9047af0be9cb49a6cc6197774ca372a349e69e133a70f4615ee8c58c01e52",
+      "current_rgba_sha256": "98b9047af0be9cb49a6cc6197774ca372a349e69e133a70f4615ee8c58c01e52"
+    },
+    {
+      "path": "phase03_npc_hook_native/landing-fish.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "958247a8d3b6bc1c6a79e4ad69801fd373b4a3e3f7d6f53e867f2159d88c2f55",
+      "current_file_sha256": "958247a8d3b6bc1c6a79e4ad69801fd373b4a3e3f7d6f53e867f2159d88c2f55",
+      "baseline_rgba_sha256": "98b9047af0be9cb49a6cc6197774ca372a349e69e133a70f4615ee8c58c01e52",
+      "current_rgba_sha256": "98b9047af0be9cb49a6cc6197774ca372a349e69e133a70f4615ee8c58c01e52"
+    },
+    {
+      "path": "phase03_npc_hook_native/landing-observation-hidden.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "1633c68b0811cbf2691f6709a245d284ee31b6dec85fea5d13163a312483673c",
+      "current_file_sha256": "1633c68b0811cbf2691f6709a245d284ee31b6dec85fea5d13163a312483673c",
+      "baseline_rgba_sha256": "67f4286959d7c3dd8d9dfda8eac3d649704b3dc3dc7eb8cc17dfea8a4ec0f4ab",
+      "current_rgba_sha256": "67f4286959d7c3dd8d9dfda8eac3d649704b3dc3dc7eb8cc17dfea8a4ec0f4ab"
+    },
+    {
+      "path": "phase03_npc_hook_native/landing-observation-public.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "1633c68b0811cbf2691f6709a245d284ee31b6dec85fea5d13163a312483673c",
+      "current_file_sha256": "1633c68b0811cbf2691f6709a245d284ee31b6dec85fea5d13163a312483673c",
+      "baseline_rgba_sha256": "67f4286959d7c3dd8d9dfda8eac3d649704b3dc3dc7eb8cc17dfea8a4ec0f4ab",
+      "current_rgba_sha256": "67f4286959d7c3dd8d9dfda8eac3d649704b3dc3dc7eb8cc17dfea8a4ec0f4ab"
+    },
+    {
+      "path": "phase03_npc_hook_native/landing-observation.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "1633c68b0811cbf2691f6709a245d284ee31b6dec85fea5d13163a312483673c",
+      "current_file_sha256": "1633c68b0811cbf2691f6709a245d284ee31b6dec85fea5d13163a312483673c",
+      "baseline_rgba_sha256": "67f4286959d7c3dd8d9dfda8eac3d649704b3dc3dc7eb8cc17dfea8a4ec0f4ab",
+      "current_rgba_sha256": "67f4286959d7c3dd8d9dfda8eac3d649704b3dc3dc7eb8cc17dfea8a4ec0f4ab"
+    },
+    {
+      "path": "phase03_npc_hook_native/respawned-shore.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "47a4960c01804453ae5e78d8cc52bc5ecb37a75c11de659de6bb1505d345229b",
+      "current_file_sha256": "47a4960c01804453ae5e78d8cc52bc5ecb37a75c11de659de6bb1505d345229b",
+      "baseline_rgba_sha256": "b3d20a55a595732c5a7fcf803dca3ad1b4709dacedc57730f39d3d650cf44f6f",
+      "current_rgba_sha256": "b3d20a55a595732c5a7fcf803dca3ad1b4709dacedc57730f39d3d650cf44f6f"
+    },
+    {
+      "path": "phase03_npc_native/fish-count-0.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "8032f6b6403b2bce521d8a04be3b219b11f26c3c79c90b8b79270ceee618d3e9",
+      "current_file_sha256": "8032f6b6403b2bce521d8a04be3b219b11f26c3c79c90b8b79270ceee618d3e9",
+      "baseline_rgba_sha256": "42da4109a70746a88d2126077ae366e0d60260cc5817f670985fc9bd235a90bb",
+      "current_rgba_sha256": "42da4109a70746a88d2126077ae366e0d60260cc5817f670985fc9bd235a90bb"
+    },
+    {
+      "path": "phase03_npc_native/fish-count-3.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "d04951ed27e55be0f3358c22508c70e15517f79709d45494908f2cab81c1a9d7",
+      "current_file_sha256": "d04951ed27e55be0f3358c22508c70e15517f79709d45494908f2cab81c1a9d7",
+      "baseline_rgba_sha256": "281c680c99b77533dc57e4c79c416e075fc07c38bee1c556a95cd7858eb2e328",
+      "current_rgba_sha256": "281c680c99b77533dc57e4c79c416e075fc07c38bee1c556a95cd7858eb2e328"
+    },
+    {
+      "path": "phase03_npc_native/fish-count-6.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "f3302593f4b27b2b77654c8ab22d54966b5cce0b675260c2e823621a4f94955f",
+      "current_file_sha256": "f3302593f4b27b2b77654c8ab22d54966b5cce0b675260c2e823621a4f94955f",
+      "baseline_rgba_sha256": "aa675c78447f0d24870cd92c0c58eb8e832a5035c83eabdae94dd61b52df0d5d",
+      "current_rgba_sha256": "aa675c78447f0d24870cd92c0c58eb8e832a5035c83eabdae94dd61b52df0d5d"
+    },
+    {
+      "path": "phase03_npc_native/fish-hidden-truth.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "d04951ed27e55be0f3358c22508c70e15517f79709d45494908f2cab81c1a9d7",
+      "current_file_sha256": "d04951ed27e55be0f3358c22508c70e15517f79709d45494908f2cab81c1a9d7",
+      "baseline_rgba_sha256": "281c680c99b77533dc57e4c79c416e075fc07c38bee1c556a95cd7858eb2e328",
+      "current_rgba_sha256": "281c680c99b77533dc57e4c79c416e075fc07c38bee1c556a95cd7858eb2e328"
+    },
+    {
+      "path": "phase03_npc_native/fish-no-npcs.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "8032f6b6403b2bce521d8a04be3b219b11f26c3c79c90b8b79270ceee618d3e9",
+      "current_file_sha256": "8032f6b6403b2bce521d8a04be3b219b11f26c3c79c90b8b79270ceee618d3e9",
+      "baseline_rgba_sha256": "42da4109a70746a88d2126077ae366e0d60260cc5817f670985fc9bd235a90bb",
+      "current_rgba_sha256": "42da4109a70746a88d2126077ae366e0d60260cc5817f670985fc9bd235a90bb"
+    },
+    {
+      "path": "phase03_npc_native/fish-npc-fed-public-replica.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "35fc97d496d0c4020f50ed632c8c1f7b678e2272f7f18a890cb8239fd17d3aa5",
+      "current_file_sha256": "35fc97d496d0c4020f50ed632c8c1f7b678e2272f7f18a890cb8239fd17d3aa5",
+      "baseline_rgba_sha256": "c6fec31c0a746d2a25d6702e8cf3eab7a8ba8ca41da492cd5a28fd74edc34bf9",
+      "current_rgba_sha256": "c6fec31c0a746d2a25d6702e8cf3eab7a8ba8ca41da492cd5a28fd74edc34bf9"
+    },
+    {
+      "path": "phase03_npc_native/fish-npc-feeding-hidden-truth.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "35fc97d496d0c4020f50ed632c8c1f7b678e2272f7f18a890cb8239fd17d3aa5",
+      "current_file_sha256": "35fc97d496d0c4020f50ed632c8c1f7b678e2272f7f18a890cb8239fd17d3aa5",
+      "baseline_rgba_sha256": "c6fec31c0a746d2a25d6702e8cf3eab7a8ba8ca41da492cd5a28fd74edc34bf9",
+      "current_rgba_sha256": "c6fec31c0a746d2a25d6702e8cf3eab7a8ba8ca41da492cd5a28fd74edc34bf9"
+    },
+    {
+      "path": "phase03_npc_native/fish-npc-food-before.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "f4f38bf654cf59e4cd910f13290c3089ee779f022e8a88977c0fa22f282308a0",
+      "current_file_sha256": "f4f38bf654cf59e4cd910f13290c3089ee779f022e8a88977c0fa22f282308a0",
+      "baseline_rgba_sha256": "82d09eb1a5a828e9091586089f721914cd9df3a59d7a71f6fd5c7494b1e09d25",
+      "current_rgba_sha256": "82d09eb1a5a828e9091586089f721914cd9df3a59d7a71f6fd5c7494b1e09d25"
+    },
+    {
+      "path": "phase03_npc_native/fish-npc-food-consumed.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "35fc97d496d0c4020f50ed632c8c1f7b678e2272f7f18a890cb8239fd17d3aa5",
+      "current_file_sha256": "35fc97d496d0c4020f50ed632c8c1f7b678e2272f7f18a890cb8239fd17d3aa5",
+      "baseline_rgba_sha256": "c6fec31c0a746d2a25d6702e8cf3eab7a8ba8ca41da492cd5a28fd74edc34bf9",
+      "current_rgba_sha256": "c6fec31c0a746d2a25d6702e8cf3eab7a8ba8ca41da492cd5a28fd74edc34bf9"
+    },
+    {
+      "path": "phase03_npc_native/fish-npc-food-visible-control.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "be2e1c5abcb97f8fefd4028760e2120c7c31d3ddc42f40befedf1b8f627ca8dc",
+      "current_file_sha256": "be2e1c5abcb97f8fefd4028760e2120c7c31d3ddc42f40befedf1b8f627ca8dc",
+      "baseline_rgba_sha256": "d14a7266b27198c16e1822f277fdeac93ae8c013f29693cb747a8947e673492b",
+      "current_rgba_sha256": "d14a7266b27198c16e1822f277fdeac93ae8c013f29693cb747a8947e673492b"
+    },
+    {
+      "path": "phase03_npc_native/fish-player-in-front.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "8032f6b6403b2bce521d8a04be3b219b11f26c3c79c90b8b79270ceee618d3e9",
+      "current_file_sha256": "8032f6b6403b2bce521d8a04be3b219b11f26c3c79c90b8b79270ceee618d3e9",
+      "baseline_rgba_sha256": "42da4109a70746a88d2126077ae366e0d60260cc5817f670985fc9bd235a90bb",
+      "current_rgba_sha256": "42da4109a70746a88d2126077ae366e0d60260cc5817f670985fc9bd235a90bb"
+    },
+    {
+      "path": "phase03_npc_native/fish-public-replica.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "d04951ed27e55be0f3358c22508c70e15517f79709d45494908f2cab81c1a9d7",
+      "current_file_sha256": "d04951ed27e55be0f3358c22508c70e15517f79709d45494908f2cab81c1a9d7",
+      "baseline_rgba_sha256": "281c680c99b77533dc57e4c79c416e075fc07c38bee1c556a95cd7858eb2e328",
+      "current_rgba_sha256": "281c680c99b77533dc57e4c79c416e075fc07c38bee1c556a95cd7858eb2e328"
+    },
+    {
+      "path": "phase03_npc_native/fish-three-ambient.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "d04951ed27e55be0f3358c22508c70e15517f79709d45494908f2cab81c1a9d7",
+      "current_file_sha256": "d04951ed27e55be0f3358c22508c70e15517f79709d45494908f2cab81c1a9d7",
+      "baseline_rgba_sha256": "281c680c99b77533dc57e4c79c416e075fc07c38bee1c556a95cd7858eb2e328",
+      "current_rgba_sha256": "281c680c99b77533dc57e4c79c416e075fc07c38bee1c556a95cd7858eb2e328"
+    },
+    {
+      "path": "phase03_npc_native/fish-variant-0.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "157b7fba36ea41343aa0d550a918da3011a502a90b2a3ce8dc6fb933dddf0b60",
+      "current_file_sha256": "157b7fba36ea41343aa0d550a918da3011a502a90b2a3ce8dc6fb933dddf0b60",
+      "baseline_rgba_sha256": "b1d446f5fac0b3b6789cc1eb60bbd03a46575d167f6d0e6dfc5175963e0780db",
+      "current_rgba_sha256": "b1d446f5fac0b3b6789cc1eb60bbd03a46575d167f6d0e6dfc5175963e0780db"
+    },
+    {
+      "path": "phase03_npc_native/fish-variant-1.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "6b27a93af65a218b8d1f2edb47cf842806341d94db3a86128630657fae4d9ae7",
+      "current_file_sha256": "6b27a93af65a218b8d1f2edb47cf842806341d94db3a86128630657fae4d9ae7",
+      "baseline_rgba_sha256": "9e1983d7ba1c176be1b1f0768b4d95bc1d5ad0e8750014bad45828cad9e738d6",
+      "current_rgba_sha256": "9e1983d7ba1c176be1b1f0768b4d95bc1d5ad0e8750014bad45828cad9e738d6"
+    },
+    {
+      "path": "phase03_npc_native/fish-variant-2.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "b309e2bed2221a5f926fab7394ce0f134173e43b0cbc4db601e73aa6b3db5baa",
+      "current_file_sha256": "b309e2bed2221a5f926fab7394ce0f134173e43b0cbc4db601e73aa6b3db5baa",
+      "baseline_rgba_sha256": "6a557bebee52d6291d7799f980690fecfc389f5feb542b455a11983cc52e3a3d",
+      "current_rgba_sha256": "6a557bebee52d6291d7799f980690fecfc389f5feb542b455a11983cc52e3a3d"
+    },
+    {
+      "path": "phase03_npc_native/observation-ambient-shadow.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "9c4a3b6e700b6b29df3b3fb2eb2a2e337697e5a4b0f61a2525d5c1f35339b9fd",
+      "current_file_sha256": "9c4a3b6e700b6b29df3b3fb2eb2a2e337697e5a4b0f61a2525d5c1f35339b9fd",
+      "baseline_rgba_sha256": "549a304d13afdda80daaebe4500aae94392279081ec81037a6963b2f37fc75c5",
+      "current_rgba_sha256": "549a304d13afdda80daaebe4500aae94392279081ec81037a6963b2f37fc75c5"
+    },
+    {
+      "path": "phase03_npc_native/observation-hidden-truth.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "9c4a3b6e700b6b29df3b3fb2eb2a2e337697e5a4b0f61a2525d5c1f35339b9fd",
+      "current_file_sha256": "9c4a3b6e700b6b29df3b3fb2eb2a2e337697e5a4b0f61a2525d5c1f35339b9fd",
+      "baseline_rgba_sha256": "549a304d13afdda80daaebe4500aae94392279081ec81037a6963b2f37fc75c5",
+      "current_rgba_sha256": "549a304d13afdda80daaebe4500aae94392279081ec81037a6963b2f37fc75c5"
+    },
+    {
+      "path": "phase03_npc_native/observation-no-npcs.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "edd0b16255d9cd397989220c0f00890f4f16e6b1ff8da29d647d5b6a47f8a951",
+      "current_file_sha256": "edd0b16255d9cd397989220c0f00890f4f16e6b1ff8da29d647d5b6a47f8a951",
+      "baseline_rgba_sha256": "d9151a0a659ac7a9916ec00066f47e35e1726a51889482f81a3f347390a7d73e",
+      "current_rgba_sha256": "d9151a0a659ac7a9916ec00066f47e35e1726a51889482f81a3f347390a7d73e"
+    },
+    {
+      "path": "phase03_npc_native/shore-ambient-shadows.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "0aeb81cdcebac4ae290c5826c2cd8947f6d26be372e3e87254989e6f5a140fdc",
+      "current_file_sha256": "0aeb81cdcebac4ae290c5826c2cd8947f6d26be372e3e87254989e6f5a140fdc",
+      "baseline_rgba_sha256": "7883ac5245afe0c1f237b9cd3825df33c6cb7bb54d0e8f68056863462a2b6146",
+      "current_rgba_sha256": "7883ac5245afe0c1f237b9cd3825df33c6cb7bb54d0e8f68056863462a2b6146"
+    },
+    {
+      "path": "phase03_npc_native/shore-hidden-truth.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "0aeb81cdcebac4ae290c5826c2cd8947f6d26be372e3e87254989e6f5a140fdc",
+      "current_file_sha256": "0aeb81cdcebac4ae290c5826c2cd8947f6d26be372e3e87254989e6f5a140fdc",
+      "baseline_rgba_sha256": "7883ac5245afe0c1f237b9cd3825df33c6cb7bb54d0e8f68056863462a2b6146",
+      "current_rgba_sha256": "7883ac5245afe0c1f237b9cd3825df33c6cb7bb54d0e8f68056863462a2b6146"
+    },
+    {
+      "path": "phase03_npc_native/shore-no-npcs.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "8ed2e3ec17753ad4ee513691c648a39bd23229e7082ff2bc5f1c0eea7af78f01",
+      "current_file_sha256": "8ed2e3ec17753ad4ee513691c648a39bd23229e7082ff2bc5f1c0eea7af78f01",
+      "baseline_rgba_sha256": "ac119607511d3679ab746b865787a7fdaaf7f84dffb8d2d635c9918df35f196f",
+      "current_rgba_sha256": "ac119607511d3679ab746b865787a7fdaaf7f84dffb8d2d635c9918df35f196f"
+    },
+    {
+      "path": "phase03_npc_native/social-compete-angler-hidden.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "7a21396cd4e610db6d95c01b05b5b7392f74bb65e43ff5388694d791a4198ffb",
+      "current_file_sha256": "7a21396cd4e610db6d95c01b05b5b7392f74bb65e43ff5388694d791a4198ffb",
+      "baseline_rgba_sha256": "f5acefc447e4f2fc5be9095a9ccea9f03d5e756db37f132a614ee437ca8b66fd",
+      "current_rgba_sha256": "f5acefc447e4f2fc5be9095a9ccea9f03d5e756db37f132a614ee437ca8b66fd"
+    },
+    {
+      "path": "phase03_npc_native/social-compete-angler-public.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "7a21396cd4e610db6d95c01b05b5b7392f74bb65e43ff5388694d791a4198ffb",
+      "current_file_sha256": "7a21396cd4e610db6d95c01b05b5b7392f74bb65e43ff5388694d791a4198ffb",
+      "baseline_rgba_sha256": "f5acefc447e4f2fc5be9095a9ccea9f03d5e756db37f132a614ee437ca8b66fd",
+      "current_rgba_sha256": "f5acefc447e4f2fc5be9095a9ccea9f03d5e756db37f132a614ee437ca8b66fd"
+    },
+    {
+      "path": "phase03_npc_native/social-compete-angler.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "7a21396cd4e610db6d95c01b05b5b7392f74bb65e43ff5388694d791a4198ffb",
+      "current_file_sha256": "7a21396cd4e610db6d95c01b05b5b7392f74bb65e43ff5388694d791a4198ffb",
+      "baseline_rgba_sha256": "f5acefc447e4f2fc5be9095a9ccea9f03d5e756db37f132a614ee437ca8b66fd",
+      "current_rgba_sha256": "f5acefc447e4f2fc5be9095a9ccea9f03d5e756db37f132a614ee437ca8b66fd"
+    },
+    {
+      "path": "phase03_npc_native/social-compete-fish-hidden.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "6dc02e9691159af59d1d50b8adcfe6f785d7d63df71be1ceb08459653896e95d",
+      "current_file_sha256": "6dc02e9691159af59d1d50b8adcfe6f785d7d63df71be1ceb08459653896e95d",
+      "baseline_rgba_sha256": "bf78a4b2871bce5a9cfed02703ae8d494ea4bbce9fb3f2089cf31ebf7a15fc73",
+      "current_rgba_sha256": "bf78a4b2871bce5a9cfed02703ae8d494ea4bbce9fb3f2089cf31ebf7a15fc73"
+    },
+    {
+      "path": "phase03_npc_native/social-compete-fish-public.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "6dc02e9691159af59d1d50b8adcfe6f785d7d63df71be1ceb08459653896e95d",
+      "current_file_sha256": "6dc02e9691159af59d1d50b8adcfe6f785d7d63df71be1ceb08459653896e95d",
+      "baseline_rgba_sha256": "bf78a4b2871bce5a9cfed02703ae8d494ea4bbce9fb3f2089cf31ebf7a15fc73",
+      "current_rgba_sha256": "bf78a4b2871bce5a9cfed02703ae8d494ea4bbce9fb3f2089cf31ebf7a15fc73"
+    },
+    {
+      "path": "phase03_npc_native/social-compete-fish.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "6dc02e9691159af59d1d50b8adcfe6f785d7d63df71be1ceb08459653896e95d",
+      "current_file_sha256": "6dc02e9691159af59d1d50b8adcfe6f785d7d63df71be1ceb08459653896e95d",
+      "baseline_rgba_sha256": "bf78a4b2871bce5a9cfed02703ae8d494ea4bbce9fb3f2089cf31ebf7a15fc73",
+      "current_rgba_sha256": "bf78a4b2871bce5a9cfed02703ae8d494ea4bbce9fb3f2089cf31ebf7a15fc73"
+    },
+    {
+      "path": "phase03_npc_native/social-compete-motion-later.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "a59207cce3cf6ba09a84e72297532eed53ae199c823620e36ee547942543bd50",
+      "current_file_sha256": "a59207cce3cf6ba09a84e72297532eed53ae199c823620e36ee547942543bd50",
+      "baseline_rgba_sha256": "d3ce9cb3cf56ded7e670ce99ba8931110d9e010d28c77c806011a4a2cd40c3d3",
+      "current_rgba_sha256": "d3ce9cb3cf56ded7e670ce99ba8931110d9e010d28c77c806011a4a2cd40c3d3"
+    },
+    {
+      "path": "phase03_npc_native/social-compete-observation-hidden.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "eb70f7c457c72299f3d2ecbd2846231eb43a2e84f230ca714d5d8163e3f6954d",
+      "current_file_sha256": "eb70f7c457c72299f3d2ecbd2846231eb43a2e84f230ca714d5d8163e3f6954d",
+      "baseline_rgba_sha256": "0a87500d5b3ae7e0b65b306af3e7917a8177bd66e2d9d415383f458fda7b0d93",
+      "current_rgba_sha256": "0a87500d5b3ae7e0b65b306af3e7917a8177bd66e2d9d415383f458fda7b0d93"
+    },
+    {
+      "path": "phase03_npc_native/social-compete-observation-public.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "eb70f7c457c72299f3d2ecbd2846231eb43a2e84f230ca714d5d8163e3f6954d",
+      "current_file_sha256": "eb70f7c457c72299f3d2ecbd2846231eb43a2e84f230ca714d5d8163e3f6954d",
+      "baseline_rgba_sha256": "0a87500d5b3ae7e0b65b306af3e7917a8177bd66e2d9d415383f458fda7b0d93",
+      "current_rgba_sha256": "0a87500d5b3ae7e0b65b306af3e7917a8177bd66e2d9d415383f458fda7b0d93"
+    },
+    {
+      "path": "phase03_npc_native/social-compete-observation.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "eb70f7c457c72299f3d2ecbd2846231eb43a2e84f230ca714d5d8163e3f6954d",
+      "current_file_sha256": "eb70f7c457c72299f3d2ecbd2846231eb43a2e84f230ca714d5d8163e3f6954d",
+      "baseline_rgba_sha256": "0a87500d5b3ae7e0b65b306af3e7917a8177bd66e2d9d415383f458fda7b0d93",
+      "current_rgba_sha256": "0a87500d5b3ae7e0b65b306af3e7917a8177bd66e2d9d415383f458fda7b0d93"
+    },
+    {
+      "path": "phase03_npc_native/social-flee-angler-hidden.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "3a63c0c27059aaf4bb20c71b8d0a52d258af117f6aa44e656372eb95f72ac06f",
+      "current_file_sha256": "3a63c0c27059aaf4bb20c71b8d0a52d258af117f6aa44e656372eb95f72ac06f",
+      "baseline_rgba_sha256": "2b0b600d4b54882a9b8c29d07436177363c312af570e4e5a2fa95353ced75e93",
+      "current_rgba_sha256": "2b0b600d4b54882a9b8c29d07436177363c312af570e4e5a2fa95353ced75e93"
+    },
+    {
+      "path": "phase03_npc_native/social-flee-angler-public.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "3a63c0c27059aaf4bb20c71b8d0a52d258af117f6aa44e656372eb95f72ac06f",
+      "current_file_sha256": "3a63c0c27059aaf4bb20c71b8d0a52d258af117f6aa44e656372eb95f72ac06f",
+      "baseline_rgba_sha256": "2b0b600d4b54882a9b8c29d07436177363c312af570e4e5a2fa95353ced75e93",
+      "current_rgba_sha256": "2b0b600d4b54882a9b8c29d07436177363c312af570e4e5a2fa95353ced75e93"
+    },
+    {
+      "path": "phase03_npc_native/social-flee-angler.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "3a63c0c27059aaf4bb20c71b8d0a52d258af117f6aa44e656372eb95f72ac06f",
+      "current_file_sha256": "3a63c0c27059aaf4bb20c71b8d0a52d258af117f6aa44e656372eb95f72ac06f",
+      "baseline_rgba_sha256": "2b0b600d4b54882a9b8c29d07436177363c312af570e4e5a2fa95353ced75e93",
+      "current_rgba_sha256": "2b0b600d4b54882a9b8c29d07436177363c312af570e4e5a2fa95353ced75e93"
+    },
+    {
+      "path": "phase03_npc_native/social-flee-fish-hidden.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "44a890f180e72b337b852b934540169213a7a6a4946a303b724efce0f94a0ae6",
+      "current_file_sha256": "44a890f180e72b337b852b934540169213a7a6a4946a303b724efce0f94a0ae6",
+      "baseline_rgba_sha256": "ad83ec1943fa6474d27c21682623a9d608755cd0ccff123fb33aed994ecbee79",
+      "current_rgba_sha256": "ad83ec1943fa6474d27c21682623a9d608755cd0ccff123fb33aed994ecbee79"
+    },
+    {
+      "path": "phase03_npc_native/social-flee-fish-public.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "44a890f180e72b337b852b934540169213a7a6a4946a303b724efce0f94a0ae6",
+      "current_file_sha256": "44a890f180e72b337b852b934540169213a7a6a4946a303b724efce0f94a0ae6",
+      "baseline_rgba_sha256": "ad83ec1943fa6474d27c21682623a9d608755cd0ccff123fb33aed994ecbee79",
+      "current_rgba_sha256": "ad83ec1943fa6474d27c21682623a9d608755cd0ccff123fb33aed994ecbee79"
+    },
+    {
+      "path": "phase03_npc_native/social-flee-fish.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "44a890f180e72b337b852b934540169213a7a6a4946a303b724efce0f94a0ae6",
+      "current_file_sha256": "44a890f180e72b337b852b934540169213a7a6a4946a303b724efce0f94a0ae6",
+      "baseline_rgba_sha256": "ad83ec1943fa6474d27c21682623a9d608755cd0ccff123fb33aed994ecbee79",
+      "current_rgba_sha256": "ad83ec1943fa6474d27c21682623a9d608755cd0ccff123fb33aed994ecbee79"
+    },
+    {
+      "path": "phase03_npc_native/social-flee-motion-later.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "b485c9ecfd0e0fc402d93664c84c18626caee9ac0cebd8827d304d5a31eeda00",
+      "current_file_sha256": "b485c9ecfd0e0fc402d93664c84c18626caee9ac0cebd8827d304d5a31eeda00",
+      "baseline_rgba_sha256": "2f107f8deb0aa1e95539c711d7f7056de992abeed9f7eefebd7f4c59a4ac50ff",
+      "current_rgba_sha256": "2f107f8deb0aa1e95539c711d7f7056de992abeed9f7eefebd7f4c59a4ac50ff"
+    },
+    {
+      "path": "phase03_npc_native/social-flee-observation-hidden.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "c7a97c8c670d5630b91a9cbc09f2abd8319f7fd6bded105824198851a794033e",
+      "current_file_sha256": "c7a97c8c670d5630b91a9cbc09f2abd8319f7fd6bded105824198851a794033e",
+      "baseline_rgba_sha256": "653acebc555fc026954b32d9c4863abbdee7c6bfe354f127523bcd10139e066e",
+      "current_rgba_sha256": "653acebc555fc026954b32d9c4863abbdee7c6bfe354f127523bcd10139e066e"
+    },
+    {
+      "path": "phase03_npc_native/social-flee-observation-public.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "c7a97c8c670d5630b91a9cbc09f2abd8319f7fd6bded105824198851a794033e",
+      "current_file_sha256": "c7a97c8c670d5630b91a9cbc09f2abd8319f7fd6bded105824198851a794033e",
+      "baseline_rgba_sha256": "653acebc555fc026954b32d9c4863abbdee7c6bfe354f127523bcd10139e066e",
+      "current_rgba_sha256": "653acebc555fc026954b32d9c4863abbdee7c6bfe354f127523bcd10139e066e"
+    },
+    {
+      "path": "phase03_npc_native/social-flee-observation.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "c7a97c8c670d5630b91a9cbc09f2abd8319f7fd6bded105824198851a794033e",
+      "current_file_sha256": "c7a97c8c670d5630b91a9cbc09f2abd8319f7fd6bded105824198851a794033e",
+      "baseline_rgba_sha256": "653acebc555fc026954b32d9c4863abbdee7c6bfe354f127523bcd10139e066e",
+      "current_rgba_sha256": "653acebc555fc026954b32d9c4863abbdee7c6bfe354f127523bcd10139e066e"
+    },
+    {
+      "path": "phase03_npc_native/social-hesitate-angler-hidden.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "3b94342c1b6140f39b6862a44d95908a982953513c592587287a3699cb334c83",
+      "current_file_sha256": "3b94342c1b6140f39b6862a44d95908a982953513c592587287a3699cb334c83",
+      "baseline_rgba_sha256": "182aa19c51157c8da2342a740aeb3b86c5024d9209abbd1880a92452f7e8c00a",
+      "current_rgba_sha256": "182aa19c51157c8da2342a740aeb3b86c5024d9209abbd1880a92452f7e8c00a"
+    },
+    {
+      "path": "phase03_npc_native/social-hesitate-angler-public.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "3b94342c1b6140f39b6862a44d95908a982953513c592587287a3699cb334c83",
+      "current_file_sha256": "3b94342c1b6140f39b6862a44d95908a982953513c592587287a3699cb334c83",
+      "baseline_rgba_sha256": "182aa19c51157c8da2342a740aeb3b86c5024d9209abbd1880a92452f7e8c00a",
+      "current_rgba_sha256": "182aa19c51157c8da2342a740aeb3b86c5024d9209abbd1880a92452f7e8c00a"
+    },
+    {
+      "path": "phase03_npc_native/social-hesitate-angler.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "3b94342c1b6140f39b6862a44d95908a982953513c592587287a3699cb334c83",
+      "current_file_sha256": "3b94342c1b6140f39b6862a44d95908a982953513c592587287a3699cb334c83",
+      "baseline_rgba_sha256": "182aa19c51157c8da2342a740aeb3b86c5024d9209abbd1880a92452f7e8c00a",
+      "current_rgba_sha256": "182aa19c51157c8da2342a740aeb3b86c5024d9209abbd1880a92452f7e8c00a"
+    },
+    {
+      "path": "phase03_npc_native/social-hesitate-fish-hidden.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "7f5f609492e398cd48b92034f4abd3b1dd124307a320fd2d5cba626608e308e6",
+      "current_file_sha256": "7f5f609492e398cd48b92034f4abd3b1dd124307a320fd2d5cba626608e308e6",
+      "baseline_rgba_sha256": "ed827246f360902258457f05a17e902f1cf7c2edf1a1ee63bb6c7b6d0c83502f",
+      "current_rgba_sha256": "ed827246f360902258457f05a17e902f1cf7c2edf1a1ee63bb6c7b6d0c83502f"
+    },
+    {
+      "path": "phase03_npc_native/social-hesitate-fish-public.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "7f5f609492e398cd48b92034f4abd3b1dd124307a320fd2d5cba626608e308e6",
+      "current_file_sha256": "7f5f609492e398cd48b92034f4abd3b1dd124307a320fd2d5cba626608e308e6",
+      "baseline_rgba_sha256": "ed827246f360902258457f05a17e902f1cf7c2edf1a1ee63bb6c7b6d0c83502f",
+      "current_rgba_sha256": "ed827246f360902258457f05a17e902f1cf7c2edf1a1ee63bb6c7b6d0c83502f"
+    },
+    {
+      "path": "phase03_npc_native/social-hesitate-fish.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "7f5f609492e398cd48b92034f4abd3b1dd124307a320fd2d5cba626608e308e6",
+      "current_file_sha256": "7f5f609492e398cd48b92034f4abd3b1dd124307a320fd2d5cba626608e308e6",
+      "baseline_rgba_sha256": "ed827246f360902258457f05a17e902f1cf7c2edf1a1ee63bb6c7b6d0c83502f",
+      "current_rgba_sha256": "ed827246f360902258457f05a17e902f1cf7c2edf1a1ee63bb6c7b6d0c83502f"
+    },
+    {
+      "path": "phase03_npc_native/social-hesitate-motion-later.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "1f0fb79e94f46f05559cfdf9e04e7c75a20a2f3a7f56af7ad7e009760efe9ed5",
+      "current_file_sha256": "1f0fb79e94f46f05559cfdf9e04e7c75a20a2f3a7f56af7ad7e009760efe9ed5",
+      "baseline_rgba_sha256": "f701130848f3952f7ca5fc37e93ba13c46a7fdd2492a0df80d3bf40499f43fbe",
+      "current_rgba_sha256": "f701130848f3952f7ca5fc37e93ba13c46a7fdd2492a0df80d3bf40499f43fbe"
+    },
+    {
+      "path": "phase03_npc_native/social-hesitate-observation-hidden.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "c7a97c8c670d5630b91a9cbc09f2abd8319f7fd6bded105824198851a794033e",
+      "current_file_sha256": "c7a97c8c670d5630b91a9cbc09f2abd8319f7fd6bded105824198851a794033e",
+      "baseline_rgba_sha256": "653acebc555fc026954b32d9c4863abbdee7c6bfe354f127523bcd10139e066e",
+      "current_rgba_sha256": "653acebc555fc026954b32d9c4863abbdee7c6bfe354f127523bcd10139e066e"
+    },
+    {
+      "path": "phase03_npc_native/social-hesitate-observation-public.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "c7a97c8c670d5630b91a9cbc09f2abd8319f7fd6bded105824198851a794033e",
+      "current_file_sha256": "c7a97c8c670d5630b91a9cbc09f2abd8319f7fd6bded105824198851a794033e",
+      "baseline_rgba_sha256": "653acebc555fc026954b32d9c4863abbdee7c6bfe354f127523bcd10139e066e",
+      "current_rgba_sha256": "653acebc555fc026954b32d9c4863abbdee7c6bfe354f127523bcd10139e066e"
+    },
+    {
+      "path": "phase03_npc_native/social-hesitate-observation.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "c7a97c8c670d5630b91a9cbc09f2abd8319f7fd6bded105824198851a794033e",
+      "current_file_sha256": "c7a97c8c670d5630b91a9cbc09f2abd8319f7fd6bded105824198851a794033e",
+      "baseline_rgba_sha256": "653acebc555fc026954b32d9c4863abbdee7c6bfe354f127523bcd10139e066e",
+      "current_rgba_sha256": "653acebc555fc026954b32d9c4863abbdee7c6bfe354f127523bcd10139e066e"
+    },
+    {
+      "path": "wood_fade_native/fork-inside.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "92d593336bc12075c42df2696c62fe8398cfa04d667955cc62d1772a09b98268",
+      "current_file_sha256": "92d593336bc12075c42df2696c62fe8398cfa04d667955cc62d1772a09b98268",
+      "baseline_rgba_sha256": "88de5ab665bbc689265a6e9bf6e0e0b63f5477c94df90877faf3b4a64ca9e16c",
+      "current_rgba_sha256": "88de5ab665bbc689265a6e9bf6e0e0b63f5477c94df90877faf3b4a64ca9e16c"
+    },
+    {
+      "path": "wood_fade_native/fork-opaque.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "b5c8d12309c1a0b5551dce4d9d4c93eb12da62eed33e6976924fb8b317ea9923",
+      "current_file_sha256": "b5c8d12309c1a0b5551dce4d9d4c93eb12da62eed33e6976924fb8b317ea9923",
+      "baseline_rgba_sha256": "bd5a5243aa0074cc8bcb162feef46622d52efe212dd1b493ffda6f530b6d3925",
+      "current_rgba_sha256": "bd5a5243aa0074cc8bcb162feef46622d52efe212dd1b493ffda6f530b6d3925"
+    },
+    {
+      "path": "wood_fade_native/log-inside.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "e631ab62021c768ffdb01777d14bcec192335cc9157e61228ac9c0de6eed8c3e",
+      "current_file_sha256": "e631ab62021c768ffdb01777d14bcec192335cc9157e61228ac9c0de6eed8c3e",
+      "baseline_rgba_sha256": "55a987ed3c2cfb1a11efc7d4dbfd374a6383ef008a25919f6311b5d38cd518be",
+      "current_rgba_sha256": "55a987ed3c2cfb1a11efc7d4dbfd374a6383ef008a25919f6311b5d38cd518be"
+    },
+    {
+      "path": "wood_fade_native/log-opaque.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "a331a43e89f2e89b7b0323d953df1c90040a65449475fa06f34c4676b8106633",
+      "current_file_sha256": "a331a43e89f2e89b7b0323d953df1c90040a65449475fa06f34c4676b8106633",
+      "baseline_rgba_sha256": "a31df2f8aec3e9c02d672fb96e9a2bcaa4e261c60a3d48f46ed477eb32b7b56e",
+      "current_rgba_sha256": "a31df2f8aec3e9c02d672fb96e9a2bcaa4e261c60a3d48f46ed477eb32b7b56e"
+    },
+    {
+      "path": "wood_fade_native/trunk-default-inside.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "3ce56d5d25ab01a8bc58cd0802e427d8c67150fc6b75eb4f85d20f34d06a67ac",
+      "current_file_sha256": "3ce56d5d25ab01a8bc58cd0802e427d8c67150fc6b75eb4f85d20f34d06a67ac",
+      "baseline_rgba_sha256": "21c356816bbb7bcb222acfd7862bd0d67616e6db53cc489d901ace03cf20dea7",
+      "current_rgba_sha256": "21c356816bbb7bcb222acfd7862bd0d67616e6db53cc489d901ace03cf20dea7"
+    },
+    {
+      "path": "wood_fade_native/trunk-inside.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "9c09e537dd8f6fa5d396013393904551eb25d31a110ea5e45fc4d1473da87f61",
+      "current_file_sha256": "9c09e537dd8f6fa5d396013393904551eb25d31a110ea5e45fc4d1473da87f61",
+      "baseline_rgba_sha256": "2408b8878c0d7ca0fa034e9318b5056151390b67aa66bec33b129063d938a96b",
+      "current_rgba_sha256": "2408b8878c0d7ca0fa034e9318b5056151390b67aa66bec33b129063d938a96b"
+    },
+    {
+      "path": "wood_fade_native/trunk-opaque.png",
+      "baseline_size": [
+        640,
+        360
+      ],
+      "current_size": [
+        640,
+        360
+      ],
+      "pixels_identical": true,
+      "different_pixels": 0,
+      "baseline_file_sha256": "e0bc46257cf726d296b91f5e8debeab11fc043682e88f10bc68a145af2da42e4",
+      "current_file_sha256": "e0bc46257cf726d296b91f5e8debeab11fc043682e88f10bc68a145af2da42e4",
+      "baseline_rgba_sha256": "fc7741669eca2ee40e5a5c8de367e98f1ffb33886199fe456ec422b7b975561b",
+      "current_rgba_sha256": "fc7741669eca2ee40e5a5c8de367e98f1ffb33886199fe456ec422b7b975561b"
+    }
+  ],
+  "prior_failed_evidence": "artifacts/p42-independent-native-pixels/comparison.json",
+  "prior_failure_cause": "Different suite order left native OS cursor inside current NPC observation viewport only; all 5376 changed pixels were cursor glyph. No source changes, masks, tolerances, or cropped image exclusions.",
+  "cursor_setup_checks": [
+    {
+      "suite": "phase03_npc_native",
+      "baseline_render_setups": 83,
+      "current_render_setups": 83,
+      "records_identical": true,
+      "all_noninteractive_and_authority_unchanged": true,
+      "observed_mouse_coordinates": [
+        [
+          -313.0,
+          -229.0
+        ],
+        [
+          4.0,
+          4.0
+        ]
+      ]
+    },
+    {
+      "suite": "phase03_npc_hook_native",
+      "baseline_render_setups": 58,
+      "current_render_setups": 58,
+      "records_identical": true,
+      "all_noninteractive_and_authority_unchanged": true,
+      "observed_mouse_coordinates": [
+        [
+          -313.0,
+          -229.0
+        ],
+        [
+          4.0,
+          4.0
+        ]
+      ]
+    }
+  ],
+  "cursor_wrapper_template": "tests/fixtures/phase04/authority_native_cursor_fixture.gd.txt",
+  "wrapper_sha256": {
+    "phase03_npc_native_cursor_pinned.gd": "90c2c6da118621dff23964d78fdfa4d3e1f13f3418929ebe59b6d23a8465c37e",
+    "phase03_npc_hook_native_cursor_pinned.gd": "ea9dc31c5a21592b6a92bf5b18fbd6b1ec15b87ca6a5582a24fd5f5404dfd320"
+  },
+  "prior_failed_offscreen_evidence": "artifacts/p42-independent-native-controlled-pixels/comparison.json",
+  "success": true
+}

@@ -8,7 +8,6 @@ var belief_bands: Dictionary={}
 var belief_focus := -1
 const Observation=preload("res://scripts/fish_observation.gd")
 var observation: Dictionary={}
-const Layout=preload("res://scripts/pond_layout.gd")
 
 # Outputs the same movement/suction/QTE commands as keyboard and mouse input.
 # It never writes fish position, stamina, score, hook state or QTE results.
@@ -84,7 +83,7 @@ func command(game: Node2D, delta: float) -> Dictionary:
 		var sign_side := signf((game.fish-projection).dot(normal))
 		if sign_side==0: sign_side=-1
 		var safe := projection+normal*sign_side*85
-		if safe.y<83 or safe.y>Layout.FLOOR-23 or safe.x<28 or safe.x>Layout.SIZE.x-28: safe=projection-normal*sign_side*85
+		if safe.y<game.map_context.water.position.y+15 or safe.y>game.map_context.floor_y-23 or safe.x<game.map_context.water.position.x+20 or safe.x>game.map_context.water.end.x-20: safe=projection-normal*sign_side*85
 		result.move=(safe-Vector2(game.fish)).normalized() if game.fish.distance_to(safe)>7 else Vector2.ZERO
 		result.dash=game.stamina_ratio()>0.45 and game.net_state=="sweep"
 		state="躲避抄网"
@@ -121,8 +120,8 @@ func command(game: Node2D, delta: float) -> Dictionary:
 				decision_age=0.5
 				var distance := INF
 				for index in game.targets.size():
-					if game.target_is_wrapped(index): continue
-					var point: Vector2=game.targets[index].bounds.get_center().clamp(Vector2(28,90),Vector2(Layout.SIZE.x-30,Layout.FLOOR-25))
+					if not game.targets[index].capabilities.rope_anchor or game.target_is_wrapped(index): continue
+					var point: Vector2=game.targets[index].bounds.get_center().clamp(game.map_context.water.position+Vector2(20,22),Vector2(game.map_context.water.end.x-22,game.map_context.floor_y-25))
 					var candidate: float=game.fish.distance_squared_to(point)
 					if candidate<distance: distance=candidate; escape_target=index
 			if game.tension>game.rule("tension_high")-0.02 and game.stamina_ratio()>0.45:
@@ -130,12 +129,12 @@ func command(game: Node2D, delta: float) -> Dictionary:
 				result.dash=true
 				state="挣扎拉线"
 			elif escape_target>=0:
-				var destination: Vector2=game.targets[escape_target].bounds.get_center().clamp(Vector2(28,90),Vector2(Layout.SIZE.x-30,Layout.FLOOR-25))
+				var destination: Vector2=game.targets[escape_target].bounds.get_center().clamp(game.map_context.water.position+Vector2(20,22),Vector2(game.map_context.water.end.x-22,game.map_context.floor_y-25))
 				result.move=(destination-Vector2(game.fish)).normalized()*0.72
 				state="游向掩体"
 		return result
 	if game.score>=game.food_target()-0.001:
-		result.move=(game.HOME-Vector2(game.fish)).normalized() if game.fish.distance_to(game.HOME)>8 else Vector2.ZERO
+		result.move=(game.map_context.home-Vector2(game.fish)).normalized() if game.fish.distance_to(game.map_context.home)>8 else Vector2.ZERO
 		result.home=game.can_home() and not game.returning
 		state="带食物回巢"
 		return result
