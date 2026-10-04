@@ -1,6 +1,6 @@
 # 0.26.4 双人联机
 
-本文对应 0.26.4 源码，未发布本版游戏包。双方运行同版源码；公开 Windows 包仍为 0.26.1。P4.3 保留 exact-build，并在握手/开局核对地图 id、revision、contract_version、content_hash；不匹配拒绝进入对局，不下载地图或静默退回默认池塘。
+本文对应 0.26.4 源码及公开 Windows 试玩包。双方下载 0.26.4 ZIP，解压运行，不要与旧版本混连。P4.3 保留 exact-build，并在握手/开局核对地图 id、revision、contract_version、content_hash；不匹配拒绝进入对局，不下载地图或静默退回默认池塘。
 
 抄网操作、模块及规则迁移见 [NET-ARCHITECTURE.md](../architecture/NET-ARCHITECTURE.md)。
 
