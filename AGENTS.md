@@ -18,6 +18,7 @@
 - Windows Python 使用 `D:\python\python.exe`。
 - WSL/Linux Python 使用 `python3`；WSL 确需 Windows Python 时使用 `/mnt/d/python/python.exe`。
 - 关闭不再需要的浏览器标签页。
+- 禁止大量无意义的 SHA256 检查；发布只计算必要的包校验值，用功能测试及关键改动文件内容核对验证构建。
 - 禁止批量或递归删除，禁止通过通配符、循环或脚本删除多个文件。
 - 不得使用 `del /s`、`rd /s`、`rmdir /s`、`Remove-Item -Recurse`、`rm -r`、`rm -rf` 或 `find ... -delete`。
 - 每次只能删除一个明确指定的文件；多个文件或目录需要删除时，请用户手动处理。

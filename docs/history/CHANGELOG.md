@@ -1,3 +1,7 @@
+# 2026-10-04 · v0.26.1 Windows 试玩包发布
+
+已发布 v0.26.1，Authority 迁移到每局固定的 MapContext，现有池塘和玩法保持，P4.3 尚未开始。Windows 完整 current 源码回归、发行包定向检查及 EXE 启动通过；Python 工具测试 19 项通过、1 项因符号链接权限受阻。详见[发布核验记录](../test-reports/GITHUB-RELEASE-0.26.1.md)。历史记录保持原样。
+
 # 2026-10-04 · v0.26.1 P4.2 Authority MapContext
 
 用户确认 0.26.0 后，权威运行接入已验证的每局 MapContext；迁移出生/巢穴/饵位/NPC/抄网/观察/AI/交互目标与通用几何，保持 pond_v2 行为。schema15、网络形状、画面、Watergen 和既有规则不变。本轮只提交推送，不生成包或 Release。验证与边界见[0.26.1 报告](../test-reports/PHASE04-MAP-AUTHORITY-0.26.1.md)，完成后停在 P4.2 等待人工抽查。下列历史发布记录保留。

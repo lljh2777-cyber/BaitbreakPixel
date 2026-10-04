@@ -1,6 +1,6 @@
 # 0.26.1 双人联机
 
-本文对应 0.26.1 源码。双方同步同一 feature/dev 并用 Godot 4.7.2 运行；本轮不生成包，公开 Windows 包仍为 0.26.0，不要与当前源码混连。P4.2 只迁移 Authority MapContext，仍为 schema15，尚未增加 map_ref 握手。
+本文对应 0.26.1 源码和公开 Windows 试玩包。双方下载 0.26.1 ZIP，解压后运行，不要与旧版本混连。P4.2 只迁移 Authority MapContext，仍为 schema15，尚未增加 map_ref 握手。
 
 抄网操作、模块及规则迁移见 [NET-ARCHITECTURE.md](../architecture/NET-ARCHITECTURE.md)。
 

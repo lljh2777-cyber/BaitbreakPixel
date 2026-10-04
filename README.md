@@ -3,11 +3,11 @@
 一个 2D 像素风格的人鱼对抗游戏：小鱼在水下觅食、缠线和逃脱，钓鱼人在岸边控竿、收放线与抄网。支持单机挑战、自由练习和一人对一鱼的局域网联机。
 
 **当前源码：0.26.1（P4.2 Authority MapContext）** · Godot 4.7.2
-**当前公开 Windows 试玩包：0.26.0**，历史发行记录继续保留。
+**当前公开 Windows 试玩包：0.26.1**，历史发行记录继续保留。
 
 用户已确认 0.25.2 社会线索试玩通过。0.25.3 让 NPC 真实误咬钩、自动挣扎、逃脱、断线或被拉起。钓错 NPC 不结束比赛；玩家可趁机吃饵、回巢，钓鱼人需要重新部署。NPC 捕获后暂离生态，延迟生成新 ID 的鱼。
 
-用户于 2026-10-04 确认 0.26.0 测试通过并继续。本轮 0.26.1 完成 P4.2：每局先验证并冻结 MapContext，再初始化玩家、NPC、饵与钓鱼人；权威几何、出生/回巢、抄网、观察和 AI 改读地图数据。pond_v2 的几何、随机序列与玩法保持，schema15、网络包结构和画面尚未迁移。详见[Authority Context 架构](docs/architecture/MAP-AUTHORITY-CONTEXT.md)、[验证与人工抽查](docs/test-reports/PHASE04-MAP-AUTHORITY-0.26.1.md)，旧[数据契约](docs/architecture/MAP-DEFINITION-CONTRACT.md)与[依赖审计](docs/architecture/MAP-DEPENDENCY-AUDIT.md)保留。本轮仅提交推送，不生成新包或 Release；公开 Windows 包仍为 0.26.0。完成后停在 P4.2，等待确认再进入 P4.3 Snapshot / Network map_ref。新路线仍为 Phase 4 地图抽象 → Phase 5 交互地图生成，多竿与长期记忆后移。
+用户于 2026-10-04 确认 0.26.0 测试通过并继续。本轮 0.26.1 完成 P4.2：每局先验证并冻结 MapContext，再初始化玩家、NPC、饵与钓鱼人；权威几何、出生/回巢、抄网、观察和 AI 改读地图数据。pond_v2 的几何、随机序列与玩法保持，schema15、网络包结构和画面尚未迁移。详见[Authority Context 架构](docs/architecture/MAP-AUTHORITY-CONTEXT.md)、[验证与人工抽查](docs/test-reports/PHASE04-MAP-AUTHORITY-0.26.1.md)，旧[数据契约](docs/architecture/MAP-DEFINITION-CONTRACT.md)与[依赖审计](docs/architecture/MAP-DEPENDENCY-AUDIT.md)保留。0.26.1 Windows 试玩包已构建、验证并公开发布；解压后运行 BaitbreakPixel.exe，核对菜单 0.26.1。完成后停在 P4.2，等待确认再进入 P4.3 Snapshot / Network map_ref。新路线仍为 Phase 4 地图抽象 → Phase 5 交互地图生成，多竿与长期记忆后移。
 
 玩家 10 px 自动咬食、0.80 秒间隔、4/6/8 容量和已确认的抢食/补饵规则保持。NPC 继续真实消耗食物、增加自身饱食，不增加玩家分数、不参与胜负。玩家原 QTE、缠线、松线、断线、张力和提鱼保持。
 
@@ -15,11 +15,11 @@
 
 本版沿用 0.24.4 的渐变吸力，散粒实际移动、剥离和整饵位移目标共用同一距离场；此前[距离修正验证](docs/test-reports/PHASE02-DISTANCE-VALIDATION.md)保留为历史记录。
 
-### 公开 Windows 试玩包：0.26.0
+### 公开 Windows 试玩包：0.26.1
 
-从 [v0.26.0 发行页](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.26.0)下载 [BaitbreakPixel-0.26.0.zip](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.26.0/BaitbreakPixel-0.26.0.zip)，解压后运行 `BaitbreakPixel.exe`。EXE 与同目录 PCK 保持在一起，玩家无需安装 Godot。小鱼嘴边有食物时自动咬食，左键吸食；完整操作见包内说明。
+从 [v0.26.1 发行页](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.26.1)下载 [BaitbreakPixel-0.26.1.zip](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.26.1/BaitbreakPixel-0.26.1.zip)，解压后运行 `BaitbreakPixel.exe`。EXE 与同目录 PCK 保持在一起，玩家无需安装 Godot。小鱼嘴边有食物时自动咬食，左键吸食；完整操作见包内说明。
 
-截至 2026-10-04 已逐版发布 **0.21.0–0.26.0，共 26 个 Release**，每版均附 ZIP 和 `SHA256SUMS.txt`。其他版本见 [全部 Releases](https://github.com/lljh2777-cyber/BaitbreakPixel/releases)，核对结果见 [0.26.0 发布记录](docs/test-reports/GITHUB-RELEASE-0.26.0.md)、[0.25.5 发布记录](docs/test-reports/GITHUB-RELEASE-0.25.5.md)、[0.25.4 发布记录](docs/test-reports/GITHUB-RELEASE-0.25.4.md)、[0.25.3 发布记录](docs/test-reports/GITHUB-RELEASE-0.25.3.md)、[0.25.2 发布记录](docs/test-reports/GITHUB-RELEASE-0.25.2.md)、[0.25.1 发布记录](docs/test-reports/GITHUB-RELEASE-0.25.1.md)、[0.25.0 发布记录](docs/test-reports/GITHUB-RELEASE-0.25.0.md)、[0.24.6 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.6.md)、[0.24.5 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.5.md)、[0.24.4 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.4.md)、[0.24.3 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.3.md)、[0.24.2 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.2.md)及[此前 14 版发布记录](docs/test-reports/GITHUB-RELEASES-2026-10-02.md)。0.24.6 发行记录保留其发布当时的验证边界；用户随后已确认手感并允许进入 Phase 3。
+截至 2026-10-04 已逐版发布 **0.21.0–0.26.1，共 27 个 Release**，每版均附 ZIP 和 `SHA256SUMS.txt`。其他版本见 [全部 Releases](https://github.com/lljh2777-cyber/BaitbreakPixel/releases)，核对结果见 [0.26.1 发布记录](docs/test-reports/GITHUB-RELEASE-0.26.1.md)、[0.26.0 发布记录](docs/test-reports/GITHUB-RELEASE-0.26.0.md)、[0.25.5 发布记录](docs/test-reports/GITHUB-RELEASE-0.25.5.md)、[0.25.4 发布记录](docs/test-reports/GITHUB-RELEASE-0.25.4.md)、[0.25.3 发布记录](docs/test-reports/GITHUB-RELEASE-0.25.3.md)、[0.25.2 发布记录](docs/test-reports/GITHUB-RELEASE-0.25.2.md)、[0.25.1 发布记录](docs/test-reports/GITHUB-RELEASE-0.25.1.md)、[0.25.0 发布记录](docs/test-reports/GITHUB-RELEASE-0.25.0.md)、[0.24.6 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.6.md)、[0.24.5 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.5.md)、[0.24.4 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.4.md)、[0.24.3 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.3.md)、[0.24.2 发布记录](docs/test-reports/GITHUB-RELEASE-0.24.2.md)及[此前 14 版发布记录](docs/test-reports/GITHUB-RELEASES-2026-10-02.md)。0.24.6 发行记录保留其发布当时的验证边界；用户随后已确认手感并允许进入 Phase 3。
 
 ### Phase 2.3：已由用户人工关闭
 

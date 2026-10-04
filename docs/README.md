@@ -29,6 +29,7 @@
 
 ## 验证与历史
 
+- [0.26.1 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.26.1.md)
 - [0.26.0 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.26.0.md)
 - [0.25.5 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.25.5.md)
 - [0.25.4 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.25.4.md)
