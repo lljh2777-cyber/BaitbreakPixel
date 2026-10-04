@@ -1,0 +1,33 @@
+{
+  "started_at_utc": "2026-10-04T01:29:22.875946+00:00",
+  "finished_at_utc": "2026-10-04T01:32:29.947426+00:00",
+  "command": [
+    "/workspace/shared/baitbreak-toolchain-472/Godot_v4.7.2-stable_linux.x86_64",
+    "--audio-driver",
+    "Dummy",
+    "--rendering-method",
+    "gl_compatibility",
+    "--path",
+    "/workspace/scratch/5dc5a43a1104/BaitbreakPixel",
+    "--script",
+    "res://artifacts/p35-native-review/manual-ui-recorder.gd",
+    "--",
+    "--test-profile",
+    "--ui-record-output=/workspace/scratch/5dc5a43a1104/BaitbreakPixel/artifacts/p35-native-ui-baseline/captures"
+  ],
+  "returncode": 0,
+  "head": "dfdd9af72e3700c4b82fcf32419ff998231d7ef9",
+  "source_unchanged": false,
+  "changed_files": [
+    "scripts/pond.gd",
+    "tests/suite_registry.json",
+    "scripts/network_protocol.gd",
+    "project.godot",
+    "scripts/menu.gd"
+  ],
+  "file_count": 177,
+  "scope": "Runtime scripts/scenes/assets/import descriptors; project.godot; current renderer test bodies/UIDs; runner/registry; evidence-only UI recorder. Generated Godot cache, documentation and headless-only tests excluded.",
+  "godot_sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+  "display": ":0",
+  "mode": "ordinary native UI with F12 observation only"
+}

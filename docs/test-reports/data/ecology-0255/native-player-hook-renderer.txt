@@ -1,0 +1,126 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+PIXEL_READY | asymmetric-2d | 640x360 | v0.25.5 | playtest-gate-phase03-ecology
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | entry 0 ignores a warning-period Space
+PLAYER_HOOK_NATIVE_PASS | capture entry-early-space
+PLAYER_HOOK_NATIVE_PASS | native 640x360 canvas entry-early-space
+PLAYER_HOOK_NATIVE_PASS | capture entry-green
+PLAYER_HOOK_NATIVE_PASS | native 640x360 canvas entry-green
+PLAYER_HOOK_NATIVE_PASS | entry 0 accepts a fresh visible green-zone Space
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | entry 1 ignores a warning-period Space
+PLAYER_HOOK_NATIVE_PASS | entry 1 accepts a fresh visible green-zone Space
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | entry 2 ignores a warning-period Space
+PLAYER_HOOK_NATIVE_PASS | entry 2 accepts a fresh visible green-zone Space
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | entry 3 ignores a warning-period Space
+PLAYER_HOOK_NATIVE_PASS | entry 3 accepts a fresh visible green-zone Space
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | entry 4 ignores a warning-period Space
+PLAYER_HOOK_NATIVE_PASS | entry 4 accepts a fresh visible green-zone Space
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | entry 5 ignores a warning-period Space
+PLAYER_HOOK_NATIVE_PASS | entry 5 accepts a fresh visible green-zone Space
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | held Space across the warning-to-sweep boundary does not auto-judge
+PLAYER_HOOK_NATIVE_PASS | keyboard repeat echo cannot judge a held warning key
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | visible off-zone entry Space still fails and attaches the hook
+PLAYER_HOOK_NATIVE_PASS | capture entry-visible-failure
+PLAYER_HOOK_NATIVE_PASS | native 640x360 canvas entry-visible-failure
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | wrap 0 opening key never judges itself
+PLAYER_HOOK_NATIVE_PASS | wrap 0 held opening key stays unjudged
+PLAYER_HOOK_NATIVE_PASS | wrap 0 ignores a second warning-period Space
+PLAYER_HOOK_NATIVE_PASS | capture wrap-early-space
+PLAYER_HOOK_NATIVE_PASS | native 640x360 canvas wrap-early-space
+PLAYER_HOOK_NATIVE_PASS | capture wrap-green
+PLAYER_HOOK_NATIVE_PASS | native 640x360 canvas wrap-green
+PLAYER_HOOK_NATIVE_PASS | wrap 0 visible green-zone press creates exactly one coil
+PLAYER_HOOK_NATIVE_PASS | capture wrap-success
+PLAYER_HOOK_NATIVE_PASS | native 640x360 canvas wrap-success
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | wrap 1 opening key never judges itself
+PLAYER_HOOK_NATIVE_PASS | wrap 1 held opening key stays unjudged
+PLAYER_HOOK_NATIVE_PASS | wrap 1 ignores a second warning-period Space
+PLAYER_HOOK_NATIVE_PASS | wrap 1 visible green-zone press creates exactly one coil
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | wrap 2 opening key never judges itself
+PLAYER_HOOK_NATIVE_PASS | wrap 2 held opening key stays unjudged
+PLAYER_HOOK_NATIVE_PASS | wrap 2 ignores a second warning-period Space
+PLAYER_HOOK_NATIVE_PASS | wrap 2 visible green-zone press creates exactly one coil
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | wrap 3 opening key never judges itself
+PLAYER_HOOK_NATIVE_PASS | wrap 3 held opening key stays unjudged
+PLAYER_HOOK_NATIVE_PASS | wrap 3 ignores a second warning-period Space
+PLAYER_HOOK_NATIVE_PASS | wrap 3 visible green-zone press creates exactly one coil
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | wrap 4 opening key never judges itself
+PLAYER_HOOK_NATIVE_PASS | wrap 4 held opening key stays unjudged
+PLAYER_HOOK_NATIVE_PASS | wrap 4 ignores a second warning-period Space
+PLAYER_HOOK_NATIVE_PASS | wrap 4 visible green-zone press creates exactly one coil
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | wrap 5 opening key never judges itself
+PLAYER_HOOK_NATIVE_PASS | wrap 5 held opening key stays unjudged
+PLAYER_HOOK_NATIVE_PASS | wrap 5 ignores a second warning-period Space
+PLAYER_HOOK_NATIVE_PASS | wrap 5 visible green-zone press creates exactly one coil
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | pause opens the real pause menu
+PLAYER_HOOK_NATIVE_PASS | pause freezes the active QTE and simulation
+PLAYER_HOOK_NATIVE_PASS | capture pause-menu
+PLAYER_HOOK_NATIVE_PASS | native 640x360 canvas pause-menu
+PLAYER_HOOK_NATIVE_PASS | pause Space activates the focused Continue button
+PLAYER_HOOK_NATIVE_PASS | pause resume Space is not also a gameplay judgment
+PLAYER_HOOK_NATIVE_PASS | pause accepts a new deliberate press after release
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | focus opens the real pause menu
+PLAYER_HOOK_NATIVE_PASS | focus freezes the active QTE and simulation
+PLAYER_HOOK_NATIVE_PASS | capture focus-menu
+PLAYER_HOOK_NATIVE_PASS | native 640x360 canvas focus-menu
+PLAYER_HOOK_NATIVE_PASS | focus Space activates the focused Continue button
+PLAYER_HOOK_NATIVE_PASS | focus resume Space is not also a gameplay judgment
+PLAYER_HOOK_NATIVE_PASS | focus accepts a new deliberate press after release
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | entry last-warning-frame Space is not judged on the first visible tick
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | wrap last-warning-frame Space is not judged on the first visible tick
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | focus held Space remains blocked across resume/reset
+PLAYER_HOOK_NATIVE_PASS | focus re-arms only after neutral input then a fresh press
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | restart held Space remains blocked across resume/reset
+PLAYER_HOOK_NATIVE_PASS | restart re-arms only after neutral input then a fresh press
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | fish effort ignores warning-period Space
+PLAYER_HOOK_NATIVE_PASS | fish visible off-zone effort still fails with the original penalty
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | angler effort ignores warning-period Space
+PLAYER_HOOK_NATIVE_PASS | angler visible off-zone effort still fails with the original penalty
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | untangle fixture opens real check
+PLAYER_HOOK_NATIVE_PASS | untangle ignores warning-period Space
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | untouched entry expires only after its full warning+sweep duration
+PLAYER_HOOK_NATIVE_TIMING | entry_timeout_seconds=2.41666666666667 | configured_seconds=2.4 | frames=145
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | contact loss names the interruption during warning
+PLAYER_HOOK_NATIVE_PASS | contact loss counts a skill failure only after the visible sweep
+PLAYER_HOOK_NATIVE_PASS | capture wrap-contact-loss-warning
+PLAYER_HOOK_NATIVE_PASS | native 640x360 canvas wrap-contact-loss-warning
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | contact loss names the interruption during sweep
+PLAYER_HOOK_NATIVE_PASS | contact loss counts a skill failure only after the visible sweep
+PLAYER_HOOK_NATIVE_PASS | capture wrap-contact-loss-sweep
+PLAYER_HOOK_NATIVE_PASS | native 640x360 canvas wrap-contact-loss-sweep
+PLAYER_HOOK_NATIVE_PASS | real mouth contact opens entry
+PLAYER_HOOK_NATIVE_PASS | restart clears the pending hook and QTE
+PLAYER_HOOK_NATIVE_PASS | capture restart-clear
+PLAYER_HOOK_NATIVE_PASS | native 640x360 canvas restart-clear
+PLAYER_HOOK_NATIVE | passed=116 | failed=0
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

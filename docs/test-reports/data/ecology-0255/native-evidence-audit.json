@@ -1,0 +1,19 @@
+{
+  "checks": {
+    "native_exit_0": true,
+    "ui_exit_0": true,
+    "all_177_dependencies_identical_across_both_runs": true,
+    "current_native_dependency_hashes_match": true,
+    "archived_wrapper_hash_matches_actual": true,
+    "archived_recorder_matches_actual": true,
+    "pause_time_positions_scores_npcs_unchanged": true,
+    "observation_started_and_cancelled": true,
+    "focus_return_is_paused": true,
+    "fish_and_angler_restart_clear_intakes": true,
+    "all_published_pngs_640x360": true,
+    "no_native_or_ui_engine_script_errors": true
+  },
+  "passed": 12,
+  "failed": 0,
+  "scope": "Evidence consistency checks, not additional gameplay assertions"
+}

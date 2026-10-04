@@ -1,0 +1,46 @@
+PASSED editor-import
+RUN bait_suction_native_v0211 [current]
+PASSED bait_suction_native_v0211: 7 passed, 0 failed;  log=bait_suction_native_v0211.log
+RUN bait_suction_native_v0212 [current]
+PASSED bait_suction_native_v0212: 9 passed, 0 failed;  log=bait_suction_native_v0212.log
+RUN effort_native_v013 [current]
+PASSED effort_native_v013: 25 passed, 0 failed;  log=effort_native_v013.log
+RUN feeding_feel_native_v022 [current]
+PASSED feeding_feel_native_v022: 24 passed, 0 failed;  log=feeding_feel_native_v022.log
+RUN hand_joint_native_v0156 [current]
+PASSED hand_joint_native_v0156: 84 passed, 0 failed;  log=hand_joint_native_v0156.log
+RUN net_native_v020 [current]
+PASSED net_native_v020: 9 passed, 0 failed;  log=net_native_v020.log
+RUN obstacle_visuals_native [current]
+PASSED obstacle_visuals_native: 16 passed, 0 failed;  log=obstacle_visuals_native.log
+RUN pond_native_v021 [current]
+PASSED pond_native_v021: 9 passed, 0 failed;  log=pond_native_v021.log
+RUN reel_hand_native_v016 [current]
+PASSED reel_hand_native_v016: 97 passed, 0 failed;  log=reel_hand_native_v016.log
+RUN reeling_native_v0122 [current]
+PASSED reeling_native_v0122: 10 passed, 0 failed;  log=reeling_native_v0122.log
+RUN rules_native_v019 [current]
+PASSED rules_native_v019: 8 passed, 0 failed;  log=rules_native_v019.log
+RUN untangle_native_v018 [current]
+PASSED untangle_native_v018: 6 passed, 0 failed;  log=untangle_native_v018.log
+RUN visuals [current]
+PASSED visuals: 2 passed, 0 failed;  log=visuals.log
+RUN water_scenery_native [current]
+PASSED water_scenery_native: 19 passed, 0 failed;  log=water_scenery_native.log
+RUN wood_fade_native [current]
+PASSED wood_fade_native: 17 passed, 0 failed;  log=wood_fade_native.log
+RUN phase01_native [current]
+PASSED phase01_native: 16 passed, 0 failed;  log=phase01_native.log
+RUN phase15_native [current]
+PASSED phase15_native: 25 passed, 0 failed;  log=phase15_native.log
+RUN phase02_bite_native [current]
+PASSED phase02_bite_native: 23 passed, 0 failed;  log=phase02_bite_native.log
+RUN phase02_bait_native [current]
+PASSED phase02_bait_native: 78 passed, 0 failed;  log=phase02_bait_native.log
+RUN phase03_npc_native [current]
+PASSED phase03_npc_native: 117 passed, 0 failed;  log=phase03_npc_native.log
+RUN phase03_npc_hook_native [current]
+PASSED phase03_npc_hook_native: 86 passed, 0 failed;  log=phase03_npc_hook_native.log
+RUN player_hook_entry_native [current]
+PASSED player_hook_entry_native: 116 passed, 0 failed;  log=player_hook_entry_native.log
+SUMMARY {"passed": 23, "failed": 0, "timeout": 0, "blocked": 0, "retired": 0}

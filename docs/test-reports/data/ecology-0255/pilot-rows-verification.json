@@ -1,0 +1,7 @@
+{
+  "source_rounds_file_sha256": "16b5434675e1ba954b9e64bc21956bac98d6051594f0d5aeb59e46f8f340c6bb",
+  "bundle_canonical_rows_sha256": "f3b185cda50853b6f7d2be707773fab966e609796baae210d883c3b98b4147fd",
+  "roundtrip_equal": true,
+  "source_provenance_sha256": "9d2c0e2447de1c6920b540ca78d30eae5adbd92d5df352870cd3eacd72502e7d",
+  "rows": 192
+}

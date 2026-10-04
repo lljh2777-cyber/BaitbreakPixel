@@ -1,0 +1,250 @@
+{
+  "architecture_v020.log": {
+    "sha256": "77e203a94b19c16d8d6d85a0a6f6f43c481419df57a25b1b34479fd481efd8bc",
+    "bytes": 3985
+  },
+  "bait_suction_v0212.log": {
+    "sha256": "d99ca78cc3148bef971136e00f0c6b9066476b17a10a81fc7b465ba2acee2340",
+    "bytes": 3872
+  },
+  "effort_v013.log": {
+    "sha256": "9917f40c9fa9b824d8ff66addc073d464a877592dda0f00e6290e3dea1b09635",
+    "bytes": 2251
+  },
+  "feeding_feel_v022.log": {
+    "sha256": "b4cf67a0f59c1a0ee288a8f326c1f5d82d31c81154bf807e005f927c6db39425",
+    "bytes": 2246
+  },
+  "feeding_movement_v0221.log": {
+    "sha256": "09df4526a036ae0c02e75541b5ea968d5416ce2896191effbe8c5545820f8d00",
+    "bytes": 2518
+  },
+  "fish_orbit_v021.log": {
+    "sha256": "9e453424ad7988c1721c9dd6e15800c44982c912132f1223b154b56c9dff6fde",
+    "bytes": 11393
+  },
+  "grass_binding_v021.log": {
+    "sha256": "e91cb95ebbd0ab4264593eb348097f1b6b2c65fb262bf8d88627855de9ce74f5",
+    "bytes": 6985
+  },
+  "import.log": {
+    "sha256": "d2680c828b4a1ee9bb0e95e87146b4ca78e585b795824c27f4878a81e474d3a6",
+    "bytes": 72657
+  },
+  "line_motion_v021.log": {
+    "sha256": "32df1172086eb41ef324f9fe957c04e9e6bb3d0189dc796d26e474b8d5fd78f4",
+    "bytes": 2687
+  },
+  "net_animation_v0201.log": {
+    "sha256": "1e24745e1da3193a78f675b96e7a89a01aee1b5009070fb49f2f998b9d3387cc",
+    "bytes": 3674
+  },
+  "net_network_v020.log": {
+    "sha256": "447d68e78670ae3e20496e7ad7abb6017aa6e7ef954d6e8ef1be4ae9666712d3",
+    "bytes": 1924
+  },
+  "net_network_v021.log": {
+    "sha256": "92d04c331e4cd33440202cf9183b77239317b574ee67c283d430502d8475fb1a",
+    "bytes": 1969
+  },
+  "net_v021.log": {
+    "sha256": "60b064e960b4274d9b5362d4f08c468364149080174b14b7787c6128fa88489e",
+    "bytes": 2758
+  },
+  "network_rules_v012.log": {
+    "sha256": "5cfcd71f93a643f42c74aef9aa7abf10bd686cfe2c785e65aa32841e80e7d40d",
+    "bytes": 2672
+  },
+  "obstacle_art.log": {
+    "sha256": "79cc35d3988af436d30c8419a6526bd179925b24e4f367e221bfd54c2ce97e58",
+    "bytes": 7758
+  },
+  "phase01_entities.log": {
+    "sha256": "5741d75c58b49f0f5e2dd25b6314512f35fc9bac33c4042c253220802498a722",
+    "bytes": 103
+  },
+  "phase01_instinct.log": {
+    "sha256": "9377bb578188aabbce1dfee3dda503d5c59b2a9744cdb9c194dd65d291660eab",
+    "bytes": 105
+  },
+  "phase01_network.log": {
+    "sha256": "cffe212095f505644378cca3d612ae4235f9bb1876d67c98b6cb5c31c016d98f",
+    "bytes": 4553
+  },
+  "phase01_observation.log": {
+    "sha256": "1753354181b574c0999942571395a85e5c8d5c12aef701829bd498c084f0eccf",
+    "bytes": 1763
+  },
+  "phase01_policies.log": {
+    "sha256": "8a21f97c531aee00499cb841c067b2685609823a6afa5dfc581038479457948c",
+    "bytes": 102
+  },
+  "phase01_random_hooks.log": {
+    "sha256": "052f76cf7eee18c47337c6c3cbf9742094c2e56da8fe2fc833ccf16b34cfe292",
+    "bytes": 109
+  },
+  "phase01_satiety.log": {
+    "sha256": "d55df16c48007943c9b874e851441de8bb5bcfc9f59de3badb3e8f963724a2ac",
+    "bytes": 104
+  },
+  "phase01_statistics.log": {
+    "sha256": "b2f5a1cac18fd1fdee1b262a5beb9732a244735fb7048e0dab91bdac1629dfc4",
+    "bytes": 102
+  },
+  "phase01_suspicion.log": {
+    "sha256": "e54598a2700f2900a2914cf7ed2fb92345a9837e4c5ecd313bb7dd4e0e3804d2",
+    "bytes": 106
+  },
+  "phase02_bait_network.log": {
+    "sha256": "9a6fc51694402b1c69597931bff9f5582f1cd68739429a2a0084a07e172d8b90",
+    "bytes": 7855
+  },
+  "phase02_bait_types.log": {
+    "sha256": "b8e1eaafb764fab0fc4902c89cac85c6cdce2f33b703f5a8a44d180c8afede59",
+    "bytes": 4047
+  },
+  "phase02_bite.log": {
+    "sha256": "365a430c8b4df5c49f6d0ff451cd146b70375f5c1114ad39e24a7b7b52115e98",
+    "bytes": 4237
+  },
+  "phase02_bite_network.log": {
+    "sha256": "7b0b7df06ab9cdc9c4a3160ffe8bb338c3274e0de933008529a424de43d1d2eb",
+    "bytes": 9554
+  },
+  "phase02_feeding_balance.log": {
+    "sha256": "944c6f452349979bca5e8eeaaa1438b8047b54fa0f073fc7de754a16a6d20ddc",
+    "bytes": 257
+  },
+  "phase02_feeding_policies.log": {
+    "sha256": "fc41971f943ecd08eda673421757b88430cbbca518faa658b32647161966dccf",
+    "bytes": 111
+  },
+  "phase02_food_profiles.log": {
+    "sha256": "07c25e3b1dd89f8ab121a52bea8f8fc96673e7e98a5808f6a79a6e22b9bcf8c5",
+    "bytes": 110
+  },
+  "phase02_observation.log": {
+    "sha256": "25193c424ec4b74c801ee02b8705ce748cd74bc0481dc5c5d65a06de66426337",
+    "bytes": 5376
+  },
+  "phase03_ecology_balance.log": {
+    "sha256": "7e048354241b0bebfbdd08ae7b70d461faab6048bda35d22405dc62837c0aa2b",
+    "bytes": 38603
+  },
+  "phase03_food_reachability.log": {
+    "sha256": "0afa9222f16b1dba99ff595fc908707c070d56bf8b0fd42eea6fc885cd8e714d",
+    "bytes": 1030
+  },
+  "phase03_npc_ambient.log": {
+    "sha256": "5e82700ae5f114f07268f30f80eed91f27b68b4f1452479e3890e141a3bdff26",
+    "bytes": 126
+  },
+  "phase03_npc_entities.log": {
+    "sha256": "c43c5ac6c0e4d15b6add3cb37bda912d893f96eb5d42f1c9768e0dcc6a7f131e",
+    "bytes": 125
+  },
+  "phase03_npc_foraging.log": {
+    "sha256": "4d40751226e8b52a47888e494d7c5d0da906a6bf6f31de6981809c1fb1b0737f",
+    "bytes": 253
+  },
+  "phase03_npc_foraging_brain.log": {
+    "sha256": "62fbb7ad29d531aaefec0bafb7b898055b3e953d33fc2f2485721f1e1af0a441",
+    "bytes": 130
+  },
+  "phase03_npc_hook_pacing.log": {
+    "sha256": "339ecbbbcf141a0ebb98ef5e4657913a81ece1fde75739b650cdcb2f3c07135b",
+    "bytes": 18833
+  },
+  "phase03_npc_hook_target.log": {
+    "sha256": "7dd5b45e4293a3e8c89570a8b8c4b469302ec6032b9d2078d6d84866ab6455b0",
+    "bytes": 5526
+  },
+  "phase03_npc_network.log": {
+    "sha256": "7441574bffbca75aeb89b785df7c18ea3467318d31b2fa664c64dfca26552668",
+    "bytes": 42572
+  },
+  "phase03_npc_observation.log": {
+    "sha256": "afe1f6d701aa73f1c59d6bd49f5ba8c5b6554d4999b43b7ca2af6b7bb1623599",
+    "bytes": 18644
+  },
+  "phase03_npc_rng.log": {
+    "sha256": "ffc53643f9fb37fbfc4cca50ec6e8dacf26a13da46344e9f0eb26dbd75882d56",
+    "bytes": 120
+  },
+  "phase03_npc_snapshot.log": {
+    "sha256": "4ae851d4ed6931b86e79ee664c2eb420c98790f2e7ef7f6f75e7f70370cdd218",
+    "bytes": 125
+  },
+  "phase03_npc_social.log": {
+    "sha256": "a6f99dd405d3d2bae5e1d7eee5448f21f82686082974317a12f535bd5fbe6fa9",
+    "bytes": 2503
+  },
+  "phase03_npc_social_brain.log": {
+    "sha256": "e060009f6ae58fefb1a7d706a6ab0c3ef42327081dd007e068d9d1a732d41fd8",
+    "bytes": 128
+  },
+  "phase03_npc_statistics.log": {
+    "sha256": "b1a5c5a28f2e5bbe0d25210c95bba9e3ca04ab4c748058726910d91af82fa6f5",
+    "bytes": 3101
+  },
+  "phase15_controls.log": {
+    "sha256": "e78d27d0ad705e1f287e912ebc2259787ed1d4c0a0ba734a40af1aa983f59cf2",
+    "bytes": 7622
+  },
+  "plant_art.log": {
+    "sha256": "e8beb5b0243819824a2e6e216a8fdd70dbe12f6bcfa22daab914b982484e1699",
+    "bytes": 122
+  },
+  "player_hook_entry.log": {
+    "sha256": "31e659f34e274cf85846734e13ae944919ae19b7b1dd609a34d3b49ccc9c98fe",
+    "bytes": 3926
+  },
+  "player_hook_network.log": {
+    "sha256": "b24715a40d3f9ce73e935c8f3592bb1271b41970eb46062957f6247c9b342f2c",
+    "bytes": 10087
+  },
+  "pond_v021.log": {
+    "sha256": "2a1562c297e9c44fcf817ce3eb5652dfb7b8840c96bf8a6afd372d31edc75096",
+    "bytes": 2099
+  },
+  "reeling_v0122.log": {
+    "sha256": "8515eeceb7520be5661e7a58c5fb58e609c035f4bfe5d1f0ddb888a78e8e7105",
+    "bytes": 1610
+  },
+  "rod_load_v017.log": {
+    "sha256": "c3165dc0f068dd9af901529bf06621391aca5c832af967cf53be886475e991b6",
+    "bytes": 971
+  },
+  "rules_network_v019.log": {
+    "sha256": "df1dc23275e5bce4c2ccaec0f041e80da5acfe83228fbc79912f0fdf7261afc5",
+    "bytes": 1378
+  },
+  "rules_v020.log": {
+    "sha256": "4741dddd7fdd980020a9a80552ad0d2b58c4aaf4729948a4f89a7c00bacbb5a9",
+    "bytes": 13028
+  },
+  "tackle_dynamics_v021.log": {
+    "sha256": "159f766b807cb7edc084a6f23a1e2a956f87bb968d5401ef70ded40b989c980b",
+    "bytes": 2317
+  },
+  "untangle_network_v018.log": {
+    "sha256": "d9fd59ca728fb05106817ba25436fb368fc5346d7035b134fa378fa1e8f7114c",
+    "bytes": 1228
+  },
+  "untangle_v021.log": {
+    "sha256": "2a9df7571f723d573f9264718cccd84b96bfc45c5b8d2c5c8bdcbb84eb6167d4",
+    "bytes": 3231
+  },
+  "water_art.log": {
+    "sha256": "e6e37697bc0b96f67a71e79b768989cb339b7ca14112efe5d5be9e3f94f99d6d",
+    "bytes": 1287
+  },
+  "wood_fade.log": {
+    "sha256": "46ff39d5b54d2779eb20179a3e61325cee2a2f29f2f4de8b66ccb19100fd0f2a",
+    "bytes": 3697
+  },
+  "wood_junctions.log": {
+    "sha256": "bef82e95136bc708519da583cc8f7750562b5294e2b64532391037328a71a49a",
+    "bytes": 1795
+  }
+}

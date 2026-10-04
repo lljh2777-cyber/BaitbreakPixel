@@ -1,3 +1,4 @@
+- [0.25.5 整体生态平衡与最终人工门](PHASE03-ECOLOGY-VALIDATION-0.25.5.md)
 - [0.25.4 上钩开局与 NPC 拉起修正](PHASE03-HOOK-FIX-0.25.4.md)
 - [0.25.3 钓错目标：验证与人工试玩](PHASE03-HOOK-VALIDATION-0.25.3.md)
 - [0.25.2 社会线索：验证与人工试玩](PHASE03-SOCIAL-VALIDATION-0.25.2.md)
