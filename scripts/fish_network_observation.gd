@@ -10,12 +10,14 @@ const FoodProfile=preload("res://scripts/food_profile.gd")
 const Effort=preload("res://scripts/effort_check.gd")
 const NPCPublic=preload("res://scripts/npc_fish_public_state.gd")
 const Stats=preload("res://scripts/round_stats.gd")
+const MapContext=preload("res://scripts/maps/map_context.gd")
 const FORMAT := "fish-presentation"
-const SCHEMA := 1
+# Public schema 2 replaces map_id with a locally resolved MapRef. This is not
+# authority snapshot schema 16 or MapDefinition contract_version 1.
+const SCHEMA := 2
 # Required extension guard: schema 1 alone predates public bait archetypes.
 const BAIT_PROFILE_VERSION := 1
 const NPC_PROFILE_VERSION := 2
-const MAP_ID := "pond_v2"
 const STATE_FIELDS := [
 	"fish_id","rod_id","rules","net_action","qte_timing","fish","manual_net",
 	"net_trail","net_return_path","net_exit_path","net_route","velocity","aim","power",
@@ -89,7 +91,7 @@ static func capture(world: Node2D) -> Dictionary:
 	state.baits=[]
 	for index in world.baits.size():
 		var bait: Dictionary=world.baits[index]
-		var facts:=Observation._facts(bait,world.fish)
+		var facts:=Observation._facts(bait,world.fish,world.map_context.water)
 		var visual:=Observation._visual(bait,facts)
 		var grains: Array[Dictionary]=[]
 		for grain in bait.grains:
@@ -104,7 +106,7 @@ static func capture(world: Node2D) -> Dictionary:
 		state.baits.append(visual)
 	# The flashing warning is visible; upcoming cycle timing and reserve order are not.
 	state.cycle_slot=world.cycle_slot if world.cycle_phase=="warning" else -1
-	return bytes_to_var(var_to_bytes({"format":FORMAT,"schema":SCHEMA,"bait_profile_version":BAIT_PROFILE_VERSION,"npc_profile_version":NPC_PROFILE_VERSION,"map_id":MAP_ID,"role":"fish","state":state,"rig":rig}))
+	return bytes_to_var(var_to_bytes({"format":FORMAT,"schema":SCHEMA,"bait_profile_version":BAIT_PROFILE_VERSION,"npc_profile_version":NPC_PROFILE_VERSION,"map_ref":world.map_context.map_ref,"role":"fish","state":state,"rig":rig}))
 
 static func _keys(values: Dictionary, fields: Array) -> bool:
 	if values.size()!=fields.size(): return false
@@ -121,20 +123,30 @@ static func _record(values: Variant, reference: Dictionary, fields: Array) -> bo
 static func _properties(object: Object, values: Dictionary, fields: Array) -> bool:
 	if not _keys(values,fields): return false
 	for key in fields:
-		if typeof(object.get(key))!=typeof(values[key]): return false
+		var reference: Variant=object.get(key)
+		if typeof(reference)!=typeof(values[key]): return false
+		if reference is Array and reference.is_typed():
+			var expected: int=reference.get_typed_builtin()
+			var items: Array=values[key]
+			if items.is_typed() and items.get_typed_builtin()!=expected: return false
+			for item in items:
+				if typeof(item)!=expected: return false
 	return true
 
 static func valid(world: Node2D, snapshot: Dictionary) -> bool:
-	if not _keys(snapshot,["format","schema","bait_profile_version","npc_profile_version","map_id","role","state","rig"]): return false
+	if not _keys(snapshot,["format","schema","bait_profile_version","npc_profile_version","map_ref","role","state","rig"]): return false
 	if not snapshot.npc_profile_version is int or snapshot.npc_profile_version!=NPC_PROFILE_VERSION: return false
 	if not snapshot.schema is int: return false
 	if not snapshot.bait_profile_version is int or snapshot.bait_profile_version!=BAIT_PROFILE_VERSION: return false
-	if snapshot.format!=FORMAT or snapshot.schema!=SCHEMA or snapshot.map_id!=MAP_ID or snapshot.role!="fish" or not Protocol.safe_values(snapshot): return false
+	if snapshot.format!=FORMAT or snapshot.schema!=SCHEMA or snapshot.role!="fish" or not Protocol.safe_values(snapshot): return false
 	if not snapshot.state is Dictionary or not snapshot.rig is Dictionary: return false
+	var loaded:=MapContext.load_ref(snapshot.map_ref)
+	if not loaded.valid: return false
+	var context: MapContext=loaded.context
 	var state: Dictionary=snapshot.state
 	var rig: Dictionary=snapshot.rig
 	if not _properties(world,state,STATE_FIELDS) or not _properties(world.angler,rig,RIG_FIELDS): return false
-	if not NPCPublic.valid(state.npc_fishes,state.fish_id) or not NPCPublic.valid_hook_state(state): return false
+	if not NPCPublic.valid(state.npc_fishes,state.fish_id,context.water) or not NPCPublic.valid_hook_state(state,context.water): return false
 	if not Rules.valid(state.rules): return false
 	if not _record(state.qte_timing,Rules.qte(Rules.defaults(),"entry"),QTE_FIELDS): return false
 	if state.qte_timing.lead<0 or state.qte_timing.lead>2 or state.qte_timing.sweep<0.5 or state.qte_timing.sweep>8: return false
@@ -153,11 +165,11 @@ static func valid(world: Node2D, snapshot: Dictionary) -> bool:
 	if state.qte_age<0 or state.qte_age>10.3 or state.qte_width<=0 or state.qte_width>0.8 or state.qte_result_width<=0 or state.qte_result_width>0.8: return false
 	if not state.net_state in ["wait","rest","prepare","warning","sweep","miss","withdraw","caught"] or not state.net_kind in ["sweep","drop"]: return false
 	if state.net_capture<0 or state.net_capture>1 or state.net_retract_duration<=0: return false
-	if state.target_opacity.size()!=world.targets.size(): return false
+	if state.target_opacity.size()!=context.target_count(): return false
 	for opacity in state.target_opacity:
 		if not opacity is float or opacity<0 or opacity>1: return false
 	for key in ["wrap_target","contact_target","untangle_target"]:
-		if state[key]< -1 or state[key]>=world.targets.size(): return false
+		if state[key]< -1 or state[key]>=context.target_count(): return false
 	if not state.untangle_phase in ["","check","unwind","recover"] or state.untangle_age<0 or state.untangle_age>10.3 or state.untangle_cooldown<0: return false
 	if not state.cycle_phase in ["","warning","refill"] or state.cycle_slot< -1 or state.cycle_slot>=4: return false
 	if state.cycle_phase!="warning" and state.cycle_slot!=-1: return false
@@ -170,11 +182,11 @@ static func valid(world: Node2D, snapshot: Dictionary) -> bool:
 	var opponent: Dictionary=state.effort_checks.angler
 	if opponent.multiplier<0.1 or opponent.multiplier>2.5 or opponent.effect_age<0 or opponent.effect_age>6: return false
 	if not _record(state.round_stats,Stats.fresh(),STAT_FIELDS) or not Stats.valid(state.round_stats,true): return false
-	if state.wraps.size()>world.targets.size(): return false
+	if state.wraps.size()>context.target_count(): return false
 	var wrap_ids: Dictionary={}
 	for wrap in state.wraps:
 		if not _record(wrap,{"center":Vector2.ZERO,"radii":Vector2.ONE,"entry":Vector2.ZERO,"loop":PackedVector2Array(),"progress":0.0,"target":0},WRAP_FIELDS): return false
-		if wrap.target<0 or wrap.target>=world.targets.size() or wrap_ids.has(wrap.target) or wrap.loop.size()<2 or wrap.loop.size()>512 or wrap.progress<0 or wrap.progress>1 or wrap.radii.x<=0 or wrap.radii.y<=0: return false
+		if wrap.target<0 or wrap.target>=context.target_count() or wrap_ids.has(wrap.target) or wrap.loop.size()<2 or wrap.loop.size()>512 or wrap.progress<0 or wrap.progress>1 or wrap.radii.x<=0 or wrap.radii.y<=0: return false
 		wrap_ids[wrap.target]=true
 	if state.untangle_phase in ["check","unwind"]:
 		if state.hooked!=2 or state.wraps.is_empty() or state.wraps[-1].target!=state.untangle_target: return false
@@ -192,10 +204,10 @@ static func valid(world: Node2D, snapshot: Dictionary) -> bool:
 			if not grain.free and grain.visual_kind!=bait.visual_kind: return false
 			grain_ids[grain.id]=true
 		# Public type/hint strings must match visible grains, never hidden reserves.
-		var facts:=Observation._facts(bait,state.fish)
+		var facts:=Observation._facts(bait,state.fish,context.water)
 		if bait.visual_kind!=facts.visual_kind or bait.shape_hint!=facts.shape_hint or bait.smell_hint!=facts.smell_hint: return false
 		if not bait.grains.is_empty() and not FoodProfile.valid_type(bait.visual_kind): return false
-	if rig.surface_x<0 or rig.surface_x>world.Layout.SIZE.x or absf(rig.surface_velocity)>10000: return false
+	if rig.surface_x<0 or rig.surface_x>context.size.x or absf(rig.surface_velocity)>10000: return false
 	if not rig.reel_hand_mode in [-1,0,1] or rig.reel_hand_amount<0 or rig.reel_hand_amount>1: return false
 	if rig.reel_phase<0 or rig.reel_phase>=TAU or rig.release_phase<0 or rig.release_phase>=TAU: return false
 	if rig.rod_load<0 or rig.rod_load>1 or rig.rod_lift<0 or rig.rod_lift>1: return false
@@ -205,6 +217,10 @@ static func apply(world: Node2D, snapshot: Dictionary) -> bool:
 	# Never call authoritative restore with invented secret fields. Validation is
 	# complete before the first mutation, and application has no gameplay side effects.
 	if not valid(world,snapshot): return false
+	var loaded:=MapContext.load_ref(snapshot.map_ref)
+	if not loaded.valid: return false
+	if world.map_context.map_ref!=snapshot.map_ref:
+		world._install_snapshot_map_context(loaded.context)
 	var detached: Dictionary=bytes_to_var(var_to_bytes(snapshot))
 	var opponent:=Effort.fresh()
 	opponent.wait=0.0

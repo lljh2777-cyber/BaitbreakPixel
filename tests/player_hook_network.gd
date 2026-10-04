@@ -21,6 +21,8 @@ func queue_checks() -> void:
 	world.reset_world({"npc_count":0,"rules":{"line_force":0.0,"water_strength":0.0,"timer_enabled":false,"instinct_max_strength":0.0}})
 	world._enter_hook(0); world.simulation_tick=100; world.qte_age=0.3
 	var session:=Session.new(); session.game=world; session.remote_role="fish"; session.session_id="player-hook-preparation"; session.round_id=1
+	# Queue-only timing fixtures require the post-handshake host boundary.
+	session._select_map(); session.map_validated=true; session.is_host=true; session.status="playing"
 	session._remember_qte()
 	world.simulation_tick=108; world.qte_age=0.45
 	session.receive_input(packet(session,1,world.qte_id,100))
@@ -72,6 +74,7 @@ func batch_checks() -> void:
 			elif kind!="regular": world.Effort.open(world.effort_checks[role],world.rng,world.effort_tuning(role))
 			var identity: int=world.qte_id if kind=="regular" else world.effort_checks[role].id
 			var session:=Session.new(); session.game=world; session.remote_role=role; session.session_id="batch-"+kind; session.round_id=1
+			session._select_map(); session.map_validated=true; session.is_host=true; session.status="playing"
 			var first_tick: int=102 if mode=="visible_miss_green" else 100
 			var first_age: float=0.4+DT if mode=="visible_miss_green" else 0.4-DT
 			world.simulation_tick=first_tick

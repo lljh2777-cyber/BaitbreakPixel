@@ -43,7 +43,7 @@ func run() -> void:
 	w.angler.free_line_length=320
 	var p:=Vector2(1130,290)
 	check(Camera.to_world(Camera.to_screen(p,w,"angler"),w,"angler")==p,"deep observation click roundtrip")
-	var clean:=Protocol.input("angler",{"target":p,"net_events":[{"kind":"point","point":p}]})
+	var clean:=Protocol.input("angler",{"target":p,"net_events":[{"kind":"point","point":p}]},w.map_context)
 	check(clean.target==p and clean.net_events[0].point==p,"network input no longer truncates far-bank world coordinates")
 	w.angler.x=1054; w.fish=Vector2(1120,180); w.fish_before=w.fish
 	w.advance_tick({}, {"net_events":[{"kind":"toggle"},{"kind":"point","point":Vector2(1070,180)},{"kind":"point","point":Vector2(1170,180)}]})

@@ -26,7 +26,7 @@ func patrol_checks() -> void:
 			if w.npc_fishes[0].position!=before.position: movement_ticks+=1
 			if w.npc_fishes[0].decision_age>before.decision_age: decision_ticks+=1
 			for npc: Dictionary in w.npc_fishes:
-				check(State.valid(npc,w.next_fish_id) and npc.behavior_state=="WANDER" and not npc.feeding and npc.satiety==100.0,"long patrol remains finite, normalized, in bounds, and WANDER-only seed=%d tick=%d id=%d" % [seed_value,tick,npc.fish_id])
+				check(State.valid(npc,w.next_fish_id,w.map_context.water) and npc.behavior_state=="WANDER" and not npc.feeding and npc.satiety==100.0,"long patrol remains finite, normalized, in bounds, and WANDER-only seed=%d tick=%d id=%d" % [seed_value,tick,npc.fish_id])
 		check(movement_ticks>10700,"NPC motion integrates each 60 Hz authority tick")
 		check(decision_ticks>1100 and decision_ticks<1600,"brain updates are slower than motion at approximately 0.12 seconds")
 		check(not w.match_over and w.npc_fishes.size()==6,"180-second ambient run does not alter match results or population")

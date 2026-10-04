@@ -89,6 +89,8 @@ func run() -> void:
 
 func network_checks() -> void:
 	var net=Session.new(); net.game=game; root.add_child(net)
+	# Isolated timing unit starts at the verified/playing host boundary.
+	net._select_map(); net.map_validated=true; net.is_host=true; net.status="playing"
 	for role in ["fish","angler"]:
 		fresh(); game.qte_grace_seconds=0.25
 		var state: Dictionary=game.effort_checks[role]
@@ -104,5 +106,5 @@ func network_checks() -> void:
 		check(not net._take_remote().qte,role+" held network input does not repeat a judgment")
 		packet.seq=2; net.receive_input(packet)
 		check(not net._take_remote().qte,role+" resolved effort rejects replayed judgments")
-		check(Protocol.input(role,{"qte_at_age":1.3}).qte_at_age<0,role+" cannot supply a trusted timestamp directly")
+		check(Protocol.input(role,{"qte_at_age":1.3},game.map_context).qte_at_age<0,role+" cannot supply a trusted timestamp directly")
 	net.queue_free(); await process_frame

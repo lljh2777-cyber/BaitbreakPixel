@@ -1,3 +1,5 @@
+> 0.26.4 更新：本文保留原阶段的历史状态；P4.4–P4.6 的最终实现与已清理依赖见 [地图抽象最终架构](MAP-PRESENTATION-FINAL.md)。
+
 > 本页保留 0.26.0 / P4.1 数据基础建立时的约定与边界。0.26.1 的已接入消费者、冻结策略及剩余限制见 [Authority MapContext](MAP-AUTHORITY-CONTEXT.md)；contract1 和 pond_v2 hash 不变。
 
 # Phase 4.1 MapDefinition contract v1

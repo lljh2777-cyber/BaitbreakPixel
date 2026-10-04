@@ -6,10 +6,13 @@ const World=preload("res://scripts/world_simulation.gd")
 const Snapshot=preload("res://scripts/world_snapshot.gd")
 const NPCPublic=preload("res://scripts/npc_fish_public_state.gd")
 const Protocol=preload("res://scripts/network_protocol.gd")
+const MapContext=preload("res://scripts/maps/map_context.gd")
 const FORMAT := "angler-presentation"
+# The schema field follows the preserved authority-field layout (schema 16);
+# format and NPC_PROFILE_VERSION remain independent public privacy guards.
 const NPC_PROFILE_VERSION := 4
 const PRIVATE_WORLD_FIELDS := ["next_fish_id","npc_foraging_enabled","npc_social_enabled","public_hook_cue","npc_hook_enabled"]
-const FIELDS := ["format","role","npc_profile_version","schema","bait_profile_version","map_id","state","rig","rng_seed","rng_state"]
+const FIELDS := ["format","role","npc_profile_version","schema","bait_profile_version","map_ref","state","rig","rng_seed","rng_state"]
 
 static func capture(world: Node2D) -> Dictionary:
 	var snapshot: Dictionary=world.capture_snapshot()
@@ -29,7 +32,9 @@ static func _authority(snapshot: Dictionary) -> Dictionary:
 		if not snapshot.has(key): return {}
 	if snapshot.format!=FORMAT or snapshot.role!="angler" or not snapshot.npc_profile_version is int or snapshot.npc_profile_version!=NPC_PROFILE_VERSION: return {}
 	if not snapshot.schema is int or not snapshot.state is Dictionary or not Protocol.safe_values(snapshot): return {}
-	if not snapshot.state.get("fish_id") is int or not NPCPublic.valid(snapshot.state.get("npc_fishes"),snapshot.state.fish_id): return {}
+	var loaded:=MapContext.load_ref(snapshot.map_ref)
+	if not loaded.valid: return {}
+	if not snapshot.state.get("fish_id") is int or not NPCPublic.valid(snapshot.state.get("npc_fishes"),snapshot.state.fish_id,loaded.context.water): return {}
 	if snapshot.state.size()!=Snapshot.WORLD_FIELDS.size()-PRIVATE_WORLD_FIELDS.size(): return {}
 	for key: String in Snapshot.WORLD_FIELDS:
 		if key not in PRIVATE_WORLD_FIELDS and not snapshot.state.has(key): return {}

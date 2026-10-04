@@ -1,0 +1,20 @@
+P4.3 receiving-state envelope hardening
+
+Reproduced on the pre-fix P4.3 receiver (inherited ordering from 0.26.1):
+- Input: valid same-build/same-map fish state with countdown={}
+- Before: fish=(66,385), received_seq=-1
+- Error: Invalid call. Nonexistent 'float' constructor, _receive_state
+- After error: fish=(777,220), received_seq=1
+- This was an intentional failing reproduction, not a passing release gate
+
+Fix: before unpack/apply, require ack int >= 0 and countdown int/float finite within 0..3
+Rejection stops the connection and pauses the world; other authority, received/applied sequence and render state remain unchanged
+Regression: both fish and angler, missing/wrong types, negative values, excessive values and nonfinite countdown; valid int/float 0 and 3 retained
+Final formal phase04_map_network: 276 passed, 0 failed; covers both-role real ENet plus identity and envelope adversarial cases
+Existing fish net_action.age exact-float guard was not loosened
+
+Native rejection-caption finding and fix:
+- Before: immediate host close could lose the reliable reject reason; host clear map/version error, joining client generic connection-closed
+- After: host immediately remains failed/map-unvalidated while ENet rejection drains for at most1000ms; all hello/gameplay ignored during drain
+- Both-role14 hello mismatch cases show explicit version/map reason on both endpoints
+- Silent-client case proves bounded host transport close; no ready/play revival

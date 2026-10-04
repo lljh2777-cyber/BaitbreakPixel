@@ -1,9 +1,9 @@
 extends RefCounted
 
 const VERSION := 1
-const Layout=preload("res://scripts/pond_layout.gd")
-# Peers must share capture timing and the round-statistics snapshot schema.
-const BUILD := "0.26.1"
+const MapContext=preload("res://scripts/maps/map_context.gd")
+# Peers must share the exact build and validated built-in MapRef before play.
+const BUILD := "0.26.4"
 const DEFAULT_PORT := 24712
 const MAX_PACKET := 196608
 const MAX_STATE := 1048576
@@ -19,11 +19,13 @@ static func safe_values(value: Variant, depth: int = 0) -> bool:
 		TYPE_VECTOR2: return value.is_finite() and absf(value.x)<100000 and absf(value.y)<100000
 		TYPE_PACKED_BYTE_ARRAY: return value.size()<=MAX_PACKET
 		TYPE_ARRAY,TYPE_PACKED_VECTOR2_ARRAY:
+			if value is Array and value.is_typed() and value.get_typed_builtin()==TYPE_OBJECT: return false
 			if value.size()>8192: return false
 			for item in value:
 				if not safe_values(item,depth+1): return false
 			return true
 		TYPE_DICTIONARY:
+			if value.get_typed_key_builtin()==TYPE_OBJECT or value.get_typed_value_builtin()==TYPE_OBJECT: return false
 			if value.size()>8192: return false
 			for key in value:
 				if not (key is String or key is StringName or key is int) or not safe_values(value[key],depth+1): return false
@@ -52,17 +54,19 @@ static func unpack_state(packet: Dictionary) -> Dictionary:
 	var value: Variant=bytes_to_var(raw)
 	return value if value is Dictionary and safe_values(value) else {}
 
-static func input(role: String, raw: Dictionary) -> Dictionary:
+# Map bounds are an explicit input: wire sanitization must never silently use
+# another round's default pond geometry. No map lookup/hash runs per input tick.
+static func input(role: String, raw: Dictionary, context: MapContext) -> Dictionary:
 	if role=="fish":
 		var clean := Commands.fish(raw,Vector2.RIGHT,0.35)
 		clean.qte_at_age=-1.0 # Never trust a client's claimed timing or success.
 		return clean
-	var clean := Commands.angler(raw,Vector2(232,180))
+	var clean := Commands.angler(raw,context.water.position+Vector2(224,112))
 	clean.qte_at_age=-1.0
 	clean.qte_condition_valid=true # Authority derives conditions from its own history.
 	clean.auto_reel=false
 	clean.auto_net=false
-	clean.target=clean.target.clamp(Vector2(0,0),Layout.SIZE)
+	clean.target=clean.target.clamp(Vector2.ZERO,context.size)
 	if clean.net_events.size()>MAX_EVENTS: clean.net_events.resize(MAX_EVENTS)
 	return clean
 

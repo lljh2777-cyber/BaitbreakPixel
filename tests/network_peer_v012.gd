@@ -80,7 +80,7 @@ func _process(_delta: float) -> bool:
 		check(false,"session stopped: "+net.message); finish(); return false
 	if Time.get_ticks_msec()-test_started>30000:
 		check(false,"peer run timed out"); finish(); return false
-	if not ready_sent and net.status=="waiting" and net.remote_id!=0:
+	if not ready_sent and net.status=="waiting" and net.remote_id!=0 and net.map_validated:
 		ready_sent=true
 		check(game.menu.screen=="room","room screen is visible after connecting")
 		capture("room")

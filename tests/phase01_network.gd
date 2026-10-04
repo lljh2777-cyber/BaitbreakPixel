@@ -126,6 +126,9 @@ func pure_checks() -> void:
 	check(not FishNetwork.config_valid(config),"seed-bearing configuration is rejected on fish receive")
 	var sender:=Session.new(); sender.game=authority; sender.remote_role="fish"; sender.session_id="projection"; sender.round_id=1; sender.status="playing"
 	var receiving:=Session.new(); receiving.game=receiver; receiving.local_role="fish"; receiving.session_id="projection"; receiving.round_id=1
+	# Unit transport fixtures start after a successful handshake; ENet below performs the full exchange.
+	for endpoint in [sender,receiving]: endpoint._select_map(); endpoint.map_validated=true; endpoint.status="playing"
+	sender.is_host=true; receiving.is_host=false
 	for kind in ["start","state"]:
 		var packet: Dictionary=sender._state_packet(kind)
 		check(no_private(Protocol.unpack_state(packet.snapshot)),kind+" packet uses fish projection before encoding")

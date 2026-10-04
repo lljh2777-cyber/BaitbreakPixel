@@ -107,10 +107,10 @@ func competition_checks() -> void:
 	var lying:=cue(); lying.feeding_fish[0].target_bait_id=999; lying.feeding_fish[0].caution_state="ALARMED"; lying.feeding_fish[0].satiety=0
 	check(decide(record,[bait()],lying)==result,"another fish's private state and intended target are ignored")
 	apply(record,result)
-	check(State.valid(record,3),"competition private memory is valid")
+	check(State.valid(record,3,Layout.WATER),"competition private memory is valid")
 	for tick in 4:
 		result=decide(record,[bait()],{},60+tick*8); apply(record,result)
-		check(result.state=="COMPETE" and State.valid(record,3),"short feeder action/rest gaps keep the same contested target")
+		check(result.state=="COMPETE" and State.valid(record,3,Layout.WATER),"short feeder action/rest gaps keep the same contested target")
 	for tick in 3:
 		result=decide(record,[bait()],{},100+tick*8); apply(record,result)
 	check(result.state=="APPROACH_FOOD" and record.social_compete_left==0.0,"expired social memory returns to ordinary approach")
@@ -132,9 +132,9 @@ func competition_checks() -> void:
 		result=decide(record,[right,left] if tick%2==0 else [left,right],cue(),tick); apply(record,result)
 		check(record.target_bait_id==target,"small public distance/action variation does not thrash a contested target")
 	result=decide(record,[right] if target==3 else [left],cue()); apply(record,result)
-	check(record.target_bait_id!=target and State.valid(record,3),"disappearing contested food promptly releases its stale target")
+	check(record.target_bait_id!=target and State.valid(record,3,Layout.WATER),"disappearing contested food promptly releases its stale target")
 	result=decide(record,[],{}); apply(record,result)
-	check(record.behavior_state=="WANDER" and record.target_bait_id==-1 and record.social_compete_left==0.0 and State.valid(record,3),"missing perception safely clears competition without phantom feeding")
+	check(record.behavior_state=="WANDER" and record.target_bait_id==-1 and record.social_compete_left==0.0 and State.valid(record,3,Layout.WATER),"missing perception safely clears competition without phantom feeding")
 
 func recovery_checks() -> void:
 	for speed: float in [6.0,22.0]:
@@ -146,7 +146,7 @@ func recovery_checks() -> void:
 				reacting_ticks+=1
 				if record.behavior_state not in ["HESITATE","FLEE"]: starts+=1
 			apply(record,result)
-			check(State.valid(record,3),"continuous cue sequence always satisfies private-state guard")
+			check(State.valid(record,3,Layout.WATER),"continuous cue sequence always satisfies private-state guard")
 		check(starts==1 and reacting_ticks<=11,"a continuous motion cue cannot renew hesitation/flight forever")
 		for tick in 160:
 			var result:=decide(record,[bait()],{},1300+tick*8); apply(record,result)
@@ -160,7 +160,7 @@ func recovery_checks() -> void:
 	apply(record,result)
 	for tick in 14:
 		result=decide(record,[],{},68+tick*8); apply(record,result)
-		check(State.valid(record,3) and record.target_bait_id==-1,"missing perception during a reaction expires without stale target references")
+		check(State.valid(record,3,Layout.WATER) and record.target_bait_id==-1,"missing perception during a reaction expires without stale target references")
 	check(record.behavior_state=="WANDER" and record.social_origin==Vector2.ZERO and record.social_bait_id==-1,"flight completely releases short-lived source geometry")
 	result=decide(record,[bait(Vector2(300,200),22.0)],{},200)
 	check(result.state!="FLEE","brief quiet/reappearance during recovery cannot start another flight")
@@ -170,7 +170,7 @@ func recovery_checks() -> void:
 	apply(record,result)
 	for tick in 120:
 		result=decide(record,[],{"danger_events":[{"tick":201,"position":Vector2(210,200)}]},209+tick*8); apply(record,result)
-		check(State.valid(record,3),"expired public outcome leaves only valid decaying private memory")
+		check(State.valid(record,3,Layout.WATER),"expired public outcome leaves only valid decaying private memory")
 	check(record.behavior_state=="WANDER" and record.social_recovery_left==0.0,"repeated delivery of the same outcome does not prevent recovery")
 
 func isolation_checks() -> void:
@@ -202,27 +202,27 @@ func guard_checks() -> void:
 		var fixture:=npc(Vector2(200,200),25.0)
 		var result:=decide(fixture,[bait(Vector2(300,200),6.0 if state=="HESITATE" else (22.0 if state=="FLEE" else 0.0))],cue() if state=="COMPETE" else {})
 		apply(fixture,result)
-		check(fixture.behavior_state==state and State.valid(fixture,3),"valid intent creates a strict current-shape "+state+" record")
+		check(fixture.behavior_state==state and State.valid(fixture,3,Layout.WATER),"valid intent creates a strict current-shape "+state+" record")
 		for field: String in State.SOCIAL_MEMORY_FIELDS:
 			var bad:=fixture.duplicate(true); bad.erase(field)
-			check(not State.valid(bad,3),"social records never silently migrate a missing private field: "+field)
+			check(not State.valid(bad,3,Layout.WATER),"social records never silently migrate a missing private field: "+field)
 		var copied: Dictionary=bytes_to_var(var_to_bytes(fixture))
-		check(State.valid(copied,3) and copied==fixture,"social memory round-trips byte serialization")
+		check(State.valid(copied,3,Layout.WATER) and copied==fixture,"social memory round-trips byte serialization")
 	for field: String in ["social_reaction_left","social_recovery_left","social_compete_left"]:
 		for value in [NAN,INF,-0.01,4.0,0,"0"]:
 			var bad:=record.duplicate(true); bad[field]=value
-			check(not State.valid(bad,3),"strict timer scalar rejects malformed "+field)
+			check(not State.valid(bad,3,Layout.WATER),"strict timer scalar rejects malformed "+field)
 	for pair: Array in [["social_origin",Vector2(NAN,0)],["social_origin",Vector2(INF,0)],["social_origin",Vector2(1,0)],["social_origin",0],["social_bait_id",0],["social_bait_id",-2],["social_bait_id",3],["social_bait_id",-1.0],["social_motion_level",-1],["social_motion_level",3],["social_motion_level",1.0],["social_danger_tick",-2],["social_danger_tick",0.0],["social_reaction_left",0.1],["social_compete_left",0.1],["behavior_state","HESITATE"],["behavior_state","FLEE"],["behavior_state","COMPETE"],["behavior_state","WRAPPED"],["behavior_state","CAPTURED"]]:
 		var bad:=record.duplicate(true); bad[pair[0]]=pair[1]
-		check(not State.valid(bad,3),"strict semantic/type guard rejects inconsistent social record: "+str(pair))
+		check(not State.valid(bad,3,Layout.WATER),"strict semantic/type guard rejects inconsistent social record: "+str(pair))
 	# P3.4 admits the local Hook state; world_snapshot separately requires the
 	# matching single-line target/phase and rejects orphan HOOKED records.
 	var hooked_record:=record.duplicate(true); hooked_record.behavior_state="HOOKED"
-	check(State.valid(hooked_record,3),"P3.4 Hook record shape is valid; target association belongs to the world guard")
+	check(State.valid(hooked_record,3,Layout.WATER),"P3.4 Hook record shape is valid; target association belongs to the world guard")
 	apply(record,decide(record,[bait(Vector2(300,200),6.0)]))
 	for pair: Array in [["feeding",true],["target_bait_id",4],["social_bait_id",-1],["social_reaction_left",1.0],["social_recovery_left",0.0],["social_compete_left",0.1]]:
 		var bad:=record.duplicate(true); bad[pair[0]]=pair[1]
-		check(not State.valid(bad,3),"hesitation rejects impossible food/action/recovery relations")
+		check(not State.valid(bad,3,Layout.WATER),"hesitation rejects impossible food/action/recovery relations")
 
 func _initialize() -> void:
 	observation_checks(); competition_checks(); recovery_checks(); isolation_checks(); guard_checks()

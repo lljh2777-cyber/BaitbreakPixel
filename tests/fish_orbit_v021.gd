@@ -12,7 +12,7 @@ func run() -> void:
 	var w:=World.new(); w.reset_world({"ruleset":"duel","rules":{"water_strength":0}})
 	w.baits[0].active=true; w._enter_hook(0); w._attach_hook()
 	for target in w.targets.size():
-		var c: Dictionary=w.Layout.coil_at(w.targets[target],w.targets[target].bounds.get_center())
+		var c: Dictionary=w.MapGeometry.coil_at(w.targets[target],w.targets[target].bounds.get_center())
 		c.target=target; c.progress=0.0; w.wraps.assign([c])
 		w.fish=Vector2(c.center).clamp(Vector2(25,85),Vector2(1255,411)); w.fish_line_length=44
 		w.rope_length=w.line_anchor(0).distance_to(w.mouth()); w.untangle_phase=""; w.net_state="wait"

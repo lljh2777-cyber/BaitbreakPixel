@@ -19,9 +19,6 @@ const Suspicion=preload("res://scripts/fish_suspicion.gd")
 const Instinct=preload("res://scripts/fish_instinct.gd")
 const Stats = preload("res://scripts/round_stats.gd")
 const Rope = preload("res://scripts/rope.gd")
-# Compatibility facade for the unmigrated schema15/network and presentation APIs.
-# Authority gameplay below must use the validated per-round map_context instead.
-const Layout = preload("res://scripts/pond_layout.gd")
 const MapContext = preload("res://scripts/maps/map_context.gd")
 const MapGeometry = preload("res://scripts/maps/map_geometry.gd")
 var _map_context: MapContext
@@ -41,7 +38,6 @@ enum HookState { FREE, MOUTH, HOOKED }
 var HOME: Vector2:
 	get: return map_context.home
 const TIME_LIMIT := 360.0
-const SOLIDS: Array = Layout.SOLIDS
 const NET_RIM := Vector2(8,24)
 const NET_CATCH := Vector2(8,24)
 const NET_SWEEP := 1.6
@@ -252,6 +248,14 @@ func _install_map_context(context: MapContext) -> void:
 	map_fish_occluders=context.fish_occluders
 	map_vegetation_drag_zones=context.vegetation_drag_zones
 	_npc_spawn_regions=NPCFishState.spawn_regions(context.water)
+
+# Install only after a snapshot/public-state adapter has validated its entire
+# value tree and resolved its MapRef locally. No actor reset, signal or RNG use.
+func _install_snapshot_map_context(context: MapContext) -> void:
+	if map_context == null or context.map_ref != map_context.map_ref:
+		_install_map_context(context)
+		angler.configure_map(context)
+	map_errors=[]
 
 # Compatibility properties above are aliases only; no duplicate tuning state.
 func rule(key: String) -> float: return float(rules[key])
@@ -481,9 +485,11 @@ func reset_world(config: Dictionary = {}, definition: Variant = null) -> bool:
 	var loaded: Dictionary
 	if definition != null:
 		loaded=MapContext.from_definition(definition)
+	elif config.has("map_ref"):
+		loaded=MapContext.load_ref(config.map_ref)
 	else:
-		var map_id: Variant=config.get("map_id","pond_v2")
-		var revision: Variant=config.get("map_revision",1)
+		var map_id: Variant=config.get("map_id",MapContext.Registry.DEFAULT_MAP_ID)
+		var revision: Variant=config.get("map_revision",MapContext.Registry.DEFAULT_REVISION)
 		if not map_id is String or not revision is int:
 			map_errors=["map id and revision have invalid types"]
 			return false

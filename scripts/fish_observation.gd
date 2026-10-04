@@ -3,10 +3,6 @@ extends RefCounted
 # Pure, detached fish-facing data. Render geometry is exact for compatibility;
 # decision hints add detail with proximity without classifying food as safe/dangerous.
 # Never copy whole bait/grain records: new authority fields stay private by default.
-const Registry=preload("res://scripts/maps/map_registry.gd")
-# The two-argument helper is retained for the schema-15 network adapter. Its
-# default geometry remains pond_v2 until P4.3; authority always passes its water.
-static var _compatibility_water := Rect2()
 const Feeding=preload("res://scripts/fish_feeding.gd")
 const FoodProfile=preload("res://scripts/food_profile.gd")
 const NEAR_DISTANCE := 64.0
@@ -111,13 +107,7 @@ static func _visual(bait: Dictionary, facts: Dictionary) -> Dictionary:
 		"visual_kind":facts.visual_kind,"shape_hint":facts.shape_hint,"smell_hint":facts.smell_hint,
 		"grains":grains}
 
-static func _facts(bait: Dictionary, fish_position: Vector2, water_bounds: Rect2=Rect2()) -> Dictionary:
-	if not water_bounds.has_area():
-		if not _compatibility_water.has_area():
-			var loaded:=Registry.load_map()
-			assert(loaded.valid,"default network compatibility map must validate")
-			_compatibility_water=loaded.definition.bounds.water
-		water_bounds=_compatibility_water
+static func _facts(bait: Dictionary, fish_position: Vector2, water_bounds: Rect2) -> Dictionary:
 	# Hint-only callers allocate no visual grain array or per-grain dictionary.
 	var count:=0
 	var loose:=0

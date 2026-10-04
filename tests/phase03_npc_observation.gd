@@ -17,7 +17,7 @@ func legacy_build(world: Node2D, include_visuals: bool = true) -> Dictionary:
 	var observed: Array[Dictionary]=[]
 	var fish_position: Vector2=world.fish
 	for bait: Dictionary in world.baits:
-		var facts:=Observation._facts(bait,fish_position)
+		var facts:=Observation._facts(bait,fish_position,world.map_context.water)
 		if facts.visible_count==0: continue
 		var food: Variant=facts.food_position
 		var distance: float=fish_position.distance_to(Vector2(food) if food is Vector2 else Vector2(facts.pos))

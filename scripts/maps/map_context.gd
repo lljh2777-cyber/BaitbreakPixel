@@ -5,6 +5,7 @@ extends RefCounted
 const Registry = preload("res://scripts/maps/map_registry.gd")
 const Validator = preload("res://scripts/maps/map_validator.gd")
 const Geometry = preload("res://scripts/maps/map_geometry.gd")
+static var _registered_context: RefCounted = null
 
 # Godot read-only Array/Dictionary does NOT freeze nested packed arrays. Therefore
 # collection getters and lookup records are detached setup/export snapshots, not
@@ -90,6 +91,21 @@ static func load_map(map_id: String = Registry.DEFAULT_MAP_ID, map_revision: int
 	if not loaded.valid:
 		return {"valid":false,"errors":loaded.errors.duplicate(),"context":null}
 	return from_definition(loaded.definition)
+
+# Snapshot/network entry: resolve the exact reference against built-in data.
+# No fallback to the current/default context and no remote geometry are allowed.
+static func load_ref(value: Variant) -> Dictionary:
+	var validation := Registry.validate_ref(value)
+	if not validation.valid:
+		return {"valid":false,"errors":validation.errors.duplicate(),"context":null}
+	if _registered_context == null:
+		var loaded := Registry.load_ref(value)
+		if not loaded.valid:
+			return {"valid":false,"errors":loaded.errors.duplicate(),"context":null}
+		var built := from_definition(loaded.definition)
+		if not built.valid: return built
+		_registered_context = built.context
+	return {"valid":true,"errors":[],"context":_registered_context}
 
 # Also permits validated, unregistered definitions for isolated tests. This does
 # not register a map, add selection UI, or change snapshot/network acceptance.

@@ -12,7 +12,7 @@ func check(ok:bool,label:String) -> void:
 func fixture(target:int=0) -> Node2D:
 	var w=World.new(); w.reset_world({"ruleset":"duel","challenge":false,"water_strength":0})
 	w.fish=Vector2(382,245); w.baits[0].active=true; w._enter_hook(0); w._attach_hook()
-	var c:Dictionary=w.Layout.coil_at(w.targets[target],w.targets[target].bounds.get_center()); c.target=target; c.progress=1.0
+	var c:Dictionary=w.MapGeometry.coil_at(w.targets[target],w.targets[target].bounds.get_center()); c.target=target; c.progress=1.0
 	w.wraps.append(c); w.fish=Vector2(c.entry)+Vector2(50,3); w.fish_line_length=44
 	w.tension=0.4; w.rope_length=w.line_anchor(0).distance_to(w.mouth()); w._rebuild_rope()
 	return w

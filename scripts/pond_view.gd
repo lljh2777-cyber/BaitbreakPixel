@@ -6,7 +6,9 @@ var camera_offset := Vector2.ZERO
 var water_layers: Dictionary = {}
 
 const Art = preload("res://scripts/pixel_art.gd")
-const Layout = preload("res://scripts/pond_layout.gd")
+const Presentation = preload("res://scripts/maps/map_presentation.gd")
+var map_presentation: RefCounted
+var _render_context: RefCounted
 const Gauge = preload("res://scripts/hook_gauge.gd")
 const AnglerVisual = preload("res://scripts/angler_visual.gd")
 const Observation = preload("res://scripts/net_observation.gd")
@@ -45,21 +47,33 @@ var props: Array[Dictionary] = []
 var plant_frames: Array = []
 
 func _ready() -> void:
-	water_layers = Scenery.Water.layers()
 	shore.hand.prepare(self)
 	shore.reel_hand.prepare(self)
 	fish_texture = Art.fish()
 	for variant in 3: npc_textures.append(Art.npc_fish(variant))
 	gauge_texture = Gauge.metal_texture()
 	bobber_texture = Gauge.bobber_texture()
-	props=Art.scene_props()
-	for index in Layout.PLANTS.size():
-		var frames: Array[Dictionary] = []
-		for frame in range(8): frames.append(_make_plant_layer(frame*TAU/12.0,index))
-		plant_frames.append(frames)
+	if is_instance_valid(game): prepare_map(game.map_context)
 	font = SystemFont.new()
 	font.font_names = PackedStringArray(["Microsoft YaHei", "Noto Sans CJK SC", "sans-serif"])
 	font.antialiasing = TextServer.FONT_ANTIALIASING_NONE
+
+# Called at setup and whenever authority/replica display context changes. No
+# geometry export, hashing, or texture construction happens on an unchanged map.
+func prepare_map(context: RefCounted) -> void:
+	if _render_context == context: return
+	_render_context = context
+	var next: RefCounted = Presentation.for_context(context)
+	var reuse: bool = next.matches(map_presentation)
+	map_presentation = next
+	if reuse: return
+	water_layers = Scenery.Water.layers(map_presentation)
+	props = Art.scene_props(map_presentation)
+	plant_frames.clear()
+	for index in map_presentation.plants.size():
+		var frames: Array[Dictionary] = []
+		for frame in range(8): frames.append(_make_plant_layer(frame*TAU/12.0,index))
+		plant_frames.append(frames)
 
 func label_at(point: Vector2, text: String, size: int = 12, color: Color = CREAM) -> void:
 	draw_string(font, point.round(), text, HORIZONTAL_ALIGNMENT_LEFT, -1, size, color)
@@ -72,6 +86,7 @@ func panel(rect: Rect2, color: Color = INK) -> void:
 func _draw() -> void:
 	if not is_instance_valid(game): return
 	world=game.network.display_world() if is_instance_valid(game.network) and game.network.active() and game.shared_session else game
+	prepare_map(world.map_context)
 	var t: float = world.elapsed
 	line_frame=line_motion.sample(world)
 	net_frame=net_motion.sample(world)
@@ -140,7 +155,7 @@ func _npc_fishes(t: float) -> void:
 
 func _navigation() -> void:
 	if game.menu.visible: return
-	var p:=Camera.to_screen(Layout.HOME,world,"fish")
+	var p:=Camera.to_screen(world.map_context.home,world,"fish")
 	if Rect2(32,65,576,242).has_point(p): return
 	var center:=Vector2(320,193)
 	var dir:=(p-center).normalized()
@@ -150,10 +165,10 @@ func _navigation() -> void:
 
 func _plants(t: float, background: bool) -> void:
 	var frame := posmod(int(t*12.0/TAU),8)
-	for index in Layout.PLANTS.size():
-		if Layout.PLANTS[index].back!=background: continue
+	for index in map_presentation.plants.size():
+		if map_presentation.plants[index].back!=background: continue
 		var sprite: Dictionary = plant_frames[index][frame]
-		var tint:=Color(1,1,1,world.target_opacity[Layout.SOLIDS.size()+index])
+		var tint:=Color(1,1,1,world.target_opacity[map_presentation.plant_target_index(index)])
 		var cover: Dictionary={}
 		for candidate: Dictionary in line_frame.grass:
 			if candidate.plant==index: cover=candidate; break
@@ -171,12 +186,12 @@ func _plants(t: float, background: bool) -> void:
 
 func _make_plant_layer(t: float, plant_index: int) -> Dictionary:
 	# Keep each cached clump's original crop and anchor for fading / grass binding.
-	var canvas := Image.create(int(Layout.SIZE.x),132,false,Image.FORMAT_RGBA8)
+	var canvas := Image.create(int(map_presentation.size.x),132,false,Image.FORMAT_RGBA8)
 	canvas.fill(Color.TRANSPARENT)
-	var plant: Dictionary = Layout.PLANTS[plant_index]
+	var plant: Dictionary = map_presentation.plants[plant_index]
 	preload("res://scripts/pond_plant_art.gd").paint(canvas,plant,t)
 	var region := Rect2i(int(plant.x-plant.width*0.5-14),int(129-plant.height-8),int(plant.width+29),int(plant.height+12))
-	region = region.intersection(Rect2i(0,0,int(Layout.SIZE.x),132))
+	region = region.intersection(Rect2i(0,0,int(map_presentation.size.x),132))
 	return {"texture":ImageTexture.create_from_image(canvas.get_region(region)),"position":Vector2(region.position)+Vector2(0,plant.y-129)}
 
 func _bait_point(index: int, point: Vector2) -> Vector2:
@@ -509,8 +524,8 @@ func _player(t: float) -> void:
 		var radius: float = (0.7 - world.result_flash) * 25 + 12
 		draw_arc(position, radius, 0, TAU, 16, MINT if world.result_good else RED, 1)
 	if world.returning:
-		draw_rect(Rect2(Layout.HOME+Vector2(-22,-5),Vector2(44,2)), INK)
-		draw_rect(Rect2(Layout.HOME+Vector2(-22,-5),Vector2(44*world.home_age/world.rule("home_hold"),2)), MINT)
+		draw_rect(Rect2(world.map_context.home+Vector2(-22,-5),Vector2(44,2)), INK)
+		draw_rect(Rect2(world.map_context.home+Vector2(-22,-5),Vector2(44*world.home_age/world.rule("home_hold"),2)), MINT)
 
 func _net_back(_t: float) -> void:
 	if net_frame.active: NetVisual.back(self,NetMotion.fish_pose(world,net_frame))

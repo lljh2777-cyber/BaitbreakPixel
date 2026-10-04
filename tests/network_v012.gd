@@ -66,7 +66,7 @@ func run() -> void:
 	check(Protocol.unpack_state(packed)==sample and packed.data.size()<var_to_bytes(sample).size(),"compressed snapshots round-trip while reducing traffic")
 	check(Protocol.unpack_state({"size":Protocol.MAX_STATE+1,"data":PackedByteArray()}).is_empty(),"decompression rejects an oversized declared state")
 	check(not Protocol.safe_values({"node":host}),"packet schema excludes object references")
-	var clean := Protocol.input("angler",{"auto_reel":true,"auto_net":true,"walk":99,"target":Vector2(9999,9999)})
+	var clean := Protocol.input("angler",{"auto_reel":true,"auto_net":true,"walk":99,"target":Vector2(9999,9999)},host.map_context)
 	check(not clean.auto_reel and not clean.auto_net and clean.walk==1 and clean.target==Vector2(640,360),"remote players cannot enable AI or bypass input bounds")
 	var rejected: int=host.network.rejected_inputs
 	host.network.receive_input({"session":host.network.session_id,"round":host.network.round_id-1,"seq":999})

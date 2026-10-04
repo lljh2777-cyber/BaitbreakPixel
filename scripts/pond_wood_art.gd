@@ -1,8 +1,9 @@
 extends RefCounted
 # One material field per connected tree. Individual sprites retain the exact
 # collision masks and opacity targets, but overlapping pixels are identical.
-const Layout=preload("res://scripts/pond_layout.gd")
-const GROUPS: Array = Layout.WOOD_GROUPS
+const Presentation=preload("res://scripts/maps/map_presentation.gd")
+# Historical tooling API explicitly selects the registered default presentation.
+static var GROUPS: Array = Presentation.default_map().wood_groups
 const PALETTE: Array[Color] = [Color("293f3b"),Color("424f40"),Color("666b4f"),Color("8c8b67")]
 const SHAPES: Dictionary = {
 	1:[[Vector2(337,171),Vector2(335,237),Vector2(343,299),Vector2(353,368),Vector2(355,434)],[8.0,14.0,18.0,26.0,25.0]],
@@ -17,24 +18,26 @@ const SHAPES: Dictionary = {
 	18:[[Vector2(1172,363),Vector2(1190,385),Vector2(1207,399),Vector2(1207,420)],[3.0,6.0,8.0,10.0]]
 }
 
-static func context(obstacle: Dictionary) -> Dictionary:
+static func context(obstacle: Dictionary, presentation: RefCounted=null) -> Dictionary:
+	if presentation == null: presentation=Presentation.default_map()
 	var group: Array=[int(obstacle.seed)]
-	for candidate: Array in GROUPS:
+	for candidate: Array in presentation.wood_groups:
 		if int(obstacle.seed) in candidate: group=candidate; break
 	var polygons: Array[PackedVector2Array]=[]
 	var shapes: Array[Dictionary]=[]
 	for seed_value: int in group:
 		var points:=PackedVector2Array(obstacle.points)
-		for solid: Dictionary in Layout.SOLIDS:
+		for solid: Dictionary in presentation.solids:
 			if solid.seed==seed_value: points=PackedVector2Array(solid.points); break
 		polygons.append(points)
-		var controls: Array=SHAPES.get(seed_value,[[points[0],points[points.size()/2]],[6.0,6.0]])
+		var fallback: Array=[[points[0],points[points.size()/2]],[6.0,6.0]]
+		var controls: Array=SHAPES.get(seed_value,fallback) if presentation.visual_profile_id=="legacy_pond" else fallback
 		shapes.append(_curve(controls,seed_value))
 	var trunk: Dictionary=shapes[0]
 	for branch: Dictionary in shapes.slice(1):
 		var join:=_sample(branch.path[-1],trunk)
 		branch.offset=Vector2(join.across,join.along-branch.length)
-	return {"seed":group[0],"shapes":shapes,"branches":shapes.slice(1),"polygons":polygons,"top":trunk.path[0].y}
+	return {"seed":group[0],"shapes":shapes,"branches":shapes.slice(1),"polygons":polygons,"top":trunk.path[0].y,"legacy_profile":presentation.visual_profile_id=="legacy_pond","floor_y":presentation.floor_y}
 
 static func _curve(controls: Array, seed_value: int) -> Dictionary:
 	var path: Array[Vector2]=[]
@@ -141,7 +144,7 @@ static func color_at(point: Vector2, tree: Dictionary) -> Color:
 		if ring<0.45: color=Color("3b5149")
 		elif ring<0.70 or (ring>0.96 and ring<1.15): color=PALETTE[tone if knot.y<0 else mini(3,tone+1)]
 		elif ring<0.94: color=PALETTE[0]
-	if seed_value==7:
+	if seed_value==7 and tree.legacy_profile:
 		var end:=Vector2((point.x-657)/8.0,(point.y-375)/13.0)
 		var ring:=end.length()+sin(end.angle()*5)*0.09
 		if ring<1:
@@ -149,7 +152,7 @@ static func color_at(point: Vector2, tree: Dictionary) -> Color:
 			if ring>0.65 and ring<0.80: color=Color("586950")
 			if ring<0.34: color=Color("304e47")
 			if end.y>0.1 and absf(end.x+end.y*0.2)<0.10: color=Color("425b49")
-	if point.y>422+sin(point.x*0.14+seed_value)*3: color=color.lerp(Color("4d685b"),0.45)
+	if point.y>float(tree.floor_y)-11+sin(point.x*0.14+seed_value)*3: color=color.lerp(Color("4d685b"),0.45)
 	var top_edge:=not contains(point-Vector2(0,2),tree)
 	var lower_edge:=not contains(point+Vector2(1,1),tree)
 	var algae:=sin(point.x*0.19+seed_value*1.7)+sin(point.x*0.071-point.y*0.08)

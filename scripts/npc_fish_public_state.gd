@@ -2,7 +2,6 @@ extends RefCounted
 
 # Shared render/wire projection. Only contact-derived hook outcomes are public;
 # food targets, decisions, struggle phase and all private timers stay authoritative.
-const Layout=preload("res://scripts/pond_layout.gd")
 const FIELDS: Array[String] = ["fish_id","position","velocity","aim","visual_variant","animation_state"]
 const HOOK_FIELDS: Array[String] = ["phase"]
 const RESULT_FIELDS: Array[String] = ["tick","fish_id","result","position"]
@@ -40,21 +39,22 @@ static func _keys(record: Dictionary, fields: Array[String]) -> bool:
 		if not record.has(key): return false
 	return true
 
-static func landing_bounds() -> Rect2:
-	var bounds:=Layout.fish_bounds(BODY_RADIUS)
-	return Rect2(bounds.position.x,39.0,bounds.size.x,bounds.end.y-39.0)
+static func landing_bounds(water: Rect2) -> Rect2:
+	var bounds:=water.grow(-BODY_RADIUS)
+	var top:=water.position.y-29.0
+	return Rect2(bounds.position.x,top,bounds.size.x,bounds.end.y-top)
 
-static func valid_result(result: Variant, tick: int) -> bool:
+static func valid_result(result: Variant, tick: int, water: Rect2) -> bool:
 	if not result is Dictionary or not _keys(result,RESULT_FIELDS): return false
 	if not result.tick is int or not result.fish_id is int or not result.result is String or not result.position is Vector2 or not result.position.is_finite(): return false
 	if result.tick==-1:
 		return result.fish_id==-1 and result.result=="" and result.position==Vector2.ZERO
-	return result.tick>=0 and result.tick<=tick and result.fish_id>=2 and result.result in ["hooked","escaped","broken","captured"] and landing_bounds().has_point(result.position)
+	return result.tick>=0 and result.tick<=tick and result.fish_id>=2 and result.result in ["hooked","escaped","broken","captured"] and landing_bounds(water).has_point(result.position)
 
-static func valid_hook_state(state: Dictionary) -> bool:
+static func valid_hook_state(state: Dictionary, water: Rect2) -> bool:
 	if not state.get("hook_target_fish_id") is int or not state.get("npc_hook") is Dictionary: return false
 	if not _keys(state.npc_hook,HOOK_FIELDS) or not state.npc_hook.phase is String or state.npc_hook.phase not in ["","hooked","landing"]: return false
-	if not valid_result(state.get("public_npc_hook_result"),int(state.simulation_tick)): return false
+	if not valid_result(state.get("public_npc_hook_result"),int(state.simulation_tick),water): return false
 	var target: int=state.hook_target_fish_id
 	if target < -1 or target==0: return false
 	if target==-1 and (state.hooked!=0 or state.npc_hook.phase!="" or state.bound_bait!=-1): return false
@@ -70,14 +70,14 @@ static func valid_hook_state(state: Dictionary) -> bool:
 		elif npc.animation_state!="swim": return false
 	return target<=1 or found
 
-static func valid(states: Variant, player_id: int = 1) -> bool:
+static func valid(states: Variant, player_id: int, water: Rect2) -> bool:
 	if not states is Array or states.size()>MAX_FISH: return false
 	var identities: Dictionary={}
 	for state in states:
 		if not state is Dictionary or not _keys(state,FIELDS): return false
 		if not state.fish_id is int or state.fish_id<2 or state.fish_id==player_id or identities.has(state.fish_id): return false
 		if not state.animation_state is String or state.animation_state not in ["swim","hooked","landing"]: return false
-		var bounds: Rect2=landing_bounds() if state.animation_state=="landing" else Layout.fish_bounds(BODY_RADIUS)
+		var bounds: Rect2=landing_bounds(water) if state.animation_state=="landing" else water.grow(-BODY_RADIUS)
 		if not state.position is Vector2 or not state.position.is_finite() or not bounds.has_point(state.position): return false
 		var max_speed: float=MAX_SPEED if state.animation_state=="swim" else MAX_HOOK_SPEED
 		if not state.velocity is Vector2 or not state.velocity.is_finite() or state.velocity.length()>max_speed+0.001: return false

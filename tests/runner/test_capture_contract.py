@@ -1,6 +1,7 @@
 """Keep native capture entrypoints portable without adding PCK dependencies."""
 from pathlib import Path
 import re
+import json
 import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -21,13 +22,21 @@ class CaptureContractTests(unittest.TestCase):
                 self.assertIn("CAPTURE_OUTPUT_FAIL", source)
                 self.assertIn("error != OK", source)
                 self.assertNotRegex(source, r'save_png\("res://')
-                self.assertNotIn('preload("res://tests/', source)
+                if script.name == "phase04_map_native.gd":
+                    # Its authored map is intentionally unavailable in a release
+                    # PCK; every other renderer keeps the external-pack contract.
+                    registry = json.loads((ROOT / "tests" / "suite_registry.json").read_text())
+                    self.assertFalse(registry["suites"][script.stem]["pack_compatible"])
+                    self.assertIn("fixture", registry["suites"][script.stem]["pack_reason"])
+                else:
+                    self.assertNotIn('preload("res://tests/', source)
         self.assertIn("phase01_native.gd", producers)
         self.assertIn("phase02_bite_native.gd", producers)
         self.assertIn("phase02_bait_native.gd", producers)
         self.assertIn("phase03_npc_hook_native.gd", producers)
         self.assertIn("player_hook_entry_native.gd", producers)
-        self.assertEqual(len(producers), 37)
+        self.assertIn("phase04_map_native.gd", producers)
+        self.assertEqual(len(producers), 38)
 
     def test_capture_success_cannot_overwrite_failure(self):
         for script in sorted((ROOT / "tests").glob("*.gd")):

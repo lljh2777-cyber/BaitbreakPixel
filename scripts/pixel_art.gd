@@ -1,5 +1,6 @@
 extends RefCounted
 
+const Presentation=preload("res://scripts/maps/map_presentation.gd")
 const Wood=preload("res://scripts/pond_wood_art.gd")
 
 static func paint_line(canvas: Image, a: Vector2, b: Vector2, color: Color) -> void:
@@ -111,27 +112,28 @@ static func reed() -> Texture2D:
 		{"t":"c59d63", "s":"437d6d", "l":"67ac85"})
 
 # Materials are painted inside the authoritative silhouette. The net, fading and
-# line-coil targets still use PondLayout; decorative pixels never enlarge cover.
-static func prop(obstacle: Dictionary) -> Dictionary:
+# line-coil targets use MapContext; decorative pixels never enlarge cover.
+static func prop(obstacle: Dictionary, presentation: RefCounted=null) -> Dictionary:
 	var bounds := prop_bounds(obstacle)
-	return {"texture":ImageTexture.create_from_image(prop_image(obstacle)),"position":bounds.position}
+	return {"texture":ImageTexture.create_from_image(prop_image(obstacle,presentation)),"position":bounds.position}
 
 # Assemble connected masks while fully opaque, then tint the whole tree once.
 # Blending separately faded branches would darken their overlap pixels.
-static func scene_props() -> Array[Dictionary]:
+static func scene_props(presentation: RefCounted=null) -> Array[Dictionary]:
+	if presentation == null: presentation=Presentation.default_map()
 	var result: Array[Dictionary]=[]
 	var consumed: Dictionary={}
-	for index in Wood.Layout.SOLIDS.size():
+	for index in presentation.solids.size():
 		if consumed.has(index): continue
-		var group:=Wood.Layout.solid_fade_group(index)
+		var group: String=presentation.solid_fade_group(index)
 		var members: Array[int]=[]
 		var images: Array[Dictionary]=[]
 		var bounds:=Rect2i()
-		for candidate in Wood.Layout.SOLIDS.size():
-			if Wood.Layout.solid_fade_group(candidate)!=group: continue
-			consumed[candidate]=true; members.append(candidate)
-			var solid: Dictionary=Wood.Layout.SOLIDS[candidate]
-			var image:=prop_image(solid)
+		for candidate in presentation.solids.size():
+			if presentation.solid_fade_group(candidate)!=group: continue
+			consumed[candidate]=true; members.append(presentation.solids[candidate].target_index)
+			var solid: Dictionary=presentation.solids[candidate]
+			var image:=prop_image(solid,presentation)
 			var at:=Vector2i(prop_bounds(solid).position)
 			var region:=Rect2i(at,image.get_size())
 			bounds=region if images.is_empty() else bounds.merge(region)
@@ -144,18 +146,20 @@ static func scene_props() -> Array[Dictionary]:
 	return result
 
 static func prop_bounds(obstacle: Dictionary) -> Rect2:
+	if obstacle.has("bounds"): return Rect2(obstacle.bounds).grow(1)
 	var polygon := PackedVector2Array(obstacle.points)
 	var bounds := Rect2(polygon[0],Vector2.ZERO)
 	for point in polygon: bounds=bounds.expand(point)
 	return bounds.grow(1)
 
-static func prop_image(obstacle: Dictionary) -> Image:
+static func prop_image(obstacle: Dictionary, presentation: RefCounted=null) -> Image:
+	if presentation == null: presentation=Presentation.default_map()
 	var polygon := PackedVector2Array(obstacle.points)
 	var bounds := prop_bounds(obstacle)
 	var canvas := Image.create(int(bounds.size.x)+1,int(bounds.size.y)+1,false,Image.FORMAT_RGBA8)
 	canvas.fill(Color.TRANSPARENT)
 	var wood: bool=obstacle.kind=="wood"
-	var grain := Wood.context(obstacle) if wood else {}
+	var grain := Wood.context(obstacle,presentation) if wood else {}
 	for y in canvas.get_height():
 		for x in canvas.get_width():
 			var point := bounds.position+Vector2(x+0.5,y+0.5)

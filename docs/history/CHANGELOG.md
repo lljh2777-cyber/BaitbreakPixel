@@ -1,3 +1,11 @@
+# 2026-10-04 · v0.26.4 Phase 4 地图抽象最终工程门
+
+用户授权持续完成P4.4–P4.6并自行测试。本轮将池塘/岸边/镜头/像素显示与缓存迁至当前MapContext，清除通用网络/NPC/观察/路径中的旧静态地图假设，加入只在测试中使用的800×360及小/高/平移fixture。保留原pond_v2、地图hash、schema16、角色隐私、QTE/NPC/抄网节奏和原生画面；另明确修复同tick抄网age整数导致鱼端拒包的继承问题。最终验证采用完整状态与原生RGBA直接比较，无批量无意义SHA256清单。仅提交推送，不创建包或Release。人工手感未代验，不自动进入Phase5。见[完整报告](../test-reports/PHASE04-MAP-FINAL-0.26.4.md)；下列历史门记录保留原文。
+
+# 2026-10-04 · v0.26.2 P4.3 地图存档与联机
+
+用户确认 0.26.1 后，仅推进 Snapshot schema16 / MapRef 和网络地图握手。恢复与开局要求本机地图 ID、revision、contract_version、content_hash 一致；旧 schema15 明确拒绝，地图不匹配不进入比赛。现有 pond_v2、隐私边界、RNG、玩法与画面保持。仅提交推送，不构建游戏包或 Release；公开 Windows 包仍为 0.26.1。完成后停在 P4.3，等待确认再做 P4.4。详见[本轮报告](../test-reports/PHASE04-MAP-SNAPSHOT-NETWORK-0.26.2.md)。
+
 # 2026-10-04 · v0.26.1 Windows 试玩包发布
 
 已发布 v0.26.1，Authority 迁移到每局固定的 MapContext，现有池塘和玩法保持，P4.3 尚未开始。Windows 完整 current 源码回归、发行包定向检查及 EXE 启动通过；Python 工具测试 19 项通过、1 项因符号链接权限受阻。详见[发布核验记录](../test-reports/GITHUB-RELEASE-0.26.1.md)。历史记录保持原样。

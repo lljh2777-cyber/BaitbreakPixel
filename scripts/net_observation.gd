@@ -3,7 +3,7 @@ extends RefCounted
 # View-only underwater observation. Never exposes the fish HUD or writes simulation state.
 const Camera = preload("res://scripts/pond_camera.gd")
 const Net = preload("res://scripts/net_simulation.gd")
-const Layout = preload("res://scripts/pond_layout.gd")
+const Presentation = preload("res://scripts/maps/map_presentation.gd")
 const INK := Color("142e39")
 const MINT := Color("8de0bd")
 const RED := Color("f58375")
@@ -16,24 +16,26 @@ static func interactive(view: Node2D, world: Node2D, point: Vector2) -> bool:
 	return true
 
 static func draw(view: Node2D, world: Node2D, t: float) -> void:
+	var map := Presentation.for_context(world.map_context)
 	var offset:=Camera.offset(world,"angler")
 	view.draw_set_transform(Vector2.ZERO)
 	view.draw_rect(Rect2(0,0,640,360),INK)
 	view.draw_set_transform(-offset)
-	for band in 14:
-		view.draw_rect(Rect2(0,55+band*29,Layout.SIZE.x,29),Color("285e68").lerp(Color("153d4e"),band/13.0))
-	view.draw_rect(Rect2(0,53,Layout.SIZE.x,2),Color("64958f"))
+	var bands:=maxi(2,ceili((map.floor_y-map.surface_y)/29.0))
+	for band in bands:
+		view.draw_rect(Rect2(0,map.surface_y+band*29,map.size.x,29),Color("285e68").lerp(Color("153d4e"),band/float(bands-1)))
+	view.draw_rect(Rect2(0,map.surface_y-2,map.size.x,2),Color("64958f"))
 	# A sparse, native-pixel veil preserves edges without a blur filter.
-	for tile_y in range(64,int(Layout.FLOOR),16):
-		for tile_x in range(0,int(Layout.SIZE.x),16):
+	for tile_y in range(int(map.water.position.y-4),int(map.floor_y),16):
+		for tile_x in range(0,int(map.size.x),16):
 			var p := Vector2(tile_x+8,tile_y+8)
 			if not Net.reachable(world,p): view.draw_rect(Rect2(tile_x,tile_y,16,16),Color(0.02,0.08,0.13,0.32))
 	for index in 28:
-		var p: Vector2=Vector2(posmod(index*79,int(Layout.SIZE.x)),70+posmod(index*41,355))+world.water_offset(Vector2(index*17,180))
+		var p: Vector2=Vector2(posmod(index*79,int(map.size.x)),map.water.position.y+2+posmod(index*41,maxi(1,int(map.water.size.y-8))))+world.water_offset(Vector2(index*17,map.water.position.y+112))
 		view.draw_line(p.round(),(p+Vector2(5+index%4,0)).round(),Color(0.47,0.71,0.68,0.15),1)
 	for prop in view.props:
 		view.draw_texture(prop.texture,prop.position,Color(0.58,0.72,0.69,0.9))
-	for plant in Layout.PLANTS:
+	for plant in map.plants:
 		var origin := Vector2(plant.x,plant.y)
 		for stem in range(3):
 			var top := origin+Vector2((stem-1)*plant.width*0.2+sin(t+plant.x)*2,-plant.height*(0.7+stem*0.12))
@@ -41,7 +43,7 @@ static func draw(view: Node2D, world: Node2D, t: float) -> void:
 			for leaf in range(1,4):
 				var p := origin.lerp(top,leaf/4.0).round()
 				view.draw_line(p,p+Vector2(7 if (leaf+stem)%2 else -7,-6),Color("3c746d"),1)
-	view.draw_rect(Rect2(0,Layout.FLOOR,Layout.SIZE.x,30),Color("405b59"))
+	view.draw_rect(Rect2(0,map.floor_y,map.size.x,30),Color("405b59"))
 	view.shore.draw_observed_npcs(view,world)
 	# Silhouettes are approximate in position and contain no face, stamina or food detail.
 	var visibility := Net.visibility(world,world.fish)
@@ -61,7 +63,7 @@ static func draw(view: Node2D, world: Node2D, t: float) -> void:
 	var boundary := PackedVector2Array()
 	for index in 97:
 		var p: Vector2=world.angler.anchor()+Vector2.from_angle(index*PI/96)*world.rule("net_reach")
-		if p.y>=55 and p.y<=Layout.FLOOR and p.x>=0 and p.x<=Layout.SIZE.x: boundary.append(p.round())
+		if p.y>=map.surface_y and p.y<=map.floor_y and p.x>=0 and p.x<=map.size.x: boundary.append(p.round())
 		elif boundary.size()>1:
 			view.draw_polyline(boundary,Color(MINT,0.25),1); boundary.clear()
 	if boundary.size()>1: view.draw_polyline(boundary,Color(MINT,0.25),1)

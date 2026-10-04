@@ -1,19 +1,22 @@
 extends RefCounted
 
 # Cached decorative depth planes. These never enter collision or coil geometry.
-const Layout=preload("res://scripts/pond_layout.gd")
+const Presentation=preload("res://scripts/maps/map_presentation.gd")
 const Art=preload("res://scripts/pixel_art.gd")
 
-static func _canvas() -> Image:
-	var image:=Image.create(int(Layout.SIZE.x),int(Layout.SIZE.y),false,Image.FORMAT_RGBA8)
+static func _canvas(presentation: RefCounted) -> Image:
+	var image:=Image.create(int(presentation.size.x),int(presentation.size.y),false,Image.FORMAT_RGBA8)
 	image.fill(Color.TRANSPARENT)
 	return image
 
 static func _grain(x: int, y: int, seed_value: int=0) -> float:
 	return float(posmod(x*127+y*311+seed_value*73,997))/997.0
 
-static func distant_image() -> Image:
-	var image:=_canvas()
+static func distant_image(presentation: RefCounted=null) -> Image:
+	if presentation == null: presentation=Presentation.default_map()
+	var image:=_canvas(presentation)
+	# Authored legacy decoration belongs to this visual profile only.
+	if presentation.visual_profile_id!="legacy_pond": return image
 	# Submerged shelves grow larger toward the banks, opening a central valley.
 	for rock: Array in [[-4,350,145,172],[90,372,106,121],[181,384,85,79],[306,398,65,43],[473,394,66,42],[715,395,91,46],[916,380,86,67],[1028,371,105,100],[1189,358,145,151],[1280,356,106,194]]:
 		_rock(image,Vector2(rock[0],rock[1]),Vector2(rock[2],rock[3]),int(rock[0])+31,0.24,Color("205057"),Color("427472"))
@@ -23,8 +26,11 @@ static func distant_image() -> Image:
 	_timber(image,Vector2(992,393),Vector2(1145,317),13,Color(0.08,0.22,0.27,0.40),Color(0.20,0.36,0.35,0.32))
 	return image
 
-static func middle_image() -> Image:
-	var image:=_canvas()
+static func middle_image(presentation: RefCounted=null) -> Image:
+	if presentation == null: presentation=Presentation.default_map()
+	var image:=_canvas(presentation)
+	# Authored legacy decoration belongs to this visual profile only.
+	if presentation.visual_profile_id!="legacy_pond": return image
 	# Staggered ledges and overlapping rocks, rather than a repeated stone row.
 	for rock: Array in [[-10,415,79,94],[73,411,69,59],[117,412,41,32],[268,405,40,29],[408,411,62,42],[453,412,31,24],[792,416,57,51],[920,413,45,29],[1078,411,49,44],[1162,414,81,73],[1272,414,91,128]]:
 		_rock(image,Vector2(rock[0],rock[1]),Vector2(rock[2],rock[3]),int(rock[0])+61,0.64,Color("274f52"),Color("69867b"))
@@ -32,8 +38,11 @@ static func middle_image() -> Image:
 		_weed(image,Vector2(clump[0],clump[1]),float(clump[2]),int(clump[3]),Color(0.20,0.38,0.32,0.64),1.2)
 	return image
 
-static func surface_image() -> Image:
-	var image:=_canvas()
+static func surface_image(presentation: RefCounted=null) -> Image:
+	if presentation == null: presentation=Presentation.default_map()
+	var image:=_canvas(presentation)
+	# Authored legacy decoration belongs to this visual profile only.
+	if presentation.visual_profile_id!="legacy_pond": return image
 	# Floating leaves have broad undersides and long, irregular stalks.
 	for pad: Array in [[85,36,314],[186,26,257],[484,34,340],[565,24,295],[884,41,369],[976,28,298],[1162,38,345]]:
 		var x: float=pad[0]; var width: float=pad[1]; var depth: float=pad[2]
@@ -64,14 +73,15 @@ static func surface_image() -> Image:
 			previous=point
 	return image
 
-static func floor_image() -> Image:
-	var image:=_canvas()
+static func floor_image(presentation: RefCounted=null) -> Image:
+	if presentation == null: presentation=Presentation.default_map()
+	var image:=_canvas(presentation)
 	# Distance contracts the gravel and fades the far bed into the water.
 	for x in image.get_width():
-		var horizon:=357.0+sin(x*0.008+1)*9+sin(x*0.029)*4
-		for y in range(int(horizon),image.get_height()):
-			var depth:=clampf((y-horizon)/(Layout.FLOOR-horizon),0,1)
-			var channel:=exp(-pow((x-664.0)/(102+depth*156),2))
+		var horizon: float=presentation.floor_y-76.0+sin(x*0.008+1)*9+sin(x*0.029)*4
+		for y in range(maxi(0,int(horizon)),image.get_height()):
+			var depth:=clampf((y-horizon)/(presentation.floor_y-horizon),0,1)
+			var channel:=exp(-pow((x-presentation.size.x*0.51875)/(102+depth*156),2))
 			var wave:=sin(x*0.074+y*0.19)+sin(x*0.037-y*0.093)
 			var dark:=Color("355a55"); var sand:=Color("7d8970")
 			var light:=0.18+channel*0.37+wave*0.047+(_grain(x,y)-0.5)*0.09
@@ -80,15 +90,18 @@ static func floor_image() -> Image:
 			image.set_pixel(x,y,color)
 	# Gravel comes in loose patches, with elliptical contact shadows.
 	for index in 205:
-		var y:=366+posmod(index*47+index*index*3,109)
-		var depth: float=(y-355.0)/125.0
-		var x:=posmod(index*109+index*index*17,1280)
+		var y:=int(presentation.floor_y)-67+posmod(index*47+index*index*3,maxi(1,int(presentation.size.y-presentation.floor_y)+62))
+		var depth: float=(y-(presentation.floor_y-78.0))/125.0
+		var x:=posmod(index*109+index*index*17,maxi(1,int(presentation.size.x)))
 		var size:=Vector2(2+floorf(depth*5)+index%3,1+floorf(depth*3))
 		_rock(image,Vector2(x,y),size,index+137,0.45+depth*0.35,Color("2c4947"),Color("8a9479"))
 	return image
 
-static func foreground_image() -> Image:
-	var image:=_canvas()
+static func foreground_image(presentation: RefCounted=null) -> Image:
+	if presentation == null: presentation=Presentation.default_map()
+	var image:=_canvas(presentation)
+	# Authored legacy decoration belongs to this visual profile only.
+	if presentation.visual_profile_id!="legacy_pond": return image
 	# Broad dark blades overlap the bed at the near edge. The fish and food
 	# render above this plane, so depth accents cannot hide interaction cues.
 	for clump: Array in [[26,475,96,7],[153,477,66,5],[349,479,73,6],[598,479,55,5],[895,477,81,6],[1038,476,105,7],[1248,478,134,8]]:

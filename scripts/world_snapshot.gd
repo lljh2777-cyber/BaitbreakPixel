@@ -6,11 +6,14 @@ const FoodProfile = preload("res://scripts/food_profile.gd")
 const NPCFishState = preload("res://scripts/npc_fish_state.gd")
 const NPCHook = preload("res://scripts/npc_hook.gd")
 const NPCPublic = preload("res://scripts/npc_fish_public_state.gd")
-const SCHEMA := 15
-# Schema 15 adds separate NPC authority. This mandatory extension guard rejects
-# earlier feeding physics even without a network exact-build handshake.
+const MapContext = preload("res://scripts/maps/map_context.gd")
+const SCHEMA := 16
+# Schema 16 requires a complete locally resolvable map_ref. Schema 15 and earlier
+# are explicitly rejected; no geometry or map identity can be inferred/upgraded.
 const BAIT_PROFILE_VERSION := 3
-const MAP_ID := "pond_v2"
+const MAX_VALUE_DEPTH := 32
+const MAX_VALUE_NODES := 262144
+const MAX_CONTAINER_ITEMS := 8192
 const WORLD_FIELDS: Array[String] = [
 	"fish_id", "rod_id", "next_bait_id", "next_hook_id",
 	"next_fish_id", "npc_fishes", "hook_target_fish_id", "npc_foraging_enabled", "npc_social_enabled", "public_hook_cue",
@@ -176,26 +179,58 @@ static func capture(world: Node2D) -> Dictionary:
 	for key in WORLD_FIELDS: state[key]=world.get(key)
 	for key in RIG_FIELDS: rig[key]=world.angler.get(key)
 	# Variant serialization also detaches packed arrays and nested grain/wrap data.
-	return bytes_to_var(var_to_bytes({"schema":SCHEMA,"bait_profile_version":BAIT_PROFILE_VERSION,"map_id":MAP_ID,"state":state,"rig":rig,"rng_seed":world.rng.seed,"rng_state":world.rng.state}))
+	return bytes_to_var(var_to_bytes({"schema":SCHEMA,"bait_profile_version":BAIT_PROFILE_VERSION,"map_ref":world.map_context.map_ref,"state":state,"rig":rig,"rng_seed":world.rng.seed,"rng_state":world.rng.state}))
 
 static func plain(value: Variant) -> bool:
+	return _plain(value,[],[MAX_VALUE_NODES],0)
+
+# Inspect untrusted containers before detaching/serializing them. Empty typed
+# Object containers can carry scripts even when they have no visible elements.
+static func _plain(value: Variant, ancestors: Array, budget: Array[int], depth: int) -> bool:
+	budget[0]-=1
+	if budget[0]<0 or depth>MAX_VALUE_DEPTH: return false
 	match typeof(value):
 		TYPE_NIL,TYPE_BOOL,TYPE_INT,TYPE_STRING,TYPE_STRING_NAME: return true
 		TYPE_FLOAT: return is_finite(value)
 		TYPE_VECTOR2: return value.is_finite()
-		TYPE_ARRAY,TYPE_PACKED_VECTOR2_ARRAY:
-			for item in value:
-				if not plain(item): return false
+		TYPE_PACKED_VECTOR2_ARRAY:
+			if value.size()>MAX_CONTAINER_ITEMS: return false
+			for point in value:
+				if not point.is_finite(): return false
 			return true
-		TYPE_DICTIONARY:
-			for key in value:
-				if not (key is String or key is StringName or key is int) or not plain(value[key]): return false
+		TYPE_ARRAY,TYPE_DICTIONARY:
+			if value.size()>MAX_CONTAINER_ITEMS: return false
+			if value is Array and value.get_typed_builtin()==TYPE_OBJECT: return false
+			if value is Dictionary and (value.get_typed_key_builtin()==TYPE_OBJECT or value.get_typed_value_builtin()==TYPE_OBJECT): return false
+			for ancestor in ancestors:
+				if is_same(value,ancestor): return false
+			ancestors.append(value)
+			if value is Dictionary:
+				for key in value:
+					if not (key is String or key is StringName or key is int) or not _plain(value[key],ancestors,budget,depth+1):
+						ancestors.pop_back()
+						return false
+			else:
+				for item in value:
+					if not _plain(item,ancestors,budget,depth+1):
+						ancestors.pop_back()
+						return false
+			ancestors.pop_back()
 			return true
 	return false
 
 static func fields_match(object: Object, values: Dictionary, fields: Array[String]) -> bool:
 	for key in fields:
-		if not values.has(key) or typeof(object.get(key))!=typeof(values[key]): return false
+		var reference: Variant=object.get(key)
+		if not values.has(key) or typeof(reference)!=typeof(values[key]): return false
+		# Validate typed property assignment too, before any earlier field can be
+		# changed. A same-size Array of the wrong built-in type is not safe state.
+		if reference is Array and reference.is_typed():
+			var expected: int=reference.get_typed_builtin()
+			var items: Array=values[key]
+			if items.is_typed() and items.get_typed_builtin()!=expected: return false
+			for item in items:
+				if typeof(item)!=expected: return false
 	return true
 
 static func record_matches(values: Dictionary, reference: Dictionary, excluded: String = "") -> bool:
@@ -215,9 +250,15 @@ static func restore_angler_presentation(world: Node2D, snapshot: Dictionary) -> 
 	return _restore(world,snapshot,true)
 
 static func _restore(world: Node2D, snapshot: Dictionary, public_npcs: bool) -> bool:
+	if not snapshot.get("schema") is int: return false
+	if snapshot.schema==15: return false # Deliberate legacy rejection, not a migration.
+	if snapshot.schema!=SCHEMA or snapshot.size()!=7: return false
 	if not snapshot.get("bait_profile_version") is int or snapshot.bait_profile_version!=BAIT_PROFILE_VERSION: return false
-	if snapshot.size()!=7: return false
-	if snapshot.get("schema")!=SCHEMA or snapshot.get("map_id")!=MAP_ID or not plain(snapshot): return false
+	# Resolve the identity first; never use the current world's geometry to
+	# validate a different snapshot, and never accept supplied geometry fields.
+	var resolved := MapContext.load_ref(snapshot.get("map_ref"))
+	if not resolved.valid or not plain(snapshot): return false
+	var context: RefCounted=resolved.context
 	if not snapshot.get("state") is Dictionary or not snapshot.get("rig") is Dictionary: return false
 	if not snapshot.get("rng_seed") is int or not snapshot.get("rng_state") is int: return false
 	var state: Dictionary=snapshot.state
@@ -244,7 +285,7 @@ static func _restore(world: Node2D, snapshot: Dictionary, public_npcs: bool) -> 
 	if state.satiety<0 or state.satiety>100: return false
 	if state.stamina<0 or state.stamina>state.rules.stamina_max: return false
 	if state.last_eat_at < -10 or state.last_eat_at > state.elapsed+0.000001: return false
-	if snapshot.rig.surface_x<0 or snapshot.rig.surface_x>world.Layout.SIZE.x or absf(snapshot.rig.surface_velocity)>10000: return false
+	if snapshot.rig.surface_x<0 or snapshot.rig.surface_x>context.size.x or absf(snapshot.rig.surface_velocity)>10000: return false
 	if not snapshot.rig.reel_hand_mode in [-1,0,1] or snapshot.rig.reel_hand_amount<0 or snapshot.rig.reel_hand_amount>1: return false
 	if snapshot.rig.reel_phase<0 or snapshot.rig.reel_phase>=TAU or snapshot.rig.release_phase<0 or snapshot.rig.release_phase>=TAU: return false
 	if snapshot.rig.rod_load<0 or snapshot.rig.rod_load>1 or snapshot.rig.rod_lift<0 or snapshot.rig.rod_lift>1: return false
@@ -252,7 +293,7 @@ static func _restore(world: Node2D, snapshot: Dictionary, public_npcs: bool) -> 
 	if not state.winner_role in ["","fish","angler"] or state.match_over!=(state.winner_role!=""): return false
 	if state.hooked<0 or state.hooked>2 or state.bound_bait < -1 or state.bound_bait>=4: return false
 	if state.baits.size()!=4 or state.net_route_next<1 or state.net_route_next>maxi(1,state.net_route.size()): return false
-	if state.target_opacity.size()!=world.targets.size(): return false
+	if state.target_opacity.size()!=context.target_count(): return false
 	if state.hooked!=0 and state.bound_bait<0: return false
 	if state.qte_id<0 or not state.qte in ["","entry","slack","wrap"]: return false
 	for role in ["fish","angler"]:
@@ -260,11 +301,11 @@ static func _restore(world: Node2D, snapshot: Dictionary, public_npcs: bool) -> 
 	if not world.Stats.valid(state.round_stats) or state.net_capture<0 or state.net_capture>1: return false
 	if state.round_stats.last_suck_success_tick>state.simulation_tick: return false
 	if not state.net_state in ["wait","rest","prepare","warning","sweep","miss","withdraw","caught"]: return false
-	if state.wrap_target < -1 or state.wrap_target>=world.targets.size(): return false
-	if state.contact_target < -1 or state.contact_target>=world.targets.size(): return false
-	if state.wraps.size()>world.targets.size() or state.baits.size()!=4: return false
+	if state.wrap_target < -1 or state.wrap_target>=context.target_count(): return false
+	if state.contact_target < -1 or state.contact_target>=context.target_count(): return false
+	if state.wraps.size()>context.target_count() or state.baits.size()!=4: return false
 	if not state.untangle_phase in ["","check","unwind","recover"] or state.untangle_age<0 or state.untangle_age>10.3 or state.untangle_cooldown<0 or state.untangle_cooldown>maxf(float(state.rules.untangle_cooldown),float(state.rules.wrap_seconds)+0.5): return false
-	if state.untangle_target < -1 or state.untangle_target>=world.targets.size(): return false
+	if state.untangle_target < -1 or state.untangle_target>=context.target_count(): return false
 	if state.untangle_phase in ["check","unwind"]:
 		if state.hooked!=2 or state.wraps.is_empty() or not state.wraps[-1] is Dictionary or state.wraps[-1].get("target")!=state.untangle_target: return false
 		if state.effort_checks.angler.kind!="untangle" or state.effort_checks.angler.active!=(state.untangle_phase=="check"): return false
@@ -276,17 +317,17 @@ static func _restore(world: Node2D, snapshot: Dictionary, public_npcs: bool) -> 
 	if not record_matches(state.public_hook_cue,{"tick":-1,"position":Vector2.ZERO}) or state.public_hook_cue.size()!=2: return false
 	if state.public_hook_cue.tick< -1 or state.public_hook_cue.tick>state.simulation_tick or not state.public_hook_cue.position.is_finite(): return false
 	if state.public_hook_cue.tick==-1 and state.public_hook_cue.position!=Vector2.ZERO: return false
-	if state.public_hook_cue.tick>=0 and not world.Layout.WATER.has_point(state.public_hook_cue.position): return false
+	if state.public_hook_cue.tick>=0 and not context.water.has_point(state.public_hook_cue.position): return false
 	if public_npcs:
-		if not NPCPublic.valid(state.npc_fishes,state.fish_id) or not NPCPublic.valid_hook_state(state): return false
+		if not NPCPublic.valid(state.npc_fishes,state.fish_id,context.water) or not NPCPublic.valid_hook_state(state,context.water): return false
 	else:
 		var npc_ids: Dictionary={}
 		for npc in state.npc_fishes:
-			if not NPCFishState.valid(npc,state.next_fish_id) or npc_ids.has(npc.fish_id): return false
+			if not NPCFishState.valid(npc,state.next_fish_id,context.water) or npc_ids.has(npc.fish_id): return false
 			if npc.social_danger_tick>state.simulation_tick: return false
 			npc_ids[npc.fish_id]=true
 		if not NPCHook.valid(state.npc_hook) or not _valid_hook_target(state): return false
-		if not NPCHook.valid_result(state.public_npc_hook_result,state.simulation_tick,state.next_fish_id) or not NPCPublic.valid_result(state.public_npc_hook_result,state.simulation_tick): return false
+		if not NPCHook.valid_result(state.public_npc_hook_result,state.simulation_tick,state.next_fish_id) or not NPCPublic.valid_result(state.public_npc_hook_result,state.simulation_tick,context.water): return false
 	if state.fish_id<=0 or state.rod_id<=0 or state.next_bait_id<=0 or state.next_hook_id<=0: return false
 	for bait in state.baits:
 		if not bait is Dictionary or not bait.get("grains") is Array or bait.grains.size()>2048: return false
@@ -310,10 +351,11 @@ static func _restore(world: Node2D, snapshot: Dictionary, public_npcs: bool) -> 
 	for wrap in state.wraps:
 		if not wrap is Dictionary: return false
 		if not record_matches(wrap,{"center":Vector2.ZERO,"radii":Vector2.ONE,"entry":Vector2.ZERO,"loop":PackedVector2Array(),"progress":0.0,"target":0}): return false
-		if not wrap.target is int or wrap.target<0 or wrap.target>=world.targets.size() or wrap.loop.size()<2 or wrap.loop.size()>512: return false
+		if not wrap.target is int or wrap.target<0 or wrap.target>=context.target_count() or wrap.loop.size()<2 or wrap.loop.size()>512: return false
 		if wrap.progress<0 or wrap.progress>1: return false
 	# Validate before mutating, and never fire sound/result/profile side effects on restore.
 	var detached: Dictionary=bytes_to_var(var_to_bytes(snapshot))
+	world._install_snapshot_map_context(context)
 	for key in WORLD_FIELDS: world.set(key,detached.state[key])
 	for key in RIG_FIELDS: world.angler.set(key,detached.rig[key])
 	world.rng.seed=detached.rng_seed

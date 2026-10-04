@@ -1,0 +1,2830 @@
+{
+  "format": "p43-native-equivalence-evidence-v1",
+  "recorded_at": "2026-10-04T11:20:46.792144+00:00",
+  "baseline": {
+    "commit": "8831f52ee7daae5d592282d5da432cbd67fccfb0",
+    "version": "0.26.1"
+  },
+  "current_version": "0.26.2",
+  "environment": {
+    "engine": "Godot 4.7.2.stable.official.ed1daf0bf",
+    "surface": "Actual cloud-native X11 desktop window, not headless or Xvfb",
+    "renderer": "OpenGL Compatibility / Mesa llvmpipe",
+    "viewport": [
+      640,
+      360
+    ],
+    "audio": "Dummy; audio output not verified"
+  },
+  "formal_profiles": {
+    "baseline": {
+      "renderer_suites": 22,
+      "all_passed": true,
+      "summary_assertions": 801,
+      "completion_markers": 2,
+      "failed": 0,
+      "editor_import_passed": true,
+      "source_stable": true,
+      "source_stability": "Pass during full native run; exact source-byte comparison for final current run"
+    },
+    "current": {
+      "renderer_suites": 22,
+      "all_passed": true,
+      "summary_assertions": 801,
+      "completion_markers": 2,
+      "failed": 0,
+      "editor_import_passed": true,
+      "source_stable": true,
+      "source_stability": "Pass during full native run; exact source-byte comparison for final current run"
+    },
+    "coverage": "Current registered native only: 22 renderer suites per side plus separate editor import; historical/retired/manual entries excluded",
+    "later_targeted_rerun": "Full native and controlled pixel evidence predate the later rejection-reason transport fix. Final Main-scene ENet UI rerun below verifies that isolated path; gameplay/render sources unchanged per reviewed scope."
+  },
+  "pixel_comparisons": {
+    "formal": {
+      "pair_count": 320,
+      "identical_count": 319,
+      "different_pixels_total": 859,
+      "missing_baseline": [],
+      "missing_current": [],
+      "rows": [
+        {
+          "path": "bait_suction_native_v0211/hook-0.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0211/hook-1.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0211/hook-2.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0211/hook-3.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0211/hook-4.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0211/hook-5.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0211/plain-0.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0211/plain-1.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0211/plain-2.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0211/plain-3.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0211/plain-4.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0211/plain-5.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0212/hook-0.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0212/hook-1.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0212/hook-2.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0212/hook-3.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0212/hook-4.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0212/hook-5.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0212/hook-idle.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0212/plain-0.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0212/plain-1.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0212/plain-2.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0212/plain-3.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0212/plain-4.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0212/plain-5.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "bait_suction_native_v0212/plain-idle.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "effort_native_v013/effort-angler-boost-v013.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "effort_native_v013/effort-angler-failure-v013.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "effort_native_v013/effort-angler-ring-v013.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "effort_native_v013/effort-angler-success-v013.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "effort_native_v013/effort-angler-warning-v013.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "effort_native_v013/effort-entry-random-v013.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "effort_native_v013/effort-entry-warning-v013.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "effort_native_v013/effort-fish-boost-v013.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "effort_native_v013/effort-fish-failure-v013.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "effort_native_v013/effort-fish-ring-v013.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "effort_native_v013/effort-fish-success-v013.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "effort_native_v013/effort-fish-warning-v013.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "effort_native_v013/effort-wrap-random-v013.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "feeding_feel_native_v022/gentle-deformed.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "feeding_feel_native_v022/gentle-hook-18.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "feeding_feel_native_v022/gentle-hook-36.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "feeding_feel_native_v022/gentle-hook-60.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "feeding_feel_native_v022/gentle-hook-9.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "feeding_feel_native_v022/gentle-intake.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "feeding_feel_native_v022/gentle-plain-18.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "feeding_feel_native_v022/gentle-plain-36.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "feeding_feel_native_v022/gentle-plain-60.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "feeding_feel_native_v022/gentle-plain-9.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "feeding_feel_native_v022/strong-deformed.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "feeding_feel_native_v022/strong-hook-18.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "feeding_feel_native_v022/strong-hook-36.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "feeding_feel_native_v022/strong-hook-60.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "feeding_feel_native_v022/strong-hook-9.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "feeding_feel_native_v022/strong-intake.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "feeding_feel_native_v022/strong-plain-18.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "feeding_feel_native_v022/strong-plain-36.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "feeding_feel_native_v022/strong-plain-60.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "feeding_feel_native_v022/strong-plain-9.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "net_native_v020/net-committed-shore-v020.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "net_native_v020/net-observe-blocked-v020.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "net_native_v020/net-observe-hooked-v020.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "net_native_v020/net-settings-v020.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "net_native_v020/net-shore-v020.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "net_native_v020/net-sweep-fish-v020.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "net_native_v020/net-sweep-shore-v020.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "obstacle_visuals_native/grass-1-bound-000.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "obstacle_visuals_native/grass-1-bound-050.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "obstacle_visuals_native/grass-1-bound-100.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "obstacle_visuals_native/grass-1-opacity-000.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "obstacle_visuals_native/grass-1-opacity-025.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "obstacle_visuals_native/grass-1-opacity-100.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "obstacle_visuals_native/grass-14-bound-000.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "obstacle_visuals_native/grass-14-bound-050.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "obstacle_visuals_native/grass-14-bound-100.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "obstacle_visuals_native/grass-14-opacity-000.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "obstacle_visuals_native/grass-14-opacity-025.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "obstacle_visuals_native/grass-14-opacity-100.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "obstacle_visuals_native/grass-18-bound-000.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "obstacle_visuals_native/grass-18-bound-050.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "obstacle_visuals_native/grass-18-bound-100.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "obstacle_visuals_native/grass-18-opacity-000.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "obstacle_visuals_native/grass-18-opacity-025.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "obstacle_visuals_native/grass-18-opacity-100.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "obstacle_visuals_native/log-opacity-000.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "obstacle_visuals_native/log-opacity-025.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "obstacle_visuals_native/log-opacity-100.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase01_native/bait-hooked.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase01_native/bait-safe.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase01_native/caution-alarmed.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase01_native/caution-calm.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase01_native/caution-uneasy.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase01_native/satiety-critical.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase01_native/satiety-hungry.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase01_native/satiety-normal.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase01_native/satiety-starving.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/chunk-automatic-bite-after.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/chunk-automatic-bite-before.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/chunk-hooked.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/chunk-loose-fragment-hooked.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/chunk-loose-fragment-moved.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/chunk-loose-fragment.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/chunk-partially-eaten-hooked.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/chunk-partially-eaten.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/chunk-safe.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/chunk-satiety-capped.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/chunk-suction-hooked.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/chunk-suction-safe.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/cluster-automatic-bite-after.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/cluster-automatic-bite-before.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/cluster-hooked.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/cluster-loose-fragment-hooked.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/cluster-loose-fragment-moved.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/cluster-loose-fragment.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/cluster-partially-eaten-hooked.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/cluster-partially-eaten.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/cluster-safe.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/cluster-satiety-capped.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/cluster-suction-hooked.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/cluster-suction-safe.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/three-bait-types-hooked.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/three-bait-types-partial-and-loose.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/three-bait-types-safe.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/worm-automatic-bite-after.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/worm-automatic-bite-before.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/worm-hooked.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/worm-loose-fragment-hooked.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/worm-loose-fragment-moved.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/worm-loose-fragment.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/worm-partially-eaten-hooked.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/worm-partially-eaten.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/worm-safe.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/worm-satiety-capped.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/worm-suction-hooked.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bait_native/worm-suction-safe.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bite_native/bite-active.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bite_native/bite-cooldown.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bite_native/bite-empty-idle.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bite_native/bite-far-idle.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bite_native/bite-far-ready.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bite_native/bite-food-ready.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bite_native/bite-outside-10-idle.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bite_native/bite-outside-10-ready.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bite_native/bite-ready.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bite_native/bite-recovered.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bite_native/bite-repeat-at-080.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bite_native/bite-still-cooling-at-060.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bite_native/hidden-hook-active.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bite_native/hidden-hook-cooldown.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bite_native/hidden-hook-ready.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bite_native/hidden-safe-active.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bite_native/hidden-safe-cooldown.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase02_bite_native/hidden-safe-ready.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/broken-angler-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/broken-angler-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/broken-angler.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/broken-fish-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/broken-fish-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/broken-fish.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/broken-observation-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/broken-observation-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/broken-observation.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/captured-angler.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/captured-fish.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/escaped-angler-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/escaped-angler-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/escaped-angler.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/escaped-fish-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/escaped-fish-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/escaped-fish.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/escaped-observation-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/escaped-observation-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/escaped-observation.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/hooked-angler-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/hooked-angler-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/hooked-angler.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/hooked-fish-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/hooked-fish-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/hooked-fish.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/hooked-observation-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/hooked-observation-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/hooked-observation.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/hooked-player-in-front.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/landing-angler-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/landing-angler-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/landing-angler.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/landing-fish-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/landing-fish-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/landing-fish.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/landing-observation-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/landing-observation-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/landing-observation.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/respawned-shore.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-count-0.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-count-3.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-count-6.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-hidden-truth.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-no-npcs.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-npc-fed-public-replica.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-npc-feeding-hidden-truth.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-npc-food-before.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-npc-food-consumed.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-npc-food-visible-control.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-player-in-front.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-public-replica.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-three-ambient.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-variant-0.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-variant-1.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-variant-2.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/observation-ambient-shadow.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/observation-hidden-truth.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/observation-no-npcs.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/shore-ambient-shadows.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/shore-hidden-truth.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/shore-no-npcs.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-compete-angler-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-compete-angler-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-compete-angler.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-compete-fish-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-compete-fish-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-compete-fish.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-compete-motion-later.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-compete-observation-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-compete-observation-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-compete-observation.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-flee-angler-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-flee-angler-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-flee-angler.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-flee-fish-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-flee-fish-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-flee-fish.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-flee-motion-later.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-flee-observation-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-flee-observation-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-flee-observation.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-hesitate-angler-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-hesitate-angler-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-hesitate-angler.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-hesitate-fish-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-hesitate-fish-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-hesitate-fish.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-hesitate-motion-later.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-hesitate-observation-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-hesitate-observation-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-hesitate-observation.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase15_native/angler-idle.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase15_native/angler-reel-0.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase15_native/angler-reel-1.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase15_native/angler-release-0.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase15_native/angler-release-1.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase15_native/angler-restart.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase15_native/angler-stopped.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase15_native/angler-undeployed.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase15_native/fish-caution-alarmed.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase15_native/fish-caution-calm.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase15_native/fish-caution-uneasy.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase15_native/fish-low-satiety-instinct.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase15_native/fish-satiety-0.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase15_native/fish-satiety-100.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase15_native/fish-satiety-20.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase15_native/fish-satiety-5.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase15_native/fish-satiety-50.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "player_hook_entry_native/entry-early-space.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "player_hook_entry_native/entry-green.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "player_hook_entry_native/entry-visible-failure.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "player_hook_entry_native/focus-menu.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "player_hook_entry_native/pause-menu.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "player_hook_entry_native/restart-clear.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "player_hook_entry_native/wrap-contact-loss-sweep.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "player_hook_entry_native/wrap-contact-loss-warning.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "player_hook_entry_native/wrap-early-space.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "player_hook_entry_native/wrap-green.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "player_hook_entry_native/wrap-success.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "pond_native_v021/fish-1080.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "pond_native_v021/fish-280.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "pond_native_v021/fish-670.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "pond_native_v021/hidden-hook.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "pond_native_v021/hooked-fish.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "pond_native_v021/net-far-bank.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "pond_native_v021/net-fish-far-bank.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "pond_native_v021/observe-far-bank.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "pond_native_v021/shore-far-bank.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "reeling_native_v0122/reeling-s-release-v0122.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "reeling_native_v0122/reeling-s-slack-v0122.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "reeling_native_v0122/reeling-start-v0122.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "reeling_native_v0122/reeling-w-tight-v0122.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "rules_native_v019/rules-custom-qte-v019.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "rules_native_v019/rules-locked-v019.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "rules_native_v019/rules-presets-v019.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "rules_native_v019/rules-qte-v019.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "rules_native_v019/rules-stamina-v019.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "untangle_native_v018/untangle-angler-check-v018.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "untangle_native_v018/untangle-angler-unwind-v018.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "untangle_native_v018/untangle-fish-check-v018.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "untangle_native_v018/untangle-fish-unwind-v018.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "visuals/help.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "visuals/loss.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "visuals/root-line.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "visuals/settings.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "visuals/slack-ring.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "visuals/title-final.png",
+          "exact_rgba": false,
+          "changed_pixels": 859,
+          "difference_bounds": [
+            364,
+            282,
+            475,
+            294
+          ]
+        },
+        {
+          "path": "visuals/win.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "water_scenery_native/contact.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "water_scenery_native/hidden-hook.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "water_scenery_native/hooked.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "water_scenery_native/left.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "water_scenery_native/middle.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "water_scenery_native/nest-ready.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "water_scenery_native/nest-waiting.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "water_scenery_native/nest.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "water_scenery_native/right.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "water_scenery_native/shallow.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "water_scenery_native/upper-right.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "wood_fade_native/fork-inside.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "wood_fade_native/fork-opaque.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "wood_fade_native/log-inside.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "wood_fade_native/log-opaque.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "wood_fade_native/trunk-default-inside.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "wood_fade_native/trunk-inside.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "wood_fade_native/trunk-opaque.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        }
+      ]
+    },
+    "controlled": {
+      "pair_count": 106,
+      "identical_count": 106,
+      "different_pixels_total": 0,
+      "missing_baseline": [],
+      "missing_current": [],
+      "rows": [
+        {
+          "path": "net_native_v020/net-committed-shore-v020.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "net_native_v020/net-observe-blocked-v020.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "net_native_v020/net-observe-hooked-v020.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "net_native_v020/net-settings-v020.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "net_native_v020/net-shore-v020.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "net_native_v020/net-sweep-fish-v020.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "net_native_v020/net-sweep-shore-v020.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/broken-angler-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/broken-angler-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/broken-angler.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/broken-fish-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/broken-fish-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/broken-fish.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/broken-observation-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/broken-observation-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/broken-observation.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/captured-angler.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/captured-fish.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/escaped-angler-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/escaped-angler-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/escaped-angler.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/escaped-fish-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/escaped-fish-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/escaped-fish.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/escaped-observation-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/escaped-observation-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/escaped-observation.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/hooked-angler-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/hooked-angler-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/hooked-angler.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/hooked-fish-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/hooked-fish-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/hooked-fish.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/hooked-observation-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/hooked-observation-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/hooked-observation.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/hooked-player-in-front.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/landing-angler-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/landing-angler-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/landing-angler.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/landing-fish-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/landing-fish-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/landing-fish.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/landing-observation-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/landing-observation-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/landing-observation.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_hook_native/respawned-shore.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-count-0.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-count-3.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-count-6.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-hidden-truth.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-no-npcs.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-npc-fed-public-replica.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-npc-feeding-hidden-truth.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-npc-food-before.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-npc-food-consumed.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-npc-food-visible-control.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-player-in-front.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-public-replica.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-three-ambient.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-variant-0.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-variant-1.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/fish-variant-2.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/observation-ambient-shadow.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/observation-hidden-truth.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/observation-no-npcs.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/shore-ambient-shadows.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/shore-hidden-truth.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/shore-no-npcs.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-compete-angler-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-compete-angler-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-compete-angler.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-compete-fish-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-compete-fish-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-compete-fish.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-compete-motion-later.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-compete-observation-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-compete-observation-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-compete-observation.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-flee-angler-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-flee-angler-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-flee-angler.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-flee-fish-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-flee-fish-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-flee-fish.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-flee-motion-later.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-flee-observation-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-flee-observation-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-flee-observation.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-hesitate-angler-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-hesitate-angler-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-hesitate-angler.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-hesitate-fish-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-hesitate-fish-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-hesitate-fish.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-hesitate-motion-later.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-hesitate-observation-hidden.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-hesitate-observation-public.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "phase03_npc_native/social-hesitate-observation.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "wood_fade_native/fork-inside.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "wood_fade_native/fork-opaque.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "wood_fade_native/log-inside.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "wood_fade_native/log-opaque.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "wood_fade_native/trunk-default-inside.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "wood_fade_native/trunk-inside.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        },
+        {
+          "path": "wood_fade_native/trunk-opaque.png",
+          "exact_rgba": true,
+          "changed_pixels": 0,
+          "difference_bounds": null
+        }
+      ],
+      "assertions_per_side": 229,
+      "subset_note": "106 targeted names are re-captures from the full320 names, not additional independent frames",
+      "source_bytes_stable": true,
+      "cursor_setup_checks": [
+        {
+          "suite": "phase03_npc_native",
+          "baseline_setups": 83,
+          "current_setups": 83,
+          "records_identical": true,
+          "all_noninteractive_and_authority_unchanged": true
+        },
+        {
+          "suite": "phase03_npc_hook_native",
+          "baseline_setups": 58,
+          "current_setups": 58,
+          "records_identical": true,
+          "all_noninteractive_and_authority_unchanged": true
+        }
+      ]
+    },
+    "method": "Compare complete decoded RGBA bytes, with no crops, masks, tolerances or modified assertions",
+    "intentional_title_difference": {
+      "path": "visuals/title-final.png",
+      "cause": "Approved title caption 0.26.1/P4.2 becomes 0.26.2/P4.3",
+      "visually_inspected": true,
+      "changed_pixels": 859,
+      "bounds": [
+        364,
+        282,
+        475,
+        294
+      ]
+    }
+  },
+  "native_enet_ui": {
+    "passed": 44,
+    "failed": 0,
+    "source_bytes_stable": true,
+    "formal_registry_suite": false,
+    "method": "Actual Main scenes and production menus over real ENet, using existing test-only packet transformer; no production render changes",
+    "capture_count": 12,
+    "roles": [
+      "fish",
+      "angler"
+    ],
+    "checks": "Connecting keeps Ready disabled; exact local MapRef validates before Ready/round; both client/display maps resolve locally; three public NPCs valid; wrong-hash hello/welcome fails before round; mismatch captions persist after rejection drain",
+    "states": [
+      {
+        "name": "fish-connecting",
+        "network_status": "connecting",
+        "network_message": "正在连接房主…",
+        "map_validated": false,
+        "local_role": "fish",
+        "shared_session": false,
+        "simulation_tick": 0,
+        "menu_visible": true,
+        "menu_screen": "room",
+        "ready_disabled": true
+      },
+      {
+        "name": "fish-map-validated-room",
+        "network_status": "waiting",
+        "network_message": "已进入房间，双方准备后开始",
+        "map_validated": true,
+        "local_role": "fish",
+        "shared_session": false,
+        "simulation_tick": 0,
+        "menu_visible": true,
+        "menu_screen": "room",
+        "ready_disabled": false
+      },
+      {
+        "name": "fish-playing",
+        "network_status": "playing",
+        "network_message": "",
+        "map_validated": true,
+        "local_role": "fish",
+        "shared_session": true,
+        "simulation_tick": 1,
+        "menu_visible": false,
+        "menu_screen": "room",
+        "ready_disabled": false
+      },
+      {
+        "name": "fish-hello-hash-rejected",
+        "network_status": "failed",
+        "network_message": "版本或地图不兼容，请双方使用 0.26.2 版及相同地图",
+        "map_validated": false,
+        "local_role": "angler",
+        "shared_session": false,
+        "simulation_tick": 0,
+        "menu_visible": true,
+        "menu_screen": "room",
+        "ready_disabled": true
+      },
+      {
+        "name": "fish-hello-client-hash-rejected",
+        "network_status": "failed",
+        "network_message": "版本或地图不兼容，请双方使用 0.26.2 版及相同地图",
+        "map_validated": false,
+        "local_role": "fish",
+        "shared_session": false,
+        "simulation_tick": 0,
+        "menu_visible": true,
+        "menu_screen": "room",
+        "ready_disabled": true
+      },
+      {
+        "name": "fish-welcome-hash-rejected",
+        "network_status": "failed",
+        "network_message": "房主版本或地图不兼容",
+        "map_validated": false,
+        "local_role": "fish",
+        "shared_session": false,
+        "simulation_tick": 0,
+        "menu_visible": true,
+        "menu_screen": "room",
+        "ready_disabled": true
+      },
+      {
+        "name": "angler-connecting",
+        "network_status": "connecting",
+        "network_message": "正在连接房主…",
+        "map_validated": false,
+        "local_role": "fish",
+        "shared_session": false,
+        "simulation_tick": 0,
+        "menu_visible": true,
+        "menu_screen": "room",
+        "ready_disabled": true
+      },
+      {
+        "name": "angler-map-validated-room",
+        "network_status": "waiting",
+        "network_message": "已进入房间，双方准备后开始",
+        "map_validated": true,
+        "local_role": "angler",
+        "shared_session": false,
+        "simulation_tick": 0,
+        "menu_visible": true,
+        "menu_screen": "room",
+        "ready_disabled": false
+      },
+      {
+        "name": "angler-playing",
+        "network_status": "playing",
+        "network_message": "",
+        "map_validated": true,
+        "local_role": "angler",
+        "shared_session": true,
+        "simulation_tick": 1,
+        "menu_visible": false,
+        "menu_screen": "room",
+        "ready_disabled": false
+      },
+      {
+        "name": "angler-hello-hash-rejected",
+        "network_status": "failed",
+        "network_message": "版本或地图不兼容，请双方使用 0.26.2 版及相同地图",
+        "map_validated": false,
+        "local_role": "fish",
+        "shared_session": false,
+        "simulation_tick": 0,
+        "menu_visible": true,
+        "menu_screen": "room",
+        "ready_disabled": true
+      },
+      {
+        "name": "angler-hello-client-hash-rejected",
+        "network_status": "failed",
+        "network_message": "版本或地图不兼容，请双方使用 0.26.2 版及相同地图",
+        "map_validated": false,
+        "local_role": "fish",
+        "shared_session": false,
+        "simulation_tick": 0,
+        "menu_visible": true,
+        "menu_screen": "room",
+        "ready_disabled": true
+      },
+      {
+        "name": "angler-welcome-hash-rejected",
+        "network_status": "failed",
+        "network_message": "房主版本或地图不兼容",
+        "map_validated": false,
+        "local_role": "fish",
+        "shared_session": false,
+        "simulation_tick": 0,
+        "menu_visible": true,
+        "menu_screen": "room",
+        "ready_disabled": true
+      }
+    ],
+    "selected_viewport_images": [
+      "fish-playing.png",
+      "angler-playing.png",
+      "fish-hello-client-hash-rejected.png"
+    ]
+  },
+  "retained_pre_fix_findings": [
+    {
+      "finding": "Initial controlled images106/106exact but source changed during capture",
+      "action": "Correctly failed source-stability gate; retained evidence and cleanly reran final controlled pair"
+    },
+    {
+      "finding": "Bad hello host showed map/version error, joining client showed generic connection-closed caption",
+      "action": "Reported; rejection transport corrected; final native rerun asserts explicit joining-client map/version error after both peers stop and drain"
+    }
+  ]
+}
