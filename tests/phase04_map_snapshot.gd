@@ -250,4 +250,3 @@ func geometry_and_rng() -> void:
 	bad = reference.duplicate(true); bad.contract_version = 2
 	check(not target.reset_world({"map_ref":bad}) and bytes(target) == before,"round config mismatched ref rejects before world mutation")
 	source.free(); target.free()
-
