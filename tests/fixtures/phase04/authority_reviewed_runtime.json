@@ -1,0 +1,63 @@
+{
+  "format": "phase04-authority-reviewed-runtime-v1",
+  "baseline_commit": "0a3e5af3dc3ca26f0909644505ff24a1de1fe06d",
+  "review_status": "reviewed",
+  "review_scope": "P4.2 Authority MapContext only. Snapshot16/map-ref handshake, presentation migration, generic Rope node bounds and new fish collision behavior remain out of scope.",
+  "verification": {
+    "fixture_suite": "phase04_map_authority",
+    "fixture_assertions": 1017,
+    "fixture_failures": 0,
+    "fixture_result": "artifacts/p42-independent-authority/summary.json",
+    "engine": "4.7.2.stable.official.ed1daf0bf"
+  },
+  "files": {
+    "scripts/angler_brain.gd": {
+      "sha256": "0f2510449bdd82ccc093435e6753f08d9bb7d8fceff48863205f522640f190ef",
+      "reason": "Read patrol width from the installed map size with unchanged pond operation order."
+    },
+    "scripts/angler_rig.gd": {
+      "sha256": "e437c2afcb2581991bd11299c73b60c308112198aacfe23750f9f32db544aadc",
+      "reason": "Configure derived walk, cast, cursor, buoy, hook and surface policies from the installed map before reset; preserve exact pond margins and inertial algorithms."
+    },
+    "scripts/fish_brain.gd": {
+      "sha256": "ab81c9b7065877e9688c10665784f14baf9c8b7052c7080e9db9e4de34d892c2",
+      "reason": "Use installed water/floor/home for avoidance, escape and return navigation; select only explicit rope anchors without reordering compatibility targets."
+    },
+    "scripts/fish_observation.gd": {
+      "sha256": "ef06497455068a1564f1a950305448121fab2ba0ac05cd6a467b444b6b3aadc1",
+      "reason": "Pass active map water to authority loose-food perception. Retain a separately documented cached built-in water default only for the existing schema15 network helper ABI."
+    },
+    "scripts/maps/map_context.gd": {
+      "sha256": "ecc8282fcd566b172c72d853f4a1859475f1604c7b8982d85707fae64fe6da0f",
+      "reason": "New checked immutable round context with detached packed-array exports, cached geometry/lookups/capability views, inert public setters and zero map-loading RNG consumption."
+    },
+    "scripts/maps/map_context.gd.uid": {
+      "sha256": "c394d2daf3a129c1859ba4ef26580ce42b857a9c31a2e67321fcd8a1233faa54",
+      "reason": "Godot UID metadata for the reviewed MapContext script; no executable or map data changes."
+    },
+    "scripts/maps/map_geometry.gd": {
+      "sha256": "398aabb6c5a3b0205d67d2ab67a926a4fa21904c07d4892b1cda98e3962ecad4",
+      "reason": "New generic geometry preserving old polygon/contact/coil operation order and target ABI, with explicit capabilities and authored cross-kind fade groups; self-grouped pond grass retains absent fade_group field."
+    },
+    "scripts/maps/map_geometry.gd.uid": {
+      "sha256": "869c85ea84d6f76f7c938349b0836c2e27fa89c45ecd9d5b3804346067d3bc1e",
+      "reason": "Godot UID metadata for the reviewed MapGeometry script; no executable or map data changes."
+    },
+    "scripts/net_simulation.gd": {
+      "sha256": "058091d924d719e8916525203eaff4f628202a1dbe02030ad7f59287a871de6b",
+      "reason": "Consume once-cached explicit net-blocking and fish-occluding capability views, map net area and home/surface geometry; preserve net algorithms and existing Rope routing limitations."
+    },
+    "scripts/npc_fish_state.gd": {
+      "sha256": "f669d8120e06e6151d703b9bd9b87ab3f64bb59d02ee27bf0021cc8ef6bf16b8",
+      "reason": "Derive NPC ecological spawn regions from selected water using multiply-before-divide policy that reproduces pond values exactly. Existing schema15 record validator remains deliberately built-in-only."
+    },
+    "scripts/npc_hook.gd": {
+      "sha256": "3fa66bba005c809406ac9298b1ea7b68e428ab2fead671a98d01ed6e127351b1",
+      "reason": "Read hook movement bounds and landing surface/threshold from the active map; preserve lifecycle, local struggle behavior and RNG semantics."
+    },
+    "scripts/world_simulation.gd": {
+      "sha256": "781d7abb2d23aaaa5cc92b8b4a72c7e21715a1b4318f4850987bbcbb1a6cdfbe",
+      "reason": "Validate/freeze the map before round mutation and RNG seeding; install detached target/blocker/drag caches once per round; migrate spawn, bait, home, water bounds, contact-fade, rope capability and coil inputs. Legacy Layout/SOLIDS remain explicitly scoped compatibility facades."
+    }
+  }
+}

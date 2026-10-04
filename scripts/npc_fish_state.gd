@@ -1,6 +1,7 @@
 extends RefCounted
 
 # Phase 3 authority records. Player scalar authority deliberately stays untouched.
+# Schema15 record validation remains built-in-only until the P4.3 map-ref gate.
 const Layout=preload("res://scripts/pond_layout.gd")
 const Feeding=preload("res://scripts/fish_feeding.gd")
 const DEFAULT_COUNT := 3
@@ -15,8 +16,19 @@ const FLEE_SECONDS := 1.2
 const SOCIAL_RECOVERY_SECONDS := 2.4
 const COMPETE_SECONDS := 0.6
 const SOCIAL_MEMORY_FIELDS: Array[String]=["social_reaction_left","social_recovery_left","social_origin","social_bait_id","social_motion_level","social_danger_tick","social_compete_left"]
-# These are main-game spawn regions, not additions to the shared map ABI.
-const SPAWN_REGIONS := [Rect2(135,108,150,190),Rect2(470,106,175,200),Rect2(875,112,230,200)]
+# Normalized ecology allocation policy, relative to the selected water rectangle.
+# Keep multiply-before-divide in double precision: pond_v2 recovers each original
+# integer edge exactly, preserving NPC candidate coordinates and local RNG draws.
+# These proportions are behavior tuning, not a second map or a registry entry.
+static func spawn_regions(water: Rect2) -> Array[Rect2]:
+	var result: Array[Rect2]=[]
+	for region: Rect2 in [Rect2(127,40,150,190),Rect2(462,38,175,200),Rect2(867,44,230,200)]:
+		var origin:=Vector2(water.position.x+float(water.size.x)*float(region.position.x)/1264.0,
+			water.position.y+float(water.size.y)*float(region.position.y)/363.0)
+		var extent:=Vector2(float(water.size.x)*float(region.size.x)/1264.0,
+			float(water.size.y)*float(region.size.y)/363.0)
+		result.append(Rect2(origin,extent).intersection(water.grow(-RADIUS)))
+	return result
 
 static func derive_seed(round_seed: int, identity: int) -> int:
 	return int(("npc-fish-v1:%d:%d" % [round_seed,identity]).sha256_text().substr(0,15).hex_to_int())

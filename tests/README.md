@@ -13,7 +13,7 @@ Windows 可使用 `D:\python\python.exe`；用 `--godot "引擎可执行文件�
 
 ## 注册表与状态
 
-[`suite_registry.json`](suite_registry.json) 显式登记全部 126 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
+[`suite_registry.json`](suite_registry.json) 显式登记全部 128 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
 
 - `current`：当前有效的回归门禁；不按文件名版本新旧决定。`--profile current` 运行无窗口套件，`--profile native` 运行图形套件。已重新验证的 effort、net_animation、rules_network 等较早版本仍在当前门禁中
 - `historical`：当前检出复现了失败的诊断套件。保留原断言，失败仍返回非零；这不是“已证明所有断言过时”，更不是通过。具体原因和结果见[维护报告](../docs/test-reports/TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md)
@@ -165,3 +165,13 @@ Authority schema15；旧 0.25.2 缺少 Hook 生命周期字段的快照明确拒
 - `python3 -m unittest discover -s tests/runner -v`：包含不可变基线、源码 allowlist、harness 来源与失败拒绝检查
 
 游戏仍使用旧 PondLayout；schema15 / 网络格式 / 渲染不迁移。测试 fixture 只在 tests 中构造，Registry 不注册。历史全仓 globs 不计入当前通过；P4.2 与后续整体迁移未开始。范围、已知继承问题与人工抽查见 [0.26.0 报告](../docs/test-reports/PHASE04-MAP-FOUNDATION-0.26.0.md)。
+
+
+## 0.26.1 · P4.2 Authority MapContext
+
+- `phase04_map_context`：旧 pond 全字段/目标顺序/coil 等价、只读 context、深层与 PackedArray 导出隔离、按能力缓存、非法输入和零 RNG
+- `phase04_map_authority`：仅 tests 内的 800×380 / shifted-water fixture；证明 World 初始化、原子拒绝、出生/回巢/饵位/NPC/观察/AI/抄网/接触等实际权威路径读取地图。包模式明确 blocked，不将测试地图加入 Registry/菜单/Release
+- `python3 tools/phase04_compare_authority.py --godot <4.7.2> --require-engine 4.7.2 --output <new-directory>`：冻结 0.26.0 实际最新提交，使用未改的旧外部 harness 对照每 tick 全状态/输入/RNG/观察/回放；源码许可清单和审查哈希必须一致
+- 旧 `phase04_compare_baseline.py` 保留为 P4.1 历史门，其“所有 consumer 不可改”规则有意不适用于 P4.2；不得放宽它或把当前运行失败伪报为通过。当前 standalone `phase04_map_baseline` 仍是注册回归之一
+
+仅声明当前 profile，通过不包括 historical/retired/manual。schema15 和公开网络仅支持原 pond；不同地图持久化/握手属于 P4.3，Presentation 属于 P4.4，剩余 Rope 固定路由节点边界属于后续硬编码清理。详见[本轮验证](../docs/test-reports/PHASE04-MAP-AUTHORITY-0.26.1.md)。

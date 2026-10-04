@@ -1,0 +1,1043 @@
+{
+  "success": true,
+  "review_errors": [],
+  "forbidden_new_runtime_files": [],
+  "existing_runtime_files": [
+    {
+      "path": "assets/first_person/GENERATION.md",
+      "baseline_sha256": "46d6fdf93399f44bba3452fcd794606d3a479d8d344e06484ee9177237b312a1",
+      "current_sha256": "46d6fdf93399f44bba3452fcd794606d3a479d8d344e06484ee9177237b312a1",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "assets/first_person/HAND-FOREARM-GENERATION.md",
+      "baseline_sha256": "d916286735e8d08b06a85d8a64ec1cbacbab4690479bc76d54da9727a2d4a3fc",
+      "current_sha256": "d916286735e8d08b06a85d8a64ec1cbacbab4690479bc76d54da9727a2d4a3fc",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "assets/first_person/HAND-GENERATION.md",
+      "baseline_sha256": "86b464a589edfbc8dfe4ca0f435e34f7612bf716d5a28436aa8a8ba359a351fb",
+      "current_sha256": "86b464a589edfbc8dfe4ca0f435e34f7612bf716d5a28436aa8a8ba359a351fb",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "assets/first_person/HAND-PIXEL-GENERATION.md",
+      "baseline_sha256": "487cc0d94e5d878620a90f94bcf313326894174a917563ffec958e7fe3d456ec",
+      "current_sha256": "487cc0d94e5d878620a90f94bcf313326894174a917563ffec958e7fe3d456ec",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "assets/first_person/angler_hand.png",
+      "baseline_sha256": "d587e8c4be3a321bb4f56079cd8e416f0ec5a6417f2f91c4e93b1088e5dc4f44",
+      "current_sha256": "d587e8c4be3a321bb4f56079cd8e416f0ec5a6417f2f91c4e93b1088e5dc4f44",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "assets/first_person/angler_hand.png.import",
+      "baseline_sha256": "afe9aced3020ba6c7a86f75c85f8632921da308743376ad2d4335f21fec5049d",
+      "current_sha256": "afe9aced3020ba6c7a86f75c85f8632921da308743376ad2d4335f21fec5049d",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "assets/first_person/angler_hand_forearm.png",
+      "baseline_sha256": "77ae57329889d026a6c3c2d10614ad822aa7a2bd1d27ab6029489d13664ef54c",
+      "current_sha256": "77ae57329889d026a6c3c2d10614ad822aa7a2bd1d27ab6029489d13664ef54c",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "assets/first_person/angler_hand_forearm.png.import",
+      "baseline_sha256": "d10fafc4d28a0fb962cd406f031b6f4d8e481233509923bc76c189d5306bbcfd",
+      "current_sha256": "d10fafc4d28a0fb962cd406f031b6f4d8e481233509923bc76c189d5306bbcfd",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "assets/first_person/angler_hand_pixel.png",
+      "baseline_sha256": "c7b0432f8e7f1e49855c61b0a78b389c5fd9b41c7a858c371303d5729d833867",
+      "current_sha256": "c7b0432f8e7f1e49855c61b0a78b389c5fd9b41c7a858c371303d5729d833867",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "assets/first_person/angler_hand_pixel.png.import",
+      "baseline_sha256": "6423560b551d61c575757ff753d4496eac6ca7cff515ea2ffd401d677f93e96c",
+      "current_sha256": "6423560b551d61c575757ff753d4496eac6ca7cff515ea2ffd401d677f93e96c",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "assets/first_person/left_reel_hands_v016.md",
+      "baseline_sha256": "e71b5af911ff67de9363028172e3e587d0adb312b50998592db197a2dc073f9c",
+      "current_sha256": "e71b5af911ff67de9363028172e3e587d0adb312b50998592db197a2dc073f9c",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "assets/first_person/left_reel_hands_v016.png",
+      "baseline_sha256": "a0e7e00ecde0028d3fcd14820d269fee432a9c5a8c55d380523825d225f2ddd5",
+      "current_sha256": "a0e7e00ecde0028d3fcd14820d269fee432a9c5a8c55d380523825d225f2ddd5",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "assets/first_person/left_reel_hands_v016.png.import",
+      "baseline_sha256": "75cdd68f499aafb2751f2899589507141bf3a5efe905e9052a8ca0d1d84c9690",
+      "current_sha256": "75cdd68f499aafb2751f2899589507141bf3a5efe905e9052a8ca0d1d84c9690",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "assets/first_person/reference_tackle_v0158.md",
+      "baseline_sha256": "53a6c6c2ad998593e586b039ccdc76de8a493d931e310e91984bbc1b6a4cc743",
+      "current_sha256": "53a6c6c2ad998593e586b039ccdc76de8a493d931e310e91984bbc1b6a4cc743",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "assets/first_person/reference_tackle_v0158.png",
+      "baseline_sha256": "ec08d18910ae6a7bf702b285151b44e5525462d94e2879bd445231eece9dd8f7",
+      "current_sha256": "ec08d18910ae6a7bf702b285151b44e5525462d94e2879bd445231eece9dd8f7",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "assets/first_person/reference_tackle_v0158.png.import",
+      "baseline_sha256": "b5a26f7cc513d2a9dfd639a60e382623cbdd3199641e1919a33c248bcb5f272d",
+      "current_sha256": "b5a26f7cc513d2a9dfd639a60e382623cbdd3199641e1919a33c248bcb5f272d",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "assets/first_person/sunset_lake.png",
+      "baseline_sha256": "70c0c2ff58dd929ce012e5dd780dea9466cc177de419d900a46c078444371091",
+      "current_sha256": "70c0c2ff58dd929ce012e5dd780dea9466cc177de419d900a46c078444371091",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "assets/first_person/sunset_lake.png.import",
+      "baseline_sha256": "22307328d6c63be31e55ff660033df94ee4230fae8c44f377b24af71ad2a355b",
+      "current_sha256": "22307328d6c63be31e55ff660033df94ee4230fae8c44f377b24af71ad2a355b",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "project.godot",
+      "baseline_sha256": "0f219469b4d330e7b86f8f99605685127d5e2573d4fbdea2c3aff6ef3a33f6e0",
+      "current_sha256": "2ca5b73f56d7a6505a7f859ebaefe19e04df3d030a65e428238b4750225f061b",
+      "status": "exact_release_metadata_only",
+      "review_reason": null
+    },
+    {
+      "path": "scenes/main.tscn",
+      "baseline_sha256": "e93d9e0f585570e9ba621b471b93fd9b9db1a1265a9d92a4914e2525e8dd542f",
+      "current_sha256": "e93d9e0f585570e9ba621b471b93fd9b9db1a1265a9d92a4914e2525e8dd542f",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/angler_brain.gd",
+      "baseline_sha256": "0cf8cd83aa58fa0d38a000badc1726ecba81011ae9445f415c3e6ba43903582d",
+      "current_sha256": "0f2510449bdd82ccc093435e6753f08d9bb7d8fceff48863205f522640f190ef",
+      "status": "exact_reviewed_authority_change",
+      "review_reason": "Read patrol width from the installed map size with unchanged pond operation order."
+    },
+    {
+      "path": "scripts/angler_brain.gd.uid",
+      "baseline_sha256": "c99aec14240d598d76c26bc8806b7d31cb5e549a70720987289a12b9b031948e",
+      "current_sha256": "c99aec14240d598d76c26bc8806b7d31cb5e549a70720987289a12b9b031948e",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/angler_controller.gd",
+      "baseline_sha256": "cf870f0d5277403a54ee51ee6e7e5b8f1dee032241636046e505974567136a7a",
+      "current_sha256": "cf870f0d5277403a54ee51ee6e7e5b8f1dee032241636046e505974567136a7a",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/angler_controller.gd.uid",
+      "baseline_sha256": "ef252b7c370dc63e0e9a03e31649b5ad640b4267e829acf28ff8f8d3939ce774",
+      "current_sha256": "ef252b7c370dc63e0e9a03e31649b5ad640b4267e829acf28ff8f8d3939ce774",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/angler_hand.gd",
+      "baseline_sha256": "f5db4b118381c8f4e5cb5c606aab3b01231f04ae23bb33a499550dbab68eb17a",
+      "current_sha256": "f5db4b118381c8f4e5cb5c606aab3b01231f04ae23bb33a499550dbab68eb17a",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/angler_hand.gd.uid",
+      "baseline_sha256": "3139017b728431bf6f3851bdc3afc93c4499091077aaf7e4547dd43f0adbb6fe",
+      "current_sha256": "3139017b728431bf6f3851bdc3afc93c4499091077aaf7e4547dd43f0adbb6fe",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/angler_network_observation.gd",
+      "baseline_sha256": "40ce0453d366b08da1dd344dceaf60177c794f452ed6e18af96c889665cfb0a7",
+      "current_sha256": "40ce0453d366b08da1dd344dceaf60177c794f452ed6e18af96c889665cfb0a7",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/angler_network_observation.gd.uid",
+      "baseline_sha256": "52afae032cb4de92c1139395abfd96ec2e641e0e155dd7e7a1127888ec1fd4b1",
+      "current_sha256": "52afae032cb4de92c1139395abfd96ec2e641e0e155dd7e7a1127888ec1fd4b1",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/angler_rig.gd",
+      "baseline_sha256": "5ca54e3751b26e303846c44a0c9e0e606b2382928737d4df9d24ac7aad3bc4f1",
+      "current_sha256": "e437c2afcb2581991bd11299c73b60c308112198aacfe23750f9f32db544aadc",
+      "status": "exact_reviewed_authority_change",
+      "review_reason": "Configure derived walk, cast, cursor, buoy, hook and surface policies from the installed map before reset; preserve exact pond margins and inertial algorithms."
+    },
+    {
+      "path": "scripts/angler_rig.gd.uid",
+      "baseline_sha256": "a8aa773c57c79aa8d65d84fc46ec8f358d0a893d6c1a7c155b7b05c290d43264",
+      "current_sha256": "a8aa773c57c79aa8d65d84fc46ec8f358d0a893d6c1a7c155b7b05c290d43264",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/angler_visual.gd",
+      "baseline_sha256": "274e0dff8051984f0fbe363badf2d3f85a693ea0342f2eb9572582f95f6fcee0",
+      "current_sha256": "274e0dff8051984f0fbe363badf2d3f85a693ea0342f2eb9572582f95f6fcee0",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/angler_visual.gd.uid",
+      "baseline_sha256": "2be52441196e3ab10e98cf0407201e39c8adff0f417e39c8b72129f9241cf4fa",
+      "current_sha256": "2be52441196e3ab10e98cf0407201e39c8adff0f417e39c8b72129f9241cf4fa",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/effort_check.gd",
+      "baseline_sha256": "c693244b6a0703a9218f88afc83d47f1521adedc7901390f1aae504829c1ede6",
+      "current_sha256": "c693244b6a0703a9218f88afc83d47f1521adedc7901390f1aae504829c1ede6",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/effort_check.gd.uid",
+      "baseline_sha256": "c1f130810f830e1c2becd1d9d58ebf265dc11b8f0a2ecc5cc5cae18391120c2c",
+      "current_sha256": "c1f130810f830e1c2becd1d9d58ebf265dc11b8f0a2ecc5cc5cae18391120c2c",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/fish_brain.gd",
+      "baseline_sha256": "1de20533cba63e62839d5e7646ecc194ba3d38bfb00ec7da8490207ad1c65fc3",
+      "current_sha256": "ab81c9b7065877e9688c10665784f14baf9c8b7052c7080e9db9e4de34d892c2",
+      "status": "exact_reviewed_authority_change",
+      "review_reason": "Use installed water/floor/home for avoidance, escape and return navigation; select only explicit rope anchors without reordering compatibility targets."
+    },
+    {
+      "path": "scripts/fish_brain.gd.uid",
+      "baseline_sha256": "e32bc5824a5817b2645ff21a8f9059a997948976597e2c47cfaec12fc0e9b54c",
+      "current_sha256": "e32bc5824a5817b2645ff21a8f9059a997948976597e2c47cfaec12fc0e9b54c",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/fish_feeding.gd",
+      "baseline_sha256": "c8f84d1a473e45e73d002684a08c62f95671c5c79a286d6409ddc80325c1c4a7",
+      "current_sha256": "c8f84d1a473e45e73d002684a08c62f95671c5c79a286d6409ddc80325c1c4a7",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/fish_feeding.gd.uid",
+      "baseline_sha256": "3584d1e0ded5a5d47a5074496bbb92451ed818a6bd6220fd69cf86539ac0b850",
+      "current_sha256": "3584d1e0ded5a5d47a5074496bbb92451ed818a6bd6220fd69cf86539ac0b850",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/fish_instinct.gd",
+      "baseline_sha256": "0e915d74eefd04b1711b2896b174181a9623f8a74a6b6425dfbfd4d09029ddc8",
+      "current_sha256": "0e915d74eefd04b1711b2896b174181a9623f8a74a6b6425dfbfd4d09029ddc8",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/fish_instinct.gd.uid",
+      "baseline_sha256": "eec6e6cc238b5348f9cab409729ece81bd1518dd8f6155b91a02ab7db8435f7a",
+      "current_sha256": "eec6e6cc238b5348f9cab409729ece81bd1518dd8f6155b91a02ab7db8435f7a",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/fish_network_observation.gd",
+      "baseline_sha256": "61231951e4b4e005233d9be8ba28ea7dea1d2dd63ec79a31519846808cb85114",
+      "current_sha256": "61231951e4b4e005233d9be8ba28ea7dea1d2dd63ec79a31519846808cb85114",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/fish_network_observation.gd.uid",
+      "baseline_sha256": "4ec455620f9c5f0438688eaa07218a4afbc7fe3f92eb8df363b04cb8734efafd",
+      "current_sha256": "4ec455620f9c5f0438688eaa07218a4afbc7fe3f92eb8df363b04cb8734efafd",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/fish_observation.gd",
+      "baseline_sha256": "155fcf155c9fcfa32ec125455b6ee067a0bfd7e9df95238d36bd61cb1858d00d",
+      "current_sha256": "ef06497455068a1564f1a950305448121fab2ba0ac05cd6a467b444b6b3aadc1",
+      "status": "exact_reviewed_authority_change",
+      "review_reason": "Pass active map water to authority loose-food perception. Retain a separately documented cached built-in water default only for the existing schema15 network helper ABI."
+    },
+    {
+      "path": "scripts/fish_observation.gd.uid",
+      "baseline_sha256": "1b4c6ddf8f8c6597a0db5e443d1c80261515b1a61cb8aaa34b992b4f0c4a87f4",
+      "current_sha256": "1b4c6ddf8f8c6597a0db5e443d1c80261515b1a61cb8aaa34b992b4f0c4a87f4",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/fish_suspicion.gd",
+      "baseline_sha256": "b2398e40a6d0694339f87ab9659c42a2b14a7c941c224abdf51a3b69810d9ed1",
+      "current_sha256": "b2398e40a6d0694339f87ab9659c42a2b14a7c941c224abdf51a3b69810d9ed1",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/fish_suspicion.gd.uid",
+      "baseline_sha256": "f812c1293252abba61dba7315204b3c347154f7ff97bad9e50b018633ba55ec8",
+      "current_sha256": "f812c1293252abba61dba7315204b3c347154f7ff97bad9e50b018633ba55ec8",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/fish_winding.gd",
+      "baseline_sha256": "b0bb3762ac5323a7457c4e747e6c76079b063605098039ddd35aa08b5bf72823",
+      "current_sha256": "b0bb3762ac5323a7457c4e747e6c76079b063605098039ddd35aa08b5bf72823",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/fish_winding.gd.uid",
+      "baseline_sha256": "8a40576b8bea29d28ffb8ad818eaec89276a86c3f8e28a3977f76f8e68f981f4",
+      "current_sha256": "8a40576b8bea29d28ffb8ad818eaec89276a86c3f8e28a3977f76f8e68f981f4",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/food_profile.gd",
+      "baseline_sha256": "0dbc7b16a19dec0cf943d1efe499f293207e69925cad7d8af77230f5176a9b44",
+      "current_sha256": "0dbc7b16a19dec0cf943d1efe499f293207e69925cad7d8af77230f5176a9b44",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/food_profile.gd.uid",
+      "baseline_sha256": "49c5620f9e615425d101752d6f71285acf955d692431e53fcaf430069e412c8c",
+      "current_sha256": "49c5620f9e615425d101752d6f71285acf955d692431e53fcaf430069e412c8c",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/game_commands.gd",
+      "baseline_sha256": "f83cdf0aefc7fcfaa4bf18d6b3966629d17f27709edb65f6208937a160c01ca4",
+      "current_sha256": "f83cdf0aefc7fcfaa4bf18d6b3966629d17f27709edb65f6208937a160c01ca4",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/game_commands.gd.uid",
+      "baseline_sha256": "3621947264d3e0545050e4c9985292b1b5d9d2651482ffbfb0fc3e42202da40b",
+      "current_sha256": "3621947264d3e0545050e4c9985292b1b5d9d2651482ffbfb0fc3e42202da40b",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/game_rules.gd",
+      "baseline_sha256": "5d58b745ad3b6872ab1cca1375dcda28c4c2df2bafce47ce7bb7422806c0a311",
+      "current_sha256": "5d58b745ad3b6872ab1cca1375dcda28c4c2df2bafce47ce7bb7422806c0a311",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/game_rules.gd.uid",
+      "baseline_sha256": "c3c8a2082b5e92623048f2dedf90f4e752364167e127055ab220fec90a6ff3fa",
+      "current_sha256": "c3c8a2082b5e92623048f2dedf90f4e752364167e127055ab220fec90a6ff3fa",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/grass_binding.gd",
+      "baseline_sha256": "bfc09fa96e18db82d25467042b9daf9e2339b3748fc45445c97d629c68a8f1c4",
+      "current_sha256": "bfc09fa96e18db82d25467042b9daf9e2339b3748fc45445c97d629c68a8f1c4",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/grass_binding.gd.uid",
+      "baseline_sha256": "efdbae3083a42640024b2550b682ebc858b13df001f67b07984ea14b24459729",
+      "current_sha256": "efdbae3083a42640024b2550b682ebc858b13df001f67b07984ea14b24459729",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/hand_palette.gdshader",
+      "baseline_sha256": "821a1a18ea07e9fc77ce72aca698253e79a43b16f4a0c1c30c91416edb944211",
+      "current_sha256": "821a1a18ea07e9fc77ce72aca698253e79a43b16f4a0c1c30c91416edb944211",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/hand_palette.gdshader.uid",
+      "baseline_sha256": "d304e80353178cbdc3fe37dc59fd9cbba80b5c118f59f4e899cdd1ef62361968",
+      "current_sha256": "d304e80353178cbdc3fe37dc59fd9cbba80b5c118f59f4e899cdd1ef62361968",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/hook_gauge.gd",
+      "baseline_sha256": "4fe42c7690fa40f42e970af97eb26915793ec166c01b06da3ea21eb1fb692593",
+      "current_sha256": "4fe42c7690fa40f42e970af97eb26915793ec166c01b06da3ea21eb1fb692593",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/hook_gauge.gd.uid",
+      "baseline_sha256": "71652de19010a727276c1a901907f0b98f4a8d028bd05739fca3da62df4aa63b",
+      "current_sha256": "71652de19010a727276c1a901907f0b98f4a8d028bd05739fca3da62df4aa63b",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/line_motion.gd",
+      "baseline_sha256": "1fb62671fdcaeeb88865c30ed09eabfa96982ad6cbe4a4455c1d74260f0d74eb",
+      "current_sha256": "1fb62671fdcaeeb88865c30ed09eabfa96982ad6cbe4a4455c1d74260f0d74eb",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/line_motion.gd.uid",
+      "baseline_sha256": "371a971e41e774dbba7ec3c833da1d8d863236fe57fe23cfbf0b0c9dd0019204",
+      "current_sha256": "371a971e41e774dbba7ec3c833da1d8d863236fe57fe23cfbf0b0c9dd0019204",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/local_input.gd",
+      "baseline_sha256": "7612181f2ad849bc0e02c03eccb0044bf43a5b28812395b70a7b0d11fbacf5b2",
+      "current_sha256": "7612181f2ad849bc0e02c03eccb0044bf43a5b28812395b70a7b0d11fbacf5b2",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/local_input.gd.uid",
+      "baseline_sha256": "3d0ac1620e7315cdf455341f11f947acd86d36e5f1e166d03e6d00d950417d05",
+      "current_sha256": "3d0ac1620e7315cdf455341f11f947acd86d36e5f1e166d03e6d00d950417d05",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/maps/map_definition.gd",
+      "baseline_sha256": "210d10aa02e92e96e07a3e52a699370a9a8d6ec62021aec03935d82577179c4c",
+      "current_sha256": "210d10aa02e92e96e07a3e52a699370a9a8d6ec62021aec03935d82577179c4c",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/maps/map_definition.gd.uid",
+      "baseline_sha256": "08ece3f2cfb6f8f09cd9f1ab4765d5ea02bf458e51cbcb9ab3ac444d6c8f91df",
+      "current_sha256": "08ece3f2cfb6f8f09cd9f1ab4765d5ea02bf458e51cbcb9ab3ac444d6c8f91df",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/maps/map_registry.gd",
+      "baseline_sha256": "75d9ea2441e092f3e6065b32bc43a51074ccea1d00dfee312fc14f42dd53b6b5",
+      "current_sha256": "75d9ea2441e092f3e6065b32bc43a51074ccea1d00dfee312fc14f42dd53b6b5",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/maps/map_registry.gd.uid",
+      "baseline_sha256": "ddc88d706bc6d5a2ec692fb33685eb676201fa4255ab4088e952de26239271ea",
+      "current_sha256": "ddc88d706bc6d5a2ec692fb33685eb676201fa4255ab4088e952de26239271ea",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/maps/map_validator.gd",
+      "baseline_sha256": "3e5588d5517dd63bc99d60845966fc47b9a32b2ddfbe6ea4dec6ee386395b1f2",
+      "current_sha256": "3e5588d5517dd63bc99d60845966fc47b9a32b2ddfbe6ea4dec6ee386395b1f2",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/maps/map_validator.gd.uid",
+      "baseline_sha256": "3d395d3049e47ea55f566ca4a9fc8ec44404ec1b6bdb1cef3b9480e779650d15",
+      "current_sha256": "3d395d3049e47ea55f566ca4a9fc8ec44404ec1b6bdb1cef3b9480e779650d15",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/maps/pond_v2_map.gd",
+      "baseline_sha256": "a5723ad170ab4db517eb103cf158a6f7291ce2322f6618451dfd274a7a95cd1e",
+      "current_sha256": "a5723ad170ab4db517eb103cf158a6f7291ce2322f6618451dfd274a7a95cd1e",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/maps/pond_v2_map.gd.uid",
+      "baseline_sha256": "72fd2a33a38617e1f1b89b3a8ca32337101239d5f7f6a83b1d71073634be0158",
+      "current_sha256": "72fd2a33a38617e1f1b89b3a8ca32337101239d5f7f6a83b1d71073634be0158",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/menu.gd",
+      "baseline_sha256": "1f3e1a9aa70cc8d4415f2d02e11db8afad7f92f8b2f0ae34019be3e4d64a916c",
+      "current_sha256": "0c9df86d636e7738c05b3836fa026c80385387907f1e3c19197be6d4d9dcfce1",
+      "status": "exact_release_metadata_only",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/menu.gd.uid",
+      "baseline_sha256": "69617e4fc309a94cba635c1adcb8d5732314be50357dc4a81feb7986f4b5a470",
+      "current_sha256": "69617e4fc309a94cba635c1adcb8d5732314be50357dc4a81feb7986f4b5a470",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/net_motion.gd",
+      "baseline_sha256": "03f50c4915c97c0c8b4af15547086f35e013461dae9e5df3a376817c6b2720da",
+      "current_sha256": "03f50c4915c97c0c8b4af15547086f35e013461dae9e5df3a376817c6b2720da",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/net_motion.gd.uid",
+      "baseline_sha256": "c46fc6f0f3f4545c4509c4c0bd8299fc5602f6c34d593a3ad1ca1a71c77d6e3d",
+      "current_sha256": "c46fc6f0f3f4545c4509c4c0bd8299fc5602f6c34d593a3ad1ca1a71c77d6e3d",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/net_observation.gd",
+      "baseline_sha256": "96a48927a93953154c5e642edaaf60dc47b61efe3e6b68bc2f0d7f432de75879",
+      "current_sha256": "96a48927a93953154c5e642edaaf60dc47b61efe3e6b68bc2f0d7f432de75879",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/net_observation.gd.uid",
+      "baseline_sha256": "a645d4396eace68069808565c19d06be846dc1e44d68ac687aadf9062863856e",
+      "current_sha256": "a645d4396eace68069808565c19d06be846dc1e44d68ac687aadf9062863856e",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/net_simulation.gd",
+      "baseline_sha256": "4a50a169994284b143b99a1808ea85443f51eddcd381a865026e8b69e012f5f5",
+      "current_sha256": "058091d924d719e8916525203eaff4f628202a1dbe02030ad7f59287a871de6b",
+      "status": "exact_reviewed_authority_change",
+      "review_reason": "Consume once-cached explicit net-blocking and fish-occluding capability views, map net area and home/surface geometry; preserve net algorithms and existing Rope routing limitations."
+    },
+    {
+      "path": "scripts/net_simulation.gd.uid",
+      "baseline_sha256": "5e2d5ea6ef8a2bfc177a6bcf07519b6a1cfdd107dac4c16054fdfb661a47f68f",
+      "current_sha256": "5e2d5ea6ef8a2bfc177a6bcf07519b6a1cfdd107dac4c16054fdfb661a47f68f",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/net_visual.gd",
+      "baseline_sha256": "aee8baa45953d779c446696aca27f8a8f6080f94db63d4c037182b17decef6f5",
+      "current_sha256": "aee8baa45953d779c446696aca27f8a8f6080f94db63d4c037182b17decef6f5",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/net_visual.gd.uid",
+      "baseline_sha256": "ff8d2e2022d292806d038c9acb72826ff1b23cbf15fa663d5470c4f030a9698c",
+      "current_sha256": "ff8d2e2022d292806d038c9acb72826ff1b23cbf15fa663d5470c4f030a9698c",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/network_presentation.gd",
+      "baseline_sha256": "c4f11e5391a354aa0b12cdb218ca9dc58ccc13c43608b357a456208c1df806bc",
+      "current_sha256": "c4f11e5391a354aa0b12cdb218ca9dc58ccc13c43608b357a456208c1df806bc",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/network_presentation.gd.uid",
+      "baseline_sha256": "7fbeae34080e64475a7f3f896b46e16cc5753d253b95d0888b30a2060fa53466",
+      "current_sha256": "7fbeae34080e64475a7f3f896b46e16cc5753d253b95d0888b30a2060fa53466",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/network_protocol.gd",
+      "baseline_sha256": "5f1a8bfdc588702fdc3ce090cff2f2e9c6738339f6b17d9e8b70c47db6f28fe6",
+      "current_sha256": "2b9f9701845e45774b355894a402f4664fb46dc629731f1d2061af173549a7ab",
+      "status": "exact_release_metadata_only",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/network_protocol.gd.uid",
+      "baseline_sha256": "05beea073c4fa390e441e822a6cf708b99059ce1c72e0885fffda5307dec063e",
+      "current_sha256": "05beea073c4fa390e441e822a6cf708b99059ce1c72e0885fffda5307dec063e",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/network_session.gd",
+      "baseline_sha256": "2a5c14f897389b7dd1b9eb0dfc8b0e2dc8efb28097fa13a8cab6c2b743dda3ab",
+      "current_sha256": "2a5c14f897389b7dd1b9eb0dfc8b0e2dc8efb28097fa13a8cab6c2b743dda3ab",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/network_session.gd.uid",
+      "baseline_sha256": "7ed9202b59516f1f1f5e3c75ce95b458b1cb925f9c036c86900ef9d0a3de0966",
+      "current_sha256": "7ed9202b59516f1f1f5e3c75ce95b458b1cb925f9c036c86900ef9d0a3de0966",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/npc_fish_brain.gd",
+      "baseline_sha256": "6fd3c26b85f23e34d055f3904a27e11cb5adac30ee55866cf971f58215af731a",
+      "current_sha256": "6fd3c26b85f23e34d055f3904a27e11cb5adac30ee55866cf971f58215af731a",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/npc_fish_brain.gd.uid",
+      "baseline_sha256": "895741a9e8feed85302f44cc6bfcbe16a61308b202ac1e4304bf0464af031c11",
+      "current_sha256": "895741a9e8feed85302f44cc6bfcbe16a61308b202ac1e4304bf0464af031c11",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/npc_fish_public_state.gd",
+      "baseline_sha256": "4b1c2530f6657b45e082e3db9a26262e292e6f0219e19be82eaa637500c0e763",
+      "current_sha256": "4b1c2530f6657b45e082e3db9a26262e292e6f0219e19be82eaa637500c0e763",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/npc_fish_public_state.gd.uid",
+      "baseline_sha256": "10874ee14caa45cef5cdd4d13c2cd8a408b672b4e86e39e3db16629d0db0416a",
+      "current_sha256": "10874ee14caa45cef5cdd4d13c2cd8a408b672b4e86e39e3db16629d0db0416a",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/npc_fish_state.gd",
+      "baseline_sha256": "9240abb57813474c1fa02e39e0fcda54fcd219f94ae3a01e9dcc2563bb850c64",
+      "current_sha256": "f669d8120e06e6151d703b9bd9b87ab3f64bb59d02ee27bf0021cc8ef6bf16b8",
+      "status": "exact_reviewed_authority_change",
+      "review_reason": "Derive NPC ecological spawn regions from selected water using multiply-before-divide policy that reproduces pond values exactly. Existing schema15 record validator remains deliberately built-in-only."
+    },
+    {
+      "path": "scripts/npc_fish_state.gd.uid",
+      "baseline_sha256": "f779a4470f4d1397af889e30913c8628e51edcaee69dfd7f53f166ed693f42d4",
+      "current_sha256": "f779a4470f4d1397af889e30913c8628e51edcaee69dfd7f53f166ed693f42d4",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/npc_hook.gd",
+      "baseline_sha256": "ecbbe0ec9d216ea0d175ec436e0f0c4a6872b6aae8459b22ef2c74ab61df47a3",
+      "current_sha256": "3fa66bba005c809406ac9298b1ea7b68e428ab2fead671a98d01ed6e127351b1",
+      "status": "exact_reviewed_authority_change",
+      "review_reason": "Read hook movement bounds and landing surface/threshold from the active map; preserve lifecycle, local struggle behavior and RNG semantics."
+    },
+    {
+      "path": "scripts/npc_hook.gd.uid",
+      "baseline_sha256": "1f235f66b9a4bafc094ea8c5053ce37def2ae58f9c5be39adf8c35a90b28e5f1",
+      "current_sha256": "1f235f66b9a4bafc094ea8c5053ce37def2ae58f9c5be39adf8c35a90b28e5f1",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/pixel_art.gd",
+      "baseline_sha256": "f294ca6a656ba43fb793aaaa2d738fd3824fc89630086898a364e29a35d2a3ed",
+      "current_sha256": "f294ca6a656ba43fb793aaaa2d738fd3824fc89630086898a364e29a35d2a3ed",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/pixel_art.gd.uid",
+      "baseline_sha256": "43a5bab3e001b58069fd2d3f8c390ebc4cb15180b5a5eda929c90be733df64ad",
+      "current_sha256": "43a5bab3e001b58069fd2d3f8c390ebc4cb15180b5a5eda929c90be733df64ad",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/pond.gd",
+      "baseline_sha256": "a9e289dfdbeca09713ebd408a78850a20675efe2e7f371f573da75157fe821e4",
+      "current_sha256": "6807cdd49f17ee91c9a5bc863fdff7390536675d8844eadc48dbef2a51ea0368",
+      "status": "exact_release_metadata_only",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/pond.gd.uid",
+      "baseline_sha256": "475655cfa1cf724ee178e3eea950c22325ea235406ddf338dfdd7f5aa24f9e8d",
+      "current_sha256": "475655cfa1cf724ee178e3eea950c22325ea235406ddf338dfdd7f5aa24f9e8d",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/pond_camera.gd",
+      "baseline_sha256": "2170a1430fe074b9f6113e196a25d77b76eaffaee678e4a6f03969a33a8e3614",
+      "current_sha256": "2170a1430fe074b9f6113e196a25d77b76eaffaee678e4a6f03969a33a8e3614",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/pond_camera.gd.uid",
+      "baseline_sha256": "8e266b6c98fd88194255c816504f073bcbdfff27c4ff994ac9c6e458398e5ef2",
+      "current_sha256": "8e266b6c98fd88194255c816504f073bcbdfff27c4ff994ac9c6e458398e5ef2",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/pond_depth_art.gd",
+      "baseline_sha256": "387aec1492eff7d2a0ef846798091ebc60bdafeba6edd16760ce9ac759be5b31",
+      "current_sha256": "387aec1492eff7d2a0ef846798091ebc60bdafeba6edd16760ce9ac759be5b31",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/pond_depth_art.gd.uid",
+      "baseline_sha256": "78c2bb4c35a8becd3cc962195324a071527555b75f812844cd653746ca2d0be4",
+      "current_sha256": "78c2bb4c35a8becd3cc962195324a071527555b75f812844cd653746ca2d0be4",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/pond_layout.gd",
+      "baseline_sha256": "3d9405536a8a02e5002dbe9ed2d0cab1591ac04f0b9628050c1881106871174f",
+      "current_sha256": "3d9405536a8a02e5002dbe9ed2d0cab1591ac04f0b9628050c1881106871174f",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/pond_layout.gd.uid",
+      "baseline_sha256": "c6d701d99608f3f8e9854e3a2d2d6e783db02b9d4c527b586f71b4d6f40019c1",
+      "current_sha256": "c6d701d99608f3f8e9854e3a2d2d6e783db02b9d4c527b586f71b4d6f40019c1",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/pond_plant_art.gd",
+      "baseline_sha256": "e3f95151f229c4a6d6425ae144358dbb3a728046d5e416f548afbb74a8c4512e",
+      "current_sha256": "e3f95151f229c4a6d6425ae144358dbb3a728046d5e416f548afbb74a8c4512e",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/pond_plant_art.gd.uid",
+      "baseline_sha256": "37465bfc7716304059deccf47ba4da6da204f26b4a2054bd306bfc73e8d8f264",
+      "current_sha256": "37465bfc7716304059deccf47ba4da6da204f26b4a2054bd306bfc73e8d8f264",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/pond_scenery.gd",
+      "baseline_sha256": "2897e3eb6c3e4a0cad142ec7d212129e4e99f7057053170d12da6e6c7b03ef87",
+      "current_sha256": "2897e3eb6c3e4a0cad142ec7d212129e4e99f7057053170d12da6e6c7b03ef87",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/pond_scenery.gd.uid",
+      "baseline_sha256": "e9d050bb375da2e56ee437ee453677f4678ab14eddfc6c28f51caa8755e5485a",
+      "current_sha256": "e9d050bb375da2e56ee437ee453677f4678ab14eddfc6c28f51caa8755e5485a",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/pond_view.gd",
+      "baseline_sha256": "2b078fd396840ae621542c0f76c2d82f197228756be6a52c7e6777ff3ff3fcea",
+      "current_sha256": "2b078fd396840ae621542c0f76c2d82f197228756be6a52c7e6777ff3ff3fcea",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/pond_view.gd.uid",
+      "baseline_sha256": "f998626ad239ed8b52c37cb26b01ff327651e7729bb323d57870284d7dee52c3",
+      "current_sha256": "f998626ad239ed8b52c37cb26b01ff327651e7729bb323d57870284d7dee52c3",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/pond_water_art.gd",
+      "baseline_sha256": "c875541049c29e6817cfedc7767e63b43888ab8cc6d5745b98e40a8aec31fdad",
+      "current_sha256": "c875541049c29e6817cfedc7767e63b43888ab8cc6d5745b98e40a8aec31fdad",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/pond_water_art.gd.uid",
+      "baseline_sha256": "467f74fd28bc6db452f10abd81587839f59a14b8a6c973a62ee58971f4617bbd",
+      "current_sha256": "467f74fd28bc6db452f10abd81587839f59a14b8a6c973a62ee58971f4617bbd",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/pond_wood_art.gd",
+      "baseline_sha256": "bd042f616dfe75bbe007f92bab72fc34c414a6489631da7f7d5ff62190bd598b",
+      "current_sha256": "bd042f616dfe75bbe007f92bab72fc34c414a6489631da7f7d5ff62190bd598b",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/pond_wood_art.gd.uid",
+      "baseline_sha256": "74fa10ce7711510d732d786a7ee49fac801b9d49f7e84d8af63523c09eba8ce4",
+      "current_sha256": "74fa10ce7711510d732d786a7ee49fac801b9d49f7e84d8af63523c09eba8ce4",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/reel_hand.gd",
+      "baseline_sha256": "7673e1a663aefe61388a607a172609e9ea242ce9d24f651007d777bc33334dcb",
+      "current_sha256": "7673e1a663aefe61388a607a172609e9ea242ce9d24f651007d777bc33334dcb",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/reel_hand.gd.uid",
+      "baseline_sha256": "931fd142881d397b6fbbcfad96f1392cda1fa7507da3bb16cfbe3a64905e1c7f",
+      "current_sha256": "931fd142881d397b6fbbcfad96f1392cda1fa7507da3bb16cfbe3a64905e1c7f",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/rope.gd",
+      "baseline_sha256": "2e30152e65b00f39fe25324b992afd39925acfadd80b64dce385df865d69fe42",
+      "current_sha256": "2e30152e65b00f39fe25324b992afd39925acfadd80b64dce385df865d69fe42",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/rope.gd.uid",
+      "baseline_sha256": "4828708ec7f8749b126f0e5b09fd77233e9f82ce53462962b69568f884b31a04",
+      "current_sha256": "4828708ec7f8749b126f0e5b09fd77233e9f82ce53462962b69568f884b31a04",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/round_stats.gd",
+      "baseline_sha256": "e160da86d8c31ee86c8dfdcf53caf122e97d3c03a019b97c8b984622d7c4a02f",
+      "current_sha256": "e160da86d8c31ee86c8dfdcf53caf122e97d3c03a019b97c8b984622d7c4a02f",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/round_stats.gd.uid",
+      "baseline_sha256": "06be9b3bf66eaa15a8c4c50c97f7f7736566de84464b3df2545de2bc86af9859",
+      "current_sha256": "06be9b3bf66eaa15a8c4c50c97f7f7736566de84464b3df2545de2bc86af9859",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/rules_catalog.gd",
+      "baseline_sha256": "f205ab9e285b01aafdfd6ebb7b0eafc802f5989b8f00e508db28cfdfc3f57c72",
+      "current_sha256": "f205ab9e285b01aafdfd6ebb7b0eafc802f5989b8f00e508db28cfdfc3f57c72",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/rules_catalog.gd.uid",
+      "baseline_sha256": "5ef8775a761f600355aace44bd70d427e0b6f24e0608961edc4ac945d65a0946",
+      "current_sha256": "5ef8775a761f600355aace44bd70d427e0b6f24e0608961edc4ac945d65a0946",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/rules_settings.gd",
+      "baseline_sha256": "ad6b2bca83710ad92f8477da83151a21f57d00d8979b81a864f7824f7383885b",
+      "current_sha256": "ad6b2bca83710ad92f8477da83151a21f57d00d8979b81a864f7824f7383885b",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/rules_settings.gd.uid",
+      "baseline_sha256": "db431fb943a0bc1e69b37ebc2a737b365e851ffa723595339dc8ccd929053ccd",
+      "current_sha256": "db431fb943a0bc1e69b37ebc2a737b365e851ffa723595339dc8ccd929053ccd",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/rules_store.gd",
+      "baseline_sha256": "7256c0290b916d215ca8e5693f0e819e76429ac9367c3b36d6a392310df2acf8",
+      "current_sha256": "7256c0290b916d215ca8e5693f0e819e76429ac9367c3b36d6a392310df2acf8",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/rules_store.gd.uid",
+      "baseline_sha256": "4c5e9e20d989d293eefeddf1b24a35048eab55a7849b66dd6cc1d51ba5251384",
+      "current_sha256": "4c5e9e20d989d293eefeddf1b24a35048eab55a7849b66dd6cc1d51ba5251384",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/shore_view.gd",
+      "baseline_sha256": "849f8e420783d01810361be8d128efe1bc3fe342cdff75dd2db0b6454d82ce2b",
+      "current_sha256": "849f8e420783d01810361be8d128efe1bc3fe342cdff75dd2db0b6454d82ce2b",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/shore_view.gd.uid",
+      "baseline_sha256": "5577369d4e8c8c4a57674122bbfb050e7e90c210cd786ba7bc6658796ee01048",
+      "current_sha256": "5577369d4e8c8c4a57674122bbfb050e7e90c210cd786ba7bc6658796ee01048",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/sound.gd",
+      "baseline_sha256": "e26674ed0be1337c53838e95e32e04452131bba5610b50fb24add73304d3b9c0",
+      "current_sha256": "e26674ed0be1337c53838e95e32e04452131bba5610b50fb24add73304d3b9c0",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/sound.gd.uid",
+      "baseline_sha256": "f423c1a9bbde25f367aea190d8552f2133103787ecfc0e7b8960f84c7d52fc52",
+      "current_sha256": "f423c1a9bbde25f367aea190d8552f2133103787ecfc0e7b8960f84c7d52fc52",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/suction_feel.gd",
+      "baseline_sha256": "9d291d1db447505cc56dfe70618ce8ccb35dec60b2e0779665926de2d1b0a05a",
+      "current_sha256": "9d291d1db447505cc56dfe70618ce8ccb35dec60b2e0779665926de2d1b0a05a",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/suction_feel.gd.uid",
+      "baseline_sha256": "157f3b2d59548a03b30c19283c7ea1a73bbdb49b5fcbf4754702cdc4009e3069",
+      "current_sha256": "157f3b2d59548a03b30c19283c7ea1a73bbdb49b5fcbf4754702cdc4009e3069",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/world_simulation.gd",
+      "baseline_sha256": "766f5a1e68899f433f7e491354e7d1c0f739d8af649f6dd8049eeb13274e1860",
+      "current_sha256": "781d7abb2d23aaaa5cc92b8b4a72c7e21715a1b4318f4850987bbcbb1a6cdfbe",
+      "status": "exact_reviewed_authority_change",
+      "review_reason": "Validate/freeze the map before round mutation and RNG seeding; install detached target/blocker/drag caches once per round; migrate spawn, bait, home, water bounds, contact-fade, rope capability and coil inputs. Legacy Layout/SOLIDS remain explicitly scoped compatibility facades."
+    },
+    {
+      "path": "scripts/world_simulation.gd.uid",
+      "baseline_sha256": "54dd3fa796c1c30293e06742b735c096a61bb353eb07f9273e50790b99475d5e",
+      "current_sha256": "54dd3fa796c1c30293e06742b735c096a61bb353eb07f9273e50790b99475d5e",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/world_snapshot.gd",
+      "baseline_sha256": "2a9702e3d9f6f2060165175666f83849ed36ecc52766e8a314316d4350ea924e",
+      "current_sha256": "2a9702e3d9f6f2060165175666f83849ed36ecc52766e8a314316d4350ea924e",
+      "status": "identical",
+      "review_reason": null
+    },
+    {
+      "path": "scripts/world_snapshot.gd.uid",
+      "baseline_sha256": "88baab1611bcd68621c96e938983a70646dd28bf9b64118d8d3d74f3492ab120",
+      "current_sha256": "88baab1611bcd68621c96e938983a70646dd28bf9b64118d8d3d74f3492ab120",
+      "status": "identical",
+      "review_reason": null
+    }
+  ],
+  "new_reviewed_runtime_files": [
+    "scripts/maps/map_context.gd",
+    "scripts/maps/map_context.gd.uid",
+    "scripts/maps/map_geometry.gd",
+    "scripts/maps/map_geometry.gd.uid"
+  ],
+  "reviewed_runtime": {
+    "format": "phase04-authority-reviewed-runtime-v1",
+    "baseline_commit": "0a3e5af3dc3ca26f0909644505ff24a1de1fe06d",
+    "review_status": "reviewed",
+    "review_scope": "P4.2 Authority MapContext only. Snapshot16/map-ref handshake, presentation migration, generic Rope node bounds and new fish collision behavior remain out of scope.",
+    "verification": {
+      "fixture_suite": "phase04_map_authority",
+      "fixture_assertions": 1017,
+      "fixture_failures": 0,
+      "fixture_result": "artifacts/p42-independent-authority/summary.json",
+      "engine": "4.7.2.stable.official.ed1daf0bf"
+    },
+    "files": {
+      "scripts/angler_brain.gd": {
+        "sha256": "0f2510449bdd82ccc093435e6753f08d9bb7d8fceff48863205f522640f190ef",
+        "reason": "Read patrol width from the installed map size with unchanged pond operation order."
+      },
+      "scripts/angler_rig.gd": {
+        "sha256": "e437c2afcb2581991bd11299c73b60c308112198aacfe23750f9f32db544aadc",
+        "reason": "Configure derived walk, cast, cursor, buoy, hook and surface policies from the installed map before reset; preserve exact pond margins and inertial algorithms."
+      },
+      "scripts/fish_brain.gd": {
+        "sha256": "ab81c9b7065877e9688c10665784f14baf9c8b7052c7080e9db9e4de34d892c2",
+        "reason": "Use installed water/floor/home for avoidance, escape and return navigation; select only explicit rope anchors without reordering compatibility targets."
+      },
+      "scripts/fish_observation.gd": {
+        "sha256": "ef06497455068a1564f1a950305448121fab2ba0ac05cd6a467b444b6b3aadc1",
+        "reason": "Pass active map water to authority loose-food perception. Retain a separately documented cached built-in water default only for the existing schema15 network helper ABI."
+      },
+      "scripts/maps/map_context.gd": {
+        "sha256": "ecc8282fcd566b172c72d853f4a1859475f1604c7b8982d85707fae64fe6da0f",
+        "reason": "New checked immutable round context with detached packed-array exports, cached geometry/lookups/capability views, inert public setters and zero map-loading RNG consumption."
+      },
+      "scripts/maps/map_context.gd.uid": {
+        "sha256": "c394d2daf3a129c1859ba4ef26580ce42b857a9c31a2e67321fcd8a1233faa54",
+        "reason": "Godot UID metadata for the reviewed MapContext script; no executable or map data changes."
+      },
+      "scripts/maps/map_geometry.gd": {
+        "sha256": "398aabb6c5a3b0205d67d2ab67a926a4fa21904c07d4892b1cda98e3962ecad4",
+        "reason": "New generic geometry preserving old polygon/contact/coil operation order and target ABI, with explicit capabilities and authored cross-kind fade groups; self-grouped pond grass retains absent fade_group field."
+      },
+      "scripts/maps/map_geometry.gd.uid": {
+        "sha256": "869c85ea84d6f76f7c938349b0836c2e27fa89c45ecd9d5b3804346067d3bc1e",
+        "reason": "Godot UID metadata for the reviewed MapGeometry script; no executable or map data changes."
+      },
+      "scripts/net_simulation.gd": {
+        "sha256": "058091d924d719e8916525203eaff4f628202a1dbe02030ad7f59287a871de6b",
+        "reason": "Consume once-cached explicit net-blocking and fish-occluding capability views, map net area and home/surface geometry; preserve net algorithms and existing Rope routing limitations."
+      },
+      "scripts/npc_fish_state.gd": {
+        "sha256": "f669d8120e06e6151d703b9bd9b87ab3f64bb59d02ee27bf0021cc8ef6bf16b8",
+        "reason": "Derive NPC ecological spawn regions from selected water using multiply-before-divide policy that reproduces pond values exactly. Existing schema15 record validator remains deliberately built-in-only."
+      },
+      "scripts/npc_hook.gd": {
+        "sha256": "3fa66bba005c809406ac9298b1ea7b68e428ab2fead671a98d01ed6e127351b1",
+        "reason": "Read hook movement bounds and landing surface/threshold from the active map; preserve lifecycle, local struggle behavior and RNG semantics."
+      },
+      "scripts/world_simulation.gd": {
+        "sha256": "781d7abb2d23aaaa5cc92b8b4a72c7e21715a1b4318f4850987bbcbb1a6cdfbe",
+        "reason": "Validate/freeze the map before round mutation and RNG seeding; install detached target/blocker/drag caches once per round; migrate spawn, bait, home, water bounds, contact-fade, rope capability and coil inputs. Legacy Layout/SOLIDS remain explicitly scoped compatibility facades."
+      }
+    }
+  },
+  "note": "Exact hashes admit reviewed authority context/consumer changes only. Snapshot, wire shapes, presentation, assets and all other runtime bytes stay locked; four exact 0.26.1 markers are separate."
+}

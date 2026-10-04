@@ -1,3 +1,4 @@
+- [0.26.1 P4.2 Authority MapContext](PHASE04-MAP-AUTHORITY-0.26.1.md)
 - [0.26.0 P4.0 + P4.1 地图数据基础](PHASE04-MAP-FOUNDATION-0.26.0.md)
 - [0.25.5 整体生态平衡与最终人工门](PHASE03-ECOLOGY-VALIDATION-0.25.5.md)
 - [0.25.4 上钩开局与 NPC 拉起修正](PHASE03-HOOK-FIX-0.25.4.md)

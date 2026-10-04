@@ -1,0 +1,23 @@
+# External subclass template: replace @SUITE@ with the unchanged native suite.
+# Fix only live desktop cursor state. Retain all original assertions and pixels.
+extends "res://tests/@SUITE@.gd"
+
+const CursorObservation=preload("res://scripts/net_observation.gd")
+var cursor_setup_records: Array=[]
+
+func render(name: String="") -> Image:
+	var authority_before:=var_to_bytes(game.capture_snapshot())
+	Input.warp_mouse(Vector2(4,4)*Vector2(root.size)/Vector2(640,360))
+	await process_frame
+	var mouse: Vector2=game.view.get_global_mouse_position()
+	var noninteractive:=not CursorObservation.interactive(game.view,game,mouse)
+	var authority_unchanged:=authority_before==var_to_bytes(game.capture_snapshot())
+	cursor_setup_records.append({"capture":name,"mouse_x":mouse.x,"mouse_y":mouse.y,"noninteractive":noninteractive,"authority_unchanged":authority_unchanged})
+	var evidence:=FileAccess.open(output.path_join("cursor-setup-evidence.json"),FileAccess.WRITE)
+	if evidence==null or not noninteractive or not authority_unchanged:
+		push_error("CURSOR_SETUP_FAIL | cursor must be noninteractive and preserve complete authority")
+		quit(1)
+		return Image.new()
+	evidence.store_string(JSON.stringify(cursor_setup_records,"\t")+"\n")
+	evidence.close()
+	return await super.render(name)

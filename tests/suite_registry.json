@@ -694,6 +694,18 @@
       "status": "current",
       "mode": "headless",
       "timeout_seconds": 120
+    },
+    "phase04_map_context": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 90
+    },
+    "phase04_map_authority": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120,
+      "pack_compatible": false,
+      "pack_reason": "Uses test-only map fixture; release PCK intentionally excludes tests. Run against source."
     }
   }
 }

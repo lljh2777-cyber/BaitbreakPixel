@@ -1,0 +1,10 @@
+{
+  "build_count": 100,
+  "engine": "4.7.2-stable (official)",
+  "query_iterations": 10000,
+  "scope": "single local timing diagnostic; no cross-machine performance guarantee",
+  "three_cached_queries_usec": 9711,
+  "validated_context_build_usec": 1162958,
+  "engine_executable_sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+  "source_script_sha256": "0fb93f9f7d29b16291028e986785efb6194efc8ed3a06b9c1214e2772e5a7074"
+}

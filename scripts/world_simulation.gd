@@ -19,10 +19,27 @@ const Suspicion=preload("res://scripts/fish_suspicion.gd")
 const Instinct=preload("res://scripts/fish_instinct.gd")
 const Stats = preload("res://scripts/round_stats.gd")
 const Rope = preload("res://scripts/rope.gd")
+# Compatibility facade for the unmigrated schema15/network and presentation APIs.
+# Authority gameplay below must use the validated per-round map_context instead.
 const Layout = preload("res://scripts/pond_layout.gd")
+const MapContext = preload("res://scripts/maps/map_context.gd")
+const MapGeometry = preload("res://scripts/maps/map_geometry.gd")
+var _map_context: MapContext
+var map_context: MapContext:
+	get: return _map_context
+	set(_value): pass
+var map_errors: Array = []
+# Detached geometry exports are cached only at initialization, never per tick.
+var map_net_blockers: Array = []
+var map_npc_spawn_blockers: Array = []
+var map_fish_occluders: Array = []
+var map_vegetation_drag_zones: Array = []
+var _npc_spawn_regions: Array[Rect2] = []
 const AnglerController = preload("res://scripts/angler_rig.gd")
 enum HookState { FREE, MOUTH, HOOKED }
-const HOME := Layout.HOME
+# Legacy read aliases; Authority reads the context directly.
+var HOME: Vector2:
+	get: return map_context.home
 const TIME_LIMIT := 360.0
 const SOLIDS: Array = Layout.SOLIDS
 const NET_RIM := Vector2(8,24)
@@ -51,8 +68,8 @@ var hook_target_fish_id := -1
 var rod_id := 1
 var next_bait_id := 1
 var next_hook_id := 1
-var fish := Layout.SPAWN
-var angler := AnglerController.new()
+var fish := Vector2.ZERO
+var angler: AnglerController
 # Compatibility-only state for snapshot schema 12; gameplay uses net_to.
 var net_aim := Vector2.ZERO
 var manual_net := false
@@ -216,7 +233,25 @@ var qte_grace_seconds := 0.0
 var effort_checks := {"fish":Effort.fresh(),"angler":Effort.fresh()}
 
 func _init() -> void:
-	targets=Layout.interaction_targets()
+	var loaded := MapContext.load_map()
+	assert(loaded.valid, "Built-in map must validate before world initialization")
+	if not loaded.valid:
+		map_errors=loaded.errors.duplicate()
+		return
+	_install_map_context(loaded.context)
+	fish=map_context.player_spawn
+	angler=AnglerController.new()
+	angler.configure_map(map_context)
+	angler.reset()
+
+func _install_map_context(context: MapContext) -> void:
+	_map_context=context
+	targets.assign(context.interaction_targets)
+	map_net_blockers=context.net_blockers
+	map_npc_spawn_blockers=context.npc_spawn_blockers
+	map_fish_occluders=context.fish_occluders
+	map_vegetation_drag_zones=context.vegetation_drag_zones
+	_npc_spawn_regions=NPCFishState.spawn_regions(context.water)
 
 # Compatibility properties above are aliases only; no duplicate tuning state.
 func rule(key: String) -> float: return float(rules[key])
@@ -440,7 +475,25 @@ func tug_status() -> String:
 	if approach< -0.12: return "小鱼正在拉开"
 	return "拉扯僵持"
 
-func reset_world(config: Dictionary = {}) -> void:
+func reset_world(config: Dictionary = {}, definition: Variant = null) -> bool:
+	# Explicit definitions are a headless fixture seam, not map selection UI or
+	# network map transfer. Validate everything before touching round state/RNG.
+	var loaded: Dictionary
+	if definition != null:
+		loaded=MapContext.from_definition(definition)
+	else:
+		var map_id: Variant=config.get("map_id","pond_v2")
+		var revision: Variant=config.get("map_revision",1)
+		if not map_id is String or not revision is int:
+			map_errors=["map id and revision have invalid types"]
+			return false
+		loaded=MapContext.load_map(map_id,revision)
+	if not loaded.valid:
+		map_errors=loaded.errors.duplicate()
+		return false
+	_install_map_context(loaded.context)
+	map_errors=[]
+	angler.configure_map(map_context)
 	rules=Rules.legacy(config)
 	qte_timing=Rules.qte(rules,"entry")
 	ruleset="duel" if config.get("ruleset","survival")=="duel" else "survival"
@@ -483,7 +536,7 @@ func reset_world(config: Dictionary = {}) -> void:
 	next_bait_id=1
 	next_hook_id=1
 	challenge = bool(config.get("challenge",false))
-	fish = Layout.SPAWN
+	fish = map_context.player_spawn
 	power=rule("suction_initial")
 	rope_length=0
 	landing_from=Vector2.ZERO
@@ -579,7 +632,8 @@ func reset_world(config: Dictionary = {}) -> void:
 	cycle_age = 0
 	supply_queue.assign([2])
 	baits.clear()
-	var sites: Array[Vector2]=Layout.BAIT_SITES.duplicate()
+	var sites: Array[Vector2]=[]
+	sites.assign(map_context.bait_sites)
 	for index in range(sites.size()-1,0,-1):
 		var other:=rng.randi_range(0,index)
 		var swap:=sites[index]; sites[index]=sites[other]; sites[other]=swap
@@ -603,6 +657,7 @@ func reset_world(config: Dictionary = {}) -> void:
 	notice = "寻找饵团 · 鼠标朝向，左键吸食 · 饵中可能藏有鱼钩"
 	notice_age = 5
 	if uses_mobile_tackle(): notice="Q 下钩 · W 收线 / S 放线 · E 观察 · 左键选择 A/B 抄网"
+	return true
 
 func spawn_npc() -> int:
 	if npc_fishes.size()>=NPCFishState.MAX_COUNT: return -1
@@ -611,12 +666,12 @@ func spawn_npc() -> int:
 	var seed:=NPCFishState.derive_seed(rng.seed,identity)
 	var local_rng:=RandomNumberGenerator.new()
 	local_rng.seed=seed
-	var region: Rect2=NPCFishState.SPAWN_REGIONS[posmod(identity-2,NPCFishState.SPAWN_REGIONS.size())]
+	var region: Rect2=_npc_spawn_regions[posmod(identity-2,_npc_spawn_regions.size())]
 	var position:=region.get_center()
 	var found:=false
 	for attempt in 64:
 		var candidate:=region.position+Vector2(local_rng.randf()*region.size.x,local_rng.randf()*region.size.y)
-		var valid:=candidate.distance_to(HOME)>80 and not _collision(candidate,NPCFishState.RADIUS)
+		var valid:=map_context.fish_bounds(NPCFishState.RADIUS).has_point(candidate) and candidate.distance_to(map_context.home)>80 and not _collision(candidate,NPCFishState.RADIUS)
 		for bait: Dictionary in baits:
 			if bait.active and candidate.distance_to(bait.pos)<45: valid=false
 		for other: Dictionary in npc_fishes:
@@ -658,7 +713,7 @@ func _tick_npc_fishes(delta: float) -> void:
 		if npc.active: neighbors.append({"fish_id":int(npc.fish_id),"position":Vector2(npc.position)})
 	neighbors.sort_custom(func(a: Dictionary,b: Dictionary) -> bool: return a.fish_id<b.fish_id)
 	var public_fish:=Observation.social_fish(self)
-	var environment: Dictionary={"bounds":Layout.fish_bounds(NPCFishState.RADIUS),"neighbors":neighbors,"foraging_enabled":npc_foraging_enabled,"social_enabled":npc_social_enabled}
+	var environment: Dictionary={"bounds":map_context.fish_bounds(NPCFishState.RADIUS),"neighbors":neighbors,"foraging_enabled":npc_foraging_enabled,"social_enabled":npc_social_enabled}
 	for npc: Dictionary in npc_fishes:
 		if not npc.active: continue
 		npc.hook_immunity=maxf(0.0,npc.hook_immunity-delta)
@@ -725,7 +780,7 @@ func line_anchor(index: int) -> Vector2:
 	if uses_mobile_tackle(): return angler.anchor()
 	var bait: Dictionary=baits[index]
 	if bait.has("attachment_anchor"): return Vector2(bait.attachment_anchor)
-	return Vector2(bait.home.x,53)
+	return Vector2(bait.home.x,map_context.water.position.y-15)
 
 func _create_bait(index: int, forced_hook: int=-1, bait_type: String="") -> void:
 	var kind:=FoodProfile.roll(rng) if bait_type.is_empty() else bait_type
@@ -793,7 +848,7 @@ func _initial_hook_assignments() -> Array[bool]:
 
 func _make_bait(index: int, batch: int = 0, bait_type: String = "cluster") -> Dictionary:
 	var hooked_bait := false
-	var home := Vector2(232,153)
+	var home := Vector2(map_context.water.position.x+224,map_context.water.position.y+85)
 	var bait := {"bait_type":bait_type,"bait_id":0,"hook_id":0,"rod_id":rod_id,"tackle":index in [0,2],"drift_phase":0.0,"flutter_amplitude":0.0,"created_tick":simulation_tick,"motion_velocity":Vector2.ZERO,"last_disturbance_tick":-1000,"id":index, "home":home, "pos":home, "angle":0.0, "suction_offset":Vector2.ZERO, "hook":hooked_bait, "removed":false, "active":index != 2, "age":0.0, "budget":0.0, "grains":[], "tip_before":home + Vector2(2, 1)}
 	var counts := [24, 14, 6]
 	var radii := [7.0, 4.4, 1.9]
@@ -853,18 +908,18 @@ func strength(point: Vector2) -> float:
 	return FishFeeding.strength(point,mouth(),aim,rules)
 
 func _collision(point: Vector2, radius: float) -> bool:
-	for solid in SOLIDS:
-		if Layout.touches(point,radius,PackedVector2Array(solid.points)): return true
+	for solid in map_npc_spawn_blockers:
+		if MapGeometry.touches(point,radius,solid.polygon): return true
 	return false
 
 func vegetation_drag(point: Vector2) -> float:
-	for patch in Layout.GRASS:
+	for patch in map_vegetation_drag_zones:
 		if patch.has_point(point): return rule("vegetation_speed")
 	return 1.0
 
 func move_fish(motion: Vector2) -> void:
 	var radius := 17.0 if hooked == HookState.HOOKED else 12.0
-	fish = (fish+motion).clamp(Layout.fish_bounds(radius).position,Layout.fish_bounds(radius).end)
+	fish = (fish+motion).clamp(map_context.fish_bounds(radius).position,map_context.fish_bounds(radius).end)
 	if not uses_mobile_tackle() or hooked!=HookState.HOOKED or landing or line_tuning().y<=0: return
 	var contact := line_anchor(bound_bait) if wraps.is_empty() else Vector2(wraps[-1].entry)
 	var available := rope_length if wraps.is_empty() else fish_line_length
@@ -874,10 +929,14 @@ func move_fish(motion: Vector2) -> void:
 	var reach := maxf(0,available)+rule("line_elastic")*(1-base)
 	var radial := mouth()-contact
 	if radial.length()>reach:
-		fish=(contact+radial.normalized()*reach-aim*10).clamp(Layout.fish_bounds(radius).position,Layout.fish_bounds(radius).end)
+		fish=(contact+radial.normalized()*reach-aim*10).clamp(map_context.fish_bounds(radius).position,map_context.fish_bounds(radius).end)
 
 func touching_target(index: int) -> bool:
-	return index>=0 and index<targets.size() and Layout.touches(fish,12,targets[index].polygon)
+	return index>=0 and index<targets.size() and MapGeometry.touches(fish,12,targets[index].polygon)
+
+func _target_capability(index: int, capability: String) -> bool:
+	if index<0 or index>=targets.size(): return false
+	return bool(targets[index].get("capabilities",{}).get(capability,true))
 
 func target_is_wrapped(index: int) -> bool:
 	for wrap in wraps:
@@ -892,20 +951,20 @@ func _update_contacts(delta: float) -> void:
 	for index in targets.size():
 		var group: int=targets[index].get("fade_group",index)
 		group_opacity[group]=minf(group_opacity.get(group,1.0),target_opacity[index])
-		if touching_target(index): touching_groups[group]=true
+		if _target_capability(index,"contact_fade") and touching_target(index): touching_groups[group]=true
 	for group: int in group_opacity:
 		var opacity: float=rule("cover_opacity") if touching_groups.has(group) else 1.0
 		group_opacity[group]=move_toward(group_opacity[group],opacity,delta*4)
 	for index in targets.size():
-		target_opacity[index]=group_opacity[targets[index].get("fade_group",index)]
+		target_opacity[index]=group_opacity[targets[index].get("fade_group",index)] if _target_capability(index,"contact_fade") else move_toward(target_opacity[index],1.0,delta*4)
 	if qte=="wrap":
 		contact_target = wrap_target
 		return
-	if touching_target(contact_target) and not target_is_wrapped(contact_target): return
+	if _target_capability(contact_target,"rope_anchor") and touching_target(contact_target) and not target_is_wrapped(contact_target): return
 	contact_target = -1
 	var nearest := INF
 	for index in targets.size():
-		if not touching_target(index) or target_is_wrapped(index): continue
+		if not _target_capability(index,"rope_anchor") or not touching_target(index) or target_is_wrapped(index): continue
 		var bounds: Rect2 = targets[index].bounds
 		var distance := fish.distance_squared_to(bounds.get_center())
 		if distance<nearest:
@@ -953,7 +1012,7 @@ func _finish_qte_visual(good: bool, message: String = "", judged: bool = true) -
 func _begin_wrap() -> bool:
 	if untangle_phase=="unwind": return false
 	if hooked!=HookState.HOOKED or wrap_retry>0 or winding() or not touching_target(contact_target): return false
-	if target_is_wrapped(contact_target) or not qte.is_empty(): return false
+	if not _target_capability(contact_target,"rope_anchor") or target_is_wrapped(contact_target) or not qte.is_empty(): return false
 	wrap_target = contact_target
 	_open_qte("wrap")
 	low_age = 0
@@ -971,10 +1030,10 @@ func _fail_wrap(message: String = "", judged: bool = true) -> void:
 	play_feedback("fail")
 
 func _commit_wrap() -> void:
-	if not touching_target(wrap_target) or target_is_wrapped(wrap_target):
+	if not _target_capability(wrap_target,"rope_anchor") or not touching_target(wrap_target) or target_is_wrapped(wrap_target):
 		_fail_wrap("离开障碍 · 缠线中断",qte_age>=float(qte_timing.lead))
 		return
-	var coil := Layout.coil_at(targets[wrap_target],fish)
+	var coil := MapGeometry.coil_at(targets[wrap_target],fish)
 	coil.target = wrap_target
 	wraps.append(coil)
 	untangle_cooldown=maxf(untangle_cooldown,rule("wrap_seconds")+0.5)
@@ -1046,7 +1105,7 @@ func _simulate_fish(delta: float, movement: Vector2, sucking: bool, interact: bo
 	focus_bait_id=interpretation.focus_bait_id
 	if not movement_locked(): movement=Instinct.combine(movement,instinct.bias)
 	if hooked==HookState.HOOKED and not landing and net_state!="caught": round_stats.hooked_seconds+=delta
-	if fish.distance_to(HOME) > 34: started = true
+	if fish.distance_to(map_context.home) > 34: started = true
 	if challenge and rules.timer_enabled and started: clock = minf(rule("time_limit"), clock + delta)
 	notice_age = maxf(0, notice_age - delta)
 	result_flash = maxf(0, result_flash - delta)
@@ -1274,7 +1333,7 @@ func _step_bait_suction(bait: Dictionary, delta: float, sucking: bool, npc: Dict
 		var reach:=FishFeeding.strength(base,origin,direction,rules)*Suction.body_gain(pull_power)*26*rule("hook_suction")*float(FoodProfile.get_profile(bait.bait_type).suction_efficiency)
 		target=base.move_toward(origin,reach)-base
 	bait.suction_offset=Vector2(bait.suction_offset).move_toward(target,delta*(Suction.body_speed(pull_power) if sucking else 38))
-	var bounds:=Layout.WATER.grow(-7)
+	var bounds:=map_context.water.grow(-7)
 	bait.pos=(base+Vector2(bait.suction_offset)).clamp(bounds.position,bounds.end)
 	bait.suction_offset=Vector2(bait.pos)-base
 
@@ -1308,7 +1367,7 @@ func _attach_hook() -> void:
 	landing_age = 0
 	landing = false
 	# Props are pass-through cover; only the pond perimeter constrains swimming.
-	fish = fish.clamp(Layout.fish_bounds(17).position,Layout.fish_bounds(17).end)
+	fish = fish.clamp(map_context.fish_bounds(17).position,map_context.fish_bounds(17).end)
 	public_hook_cue={"tick":simulation_tick,"position":Vector2(fish)}
 	wraps.clear()
 	wrap_target = -1
@@ -1380,7 +1439,7 @@ func _step_line(delta: float, qte_pressed: bool, judged_age: float = -1) -> void
 	if high_age >= break_hold_seconds:
 		_release_hook(true)
 		return
-	if not latched and fish.y < 91 and absf(fish.x - anchor.x) < 30 and tension >= rule("tension_low"):
+	if not latched and fish.y < map_context.water.position.y+23 and absf(fish.x - anchor.x) < 30 and tension >= rule("tension_low"):
 		landing_age += delta
 		if landing_age >= rule("landing_hold"):
 			Net.cancel_manual_net(self)
@@ -1421,13 +1480,13 @@ func _step_line(delta: float, qte_pressed: bool, judged_age: float = -1) -> void
 func _step_landing(delta: float) -> void:
 	landing_age += delta
 	var ratio := clampf(landing_age/rule("landing_lift"),0,1)
-	fish = landing_from.lerp(Vector2(line_anchor(bound_bait).x,39),ratio*ratio)
+	fish = landing_from.lerp(Vector2(line_anchor(bound_bait).x,map_context.water.position.y-29),ratio*ratio)
 	_rebuild_rope()
 	if ratio<1: return
 	if challenge: finish(false,"landed")
 	else:
 		_clear_hook()
-		fish = HOME+Vector2(0,-14)
+		fish = map_context.home+Vector2(0,-14)
 		fish_before = fish
 		notice = "被拉出水了 · 食物保留，已回到巢边"
 		notice_age = 4
@@ -1590,7 +1649,7 @@ static func _segment_distance(a: Vector2, b: Vector2, point: Vector2) -> float:
 	return point.distance_to(a.lerp(b, factor))
 
 func can_home() -> bool:
-	return hooked == HookState.FREE and score >= food_target() - 0.001 and fish.distance_to(HOME) < 29
+	return hooked == HookState.FREE and score >= food_target() - 0.001 and fish.distance_to(map_context.home) < 29
 
 func finish(success: bool, why: String) -> void:
 	if match_over: return

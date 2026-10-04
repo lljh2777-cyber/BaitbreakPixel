@@ -6,6 +6,12 @@ const Commands=preload("res://scripts/game_commands.gd")
 const FishBrain=preload("res://scripts/fish_brain.gd")
 const AnglerBrain=preload("res://scripts/angler_brain.gd")
 const Snapshot=preload("res://scripts/world_snapshot.gd")
+# Explicit exceptions only: these values are reconstructed from the immutable
+# round map, not mutable simulation state missing from schema15. Unknown future
+# fields (including underscore/Object fields) must still fail snapshot coverage.
+const WORLD_MAP_FIELDS: Array[String] = ["_map_context", "map_context", "map_net_blockers", "map_npc_spawn_blockers", "map_fish_occluders", "map_vegetation_drag_zones", "_npc_spawn_regions", "HOME"]
+const WORLD_DIAGNOSTIC_FIELDS: Array[String] = ["map_errors"]
+const RIG_MAP_FIELDS: Array[String] = ["_map_context", "_walk_limits", "_surface_limits", "_cast_bounds", "_cursor_bounds", "_hook_bounds", "_anchor_y", "_surface_current_y"]
 var passed:=0
 var failed:=0
 
@@ -38,17 +44,84 @@ func roundtrip(a: Node2D, b: Node2D, label: String, frames: int=90) -> void:
 	check(restored and same(a,b),label+" restores every simulation field")
 	check(replay_pair(a,b,frames),label+" resumes identically under the same commands")
 
+func uncovered_fields(world_fields: Array, rig_fields: Array) -> Array[String]:
+	var result: Array[String] = []
+	for field: Dictionary in world_fields:
+		if not (int(field.usage) & PROPERTY_USAGE_SCRIPT_VARIABLE): continue
+		if field.name in ["targets", "angler", "rng"] or field.name in World.Rules.LEGACY_PROPERTIES or field.name in Snapshot.WORLD_FIELDS: continue
+		if field.name in WORLD_MAP_FIELDS or field.name in WORLD_DIAGNOSTIC_FIELDS: continue
+		result.append("world." + String(field.name))
+	for field: Dictionary in rig_fields:
+		if not (int(field.usage) & PROPERTY_USAGE_SCRIPT_VARIABLE): continue
+		if field.name not in Snapshot.RIG_FIELDS and field.name not in RIG_MAP_FIELDS: result.append("rig." + String(field.name))
+	return result
+
+func map_cache_values(game: Node2D) -> Dictionary:
+	# Deliberately explicit, mirroring each exclusion rather than dropping every
+	# Object or underscore property. References are verified independently below.
+	return {"map_ref":game.map_context.map_ref, "targets":game.targets.duplicate(true),
+		"map_net_blockers":game.map_net_blockers.duplicate(true),
+		"map_npc_spawn_blockers":game.map_npc_spawn_blockers.duplicate(true),
+		"map_fish_occluders":game.map_fish_occluders.duplicate(true),
+		"map_vegetation_drag_zones":game.map_vegetation_drag_zones.duplicate(),
+		"_npc_spawn_regions":game._npc_spawn_regions.duplicate(), "HOME":game.HOME,
+		"_walk_limits":game.angler._walk_limits, "_surface_limits":game.angler._surface_limits,
+		"_cast_bounds":game.angler._cast_bounds, "_cursor_bounds":game.angler._cursor_bounds,
+		"_hook_bounds":game.angler._hook_bounds, "_anchor_y":game.angler._anchor_y,
+		"_surface_current_y":game.angler._surface_current_y}
+
+func test_map_cache_contract(a: Node2D, b: Node2D) -> void:
+	var world_fields: Array = a.get_script().get_script_property_list()
+	var rig_fields: Array = a.angler.get_script().get_script_property_list()
+	var world_names: Array = []; var rig_names: Array = []
+	for field: Dictionary in world_fields: world_names.append(field.name)
+	for field: Dictionary in rig_fields: rig_names.append(field.name)
+	var exact := true
+	for name: String in WORLD_MAP_FIELDS + WORLD_DIAGNOSTIC_FIELDS:
+		exact = exact and name in world_names and name not in Snapshot.WORLD_FIELDS
+	for name: String in RIG_MAP_FIELDS: exact = exact and name in rig_names and name not in Snapshot.RIG_FIELDS
+	check(exact, "map exclusion names exist and do not silently exempt serialized simulation fields")
+	world_fields.append({"name":"_future_object", "usage":PROPERTY_USAGE_SCRIPT_VARIABLE, "type":TYPE_OBJECT})
+	rig_fields.append({"name":"_future_cache", "usage":PROPERTY_USAGE_SCRIPT_VARIABLE, "type":TYPE_ARRAY})
+	check(uncovered_fields(world_fields, rig_fields) == ["world._future_object", "rig._future_cache"], "unknown underscore/Object/cache fields still fail the architecture guard")
+	var context: RefCounted = a.map_context
+	check(is_same(a._map_context, context) and is_same(a.angler._map_context, context), "world property/private storage and rig all reference the same validated map")
+	check(a.targets == context.interaction_targets and a.map_net_blockers == context.net_blockers and a.map_npc_spawn_blockers == context.npc_spawn_blockers and a.map_fish_occluders == context.fish_occluders, "every excluded target/blocker cache is derived from that exact map")
+	check(a.map_vegetation_drag_zones == context.vegetation_drag_zones and a.HOME == context.home and a.HOME == Vector2(60, 401), "drag cache and HOME read alias come from the same map")
+	check(a._npc_spawn_regions == [Rect2(135,108,150,190), Rect2(470,106,175,200), Rect2(875,112,230,200)], "NPC region cache reconstructs exact legacy ecology bounds")
+	check(a.angler._walk_limits == Vector2(18,1228) and a.angler._surface_limits == Vector2(20,1260), "excluded rig horizontal limits retain independent pond golden values")
+	check(a.angler._cast_bounds == Rect2(38,100,1204,304) and a.angler._cursor_bounds == Rect2(30,80,1220,334) and a.angler._hook_bounds == Rect2(20,79,1240,340) and a.angler._anchor_y == 48.0 and a.angler._surface_current_y == 60.0, "all remaining excluded rig caches retain independent pond golden values")
+	var caches := map_cache_values(a)
+	var target_cache: Array = a.targets
+	var target_record: Dictionary = a.targets[0]
+	var net_cache: Array = a.map_net_blockers
+	var payload: Dictionary = a.capture_snapshot()
+	var absent: bool = not payload.state.has("targets") and not payload.state.has("map_errors")
+	for name: String in WORLD_MAP_FIELDS: absent = absent and not payload.state.has(name)
+	for name: String in RIG_MAP_FIELDS: absent = absent and not payload.rig.has(name)
+	check(absent and payload.schema == 15, "schema15 explicitly excludes reconstructed map state without changing its wire shape")
+	a.advance_tick({"move":Vector2.RIGHT}, {"walk":1.0})
+	check(map_cache_values(a) == caches and is_same(a.map_context, context) and is_same(a.targets, target_cache) and is_same(a.targets[0], target_record) and is_same(a.map_net_blockers, net_cache), "gameplay updates neither rebuild nor mutate static map caches")
+	check(a.restore_snapshot(payload) and same(a, b) and map_cache_values(a) == caches and is_same(a.map_context, context) and is_same(a.angler._map_context, context), "ordinary pond snapshot restore preserves its installed map and all derived caches")
+	check(not a.reset_world({"map_id":"invalid_architecture_map"}) and not a.map_errors.is_empty() and same(a, b) and map_cache_values(a) == caches, "map_errors is rejection diagnostics only, not missing round authority")
+	# A new round must rebuild exact exports/rig bounds even if a debug consumer
+	# has damaged its detached setup cache; it must not reuse stale live arrays.
+	a.targets[0].polygon[0] = Vector2(-999,-999)
+	a.map_net_blockers.clear(); a.map_npc_spawn_blockers.clear(); a.map_fish_occluders.clear()
+	a.map_vegetation_drag_zones.clear(); a._npc_spawn_regions.clear()
+	a.angler._walk_limits = Vector2.ZERO; a.angler._surface_limits = Vector2.ZERO
+	a.angler._cast_bounds = Rect2(); a.angler._cursor_bounds = Rect2(); a.angler._hook_bounds = Rect2()
+	a.angler._anchor_y = 0.0; a.angler._surface_current_y = 0.0
+	check(a.reset_world(config()) and map_cache_values(a) == caches and same(a, b) and a.map_errors.is_empty(), "new round reconstructs every excluded derived cache and clears diagnostics")
+	check(not is_same(a.map_context, context) and is_same(a._map_context, a.map_context) and is_same(a.angler._map_context, a.map_context), "round reset atomically replaces world and rig map references together")
+
 func run() -> void:
 	var a:=World.new()
 	var b:=World.new()
 	a.reset_world(config()); b.reset_world(config())
-	var transient: Array[String]=[]
-	for field in a.get_script().get_script_property_list():
-		if not field.usage & PROPERTY_USAGE_SCRIPT_VARIABLE: continue
-		if not field.name in ["targets","angler","rng"] and not field.name in World.Rules.LEGACY_PROPERTIES and not field.name in Snapshot.WORLD_FIELDS: transient.append(field.name)
-	for field in a.angler.get_script().get_script_property_list():
-		if field.usage & PROPERTY_USAGE_SCRIPT_VARIABLE and not field.name in Snapshot.RIG_FIELDS: transient.append(field.name)
-	check(transient.is_empty(),"snapshot schema covers every mutable world and rig field: "+str(transient))
+	var transient := uncovered_fields(a.get_script().get_script_property_list(), a.angler.get_script().get_script_property_list())
+	check(transient.is_empty(),"snapshot covers all mutable simulation fields; explicitly verified static map caches/diagnostics are separate: "+str(transient))
+	test_map_cache_contract(a, b)
 	a.set_escape_timing(2,0.9,9); a.set_practice_line_tuning(2,2); a.water_strength=2
 	a.angler.cast_from=Vector2(90,100); a.result_good=true
 	a.reset_world(config()); b.reset_world(config())

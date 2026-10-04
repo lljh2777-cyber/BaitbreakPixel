@@ -1,6 +1,7 @@
 extends RefCounted
 
 # Authoritative net simulation. Value state lives in the world snapshot; no input or rendering.
+const MapGeometry=preload("res://scripts/maps/map_geometry.gd")
 
 static func net_warning_seconds(g: Node2D) -> float:
 	return g.rule("net_manual_warning")
@@ -17,17 +18,17 @@ static func record_manual_net_point(g: Node2D, point: Vector2) -> void:
 	commit(g,plan)
 
 static func manual_net_blocked(g: Node2D, point: Vector2) -> bool:
-	for solid in g.SOLIDS:
-		if g.Layout.touches(point,g.net_rim().y+2,PackedVector2Array(solid.points)): return true
+	for solid in g.map_net_blockers:
+		if MapGeometry.touches(point,g.net_rim().y+2,solid.polygon): return true
 	return false
 
 static func _manual_net_exit(g: Node2D, point: Vector2) -> PackedVector2Array:
-	var surface := Vector2(point.x,5)
+	var surface := Vector2(point.x,g.map_context.water.position.y-63)
 	if _manual_net_lane_clear(g, point,surface): return PackedVector2Array([point,surface])
 	# Inflate the obstacles by the turnable rim, then find a clear lift to the surface.
 	var expanded: Array=[]
-	for solid in g.SOLIDS:
-		for polygon in Geometry2D.offset_polygon(PackedVector2Array(solid.points),g.net_rim().y+2,Geometry2D.JOIN_MITER):
+	for solid in g.map_net_blockers:
+		for polygon in Geometry2D.offset_polygon(solid.polygon,g.net_rim().y+2,Geometry2D.JOIN_MITER):
 			expanded.append({"points":Array(polygon)})
 	var path: PackedVector2Array=g.Rope.solve(surface,point,expanded)
 	path.reverse()
@@ -150,8 +151,8 @@ static func net_bag_offset(g: Node2D) -> Vector2:
 
 static func _net_reaches_fish(g: Node2D, point: Vector2, center: Vector2) -> bool:
 	# The small body allowance around the rim must not reach through cover.
-	for solid in g.SOLIDS:
-		var polygon := PackedVector2Array(solid.points)
+	for solid in g.map_net_blockers:
+		var polygon: PackedVector2Array=solid.polygon
 		if Geometry2D.is_point_in_polygon(point,polygon): return false
 		for index in polygon.size():
 			if Geometry2D.segment_intersects_segment(center,point,polygon[index],polygon[(index+1)%polygon.size()])!=null: return false
@@ -219,7 +220,7 @@ static func _advance_net(g: Node2D, delta: float, frame_from: Vector2, frame_to:
 		if ratio>=1:
 			if g.challenge: g.finish(false,"net")
 			else:
-				g._clear_hook(); g.fish=g.HOME+Vector2(0,-14); g.fish_before=g.fish; g.hook_cooldown=2
+				g._clear_hook(); g.fish=g.map_context.home+Vector2(0,-14); g.fish_before=g.fish; g.hook_cooldown=2
 				g.notice="被抄中了 · 已回到巢边"; g.notice_age=3
 				_finish_net_recovery(g)
 	elif g.net_state=="miss":
@@ -243,7 +244,8 @@ static func _advance_net(g: Node2D, delta: float, frame_from: Vector2, frame_to:
 			contact(g,frame_from,frame_to,old_pos,g.net_pos)
 			if g.net_pos.distance_to(g.net_trail[-1])>0.5: g.net_trail.append(g.net_pos)
 			if g.net_state=="sweep" and g.net_pos.distance_to(g.net_to)<0.001: miss(g)
-	if (old_pos.y-57)*(g.net_pos.y-57)<0: _net_splash(g,Vector2(g.net_pos.x,57))
+	var surface_y: float=g.map_context.water.position.y-11
+	if (old_pos.y-surface_y)*(g.net_pos.y-surface_y)<0: _net_splash(g,Vector2(g.net_pos.x,surface_y))
 
 
 static func fresh() -> Dictionary:
@@ -279,13 +281,13 @@ static func command(g: Node2D, events: Array) -> void:
 			"cancel", "suspend": cancel_manual_net(g)
 
 static func reachable(g: Node2D, point: Vector2) -> bool:
-	return g.Layout.NET_AREA.has_point(point) and point.distance_to(g.angler.anchor())<=g.rule("net_reach")
+	return g.map_context.net_area.has_point(point) and point.distance_to(g.angler.anchor())<=g.rule("net_reach")
 
 static func visibility(g: Node2D, point: Vector2) -> float:
 	var distance := point.distance_to(g.angler.anchor())
 	if distance>g.rule("net_sight"): return 0.0
-	for solid in g.SOLIDS:
-		if Geometry2D.is_point_in_polygon(point,PackedVector2Array(solid.points)): return 0.0
+	for solid in g.map_fish_occluders:
+		if Geometry2D.is_point_in_polygon(point,solid.polygon): return 0.0
 	var cover: float=0.42 if g.vegetation_drag(point)<1 else 1.0
 	return (1.0-smoothstep(g.rule("net_sight")*0.5,g.rule("net_sight"),distance))*cover
 
