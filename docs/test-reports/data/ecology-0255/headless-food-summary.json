@@ -1,0 +1,59 @@
+{
+  "assertion_count_basis": "24 aggregate invariants over 4000 fully retained scenario rows, plus artifact write; tick/seed loops are not inflated assertion counts.",
+  "configurations": [
+    {
+      "challenge": true,
+      "failed_seeds": [],
+      "max_empty_supply_ticks": 423,
+      "minimum_lifecycle_events": 5,
+      "minimum_npc_food": 180.0,
+      "minimum_player_food": 60.0,
+      "ruleset": "survival",
+      "seeds": 1000
+    },
+    {
+      "challenge": false,
+      "failed_seeds": [],
+      "max_empty_supply_ticks": 423,
+      "minimum_lifecycle_events": 4,
+      "minimum_npc_food": 180.0,
+      "minimum_player_food": 30.0,
+      "ruleset": "survival",
+      "seeds": 1000
+    },
+    {
+      "challenge": true,
+      "failed_seeds": [],
+      "max_empty_supply_ticks": 423,
+      "minimum_lifecycle_events": 5,
+      "minimum_npc_food": 150.0,
+      "minimum_player_food": 60.0,
+      "ruleset": "duel",
+      "seeds": 1000
+    },
+    {
+      "challenge": false,
+      "failed_seeds": [],
+      "max_empty_supply_ticks": 423,
+      "minimum_lifecycle_events": 4,
+      "minimum_npc_food": 150.0,
+      "minimum_player_food": 30.0,
+      "ruleset": "duel",
+      "seeds": 1000
+    }
+  ],
+  "distinct_seeds": 1000,
+  "first_seed": 51001,
+  "format": "phase03-food-supply-gate-v1",
+  "last_seed": 52000,
+  "limitations": "Structural supply and ownership witness only. Does not advance travel, live competing AI, hunger, hook contact or escape; player claim cooldown is reset in the resource witness. This does not prove every real-time player policy can win; separate autonomous paired experiment and human playtest are required.",
+  "method": "Adversarial initial and three repeated all-visible-food NPC depletion via shared authority intake. Advance existing warning/refill/redeploy lifecycle at 60 Hz until real new identities and edible food appear. Shared automatic Bite with controlled player mouth placement and reset cooldown claims replenished real food to unchanged goal. No new food injection, private hook selection, goal reduction, timer acceleration or forced winner.",
+  "scenario_count": 4000,
+  "tick_seconds": 0.0166666666666667,
+  "wall_seconds": 215.316,
+  "raw_source": "artifacts/phase03-food-reachability.json",
+  "raw_source_sha256": "b7b784b74141d001522b415d4dacb9617c9a629be28dd0ed6229f4c4f61a3a6b",
+  "all_cases_file": "headless-food-cases.jsonl",
+  "all_cases_sha256": "abfdcd2d4a0f8cbaccd8990f7b649bb385e74f369123a3cb076c19c1247ae6b0",
+  "final_gate": "headless-summary.json / phase03_food_reachability"
+}

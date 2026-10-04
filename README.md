@@ -2,12 +2,12 @@
 
 一个 2D 像素风格的人鱼对抗游戏：小鱼在水下觅食、缠线和逃脱，钓鱼人在岸边控竿、收放线与抄网。支持单机挑战、自由练习和一人对一鱼的局域网联机。
 
-**当前源码：0.25.4（P3.4 上钩修正，等待人工复测）** · Godot 4.7.2
+**当前源码：0.25.5（P3.5 整体生态平衡，等待最终人工试玩）** · Godot 4.7.2
 **当前公开 Windows 试玩包：0.25.4**，历史发行记录继续保留。
 
 用户已确认 0.25.2 社会线索试玩通过。0.25.3 让 NPC 真实误咬钩、自动挣扎、逃脱、断线或被拉起。钓错 NPC 不结束比赛；玩家可趁机吃饵、回巢，钓鱼人需要重新部署。NPC 捕获后暂离生态，延迟生成新 ID 的鱼。
 
-0.25.4 根据试玩反馈修正 QTE 准备阶段误判、缠线开局顺序与 NPC 拉起节奏；详见[修正与人工复测清单](docs/test-reports/PHASE03-HOOK-FIX-0.25.4.md)。0.25.4 Windows ZIP 已构建、验证并公开发布；解压后运行 `BaitbreakPixel.exe`，核对菜单显示 0.25.4。[钓错目标架构](docs/architecture/PHASE03-WRONG-HOOK-TARGET.md)和原验证报告保留历史范围。P3.4 完成后 STOP，等待人工试玩；P3.5 整体平衡、NPC 抄网与 Phase 4 多竿不在本轮。
+用户已允许进入 P3.5。0.25.5 保留三条 NPC、既有抢食/社会反应、0.25.4 玩家 QTE 修正与 NPC 收近节奏，以跨模式、跨摄食策略的配对统计及完整回归检查整体生态，详见[生态平衡报告与最终试玩清单](docs/test-reports/PHASE03-ECOLOGY-VALIDATION-0.25.5.md)。本轮只提交推送源码，不生成新的 Windows 包；公开 Windows ZIP 仍为 0.25.4。[钓错目标架构](docs/architecture/PHASE03-WRONG-HOOK-TARGET.md)及历史验证保留。完成后 STOP 等待 Phase 3 最终人工确认；NPC 抄网暂缓，Phase 4 多竿仍锁定。
 
 玩家 10 px 自动咬食、0.80 秒间隔、4/6/8 容量和已确认的抢食/补饵规则保持。NPC 继续真实消耗食物、增加自身饱食，不增加玩家分数、不参与胜负。玩家原 QTE、缠线、松线、断线、张力和提鱼保持。
 
@@ -23,7 +23,7 @@
 
 ### Phase 2.3：已由用户人工关闭
 
-用户于 2026-10-03 确认目前手感合适并进入 Phase 3。此前各版的自动统计、未通过项与人工门记录保留原文，不能把后续确认回写为当时已通过。0.25.0 环境鱼、0.25.1 抢食和 0.25.2 社会线索均已由用户试玩确认；现行人工复测清单见上方 0.25.4 报告。
+用户于 2026-10-03 确认目前手感合适并进入 Phase 3。此前各版的自动统计、未通过项与人工门记录保留原文，不能把后续确认回写为当时已通过。0.25.0 环境鱼、0.25.1 抢食和 0.25.2 社会线索均已由用户试玩确认；用户随后授权进入 P3.5；这不回写为对每一项 P3.4 手感的逐条验收。现行最终人工试玩清单见上方 0.25.5 报告。
 
 实现与统计定义见[摄食平衡边界](docs/architecture/PHASE02-FEEDING-BALANCE.md)。此前[三种饵型报告](docs/test-reports/PHASE02-BAIT-VALIDATION.md)与[P2.1 报告](docs/test-reports/PHASE02-BITE-VALIDATION.md)保留原始结果。
 
@@ -66,7 +66,7 @@
 .\Build-Pixel.ps1 -GodotDirectory 'D:\Tools\Godot_v4.7.2-stable_win64.exe'
 ```
 
-该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.25.4` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
+该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.25.5` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
 
 当前测试入口、套件状态和产物目录配置见 [测试运行指南](tests/README.md)。核心抄网逻辑检查示例（替换为本机引擎路径）：
 
@@ -74,7 +74,7 @@
 & 'D:\Tools\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe' --headless --path . --script res://tests/net_v021.gd -- --test-profile
 ```
 
-测试使用独立配置；带原生画面截图的脚本需要图形窗口，不使用 `--headless`。本次检查见 [0.25.4 修正报告](docs/test-reports/PHASE03-HOOK-FIX-0.25.4.md)；此前 Windows 试玩包的验证保留在 [0.22.5 原始报告](docs/test-reports/TEST-REPORT-0.22.5.md)。
+测试使用独立配置；带原生画面截图的脚本需要图形窗口，不使用 `--headless`。本次检查见 [0.25.5 生态平衡报告](docs/test-reports/PHASE03-ECOLOGY-VALIDATION-0.25.5.md)；此前 Windows 试玩包的验证保留在 [0.22.5 原始报告](docs/test-reports/TEST-REPORT-0.22.5.md)。
 
 ## 项目结构与文档
 

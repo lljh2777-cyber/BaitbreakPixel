@@ -674,6 +674,11 @@
       "status": "current",
       "mode": "headless",
       "timeout_seconds": 120
+    },
+    "phase03_ecology_balance": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 180
     }
   }
 }

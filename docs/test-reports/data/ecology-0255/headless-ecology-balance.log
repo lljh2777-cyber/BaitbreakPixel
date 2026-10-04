@@ -1,0 +1,277 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+ECOLOGY_BALANCE_PASS | production default remains three; 2/4 exist only as test fixtures
+ECOLOGY_BALANCE_PASS | default ecology enables feeding, social cues and physical NPC hooks
+ECOLOGY_BALANCE_PASS | shared Bite contract remains 10 px / 0.8 s
+ECOLOGY_BALANCE_PASS | 0.25.4 NPC retrieval gain remains unchanged
+ECOLOGY_BALANCE_PASS | fresh appetite and six-field public NPC contract stay unchanged
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=2 mode=survival challenge=false hunger=false seed=75101
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=2 mode=survival challenge=false hunger=false seed=75101
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=2 mode=survival challenge=false hunger=false seed=75101
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=2 mode=survival challenge=false hunger=false seed=75101
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=2 mode=survival challenge=false hunger=false seed=75101
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=2 mode=survival challenge=false hunger=false seed=75101
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=2 mode=survival challenge=false hunger=false seed=75101
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=2 mode=survival challenge=false hunger=false seed=75101
+ECOLOGY_BALANCE_CASE | {"challenge":false,"count":2,"hunger":false,"mode":"survival","npc_food":21.6,"npc_hooks":0,"seed":75101,"states":{"APPROACH_FOOD":1368,"FEED":424,"FLEE":176,"HESITATE":320,"WANDER":112},"ticks":1200,"wrong_catches":0}
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=2 mode=survival challenge=false hunger=true seed=75102
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=2 mode=survival challenge=false hunger=true seed=75102
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=2 mode=survival challenge=false hunger=true seed=75102
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=2 mode=survival challenge=false hunger=true seed=75102
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=2 mode=survival challenge=false hunger=true seed=75102
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=2 mode=survival challenge=false hunger=true seed=75102
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=2 mode=survival challenge=false hunger=true seed=75102
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=2 mode=survival challenge=false hunger=true seed=75102
+ECOLOGY_BALANCE_CASE | {"challenge":false,"count":2,"hunger":true,"mode":"survival","npc_food":25.65,"npc_hooks":0,"seed":75102,"states":{"APPROACH_FOOD":1200,"COMPETE":432,"FEED":592,"HESITATE":176},"ticks":1200,"wrong_catches":0}
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=2 mode=survival challenge=true hunger=false seed=75103
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=2 mode=survival challenge=true hunger=false seed=75103
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=2 mode=survival challenge=true hunger=false seed=75103
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=2 mode=survival challenge=true hunger=false seed=75103
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=2 mode=survival challenge=true hunger=false seed=75103
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=2 mode=survival challenge=true hunger=false seed=75103
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=2 mode=survival challenge=true hunger=false seed=75103
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=2 mode=survival challenge=true hunger=false seed=75103
+ECOLOGY_BALANCE_CASE | {"challenge":true,"count":2,"hunger":false,"mode":"survival","npc_food":28.5,"npc_hooks":0,"seed":75103,"states":{"APPROACH_FOOD":424,"FEED":416,"FLEE":592,"HESITATE":368,"WANDER":600},"ticks":1200,"wrong_catches":0}
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=2 mode=survival challenge=true hunger=true seed=75104
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=2 mode=survival challenge=true hunger=true seed=75104
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=2 mode=survival challenge=true hunger=true seed=75104
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=2 mode=survival challenge=true hunger=true seed=75104
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=2 mode=survival challenge=true hunger=true seed=75104
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=2 mode=survival challenge=true hunger=true seed=75104
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=2 mode=survival challenge=true hunger=true seed=75104
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=2 mode=survival challenge=true hunger=true seed=75104
+ECOLOGY_BALANCE_CASE | {"challenge":true,"count":2,"hunger":true,"mode":"survival","npc_food":11.7,"npc_hooks":0,"seed":75104,"states":{"APPROACH_FOOD":920,"FEED":136,"HESITATE":144,"WANDER":1200},"ticks":1200,"wrong_catches":0}
+ECOLOGY_BALANCE_PASS | real swept mouth contact chooses only NPC: capture count=2 mode=survival
+ECOLOGY_BALANCE_PASS | 40 lifecycle checkpoints stay legal on authority and both roles: capture count=2 mode=survival
+ECOLOGY_BALANCE_PASS | real capture and replacement replay with live peers: capture count=2 mode=survival
+ECOLOGY_BALANCE_PASS | capture spends the existing eight-second replacement delay: capture count=2 mode=survival
+ECOLOGY_BALANCE_PASS | population recovers with a fresh stable identity: capture count=2 mode=survival
+ECOLOGY_BALANCE_PASS | other ecology continues while the original NPC occupies the line: capture count=2 mode=survival
+ECOLOGY_BALANCE_PASS | wrong catch keeps player awards and victory separate: capture count=2 mode=survival
+ECOLOGY_BALANCE_CAPTURE | {"capture_tick":235,"count":2,"mode":"survival","npc_food":18.6,"npc_hooks":2,"replacement_tick":716,"wrong_catches":2}
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=2 mode=duel challenge=false hunger=false seed=75105
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=2 mode=duel challenge=false hunger=false seed=75105
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=2 mode=duel challenge=false hunger=false seed=75105
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=2 mode=duel challenge=false hunger=false seed=75105
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=2 mode=duel challenge=false hunger=false seed=75105
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=2 mode=duel challenge=false hunger=false seed=75105
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=2 mode=duel challenge=false hunger=false seed=75105
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=2 mode=duel challenge=false hunger=false seed=75105
+ECOLOGY_BALANCE_CASE | {"challenge":false,"count":2,"hunger":false,"mode":"duel","npc_food":35.7,"npc_hooks":1,"seed":75105,"states":{"APPROACH_FOOD":1304,"FEED":312,"FLEE":88,"HESITATE":376,"HOOKED":144,"WANDER":176},"ticks":1200,"wrong_catches":0}
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=2 mode=duel challenge=false hunger=true seed=75106
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=2 mode=duel challenge=false hunger=true seed=75106
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=2 mode=duel challenge=false hunger=true seed=75106
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=2 mode=duel challenge=false hunger=true seed=75106
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=2 mode=duel challenge=false hunger=true seed=75106
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=2 mode=duel challenge=false hunger=true seed=75106
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=2 mode=duel challenge=false hunger=true seed=75106
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=2 mode=duel challenge=false hunger=true seed=75106
+ECOLOGY_BALANCE_CASE | {"challenge":false,"count":2,"hunger":true,"mode":"duel","npc_food":33.9,"npc_hooks":1,"seed":75106,"states":{"APPROACH_FOOD":1001,"CAPTURED":170,"COMPETE":120,"FEED":272,"FLEE":264,"HESITATE":256,"HOOKED":198,"LANDING":63,"WANDER":56},"ticks":1200,"wrong_catches":1}
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=2 mode=duel challenge=true hunger=false seed=75107
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=2 mode=duel challenge=true hunger=false seed=75107
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=2 mode=duel challenge=true hunger=false seed=75107
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=2 mode=duel challenge=true hunger=false seed=75107
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=2 mode=duel challenge=true hunger=false seed=75107
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=2 mode=duel challenge=true hunger=false seed=75107
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=2 mode=duel challenge=true hunger=false seed=75107
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=2 mode=duel challenge=true hunger=false seed=75107
+ECOLOGY_BALANCE_CASE | {"challenge":true,"count":2,"hunger":false,"mode":"duel","npc_food":56.55,"npc_hooks":1,"seed":75107,"states":{"APPROACH_FOOD":933,"FEED":696,"HESITATE":392,"HOOKED":194,"LANDING":9,"WANDER":176},"ticks":1200,"wrong_catches":0}
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=2 mode=duel challenge=true hunger=true seed=75108
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=2 mode=duel challenge=true hunger=true seed=75108
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=2 mode=duel challenge=true hunger=true seed=75108
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=2 mode=duel challenge=true hunger=true seed=75108
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=2 mode=duel challenge=true hunger=true seed=75108
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=2 mode=duel challenge=true hunger=true seed=75108
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=2 mode=duel challenge=true hunger=true seed=75108
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=2 mode=duel challenge=true hunger=true seed=75108
+ECOLOGY_BALANCE_CASE | {"challenge":true,"count":2,"hunger":true,"mode":"duel","npc_food":64.5,"npc_hooks":0,"seed":75108,"states":{"APPROACH_FOOD":1248,"FEED":760,"FLEE":88,"HESITATE":144,"WANDER":160},"ticks":1200,"wrong_catches":0}
+ECOLOGY_BALANCE_PASS | real swept mouth contact chooses only NPC: capture count=2 mode=duel
+ECOLOGY_BALANCE_PASS | 40 lifecycle checkpoints stay legal on authority and both roles: capture count=2 mode=duel
+ECOLOGY_BALANCE_PASS | real capture and replacement replay with live peers: capture count=2 mode=duel
+ECOLOGY_BALANCE_PASS | capture spends the existing eight-second replacement delay: capture count=2 mode=duel
+ECOLOGY_BALANCE_PASS | population recovers with a fresh stable identity: capture count=2 mode=duel
+ECOLOGY_BALANCE_PASS | other ecology continues while the original NPC occupies the line: capture count=2 mode=duel
+ECOLOGY_BALANCE_PASS | wrong catch keeps player awards and victory separate: capture count=2 mode=duel
+ECOLOGY_BALANCE_CAPTURE | {"capture_tick":235,"count":2,"mode":"duel","npc_food":5.85,"npc_hooks":2,"replacement_tick":716,"wrong_catches":2}
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=3 mode=survival challenge=false hunger=false seed=75109
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=3 mode=survival challenge=false hunger=false seed=75109
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=3 mode=survival challenge=false hunger=false seed=75109
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=3 mode=survival challenge=false hunger=false seed=75109
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=3 mode=survival challenge=false hunger=false seed=75109
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=3 mode=survival challenge=false hunger=false seed=75109
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=3 mode=survival challenge=false hunger=false seed=75109
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=3 mode=survival challenge=false hunger=false seed=75109
+ECOLOGY_BALANCE_CASE | {"challenge":false,"count":3,"hunger":false,"mode":"survival","npc_food":30.0,"npc_hooks":0,"seed":75109,"states":{"APPROACH_FOOD":2120,"COMPETE":72,"FEED":240,"FLEE":176,"HESITATE":592,"WANDER":400},"ticks":1200,"wrong_catches":0}
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=3 mode=survival challenge=false hunger=true seed=75110
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=3 mode=survival challenge=false hunger=true seed=75110
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=3 mode=survival challenge=false hunger=true seed=75110
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=3 mode=survival challenge=false hunger=true seed=75110
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=3 mode=survival challenge=false hunger=true seed=75110
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=3 mode=survival challenge=false hunger=true seed=75110
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=3 mode=survival challenge=false hunger=true seed=75110
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=3 mode=survival challenge=false hunger=true seed=75110
+ECOLOGY_BALANCE_CASE | {"challenge":false,"count":3,"hunger":true,"mode":"survival","npc_food":29.1,"npc_hooks":2,"seed":75110,"states":{"APPROACH_FOOD":985,"CAPTURED":887,"FEED":424,"FLEE":88,"HESITATE":434,"HOOKED":386,"LANDING":126,"WANDER":270},"ticks":1200,"wrong_catches":2}
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=3 mode=survival challenge=true hunger=false seed=75111
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=3 mode=survival challenge=true hunger=false seed=75111
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=3 mode=survival challenge=true hunger=false seed=75111
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=3 mode=survival challenge=true hunger=false seed=75111
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=3 mode=survival challenge=true hunger=false seed=75111
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=3 mode=survival challenge=true hunger=false seed=75111
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=3 mode=survival challenge=true hunger=false seed=75111
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=3 mode=survival challenge=true hunger=false seed=75111
+ECOLOGY_BALANCE_CASE | {"challenge":true,"count":3,"hunger":false,"mode":"survival","npc_food":28.2,"npc_hooks":0,"seed":75111,"states":{"APPROACH_FOOD":872,"COMPETE":200,"FEED":1000,"FLEE":88,"HESITATE":648,"WANDER":792},"ticks":1200,"wrong_catches":0}
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=3 mode=survival challenge=true hunger=true seed=75112
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=3 mode=survival challenge=true hunger=true seed=75112
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=3 mode=survival challenge=true hunger=true seed=75112
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=3 mode=survival challenge=true hunger=true seed=75112
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=3 mode=survival challenge=true hunger=true seed=75112
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=3 mode=survival challenge=true hunger=true seed=75112
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=3 mode=survival challenge=true hunger=true seed=75112
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=3 mode=survival challenge=true hunger=true seed=75112
+ECOLOGY_BALANCE_CASE | {"challenge":true,"count":3,"hunger":true,"mode":"survival","npc_food":10.95,"npc_hooks":1,"seed":75112,"states":{"APPROACH_FOOD":2000,"CAPTURED":472,"FEED":58,"FLEE":288,"HESITATE":288,"HOOKED":199,"LANDING":63,"WANDER":232},"ticks":1200,"wrong_catches":1}
+ECOLOGY_BALANCE_PASS | real swept mouth contact chooses only NPC: capture count=3 mode=survival
+ECOLOGY_BALANCE_PASS | 40 lifecycle checkpoints stay legal on authority and both roles: capture count=3 mode=survival
+ECOLOGY_BALANCE_PASS | real capture and replacement replay with live peers: capture count=3 mode=survival
+ECOLOGY_BALANCE_PASS | capture spends the existing eight-second replacement delay: capture count=3 mode=survival
+ECOLOGY_BALANCE_PASS | population recovers with a fresh stable identity: capture count=3 mode=survival
+ECOLOGY_BALANCE_PASS | other ecology continues while the original NPC occupies the line: capture count=3 mode=survival
+ECOLOGY_BALANCE_PASS | wrong catch keeps player awards and victory separate: capture count=3 mode=survival
+ECOLOGY_BALANCE_CAPTURE | {"capture_tick":236,"count":3,"mode":"survival","npc_food":37.65,"npc_hooks":2,"replacement_tick":717,"wrong_catches":2}
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=3 mode=duel challenge=false hunger=false seed=75113
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=3 mode=duel challenge=false hunger=false seed=75113
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=3 mode=duel challenge=false hunger=false seed=75113
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=3 mode=duel challenge=false hunger=false seed=75113
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=3 mode=duel challenge=false hunger=false seed=75113
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=3 mode=duel challenge=false hunger=false seed=75113
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=3 mode=duel challenge=false hunger=false seed=75113
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=3 mode=duel challenge=false hunger=false seed=75113
+ECOLOGY_BALANCE_CASE | {"challenge":false,"count":3,"hunger":false,"mode":"duel","npc_food":26.4,"npc_hooks":0,"seed":75113,"states":{"APPROACH_FOOD":1688,"FEED":680,"FLEE":88,"HESITATE":376,"WANDER":768},"ticks":1200,"wrong_catches":0}
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=3 mode=duel challenge=false hunger=true seed=75114
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=3 mode=duel challenge=false hunger=true seed=75114
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=3 mode=duel challenge=false hunger=true seed=75114
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=3 mode=duel challenge=false hunger=true seed=75114
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=3 mode=duel challenge=false hunger=true seed=75114
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=3 mode=duel challenge=false hunger=true seed=75114
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=3 mode=duel challenge=false hunger=true seed=75114
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=3 mode=duel challenge=false hunger=true seed=75114
+ECOLOGY_BALANCE_CASE | {"challenge":false,"count":3,"hunger":true,"mode":"duel","npc_food":54.15,"npc_hooks":1,"seed":75114,"states":{"APPROACH_FOOD":1448,"CAPTURED":432,"FEED":776,"FLEE":184,"HESITATE":248,"HOOKED":449,"LANDING":63},"ticks":1200,"wrong_catches":1}
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=3 mode=duel challenge=true hunger=false seed=75115
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=3 mode=duel challenge=true hunger=false seed=75115
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=3 mode=duel challenge=true hunger=false seed=75115
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=3 mode=duel challenge=true hunger=false seed=75115
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=3 mode=duel challenge=true hunger=false seed=75115
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=3 mode=duel challenge=true hunger=false seed=75115
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=3 mode=duel challenge=true hunger=false seed=75115
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=3 mode=duel challenge=true hunger=false seed=75115
+ECOLOGY_BALANCE_CASE | {"challenge":true,"count":3,"hunger":false,"mode":"duel","npc_food":5.85,"npc_hooks":2,"seed":75115,"states":{"APPROACH_FOOD":1340,"CAPTURED":481,"FEED":23,"FLEE":176,"HESITATE":312,"HOOKED":589,"LANDING":63,"WANDER":616},"ticks":1200,"wrong_catches":1}
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=3 mode=duel challenge=true hunger=true seed=75116
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=3 mode=duel challenge=true hunger=true seed=75116
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=3 mode=duel challenge=true hunger=true seed=75116
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=3 mode=duel challenge=true hunger=true seed=75116
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=3 mode=duel challenge=true hunger=true seed=75116
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=3 mode=duel challenge=true hunger=true seed=75116
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=3 mode=duel challenge=true hunger=true seed=75116
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=3 mode=duel challenge=true hunger=true seed=75116
+ECOLOGY_BALANCE_CASE | {"challenge":true,"count":3,"hunger":true,"mode":"duel","npc_food":30.6,"npc_hooks":1,"seed":75116,"states":{"APPROACH_FOOD":936,"CAPTURED":469,"COMPETE":40,"FEED":209,"FLEE":304,"HESITATE":488,"HOOKED":163,"LANDING":63,"WANDER":928},"ticks":1200,"wrong_catches":1}
+ECOLOGY_BALANCE_PASS | real swept mouth contact chooses only NPC: capture count=3 mode=duel
+ECOLOGY_BALANCE_PASS | 40 lifecycle checkpoints stay legal on authority and both roles: capture count=3 mode=duel
+ECOLOGY_BALANCE_PASS | real capture and replacement replay with live peers: capture count=3 mode=duel
+ECOLOGY_BALANCE_PASS | capture spends the existing eight-second replacement delay: capture count=3 mode=duel
+ECOLOGY_BALANCE_PASS | population recovers with a fresh stable identity: capture count=3 mode=duel
+ECOLOGY_BALANCE_PASS | other ecology continues while the original NPC occupies the line: capture count=3 mode=duel
+ECOLOGY_BALANCE_PASS | wrong catch keeps player awards and victory separate: capture count=3 mode=duel
+ECOLOGY_BALANCE_CAPTURE | {"capture_tick":236,"count":3,"mode":"duel","npc_food":14.1,"npc_hooks":2,"replacement_tick":717,"wrong_catches":2}
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=4 mode=survival challenge=false hunger=false seed=75117
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=4 mode=survival challenge=false hunger=false seed=75117
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=4 mode=survival challenge=false hunger=false seed=75117
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=4 mode=survival challenge=false hunger=false seed=75117
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=4 mode=survival challenge=false hunger=false seed=75117
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=4 mode=survival challenge=false hunger=false seed=75117
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=4 mode=survival challenge=false hunger=false seed=75117
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=4 mode=survival challenge=false hunger=false seed=75117
+ECOLOGY_BALANCE_CASE | {"challenge":false,"count":4,"hunger":false,"mode":"survival","npc_food":29.4,"npc_hooks":0,"seed":75117,"states":{"APPROACH_FOOD":1984,"COMPETE":216,"FEED":880,"FLEE":264,"HESITATE":232,"WANDER":1224},"ticks":1200,"wrong_catches":0}
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=4 mode=survival challenge=false hunger=true seed=75118
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=4 mode=survival challenge=false hunger=true seed=75118
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=4 mode=survival challenge=false hunger=true seed=75118
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=4 mode=survival challenge=false hunger=true seed=75118
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=4 mode=survival challenge=false hunger=true seed=75118
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=4 mode=survival challenge=false hunger=true seed=75118
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=4 mode=survival challenge=false hunger=true seed=75118
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=4 mode=survival challenge=false hunger=true seed=75118
+ECOLOGY_BALANCE_CASE | {"challenge":false,"count":4,"hunger":true,"mode":"survival","npc_food":30.0,"npc_hooks":0,"seed":75118,"states":{"APPROACH_FOOD":1792,"FEED":192,"FLEE":1000,"HESITATE":248,"WANDER":1568},"ticks":1200,"wrong_catches":0}
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=4 mode=survival challenge=true hunger=false seed=75119
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=4 mode=survival challenge=true hunger=false seed=75119
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=4 mode=survival challenge=true hunger=false seed=75119
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=4 mode=survival challenge=true hunger=false seed=75119
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=4 mode=survival challenge=true hunger=false seed=75119
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=4 mode=survival challenge=true hunger=false seed=75119
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=4 mode=survival challenge=true hunger=false seed=75119
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=4 mode=survival challenge=true hunger=false seed=75119
+ECOLOGY_BALANCE_CASE | {"challenge":true,"count":4,"hunger":false,"mode":"survival","npc_food":0.0,"npc_hooks":0,"seed":75119,"states":{"APPROACH_FOOD":2480,"FLEE":264,"HESITATE":616,"WANDER":1440},"ticks":1200,"wrong_catches":0}
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=4 mode=survival challenge=true hunger=true seed=75120
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=4 mode=survival challenge=true hunger=true seed=75120
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=4 mode=survival challenge=true hunger=true seed=75120
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=4 mode=survival challenge=true hunger=true seed=75120
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=4 mode=survival challenge=true hunger=true seed=75120
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=4 mode=survival challenge=true hunger=true seed=75120
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=4 mode=survival challenge=true hunger=true seed=75120
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=4 mode=survival challenge=true hunger=true seed=75120
+ECOLOGY_BALANCE_CASE | {"challenge":true,"count":4,"hunger":true,"mode":"survival","npc_food":26.4,"npc_hooks":0,"seed":75120,"states":{"APPROACH_FOOD":1272,"COMPETE":424,"FEED":704,"FLEE":176,"HESITATE":408,"WANDER":1816},"ticks":1200,"wrong_catches":0}
+ECOLOGY_BALANCE_PASS | real swept mouth contact chooses only NPC: capture count=4 mode=survival
+ECOLOGY_BALANCE_PASS | 40 lifecycle checkpoints stay legal on authority and both roles: capture count=4 mode=survival
+ECOLOGY_BALANCE_PASS | real capture and replacement replay with live peers: capture count=4 mode=survival
+ECOLOGY_BALANCE_PASS | capture spends the existing eight-second replacement delay: capture count=4 mode=survival
+ECOLOGY_BALANCE_PASS | population recovers with a fresh stable identity: capture count=4 mode=survival
+ECOLOGY_BALANCE_PASS | other ecology continues while the original NPC occupies the line: capture count=4 mode=survival
+ECOLOGY_BALANCE_PASS | wrong catch keeps player awards and victory separate: capture count=4 mode=survival
+ECOLOGY_BALANCE_CAPTURE | {"capture_tick":236,"count":4,"mode":"survival","npc_food":57.0,"npc_hooks":1,"replacement_tick":717,"wrong_catches":1}
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=4 mode=duel challenge=false hunger=false seed=75121
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=4 mode=duel challenge=false hunger=false seed=75121
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=4 mode=duel challenge=false hunger=false seed=75121
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=4 mode=duel challenge=false hunger=false seed=75121
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=4 mode=duel challenge=false hunger=false seed=75121
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=4 mode=duel challenge=false hunger=false seed=75121
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=4 mode=duel challenge=false hunger=false seed=75121
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=4 mode=duel challenge=false hunger=false seed=75121
+ECOLOGY_BALANCE_CASE | {"challenge":false,"count":4,"hunger":false,"mode":"duel","npc_food":27.75,"npc_hooks":1,"seed":75121,"states":{"APPROACH_FOOD":1872,"CAPTURED":258,"COMPETE":24,"FEED":216,"FLEE":992,"HESITATE":296,"HOOKED":173,"LANDING":63,"WANDER":906},"ticks":1200,"wrong_catches":1}
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=4 mode=duel challenge=false hunger=true seed=75122
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=4 mode=duel challenge=false hunger=true seed=75122
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=4 mode=duel challenge=false hunger=true seed=75122
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=4 mode=duel challenge=false hunger=true seed=75122
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=4 mode=duel challenge=false hunger=true seed=75122
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=4 mode=duel challenge=false hunger=true seed=75122
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=4 mode=duel challenge=false hunger=true seed=75122
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=4 mode=duel challenge=false hunger=true seed=75122
+ECOLOGY_BALANCE_CASE | {"challenge":false,"count":4,"hunger":true,"mode":"duel","npc_food":77.7,"npc_hooks":0,"seed":75122,"states":{"APPROACH_FOOD":1456,"COMPETE":480,"FEED":1456,"HESITATE":616,"WANDER":792},"ticks":1200,"wrong_catches":0}
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=4 mode=duel challenge=true hunger=false seed=75123
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=4 mode=duel challenge=true hunger=false seed=75123
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=4 mode=duel challenge=true hunger=false seed=75123
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=4 mode=duel challenge=true hunger=false seed=75123
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=4 mode=duel challenge=true hunger=false seed=75123
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=4 mode=duel challenge=true hunger=false seed=75123
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=4 mode=duel challenge=true hunger=false seed=75123
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=4 mode=duel challenge=true hunger=false seed=75123
+ECOLOGY_BALANCE_CASE | {"challenge":true,"count":4,"hunger":false,"mode":"duel","npc_food":48.0,"npc_hooks":0,"seed":75123,"states":{"APPROACH_FOOD":1696,"COMPETE":288,"FEED":1432,"FLEE":88,"HESITATE":864,"WANDER":432},"ticks":1200,"wrong_catches":0}
+ECOLOGY_BALANCE_PASS | pause freezes full ecology and supply: count=4 mode=duel challenge=true hunger=true seed=75124
+ECOLOGY_BALANCE_PASS | normal-density records/identities remain legal: count=4 mode=duel challenge=true hunger=true seed=75124
+ECOLOGY_BALANCE_PASS | 21 live authority checkpoints restore byte-exactly: count=4 mode=duel challenge=true hunger=true seed=75124
+ECOLOGY_BALANCE_PASS | both role allowlists accept every observed ecology checkpoint: count=4 mode=duel challenge=true hunger=true seed=75124
+ECOLOGY_BALANCE_PASS | last 120 production ticks replay byte-for-byte: count=4 mode=duel challenge=true hunger=true seed=75124
+ECOLOGY_BALANCE_PASS | idle home player keeps original goal/ownership; NPCs cannot force a winner: count=4 mode=duel challenge=true hunger=true seed=75124
+ECOLOGY_BALANCE_PASS | player hunger toggle keeps its own established physiology: count=4 mode=duel challenge=true hunger=true seed=75124
+ECOLOGY_BALANCE_PASS | integrated intake and hook statistics reconcile: count=4 mode=duel challenge=true hunger=true seed=75124
+ECOLOGY_BALANCE_CASE | {"challenge":true,"count":4,"hunger":true,"mode":"duel","npc_food":51.6,"npc_hooks":1,"seed":75124,"states":{"APPROACH_FOOD":1932,"FEED":256,"FLEE":88,"HESITATE":840,"HOOKED":206,"LANDING":38,"WANDER":1440},"ticks":1200,"wrong_catches":0}
+ECOLOGY_BALANCE_PASS | real swept mouth contact chooses only NPC: capture count=4 mode=duel
+ECOLOGY_BALANCE_PASS | 40 lifecycle checkpoints stay legal on authority and both roles: capture count=4 mode=duel
+ECOLOGY_BALANCE_PASS | real capture and replacement replay with live peers: capture count=4 mode=duel
+ECOLOGY_BALANCE_PASS | capture spends the existing eight-second replacement delay: capture count=4 mode=duel
+ECOLOGY_BALANCE_PASS | population recovers with a fresh stable identity: capture count=4 mode=duel
+ECOLOGY_BALANCE_PASS | other ecology continues while the original NPC occupies the line: capture count=4 mode=duel
+ECOLOGY_BALANCE_PASS | wrong catch keeps player awards and victory separate: capture count=4 mode=duel
+ECOLOGY_BALANCE_CAPTURE | {"capture_tick":237,"count":4,"mode":"duel","npc_food":30.0,"npc_hooks":1,"replacement_tick":718,"wrong_catches":1}
+ECOLOGY_BALANCE_PASS | ordinary net command commits the paired lane; player in lane=false
+ECOLOGY_BALANCE_PASS | negative control genuinely sweeps across the NPC body
+ECOLOGY_BALANCE_PASS | NPC overlap grants neither net capture, wrong catch nor player loss
+ECOLOGY_BALANCE_PASS | ordinary net command commits the paired lane; player in lane=true
+ECOLOGY_BALANCE_PASS | positive control retains normal player net capture
+PHASE03_ECOLOGY_BALANCE_TESTS | passed=244 | failed=0

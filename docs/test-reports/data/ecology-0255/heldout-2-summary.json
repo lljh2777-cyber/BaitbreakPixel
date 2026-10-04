@@ -1,0 +1,25 @@
+{
+	"controller_version": 1,
+	"first_seed": 73611,
+	"format": "phase03-ecology-diagnostics-v1",
+	"harness_version": 1,
+	"last_seed": 73615,
+	"limits": "All outcomes retained; practice has goal-copy adapter; duel adds periodic normal deploy command. Existing opponents/policies are imperfect. No human balance approval, fixed win-rate target or food reachability proof.",
+	"max_ticks": 22200,
+	"modes": [
+		"NoNPC",
+		"PassiveNPC",
+		"ForagingNPC",
+		"HookableNPC"
+	],
+	"paired_seeds": 5,
+	"policies": [
+		"SuckOnly",
+		"BiteOnly",
+		"Mixed"
+	],
+	"rows": 240,
+	"strata_per_seed": 12,
+	"tick_seconds": 0.0166666666666667,
+	"wall_seconds": 641.604
+}

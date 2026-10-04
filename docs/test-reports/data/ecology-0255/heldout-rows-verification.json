@@ -1,0 +1,8 @@
+{
+  "original_merged_rounds_file_sha256": "e1f38eadbc569a60535eb006c2aeaae28dc6b17da6d3801b57d1ed9f197e9a90",
+  "bundle_canonical_rows_sha256": "9f3347a1af812f27c628467f20d56eddbe6f9fbde14a5653d418f2dd02b78e52",
+  "roundtrip_equal": true,
+  "source_merge_provenance_sha256": "57b192e0ebc8df95130f268de6e76eb4b5dc92b774572c573e28ecd63f3ebdde",
+  "rows": 1200,
+  "analysis_after_lossless_reconstruction": "recomputed and compared exactly to original merged comparison"
+}

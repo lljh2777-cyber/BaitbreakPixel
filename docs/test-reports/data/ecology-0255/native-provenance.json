@@ -1,0 +1,26 @@
+{
+  "started_at_utc": "2026-10-04T01:34:14.393793+00:00",
+  "finished_at_utc": "2026-10-04T01:36:04.384677+00:00",
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "/workspace/scratch/5dc5a43a1104/BaitbreakPixel/tools/run_tests.py",
+    "--godot",
+    "/workspace/shared/baitbreak-toolchain-472/Godot_v4.7.2-stable_linux.x86_64",
+    "--import",
+    "--profile",
+    "native",
+    "--output-directory",
+    "/workspace/scratch/5dc5a43a1104/BaitbreakPixel/artifacts/p35-native-final"
+  ],
+  "returncode": 0,
+  "head_at_start": "dfdd9af72e3700c4b82fcf32419ff998231d7ef9",
+  "wrapper_sha256": "fa158bd72f5acd68ae1124759bc290b4c1aa7487e20bf23e0d693daedef9d315",
+  "head": "dfdd9af72e3700c4b82fcf32419ff998231d7ef9",
+  "source_unchanged": true,
+  "changed_files": [],
+  "file_count": 177,
+  "scope": "Runtime scripts/scenes/assets/import descriptors; project.godot; current renderer test bodies/UIDs; runner/registry; evidence-only UI recorder. Generated Godot cache, documentation and headless-only tests excluded.",
+  "godot_sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+  "display": ":0",
+  "mode": "current native gate"
+}

@@ -1,0 +1,97 @@
+{
+  "format": "phase03-ecology-readable-v1",
+  "seeds": [
+    73601,
+    73602,
+    73603,
+    73604,
+    73605,
+    73606,
+    73607,
+    73608,
+    73609,
+    73610,
+    73611,
+    73612,
+    73613,
+    73614,
+    73615,
+    73616,
+    73617,
+    73618,
+    73619,
+    73620,
+    73621,
+    73622,
+    73623,
+    73624,
+    73625
+  ],
+  "max_ticks": 22200,
+  "rows": 1200,
+  "canonical_rows_sha256": "9f3347a1af812f27c628467f20d56eddbe6f9fbde14a5653d418f2dd02b78e52",
+  "rules_sha256": "dae50bd7b89736e6d47935adb890dae032c63e265311985caf42d6df558607df",
+  "files": {
+    "survival-challenge-SuckOnly.jsonl": {
+      "stratum": "survival/challenge/SuckOnly",
+      "rows": 100,
+      "sha256": "725578c65ba46350f4f02635c5885c0f12a5d33eebe9b58f0c1797533085b5c5"
+    },
+    "survival-challenge-BiteOnly.jsonl": {
+      "stratum": "survival/challenge/BiteOnly",
+      "rows": 100,
+      "sha256": "eddb3e2872272add95f0ef3f391132a2c1af5033e4f80b7461898f2153a56b28"
+    },
+    "survival-challenge-Mixed.jsonl": {
+      "stratum": "survival/challenge/Mixed",
+      "rows": 100,
+      "sha256": "d2e58f5b5c91af6daae4cccc77145747576c913ca18937d23ab9c7b526fffd3e"
+    },
+    "survival-practice-SuckOnly.jsonl": {
+      "stratum": "survival/practice/SuckOnly",
+      "rows": 100,
+      "sha256": "eb5812320b01d702762000f2a66ea2da98d6a304d907a03aaafecdc0f48dd980"
+    },
+    "survival-practice-BiteOnly.jsonl": {
+      "stratum": "survival/practice/BiteOnly",
+      "rows": 100,
+      "sha256": "b968471be16a7172f911acc0b872567c736866d77a05a5769e43ae3296348737"
+    },
+    "survival-practice-Mixed.jsonl": {
+      "stratum": "survival/practice/Mixed",
+      "rows": 100,
+      "sha256": "f53e994562e5d817ccd216abb9f04364b3054f4b0766eaf54e33455e2cc24838"
+    },
+    "duel-challenge-SuckOnly.jsonl": {
+      "stratum": "duel/challenge/SuckOnly",
+      "rows": 100,
+      "sha256": "dc314c8269d3fa4a9be4b95561ee8cfe24b342238f7bef019d1d3c178e62a07b"
+    },
+    "duel-challenge-BiteOnly.jsonl": {
+      "stratum": "duel/challenge/BiteOnly",
+      "rows": 100,
+      "sha256": "047072e5ef9d43bf1fcc64696b9a3d720975822ea24ea0db2bac299d8c7f3fc2"
+    },
+    "duel-challenge-Mixed.jsonl": {
+      "stratum": "duel/challenge/Mixed",
+      "rows": 100,
+      "sha256": "3019c01d40303621991b0fbf7404090f359616de785ad72b3855c39524e91dec"
+    },
+    "duel-practice-SuckOnly.jsonl": {
+      "stratum": "duel/practice/SuckOnly",
+      "rows": 100,
+      "sha256": "f550832f071b00d13b7f1fd5b6d063bcac341ec6f05c5f727b1839c6f5d749ed"
+    },
+    "duel-practice-BiteOnly.jsonl": {
+      "stratum": "duel/practice/BiteOnly",
+      "rows": 100,
+      "sha256": "11febdfc6c0a84f6911ff333ae239a6cd6bf409a18fbfbc85828b1a1f2705047"
+    },
+    "duel-practice-Mixed.jsonl": {
+      "stratum": "duel/practice/Mixed",
+      "rows": 100,
+      "sha256": "70ca6ccbbaca12d6dc576067852226fe58d798364ff5167685f51a6fec6161df"
+    }
+  },
+  "note": "Uncompressed JSONL preserves every original value except identical rules, stored once. index restores original order. Read with phase03_ecology_evidence.py to reconstruct and verify all raw rows."
+}

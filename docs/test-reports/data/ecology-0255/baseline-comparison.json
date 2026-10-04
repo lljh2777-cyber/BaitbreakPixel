@@ -1,0 +1,288 @@
+{
+  "format": "phase03-ecology-baseline-verification-v1",
+  "baseline_commit": "dfdd9af72e3700c4b82fcf32419ff998231d7ef9",
+  "gameplay_baseline_commit": "ae23fea4a2d53ff4bd3cdb21099fa538c6331e0b",
+  "paired_seed": 73402,
+  "rounds_per_version": 48,
+  "all_raw_round_rows_identical": true,
+  "source_stable_success_both": true,
+  "unchanged_runtime_scripts": 51,
+  "changed_runtime_scripts": [
+    {
+      "path": "scripts/menu.gd",
+      "baseline_sha256": "006f53b8e659533369b6a47ff09c0fa5fc27164154f5bd6d5080754fd82f509b",
+      "current_sha256": "95eadf69c62a9b3aa35bad9de9832bcba20f057fbfb0c6b172c6e0bb906dfc27"
+    },
+    {
+      "path": "scripts/network_protocol.gd",
+      "baseline_sha256": "79f38cf0727133b1fba56eca33557cf7c72b4efff61ba8f50319d804a7bc0019",
+      "current_sha256": "8a46e515cdb7335a597d0660bb810f1f6e15ac39dc24dea270f7481f26b5e98b"
+    },
+    {
+      "path": "scripts/pond.gd",
+      "baseline_sha256": "9d758f60668af2b2684878aa7e9dec28154838791a021fec5c0a29f30a838a13",
+      "current_sha256": "b5abd1ec05346de5248c7d696e5de60167e3d13521dad9708b4f437f59636127"
+    }
+  ],
+  "unchanged_scripts": [
+    {
+      "path": "scripts/angler_brain.gd",
+      "baseline_sha256": "0cf8cd83aa58fa0d38a000badc1726ecba81011ae9445f415c3e6ba43903582d",
+      "current_sha256": "0cf8cd83aa58fa0d38a000badc1726ecba81011ae9445f415c3e6ba43903582d"
+    },
+    {
+      "path": "scripts/angler_controller.gd",
+      "baseline_sha256": "cf870f0d5277403a54ee51ee6e7e5b8f1dee032241636046e505974567136a7a",
+      "current_sha256": "cf870f0d5277403a54ee51ee6e7e5b8f1dee032241636046e505974567136a7a"
+    },
+    {
+      "path": "scripts/angler_hand.gd",
+      "baseline_sha256": "f5db4b118381c8f4e5cb5c606aab3b01231f04ae23bb33a499550dbab68eb17a",
+      "current_sha256": "f5db4b118381c8f4e5cb5c606aab3b01231f04ae23bb33a499550dbab68eb17a"
+    },
+    {
+      "path": "scripts/angler_network_observation.gd",
+      "baseline_sha256": "40ce0453d366b08da1dd344dceaf60177c794f452ed6e18af96c889665cfb0a7",
+      "current_sha256": "40ce0453d366b08da1dd344dceaf60177c794f452ed6e18af96c889665cfb0a7"
+    },
+    {
+      "path": "scripts/angler_rig.gd",
+      "baseline_sha256": "5ca54e3751b26e303846c44a0c9e0e606b2382928737d4df9d24ac7aad3bc4f1",
+      "current_sha256": "5ca54e3751b26e303846c44a0c9e0e606b2382928737d4df9d24ac7aad3bc4f1"
+    },
+    {
+      "path": "scripts/angler_visual.gd",
+      "baseline_sha256": "274e0dff8051984f0fbe363badf2d3f85a693ea0342f2eb9572582f95f6fcee0",
+      "current_sha256": "274e0dff8051984f0fbe363badf2d3f85a693ea0342f2eb9572582f95f6fcee0"
+    },
+    {
+      "path": "scripts/effort_check.gd",
+      "baseline_sha256": "c693244b6a0703a9218f88afc83d47f1521adedc7901390f1aae504829c1ede6",
+      "current_sha256": "c693244b6a0703a9218f88afc83d47f1521adedc7901390f1aae504829c1ede6"
+    },
+    {
+      "path": "scripts/fish_brain.gd",
+      "baseline_sha256": "1de20533cba63e62839d5e7646ecc194ba3d38bfb00ec7da8490207ad1c65fc3",
+      "current_sha256": "1de20533cba63e62839d5e7646ecc194ba3d38bfb00ec7da8490207ad1c65fc3"
+    },
+    {
+      "path": "scripts/fish_feeding.gd",
+      "baseline_sha256": "c8f84d1a473e45e73d002684a08c62f95671c5c79a286d6409ddc80325c1c4a7",
+      "current_sha256": "c8f84d1a473e45e73d002684a08c62f95671c5c79a286d6409ddc80325c1c4a7"
+    },
+    {
+      "path": "scripts/fish_instinct.gd",
+      "baseline_sha256": "0e915d74eefd04b1711b2896b174181a9623f8a74a6b6425dfbfd4d09029ddc8",
+      "current_sha256": "0e915d74eefd04b1711b2896b174181a9623f8a74a6b6425dfbfd4d09029ddc8"
+    },
+    {
+      "path": "scripts/fish_network_observation.gd",
+      "baseline_sha256": "61231951e4b4e005233d9be8ba28ea7dea1d2dd63ec79a31519846808cb85114",
+      "current_sha256": "61231951e4b4e005233d9be8ba28ea7dea1d2dd63ec79a31519846808cb85114"
+    },
+    {
+      "path": "scripts/fish_observation.gd",
+      "baseline_sha256": "155fcf155c9fcfa32ec125455b6ee067a0bfd7e9df95238d36bd61cb1858d00d",
+      "current_sha256": "155fcf155c9fcfa32ec125455b6ee067a0bfd7e9df95238d36bd61cb1858d00d"
+    },
+    {
+      "path": "scripts/fish_suspicion.gd",
+      "baseline_sha256": "b2398e40a6d0694339f87ab9659c42a2b14a7c941c224abdf51a3b69810d9ed1",
+      "current_sha256": "b2398e40a6d0694339f87ab9659c42a2b14a7c941c224abdf51a3b69810d9ed1"
+    },
+    {
+      "path": "scripts/fish_winding.gd",
+      "baseline_sha256": "b0bb3762ac5323a7457c4e747e6c76079b063605098039ddd35aa08b5bf72823",
+      "current_sha256": "b0bb3762ac5323a7457c4e747e6c76079b063605098039ddd35aa08b5bf72823"
+    },
+    {
+      "path": "scripts/food_profile.gd",
+      "baseline_sha256": "0dbc7b16a19dec0cf943d1efe499f293207e69925cad7d8af77230f5176a9b44",
+      "current_sha256": "0dbc7b16a19dec0cf943d1efe499f293207e69925cad7d8af77230f5176a9b44"
+    },
+    {
+      "path": "scripts/game_commands.gd",
+      "baseline_sha256": "f83cdf0aefc7fcfaa4bf18d6b3966629d17f27709edb65f6208937a160c01ca4",
+      "current_sha256": "f83cdf0aefc7fcfaa4bf18d6b3966629d17f27709edb65f6208937a160c01ca4"
+    },
+    {
+      "path": "scripts/game_rules.gd",
+      "baseline_sha256": "5d58b745ad3b6872ab1cca1375dcda28c4c2df2bafce47ce7bb7422806c0a311",
+      "current_sha256": "5d58b745ad3b6872ab1cca1375dcda28c4c2df2bafce47ce7bb7422806c0a311"
+    },
+    {
+      "path": "scripts/grass_binding.gd",
+      "baseline_sha256": "bfc09fa96e18db82d25467042b9daf9e2339b3748fc45445c97d629c68a8f1c4",
+      "current_sha256": "bfc09fa96e18db82d25467042b9daf9e2339b3748fc45445c97d629c68a8f1c4"
+    },
+    {
+      "path": "scripts/hook_gauge.gd",
+      "baseline_sha256": "4fe42c7690fa40f42e970af97eb26915793ec166c01b06da3ea21eb1fb692593",
+      "current_sha256": "4fe42c7690fa40f42e970af97eb26915793ec166c01b06da3ea21eb1fb692593"
+    },
+    {
+      "path": "scripts/line_motion.gd",
+      "baseline_sha256": "1fb62671fdcaeeb88865c30ed09eabfa96982ad6cbe4a4455c1d74260f0d74eb",
+      "current_sha256": "1fb62671fdcaeeb88865c30ed09eabfa96982ad6cbe4a4455c1d74260f0d74eb"
+    },
+    {
+      "path": "scripts/local_input.gd",
+      "baseline_sha256": "7612181f2ad849bc0e02c03eccb0044bf43a5b28812395b70a7b0d11fbacf5b2",
+      "current_sha256": "7612181f2ad849bc0e02c03eccb0044bf43a5b28812395b70a7b0d11fbacf5b2"
+    },
+    {
+      "path": "scripts/net_motion.gd",
+      "baseline_sha256": "03f50c4915c97c0c8b4af15547086f35e013461dae9e5df3a376817c6b2720da",
+      "current_sha256": "03f50c4915c97c0c8b4af15547086f35e013461dae9e5df3a376817c6b2720da"
+    },
+    {
+      "path": "scripts/net_observation.gd",
+      "baseline_sha256": "96a48927a93953154c5e642edaaf60dc47b61efe3e6b68bc2f0d7f432de75879",
+      "current_sha256": "96a48927a93953154c5e642edaaf60dc47b61efe3e6b68bc2f0d7f432de75879"
+    },
+    {
+      "path": "scripts/net_simulation.gd",
+      "baseline_sha256": "4a50a169994284b143b99a1808ea85443f51eddcd381a865026e8b69e012f5f5",
+      "current_sha256": "4a50a169994284b143b99a1808ea85443f51eddcd381a865026e8b69e012f5f5"
+    },
+    {
+      "path": "scripts/net_visual.gd",
+      "baseline_sha256": "aee8baa45953d779c446696aca27f8a8f6080f94db63d4c037182b17decef6f5",
+      "current_sha256": "aee8baa45953d779c446696aca27f8a8f6080f94db63d4c037182b17decef6f5"
+    },
+    {
+      "path": "scripts/network_presentation.gd",
+      "baseline_sha256": "c4f11e5391a354aa0b12cdb218ca9dc58ccc13c43608b357a456208c1df806bc",
+      "current_sha256": "c4f11e5391a354aa0b12cdb218ca9dc58ccc13c43608b357a456208c1df806bc"
+    },
+    {
+      "path": "scripts/network_session.gd",
+      "baseline_sha256": "2a5c14f897389b7dd1b9eb0dfc8b0e2dc8efb28097fa13a8cab6c2b743dda3ab",
+      "current_sha256": "2a5c14f897389b7dd1b9eb0dfc8b0e2dc8efb28097fa13a8cab6c2b743dda3ab"
+    },
+    {
+      "path": "scripts/npc_fish_brain.gd",
+      "baseline_sha256": "6fd3c26b85f23e34d055f3904a27e11cb5adac30ee55866cf971f58215af731a",
+      "current_sha256": "6fd3c26b85f23e34d055f3904a27e11cb5adac30ee55866cf971f58215af731a"
+    },
+    {
+      "path": "scripts/npc_fish_public_state.gd",
+      "baseline_sha256": "4b1c2530f6657b45e082e3db9a26262e292e6f0219e19be82eaa637500c0e763",
+      "current_sha256": "4b1c2530f6657b45e082e3db9a26262e292e6f0219e19be82eaa637500c0e763"
+    },
+    {
+      "path": "scripts/npc_fish_state.gd",
+      "baseline_sha256": "9240abb57813474c1fa02e39e0fcda54fcd219f94ae3a01e9dcc2563bb850c64",
+      "current_sha256": "9240abb57813474c1fa02e39e0fcda54fcd219f94ae3a01e9dcc2563bb850c64"
+    },
+    {
+      "path": "scripts/npc_hook.gd",
+      "baseline_sha256": "ecbbe0ec9d216ea0d175ec436e0f0c4a6872b6aae8459b22ef2c74ab61df47a3",
+      "current_sha256": "ecbbe0ec9d216ea0d175ec436e0f0c4a6872b6aae8459b22ef2c74ab61df47a3"
+    },
+    {
+      "path": "scripts/pixel_art.gd",
+      "baseline_sha256": "f294ca6a656ba43fb793aaaa2d738fd3824fc89630086898a364e29a35d2a3ed",
+      "current_sha256": "f294ca6a656ba43fb793aaaa2d738fd3824fc89630086898a364e29a35d2a3ed"
+    },
+    {
+      "path": "scripts/pond_camera.gd",
+      "baseline_sha256": "2170a1430fe074b9f6113e196a25d77b76eaffaee678e4a6f03969a33a8e3614",
+      "current_sha256": "2170a1430fe074b9f6113e196a25d77b76eaffaee678e4a6f03969a33a8e3614"
+    },
+    {
+      "path": "scripts/pond_depth_art.gd",
+      "baseline_sha256": "387aec1492eff7d2a0ef846798091ebc60bdafeba6edd16760ce9ac759be5b31",
+      "current_sha256": "387aec1492eff7d2a0ef846798091ebc60bdafeba6edd16760ce9ac759be5b31"
+    },
+    {
+      "path": "scripts/pond_layout.gd",
+      "baseline_sha256": "3d9405536a8a02e5002dbe9ed2d0cab1591ac04f0b9628050c1881106871174f",
+      "current_sha256": "3d9405536a8a02e5002dbe9ed2d0cab1591ac04f0b9628050c1881106871174f"
+    },
+    {
+      "path": "scripts/pond_plant_art.gd",
+      "baseline_sha256": "e3f95151f229c4a6d6425ae144358dbb3a728046d5e416f548afbb74a8c4512e",
+      "current_sha256": "e3f95151f229c4a6d6425ae144358dbb3a728046d5e416f548afbb74a8c4512e"
+    },
+    {
+      "path": "scripts/pond_scenery.gd",
+      "baseline_sha256": "2897e3eb6c3e4a0cad142ec7d212129e4e99f7057053170d12da6e6c7b03ef87",
+      "current_sha256": "2897e3eb6c3e4a0cad142ec7d212129e4e99f7057053170d12da6e6c7b03ef87"
+    },
+    {
+      "path": "scripts/pond_view.gd",
+      "baseline_sha256": "2b078fd396840ae621542c0f76c2d82f197228756be6a52c7e6777ff3ff3fcea",
+      "current_sha256": "2b078fd396840ae621542c0f76c2d82f197228756be6a52c7e6777ff3ff3fcea"
+    },
+    {
+      "path": "scripts/pond_water_art.gd",
+      "baseline_sha256": "c875541049c29e6817cfedc7767e63b43888ab8cc6d5745b98e40a8aec31fdad",
+      "current_sha256": "c875541049c29e6817cfedc7767e63b43888ab8cc6d5745b98e40a8aec31fdad"
+    },
+    {
+      "path": "scripts/pond_wood_art.gd",
+      "baseline_sha256": "bd042f616dfe75bbe007f92bab72fc34c414a6489631da7f7d5ff62190bd598b",
+      "current_sha256": "bd042f616dfe75bbe007f92bab72fc34c414a6489631da7f7d5ff62190bd598b"
+    },
+    {
+      "path": "scripts/reel_hand.gd",
+      "baseline_sha256": "7673e1a663aefe61388a607a172609e9ea242ce9d24f651007d777bc33334dcb",
+      "current_sha256": "7673e1a663aefe61388a607a172609e9ea242ce9d24f651007d777bc33334dcb"
+    },
+    {
+      "path": "scripts/rope.gd",
+      "baseline_sha256": "2e30152e65b00f39fe25324b992afd39925acfadd80b64dce385df865d69fe42",
+      "current_sha256": "2e30152e65b00f39fe25324b992afd39925acfadd80b64dce385df865d69fe42"
+    },
+    {
+      "path": "scripts/round_stats.gd",
+      "baseline_sha256": "e160da86d8c31ee86c8dfdcf53caf122e97d3c03a019b97c8b984622d7c4a02f",
+      "current_sha256": "e160da86d8c31ee86c8dfdcf53caf122e97d3c03a019b97c8b984622d7c4a02f"
+    },
+    {
+      "path": "scripts/rules_catalog.gd",
+      "baseline_sha256": "f205ab9e285b01aafdfd6ebb7b0eafc802f5989b8f00e508db28cfdfc3f57c72",
+      "current_sha256": "f205ab9e285b01aafdfd6ebb7b0eafc802f5989b8f00e508db28cfdfc3f57c72"
+    },
+    {
+      "path": "scripts/rules_settings.gd",
+      "baseline_sha256": "ad6b2bca83710ad92f8477da83151a21f57d00d8979b81a864f7824f7383885b",
+      "current_sha256": "ad6b2bca83710ad92f8477da83151a21f57d00d8979b81a864f7824f7383885b"
+    },
+    {
+      "path": "scripts/rules_store.gd",
+      "baseline_sha256": "7256c0290b916d215ca8e5693f0e819e76429ac9367c3b36d6a392310df2acf8",
+      "current_sha256": "7256c0290b916d215ca8e5693f0e819e76429ac9367c3b36d6a392310df2acf8"
+    },
+    {
+      "path": "scripts/shore_view.gd",
+      "baseline_sha256": "849f8e420783d01810361be8d128efe1bc3fe342cdff75dd2db0b6454d82ce2b",
+      "current_sha256": "849f8e420783d01810361be8d128efe1bc3fe342cdff75dd2db0b6454d82ce2b"
+    },
+    {
+      "path": "scripts/sound.gd",
+      "baseline_sha256": "e26674ed0be1337c53838e95e32e04452131bba5610b50fb24add73304d3b9c0",
+      "current_sha256": "e26674ed0be1337c53838e95e32e04452131bba5610b50fb24add73304d3b9c0"
+    },
+    {
+      "path": "scripts/suction_feel.gd",
+      "baseline_sha256": "9d291d1db447505cc56dfe70618ce8ccb35dec60b2e0779665926de2d1b0a05a",
+      "current_sha256": "9d291d1db447505cc56dfe70618ce8ccb35dec60b2e0779665926de2d1b0a05a"
+    },
+    {
+      "path": "scripts/world_simulation.gd",
+      "baseline_sha256": "766f5a1e68899f433f7e491354e7d1c0f739d8af649f6dd8049eeb13274e1860",
+      "current_sha256": "766f5a1e68899f433f7e491354e7d1c0f739d8af649f6dd8049eeb13274e1860"
+    },
+    {
+      "path": "scripts/world_snapshot.gd",
+      "baseline_sha256": "2a9702e3d9f6f2060165175666f83849ed36ecc52766e8a314316d4350ea924e",
+      "current_sha256": "2a9702e3d9f6f2060165175666f83849ed36ecc52766e8a314316d4350ea924e"
+    }
+  ],
+  "differences": "Only menu version/status line, network exact-build string and pond ready/version marker. No production gameplay parameter/function change.",
+  "baseline_rounds_file_sha256": "24785a41b015e355096c76aa1a0aeea9487ff4402e47ba06a6668899b68331a3",
+  "current_rounds_file_sha256": "24785a41b015e355096c76aa1a0aeea9487ff4402e47ba06a6668899b68331a3",
+  "limits": "One same-seed 48-cell regression demonstrates unchanged output for that seed; full source equality apart from labels independently establishes unchanged mechanics. Not heldout nor evidence of human balance."
+}

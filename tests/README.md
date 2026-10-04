@@ -13,7 +13,7 @@ Windows 可使用 `D:\python\python.exe`；用 `--godot "引擎可执行文件�
 
 ## 注册表与状态
 
-[`suite_registry.json`](suite_registry.json) 显式登记全部 122 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
+[`suite_registry.json`](suite_registry.json) 显式登记全部 123 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
 
 - `current`：当前有效的回归门禁；不按文件名版本新旧决定。`--profile current` 运行无窗口套件，`--profile native` 运行图形套件。已重新验证的 effort、net_animation、rules_network 等较早版本仍在当前门禁中
 - `historical`：当前检出复现了失败的诊断套件。保留原断言，失败仍返回非零；这不是“已证明所有断言过时”，更不是通过。具体原因和结果见[维护报告](../docs/test-reports/TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md)
@@ -147,3 +147,10 @@ Authority schema15；旧 0.25.2 缺少 Hook 生命周期字段的快照明确拒
 - `phase03_npc_hook_pacing`：浅/中/深与横向偏移的真实接触后连续收近、正常 W/S、完整提鱼动画、松线与持续高张力断线，不将 NPC 捕获算玩家终局
 
 网络 exact-build0.25.4；authority schema15、鱼端 NPC guard2、钓鱼人 guard4 不改。本轮只提交源码，不新建 Windows 包；[验证与人工复测](../docs/test-reports/PHASE03-HOOK-FIX-0.25.4.md)。
+
+
+## 0.25.5 · P3.5 整体生态平衡
+
+`phase03_ecology_balance` 覆盖正常 2/3/4 条密度下的集成生态、暂停/回放/隐私和连续捕获补鱼。默认仍为 3；不新增 NPC 抄网或多人胜利阵营。
+
+`tools/phase03_run_ecology.py` 运行四种生态状态 × 两种规则 × 挑战/练习 × 三种既有摄食策略的真实 60 Hz 配对矩阵，显式保留策略适配、未终局、补给准入、NPC 占线期间玩家摄食和成功补鱼。`phase03_ecology_analysis.py` 按种子整簇重采样，不把同种子多行当独立样本；完整范围见 [预声明协议](../tools/phase03_ecology_protocol.md)。通过不等于真人体验验收。
