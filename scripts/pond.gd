@@ -109,16 +109,16 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--map-seed="):
 			var value:String=argument.trim_prefix("--map-seed=")
-			if not value.is_valid_int() or not MapResolver.resolve(MapResolver.generated(value.to_int())).valid:
+			if not value.is_valid_int() or not MapResolver.resolve(MapResolver.generated(value.to_int(),MapResolver.Request.CURRENT_VERSION)).valid:
 				push_error("Invalid generated map seed"); get_tree().quit(1); return
-			selected_map_source=MapResolver.generated(value.to_int())
+			selected_map_source=MapResolver.generated(value.to_int(),MapResolver.Request.CURRENT_VERSION)
 	reset(false)
 	menu.open("title")
 	apply_settings()
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.27.5 | generated-ponds")
+	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.28.0 | solid-pond-relief")
 
 func _register_inputs() -> void:
 	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[], "use":[KEY_E], "slow":[KEY_Q], "qte":[KEY_SPACE], "untangle":[KEY_F]}
@@ -198,7 +198,7 @@ func select_pond(kind:String,seed_text:String="42")->bool:
 	elif kind=="generated":
 		var value:=seed_text.strip_edges()
 		if value.length()>10 or not value.is_valid_int(): return false
-		source=MapResolver.generated(value.to_int())
+		source=MapResolver.generated(value.to_int(),MapResolver.Request.CURRENT_VERSION)
 	else: return false
 	if not MapResolver.resolve(source).valid: return false
 	selected_map_source=source

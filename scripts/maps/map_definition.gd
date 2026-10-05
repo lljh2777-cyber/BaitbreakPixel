@@ -30,7 +30,11 @@ static func canonical(definition: Dictionary) -> String:
 	var authority: Array = [definition.meta.contract_version,
 		[_point(bounds.size),_rect(bounds.water),_real(bounds.floor_y),_rect(bounds.net_area),drag],
 		[_point(anchors.player_spawn),_point(anchors.home)],baits,features]
-	return "baitbreak-map-contract-v1\n" + JSON.stringify(authority)
+	if definition.meta.contract_version==2:
+		var bed: Array=[]
+		for point: Vector2 in bounds.floor_profile: bed.append(_point(point))
+		authority[1].append(bed)
+	return "baitbreak-map-contract-v%d\n" % definition.meta.contract_version + JSON.stringify(authority)
 
 static func content_hash(definition: Dictionary) -> String:
 	return canonical(definition).sha256_text()

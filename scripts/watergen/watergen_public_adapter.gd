@@ -32,5 +32,9 @@ static func build(context:RefCounted)->Dictionary:
 		"floor_y_px":context.floor_y,"visual_surface_y_px":presentation.surface_y,"home_px":point(context.home),"spawn_px":point(context.player_spawn),
 		"net_area_px":rectangle(context.net_area),"bait_sites_px":sites,"legacy_grass_rects_px":grasses,"wood_groups":presentation.wood_groups.duplicate(true),
 		"static_cover_records":covers,"protected_regions":protected}
+	if context.has_relief:
+		result.schema_version=3
+		result["floor_profile_px"]=[]
+		for vertex:Vector2 in context.floor_profile: result.floor_profile_px.append(point(vertex))
 	result["map_public_digest"]=Contract.digest(result)
 	return result

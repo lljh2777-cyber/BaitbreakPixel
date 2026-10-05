@@ -2,6 +2,7 @@ extends RefCounted
 
 # Immutable per-round Authority data. Use the checked factories, then install once
 # before world actors/RNG setup. No public setter can replace a round's geometry.
+const Bed = preload("res://scripts/maps/pond_bed.gd")
 const Registry = preload("res://scripts/maps/map_registry.gd")
 const Validator = preload("res://scripts/maps/map_validator.gd")
 const Geometry = preload("res://scripts/maps/map_geometry.gd")
@@ -19,6 +20,13 @@ var map_source: Dictionary:
 	set(_value): pass
 var routing_profile: String:
 	get: return "generated_pond_v1" if _source.get("kind")=="generated" else "legacy_pond"
+	set(_value): pass
+var _floor_profile := PackedVector2Array()
+var floor_profile: PackedVector2Array:
+	get: return _floor_profile.duplicate()
+	set(_value): pass
+var has_relief: bool:
+	get: return not _floor_profile.is_empty()
 	set(_value): pass
 var _bait_sites: Array[Vector2] = []
 var _vegetation_drag_zones: Array[Rect2] = []
@@ -135,7 +143,11 @@ func _initialize(definition: Dictionary, source: Dictionary) -> void:
 	_features.assign(_data.interaction_features)
 	_visuals.assign(_data.visual_features)
 	_targets = Geometry.interaction_targets(_data)
+	_floor_profile=_data.bounds.get("floor_profile",PackedVector2Array()).duplicate()
 	_net_blockers = Geometry.capability_targets(_targets,"net_blocking")
+	if has_relief:
+		var ground := Bed.polygon(_floor_profile,size)
+		_net_blockers.append({"id":"pond_bed","kind":"terrain","polygon":ground,"points":Array(ground),"bounds":Geometry.polygon_bounds(ground)})
 	_npc_spawn_blockers = Geometry.capability_targets(_targets,"npc_spawn_blocking")
 	_fish_occluders = Geometry.capability_targets(_targets,"fish_occluding")
 	for feature: Dictionary in _data.interaction_features:
@@ -149,6 +161,28 @@ func _initialize(definition: Dictionary, source: Dictionary) -> void:
 
 func fish_bounds(radius: float) -> Rect2:
 	return water.grow(-radius)
+
+func floor_at(x: float) -> float:
+	return Bed.height(_floor_profile,x,floor_y)
+
+func bed_limit(x: float, radius: float) -> float:
+	return Bed.limit(_floor_profile,x,radius) if has_relief else floor_y-radius
+
+func bed_blocked(point: Vector2, radius: float=0.0) -> bool:
+	return has_relief and point.y>bed_limit(point.x,radius)+0.001
+
+func constrain_to_bed(point: Vector2, radius: float) -> Vector2:
+	if not has_relief: return point
+	return Vector2(point.x,minf(point.y,bed_limit(point.x,radius)))
+
+func move_in_water(start: Vector2, motion: Vector2, radius: float) -> Vector2:
+	var bounds := fish_bounds(radius)
+	if not has_relief: return (start+motion).clamp(bounds.position,bounds.end)
+	var steps := maxi(1,ceili(motion.length()/4.0))
+	var point := constrain_to_bed(start.clamp(bounds.position,bounds.end),radius)
+	for step in steps:
+		point=constrain_to_bed((point+motion/steps).clamp(bounds.position,bounds.end),radius)
+	return point
 
 func has_feature(feature_id: String) -> bool:
 	return _features_by_id.has(feature_id)

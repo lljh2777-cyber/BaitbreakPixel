@@ -2,6 +2,7 @@ extends RefCounted
 
 # Pure, fail-closed validation of the P4 map data contract. No world, RNG,
 # resource loading from map data, error logging, normalization, or input writes.
+const Bed = preload("res://scripts/maps/pond_bed.gd")
 const Definition = preload("res://scripts/maps/map_definition.gd")
 # Current reset/refill lifecycle owns four active bait slots. A map can expose
 # more ordered sites; pond_v2 keeps its six exact sites in the golden fixture.
@@ -26,7 +27,7 @@ static func validate(value: Variant) -> Dictionary:
 		return _result(errors)
 	var definition: Dictionary = value
 	_validate_meta(definition.meta, errors)
-	var bounds_ok := _validate_bounds(definition.bounds, errors)
+	var bounds_ok := _validate_bounds(definition.bounds, errors, definition.meta.get("contract_version",0) if definition.meta is Dictionary else 0)
 	_validate_anchors(definition.anchors, definition.bounds if bounds_ok else {}, errors)
 	_validate_bait_sites(definition.bait_sites, definition.bounds if bounds_ok else {}, errors)
 	var visual_ids := _validate_visuals(definition.visual_features, errors)
@@ -121,7 +122,7 @@ static func _validate_meta(value: Variant, errors: Array[String]) -> void:
 	if not _keys(value, ["id", "revision", "contract_version", "content_hash"], "$.meta", errors): return
 	if not _id(value.id): errors.append("$.meta.id: expected a nonempty bounded string")
 	if not value.revision is int or value.revision <= 0: errors.append("$.meta.revision: expected a positive integer")
-	if not value.contract_version is int or value.contract_version != 1: errors.append("$.meta.contract_version: unsupported contract")
+	if not value.contract_version is int or value.contract_version not in [1,2]: errors.append("$.meta.contract_version: unsupported contract")
 	if not value.content_hash is String or value.content_hash.length() != 64:
 		errors.append("$.meta.content_hash: expected 64 lowercase hexadecimal characters")
 	else:
@@ -141,8 +142,11 @@ static func _contains_point(bounds: Rect2, point: Vector2) -> bool:
 	# engine's half-open water containment, matching the current runtime.
 	return point.x >= bounds.position.x and point.y >= bounds.position.y and point.x <= bounds.end.x and point.y <= bounds.end.y
 
-static func _validate_bounds(value: Variant, errors: Array[String]) -> bool:
-	if not _keys(value, ["size", "water", "floor_y", "net_area", "vegetation_drag_zones"], "$.bounds", errors): return false
+static func _validate_bounds(value: Variant, errors: Array[String], version: Variant=1) -> bool:
+	if not version is int: version=0
+	var keys := ["size", "water", "floor_y", "net_area", "vegetation_drag_zones"]
+	if version==2: keys.append("floor_profile")
+	if not _keys(value, keys, "$.bounds", errors): return false
 	var before := errors.size()
 	if not value.size is Vector2 or value.size.x <= 0.0 or value.size.y <= 0.0 or value.size.x > MAX_MAP_EXTENT or value.size.y > MAX_MAP_EXTENT:
 		errors.append("$.bounds.size: expected finite positive map dimensions within limits")
@@ -161,6 +165,16 @@ static func _validate_bounds(value: Variant, errors: Array[String]) -> bool:
 		var zone: Variant = value.vegetation_drag_zones[index]
 		if not _positive_rect(zone) or not _contains_rect(map_rect, zone):
 			errors.append("$.bounds.vegetation_drag_zones[%d]: expected a positive rectangle inside the map" % index)
+	if version==2:
+		var points: Variant=value.floor_profile
+		if not points is PackedVector2Array or points.size()<2 or points.size()>129:
+			errors.append("$.bounds.floor_profile: expected 2..129 ordered points")
+		else:
+			if points[0].x!=0 or points[-1].x!=value.size.x: errors.append("bed must span map width")
+			for i in points.size():
+				var p: Vector2=points[i]
+				if p.y<value.water.position.y+120 or p.y>value.floor_y: errors.append("bed outside depth envelope")
+				if i>0 and (p.x-points[i-1].x<8 or absf(p.y-points[i-1].y)>(p.x-points[i-1].x)*0.9): errors.append("bed must have bounded, nonvertical slopes")
 	return errors.size() == before
 
 static func _validate_anchors(value: Variant, bounds: Dictionary, errors: Array[String]) -> void:
@@ -168,6 +182,8 @@ static func _validate_anchors(value: Variant, bounds: Dictionary, errors: Array[
 	for key in ["player_spawn", "home"]:
 		if not value[key] is Vector2:
 			errors.append("$.anchors." + key + ": expected Vector2")
+		elif not bounds.is_empty() and bounds.has("floor_profile") and value[key].y>Bed.limit(bounds.floor_profile,value[key].x,20):
+			errors.append("anchor intersects solid bed")
 		elif not bounds.is_empty() and not bounds.water.has_point(value[key]):
 			errors.append("$.anchors." + key + ": outside water bounds")
 
@@ -183,6 +199,7 @@ static func _validate_bait_sites(value: Variant, bounds: Dictionary, errors: Arr
 			continue
 		if seen.has(point): errors.append("$.bait_sites[%d]: duplicate site" % index)
 		seen[point] = true
+		if bounds.has("floor_profile") and point.y>Bed.limit(bounds.floor_profile,point.x,30): errors.append("bait intersects solid bed")
 		if not bounds.is_empty() and not bounds.water.has_point(point): errors.append("$.bait_sites[%d]: outside water bounds" % index)
 
 static func _validate_visuals(value: Variant, errors: Array[String]) -> Dictionary:

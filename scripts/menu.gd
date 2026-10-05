@@ -133,7 +133,7 @@ func _title(frame: Control) -> void:
 	quit.position.x = 150
 	var maps:=button(content,game.map_caption(),301,func(): open("map"),false,275)
 	maps.position.x=341; maps.add_theme_font_size_override("font_size",10)
-	text(content,"0.27.5 · 程序生成池塘",Vector2(341,280),10,Color("91afa7"))
+	text(content,"0.28.0 · 起伏水底",Vector2(341,280),10,Color("91afa7"))
 	text(content,"小鱼 · 吃饵脱身",Vector2(391,119),18,GOLD)
 	text(content,"人类 · 收线抄网",Vector2(391,159),18,GOLD)
 	text(content,"独自练习 · 双人对战",Vector2(375,199),16,GOLD)
@@ -334,7 +334,7 @@ func _process(_delta: float) -> void:
 func _map_choice(frame:Control)->void:
 	text(frame,"选择池塘",Vector2(20,16),24)
 	var mode:=OptionButton.new(); mode.name="MapMode"
-	mode.add_item("经典池塘"); mode.add_item("生成池塘")
+	mode.add_item("经典池塘"); mode.add_item("起伏池塘 · 生成地图")
 	mode.selected=1 if game.selected_map_source.kind=="generated" else 0
 	mode.position=Vector2(20,57); mode.size=Vector2(326,28); frame.add_child(mode)
 	text(frame,"地图种子 Seed · 0—2147483647",Vector2(20,96),12,MINT)
@@ -343,7 +343,7 @@ func _map_choice(frame:Control)->void:
 	frame.add_child(seed); seed.editable=mode.selected==1
 	var random_seed:=button(frame,"随机",118,func(): seed.text=str(game.random_map_seed()),false,106); random_seed.position.x=240
 	var copy_seed:=button(frame,"复制 Seed",153,func(): DisplayServer.clipboard_set(seed.text),false,158)
-	var info:=text(frame,"相同 Seed 使用相同布局；R 重开保留地图。",Vector2(20,192),11,CREAM)
+	var info:=text(frame,"同版本、同 Seed 布局相同；R 保留地图。",Vector2(20,192),11,CREAM)
 	text(frame,"联机由房主选图，加入者自动使用房主地图。",Vector2(20,211),11,CREAM)
 	var refresh:=func():
 		seed.editable=mode.selected==1; random_seed.disabled=mode.selected!=1; copy_seed.disabled=mode.selected!=1

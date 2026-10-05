@@ -4,6 +4,7 @@ const Resolver=preload("res://scripts/maps/map_resolver.gd")
 var passed:=0
 var failed:=0
 var game:Node2D
+var generator_version:=1
 var output:="res://artifacts/p5-gameplay-native"
 func check(ok:bool,label:String)->void:
 	if ok: passed+=1
@@ -30,11 +31,16 @@ func run()->void:
 	game=Main.instantiate(); root.add_child(game); game.capture_mode="p5-native"
 	game.menu.close(); freeze(game)
 	for seed:int in [42,2166,1346,296,123456789]:
-		check(game.reset_world({"map_source":Resolver.generated(seed),"seed":64317,"challenge":false}),"native generated reset")
+		check(game.reset_world({"map_source":Resolver.generated(seed,generator_version),"seed":64317,"challenge":false}),"native generated reset")
 		game.player_role="fish"; game.fish=Vector2(600,300); game.fish_before=game.fish; game.elapsed=2.0
 		await render("seed-%d-fish"%seed)
 		check(game.view.generated_water.enabled,"Watergen active and validated")
-		check(game.view.props.size()==game.map_context.presentation.wood_groups.size()+game.map_net_blockers.size()-game.map_context.presentation.wood_groups.size()*2,"connected tree parts share one sprite")
+		if generator_version==2:
+			check(game.view.bed_texture!=null,"physical bed rendered")
+			game.player_role="angler"; game.net_action.observing=true
+			await render("seed-%d-observation"%seed)
+			game.net_action.observing=false
+		check(game.view.props.size()==game.map_context.presentation.wood_groups.size()+game.map_net_blockers.size()-int(game.map_context.has_relief)-game.map_context.presentation.wood_groups.size()*2,"connected tree parts share one sprite")
 		game.player_role="angler"
 		await render("seed-%d-shore"%seed)
 	game.player_role="fish"

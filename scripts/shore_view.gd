@@ -145,6 +145,9 @@ func _ghost(view: Node2D, path: PackedVector2Array, opacity: float, color: Color
 
 func _underwater(view: Node2D, world: Node2D, t: float) -> void:
 	var map := Presentation.for_context(world.map_context)
+	if world.map_context.has_relief:
+		var bed: PackedVector2Array=world.map_context.Bed.polygon(world.map_context.floor_profile,world.map_context.size)
+		_ghost(view,projected(bed,world),0.22,Color("31564d"))
 	for solid in map.solids:
 		if not solid.shore_visible: continue
 		_ghost(view,projected(PackedVector2Array(solid.points),world),0.18 if solid.kind=="wood" else 0.14)

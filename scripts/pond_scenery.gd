@@ -50,6 +50,9 @@ static func background(view: Node2D, world: Node2D, t: float) -> void:
 
 static func floor_layer(view: Node2D) -> void:
 	var map: RefCounted=view.map_presentation
+	if view.bed_texture!=null:
+		view.draw_texture(view.bed_texture,Vector2.ZERO)
+		return
 	var floor: float=map.floor_y
 	view.draw_rect(Rect2(0,floor,map.size.x,map.size.y-floor),Color("365751"))
 	if view.generated_water.enabled:

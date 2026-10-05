@@ -2,6 +2,7 @@ extends RefCounted
 
 # Conservative spatial admission. Expanded boxes prove clear routes; runtime
 # tests separately exercise actual polygon detours, net sweeps and match outcomes.
+const Bed=preload("res://scripts/maps/pond_bed.gd")
 const Validator=preload("res://scripts/maps/map_validator.gd")
 const Geometry=preload("res://scripts/maps/map_geometry.gd")
 const Profile=preload("res://scripts/maps/generation/generated_pond_profile.gd")
@@ -19,6 +20,12 @@ static func _validated(definition: Dictionary) -> Dictionary:
 		errors.append("envelope must match balanced_pond_v1")
 	if definition.anchors.home!=Profile.HOME or definition.anchors.player_spawn!=Profile.SPAWN: errors.append("home/spawn must remain fixed in prototype")
 	if definition.bait_sites.size()!=Profile.BAIT_COUNT: errors.append("exactly six bait candidates required")
+	if b.has("floor_profile"):
+		var highest: float=b.floor_y
+		for point: Vector2 in b.floor_profile: highest=minf(highest,point.y)
+		if highest<340 or b.floor_y-highest<40: errors.append("relief must be visible and retain deep open water")
+		for point: Vector2 in definition.bait_sites:
+			if point.y>Bed.limit(b.floor_profile,point.x,42): errors.append("bait needs terrain clearance")
 	var spacing:=INF
 	var home_distance:=INF
 	var spawn_distance:=INF
@@ -72,7 +79,7 @@ static func _validated(definition: Dictionary) -> Dictionary:
 	for y in range(116,401,56):
 		for x in range(64,1241,56):
 			spawn_samples+=1
-			if not _inside_any(Vector2(x,y),npc_boxes): spawn_free+=1
+			if not _inside_any(Vector2(x,y),npc_boxes) and (not b.has("floor_profile") or y<=Bed.limit(b.floor_profile,x,12)): spawn_free+=1
 	if spawn_free<80 or float(spawn_free)/spawn_samples<0.55: errors.append("insufficient NPC spawn area")
 	var exits:=0
 	for x in [160,360,560,760,960,1140]:

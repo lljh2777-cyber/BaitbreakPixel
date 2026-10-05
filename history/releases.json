@@ -1598,6 +1598,17 @@
       "report_date": "2026-10-05",
       "test_report": "docs/test-reports/PHASE05-COMPLETION.md",
       "github_release_published_at_report": false
+    },
+    {
+      "version": "0.28.0",
+      "pack_bytes": 2531480,
+      "pack_sha256": "c6e3c0e7b7f0470f29579c433e91a24cb943e25f330bdc1cbdee44b71d15a956",
+      "zip_bytes": 89667991,
+      "report_date": "2026-10-05",
+      "github_release_published_at_report": false,
+      "test_report": "docs/test-reports/TERRAIN-0.28.0.md",
+      "verified_runtime_files": 26,
+      "source_verification": "Direct packed/source bytes for changed runtime scripts; no per-file SHA sweep."
     }
   ],
   "public_release_snapshot_history": [

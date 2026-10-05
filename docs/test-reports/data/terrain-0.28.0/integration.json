@@ -1,0 +1,109 @@
+{
+  "profile": "current",
+  "pack": null,
+  "results": [
+    {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 6.609,
+      "launch_error": false,
+      "passed": 0,
+      "failed": 0,
+      "count_basis": "log_markers",
+      "status": "passed",
+      "reason": "",
+      "suite": "editor-import",
+      "log": "import.log"
+    },
+    {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 14.563,
+      "launch_error": false,
+      "passed": 72,
+      "failed": 0,
+      "count_basis": "summary",
+      "status": "passed",
+      "reason": "",
+      "suite": "terrain_network",
+      "registry_status": "current",
+      "log": "terrain_network.log",
+      "command": [
+        "E:\\chrome\u4e0b\u8f7d\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\BaitbreakPixel",
+        "--script",
+        "res://tests/terrain_network.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\BaitbreakPixel\\artifacts\\relief-integration\\captures\\terrain_network"
+      ]
+    },
+    {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 29.265,
+      "launch_error": false,
+      "passed": 81,
+      "failed": 0,
+      "count_basis": "summary",
+      "status": "passed",
+      "reason": "",
+      "suite": "terrain_native",
+      "registry_status": "current",
+      "log": "terrain_native.log",
+      "command": [
+        "E:\\chrome\u4e0b\u8f7d\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\BaitbreakPixel",
+        "--script",
+        "res://tests/terrain_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\BaitbreakPixel\\artifacts\\relief-integration\\captures\\terrain_native"
+      ]
+    },
+    {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 4.172,
+      "launch_error": false,
+      "passed": 22,
+      "failed": 0,
+      "count_basis": "summary",
+      "status": "passed",
+      "reason": "",
+      "suite": "phase05_ui",
+      "registry_status": "current",
+      "log": "phase05_ui.log",
+      "command": [
+        "E:\\chrome\u4e0b\u8f7d\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\BaitbreakPixel",
+        "--script",
+        "res://tests/phase05_ui.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\BaitbreakPixel\\artifacts\\relief-integration\\captures\\phase05_ui"
+      ]
+    }
+  ],
+  "counts": {
+    "passed": 4,
+    "failed": 0,
+    "timeout": 0,
+    "blocked": 0,
+    "retired": 0
+  }
+}

@@ -2,7 +2,7 @@ config_version=5
 
 [application]
 config/name="吃饵，不上钩 · 像素池塘"
-config/version="0.27.5"
+config/version="0.28.0"
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/use_custom_user_dir=true

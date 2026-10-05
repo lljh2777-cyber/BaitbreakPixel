@@ -71,11 +71,11 @@ static func _clump(visual_seed: int, layer: String, index: int, map: Dictionary,
 	var rng := Seed.stream(visual_seed, layer, "clump", index)
 	var size: Array = map.world_size_px
 	var x := _edge_x(index, rng, size[0], composition.open_center_x_fraction)
-	var root: float = map.floor_y_px + rng.randf_range(-27, 5)
+	var root: float = Map.floor_at(map,x) + rng.randf_range(-27, 5)
 	var height := rng.randf_range(110, 260)
 	var width := rng.randf_range(40, 80)
 	var contrast := 1.0
-	if layer == "terrain": height = rng.randf_range(30, 76); root = map.floor_y_px + rng.randf_range(-10, 4)
+	if layer == "terrain": height = rng.randf_range(30, 76); root = Map.floor_at(map,x) + rng.randf_range(-10, 4)
 	if layer == "foreground": height = rng.randf_range(25, 63); root = size[1] + 4; width = rng.randf_range(28, 62)
 	for region in map.protected_regions:
 		var r: Array = region.rect_px

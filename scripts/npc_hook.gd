@@ -110,13 +110,14 @@ static func step(world: Node2D, delta: float) -> void:
 	npc.velocity=Vector2(npc.velocity).move_toward(struggle,delta*70.0)
 	var motion: Vector2=(Vector2(npc.velocity)+pull+world.water_velocity(npc.position)).limit_length(State.HOOK_SPEED_LIMIT)
 	var bounds: Rect2=world.map_context.fish_bounds(State.RADIUS)
-	npc.position=(Vector2(npc.position)+motion*delta).clamp(bounds.position,bounds.end-Vector2.ONE*0.001)
+	npc.position=world.map_context.move_in_water(npc.position,motion*delta,State.RADIUS) if world.map_context.has_relief else (Vector2(npc.position)+motion*delta).clamp(bounds.position,bounds.end-Vector2.ONE*0.001)
 	# Match the existing mobile tackle's finite elastic reach, without wraps.
 	if world.uses_mobile_tackle() and tuning.y>0:
 		var radial: Vector2=world.hook_target_mouth()-anchor
 		var reach: float=world.rope_length+world.rule("line_elastic")*0.5
 		if radial.length()>reach:
 			npc.position=(anchor+radial.normalized()*reach-Vector2(npc.aim)*10).clamp(bounds.position,bounds.end-Vector2.ONE*0.001)
+	npc.position=world.map_context.constrain_to_bed(npc.position,State.RADIUS)
 	world.tension=clampf(0.5+(anchor.distance_to(world.hook_target_mouth())-world.rope_length)/world.rule("line_elastic"),0,1)
 	world._rebuild_rope()
 	state.high_age=state.high_age+delta if world.tension>=world.rule("tension_high") else 0.0

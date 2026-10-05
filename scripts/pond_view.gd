@@ -4,6 +4,8 @@ const Camera = preload("res://scripts/pond_camera.gd")
 const Scenery = preload("res://scripts/pond_scenery.gd")
 var camera_offset := Vector2.ZERO
 var water_layers: Dictionary = {}
+const BedArt=preload("res://scripts/pond_bed_art.gd")
+var bed_texture: ImageTexture
 const GeneratedWater=preload("res://scripts/watergen/generated_water_appearance.gd")
 var generated_water:=GeneratedWater.new()
 var visual_seed:=713284
@@ -73,6 +75,7 @@ func prepare_map(context: RefCounted) -> void:
 	var reuse: bool = next.matches(map_presentation)
 	map_presentation = next
 	if reuse: return
+	bed_texture=BedArt.bake(context) if context.has_relief else null
 	water_layers = Scenery.Water.layers(map_presentation)
 	props = Art.scene_props(map_presentation)
 	plant_frames.clear()

@@ -4,6 +4,7 @@ const Resolver=preload("res://scripts/maps/map_resolver.gd")
 var passed:=0
 var failed:=0
 var next_port:=25980
+var generator_version:=1
 var host:Node2D
 var client:Node2D
 func check(ok:bool,label:String)->void:
@@ -23,7 +24,7 @@ func until_phase(phase:String)->bool:
 	return false
 func setup(seed:int,role:String)->void:
 	host=Peer.new(); client=Peer.new(); root.add_child(host); root.add_child(client)
-	check(host.network.host_game(role,next_port,{"map_source":Resolver.generated(seed),"rules":{"timer_enabled":false,"hunger_enabled":false}})==OK,"host creates generated lobby")
+	check(host.network.host_game(role,next_port,{"map_source":Resolver.generated(seed,generator_version),"rules":{"timer_enabled":false,"hunger_enabled":false}})==OK,"host creates generated lobby")
 	check(client.network.join_game("127.0.0.1",next_port)==OK,"client connects from classic default")
 	next_port+=1
 func cleanup()->void:
@@ -33,7 +34,7 @@ func run()->void:
 		for seed:int in [42,1346,2147483647]:
 			await setup(seed,role)
 			check(await until_phase("waiting"),"generated recipe negotiated")
-			check(client.network.map_source==Resolver.generated(seed) and client.network.map_ref==host.network.map_ref,"client reconstructs same map before ready")
+			check(client.network.map_source==Resolver.generated(seed,generator_version) and client.network.map_ref==host.network.map_ref,"client reconstructs same map before ready")
 			host.network.set_ready(); client.network.set_ready()
 			check(await until_phase("playing"),"both roles start generated round")
 			for tick in 50: await frame()

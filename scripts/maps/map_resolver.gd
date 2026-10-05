@@ -12,8 +12,8 @@ static var _contexts: Dictionary={}
 static func classic() -> Dictionary:
 	return {"kind":"built_in","id":Registry.DEFAULT_MAP_ID,"revision":Registry.DEFAULT_REVISION}
 
-static func generated(seed: int) -> Dictionary:
-	return Request.source(Request.create(seed))
+static func generated(seed: int, version: int=1) -> Dictionary:
+	return Request.source(Request.create(seed,version))
 
 static func resolve_ref(source: Variant, reference: Variant) -> Dictionary:
 	if not Registry._ref_shape_error(reference).is_empty(): return _error("invalid map_ref")
@@ -43,7 +43,7 @@ static func resolve(source: Variant, expected_ref: Variant=null) -> Dictionary:
 	if source.get("kind")!="generated" or source.size()!=5: return _error("unsupported map source")
 	var request:Dictionary=source.duplicate()
 	request.erase("kind")
-	request["map_contract_version"]=Contract.CONTRACT_VERSION
+	request["map_contract_version"]=request.get("generator_version")
 	var checked:=Request.validate(request)
 	if not checked.valid: return _error("unsupported generation recipe: "+str(checked.errors))
 	var key:String="%s:%d:%s:%d" % [request.generator_id,request.generator_version,request.gameplay_profile,request.map_seed]

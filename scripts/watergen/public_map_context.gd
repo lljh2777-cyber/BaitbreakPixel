@@ -2,6 +2,13 @@ extends RefCounted
 ## Pure-value public map contract. No Layout, world, scene or RNG dependency.
 const KEYS := ["format", "schema_version", "map_id", "source_commit", "world_size_px", "viewport_size_px", "water_rect_px", "floor_y_px", "visual_surface_y_px", "home_px", "spawn_px", "net_area_px", "bait_sites_px", "legacy_grass_rects_px", "wood_groups", "static_cover_records", "protected_regions", "map_public_digest"]
 
+static func floor_at(map: Dictionary, x: float) -> float:
+	var points: Array=map.get("floor_profile_px",[])
+	if points.is_empty(): return map.floor_y_px
+	for i in range(points.size()-1):
+		if x<=points[i+1][0]: return lerpf(points[i][1],points[i+1][1],clampf((x-points[i][0])/(points[i+1][0]-points[i][0]),0,1))
+	return points[-1][1]
+
 static func canonical(value: Variant) -> String:
 	return JSON.stringify(_numbers(value), "", true, true)
 
@@ -52,8 +59,10 @@ static func _error(code: String) -> Dictionary:
 	return {"ok": false, "code": code, "diagnostic": "PublicMapContext rejected: " + code}
 
 static func validate(value: Variant) -> Dictionary:
-	if not _keys(value, KEYS): return _error("FIELDS")
-	if value.format != "baitbreak-public-map-context" or not value.schema_version is int or value.schema_version != 2 or not value.map_id is String or value.map_id.is_empty() or value.map_id.length()>64: return _error("VERSION")
+	var fields:=KEYS.duplicate()
+	if value is Dictionary and value.get("schema_version") is int and value.schema_version==3: fields.append("floor_profile_px")
+	if not _keys(value, fields): return _error("FIELDS")
+	if value.format != "baitbreak-public-map-context" or not value.schema_version is int or value.schema_version not in [2,3] or not value.map_id is String or value.map_id.is_empty() or value.map_id.length()>64: return _error("VERSION")
 	if not _hex(value.source_commit, 40) or not _hex(value.map_public_digest, 64): return _error("METADATA")
 	for key in ["world_size_px", "viewport_size_px"]:
 		if not _vector(value[key], 2): return _error("SIZE")
@@ -102,5 +111,13 @@ static func validate(value: Variant) -> Dictionary:
 			grouped.append(seed_value)
 	for region in value.protected_regions:
 		if not _keys(region, ["purpose", "rect_px"]) or not region.purpose in ["home", "spawn", "candidate_bait"] or not _rect(region.rect_px): return _error("PROTECTED_REGION")
+	if value.schema_version==3:
+		var points: Variant=value.floor_profile_px
+		if not points is Array or points.size()<2 or points.size()>129: return _error("BED_PROFILE")
+		for i in points.size():
+			if not _vector(points[i],2): return _error("BED_POINT")
+			if points[i][1]<value.water_rect_px[1]+120 or points[i][1]>value.floor_y_px: return _error("BED_DEPTH")
+			if i>0 and (points[i][0]-points[i-1][0]<8 or absf(points[i][1]-points[i-1][1])>(points[i][0]-points[i-1][0])*0.9): return _error("BED_SLOPE")
+		if points[0][0]!=0 or points[-1][0]!=value.world_size_px[0]: return _error("BED_SPAN")
 	if digest(value) != value.map_public_digest: return _error("DIGEST")
 	return {"ok": true, "code": "OK", "diagnostic": ""}

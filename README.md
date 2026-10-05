@@ -2,7 +2,7 @@
 
 一个 2D 像素风格的人鱼对抗游戏：小鱼在水下觅食、缠线和逃脱，钓鱼人在岸边控竿、收放线与抄网。支持单机挑战、自由练习和一人对一鱼的局域网联机。
 
-**当前源码：0.27.5（P5 程序生成池塘）** · Godot 4.7.2
+**当前源码：0.28.0（真实起伏水底）** · Godot 4.7.2
 **当前公开 Windows 试玩包：0.26.4**，历史发行记录继续保留。
 
 用户已确认 0.25.2 社会线索试玩通过。0.25.3 让 NPC 真实误咬钩、自动挣扎、逃脱、断线或被拉起。钓错 NPC 不结束比赛；玩家可趁机吃饵、回巢，钓鱼人需要重新部署。NPC 捕获后暂离生态，延迟生成新 ID 的鱼。
@@ -17,9 +17,9 @@ Phase 5 已接入生成地图的实际比赛、存档、同版联机与 Watergen
 
 本版沿用 0.24.4 的渐变吸力，散粒实际移动、剥离和整饵位移目标共用同一距离场；此前[距离修正验证](docs/test-reports/PHASE02-DISTANCE-VALIDATION.md)保留为历史记录。
 
-### 本地 Windows 试玩包：0.27.5
+### 本地 Windows 试玩包：0.28.0
 
-已构建到 `E:\Fish_catches_people\Releases\BaitbreakPixel-0.27.5`，运行其中的 `BaitbreakPixel.exe`；对应 ZIP 同名。仅在构建机器上可用，尚未上传 GitHub Release。生成池塘入口、1,000 局统计、独立包验证及五类地图试玩清单见 [P5 完成记录](docs/test-reports/PHASE05-COMPLETION.md)。
+已构建到 `E:\Fish_catches_people\Releases\BaitbreakPixel-0.28.0`，运行其中的 `BaitbreakPixel.exe`；对应 ZIP 同名。仅在构建机器上可用，尚未上传 GitHub Release。新版生成池塘加入可碰撞的坡地与低洼，鱼、NPC、食物和抄网共用真实地形。入口与验证见 [0.28.0 起伏水底记录](docs/test-reports/TERRAIN-0.28.0.md)。此前 P5 统计保留于 [P5 完成记录](docs/test-reports/PHASE05-COMPLETION.md)。
 
 ### 公开 Windows 试玩包：0.26.4
 
@@ -72,7 +72,7 @@ Phase 5 已接入生成地图的实际比赛、存档、同版联机与 Watergen
 .\Build-Pixel.ps1 -GodotDirectory 'D:\Tools\Godot_v4.7.2-stable_win64.exe'
 ```
 
-该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.27.5` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
+该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.28.0` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
 
 当前测试入口、套件状态和产物目录配置见 [测试运行指南](tests/README.md)。核心抄网逻辑检查示例（替换为本机引擎路径）：
 

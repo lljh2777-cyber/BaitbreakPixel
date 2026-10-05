@@ -763,7 +763,12 @@ func _tick_npc_fishes(delta: float) -> void:
 						npc.suspicion_by_bait.erase(id); npc.caution_by_bait.erase(id)
 		npc.velocity=Vector2(npc.velocity).move_toward(Vector2(npc.steering)*NPCFishState.SPEED,delta*48.0)
 		var bounds: Rect2=environment.bounds
-		npc.position=(Vector2(npc.position)+Vector2(npc.velocity)*delta).clamp(bounds.position,bounds.end-Vector2.ONE*0.001)
+		if map_context.has_relief:
+			# Anticipate rising ground while retaining the same food/social decisions.
+			var ahead: Vector2=npc.position+Vector2(npc.velocity)*0.5
+			if map_context.bed_blocked(ahead,NPCFishState.RADIUS+12): npc.velocity.y=minf(npc.velocity.y,-24.0)
+			npc.position=map_context.move_in_water(npc.position,Vector2(npc.velocity)*delta,NPCFishState.RADIUS)
+		else: npc.position=(Vector2(npc.position)+Vector2(npc.velocity)*delta).clamp(bounds.position,bounds.end-Vector2.ONE*0.001)
 		var look: Vector2=npc.intent_aim if npc_foraging_enabled and npc.behavior_state!="WANDER" else Vector2(npc.velocity).normalized()
 		if (look.length()>0.1 if npc_foraging_enabled and npc.behavior_state!="WANDER" else Vector2(npc.velocity).length()>0.1): npc.aim=Vector2(npc.aim).slerp(look,minf(1.0,delta*5.0)).normalized()
 
@@ -917,6 +922,7 @@ func strength(point: Vector2) -> float:
 	return FishFeeding.strength(point,mouth(),aim,rules)
 
 func _collision(point: Vector2, radius: float) -> bool:
+	if map_context.bed_blocked(point,radius): return true
 	for solid in map_npc_spawn_blockers:
 		if MapGeometry.touches(point,radius,solid.polygon): return true
 	return false
@@ -928,7 +934,7 @@ func vegetation_drag(point: Vector2) -> float:
 
 func move_fish(motion: Vector2) -> void:
 	var radius := 17.0 if hooked == HookState.HOOKED else 12.0
-	fish = (fish+motion).clamp(map_context.fish_bounds(radius).position,map_context.fish_bounds(radius).end)
+	fish = map_context.move_in_water(fish,motion,radius)
 	if not uses_mobile_tackle() or hooked!=HookState.HOOKED or landing or line_tuning().y<=0: return
 	var contact := line_anchor(bound_bait) if wraps.is_empty() else Vector2(wraps[-1].entry)
 	var available := rope_length if wraps.is_empty() else fish_line_length
@@ -938,7 +944,7 @@ func move_fish(motion: Vector2) -> void:
 	var reach := maxf(0,available)+rule("line_elastic")*(1-base)
 	var radial := mouth()-contact
 	if radial.length()>reach:
-		fish=(contact+radial.normalized()*reach-aim*10).clamp(map_context.fish_bounds(radius).position,map_context.fish_bounds(radius).end)
+		fish=map_context.constrain_to_bed((contact+radial.normalized()*reach-aim*10).clamp(map_context.fish_bounds(radius).position,map_context.fish_bounds(radius).end),radius)
 
 func touching_target(index: int) -> bool:
 	return index>=0 and index<targets.size() and MapGeometry.touches(fish,12,targets[index].polygon)
@@ -1213,6 +1219,7 @@ func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2, def
 			bait.pos = Vector2(bait.pos).move_toward(target, delta * 44)
 		if bound_bait!=index or (hooked==HookState.FREE and hook_target_fish_id<0):
 			_step_bait_suction(bait,delta,sucking,_body_suction_source(bait,sucking))
+		bait.pos=map_context.constrain_to_bed(bait.pos,14)
 		if bait.active and bait.hook and not bait.removed and hooked==HookState.FREE and hook_target_fish_id<0 and net_state!="caught":
 			if hook_cooldown<=0 and FishFeeding.hook_contact(old_tip,_tip(index),old_mouth,mouth(),aim,rule("bite_radius")):
 				_enter_hook(index)
@@ -1229,6 +1236,7 @@ func _step_bait(index: int, delta: float, sucking: bool, old_mouth: Vector2, def
 		if grain.eaten: continue
 		if not grain.free: grain.pos=Vector2(bait.pos)+Vector2(grain.offset).rotated(bait.angle)
 		else: grain.pos=Vector2(grain.pos)+water_velocity(grain.pos)*delta*1.15
+		grain.pos=map_context.constrain_to_bed(grain.pos,2)
 	if sucking:
 		var intake: Array[Dictionary]=[]
 		if defer_intake: intake=pending_intake
@@ -1262,6 +1270,7 @@ func _pull_food(bait: Dictionary, delta: float, origin: Vector2, direction: Vect
 		if pull<=0: continue
 		if grain.free:
 			grain.pos=Vector2(grain.pos).move_toward(origin,delta*pull*rule("pellet_speed")*Suction.pellet_gain(pull_power)*float(FoodProfile.get_profile(grain.visual_kind).suction_efficiency))
+			grain.pos=map_context.constrain_to_bed(grain.pos,2)
 			if Vector2(grain.pos).distance_to(origin)<4: pending.append(grain)
 		elif grain.layer==layer:
 			grain.progress+=delta*pull*Suction.peel_gain(pull_power,grain.layer)*rule("pellet_detach")*float(profile.suction_efficiency)
@@ -1376,7 +1385,7 @@ func _attach_hook() -> void:
 	landing_age = 0
 	landing = false
 	# Props are pass-through cover; only the pond perimeter constrains swimming.
-	fish = fish.clamp(map_context.fish_bounds(17).position,map_context.fish_bounds(17).end)
+	fish = map_context.constrain_to_bed(fish.clamp(map_context.fish_bounds(17).position,map_context.fish_bounds(17).end),17)
 	public_hook_cue={"tick":simulation_tick,"position":Vector2(fish)}
 	wraps.clear()
 	wrap_target = -1

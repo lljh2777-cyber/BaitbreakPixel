@@ -82,6 +82,7 @@ static func generate(map: Variant, visual_seed: Variant, density := "medium") ->
 			var group := _community(plan, "grass-edge/" + str(target), "grass_edge", -1, "medium")
 			for side in [-1, 1]:
 				var root := Vector2(bounds.get_center().x + side * (bounds.size.x * 0.5 + 14), map.floor_y_px)
+				root.y=Map.floor_at(map,root.x)
 				_append(plan, group, "low_grass", root, visual_seed, side + 1, quiet)
 				if count >= 2: _append(plan, group, "filament_algae", root + Vector2(side * 7, 1), visual_seed, side + 1, quiet)
 			continue
@@ -119,7 +120,7 @@ static func generate(map: Variant, visual_seed: Variant, density := "medium") ->
 		for slot in sites:
 			var rng := stream(visual_seed, group.id + "/anchor", slot)
 			var x := lerpf(gap.x + 20, gap.y - 20, (slot + 0.5) / sites) + rng.randf_range(-5, 5)
-			var root := Vector2(x, map.floor_y_px + 2)
+			var root := Vector2(x, Map.floor_at(map,x) + 2)
 			_append(plan, group, "carpet_algae", root, visual_seed, slot, quiet)
 			_append(plan, group, "low_grass", root + Vector2(-9, -2), visual_seed, slot, quiet)
 			if band != "low" or slot == 0: _append(plan, group, "broad_leaf", root + Vector2(12, -2), visual_seed, slot, quiet)

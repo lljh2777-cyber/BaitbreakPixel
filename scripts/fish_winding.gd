@@ -25,7 +25,7 @@ static func pose(world: Node2D) -> Dictionary:
 	var radius:=Vector2(float(wrap.radii.x)+14,13)
 	radius.x=minf(radius.x,maxf(7,minf(center.x-(world.map_context.water.position.x+1),world.map_context.water.end.x-1-center.x)))
 	var orbit:=center+Vector2(cos(angle),sin(angle))*radius
-	var position: Vector2=Vector2(world.fish).lerp(orbit,blend)
+	var position: Vector2=world.map_context.constrain_to_bed(Vector2(world.fish).lerp(orbit,blend),12)
 	# Projected yaw: narrow gently while rounding either end of the obstacle,
 	# instead of abruptly mirroring or turning the belly upside down.
 	var near: float=sin(angle)

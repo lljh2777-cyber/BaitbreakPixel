@@ -71,7 +71,7 @@ func _initialize(source: RefCounted) -> void:
 	_source = weakref(source)
 	var metadata: Dictionary = source.presentation
 	_scalars = {"size":source.size,"water":source.water,"floor_y":source.floor_y,
-		"home":source.home,"visual_profile_id":metadata.visual_profile_id}
+		"home":source.home,"visual_profile_id":metadata.visual_profile_id,"floor_profile":source.floor_profile}
 	_wood_groups = metadata.wood_groups
 	var visuals: Dictionary = {}
 	for visual: Dictionary in source.visual_features: visuals[visual.id] = visual

@@ -41,3 +41,16 @@ Title → map button → classic/generated → manual/random/copy Seed. A saved 
 See [the completion report](../test-reports/PHASE05-COMPLETION.md) for automated and native results, 10,000 structural seeds, the 1,000-round matrix, extreme-seed corpus and playable package details. Source-only helpers are excluded from the PCK; JSON visual profiles are explicitly included.
 
 The statistical controllers and image inspection cannot certify subjective map fairness or enjoyment. Final human acceptance in specification §52 remains the user's playtest decision. Multiple rods and cross-round fish memory remain outside P5.
+
+
+## 0.28.0 — solid relief (generator v2)
+
+New player selections use `generator_version:2`, `gameplay_profile:relief_pond_v2`, and Map Contract 2. V1 recipes, canonical geometry and classic behavior stay supported and unchanged. The explicit version arguments on Request.create / Resolver.generated select v2; their default 1 remains available to existing P5 fixtures/tools. Saved v1 selections stay v1 until the user applies a new selection.
+
+Contract 2 adds a bounded, ordered `bounds.floor_profile` polyline. Its vertices are part of canonical Authority identity. `PondBed` supplies exact circle clearance against adjacent segments; player and NPC movement is substepped against the same surface. Tackle and detached/attached food are constrained above it. The bed is a separate net blocker, never a rope-anchor target or fading cover. Net planning, sweep and return use the original polygon solver with the bed included.
+
+Wood groups remain joined; cover tops and six bait bands retain protected clearance. The v2 generator builds up to three broad rises, with the original low bed between them, and leaves the nest approach flat. Retry count stays bounded at 32; failures do not fall back to another map.
+
+The view bakes an opaque soil layer from MapContext once per map and includes its profile in presentation cache matching. Both the fish view and observation view show the collision rim; shore view projects the same polygon. Watergen public v3 carries only the height polyline alongside the existing public metadata; v2 remains supported for flat maps. Ecology preview roots follow this public bed. New WG-6.2 decorative communities remain preview-only.
+
+Snapshot schemas remain 17/3: recipe + MapRef reconstruct all geometry locally before installing state. Network exact-build is 0.28.0. No terrain or actor RNG is carried in a visual seed. Validation and limitations: [0.28.0 report](../test-reports/TERRAIN-0.28.0.md).

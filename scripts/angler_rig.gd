@@ -191,7 +191,7 @@ func cast(game: Node2D, point: Vector2) -> bool:
 		if bait.tackle: bait.active=false
 	cast_index=index
 	cast_from=anchor()
-	cast_to=point.clamp(_cast_bounds.position,_cast_bounds.end)
+	cast_to=_map_context.constrain_to_bed(point.clamp(_cast_bounds.position,_cast_bounds.end),20)
 	cast_age=0
 	casting=true
 	cast_cooldown=1.2
@@ -270,7 +270,7 @@ func step_free_hook(game: Node2D, index: int, delta: float) -> void:
 			position=attachment+normal*free_line_length
 			var outward := (hook_velocity-bank_velocity).dot(normal)-free_reel_speed
 			if outward>0: hook_velocity-=normal*outward
-		var bounded := position.clamp(_hook_bounds.position,_hook_bounds.end)
+		var bounded: Vector2=_map_context.constrain_to_bed(position.clamp(_hook_bounds.position,_hook_bounds.end),14)
 		if not is_equal_approx(bounded.x,position.x): hook_velocity.x=0
 		if not is_equal_approx(bounded.y,position.y): hook_velocity.y=0
 		position=bounded

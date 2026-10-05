@@ -9,6 +9,7 @@ const Policy=preload("res://tools/phase02_feeding_policy.gd")
 const Angler=preload("res://scripts/angler_brain.gd")
 const SEEDS=[42,2166,1346,937,1141,144,296,64,22,0,1,2,3,4,5,6,7,8,9,10,100,999,73501,123456789,2147483647]
 const MAX_TICKS:=22200
+var generator_version:=1
 var first:=0
 var count:=1000
 var output:="res://artifacts/phase05-gameplay.jsonl"
@@ -38,7 +39,7 @@ func round_case(index:int)->Dictionary:
 	var native_ai:=index%2==0
 	var mode:String="survival" if (index%40)/2%2==0 else "duel"
 	var g:=World.new()
-	var valid:bool=g.reset_world({"map_source":Resolver.generated(map_seed),"seed":simulation_seed,"challenge":true,"ruleset":mode})
+	var valid:bool=g.reset_world({"map_source":Resolver.generated(map_seed,generator_version),"seed":simulation_seed,"challenge":true,"ruleset":mode})
 	var player:=Fish.new(); player.reset(simulation_seed+173)
 	var policy:=Policy.new(); policy.reset("Mixed",g.rules)
 	var opponent:=Angler.new()
@@ -54,7 +55,13 @@ func round_case(index:int)->Dictionary:
 		g.advance_tick(command,other)
 		if tick%60!=59: continue
 		valid=valid and g.fish.is_finite() and (g.net_state=="caught" or g.landing or g.map_context.water.grow(14).has_point(g.fish))
-		for npc:Dictionary in g.npc_fishes: valid=valid and npc.position.is_finite()
+		if g.map_context.has_relief and g.net_state!="caught" and not g.landing: valid=valid and not g.map_context.bed_blocked(g.fish,12)
+		for npc:Dictionary in g.npc_fishes:
+			valid=valid and npc.position.is_finite()
+			if npc.active and g.npc_hook.phase!="landing": valid=valid and not g.map_context.bed_blocked(npc.position,World.NPCFishState.RADIUS)
+		for bait:Dictionary in g.baits:
+			for grain:Dictionary in bait.grains:
+				if not grain.eaten and (grain.free or bait.active): valid=valid and not g.map_context.bed_blocked(grain.pos,2)
 		var available:=0.0
 		for bait:Dictionary in g.baits:
 			for grain:Dictionary in bait.grains:
@@ -70,7 +77,7 @@ func round_case(index:int)->Dictionary:
 		max_return_stall=maxf(max_return_stall,return_stall)
 	var probe:=World.new()
 	valid=valid and probe.restore_snapshot(g.capture_snapshot())
-	var row:Dictionary={"harness_version":2,"run":index,"map_seed":map_seed,"simulation_seed":simulation_seed,"policy":"native_AI" if native_ai else "Mixed_observation",
+	var row:Dictionary={"harness_version":3,"generator_version":generator_version,"run":index,"map_seed":map_seed,"simulation_seed":simulation_seed,"policy":"native_AI" if native_ai else "Mixed_observation",
 		"mode":mode,"valid":valid,"completed":g.match_over,"duration":g.elapsed,"ticks":g.simulation_tick,"winner":g.winner_role,"reason":g.reason,
 		"food":g.score,"npc_food":g.round_stats.npc_food_consumed,"hook_events":g.round_stats.hook_events,"npc_wrong_hooks":g.round_stats.npc_hook_count,
 		"net_catch":g.reason=="net","wrap_usage":g.round_stats.wrap_good,"home_completion":g.reason=="home","supply_deadlock":max_supply_stall>=20,
