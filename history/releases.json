@@ -1588,6 +1588,16 @@
       "test_report": "docs/test-reports/GITHUB-RELEASE-0.26.4.md",
       "development_report": "docs/test-reports/PHASE04-MAP-FINAL-0.26.4.md",
       "github_release_published_at_report": true
+    },
+    {
+      "version": "0.27.5",
+      "source_commit": "62cb0bc2f6a5271d07495c5eee09fd57271a4868",
+      "pack_bytes": 2500604,
+      "pack_sha256": "f4b9280313ed709ef89a1d4b935f9c918392da7eaaae78b0d15c19b0a0e760f6",
+      "zip_bytes": 89659315,
+      "report_date": "2026-10-05",
+      "test_report": "docs/test-reports/PHASE05-COMPLETION.md",
+      "github_release_published_at_report": false
     }
   ],
   "public_release_snapshot_history": [

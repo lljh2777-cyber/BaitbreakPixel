@@ -1,0 +1,55 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+NET_RULE_PASS | 200 ms late input uses the host's recorded age, not client timing
+NET_RULE_PASS | valid historical QTE succeeds even after the current pointer left green
+NET_RULE_PASS | result animation freezes at the actually judged position
+NET_RULE_PASS | held input never repeats a one-shot judgment
+NET_RULE_PASS | timing older than the 250 ms history is rejected
+NET_RULE_PASS | future tick claims are rejected
+NET_RULE_PASS | QTE identifiers cannot target another check
+NET_RULE_PASS | grace keeps an outstanding QTE available for an in-range late judgment
+NET_RULE_PASS | online expiry allows a short delivery grace
+NET_RULE_PASS | unanswered online QTE still fails after grace
+NET_RULE_PASS | offline QTE retains its original timeout
+NET_RULE_PASS | historical green does not bypass current high line tension
+NET_RULE_PASS | malformed nested food records cannot partially change the world
+NET_RULE_PASS | unknown state machine values are rejected
+NET_RULE_PASS | incomplete and duplicate fragments do not apply partial snapshots
+NETWORK_STOP | host=false | 状态版本或地图不兼容
+NETWORK_PHASE | host=false | failed | 状态版本或地图不兼容
+ERROR: NET_RULE_FAIL | out-of-order fragments assemble one complete angler presentation state
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/network_rules_v012.gd:13)
+       [1] run (res://tests/network_rules_v012.gd:93)
+ERROR: NET_RULE_FAIL | a completed old snapshot cannot replay
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/network_rules_v012.gd:13)
+       [1] run (res://tests/network_rules_v012.gd:95)
+ERROR: NET_RULE_FAIL | a later full snapshot recovers without retransmitting earlier losses
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/network_rules_v012.gd:13)
+       [1] run (res://tests/network_rules_v012.gd:99)
+ERROR: NET_RULE_FAIL | presentation interpolation cannot mutate authority state
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/network_rules_v012.gd:13)
+       [1] run (res://tests/network_rules_v012.gd:103)
+NET_RULE_PASS | fragment assembly and render sampling leave original authority and wire input snapshots byte-identical
+NET_RULE_PASS | truncated packet is rejected before Variant decoding
+NET_RULE_PASS | nested packet depth is bounded
+NETWORK_PHASE | host=true | failed | 端口应为 1024—65535
+NET_RULE_PASS | invalid room port fails cleanly before opening a socket
+NETWORK_PHASE | host=false | failed | 请填写房主 IP 和有效端口
+NET_RULE_PASS | empty server address gets a visible connection error
+NETWORK_PHASE | host=false | connecting | 正在连接房主…
+NETWORK_STOP | host=false | 连接超时：确认房主已开房、IP 和端口相同
+NETWORK_PHASE | host=false | failed | 连接超时：确认房主已开房、IP 和端口相同
+NET_RULE_PASS | connection timeout releases its socket and returns an actionable error
+NETWORK_PHASE | host=false | connecting | 正在连接房主…
+NETWORK_STOP | host=false | 连接已关闭，请确认房主和地址后重新加入
+NETWORK_PHASE | host=false | failed | 连接已关闭，请确认房主和地址后重新加入
+NET_RULE_PASS | transport failure stops the world and leaves no active connection
+NETWORK_RULES_V012_TESTS | passed=22 | failed=4

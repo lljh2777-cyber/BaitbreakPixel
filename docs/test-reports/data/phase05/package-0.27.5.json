@@ -1,0 +1,30 @@
+{
+  "version": "0.27.5",
+  "source_commit": "62cb0bc2f6a5271d07495c5eee09fd57271a4868",
+  "pack_bytes": 2500604,
+  "pack_sha256": "f4b9280313ed709ef89a1d4b935f9c918392da7eaaae78b0d15c19b0a0e760f6",
+  "zip_bytes": 89659315,
+  "verified_runtime_and_profile_files": [
+    "scripts/world_simulation.gd",
+    "scripts/pond.gd",
+    "scripts/menu.gd",
+    "scripts/world_snapshot.gd",
+    "scripts/network_session.gd",
+    "scripts/network_protocol.gd",
+    "scripts/maps/map_resolver.gd",
+    "scripts/maps/map_context.gd",
+    "scripts/maps/generation/map_generator.gd",
+    "scripts/maps/generation/generated_pond_v1.gd",
+    "scripts/maps/generation/map_playability_validator.gd",
+    "scripts/watergen/watergen_public_adapter.gd",
+    "scripts/watergen/generated_water_appearance.gd",
+    "scripts/pond_view.gd",
+    "scripts/pond_scenery.gd",
+    "data/watergen/forest_pond_atmosphere.json",
+    "data/watergen/terrain_profiles.json"
+  ],
+  "zip_crc_and_four_contents_match": true,
+  "native_executable_generated_seed_42_startup": true,
+  "passed": true,
+  "notes": "source_commit identifies the tested runtime source. Final play instructions directly match docs/gameplay/PLAY.txt, including corrected schema17/version wording. Direct content comparison; necessary PCK package identity checksum only, no per-script/frame hashes."
+}

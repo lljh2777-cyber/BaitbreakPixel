@@ -229,3 +229,5 @@ git archive --format=tar 8831f52ee7daae5d592282d5da432cbd67fccfb0 | tar -x -C ar
 - tools/phase05_run_gameplay.py：25 map seeds × 20 simulation seeds × 2 controllers，默认规则完整局统计。输出原始 JSONL 与按地图/策略汇总，不进行逐帧 SHA 扫描。
 
 P4 的当前兼容套件已更新为 schema17 / fish schema3，并明确排除新增 recipe 元数据做跨版本玩法比较；原来的几何、状态、RNG、隐私断言保持。
+
+完整矩阵复现：`D:\python\python.exe tools/phase05_run_gameplay.py --godot <Godot控制台路径> --output artifacts/p5-gameplay-new`。输出目录必须为空，保留全部 1,000 行。`tools/phase05_recheck_gameplay.py` 专门保留并复查本轮早期测试器误判记录；正常 v2 新运行不需要这一步。少量性能测量用图形模式运行 `tools/phase05_benchmark.gd -- --output=<新文件>`。P5 最终证据与包说明见 [完成报告](../docs/test-reports/PHASE05-COMPLETION.md)。

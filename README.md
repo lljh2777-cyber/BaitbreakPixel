@@ -17,6 +17,10 @@ Phase 5 已接入生成地图的实际比赛、存档、同版联机与 Watergen
 
 本版沿用 0.24.4 的渐变吸力，散粒实际移动、剥离和整饵位移目标共用同一距离场；此前[距离修正验证](docs/test-reports/PHASE02-DISTANCE-VALIDATION.md)保留为历史记录。
 
+### 本地 Windows 试玩包：0.27.5
+
+已构建到 `E:\Fish_catches_people\Releases\BaitbreakPixel-0.27.5`，运行其中的 `BaitbreakPixel.exe`；对应 ZIP 同名。仅在构建机器上可用，尚未上传 GitHub Release。生成池塘入口、1,000 局统计、独立包验证及五类地图试玩清单见 [P5 完成记录](docs/test-reports/PHASE05-COMPLETION.md)。
+
 ### 公开 Windows 试玩包：0.26.4
 
 从 [v0.26.4 发行页](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/tag/v0.26.4)下载 [BaitbreakPixel-0.26.4.zip](https://github.com/lljh2777-cyber/BaitbreakPixel/releases/download/v0.26.4/BaitbreakPixel-0.26.4.zip)，解压后运行 `BaitbreakPixel.exe`。EXE 与同目录 PCK 保持在一起，玩家无需安装 Godot。小鱼嘴边有食物时自动咬食，左键吸食；完整操作见包内说明。
@@ -56,7 +60,7 @@ Phase 5 已接入生成地图的实际比赛、存档、同版联机与 Watergen
 
 鱼需要权衡食物、体力、张力与逃脱时机；钓鱼人可以拉鱼出水，也能主动抄网。体力、断线时间、QTE 时长等玩法数值可在设置中调整、保存和分享方案。联机由房主提供本局规则。
 
-目前为单池塘 MVP，联机支持一人对一鱼；尚无互联网大厅、多鱼多人或更多地图。
+目前支持经典池塘和固定水域尺寸的程序生成池塘，联机支持一人对一鱼；尚无互联网大厅或多鱼多人。
 
 ## 开发运行
 
@@ -76,7 +80,7 @@ Phase 5 已接入生成地图的实际比赛、存档、同版联机与 Watergen
 & 'D:\Tools\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe' --headless --path . --script res://tests/net_v021.gd -- --test-profile
 ```
 
-测试使用独立配置；带原生画面截图的脚本需要图形窗口，不使用 `--headless`。本次检查见 [0.26.4 地图抽象最终报告](docs/test-reports/PHASE04-MAP-FINAL-0.26.4.md)；此前 Windows 试玩包的验证保留在 [0.22.5 原始报告](docs/test-reports/TEST-REPORT-0.22.5.md)。
+测试使用独立配置；带原生画面截图的脚本需要图形窗口，不使用 `--headless`。本次检查见 [P5 完成记录](docs/test-reports/PHASE05-COMPLETION.md)；此前 Windows 试玩包的验证保留在 [0.22.5 原始报告](docs/test-reports/TEST-REPORT-0.22.5.md)。
 
 ## 项目结构与文档
 

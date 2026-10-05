@@ -1,3 +1,4 @@
+- [0.27.5 P5 生成地图：比赛、存档、联机、Watergen、统计与试玩包](PHASE05-COMPLETION.md)
 - [0.26.4 P4.4–P4.6 地图抽象最终验证](PHASE04-MAP-FINAL-0.26.4.md)
 - [0.26.2 P4.3 Snapshot / Network MapRef](PHASE04-MAP-SNAPSHOT-NETWORK-0.26.2.md)
 - [0.26.1 P4.2 Authority MapContext](PHASE04-MAP-AUTHORITY-0.26.1.md)

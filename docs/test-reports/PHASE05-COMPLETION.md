@@ -68,4 +68,24 @@ Windows / Godot 4.7.2 / OpenGL Compatibility / AMD Radeon Graphics。10,000 Seed
 
 完整回归发现旧 `network_rules_v012` 手造 state 包缺少新 map_source；补齐 fixture 后 26 项通过。首次新房间检查发现端口与 Seed 标签区域重叠，第一次间距调整仍不足，最终重排后真实房主菜单 22 项通过并保存截图；三次结果均保留，未放松布局断言。
 
-完整 current 回归和最终打包汇总待本轮剩余检查结束写入。
+## 最终源码与独立包
+
+完整 current profile 执行 81 个 headless 套件和编辑器导入。初次 80 套件通过、旧网络 fixture 1 套件失败；修复后定向复查通过，最终 81/81 套件共 294,962 项断言通过，导入通过，零超时、零跳过。原始 `current-initial.json` 保留失败，`current-resolved.json` 明确合并哪次复查；历史/retired/manual 套件未冒充本轮通过。
+
+最终 PCK 另跑 runtime 832、snapshot 126、Watergen boundary 298、五地图 native 61、UI 22，共 1,339 项通过。17 个关键 runtime / visual profile 文件直接比对包内字节与源码，主场景和 0.27.5 版本检查通过；ZIP CRC 与四个本地文件内容一致，独立 EXE 以 Seed 42 原生启动通过。报告记录必要的 PCK 包身份校验值，未对脚本/截图逐个做 SHA256。
+
+本地试玩：`E:\Fish_catches_people\Releases\BaitbreakPixel-0.27.5\BaitbreakPixel.exe`，对应同名 ZIP。EXE 与 PCK 保持同目录。最终包大小与校验见 `data/phase05/package-0.27.5.json`，套件见 `package-tests.json`。本轮提交推送 feature/dev，未合并 main、未上传 GitHub Release；公开包仍为 0.26.4。
+
+## 五图体验检查与验收边界
+
+P5.0–P5.6 开发、P5.7 自动统计与交付检查完成。以下五图均已执行真实 World 检查、完整局矩阵和原生鱼/岸边画面检查；agent 查看截图并修正了木枝纹理及联机布局。正式的人类趣味性、公平性验收尚未代替用户签字。
+
+| 类型 | Seed | 试玩重点 |
+| --- | ---: | --- |
+| 普通 | 42 | 找饵、NPC 抢食、达标回巢 |
+| 开阔 | 2166 | 抄网路线、离开掩体后的风险 |
+| 复杂 | 1346 | 木石/草的交互可读性、缠线与解缠 |
+| 极端但合法 | 296 | 抄网绕行、提网通道与可行逃脱路线 |
+| 手动输入 | 123456789 | 两端同 Seed 布局、R 保留地图、新地图换布局 |
+
+在标题地图按钮输入对应 Seed；分别使用小鱼挑战、钓鱼人挑战。双人试玩双方使用 0.27.5，由房主先选图再开房。换视觉种子不改 Authority 的自动门已通过；图形检查使用的是 Windows 当前驱动，未实测第二台电脑/其他操作系统。最终人工问题为：随机地图是否让策略变化，同时没有频繁无解、误导或明显不公平的布局。
