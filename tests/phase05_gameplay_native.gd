@@ -35,12 +35,16 @@ func run()->void:
 		game.player_role="fish"; game.fish=Vector2(600,300); game.fish_before=game.fish; game.elapsed=2.0
 		await render("seed-%d-fish"%seed)
 		check(game.view.generated_water.enabled,"Watergen active and validated")
-		if generator_version==2:
+		if generator_version>=2:
 			check(game.view.bed_texture!=null,"physical bed rendered")
 			game.player_role="angler"; game.net_action.observing=true
 			await render("seed-%d-observation"%seed)
 			game.net_action.observing=false
 		check(game.view.props.size()==game.map_context.presentation.wood_groups.size()+game.map_net_blockers.size()-int(game.map_context.has_relief)-game.map_context.presentation.wood_groups.size()*2,"connected tree parts share one sprite")
+		if generator_version==3:
+			for side in [280,1060]:
+				game.player_role="fish"; game.fish=game.map_context.constrain_to_bed(Vector2(side,385),12); game.fish_before=game.fish
+				await render("seed-%d-ground-%d" % [seed,side])
 		game.player_role="angler"
 		await render("seed-%d-shore"%seed)
 	game.player_role="fish"

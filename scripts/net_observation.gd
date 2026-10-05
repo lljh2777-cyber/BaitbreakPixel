@@ -36,8 +36,11 @@ static func draw(view: Node2D, world: Node2D, t: float) -> void:
 	for prop in view.props:
 		view.draw_texture(prop.texture,prop.position,Color(0.58,0.72,0.69,0.9))
 	for plant in map.plants:
-		var origin := Vector2(plant.x,plant.y)
 		for stem in range(3):
+			var origin := Vector2(plant.x,plant.y)
+			if plant.has("root_y"):
+				origin.x+=(stem-1)*plant.width*0.5
+				origin.y=world.map_context.floor_at(origin.x)
 			var top := origin+Vector2((stem-1)*plant.width*0.2+sin(t+plant.x)*2,-plant.height*(0.7+stem*0.12))
 			view.draw_line(origin.round(),top.round(),Color("386d68"),2)
 			for leaf in range(1,4):

@@ -150,14 +150,16 @@ func _underwater(view: Node2D, world: Node2D, t: float) -> void:
 		_ghost(view,projected(bed,world),0.22,Color("31564d"))
 	for solid in map.solids:
 		if not solid.shore_visible: continue
-		_ghost(view,projected(PackedVector2Array(solid.points),world),0.18 if solid.kind=="wood" else 0.14)
+		for polygon in solid.get("visible_polygons",[solid.points]):
+			_ghost(view,projected(PackedVector2Array(polygon),world),0.18 if solid.kind=="wood" else 0.14)
 	for index in map.plants.size():
 		var plant: Dictionary=map.plants[index]
 		if not plant.shore_visible: continue
 		for stem in 3:
 			var x: float=plant.x+(stem-1)*5
-			var p := to_screen(Vector2(x,plant.y),world)
-			var top := to_screen(Vector2(x+sin(t*1.5+index+stem)*4,plant.y-plant.height*0.7),world)
+			var base: float=world.map_context.floor_at(x) if plant.has("root_y") else plant.y
+			var p := to_screen(Vector2(x,base),world)
+			var top := to_screen(Vector2(x+sin(t*1.5+index+stem)*4,base-plant.height*0.7),world)
 			view.draw_polyline(PackedVector2Array([p,p.lerp(top,0.5)+Vector2(2,0),top]),Color(0.06,0.21,0.24,0.20),3)
 	var float_at := float_position(world,t,view.line_frame.action)
 	if world.line_hooked() and view.line_frame.path.size()>1:

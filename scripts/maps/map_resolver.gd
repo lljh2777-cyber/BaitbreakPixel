@@ -43,7 +43,7 @@ static func resolve(source: Variant, expected_ref: Variant=null) -> Dictionary:
 	if source.get("kind")!="generated" or source.size()!=5: return _error("unsupported map source")
 	var request:Dictionary=source.duplicate()
 	request.erase("kind")
-	request["map_contract_version"]=request.get("generator_version")
+	request["map_contract_version"]=Request.contract(request.get("generator_version"))
 	var checked:=Request.validate(request)
 	if not checked.valid: return _error("unsupported generation recipe: "+str(checked.errors))
 	var key:String="%s:%d:%s:%d" % [request.generator_id,request.generator_version,request.gameplay_profile,request.map_seed]

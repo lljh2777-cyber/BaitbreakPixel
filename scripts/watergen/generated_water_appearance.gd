@@ -30,7 +30,7 @@ func prepare(context:RefCounted,visual_seed:int)->bool:
 	if not next.has("terrain_far"):
 		var relief:=Terrain.generate(map,terrain_profile,visual_seed)
 		if not relief.ok: last_error=relief.code; return false
-		var baked:=TerrainBaker.bake(relief.plan,profile.palette,profile.parallax_compensation.distance)
+		var baked:=TerrainBaker.bake(relief.plan,profile.palette,next.parallax_compensation.distance)
 		if not baked.ok: last_error=baked.code; return false
 		next["terrain_far"]=ImageTexture.create_from_image(baked.far)
 		next["terrain_bed"]=ImageTexture.create_from_image(baked.bed)

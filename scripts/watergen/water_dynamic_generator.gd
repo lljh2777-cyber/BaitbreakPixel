@@ -37,8 +37,14 @@ static func generate(map: Variant, profile: Variant, visual_seed: Variant) -> Di
 	plan["raster_spec"] = RASTER_SPEC if profile.generator_version == VERSION else LEGACY_RASTER_SPEC
 	plan["layout_stream_version"] = Profile.VERSION
 	if profile.generator_version == VERSION: Atmosphere.enrich(plan, map, profile.composition)
+	if map.has("floor_profile_px"):
+		for name in ["distance","terrain","foreground"]: plan.parallax_compensation[name]=[0,0]
+		for layer in plan.layers:
+			for object in layer.objects:
+				if object.kind!="clump": continue
+				for stem in object.stems: stem.y=Base.Map.floor_at(map,stem.x)+2
 	for layer in plan.layers:
-		var pad := Frame.padding(profile.parallax_compensation[layer.name])
+		var pad := Frame.padding(plan.parallax_compensation[layer.name])
 		layer.origin_px = [-pad.x, -pad.y]
 		layer["size_px"] = [1280 + pad.x * 2, 480 + pad.y * 2]
 		if profile.generator_version == VERSION:

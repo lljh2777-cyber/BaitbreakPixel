@@ -127,7 +127,7 @@ func _world(t: float) -> void:
 	_baits(t,true)
 	if not line_frame.grass.is_empty(): _line_back()
 	_plants(t,true)
-	Scenery.floor_layer(self)
+	if bed_texture==null: Scenery.floor_layer(self)
 	if line_frame.grass.is_empty(): _line_back()
 	for prop: Dictionary in props:
 		var opacity:=1.0
@@ -135,6 +135,7 @@ func _world(t: float) -> void:
 		draw_texture(prop.texture,prop.position,Color(1,1,1,opacity))
 	_plants(t,false)
 	Scenery.foreground(self)
+	if bed_texture!=null: Scenery.floor_layer(self)
 	Scenery.nest(self,world,t)
 
 func _npc_fishes(t: float) -> void:
@@ -195,13 +196,18 @@ func _plants(t: float, background: bool) -> void:
 
 func _make_plant_layer(t: float, plant_index: int) -> Dictionary:
 	# Keep each cached clump's original crop and anchor for fading / grass binding.
-	var canvas := Image.create(int(map_presentation.size.x),132,false,Image.FORMAT_RGBA8)
+	var plant: Dictionary = map_presentation.plants[plant_index].duplicate(true)
+	var root_span:=0.0
+	for y: float in plant.get("root_y",[]): root_span=maxf(root_span,plant.y-y)
+	var canvas_height:=maxi(132,ceili(plant.height+root_span)+16)
+	var baseline:=canvas_height-3
+	plant["canvas_base"]=baseline
+	var canvas := Image.create(int(map_presentation.size.x),canvas_height,false,Image.FORMAT_RGBA8)
 	canvas.fill(Color.TRANSPARENT)
-	var plant: Dictionary = map_presentation.plants[plant_index]
 	preload("res://scripts/pond_plant_art.gd").paint(canvas,plant,t)
-	var region := Rect2i(int(plant.x-plant.width*0.5-14),int(129-plant.height-8),int(plant.width+29),int(plant.height+12))
-	region = region.intersection(Rect2i(0,0,int(map_presentation.size.x),132))
-	return {"texture":ImageTexture.create_from_image(canvas.get_region(region)),"position":Vector2(region.position)+Vector2(0,plant.y-129)}
+	var region := Rect2i(int(plant.x-plant.width*0.5-14),floori(baseline-plant.height-root_span-8),int(plant.width+29),ceili(plant.height+root_span+12))
+	region = region.intersection(Rect2i(0,0,int(map_presentation.size.x),canvas_height))
+	return {"texture":ImageTexture.create_from_image(canvas.get_region(region)),"position":Vector2(region.position)+Vector2(0,plant.y-baseline)}
 
 func _bait_point(index: int, point: Vector2) -> Vector2:
 	if index!=world.bound_bait: return point

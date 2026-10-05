@@ -78,6 +78,7 @@ static func foreground(view: Node2D) -> void:
 
 static func nest(view: Node2D, world: Node2D, t: float) -> void:
 	var p: Vector2=world.map_context.home
+	if world.map_context.has_relief: p.y=world.map_context.floor_at(p.x)-28
 	# An irregular root arch surrounds the same destination and entrance.
 	view.draw_colored_polygon(PackedVector2Array([p+Vector2(-22,25),p+Vector2(-22,8),p+Vector2(-12,-1),p+Vector2(8,-3),p+Vector2(23,8),p+Vector2(23,25)]),Color("10363c"))
 	view.draw_colored_polygon(PackedVector2Array([p+Vector2(-29,24),p+Vector2(-28,3),p+Vector2(-21,-6),p+Vector2(-7,-12),p+Vector2(9,-10),p+Vector2(24,-3),p+Vector2(29,9),p+Vector2(27,25),p+Vector2(17,26),p+Vector2(20,13),p+Vector2(14,4),p+Vector2(2,1),p+Vector2(-10,4),p+Vector2(-17,12),p+Vector2(-17,25)]),Color("526b58"))

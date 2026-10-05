@@ -1,0 +1,25 @@
+{
+  "version": "0.28.1",
+  "zip_crc_and_content": "passed",
+  "files": [
+    {
+      "name": "BaitbreakPixel.exe",
+      "bytes": 180858888
+    },
+    {
+      "name": "BaitbreakPixel.pck",
+      "bytes": 2537164
+    },
+    {
+      "name": "GODOT-NOTICES.txt",
+      "bytes": 111024
+    },
+    {
+      "name": "开始试玩.txt",
+      "bytes": 14648
+    }
+  ],
+  "standalone_seed_42": "passed",
+  "runtime_file_byte_comparisons": 16,
+  "project_version": "0.28.1"
+}

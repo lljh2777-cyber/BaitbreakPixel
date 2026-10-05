@@ -133,7 +133,7 @@ func _title(frame: Control) -> void:
 	quit.position.x = 150
 	var maps:=button(content,game.map_caption(),301,func(): open("map"),false,275)
 	maps.position.x=341; maps.add_theme_font_size_override("font_size",10)
-	text(content,"0.28.0 · 起伏水底",Vector2(341,280),10,Color("91afa7"))
+	text(content,"0.28.1 · 坡地贴合",Vector2(341,280),10,Color("91afa7"))
 	text(content,"小鱼 · 吃饵脱身",Vector2(391,119),18,GOLD)
 	text(content,"人类 · 收线抄网",Vector2(391,159),18,GOLD)
 	text(content,"独自练习 · 双人对战",Vector2(375,199),16,GOLD)

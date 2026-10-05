@@ -1,4 +1,4 @@
-- [0.28.0 真实起伏水底](test-reports/TERRAIN-0.28.0.md)
+- [0.28.1 坡地物件贴地修正](test-reports/TERRAIN-0.28.1.md)
 - [Watergen 第二代 WG-6.2：真实地形植物群落](watergen/WG62_README.md) · [验证与样片](watergen/WG62_REPORT.md)
 - [0.27.5 生成池塘架构](architecture/GENERATED-PONDS.md) · [P5 实施与验证](test-reports/PHASE05-COMPLETION.md)
 - [0.26.4 地图抽象最终架构](architecture/MAP-PRESENTATION-FINAL.md) · [完整验证与复测清单](test-reports/PHASE04-MAP-FINAL-0.26.4.md)

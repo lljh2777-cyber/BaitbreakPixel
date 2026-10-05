@@ -2,14 +2,14 @@
 
 一个 2D 像素风格的人鱼对抗游戏：小鱼在水下觅食、缠线和逃脱，钓鱼人在岸边控竿、收放线与抄网。支持单机挑战、自由练习和一人对一鱼的局域网联机。
 
-**当前源码：0.28.0（真实起伏水底）** · Godot 4.7.2
+**当前源码：0.28.1（坡地物件贴地修正）** · Godot 4.7.2
 **当前公开 Windows 试玩包：0.26.4**，历史发行记录继续保留。
 
 用户已确认 0.25.2 社会线索试玩通过。0.25.3 让 NPC 真实误咬钩、自动挣扎、逃脱、断线或被拉起。钓错 NPC 不结束比赛；玩家可趁机吃饵、回巢，钓鱼人需要重新部署。NPC 捕获后暂离生态，延迟生成新 ID 的鱼。
 
 Phase 5 已接入生成地图的实际比赛、存档、同版联机与 Watergen 画面。标题右侧选择“经典池塘 / 生成池塘”；生成模式支持随机、手动与复制 Seed。**R 同 Seed 重开，“新地图”更换布局**。房主选图，客户端重建并核对后准备。实现与自动验证见 [P5 完成记录](docs/test-reports/PHASE05-COMPLETION.md) 和 [生成地图架构](docs/architecture/GENERATED-PONDS.md)。
 
-保留钓鱼人右键加速移竿（90 → 180 px/s）、既有鱼类摄食与 NPC 生态。经典地图的几何和旧寻路范围保持；生成地图使用完整水域。当前 Snapshot schema17 / fish public schema3 / Map Contract v1，联机要求双方使用同一版本。历史报告保留原验收边界。
+保留钓鱼人右键加速移竿（90 → 180 px/s）、既有鱼类摄食与 NPC 生态。经典地图的几何和旧寻路范围保持；生成地图使用完整水域。当前 Snapshot schema17 / fish public schema3 / Map Contract v1/v2，联机要求双方使用同一版本。历史报告保留原验收边界。
 
 玩家 10 px 自动咬食、0.80 秒间隔、4/6/8 容量和已确认的抢食/补饵规则保持。NPC 继续真实消耗食物、增加自身饱食，不增加玩家分数、不参与胜负。玩家原 QTE、缠线、松线、断线、张力和提鱼保持。
 
@@ -17,9 +17,9 @@ Phase 5 已接入生成地图的实际比赛、存档、同版联机与 Watergen
 
 本版沿用 0.24.4 的渐变吸力，散粒实际移动、剥离和整饵位移目标共用同一距离场；此前[距离修正验证](docs/test-reports/PHASE02-DISTANCE-VALIDATION.md)保留为历史记录。
 
-### 本地 Windows 试玩包：0.28.0
+### 本地 Windows 试玩包：0.28.1
 
-已构建到 `E:\Fish_catches_people\Releases\BaitbreakPixel-0.28.0`，运行其中的 `BaitbreakPixel.exe`；对应 ZIP 同名。仅在构建机器上可用，尚未上传 GitHub Release。新版生成池塘加入可碰撞的坡地与低洼，鱼、NPC、食物和抄网共用真实地形。入口与验证见 [0.28.0 起伏水底记录](docs/test-reports/TERRAIN-0.28.0.md)。此前 P5 统计保留于 [P5 完成记录](docs/test-reports/PHASE05-COMPLETION.md)。
+已构建到 `E:\Fish_catches_people\Releases\BaitbreakPixel-0.28.1`，运行其中的 `BaitbreakPixel.exe`；对应 ZIP 同名。仅在构建机器上可用，尚未上传 GitHub Release。新版修正坡地上的悬空树木、石头、水草与巢穴：物件按实际底座落地，草茎和缠线根部逐根贴合地势，镜头移动时保持接地。鱼、NPC、食物和抄网继续共用真实地形。入口与验证见 [0.28.1 贴地修正记录](docs/test-reports/TERRAIN-0.28.1.md)。此前 P5 统计保留于 [P5 完成记录](docs/test-reports/PHASE05-COMPLETION.md)。
 
 ### 公开 Windows 试玩包：0.26.4
 
@@ -72,7 +72,7 @@ Phase 5 已接入生成地图的实际比赛、存档、同版联机与 Watergen
 .\Build-Pixel.ps1 -GodotDirectory 'D:\Tools\Godot_v4.7.2-stable_win64.exe'
 ```
 
-该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.28.0` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
+该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.28.1` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
 
 当前测试入口、套件状态和产物目录配置见 [测试运行指南](tests/README.md)。核心抄网逻辑检查示例（替换为本机引擎路径）：
 

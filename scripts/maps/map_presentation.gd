@@ -97,6 +97,10 @@ func _initialize(source: RefCounted) -> void:
 		else:
 			# The silhouette always comes from public map geometry, not a texture.
 			entry.points = Array(target.polygon)
+			if source.has_relief:
+				entry["visible_polygons"]=[]
+				for polygon in Geometry2D.clip_polygons(target.polygon,Context.Bed.polygon(source.floor_profile,source.size)):
+					entry.visible_polygons.append(Array(polygon))
 			entry.kind = target.kind
 			entry.seed = entry.get("seed",1)
 			_solids.append(entry)

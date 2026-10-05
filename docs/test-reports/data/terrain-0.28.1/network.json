@@ -1,0 +1,94 @@
+{
+  "profile": "current",
+  "pack": null,
+  "results": [
+    {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 15.516,
+      "launch_error": false,
+      "passed": 282,
+      "failed": 0,
+      "count_basis": "summary",
+      "status": "passed",
+      "reason": "",
+      "suite": "phase04_map_network",
+      "registry_status": "current",
+      "log": "phase04_map_network.log",
+      "command": [
+        "E:\\chrome\u4e0b\u8f7d\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\BaitbreakPixel",
+        "--script",
+        "res://tests/phase04_map_network.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\BaitbreakPixel\\artifacts\\grounding-protocol\\captures\\phase04_map_network"
+      ]
+    },
+    {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 16.969,
+      "launch_error": false,
+      "passed": 72,
+      "failed": 0,
+      "count_basis": "summary",
+      "status": "passed",
+      "reason": "",
+      "suite": "terrain_network",
+      "registry_status": "current",
+      "log": "terrain_network.log",
+      "command": [
+        "E:\\chrome\u4e0b\u8f7d\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\BaitbreakPixel",
+        "--script",
+        "res://tests/terrain_network.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\BaitbreakPixel\\artifacts\\grounding-protocol\\captures\\terrain_network"
+      ]
+    },
+    {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 16.422,
+      "launch_error": false,
+      "passed": 72,
+      "failed": 0,
+      "count_basis": "summary",
+      "status": "passed",
+      "reason": "",
+      "suite": "grounding_network",
+      "registry_status": "current",
+      "log": "grounding_network.log",
+      "command": [
+        "E:\\chrome\u4e0b\u8f7d\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\BaitbreakPixel",
+        "--script",
+        "res://tests/grounding_network.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\BaitbreakPixel\\artifacts\\grounding-protocol\\captures\\grounding_network"
+      ]
+    }
+  ],
+  "counts": {
+    "passed": 3,
+    "failed": 0,
+    "timeout": 0,
+    "blocked": 0,
+    "retired": 0
+  }
+}

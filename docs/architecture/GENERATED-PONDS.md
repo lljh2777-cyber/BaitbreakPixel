@@ -54,3 +54,14 @@ Wood groups remain joined; cover tops and six bait bands retain protected cleara
 The view bakes an opaque soil layer from MapContext once per map and includes its profile in presentation cache matching. Both the fish view and observation view show the collision rim; shore view projects the same polygon. Watergen public v3 carries only the height polyline alongside the existing public metadata; v2 remains supported for flat maps. Ecology preview roots follow this public bed. New WG-6.2 decorative communities remain preview-only.
 
 Snapshot schemas remain 17/3: recipe + MapRef reconstruct all geometry locally before installing state. Network exact-build is 0.28.0. No terrain or actor RNG is carried in a visual seed. Validation and limitations: [0.28.0 report](../test-reports/TERRAIN-0.28.0.md).
+
+
+## 0.28.1 — grounded cover (generator v3)
+
+V3 (`grounded_pond_v3`) keeps Map Contract 2 and the V2 bed stream. V1/V2 generator files and recipes remain callable without changing their geometry. Correcting cover placement creates a new recipe identity rather than changing an old seed's result. Generator versions and map schema versions are now mapped explicitly (1→1, 2/3→2).
+
+The support interval is derived from the original vertices touching the flat floor. A wood group shares one transform anchored at this interval, not the centre of its branch-inclusive bounds. The lowest bed height across the whole contact interval embeds a rigid base into the soil. Ground is drawn over buried portions; the shore silhouette uses cached polygon subtraction. Grass envelopes follow the bed breakpoints and each rendered stem has its own root height. Coil placement shares these heights; raster strip deformation fixes all rows below the shallowest root.
+
+Decorative roots are assigned after the atmosphere pass finishes moving stems horizontally, before animation extraction. Bed-rooted layers share the ground camera transform, so panning cannot separate the roots. The nest apron intersects the bed. Fish, underwater observation and shore views all use the installed terrain. These are presentation/cache changes over the same authoritative polygons, not extra invisible collision props.
+
+Local preferences store only map kind and seed; opening a new local session resolves the current generator. This corrects the earlier 0.28.0 note that preferences retain a generator version. Full snapshots and network recipes do include their generator version and continue to reconstruct V1/V2 exactly. Validation: [0.28.1 report](../test-reports/TERRAIN-0.28.1.md).

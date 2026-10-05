@@ -1,5 +1,6 @@
 extends RefCounted
 
+const Binding=preload("res://scripts/grass_binding.gd")
 const Art = preload("res://scripts/pixel_art.gd")
 
 # Raster-only plant styling. Keep these stalk centerlines identical to
@@ -10,7 +11,7 @@ static func _spine(plant: Dictionary, stem: int, growth: float, t: float) -> Vec
 	if stem==int(plant.stems)/2: height=plant.height
 	var phase: float = plant.x*0.13+stem*0.7
 	return Vector2(plant.x+(fraction-0.5)*plant.width*(1+growth*0.38)
-		+sin(t*1.5+phase+growth*2.1)*growth*2,129-height*growth)
+		+sin(t*1.5+phase+growth*2.1)*growth*2,float(plant.get("canvas_base",129))+Binding.root_y(plant,stem)-plant.y-height*growth)
 
 static func paint(canvas: Image, plant: Dictionary, t: float) -> void:
 	var back: bool = plant.back
@@ -23,7 +24,7 @@ static func paint(canvas: Image, plant: Dictionary, t: float) -> void:
 		if plant.kind=="ribbon":
 			_ribbon(canvas,plant,stem,t,tint,shade,light)
 		else:
-			var height: float = 129-_spine(plant,stem,1,t).y
+			var height: float = _spine(plant,stem,0,t).y-_spine(plant,stem,1,t).y
 			# Alternate the leaves up the stalk rather than repeating mirrored
 			# fern triangles. Sparse fine branches read as submerged pondweed.
 			var nodes := maxi(4,roundi(height/7.0))

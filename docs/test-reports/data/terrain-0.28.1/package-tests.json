@@ -1,0 +1,123 @@
+{
+  "profile": "current",
+  "pack": "E:\\Fish_catches_people\\Releases\\BaitbreakPixel-0.28.1\\BaitbreakPixel.pck",
+  "results": [
+    {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 11.875,
+      "launch_error": false,
+      "passed": 67298,
+      "failed": 0,
+      "count_basis": "summary",
+      "status": "passed",
+      "reason": "",
+      "suite": "terrain_grounding",
+      "registry_status": "current",
+      "log": "terrain_grounding.log",
+      "command": [
+        "E:\\chrome\u4e0b\u8f7d\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--main-pack",
+        "E:\\Fish_catches_people\\Releases\\BaitbreakPixel-0.28.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\BaitbreakPixel\\tests\\terrain_grounding.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\BaitbreakPixel\\artifacts\\grounding-package\\captures\\terrain_grounding"
+      ]
+    },
+    {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 20.5,
+      "launch_error": false,
+      "passed": 111,
+      "failed": 0,
+      "count_basis": "summary",
+      "status": "passed",
+      "reason": "",
+      "suite": "grounding_native",
+      "registry_status": "current",
+      "log": "grounding_native.log",
+      "command": [
+        "E:\\chrome\u4e0b\u8f7d\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--main-pack",
+        "E:\\Fish_catches_people\\Releases\\BaitbreakPixel-0.28.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\BaitbreakPixel\\tests\\grounding_native.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\BaitbreakPixel\\artifacts\\grounding-package\\captures\\grounding_native"
+      ]
+    },
+    {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 3.75,
+      "launch_error": false,
+      "passed": 22,
+      "failed": 0,
+      "count_basis": "summary",
+      "status": "passed",
+      "reason": "",
+      "suite": "phase05_ui",
+      "registry_status": "current",
+      "log": "phase05_ui.log",
+      "command": [
+        "E:\\chrome\u4e0b\u8f7d\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--main-pack",
+        "E:\\Fish_catches_people\\Releases\\BaitbreakPixel-0.28.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\BaitbreakPixel\\tests\\phase05_ui.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\BaitbreakPixel\\artifacts\\grounding-package\\captures\\phase05_ui"
+      ]
+    },
+    {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 16.406,
+      "launch_error": false,
+      "passed": 70,
+      "failed": 0,
+      "count_basis": "summary",
+      "status": "passed",
+      "reason": "",
+      "suite": "grass_binding_v021",
+      "registry_status": "current",
+      "log": "grass_binding_v021.log",
+      "command": [
+        "E:\\chrome\u4e0b\u8f7d\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--main-pack",
+        "E:\\Fish_catches_people\\Releases\\BaitbreakPixel-0.28.1\\BaitbreakPixel.pck",
+        "--script",
+        "E:\\Fish_catches_people\\BaitbreakPixel\\tests\\grass_binding_v021.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\BaitbreakPixel\\artifacts\\grounding-package\\captures\\grass_binding_v021"
+      ]
+    }
+  ],
+  "counts": {
+    "passed": 4,
+    "failed": 0,
+    "timeout": 0,
+    "blocked": 0,
+    "retired": 0
+  }
+}

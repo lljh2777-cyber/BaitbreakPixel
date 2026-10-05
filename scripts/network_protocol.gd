@@ -3,7 +3,7 @@ extends RefCounted
 const VERSION := 1
 const MapContext=preload("res://scripts/maps/map_context.gd")
 # Peers must share the exact build and validated built-in MapRef before play.
-const BUILD := "0.28.0"
+const BUILD := "0.28.1"
 const DEFAULT_PORT := 24712
 const MAX_PACKET := 196608
 const MAX_STATE := 1048576

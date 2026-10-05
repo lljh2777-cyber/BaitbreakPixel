@@ -2,6 +2,7 @@ extends RefCounted
 const Request=preload("res://scripts/maps/generation/map_generation_request.gd")
 const Candidate=preload("res://scripts/maps/generation/generated_pond_v1.gd")
 const Relief=preload("res://scripts/maps/generation/generated_pond_v2.gd")
+const Grounded=preload("res://scripts/maps/generation/generated_pond_v3.gd")
 const Profile=preload("res://scripts/maps/generation/generated_pond_profile.gd")
 const Validator=preload("res://scripts/maps/map_validator.gd")
 const Playability=preload("res://scripts/maps/generation/map_playability_validator.gd")
@@ -11,7 +12,7 @@ const Playability=preload("res://scripts/maps/generation/map_playability_validat
 static func generate(request: Variant) -> Dictionary:
 	var validation:=Request.validate(request)
 	if not validation.valid: return {"valid":false,"errors":validation.errors,"definition":{},"source":{},"diagnostics":{}}
-	return _attempts(request,Candidate.generate if request.generator_version==1 else Relief.generate)
+	return _attempts(request,Candidate.generate if request.generator_version==1 else Relief.generate if request.generator_version==2 else Grounded.generate)
 
 # Private test seam for exercising bounded exhaustion without altering a recipe.
 static func _attempts(request: Dictionary, candidate_factory: Callable) -> Dictionary:

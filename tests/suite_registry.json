@@ -2,9 +2,23 @@
   "schema": 1,
   "description": "Current release gate plus explicit historical diagnostics. Historical is not a waiver, a passing result, or proof a failure is obsolete. Source files and assertions are retained.",
   "suites": {
-    "terrain_network": {"status": "current", "mode": "headless", "timeout_seconds": 120, "pack_compatible": false, "pack_reason": "Source ENet harness loads peer helpers intentionally excluded from PCK."},
-    "terrain_native": {"status": "current", "mode": "renderer", "timeout_seconds": 150},
-    "terrain_relief": {"status": "current", "mode": "headless", "timeout_seconds": 120},
+    "terrain_network": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120,
+      "pack_compatible": false,
+      "pack_reason": "Source ENet harness loads peer helpers intentionally excluded from PCK."
+    },
+    "terrain_native": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 150
+    },
+    "terrain_relief": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 120
+    },
     "angler_native_v010": {
       "status": "historical",
       "mode": "renderer",
@@ -828,6 +842,23 @@
       "status": "current",
       "mode": "renderer",
       "timeout_seconds": 180
+    },
+    "terrain_grounding": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 300
+    },
+    "grounding_native": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 300
+    },
+    "grounding_network": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 300,
+      "pack_compatible": false,
+      "pack_reason": "Real ENet peer helper is intentionally excluded from the PCK."
     }
   }
 }

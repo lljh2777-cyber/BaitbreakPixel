@@ -7,6 +7,7 @@ const Validator=preload("res://scripts/maps/map_validator.gd")
 const Definition=preload("res://scripts/maps/map_definition.gd")
 const Bed=preload("res://scripts/maps/pond_bed.gd")
 const Adapter=preload("res://scripts/watergen/watergen_public_adapter.gd")
+var generator_version:=2
 var passed:=0
 var failed:=0
 func check(ok: bool, label: String) -> void:
@@ -24,12 +25,12 @@ func run() -> void:
 			var p:=Vector2(x,Bed.limit(ramp,x,radius))
 			check(absf(World.MapGeometry.nearest_boundary(p,poly).distance_to(p)-radius)<0.001,"circle tangent to real slope")
 	for seed in [0,1,2,6,8,9,42,64,144,296,1346,2166,73501,123456789,2147483647]:
-		var result:=Generator.generate(Request.create(seed,2))
+		var result:=Generator.generate(Request.create(seed,generator_version))
 		check(result.valid,"generate relief %d: %s" % [seed,str(result.errors)])
 		if not result.valid:
 			print(result.diagnostics)
 			continue
-		var again:=Generator.generate(Request.create(seed,2))
+		var again:=Generator.generate(Request.create(seed,generator_version))
 		check(var_to_bytes(result.definition)==var_to_bytes(again.definition),"versioned deterministic geometry")
 		var forged: Dictionary=result.definition.duplicate(true)
 		forged.bounds.floor_profile[8].y-=1
@@ -39,7 +40,7 @@ func run() -> void:
 		forged.bounds.floor_profile[8].x=forged.bounds.floor_profile[7].x
 		check(not Validator.validate(forged).valid,"vertical/duplicate segments rejected")
 		var g:=World.new()
-		check(g.reset_world({"map_source":Resolver.generated(seed,2),"seed":423,"challenge":true,"rules":{"hunger_enabled":false,"timer_enabled":false}}),"real world installs relief")
+		check(g.reset_world({"map_source":Resolver.generated(seed,generator_version),"seed":423,"challenge":true,"rules":{"hunger_enabled":false,"timer_enabled":false}}),"real world installs relief")
 		var context: RefCounted=g.map_context
 		check(context.has_relief and context.contract_version==2 and g.npc_fishes.size()==3,"terrain and NPC setup")
 		check(context.floor_at(60)==433 and not context.bed_blocked(context.home,20),"home stays clear")
@@ -77,7 +78,7 @@ func run() -> void:
 			for npc: Dictionary in g.npc_fishes:
 				check(not context.bed_blocked(npc.position,World.NPCFishState.RADIUS),"NPC stays outside ground")
 		var copy:=World.new(); copy.reset_world()
-		check(copy.restore_snapshot(g.capture_snapshot()),"snapshot rebuilds v2 terrain")
+		check(copy.restore_snapshot(g.capture_snapshot()),"snapshot rebuilds versioned terrain")
 		check(copy.map_context.map_ref==context.map_ref and copy.capture_snapshot()==g.capture_snapshot(),"restored authority is exact")
 		copy.free(); g.free()
 	var legacy:=Resolver.resolve(Resolver.generated(42,1))

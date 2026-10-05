@@ -1,0 +1,67 @@
+{
+  "profile": "current",
+  "pack": null,
+  "results": [
+    {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 4.781,
+      "launch_error": false,
+      "passed": 3036,
+      "failed": 0,
+      "count_basis": "summary",
+      "status": "passed",
+      "reason": "",
+      "suite": "phase04_shore_projection",
+      "registry_status": "current",
+      "log": "phase04_shore_projection.log",
+      "command": [
+        "E:\\chrome\u4e0b\u8f7d\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\BaitbreakPixel",
+        "--script",
+        "res://tests/phase04_shore_projection.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\BaitbreakPixel\\artifacts\\grounding-compatibility-fix\\captures\\phase04_shore_projection"
+      ]
+    },
+    {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 15.563,
+      "launch_error": false,
+      "passed": 70,
+      "failed": 0,
+      "count_basis": "summary",
+      "status": "passed",
+      "reason": "",
+      "suite": "grass_binding_v021",
+      "registry_status": "current",
+      "log": "grass_binding_v021.log",
+      "command": [
+        "E:\\chrome\u4e0b\u8f7d\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\BaitbreakPixel",
+        "--script",
+        "res://tests/grass_binding_v021.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\BaitbreakPixel\\artifacts\\grounding-compatibility-fix\\captures\\grass_binding_v021"
+      ]
+    }
+  ],
+  "counts": {
+    "passed": 2,
+    "failed": 0,
+    "timeout": 0,
+    "blocked": 0,
+    "retired": 0
+  }
+}
