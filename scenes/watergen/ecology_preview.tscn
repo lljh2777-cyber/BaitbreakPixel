@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://tools/watergen/ecology_preview_controller.gd" id="1"]
+
+[node name="WG62EcologyPreview" type="Node"]
+script = ExtResource("1")

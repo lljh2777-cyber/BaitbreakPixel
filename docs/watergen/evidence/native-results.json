@@ -1,0 +1,78 @@
+{
+	"draw_cpu_median_us": 791,
+	"draw_cpu_p95_us": 977,
+	"engine": "4.7.2-stable (official)",
+	"failed": 0,
+	"gpu": "AMD Radeon(TM) Graphics",
+	"human_review": "PENDING",
+	"moving_frames": 180,
+	"passed": 206,
+	"performance_scope": "Standalone public-geometry preview; draw-command CPU time, not full-game FPS",
+	"records": [
+		{
+			"atlas_size": [
+				1024,
+				148
+			],
+			"community_count": 20,
+			"map_seed": 42,
+			"patch_count": 67,
+			"preparation_us": {
+				"bake": 17794,
+				"cache_hit": false,
+				"plan": 2217,
+				"upload": 95
+			},
+			"visual_seed": 713284
+		},
+		{
+			"atlas_size": [
+				1024,
+				172
+			],
+			"community_count": 18,
+			"map_seed": 2166,
+			"patch_count": 51,
+			"preparation_us": {
+				"bake": 15255,
+				"cache_hit": false,
+				"plan": 1838,
+				"upload": 118
+			},
+			"visual_seed": 713284
+		},
+		{
+			"atlas_size": [
+				1024,
+				152
+			],
+			"community_count": 21,
+			"map_seed": 1346,
+			"patch_count": 62,
+			"preparation_us": {
+				"bake": 15909,
+				"cache_hit": false,
+				"plan": 2481,
+				"upload": 94
+			},
+			"visual_seed": 713284
+		},
+		{
+			"atlas_size": [
+				1024,
+				152
+			],
+			"community_count": 19,
+			"map_seed": 296,
+			"patch_count": 62,
+			"preparation_us": {
+				"bake": 17411,
+				"cache_hit": false,
+				"plan": 2148,
+				"upload": 94
+			},
+			"visual_seed": 713284
+		}
+	],
+	"renderer": "gl_compatibility"
+}

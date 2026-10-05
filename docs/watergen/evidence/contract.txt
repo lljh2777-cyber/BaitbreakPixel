@@ -1,0 +1,167 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+
+
+WG62_CONTRACT_PASS | pure-value flora plan 42
+
+WG62_CONTRACT_PASS | repeat plan 42
+
+WG62_CONTRACT_PASS | visual seed changes flora without map change 42
+
+WG62_CONTRACT_PASS | roots lie on real polygon surfaces or true floor 42
+
+WG62_CONTRACT_PASS | complete plant footprint avoids public clear zones 42
+
+WG62_CONTRACT_PASS | nonempty bounded communities 42
+
+WG62_CONTRACT_PASS | density increases within budget 42
+
+WG62_CONTRACT_PASS | RGBA repeat by direct bytes 42
+
+WG62_CONTRACT_PASS | one bounded atlas 42
+
+WG62_CONTRACT_PASS | moss stays within existing stone/wood silhouette 42
+
+WG62_CONTRACT_PASS | targets/order/net/drag/baits/source and public inputs unchanged 42
+
+WG62_CONTRACT_PASS | pure-value flora plan 2166
+
+WG62_CONTRACT_PASS | repeat plan 2166
+
+WG62_CONTRACT_PASS | visual seed changes flora without map change 2166
+
+WG62_CONTRACT_PASS | roots lie on real polygon surfaces or true floor 2166
+
+WG62_CONTRACT_PASS | complete plant footprint avoids public clear zones 2166
+
+WG62_CONTRACT_PASS | nonempty bounded communities 2166
+
+WG62_CONTRACT_PASS | different authority map repositions communities
+
+WG62_CONTRACT_PASS | density increases within budget 2166
+
+WG62_CONTRACT_PASS | RGBA repeat by direct bytes 2166
+
+WG62_CONTRACT_PASS | one bounded atlas 2166
+
+WG62_CONTRACT_PASS | moss stays within existing stone/wood silhouette 2166
+
+WG62_CONTRACT_PASS | targets/order/net/drag/baits/source and public inputs unchanged 2166
+
+WG62_CONTRACT_PASS | pure-value flora plan 1346
+
+WG62_CONTRACT_PASS | repeat plan 1346
+
+WG62_CONTRACT_PASS | visual seed changes flora without map change 1346
+
+WG62_CONTRACT_PASS | roots lie on real polygon surfaces or true floor 1346
+
+WG62_CONTRACT_PASS | complete plant footprint avoids public clear zones 1346
+
+WG62_CONTRACT_PASS | nonempty bounded communities 1346
+
+WG62_CONTRACT_PASS | different authority map repositions communities
+
+WG62_CONTRACT_PASS | density increases within budget 1346
+
+WG62_CONTRACT_PASS | RGBA repeat by direct bytes 1346
+
+WG62_CONTRACT_PASS | one bounded atlas 1346
+
+WG62_CONTRACT_PASS | moss stays within existing stone/wood silhouette 1346
+
+WG62_CONTRACT_PASS | targets/order/net/drag/baits/source and public inputs unchanged 1346
+
+WG62_CONTRACT_PASS | pure-value flora plan 296
+
+WG62_CONTRACT_PASS | repeat plan 296
+
+WG62_CONTRACT_PASS | visual seed changes flora without map change 296
+
+WG62_CONTRACT_PASS | roots lie on real polygon surfaces or true floor 296
+
+WG62_CONTRACT_PASS | complete plant footprint avoids public clear zones 296
+
+WG62_CONTRACT_PASS | nonempty bounded communities 296
+
+WG62_CONTRACT_PASS | different authority map repositions communities
+
+WG62_CONTRACT_PASS | density increases within budget 296
+
+WG62_CONTRACT_PASS | RGBA repeat by direct bytes 296
+
+WG62_CONTRACT_PASS | one bounded atlas 296
+
+WG62_CONTRACT_PASS | moss stays within existing stone/wood silhouette 296
+
+WG62_CONTRACT_PASS | targets/order/net/drag/baits/source and public inputs unchanged 296
+
+WG62_CONTRACT_PASS | pure-value flora plan 0
+
+WG62_CONTRACT_PASS | repeat plan 0
+
+WG62_CONTRACT_PASS | visual seed changes flora without map change 0
+
+WG62_CONTRACT_PASS | roots lie on real polygon surfaces or true floor 0
+
+WG62_CONTRACT_PASS | complete plant footprint avoids public clear zones 0
+
+WG62_CONTRACT_PASS | nonempty bounded communities 0
+
+WG62_CONTRACT_PASS | different authority map repositions communities
+
+WG62_CONTRACT_PASS | density increases within budget 0
+
+WG62_CONTRACT_PASS | RGBA repeat by direct bytes 0
+
+WG62_CONTRACT_PASS | one bounded atlas 0
+
+WG62_CONTRACT_PASS | moss stays within existing stone/wood silhouette 0
+
+WG62_CONTRACT_PASS | targets/order/net/drag/baits/source and public inputs unchanged 0
+
+WG62_CONTRACT_PASS | pure-value flora plan 2147483647
+
+WG62_CONTRACT_PASS | repeat plan 2147483647
+
+WG62_CONTRACT_PASS | visual seed changes flora without map change 2147483647
+
+WG62_CONTRACT_PASS | roots lie on real polygon surfaces or true floor 2147483647
+
+WG62_CONTRACT_PASS | complete plant footprint avoids public clear zones 2147483647
+
+WG62_CONTRACT_PASS | nonempty bounded communities 2147483647
+
+WG62_CONTRACT_PASS | different authority map repositions communities
+
+WG62_CONTRACT_PASS | density increases within budget 2147483647
+
+WG62_CONTRACT_PASS | RGBA repeat by direct bytes 2147483647
+
+WG62_CONTRACT_PASS | one bounded atlas 2147483647
+
+WG62_CONTRACT_PASS | moss stays within existing stone/wood silhouette 2147483647
+
+WG62_CONTRACT_PASS | targets/order/net/drag/baits/source and public inputs unchanged 2147483647
+
+WG62_CONTRACT_PASS | six intended plant categories represented
+
+WG62_CONTRACT_PASS | bad visual seed rejected
+
+WG62_CONTRACT_PASS | bad visual seed rejected
+
+WG62_CONTRACT_PASS | bad visual seed rejected
+
+WG62_CONTRACT_PASS | bad visual seed rejected
+
+WG62_CONTRACT_PASS | bad visual seed rejected
+
+WG62_CONTRACT_PASS | bad density/map rejected
+
+WG62_CONTRACT_PASS | flora density does not perturb existing atmosphere streams
+
+WG62_CONTRACT_PASS | paired true generated worlds reset
+
+WG62_CONTRACT_PASS | 1800 real gameplay ticks preserve full state, NPC/world RNG, hooks, winding, net and score
+
+WG62_CONTRACT | passed=81 | failed=0

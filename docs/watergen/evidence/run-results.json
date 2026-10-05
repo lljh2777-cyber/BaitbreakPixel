@@ -1,0 +1,110 @@
+{
+  "base": "c3c24b3090ac148cae020414560a7eb6bbf54606",
+  "tested_head": "c3c24b3090ac148cae020414560a7eb6bbf54606",
+  "worktree_status": "?? scenes/watergen/\n?? scripts/watergen/water_ecology_baker.gd\n?? scripts/watergen/water_ecology_baker.gd.uid\n?? scripts/watergen/water_ecology_plan.gd\n?? scripts/watergen/water_ecology_plan.gd.uid\n?? scripts/watergen/water_ecology_renderer.gd\n?? scripts/watergen/water_ecology_renderer.gd.uid\n?? tests/watergen/\n?? tools/watergen/\n",
+  "tests": [
+    {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 7.563,
+      "launch_error": false,
+      "passed": 0,
+      "failed": 0,
+      "count_basis": "log_markers",
+      "status": "passed",
+      "reason": "",
+      "name": "import",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen-v2",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen-v2\\artifacts\\watergen\\wg62-review\\import-engine.log",
+        "--headless",
+        "--editor",
+        "--quit"
+      ]
+    },
+    {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 9.046,
+      "launch_error": false,
+      "passed": 81,
+      "failed": 0,
+      "count_basis": "summary",
+      "status": "passed",
+      "reason": "",
+      "name": "contract",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen-v2",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen-v2\\artifacts\\watergen\\wg62-review\\contract-engine.log",
+        "--headless",
+        "--script",
+        "res://tests/watergen/ecology_contract.gd"
+      ]
+    },
+    {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 28.985,
+      "launch_error": false,
+      "passed": 206,
+      "failed": 0,
+      "count_basis": "summary",
+      "status": "passed",
+      "reason": "",
+      "name": "native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen-v2",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen-v2\\artifacts\\watergen\\wg62-review\\native-engine.log",
+        "--scene",
+        "res://scenes/watergen/ecology_preview.tscn",
+        "--",
+        "--output=E:/Fish_catches_people/aquatic_system/BaitbreakPixel-watergen-v2/artifacts/watergen/wg62-review",
+        "--capture"
+      ]
+    },
+    {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 12.531,
+      "launch_error": false,
+      "passed": 49,
+      "failed": 0,
+      "count_basis": "summary",
+      "status": "passed",
+      "reason": "",
+      "name": "gameplay-native",
+      "command": [
+        "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--path",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen-v2",
+        "--audio-driver",
+        "Dummy",
+        "--log-file",
+        "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen-v2\\artifacts\\watergen\\wg62-review\\gameplay-native-engine.log",
+        "--script",
+        "res://tests/watergen/ecology_gameplay_native.gd",
+        "--",
+        "--test-profile",
+        "--output=E:/Fish_catches_people/aquatic_system/BaitbreakPixel-watergen-v2/artifacts/watergen/wg62-review/gameplay"
+      ]
+    }
+  ],
+  "human_review": "PENDING",
+  "production_integration": false,
+  "status": "PASS"
+}

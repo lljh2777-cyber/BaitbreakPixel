@@ -1,0 +1,419 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+OpenGL API 3.3.0 Core Profile Context 23.20.28.03.231124 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon(TM) Graphics
+
+
+
+WG62_NATIVE_PASS | isolated user directory
+
+WG62_NATIVE_PASS | load true generated map 42
+
+WG62_NATIVE_PASS | save full-world
+
+WG62_NATIVE_PASS | save full-0-0
+
+WG62_NATIVE_PASS | paused repeat full-0-0
+
+WG62_NATIVE_PASS | save full-320-120
+
+WG62_NATIVE_PASS | paused repeat full-320-120
+
+WG62_NATIVE_PASS | save full-640-120
+
+WG62_NATIVE_PASS | paused repeat full-640-120
+
+WG62_NATIVE_PASS | save full-0-120
+
+WG62_NATIVE_PASS | paused repeat full-0-120
+
+WG62_NATIVE_PASS | save full-640-0
+
+WG62_NATIVE_PASS | paused repeat full-640-0
+
+WG62_NATIVE_PASS | save before-world
+
+WG62_NATIVE_PASS | save before-0-0
+
+WG62_NATIVE_PASS | paused repeat before-0-0
+
+WG62_NATIVE_PASS | save before-320-120
+
+WG62_NATIVE_PASS | paused repeat before-320-120
+
+WG62_NATIVE_PASS | save before-640-120
+
+WG62_NATIVE_PASS | paused repeat before-640-120
+
+WG62_NATIVE_PASS | save before-0-120
+
+WG62_NATIVE_PASS | paused repeat before-0-120
+
+WG62_NATIVE_PASS | save before-640-0
+
+WG62_NATIVE_PASS | paused repeat before-640-0
+
+WG62_NATIVE_PASS | save plants-world
+
+WG62_NATIVE_PASS | save plants-0-0
+
+WG62_NATIVE_PASS | paused repeat plants-0-0
+
+WG62_NATIVE_PASS | save plants-320-120
+
+WG62_NATIVE_PASS | paused repeat plants-320-120
+
+WG62_NATIVE_PASS | save plants-640-120
+
+WG62_NATIVE_PASS | paused repeat plants-640-120
+
+WG62_NATIVE_PASS | save plants-0-120
+
+WG62_NATIVE_PASS | paused repeat plants-0-120
+
+WG62_NATIVE_PASS | save plants-640-0
+
+WG62_NATIVE_PASS | paused repeat plants-640-0
+
+WG62_NATIVE_PASS | save geometry-world
+
+WG62_NATIVE_PASS | save geometry-0-0
+
+WG62_NATIVE_PASS | paused repeat geometry-0-0
+
+WG62_NATIVE_PASS | save geometry-320-120
+
+WG62_NATIVE_PASS | paused repeat geometry-320-120
+
+WG62_NATIVE_PASS | save geometry-640-120
+
+WG62_NATIVE_PASS | paused repeat geometry-640-120
+
+WG62_NATIVE_PASS | save geometry-0-120
+
+WG62_NATIVE_PASS | paused repeat geometry-0-120
+
+WG62_NATIVE_PASS | save geometry-640-0
+
+WG62_NATIVE_PASS | paused repeat geometry-640-0
+
+WG62_NATIVE_PASS | flora changes the actual scene pixels 42
+
+WG62_NATIVE_PASS | cameras and modes do not regenerate/upload
+
+WG62_NATIVE_PASS | geometry, blockers and target order unchanged
+
+WG62_NATIVE_PASS | load true generated map 2166
+
+WG62_NATIVE_PASS | save full-world
+
+WG62_NATIVE_PASS | save full-0-0
+
+WG62_NATIVE_PASS | paused repeat full-0-0
+
+WG62_NATIVE_PASS | save full-320-120
+
+WG62_NATIVE_PASS | paused repeat full-320-120
+
+WG62_NATIVE_PASS | save full-640-120
+
+WG62_NATIVE_PASS | paused repeat full-640-120
+
+WG62_NATIVE_PASS | save full-0-120
+
+WG62_NATIVE_PASS | paused repeat full-0-120
+
+WG62_NATIVE_PASS | save full-640-0
+
+WG62_NATIVE_PASS | paused repeat full-640-0
+
+WG62_NATIVE_PASS | save before-world
+
+WG62_NATIVE_PASS | save before-0-0
+
+WG62_NATIVE_PASS | paused repeat before-0-0
+
+WG62_NATIVE_PASS | save before-320-120
+
+WG62_NATIVE_PASS | paused repeat before-320-120
+
+WG62_NATIVE_PASS | save before-640-120
+
+WG62_NATIVE_PASS | paused repeat before-640-120
+
+WG62_NATIVE_PASS | save before-0-120
+
+WG62_NATIVE_PASS | paused repeat before-0-120
+
+WG62_NATIVE_PASS | save before-640-0
+
+WG62_NATIVE_PASS | paused repeat before-640-0
+
+WG62_NATIVE_PASS | save plants-world
+
+WG62_NATIVE_PASS | save plants-0-0
+
+WG62_NATIVE_PASS | paused repeat plants-0-0
+
+WG62_NATIVE_PASS | save plants-320-120
+
+WG62_NATIVE_PASS | paused repeat plants-320-120
+
+WG62_NATIVE_PASS | save plants-640-120
+
+WG62_NATIVE_PASS | paused repeat plants-640-120
+
+WG62_NATIVE_PASS | save plants-0-120
+
+WG62_NATIVE_PASS | paused repeat plants-0-120
+
+WG62_NATIVE_PASS | save plants-640-0
+
+WG62_NATIVE_PASS | paused repeat plants-640-0
+
+WG62_NATIVE_PASS | save geometry-world
+
+WG62_NATIVE_PASS | save geometry-0-0
+
+WG62_NATIVE_PASS | paused repeat geometry-0-0
+
+WG62_NATIVE_PASS | save geometry-320-120
+
+WG62_NATIVE_PASS | paused repeat geometry-320-120
+
+WG62_NATIVE_PASS | save geometry-640-120
+
+WG62_NATIVE_PASS | paused repeat geometry-640-120
+
+WG62_NATIVE_PASS | save geometry-0-120
+
+WG62_NATIVE_PASS | paused repeat geometry-0-120
+
+WG62_NATIVE_PASS | save geometry-640-0
+
+WG62_NATIVE_PASS | paused repeat geometry-640-0
+
+WG62_NATIVE_PASS | flora changes the actual scene pixels 2166
+
+WG62_NATIVE_PASS | cameras and modes do not regenerate/upload
+
+WG62_NATIVE_PASS | geometry, blockers and target order unchanged
+
+WG62_NATIVE_PASS | load true generated map 1346
+
+WG62_NATIVE_PASS | save full-world
+
+WG62_NATIVE_PASS | save full-0-0
+
+WG62_NATIVE_PASS | paused repeat full-0-0
+
+WG62_NATIVE_PASS | save full-320-120
+
+WG62_NATIVE_PASS | paused repeat full-320-120
+
+WG62_NATIVE_PASS | save full-640-120
+
+WG62_NATIVE_PASS | paused repeat full-640-120
+
+WG62_NATIVE_PASS | save full-0-120
+
+WG62_NATIVE_PASS | paused repeat full-0-120
+
+WG62_NATIVE_PASS | save full-640-0
+
+WG62_NATIVE_PASS | paused repeat full-640-0
+
+WG62_NATIVE_PASS | save before-world
+
+WG62_NATIVE_PASS | save before-0-0
+
+WG62_NATIVE_PASS | paused repeat before-0-0
+
+WG62_NATIVE_PASS | save before-320-120
+
+WG62_NATIVE_PASS | paused repeat before-320-120
+
+WG62_NATIVE_PASS | save before-640-120
+
+WG62_NATIVE_PASS | paused repeat before-640-120
+
+WG62_NATIVE_PASS | save before-0-120
+
+WG62_NATIVE_PASS | paused repeat before-0-120
+
+WG62_NATIVE_PASS | save before-640-0
+
+WG62_NATIVE_PASS | paused repeat before-640-0
+
+WG62_NATIVE_PASS | save plants-world
+
+WG62_NATIVE_PASS | save plants-0-0
+
+WG62_NATIVE_PASS | paused repeat plants-0-0
+
+WG62_NATIVE_PASS | save plants-320-120
+
+WG62_NATIVE_PASS | paused repeat plants-320-120
+
+WG62_NATIVE_PASS | save plants-640-120
+
+WG62_NATIVE_PASS | paused repeat plants-640-120
+
+WG62_NATIVE_PASS | save plants-0-120
+
+WG62_NATIVE_PASS | paused repeat plants-0-120
+
+WG62_NATIVE_PASS | save plants-640-0
+
+WG62_NATIVE_PASS | paused repeat plants-640-0
+
+WG62_NATIVE_PASS | save geometry-world
+
+WG62_NATIVE_PASS | save geometry-0-0
+
+WG62_NATIVE_PASS | paused repeat geometry-0-0
+
+WG62_NATIVE_PASS | save geometry-320-120
+
+WG62_NATIVE_PASS | paused repeat geometry-320-120
+
+WG62_NATIVE_PASS | save geometry-640-120
+
+WG62_NATIVE_PASS | paused repeat geometry-640-120
+
+WG62_NATIVE_PASS | save geometry-0-120
+
+WG62_NATIVE_PASS | paused repeat geometry-0-120
+
+WG62_NATIVE_PASS | save geometry-640-0
+
+WG62_NATIVE_PASS | paused repeat geometry-640-0
+
+WG62_NATIVE_PASS | flora changes the actual scene pixels 1346
+
+WG62_NATIVE_PASS | cameras and modes do not regenerate/upload
+
+WG62_NATIVE_PASS | geometry, blockers and target order unchanged
+
+WG62_NATIVE_PASS | load true generated map 296
+
+WG62_NATIVE_PASS | save full-world
+
+WG62_NATIVE_PASS | save full-0-0
+
+WG62_NATIVE_PASS | paused repeat full-0-0
+
+WG62_NATIVE_PASS | save full-320-120
+
+WG62_NATIVE_PASS | paused repeat full-320-120
+
+WG62_NATIVE_PASS | save full-640-120
+
+WG62_NATIVE_PASS | paused repeat full-640-120
+
+WG62_NATIVE_PASS | save full-0-120
+
+WG62_NATIVE_PASS | paused repeat full-0-120
+
+WG62_NATIVE_PASS | save full-640-0
+
+WG62_NATIVE_PASS | paused repeat full-640-0
+
+WG62_NATIVE_PASS | save before-world
+
+WG62_NATIVE_PASS | save before-0-0
+
+WG62_NATIVE_PASS | paused repeat before-0-0
+
+WG62_NATIVE_PASS | save before-320-120
+
+WG62_NATIVE_PASS | paused repeat before-320-120
+
+WG62_NATIVE_PASS | save before-640-120
+
+WG62_NATIVE_PASS | paused repeat before-640-120
+
+WG62_NATIVE_PASS | save before-0-120
+
+WG62_NATIVE_PASS | paused repeat before-0-120
+
+WG62_NATIVE_PASS | save before-640-0
+
+WG62_NATIVE_PASS | paused repeat before-640-0
+
+WG62_NATIVE_PASS | save plants-world
+
+WG62_NATIVE_PASS | save plants-0-0
+
+WG62_NATIVE_PASS | paused repeat plants-0-0
+
+WG62_NATIVE_PASS | save plants-320-120
+
+WG62_NATIVE_PASS | paused repeat plants-320-120
+
+WG62_NATIVE_PASS | save plants-640-120
+
+WG62_NATIVE_PASS | paused repeat plants-640-120
+
+WG62_NATIVE_PASS | save plants-0-120
+
+WG62_NATIVE_PASS | paused repeat plants-0-120
+
+WG62_NATIVE_PASS | save plants-640-0
+
+WG62_NATIVE_PASS | paused repeat plants-640-0
+
+WG62_NATIVE_PASS | save geometry-world
+
+WG62_NATIVE_PASS | save geometry-0-0
+
+WG62_NATIVE_PASS | paused repeat geometry-0-0
+
+WG62_NATIVE_PASS | save geometry-320-120
+
+WG62_NATIVE_PASS | paused repeat geometry-320-120
+
+WG62_NATIVE_PASS | save geometry-640-120
+
+WG62_NATIVE_PASS | paused repeat geometry-640-120
+
+WG62_NATIVE_PASS | save geometry-0-120
+
+WG62_NATIVE_PASS | paused repeat geometry-0-120
+
+WG62_NATIVE_PASS | save geometry-640-0
+
+WG62_NATIVE_PASS | paused repeat geometry-640-0
+
+WG62_NATIVE_PASS | flora changes the actual scene pixels 296
+
+WG62_NATIVE_PASS | cameras and modes do not regenerate/upload
+
+WG62_NATIVE_PASS | geometry, blockers and target order unchanged
+
+WG62_NATIVE_PASS | same context restart reuses exact atlas
+
+WG62_NATIVE_PASS | bounded foliage movement
+
+WG62_NATIVE_PASS | seek reproduces exact pixels
+
+WG62_NATIVE_PASS | 180 moving frames do not bake/upload
+
+WG62_NATIVE_PASS | save attached-cover-fade
+
+WG62_NATIVE_PASS | fully faded cover leaves no floating epiphytes
+
+WG62_NATIVE_PASS | attached plants are visible on solid reference surfaces
+
+WG62_NATIVE_PASS | save public-anchors
+
+WG62_NATIVE_PASS | two ecology atlases maximum
+
+WG62_NATIVE_PASS | two ecology atlases maximum
+
+WG62_NATIVE_PASS | two ecology atlases maximum
+
+WG62_NATIVE_PASS | evicted ecology atlas released
+
+WG62_NATIVE_PASS | visual variation does not regenerate authority terrain
+
+WG62_NATIVE | passed=206 | failed=0

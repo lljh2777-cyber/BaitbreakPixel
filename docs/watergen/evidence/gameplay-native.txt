@@ -1,0 +1,107 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+OpenGL API 3.3.0 Core Profile Context 23.20.28.03.231124 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon(TM) Graphics
+
+
+
+PIXEL_READY | asymmetric-2d | 640x360 | v0.27.5 | generated-ponds
+
+WG62_GAMEPLAY_PASS | true generated gameplay reset
+
+WG62_GAMEPLAY_PASS | real logical game viewport
+
+WG62_GAMEPLAY_PASS | flora rendering does not change simulation or RNG
+
+WG62_GAMEPLAY_PASS | save game-42-before
+
+WG62_GAMEPLAY_PASS | real logical game viewport
+
+WG62_GAMEPLAY_PASS | flora rendering does not change simulation or RNG
+
+WG62_GAMEPLAY_PASS | save game-42-after
+
+WG62_GAMEPLAY_PASS | flora changes pixels only with real fish/NPC/food
+
+WG62_GAMEPLAY_PASS | real logical game viewport
+
+WG62_GAMEPLAY_PASS | flora rendering does not change simulation or RNG
+
+WG62_GAMEPLAY_PASS | save game-42-repeat
+
+WG62_GAMEPLAY_PASS | frozen gameplay frame repeats without uploads
+
+WG62_GAMEPLAY_PASS | real logical game viewport
+
+WG62_GAMEPLAY_PASS | flora rendering does not change simulation or RNG
+
+WG62_GAMEPLAY_PASS | save game-42-low-satiety
+
+WG62_GAMEPLAY_PASS | real logical game viewport
+
+WG62_GAMEPLAY_PASS | flora rendering does not change simulation or RNG
+
+WG62_GAMEPLAY_PASS | save game-42-shore
+
+WG62_GAMEPLAY_PASS | real logical game viewport
+
+WG62_GAMEPLAY_PASS | flora rendering does not change simulation or RNG
+
+WG62_GAMEPLAY_PASS | save game-42-shore-off
+
+WG62_GAMEPLAY_PASS | shore view unchanged by local underwater flora
+
+WG62_GAMEPLAY_PASS | true generated gameplay reset
+
+WG62_GAMEPLAY_PASS | real logical game viewport
+
+WG62_GAMEPLAY_PASS | flora rendering does not change simulation or RNG
+
+WG62_GAMEPLAY_PASS | save game-1346-before
+
+WG62_GAMEPLAY_PASS | real logical game viewport
+
+WG62_GAMEPLAY_PASS | flora rendering does not change simulation or RNG
+
+WG62_GAMEPLAY_PASS | save game-1346-after
+
+WG62_GAMEPLAY_PASS | flora changes pixels only with real fish/NPC/food
+
+WG62_GAMEPLAY_PASS | real logical game viewport
+
+WG62_GAMEPLAY_PASS | flora rendering does not change simulation or RNG
+
+WG62_GAMEPLAY_PASS | save game-1346-repeat
+
+WG62_GAMEPLAY_PASS | frozen gameplay frame repeats without uploads
+
+WG62_GAMEPLAY_PASS | real logical game viewport
+
+WG62_GAMEPLAY_PASS | flora rendering does not change simulation or RNG
+
+WG62_GAMEPLAY_PASS | save game-1346-low-satiety
+
+WG62_GAMEPLAY_PASS | real logical game viewport
+
+WG62_GAMEPLAY_PASS | flora rendering does not change simulation or RNG
+
+WG62_GAMEPLAY_PASS | save game-1346-shore
+
+WG62_GAMEPLAY_PASS | real logical game viewport
+
+WG62_GAMEPLAY_PASS | flora rendering does not change simulation or RNG
+
+WG62_GAMEPLAY_PASS | save game-1346-shore-off
+
+WG62_GAMEPLAY_PASS | shore view unchanged by local underwater flora
+
+WG62_GAMEPLAY_PASS | classic map reset
+
+WG62_GAMEPLAY_PASS | real logical game viewport
+
+WG62_GAMEPLAY_PASS | flora rendering does not change simulation or RNG
+
+WG62_GAMEPLAY_PASS | save game-classic
+
+WG62_GAMEPLAY_PASS | classic map keeps existing presentation
+
+WG62_GAMEPLAY_NATIVE | passed=49 | failed=0
