@@ -38,6 +38,8 @@ static func clear(a: Vector2, b: Vector2, obstacles: Array) -> bool:
 # No lower Y filter is intentional: net exits can rise above the water surface.
 static func routing_limits(context: RefCounted) -> Vector3:
 	var water: Rect2=context.water
+	if context.routing_profile=="generated_pond_v1":
+		return Vector3(water.position.x+1.0,water.end.x-1.0,water.end.y-1.0)
 	return Vector3(water.position.x+1.0,
 		water.position.x+float(water.size.x)*623.0/1264.0,
 		water.position.y+float(water.size.y)*241.0/363.0)

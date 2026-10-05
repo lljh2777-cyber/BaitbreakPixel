@@ -3,6 +3,7 @@ extends "res://scripts/world_simulation.gd"
 # Local application adapter. The base simulation has no input, menus, audio or profile I/O.
 const RulesStore = preload("res://scripts/rules_store.gd")
 var saved_rules := Rules.defaults()
+var selected_map_source: Dictionary=MapResolver.classic()
 
 const View = preload("res://scripts/pond_view.gd")
 const Menus = preload("res://scripts/menu.gd")
@@ -44,7 +45,8 @@ func reset(is_challenge: bool, role: String = "fish") -> void:
 	fish_source="ai" if player_role=="angler" else "local"
 	angler_source="local" if player_role=="angler" else "ai"
 	var brain_seed := rng.randi()
-	reset_world({"ruleset":"duel" if player_role=="angler" else "survival","challenge":is_challenge,"seed":rng.randi(),"rules":saved_rules})
+	if not reset_world({"map_source":selected_map_source,"ruleset":"duel" if player_role=="angler" else "survival","challenge":is_challenge,"seed":rng.randi(),"rules":saved_rules}):
+		push_error("Map reset failed: "+str(map_errors)); return
 	fish_brain.reset(brain_seed)
 	local_input.reset()
 	Input.use_accumulated_input=player_role!="angler"
@@ -104,6 +106,12 @@ func _ready() -> void:
 	menu = Menus.new()
 	menu.game = self
 	add_child(menu)
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--map-seed="):
+			var value:String=argument.trim_prefix("--map-seed=")
+			if not value.is_valid_int() or not MapResolver.resolve(MapResolver.generated(value.to_int())).valid:
+				push_error("Invalid generated map seed"); get_tree().quit(1); return
+			selected_map_source=MapResolver.generated(value.to_int())
 	reset(false)
 	menu.open("title")
 	apply_settings()
@@ -169,6 +177,12 @@ func restart_round() -> void:
 
 func return_to_title() -> void:
 	network.close(true)
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--map-seed="):
+			var value:String=argument.trim_prefix("--map-seed=")
+			if not value.is_valid_int() or not MapResolver.resolve(MapResolver.generated(value.to_int())).valid:
+				push_error("Invalid generated map seed"); get_tree().quit(1); return
+			selected_map_source=MapResolver.generated(value.to_int())
 	reset(false)
 	menu.open("title")
 

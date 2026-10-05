@@ -1,0 +1,146 @@
+{
+	"accepted_invalid": 0,
+	"distinct_maps": 10000,
+	"elapsed_seconds": 129.983503,
+	"failed": 0,
+	"failures": [],
+	"generation_with_validation_mean_ms": 4.3019203,
+	"independent_validation_mean_ms": 3.0653322,
+	"metrics": {
+		"bait_anchor_max_distance": {
+			"max": 268.544219970703,
+			"max_seed": 3847,
+			"mean": 178.324002177429,
+			"min": 71.8401031494141,
+			"min_seed": 3535
+		},
+		"bait_home_distance": {
+			"max": 314.453491210938,
+			"max_seed": 854,
+			"mean": 221.810255686951,
+			"min": 128.875915527344,
+			"min_seed": 6354
+		},
+		"bait_spacing": {
+			"max": 249.098373413086,
+			"max_seed": 937,
+			"mean": 171.554975143433,
+			"min": 129.0,
+			"min_seed": 1141
+		},
+		"bait_spawn_distance": {
+			"max": 298.001678466797,
+			"max_seed": 854,
+			"mean": 206.88656047287,
+			"min": 118.139747619629,
+			"min_seed": 6354
+		},
+		"cover_density": {
+			"max": 0.148286300868292,
+			"max_seed": 1346,
+			"mean": 0.0890278600882241,
+			"min": 0.0464178610035917,
+			"min_seed": 2166
+		},
+		"feature_count": {
+			"max": 19.0,
+			"max_seed": 64,
+			"mean": 15.3629,
+			"min": 12.0,
+			"min_seed": 22
+		},
+		"grass_count": {
+			"max": 8.0,
+			"max_seed": 3,
+			"mean": 6.5007,
+			"min": 5.0,
+			"min_seed": 0
+		},
+		"net_lift_corridors": {
+			"max": 6.0,
+			"max_seed": 0,
+			"mean": 6.0,
+			"min": 6.0,
+			"min_seed": 0
+		},
+		"net_open": {
+			"max": 21.0,
+			"max_seed": 144,
+			"mean": 15.8757,
+			"min": 12.0,
+			"min_seed": 296
+		},
+		"net_partial": {
+			"max": 10.0,
+			"max_seed": 9726,
+			"mean": 3.8188,
+			"min": 1.0,
+			"min_seed": 9
+		},
+		"npc_spawn_free": {
+			"max": 129.0,
+			"max_seed": 405,
+			"mean": 119.6701,
+			"min": 106.0,
+			"min_seed": 623
+		},
+		"npc_spawn_samples": {
+			"max": 132.0,
+			"max_seed": 0,
+			"mean": 132.0,
+			"min": 132.0,
+			"min_seed": 0
+		},
+		"rope_anchor_count": {
+			"max": 19.0,
+			"max_seed": 64,
+			"mean": 15.3629,
+			"min": 12.0,
+			"min_seed": 22
+		},
+		"rope_anchor_span": {
+			"max": 945.0,
+			"max_seed": 1862,
+			"mean": 870.98055,
+			"min": 704.0,
+			"min_seed": 5242
+		},
+		"stone_count": {
+			"max": 5.0,
+			"max_seed": 6,
+			"mean": 3.9618,
+			"min": 3.0,
+			"min_seed": 3
+		},
+		"wood_count": {
+			"max": 6.0,
+			"max_seed": 2,
+			"mean": 4.9004,
+			"min": 4.0,
+			"min_seed": 0
+		}
+	},
+	"nondeterministic": 0,
+	"passed": 20000,
+	"regression_seeds": {
+		"bait-clustered": 1141,
+		"bait-spread": 937,
+		"dense": 1346,
+		"net-friendly": 144,
+		"net-hostile": 296,
+		"open": 2166,
+		"rope-poor": 22,
+		"rope-rich": 64
+	},
+	"retry_histogram": {
+		"0": 7728,
+		"1": 1769,
+		"2": 392,
+		"3": 84,
+		"4": 19,
+		"5": 5,
+		"6": 3
+	},
+	"seed_count": 10000,
+	"seed_start": 0
+}

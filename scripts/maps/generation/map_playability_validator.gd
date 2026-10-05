@@ -1,7 +1,7 @@
 extends RefCounted
 
-# First-round conservative spatial gate, not a proof of match balance or routing.
-# Full generated routing, supply simulations and player playtests belong to P5.2/3.
+# Conservative spatial admission. Expanded boxes prove clear routes; runtime
+# tests separately exercise actual polygon detours, net sweeps and match outcomes.
 const Validator=preload("res://scripts/maps/map_validator.gd")
 const Geometry=preload("res://scripts/maps/map_geometry.gd")
 const Profile=preload("res://scripts/maps/generation/generated_pond_profile.gd")
@@ -74,16 +74,24 @@ static func _validated(definition: Dictionary) -> Dictionary:
 			spawn_samples+=1
 			if not _inside_any(Vector2(x,y),npc_boxes): spawn_free+=1
 	if spawn_free<80 or float(spawn_free)/spawn_samples<0.55: errors.append("insufficient NPC spawn area")
+	var exits:=0
+	for x in [160,360,560,760,960,1140]:
+		var corridor:=Rect2(x-1,5,2,171)
+		var blocked:=false
+		for box:Rect2 in boxes:
+			if box.intersects(corridor,true): blocked=true; break
+		if not blocked: exits+=1
+	if exits<6: errors.append("six distributed clear net lift corridors required")
 	var routes:=net_routes(boxes)
 	if boxes.is_empty() or routes.open<6 or routes.partial<1: errors.append("net routes require both open routes and meaningful blockers")
 	return {"valid":errors.is_empty(),"errors":errors,"structural_valid":true,"metrics":{
 		"wood_count":counts.wood,"stone_count":counts.stone,"grass_count":counts.grass,"feature_count":definition.interaction_features.size(),
 		"bait_spacing":spacing,"bait_home_distance":home_distance,"bait_spawn_distance":spawn_distance,"cover_density":density,
 		"rope_anchor_count":rope_boxes.size(),"rope_anchor_span":rope_span,"bait_anchor_max_distance":bait_anchor_distance,
-		"npc_spawn_free":spawn_free,"npc_spawn_samples":spawn_samples,"net_routes":routes}}
+		"npc_spawn_free":spawn_free,"npc_spawn_samples":spawn_samples,"net_routes":routes,"net_lift_corridors":exits}}
 
 # Conservative expanded AABB routes: no false claim of a narrow polygon gap.
-# The generated full-domain Rope solver is deliberately not installed in P5.1.
+# Lift corridors above prove exits; the runtime solver also supports polygon detours.
 static func net_routes(boxes: Array[Rect2]) -> Dictionary:
 	var metrics:Dictionary={"open":0,"partial":0,"invalid":0,"total":0}
 	for y in [175,245,315,375]:

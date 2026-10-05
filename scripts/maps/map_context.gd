@@ -13,6 +13,13 @@ static var _registered_context: RefCounted = null
 # Internal validated geometry/bounds/lookups remain private and are never exposed.
 # Scalar getters and geometry queries allocate no polygon and consume no RNG.
 var _data: Dictionary = {}
+var _source: Dictionary = {}
+var map_source: Dictionary:
+	get: return _source.duplicate(true)
+	set(_value): pass
+var routing_profile: String:
+	get: return "generated_pond_v1" if _source.get("kind")=="generated" else "legacy_pond"
+	set(_value): pass
 var _bait_sites: Array[Vector2] = []
 var _vegetation_drag_zones: Array[Rect2] = []
 var _features: Array[Dictionary] = []
@@ -109,18 +116,20 @@ static func load_ref(value: Variant) -> Dictionary:
 
 # Also permits validated, unregistered definitions for isolated tests. This does
 # not register a map, add selection UI, or change snapshot/network acceptance.
-static func from_definition(value: Variant) -> Dictionary:
+static func from_definition(value: Variant, source: Dictionary = {}) -> Dictionary:
 	var validation := Validator.validate(value)
 	if not validation.valid:
 		return {"valid":false,"errors":validation.errors.duplicate(),"context":null}
 	var context := new()
-	context._initialize(value)
+	context._initialize(value,source)
 	return {"valid":true,"errors":[],"context":context}
 
-func _initialize(definition: Dictionary) -> void:
+func _initialize(definition: Dictionary, source: Dictionary) -> void:
 	# Protect against accidental reinitialization of an existing round context.
 	if not _data.is_empty(): return
 	_data = definition.duplicate(true)
+	_source=source.duplicate(true) if not source.is_empty() else {"kind":"built_in","id":id,"revision":revision}
+	_freeze_containers(_source)
 	_bait_sites.assign(_data.bait_sites)
 	_vegetation_drag_zones.assign(_data.bounds.vegetation_drag_zones)
 	_features.assign(_data.interaction_features)

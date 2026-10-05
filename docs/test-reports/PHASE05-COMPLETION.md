@@ -1,0 +1,17 @@
+# Phase 5 实施与验证记录
+
+基线：feature/dev 002cbaa；用户于 2026-10-05 授权完成剩余 P5，覆盖原规范第一轮 STOP。
+
+## P5.2 / P5.3：实际比赛
+
+- 新增 MapResolver：严格验证内置来源或生成 recipe，双验证后建立普通 MapContext。最多缓存 16 个已验证生成上下文；不接受远程几何。
+- WorldSimulation.reset_world 接受 map_source；失败发生在状态/RNG 安装前。
+- 路由由已验证来源选择：经典 pond_v2 保持 (9,631,309)，generated_pond_v1 使用 (9,1271,430)。Map contract 仍为 1，几何 hash 未改变。
+- 结构 Gate 增加六条分散的保守净空提网通道；真实 Net 的碰撞/出水、Bite、三类食物、NPC 误钩、玩家 QTE、缠线/解缠、回巢通过实际 World 测试。
+- 开发入口：运行主游戏并加 `-- --map-seed=42`；菜单接入将在后续 P5.6 完成。
+
+验证：phase05_runtime 832 项、phase05_playability 17 项、phase05_generator_determinism 506 项、phase04_map_fixture 122 项通过。更新后 10,000 seeds / 20,000 检查通过，结果见 data/phase05/seed-sweep-runtime.json。主场景 Seed 42 启动通过。首次测试暴露测试数据复用 grain ID 和 recipe 插入 StringName 键，已修正并重跑；没有放宽契约检查。
+
+所有几何身份使用必要的 content_hash；状态重复性直接比较值/序列化字节，无逐文件或逐帧 SHA256 扫描。
+
+P5.4–P5.7 正在继续，尚未声明完成。

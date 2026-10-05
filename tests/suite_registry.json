@@ -793,6 +793,11 @@
       "timeout_seconds": 120,
       "pack_compatible": false,
       "pack_reason": "Uses unregistered authored map fixture; release PCK intentionally excludes tests."
+    },
+    "phase05_runtime": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 240
     }
   }
 }

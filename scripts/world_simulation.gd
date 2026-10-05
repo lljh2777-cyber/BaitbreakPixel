@@ -19,6 +19,7 @@ const Suspicion=preload("res://scripts/fish_suspicion.gd")
 const Instinct=preload("res://scripts/fish_instinct.gd")
 const Stats = preload("res://scripts/round_stats.gd")
 const Rope = preload("res://scripts/rope.gd")
+const MapResolver = preload("res://scripts/maps/map_resolver.gd")
 const MapContext = preload("res://scripts/maps/map_context.gd")
 const MapGeometry = preload("res://scripts/maps/map_geometry.gd")
 var _map_context: MapContext
@@ -485,6 +486,8 @@ func reset_world(config: Dictionary = {}, definition: Variant = null) -> bool:
 	var loaded: Dictionary
 	if definition != null:
 		loaded=MapContext.from_definition(definition)
+	elif config.has("map_source"):
+		loaded=MapResolver.resolve(config.map_source,config.get("map_ref"))
 	elif config.has("map_ref"):
 		loaded=MapContext.load_ref(config.map_ref)
 	else:
