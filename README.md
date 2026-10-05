@@ -2,14 +2,16 @@
 
 一个 2D 像素风格的人鱼对抗游戏：小鱼在水下觅食、缠线和逃脱，钓鱼人在岸边控竿、收放线与抄网。支持单机挑战、自由练习和一人对一鱼的局域网联机。
 
-**当前源码：0.26.5（钓鱼人右键加速移竿）** · Godot 4.7.2
+**当前源码：0.27.0（P5.0/P5.1 地图生成开发原型）** · Godot 4.7.2
 **当前公开 Windows 试玩包：0.26.4**，历史发行记录继续保留。
 
 用户已确认 0.25.2 社会线索试玩通过。0.25.3 让 NPC 真实误咬钩、自动挣扎、逃脱、断线或被拉起。钓错 NPC 不结束比赛；玩家可趁机吃饵、回巢，钓鱼人需要重新部署。NPC 捕获后暂离生态，延迟生成新 ID 的鱼。
 
+Phase 4 已由用户人工确认；Phase 5 第一轮按[生成契约](docs/architecture/MAP-GENERATION-PROTOTYPE.md)推进。仅开发生成器、验证和独立预览，正常游戏仍使用经典池塘，Snapshot schema16 与 Map Contract v1 保持。
+
 0.26.5 新增钓鱼人按住鼠标右键加速左右移竿：基础速度 90 px/s，加速 180 px/s，松开恢复；本地与联机一致。当前源码尚未发布新试玩包，公开包仍为 0.26.4。见[本次验证记录](docs/test-reports/ANGLER-MOVE-BOOST-0.26.5.md)。
 
-用户授权连续完成 Phase 4 剩余开发与自行测试。本轮完成画面层 MapContext 迁移、通用地图依赖清理和测试专用地图，保持玩家仍使用原 pond_v2；快照 schema16、严格 MapRef 联机和角色隐私边界延续。详见[最终地图架构](docs/architecture/MAP-PRESENTATION-FINAL.md)与[最终验证和人工复测清单](docs/test-reports/PHASE04-MAP-FINAL-0.26.4.md)。0.26.4 Windows 试玩包已构建、验证并公开发布；解压后运行 BaitbreakPixel.exe，核对菜单 0.26.4。人工手感未代验，不自动进入 Phase 5、合并 Watergen 或增加随机交互地图。
+用户授权连续完成 Phase 4 剩余开发与自行测试。本轮完成画面层 MapContext 迁移、通用地图依赖清理和测试专用地图，保持玩家仍使用原 pond_v2；快照 schema16、严格 MapRef 联机和角色隐私边界延续。详见[最终地图架构](docs/architecture/MAP-PRESENTATION-FINAL.md)与[最终验证和人工复测清单](docs/test-reports/PHASE04-MAP-FINAL-0.26.4.md)。0.26.4 Windows 试玩包已构建、验证并公开发布；解压后运行 BaitbreakPixel.exe，核对菜单 0.26.4。Phase 4 后续已由用户确认；Phase 5 当前仅开发原型，Watergen 合流与生成地图比赛入口留待后续。
 
 玩家 10 px 自动咬食、0.80 秒间隔、4/6/8 容量和已确认的抢食/补饵规则保持。NPC 继续真实消耗食物、增加自身饱食，不增加玩家分数、不参与胜负。玩家原 QTE、缠线、松线、断线、张力和提鱼保持。
 
@@ -68,7 +70,7 @@
 .\Build-Pixel.ps1 -GodotDirectory 'D:\Tools\Godot_v4.7.2-stable_win64.exe'
 ```
 
-该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.26.5` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
+该目录需要同时包含 `Godot_v4.7.2-stable_win64.exe` 和 `Godot_v4.7.2-stable_win64_console.exe`。默认输出到相邻 `Releases/BaitbreakPixel-0.27.0` 目录及 ZIP；也可用 `-OutputDirectory` 指定位置。
 
 当前测试入口、套件状态和产物目录配置见 [测试运行指南](tests/README.md)。核心抄网逻辑检查示例（替换为本机引擎路径）：
 
