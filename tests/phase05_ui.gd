@@ -3,6 +3,7 @@ const Main=preload("res://scenes/main.tscn")
 var passed:=0
 var failed:=0
 var game:Node2D
+var output:="res://artifacts/p5-ui"
 func check(ok:bool,label:String)->void:
 	if ok: passed+=1
 	else: failed+=1; push_error("GENERATED_UI_FAIL | "+label)
@@ -12,6 +13,8 @@ func button_named(label:String)->Button:
 		if button.text==label: return button
 	return null
 func run()->void:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--capture-output-directory="): output=argument.trim_prefix("--capture-output-directory=")
 	game=Main.instantiate(); root.add_child(game); game.capture_mode="p5-ui"
 	game.set_physics_process(false); game.set_process(false)
 	game.save_path="user://phase05-map-ui-test.cfg"
@@ -28,10 +31,19 @@ func run()->void:
 	if DisplayServer.get_name()!="headless":
 		for tick in 3: await process_frame
 		await RenderingServer.frame_post_draw
-		DirAccess.make_dir_recursive_absolute("res://artifacts/p5-ui")
-		check(root.get_texture().get_image().save_png("res://artifacts/p5-ui/map-choice.png")==OK,"map chooser screenshot")
+		DirAccess.make_dir_recursive_absolute(output)
+		check(root.get_texture().get_image().save_png(output.path_join("map-choice.png"))==OK,"map chooser screenshot")
 	button_named("使用这张地图").pressed.emit()
 	check(game.menu.screen=="title" and game.map_context.map_source.map_seed==123456789,"actual apply button installs manually entered map")
+	check(game.network.host_game("fish",26010,game.network_settings())==OK,"generated selection opens real host lobby")
+	if DisplayServer.get_name()!="headless":
+		for tick in 3: await process_frame
+		await RenderingServer.frame_post_draw
+		check(root.get_texture().get_image().save_png(output.path_join("host-room.png"))==OK,"host lobby screenshot")
+		for label in game.menu.find_children("*","Label",true,false):
+			if label.text.begins_with("端口 "):
+				check(label.get_global_rect().end.y<=game.menu.room_map.global_position.y,"host port and selected seed do not overlap")
+	game.return_to_title()
 	var original:Dictionary=game.map_context.map_ref
 	game.menu.close()
 	var key:=InputEventKey.new(); key.physical_keycode=KEY_R; key.pressed=true

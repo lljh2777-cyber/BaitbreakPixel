@@ -1,0 +1,41 @@
+{
+  "profile": "current",
+  "pack": null,
+  "results": [
+    {
+      "returncode": 1,
+      "timed_out": false,
+      "duration_seconds": 3.75,
+      "launch_error": false,
+      "passed": 21,
+      "failed": 1,
+      "count_basis": "summary",
+      "status": "failed",
+      "reason": "nonzero exit, failed assertion, or engine/script error",
+      "suite": "phase05_ui",
+      "registry_status": "current",
+      "log": "phase05_ui.log",
+      "command": [
+        "E:\\chrome\u4e0b\u8f7d\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--path",
+        "E:\\Fish_catches_people\\BaitbreakPixel",
+        "--script",
+        "res://tests/phase05_ui.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\BaitbreakPixel\\artifacts\\p5-lobby-spacing-fixed\\captures\\phase05_ui"
+      ]
+    }
+  ],
+  "counts": {
+    "passed": 0,
+    "failed": 1,
+    "timeout": 0,
+    "blocked": 0,
+    "retired": 0
+  }
+}

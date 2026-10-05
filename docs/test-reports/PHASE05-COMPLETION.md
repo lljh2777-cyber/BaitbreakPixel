@@ -42,4 +42,30 @@ WatergenPublicAdapter 仅接受普通 MapContext，按公共交互目标导出�
 - 原生图像审查发现生成木枝的旧固定 6 px 材质轴会压成深色，现按真实多边形提取材质中心线和宽度。联合组 alpha / 交互轮廓不变。更新后 native 61、presentation 442、wood_fade 57 项通过。
 - 发行 PCK 显式包含 data/watergen/*.json，防止导出丢失视觉配置。试玩说明和源版本同步为 0.27.5。
 
-P5.7 大样本、完整回归与试玩包验证正在收尾。
+## P5.7：统计门与极端样本
+
+`tools/phase05_run_gameplay.py` 执行 25 map seeds × 20 simulation seeds × 2 controllers，共 1,000 完整局；两种规则各 500 局，默认规则、3 NPC、60 Hz、370 秒有限保护。所有 1,000 局合法结束且最终 Snapshot 可恢复，最长 138.07 秒；没有命中“补饵条件允许时持续 20 秒无饵且无新供应”的死锁门。测试没有注入食物或降低胜利条件。
+
+| 控制策略 / 规则 | 局数 | 鱼胜率 / 回巢率 | 平均时长 | 抄网捕获率 |
+| --- | ---: | ---: | ---: | ---: |
+| Native AI / 生存 | 250 | 95.6% | 47.56 s | 0% |
+| Native AI / 对抗 | 250 | 88.0% | 52.92 s | 1.6% |
+| Mixed 观察策略 / 生存 | 250 | 32.4% | 68.12 s | 51.2% |
+| Mixed 观察策略 / 对抗 | 250 | 5.6% | 53.19 s | 92.0% |
+
+整体均值：玩家食物 51.96、NPC 食物 45.98、玩家中钩 0.229 次、NPC 误钩 1.136 次、成功缠线 0.065 次。发生玩家中钩的局占 21.4%，发生 NPC 误钩占 74.9%。这两种现有控制器能力不同，Mixed 不主动缠线，不能以合并 55.4% 胜率宣称人类玩法公平；报告保留策略分层以及每张地图全部指标。
+
+- 每图 40 局的合并鱼胜率为 47.5%–67.5%；最低 Seed 8 / 2147483647，最高 Seed 9；抄网率最高 Seed 8（47.5%）、最低 Seed 9 / 64（27.5%）。样本小、策略混合，仅作回归候选。
+- 最长补饵可用条件下无供给为 7 秒，Seed 73501 / simulation 73513，之后正常回巢。
+- 最长局 Seed 6 / simulation 73512 / Mixed 对抗：138.07 秒、最长全场无饵 58 秒、达标未回巢 61 秒，最终被钓起。该不利样本保留；对应两策略从头复跑均通过，未因结果不好删样本。
+- 八类结构极端 corpus 保持：open=2166、dense=1346、bait-spread=937、bait-clustered=1141、net-friendly=144、net-hostile=296、rope-rich=64、rope-poor=22。六条提网通道加入后 10,000 seeds 仍全过、10,000 个不同 MapRef、零非法接受、零不确定输出、最多第 6 次 retry。
+
+首次矩阵的测试器错误地要求已抄中、合法上提中的鱼仍在水内，导致 19 局提前终止。v2 检查允许 caught/landing 位置，但仍要求有限坐标与最终完整 Snapshot 验证。19 局全部从 tick 0 重跑通过；`gameplay-initial-report.json` / `gameplay-initial-rounds.jsonl` 保留失败原始证据，`gameplay-validated-rounds.jsonl` 保留最终 1,000 局，`gameplay-summary.json` 逐一列出替换 run ID。无玩法代码或统计规则为改善胜率而修改。
+
+## 性能与收尾检查
+
+Windows / Godot 4.7.2 / OpenGL Compatibility / AMD Radeon Graphics。10,000 Seed 中生成含双验证平均 4.30 ms，独立再验证平均 3.07 ms。五张代表地图的 MapContext 建立含结构验证为 1.73–3.30 ms，Watergen 首次 plan / CPU bake / terrain / texture upload API 合计 1.58–3.21 s；后续同图视图 prepare 为 0.43–1.07 μs，Resolver 命中为 6.47–16.39 μs。部分测量与回归进程并行，属于本机观测，不是跨硬件保证；首次换图仍可能有短暂停顿。视图两份 bundle 上限、重复 prepare 不再烘焙均通过。原始数据见 `data/phase05/performance.json`，可用 `tools/phase05_benchmark.gd` 复现。
+
+完整回归发现旧 `network_rules_v012` 手造 state 包缺少新 map_source；补齐 fixture 后 26 项通过。首次新房间检查发现端口与 Seed 标签区域重叠，第一次间距调整仍不足，最终重排后真实房主菜单 22 项通过并保存截图；三次结果均保留，未放松布局断言。
+
+完整 current 回归和最终打包汇总待本轮剩余检查结束写入。

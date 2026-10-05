@@ -1,0 +1,1713 @@
+{
+  "format": "phase05-gameplay-v1",
+  "passed": true,
+  "wall_seconds": 1364.5460000000003,
+  "protocol": "25 map seeds x 20 simulation seeds x 2 controllers; alternating survival/duel; default rules, 3 NPCs, 60 Hz; full rounds (370 s guard)",
+  "limits": "AI diagnostics are not human balance approval. Sustained no-food/supply or return stalls are retained for inspection, not discarded.",
+  "summary": {
+    "runs": 1000,
+    "completed": 1000,
+    "valid": 1000,
+    "supply_deadlocks": 0,
+    "duration": {
+      "mean": 55.44674999999816,
+      "min": 20.8166666666668,
+      "max": 138.066666666669
+    },
+    "food": {
+      "mean": 51.96194999999997,
+      "min": 0.75,
+      "max": 97.9499999999999
+    },
+    "npc_food": {
+      "mean": 45.98310000000005,
+      "min": 0.0,
+      "max": 228.749999999999
+    },
+    "hook_events": {
+      "mean": 0.229,
+      "min": 0,
+      "max": 2
+    },
+    "npc_wrong_hooks": {
+      "mean": 1.136,
+      "min": 0,
+      "max": 5
+    },
+    "wrap_usage": {
+      "mean": 0.065,
+      "min": 0,
+      "max": 1
+    },
+    "longest_no_food_seconds": {
+      "mean": 0.323,
+      "min": 0.0,
+      "max": 58.0
+    },
+    "longest_eligible_supply_stall": {
+      "mean": 0.07,
+      "min": 0.0,
+      "max": 7.0
+    },
+    "longest_return_stall": {
+      "mean": 6.755,
+      "min": 0.0,
+      "max": 61.0
+    },
+    "fish_win_rate": 0.554,
+    "net_catch_rate": 0.362,
+    "home_completion_rate": 0.554,
+    "hook_rate": 0.214,
+    "npc_wrong_hook_rate": 0.749
+  },
+  "maps": {
+    "0": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 56.569583333331494,
+        "min": 32.6999999999994,
+        "max": 132.183333333331
+      },
+      "food": {
+        "mean": 51.9975,
+        "min": 17.25,
+        "max": 72.3
+      },
+      "npc_food": {
+        "mean": 44.28750000000001,
+        "min": 0.0,
+        "max": 178.8
+      },
+      "hook_events": {
+        "mean": 0.3,
+        "min": 0,
+        "max": 2
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.2,
+        "min": 0,
+        "max": 4
+      },
+      "wrap_usage": {
+        "mean": 0.1,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.55,
+        "min": 0.0,
+        "max": 8.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "longest_return_stall": {
+        "mean": 7.85,
+        "min": 0.0,
+        "max": 33.0
+      },
+      "fish_win_rate": 0.55,
+      "net_catch_rate": 0.3,
+      "home_completion_rate": 0.55,
+      "hook_rate": 0.275,
+      "npc_wrong_hook_rate": 0.775
+    },
+    "1": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 57.41083333333139,
+        "min": 33.8333333333327,
+        "max": 111.449999999995
+      },
+      "food": {
+        "mean": 52.22625000000001,
+        "min": 14.25,
+        "max": 87.75
+      },
+      "npc_food": {
+        "mean": 46.06875,
+        "min": 0.0,
+        "max": 114.9
+      },
+      "hook_events": {
+        "mean": 0.15,
+        "min": 0,
+        "max": 1
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.225,
+        "min": 0,
+        "max": 4
+      },
+      "wrap_usage": {
+        "mean": 0.1,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.225,
+        "min": 0.0,
+        "max": 6.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.075,
+        "min": 0.0,
+        "max": 2.0
+      },
+      "longest_return_stall": {
+        "mean": 6.8,
+        "min": 0.0,
+        "max": 24.0
+      },
+      "fish_win_rate": 0.575,
+      "net_catch_rate": 0.375,
+      "home_completion_rate": 0.575,
+      "hook_rate": 0.15,
+      "npc_wrong_hook_rate": 0.825
+    },
+    "2": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 54.18916666666487,
+        "min": 29.7833333333329,
+        "max": 103.949999999995
+      },
+      "food": {
+        "mean": 52.34625,
+        "min": 17.1,
+        "max": 85.35
+      },
+      "npc_food": {
+        "mean": 46.740000000000016,
+        "min": 8.4,
+        "max": 108.9
+      },
+      "hook_events": {
+        "mean": 0.175,
+        "min": 0,
+        "max": 2
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.225,
+        "min": 0,
+        "max": 3
+      },
+      "wrap_usage": {
+        "mean": 0.05,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.25,
+        "min": 0.0,
+        "max": 6.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.075,
+        "min": 0.0,
+        "max": 2.0
+      },
+      "longest_return_stall": {
+        "mean": 6.55,
+        "min": 0.0,
+        "max": 17.0
+      },
+      "fish_win_rate": 0.55,
+      "net_catch_rate": 0.4,
+      "home_completion_rate": 0.55,
+      "hook_rate": 0.15,
+      "npc_wrong_hook_rate": 0.8
+    },
+    "3": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 54.48124999999819,
+        "min": 31.8499999999995,
+        "max": 100.733333333329
+      },
+      "food": {
+        "mean": 51.570000000000014,
+        "min": 15.75,
+        "max": 83.7
+      },
+      "npc_food": {
+        "mean": 46.095,
+        "min": 0.0,
+        "max": 146.1
+      },
+      "hook_events": {
+        "mean": 0.275,
+        "min": 0,
+        "max": 2
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.125,
+        "min": 0,
+        "max": 2
+      },
+      "wrap_usage": {
+        "mean": 0.075,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.475,
+        "min": 0.0,
+        "max": 14.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "longest_return_stall": {
+        "mean": 6.6,
+        "min": 0.0,
+        "max": 23.0
+      },
+      "fish_win_rate": 0.5,
+      "net_catch_rate": 0.4,
+      "home_completion_rate": 0.5,
+      "hook_rate": 0.2,
+      "npc_wrong_hook_rate": 0.8
+    },
+    "4": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 53.74624999999823,
+        "min": 31.1833333333328,
+        "max": 81.38333333333
+      },
+      "food": {
+        "mean": 49.395,
+        "min": 17.25,
+        "max": 63.15
+      },
+      "npc_food": {
+        "mean": 44.475,
+        "min": 5.7,
+        "max": 127.95
+      },
+      "hook_events": {
+        "mean": 0.175,
+        "min": 0,
+        "max": 1
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.1,
+        "min": 0,
+        "max": 3
+      },
+      "wrap_usage": {
+        "mean": 0.075,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.15,
+        "min": 0.0,
+        "max": 5.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.05,
+        "min": 0.0,
+        "max": 1.0
+      },
+      "longest_return_stall": {
+        "mean": 5.2,
+        "min": 0.0,
+        "max": 16.0
+      },
+      "fish_win_rate": 0.575,
+      "net_catch_rate": 0.375,
+      "home_completion_rate": 0.575,
+      "hook_rate": 0.175,
+      "npc_wrong_hook_rate": 0.7
+    },
+    "5": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 53.65999999999838,
+        "min": 22.0833333333334,
+        "max": 134.516666666666
+      },
+      "food": {
+        "mean": 49.541250000000005,
+        "min": 1.5,
+        "max": 72.6
+      },
+      "npc_food": {
+        "mean": 44.12250000000001,
+        "min": 0.0,
+        "max": 140.1
+      },
+      "hook_events": {
+        "mean": 0.15,
+        "min": 0,
+        "max": 1
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.225,
+        "min": 0,
+        "max": 4
+      },
+      "wrap_usage": {
+        "mean": 0.025,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.225,
+        "min": 0.0,
+        "max": 7.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.05,
+        "min": 0.0,
+        "max": 2.0
+      },
+      "longest_return_stall": {
+        "mean": 6.2,
+        "min": 0.0,
+        "max": 23.0
+      },
+      "fish_win_rate": 0.575,
+      "net_catch_rate": 0.35,
+      "home_completion_rate": 0.575,
+      "hook_rate": 0.15,
+      "npc_wrong_hook_rate": 0.825
+    },
+    "6": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 57.494166666664924,
+        "min": 32.4833333333328,
+        "max": 138.066666666669
+      },
+      "food": {
+        "mean": 51.873749999999994,
+        "min": 12.75,
+        "max": 86.3999999999999
+      },
+      "npc_food": {
+        "mean": 48.88874999999998,
+        "min": 0.0,
+        "max": 166.049999999999
+      },
+      "hook_events": {
+        "mean": 0.225,
+        "min": 0,
+        "max": 1
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.05,
+        "min": 0,
+        "max": 4
+      },
+      "wrap_usage": {
+        "mean": 0.05,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 2.0,
+        "min": 0.0,
+        "max": 58.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.175,
+        "min": 0.0,
+        "max": 5.0
+      },
+      "longest_return_stall": {
+        "mean": 8.975,
+        "min": 0.0,
+        "max": 61.0
+      },
+      "fish_win_rate": 0.55,
+      "net_catch_rate": 0.35,
+      "home_completion_rate": 0.55,
+      "hook_rate": 0.225,
+      "npc_wrong_hook_rate": 0.7
+    },
+    "7": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 59.17874999999793,
+        "min": 33.2666666666661,
+        "max": 122.949999999994
+      },
+      "food": {
+        "mean": 52.62750000000002,
+        "min": 20.25,
+        "max": 74.4
+      },
+      "npc_food": {
+        "mean": 45.31500000000002,
+        "min": 0.0,
+        "max": 101.4
+      },
+      "hook_events": {
+        "mean": 0.225,
+        "min": 0,
+        "max": 2
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.225,
+        "min": 0,
+        "max": 4
+      },
+      "wrap_usage": {
+        "mean": 0.1,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.1,
+        "min": 0.0,
+        "max": 4.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "longest_return_stall": {
+        "mean": 6.675,
+        "min": 0.0,
+        "max": 23.0
+      },
+      "fish_win_rate": 0.55,
+      "net_catch_rate": 0.35,
+      "home_completion_rate": 0.55,
+      "hook_rate": 0.2,
+      "npc_wrong_hook_rate": 0.75
+    },
+    "8": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 53.26166666666494,
+        "min": 35.7833333333326,
+        "max": 80.3333333333301
+      },
+      "food": {
+        "mean": 49.36874999999999,
+        "min": 14.25,
+        "max": 64.2
+      },
+      "npc_food": {
+        "mean": 45.959999999999994,
+        "min": 0.0,
+        "max": 95.3999999999999
+      },
+      "hook_events": {
+        "mean": 0.25,
+        "min": 0,
+        "max": 2
+      },
+      "npc_wrong_hooks": {
+        "mean": 0.95,
+        "min": 0,
+        "max": 3
+      },
+      "wrap_usage": {
+        "mean": 0.1,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.05,
+        "min": 0.0,
+        "max": 2.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "longest_return_stall": {
+        "mean": 5.575,
+        "min": 0.0,
+        "max": 18.0
+      },
+      "fish_win_rate": 0.475,
+      "net_catch_rate": 0.475,
+      "home_completion_rate": 0.475,
+      "hook_rate": 0.225,
+      "npc_wrong_hook_rate": 0.65
+    },
+    "9": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 57.912499999998,
+        "min": 29.9999999999996,
+        "max": 106.733333333329
+      },
+      "food": {
+        "mean": 55.342499999999994,
+        "min": 18.0,
+        "max": 96.5999999999999
+      },
+      "npc_food": {
+        "mean": 52.07625,
+        "min": 5.7,
+        "max": 195.0
+      },
+      "hook_events": {
+        "mean": 0.25,
+        "min": 0,
+        "max": 1
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.15,
+        "min": 0,
+        "max": 4
+      },
+      "wrap_usage": {
+        "mean": 0.1,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.2,
+        "min": 0.0,
+        "max": 7.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.025,
+        "min": 0.0,
+        "max": 1.0
+      },
+      "longest_return_stall": {
+        "mean": 7.2,
+        "min": 0.0,
+        "max": 21.0
+      },
+      "fish_win_rate": 0.675,
+      "net_catch_rate": 0.275,
+      "home_completion_rate": 0.675,
+      "hook_rate": 0.25,
+      "npc_wrong_hook_rate": 0.725
+    },
+    "10": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 55.25458333333148,
+        "min": 28.4499999999997,
+        "max": 110.249999999995
+      },
+      "food": {
+        "mean": 50.703750000000014,
+        "min": 12.0,
+        "max": 76.35
+      },
+      "npc_food": {
+        "mean": 44.03624999999999,
+        "min": 0.0,
+        "max": 105.3
+      },
+      "hook_events": {
+        "mean": 0.275,
+        "min": 0,
+        "max": 1
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.225,
+        "min": 0,
+        "max": 3
+      },
+      "wrap_usage": {
+        "mean": 0.075,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.275,
+        "min": 0.0,
+        "max": 6.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.175,
+        "min": 0.0,
+        "max": 6.0
+      },
+      "longest_return_stall": {
+        "mean": 6.35,
+        "min": 0.0,
+        "max": 20.0
+      },
+      "fish_win_rate": 0.5,
+      "net_catch_rate": 0.4,
+      "home_completion_rate": 0.5,
+      "hook_rate": 0.275,
+      "npc_wrong_hook_rate": 0.775
+    },
+    "22": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 51.07999999999838,
+        "min": 20.8166666666668,
+        "max": 82.4833333333299
+      },
+      "food": {
+        "mean": 50.93250000000001,
+        "min": 0.75,
+        "max": 71.25
+      },
+      "npc_food": {
+        "mean": 40.72124999999999,
+        "min": 0.0,
+        "max": 94.3499999999999
+      },
+      "hook_events": {
+        "mean": 0.25,
+        "min": 0,
+        "max": 2
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.025,
+        "min": 0,
+        "max": 3
+      },
+      "wrap_usage": {
+        "mean": 0.05,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.375,
+        "min": 0.0,
+        "max": 12.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.025,
+        "min": 0.0,
+        "max": 1.0
+      },
+      "longest_return_stall": {
+        "mean": 6.925,
+        "min": 0.0,
+        "max": 23.0
+      },
+      "fish_win_rate": 0.5,
+      "net_catch_rate": 0.35,
+      "home_completion_rate": 0.5,
+      "hook_rate": 0.225,
+      "npc_wrong_hook_rate": 0.75
+    },
+    "42": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 54.53249999999819,
+        "min": 21.2500000000001,
+        "max": 107.866666666662
+      },
+      "food": {
+        "mean": 53.0025,
+        "min": 14.25,
+        "max": 97.4999999999999
+      },
+      "npc_food": {
+        "mean": 45.84000000000001,
+        "min": 0.0,
+        "max": 142.35
+      },
+      "hook_events": {
+        "mean": 0.275,
+        "min": 0,
+        "max": 2
+      },
+      "npc_wrong_hooks": {
+        "mean": 0.975,
+        "min": 0,
+        "max": 3
+      },
+      "wrap_usage": {
+        "mean": 0.0,
+        "min": 0,
+        "max": 0
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "longest_return_stall": {
+        "mean": 7.125,
+        "min": 0.0,
+        "max": 24.0
+      },
+      "fish_win_rate": 0.5,
+      "net_catch_rate": 0.4,
+      "home_completion_rate": 0.5,
+      "hook_rate": 0.25,
+      "npc_wrong_hook_rate": 0.7
+    },
+    "64": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 57.74916666666469,
+        "min": 31.9999999999995,
+        "max": 104.816666666662
+      },
+      "food": {
+        "mean": 53.985,
+        "min": 18.0,
+        "max": 87.0
+      },
+      "npc_food": {
+        "mean": 45.83625,
+        "min": 5.7,
+        "max": 179.1
+      },
+      "hook_events": {
+        "mean": 0.325,
+        "min": 0,
+        "max": 2
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.25,
+        "min": 0,
+        "max": 4
+      },
+      "wrap_usage": {
+        "mean": 0.1,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.675,
+        "min": 0.0,
+        "max": 14.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.175,
+        "min": 0.0,
+        "max": 6.0
+      },
+      "longest_return_stall": {
+        "mean": 7.45,
+        "min": 0.0,
+        "max": 25.0
+      },
+      "fish_win_rate": 0.575,
+      "net_catch_rate": 0.275,
+      "home_completion_rate": 0.575,
+      "hook_rate": 0.3,
+      "npc_wrong_hook_rate": 0.7
+    },
+    "100": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 56.389583333331565,
+        "min": 27.8666666666664,
+        "max": 135.383333333333
+      },
+      "food": {
+        "mean": 50.715,
+        "min": 11.25,
+        "max": 80.7
+      },
+      "npc_food": {
+        "mean": 48.01499999999999,
+        "min": 11.4,
+        "max": 115.95
+      },
+      "hook_events": {
+        "mean": 0.175,
+        "min": 0,
+        "max": 2
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.4,
+        "min": 0,
+        "max": 5
+      },
+      "wrap_usage": {
+        "mean": 0.05,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.2,
+        "min": 0.0,
+        "max": 7.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.025,
+        "min": 0.0,
+        "max": 1.0
+      },
+      "longest_return_stall": {
+        "mean": 7.15,
+        "min": 0.0,
+        "max": 18.0
+      },
+      "fish_win_rate": 0.65,
+      "net_catch_rate": 0.3,
+      "home_completion_rate": 0.65,
+      "hook_rate": 0.15,
+      "npc_wrong_hook_rate": 0.725
+    },
+    "144": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 55.33499999999814,
+        "min": 28.9999999999996,
+        "max": 106.183333333329
+      },
+      "food": {
+        "mean": 52.63500000000001,
+        "min": 17.25,
+        "max": 75.15
+      },
+      "npc_food": {
+        "mean": 46.13250000000001,
+        "min": 5.7,
+        "max": 181.2
+      },
+      "hook_events": {
+        "mean": 0.2,
+        "min": 0,
+        "max": 1
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.025,
+        "min": 0,
+        "max": 3
+      },
+      "wrap_usage": {
+        "mean": 0.1,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.225,
+        "min": 0.0,
+        "max": 7.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.05,
+        "min": 0.0,
+        "max": 2.0
+      },
+      "longest_return_stall": {
+        "mean": 7.4,
+        "min": 0.0,
+        "max": 19.0
+      },
+      "fish_win_rate": 0.6,
+      "net_catch_rate": 0.375,
+      "home_completion_rate": 0.6,
+      "hook_rate": 0.2,
+      "npc_wrong_hook_rate": 0.75
+    },
+    "296": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 56.33083333333144,
+        "min": 29.0666666666663,
+        "max": 95.8166666666625
+      },
+      "food": {
+        "mean": 53.6025,
+        "min": 15.75,
+        "max": 88.6499999999999
+      },
+      "npc_food": {
+        "mean": 45.337500000000006,
+        "min": 5.7,
+        "max": 140.1
+      },
+      "hook_events": {
+        "mean": 0.2,
+        "min": 0,
+        "max": 1
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.15,
+        "min": 0,
+        "max": 3
+      },
+      "wrap_usage": {
+        "mean": 0.075,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.125,
+        "min": 0.0,
+        "max": 3.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.075,
+        "min": 0.0,
+        "max": 3.0
+      },
+      "longest_return_stall": {
+        "mean": 6.525,
+        "min": 0.0,
+        "max": 20.0
+      },
+      "fish_win_rate": 0.6,
+      "net_catch_rate": 0.325,
+      "home_completion_rate": 0.6,
+      "hook_rate": 0.2,
+      "npc_wrong_hook_rate": 0.75
+    },
+    "937": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 55.61374999999813,
+        "min": 34.5499999999993,
+        "max": 114.149999999995
+      },
+      "food": {
+        "mean": 51.74250000000001,
+        "min": 16.5,
+        "max": 76.95
+      },
+      "npc_food": {
+        "mean": 46.96124999999999,
+        "min": 0.6,
+        "max": 154.05
+      },
+      "hook_events": {
+        "mean": 0.25,
+        "min": 0,
+        "max": 2
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.0,
+        "min": 0,
+        "max": 2
+      },
+      "wrap_usage": {
+        "mean": 0.05,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.225,
+        "min": 0.0,
+        "max": 6.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.1,
+        "min": 0.0,
+        "max": 3.0
+      },
+      "longest_return_stall": {
+        "mean": 6.45,
+        "min": 0.0,
+        "max": 19.0
+      },
+      "fish_win_rate": 0.525,
+      "net_catch_rate": 0.375,
+      "home_completion_rate": 0.525,
+      "hook_rate": 0.225,
+      "npc_wrong_hook_rate": 0.75
+    },
+    "999": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 56.46041666666474,
+        "min": 20.8333333333334,
+        "max": 107.949999999995
+      },
+      "food": {
+        "mean": 53.2275,
+        "min": 17.25,
+        "max": 86.25
+      },
+      "npc_food": {
+        "mean": 51.937499999999964,
+        "min": 5.85,
+        "max": 228.749999999999
+      },
+      "hook_events": {
+        "mean": 0.2,
+        "min": 0,
+        "max": 1
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.025,
+        "min": 0,
+        "max": 5
+      },
+      "wrap_usage": {
+        "mean": 0.075,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.15,
+        "min": 0.0,
+        "max": 6.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "longest_return_stall": {
+        "mean": 6.7,
+        "min": 0.0,
+        "max": 19.0
+      },
+      "fish_win_rate": 0.6,
+      "net_catch_rate": 0.325,
+      "home_completion_rate": 0.6,
+      "hook_rate": 0.2,
+      "npc_wrong_hook_rate": 0.7
+    },
+    "1141": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 52.02624999999832,
+        "min": 27.7499999999997,
+        "max": 91.9833333333294
+      },
+      "food": {
+        "mean": 49.12125000000001,
+        "min": 15.45,
+        "max": 69.0
+      },
+      "npc_food": {
+        "mean": 42.61125,
+        "min": 2.4,
+        "max": 109.05
+      },
+      "hook_events": {
+        "mean": 0.175,
+        "min": 0,
+        "max": 2
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.175,
+        "min": 0,
+        "max": 3
+      },
+      "wrap_usage": {
+        "mean": 0.05,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.05,
+        "min": 0.0,
+        "max": 2.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.05,
+        "min": 0.0,
+        "max": 2.0
+      },
+      "longest_return_stall": {
+        "mean": 6.45,
+        "min": 0.0,
+        "max": 29.0
+      },
+      "fish_win_rate": 0.525,
+      "net_catch_rate": 0.375,
+      "home_completion_rate": 0.525,
+      "hook_rate": 0.15,
+      "npc_wrong_hook_rate": 0.775
+    },
+    "1346": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 53.1645833333316,
+        "min": 30.2333333333329,
+        "max": 80.1999999999967
+      },
+      "food": {
+        "mean": 51.39375,
+        "min": 7.8,
+        "max": 68.4
+      },
+      "npc_food": {
+        "mean": 45.153749999999995,
+        "min": 9.75,
+        "max": 124.35
+      },
+      "hook_events": {
+        "mean": 0.225,
+        "min": 0,
+        "max": 1
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.175,
+        "min": 0,
+        "max": 2
+      },
+      "wrap_usage": {
+        "mean": 0.075,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.6,
+        "min": 0.0,
+        "max": 9.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.175,
+        "min": 0.0,
+        "max": 3.0
+      },
+      "longest_return_stall": {
+        "mean": 7.2,
+        "min": 0.0,
+        "max": 25.0
+      },
+      "fish_win_rate": 0.525,
+      "net_catch_rate": 0.35,
+      "home_completion_rate": 0.525,
+      "hook_rate": 0.225,
+      "npc_wrong_hook_rate": 0.85
+    },
+    "2166": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 57.77124999999802,
+        "min": 28.6999999999997,
+        "max": 107.766666666662
+      },
+      "food": {
+        "mean": 54.01875,
+        "min": 15.75,
+        "max": 97.9499999999999
+      },
+      "npc_food": {
+        "mean": 47.32124999999998,
+        "min": 0.0,
+        "max": 144.3
+      },
+      "hook_events": {
+        "mean": 0.25,
+        "min": 0,
+        "max": 2
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.075,
+        "min": 0,
+        "max": 3
+      },
+      "wrap_usage": {
+        "mean": 0.05,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.275,
+        "min": 0.0,
+        "max": 8.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.2,
+        "min": 0.0,
+        "max": 5.0
+      },
+      "longest_return_stall": {
+        "mean": 6.775,
+        "min": 0.0,
+        "max": 20.0
+      },
+      "fish_win_rate": 0.55,
+      "net_catch_rate": 0.375,
+      "home_completion_rate": 0.55,
+      "hook_rate": 0.225,
+      "npc_wrong_hook_rate": 0.7
+    },
+    "73501": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 55.572499999998136,
+        "min": 29.8166666666663,
+        "max": 88.5333333333296
+      },
+      "food": {
+        "mean": 52.77000000000002,
+        "min": 14.25,
+        "max": 73.5
+      },
+      "npc_food": {
+        "mean": 45.95250000000001,
+        "min": 5.85,
+        "max": 89.3999999999998
+      },
+      "hook_events": {
+        "mean": 0.15,
+        "min": 0,
+        "max": 1
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.175,
+        "min": 0,
+        "max": 3
+      },
+      "wrap_usage": {
+        "mean": 0.05,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.175,
+        "min": 0.0,
+        "max": 7.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.175,
+        "min": 0.0,
+        "max": 7.0
+      },
+      "longest_return_stall": {
+        "mean": 6.55,
+        "min": 0.0,
+        "max": 18.0
+      },
+      "fish_win_rate": 0.575,
+      "net_catch_rate": 0.425,
+      "home_completion_rate": 0.575,
+      "hook_rate": 0.15,
+      "npc_wrong_hook_rate": 0.75
+    },
+    "123456789": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 56.024999999998116,
+        "min": 29.3666666666663,
+        "max": 124.033333333328
+      },
+      "food": {
+        "mean": 52.31250000000002,
+        "min": 14.85,
+        "max": 78.9
+      },
+      "npc_food": {
+        "mean": 44.42624999999999,
+        "min": 6.6,
+        "max": 107.25
+      },
+      "hook_events": {
+        "mean": 0.25,
+        "min": 0,
+        "max": 2
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.175,
+        "min": 0,
+        "max": 4
+      },
+      "wrap_usage": {
+        "mean": 0.05,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.05,
+        "min": 0.0,
+        "max": 2.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.05,
+        "min": 0.0,
+        "max": 2.0
+      },
+      "longest_return_stall": {
+        "mean": 6.35,
+        "min": 0.0,
+        "max": 19.0
+      },
+      "fish_win_rate": 0.575,
+      "net_catch_rate": 0.4,
+      "home_completion_rate": 0.575,
+      "hook_rate": 0.225,
+      "npc_wrong_hook_rate": 0.775
+    },
+    "2147483647": {
+      "runs": 40,
+      "completed": 40,
+      "valid": 40,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 54.95916666666485,
+        "min": 30.0499999999996,
+        "max": 94.0999999999959
+      },
+      "food": {
+        "mean": 52.59750000000001,
+        "min": 14.25,
+        "max": 83.4
+      },
+      "npc_food": {
+        "mean": 45.266249999999985,
+        "min": 0.0,
+        "max": 109.5
+      },
+      "hook_events": {
+        "mean": 0.35,
+        "min": 0,
+        "max": 1
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.075,
+        "min": 0,
+        "max": 3
+      },
+      "wrap_usage": {
+        "mean": 0.0,
+        "min": 0,
+        "max": 0
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.45,
+        "min": 0.0,
+        "max": 8.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.025,
+        "min": 0.0,
+        "max": 1.0
+      },
+      "longest_return_stall": {
+        "mean": 5.85,
+        "min": 0.0,
+        "max": 22.0
+      },
+      "fish_win_rate": 0.475,
+      "net_catch_rate": 0.35,
+      "home_completion_rate": 0.475,
+      "hook_rate": 0.35,
+      "npc_wrong_hook_rate": 0.725
+    }
+  },
+  "strata": {
+    "Mixed_observation/duel": {
+      "runs": 250,
+      "completed": 250,
+      "valid": 250,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 53.192599999998336,
+        "min": 20.8166666666668,
+        "max": 138.066666666669
+      },
+      "food": {
+        "mean": 33.757199999999976,
+        "min": 0.75,
+        "max": 85.95
+      },
+      "npc_food": {
+        "mean": 43.58519999999998,
+        "min": 5.25,
+        "max": 122.7
+      },
+      "hook_events": {
+        "mean": 0.064,
+        "min": 0,
+        "max": 1
+      },
+      "npc_wrong_hooks": {
+        "mean": 0.996,
+        "min": 0,
+        "max": 4
+      },
+      "wrap_usage": {
+        "mean": 0.0,
+        "min": 0,
+        "max": 0
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.3,
+        "min": 0.0,
+        "max": 58.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.004,
+        "min": 0.0,
+        "max": 1.0
+      },
+      "longest_return_stall": {
+        "mean": 0.984,
+        "min": 0.0,
+        "max": 61.0
+      },
+      "fish_win_rate": 0.056,
+      "net_catch_rate": 0.92,
+      "home_completion_rate": 0.056,
+      "hook_rate": 0.064,
+      "npc_wrong_hook_rate": 0.7
+    },
+    "Mixed_observation/survival": {
+      "runs": 250,
+      "completed": 250,
+      "valid": 250,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 68.11506666666409,
+        "min": 22.0833333333334,
+        "max": 118.083333333328
+      },
+      "food": {
+        "mean": 52.249800000000036,
+        "min": 1.5,
+        "max": 86.3999999999999
+      },
+      "npc_food": {
+        "mean": 66.30359999999996,
+        "min": 0.0,
+        "max": 228.749999999999
+      },
+      "hook_events": {
+        "mean": 0.24,
+        "min": 0,
+        "max": 1
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.656,
+        "min": 0,
+        "max": 5
+      },
+      "wrap_usage": {
+        "mean": 0.0,
+        "min": 0,
+        "max": 0
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.568,
+        "min": 0.0,
+        "max": 20.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.056,
+        "min": 0.0,
+        "max": 5.0
+      },
+      "longest_return_stall": {
+        "mean": 4.028,
+        "min": 0.0,
+        "max": 30.0
+      },
+      "fish_win_rate": 0.324,
+      "net_catch_rate": 0.512,
+      "home_completion_rate": 0.324,
+      "hook_rate": 0.24,
+      "npc_wrong_hook_rate": 0.952
+    },
+    "native_AI/duel": {
+      "runs": 250,
+      "completed": 250,
+      "valid": 250,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 52.91579999999827,
+        "min": 28.333333333333,
+        "max": 94.9166666666626
+      },
+      "food": {
+        "mean": 59.95920000000002,
+        "min": 27.75,
+        "max": 88.2
+      },
+      "npc_food": {
+        "mean": 35.5554,
+        "min": 0.0,
+        "max": 120.45
+      },
+      "hook_events": {
+        "mean": 0.224,
+        "min": 0,
+        "max": 2
+      },
+      "npc_wrong_hooks": {
+        "mean": 0.86,
+        "min": 0,
+        "max": 3
+      },
+      "wrap_usage": {
+        "mean": 0.1,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.076,
+        "min": 0.0,
+        "max": 6.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.048,
+        "min": 0.0,
+        "max": 6.0
+      },
+      "longest_return_stall": {
+        "mean": 12.796,
+        "min": 0.0,
+        "max": 29.0
+      },
+      "fish_win_rate": 0.88,
+      "net_catch_rate": 0.016,
+      "home_completion_rate": 0.88,
+      "hook_rate": 0.22,
+      "npc_wrong_hook_rate": 0.592
+    },
+    "native_AI/survival": {
+      "runs": 250,
+      "completed": 250,
+      "valid": 250,
+      "supply_deadlocks": 0,
+      "duration": {
+        "mean": 47.563533333331904,
+        "min": 25.7666666666665,
+        "max": 72.1833333333305
+      },
+      "food": {
+        "mean": 61.88160000000001,
+        "min": 30.0,
+        "max": 97.9499999999999
+      },
+      "npc_food": {
+        "mean": 38.48819999999997,
+        "min": 0.0,
+        "max": 107.25
+      },
+      "hook_events": {
+        "mean": 0.388,
+        "min": 0,
+        "max": 2
+      },
+      "npc_wrong_hooks": {
+        "mean": 1.032,
+        "min": 0,
+        "max": 3
+      },
+      "wrap_usage": {
+        "mean": 0.16,
+        "min": 0,
+        "max": 1
+      },
+      "longest_no_food_seconds": {
+        "mean": 0.348,
+        "min": 0.0,
+        "max": 14.0
+      },
+      "longest_eligible_supply_stall": {
+        "mean": 0.172,
+        "min": 0.0,
+        "max": 7.0
+      },
+      "longest_return_stall": {
+        "mean": 9.212,
+        "min": 0.0,
+        "max": 26.0
+      },
+      "fish_win_rate": 0.956,
+      "net_catch_rate": 0.0,
+      "home_completion_rate": 0.956,
+      "hook_rate": 0.332,
+      "npc_wrong_hook_rate": 0.752
+    }
+  },
+  "rechecked_runs": [
+    31,
+    109,
+    143,
+    151,
+    195,
+    265,
+    303,
+    315,
+    351,
+    389,
+    427,
+    435,
+    485,
+    511,
+    533,
+    561,
+    579,
+    633,
+    765
+  ],
+  "test_correction": "Harness v1 incorrectly required net-caught fish to remain inside water during legal lift/retraction. v2 permits net-caught/landing positions and still validates full final Snapshot. All stopped/invalid rounds replayed from tick zero; original files retained."
+}

@@ -1,0 +1,40 @@
+{
+  "profile": "current",
+  "pack": null,
+  "results": [
+    {
+      "returncode": 0,
+      "timed_out": false,
+      "duration_seconds": 1.187,
+      "launch_error": false,
+      "passed": 26,
+      "failed": 0,
+      "count_basis": "summary",
+      "status": "passed",
+      "reason": "",
+      "suite": "network_rules_v012",
+      "registry_status": "current",
+      "log": "network_rules_v012.log",
+      "command": [
+        "E:\\chrome\u4e0b\u8f7d\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "E:\\Fish_catches_people\\BaitbreakPixel",
+        "--script",
+        "res://tests/network_rules_v012.gd",
+        "--",
+        "--test-profile",
+        "--capture-output-directory=E:\\Fish_catches_people\\BaitbreakPixel\\artifacts\\p5-final-fixture-recheck\\captures\\network_rules_v012"
+      ]
+    }
+  ],
+  "counts": {
+    "passed": 1,
+    "failed": 0,
+    "timeout": 0,
+    "blocked": 0,
+    "retired": 0
+  }
+}

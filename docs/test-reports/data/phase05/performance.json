@@ -1,0 +1,54 @@
+{
+	"engine": "4.7.2-stable (official)",
+	"notes": "Cold visual preparation includes profile load, plan, CPU bake, terrain and texture upload API; not GPU fence timing. Samples may overlap other validation processes. Warm view calls perform no bake or hashing.",
+	"os": "Windows",
+	"passed": true,
+	"renderer": "gl_compatibility",
+	"rows": [
+		{
+			"context_with_validation_us": 2345,
+			"generation_with_validation_us": 2858,
+			"independent_validation_us": 1978,
+			"map_seed": 42,
+			"warm_resolver_mean_us": 6.46666666666667,
+			"warm_view_prepare_mean_us": 0.425,
+			"watergen_prepare_including_bake_upload_us": 1596369
+		},
+		{
+			"context_with_validation_us": 1732,
+			"generation_with_validation_us": 1949,
+			"independent_validation_us": 1428,
+			"map_seed": 2166,
+			"warm_resolver_mean_us": 6.58333333333333,
+			"warm_view_prepare_mean_us": 0.8,
+			"watergen_prepare_including_bake_upload_us": 1577610
+		},
+		{
+			"context_with_validation_us": 3298,
+			"generation_with_validation_us": 3310,
+			"independent_validation_us": 2111,
+			"map_seed": 1346,
+			"warm_resolver_mean_us": 9.19166666666667,
+			"warm_view_prepare_mean_us": 0.95,
+			"watergen_prepare_including_bake_upload_us": 1920893
+		},
+		{
+			"context_with_validation_us": 3064,
+			"generation_with_validation_us": 5497,
+			"independent_validation_us": 2644,
+			"map_seed": 296,
+			"warm_resolver_mean_us": 16.35,
+			"warm_view_prepare_mean_us": 1.06666666666667,
+			"watergen_prepare_including_bake_upload_us": 3214897
+		},
+		{
+			"context_with_validation_us": 3191,
+			"generation_with_validation_us": 3874,
+			"independent_validation_us": 2571,
+			"map_seed": 123456789,
+			"warm_resolver_mean_us": 16.3916666666667,
+			"warm_view_prepare_mean_us": 1.05833333333333,
+			"watergen_prepare_including_bake_upload_us": 3105006
+		}
+	]
+}

@@ -84,7 +84,7 @@ func run() -> void:
 	session.local_role="angler"; session.is_host=false
 	var projected:=AnglerPublic.capture(game)
 	var original_bytes:=var_to_bytes(original); var projected_bytes:=var_to_bytes(projected)
-	var packet := {"kind":"state","v":Protocol.VERSION,"session":session.session_id,"round":1,"seq":10,"phase":"playing","countdown":0.0,"ack":5,"build":Protocol.BUILD,"map_ref":session.map_ref.duplicate(true),"snapshot":Protocol.pack_state(projected)}
+	var packet := {"kind":"state","v":Protocol.VERSION,"session":session.session_id,"round":1,"seq":10,"phase":"playing","countdown":0.0,"ack":5,"build":Protocol.BUILD,"map_source":session.map_source.duplicate(true),"map_ref":session.map_ref.duplicate(true),"snapshot":Protocol.pack_state(projected)}
 	var pieces := chunks(packet)
 	session.received_state_seq=-1
 	for index in range(pieces.size()-1,0,-1): session._receive_chunk(pieces[index]); session._receive_chunk(pieces[index])

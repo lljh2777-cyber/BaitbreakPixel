@@ -304,8 +304,8 @@ func _room(frame: Control) -> void:
 		var ips: Array[String]=[]
 		for ip in IP.get_local_addresses():
 			if "." in ip and not ip.begins_with("127.") and not ip.begins_with("169.254."): ips.append(ip)
-		text(frame,"房主 IP："+(" / ".join(ips.slice(0,2)) if not ips.is_empty() else "127.0.0.1"),Vector2(20,160),12,MINT,418)
-		text(frame,"端口 %d · 本机加入填 127.0.0.1" % game.network.port,Vector2(20,183),12,CREAM,418)
+		text(frame,"房主 IP："+(" / ".join(ips.slice(0,2)) if not ips.is_empty() else "127.0.0.1"),Vector2(20,145),12,MINT,418)
+		text(frame,"端口 %d · 本机加入填 127.0.0.1" % game.network.port,Vector2(20,168),12,CREAM,418)
 	else: text(frame,"地址 %s : %d" % [game.network.address,game.network.port],Vector2(20,161),12,MINT,418)
 	room_map=text(frame,game.map_caption(game.network.map_source),Vector2(20,194),11,MINT,335)
 	var copy_seed:=button(frame,"复制",190,func():

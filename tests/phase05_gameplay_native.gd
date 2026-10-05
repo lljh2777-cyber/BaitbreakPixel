@@ -24,6 +24,8 @@ func render(name:String)->Image:
 	return image
 func run()->void:
 	if DisplayServer.get_name()=="headless": push_error("renderer required"); quit(2); return
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--capture-output-directory="): output=argument.trim_prefix("--capture-output-directory=")
 	DirAccess.make_dir_recursive_absolute(output)
 	game=Main.instantiate(); root.add_child(game); game.capture_mode="p5-native"
 	game.menu.close(); freeze(game)
