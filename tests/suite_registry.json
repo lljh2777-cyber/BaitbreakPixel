@@ -705,6 +705,13 @@
       "mode": "headless",
       "timeout_seconds": 1800
     },
+    "phase05_native": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 180,
+      "pack_compatible": false,
+      "pack_reason": "Developer preview and corpus live in tools/docs, intentionally outside the game PCK."
+    },
     "phase04_map_definition": {
       "status": "current",
       "mode": "headless",

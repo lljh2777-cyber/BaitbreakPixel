@@ -26,7 +26,7 @@ static func generate(request: Variant, attempt: int=0) -> Dictionary:
 		"meta":{"id":"generated_pond_v1_%d" % request.map_seed,"revision":1,"contract_version":1,"content_hash":""},
 		"bounds":{"size":Profile.SIZE,"water":Profile.WATER,"floor_y":Profile.FLOOR,"net_area":Profile.NET_AREA,"vegetation_drag_zones":[]},
 		"anchors":{"player_spawn":Profile.SPAWN,"home":Profile.HOME},"bait_sites":[],
-		"interaction_features":[],"visual_features":[],"presentation":{"visual_profile_id":"legacy_pond","wood_groups":[]},
+		"interaction_features":[],"visual_features":[],"presentation":{"visual_profile_id":"generated_pond_prototype","wood_groups":[]},
 	}
 	# Ordered west-to-east candidate bands leave >=128px horizontal separation.
 	# Actual food type, selected sites and hook assignment remain simulation work.

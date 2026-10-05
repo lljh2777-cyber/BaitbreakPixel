@@ -13,7 +13,7 @@ Windows 可使用 `D:\python\python.exe`；用 `--godot "引擎可执行文件�
 
 ## 注册表与状态
 
-[`suite_registry.json`](suite_registry.json) 显式登记全部 136 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
+[`suite_registry.json`](suite_registry.json) 显式登记全部 142 个顶层 GDScript 入口。新增/改名后必须同步注册表，否则运行器拒绝运行。
 
 - `current`：当前有效的回归门禁；不按文件名版本新旧决定。`--profile current` 运行无窗口套件，`--profile native` 运行图形套件。已重新验证的 effort、net_animation、rules_network 等较早版本仍在当前门禁中
 - `historical`：当前检出复现了失败的诊断套件。保留原断言，失败仍返回非零；这不是“已证明所有断言过时”，更不是通过。具体原因和结果见[维护报告](../docs/test-reports/TEST-INFRASTRUCTURE-MAINTENANCE-2026-10-02.md)
@@ -208,3 +208,14 @@ git archive --format=tar 8831f52ee7daae5d592282d5da432cbd67fccfb0 | tar -x -C ar
 新增 source-only 的 map_presentation、shore_projection、map_fixture、map_equivalence 和 map_native 套件，均已注册。原生 map_native 使用未注册的测试地图，故明确标记 pack_compatible=false；它不绕过发行包排除 tests/ 的规则。
 
 最终全状态对照使用 tools/phase04_compare_presentation.py，指定 --godot 和新的 --output-directory。基线固定7efe59b；需先以 git archive 将其解到 artifacts/p44-frozen-baseline-7efe59b，或通过 --baseline 指定同一提交的原样源码。驱动验证基线/输入脚本身份及运行期间源码稳定性，比较8场景2100tick与86检查点的完整Variant字节，不做字段排除或批量SHA256。原生完整RGBA对照和真实ENet门另列，自动结果不代替人工手感。
+
+## Phase 5 第一轮生成原型
+
+- `phase05_generation_request`：严格 recipe、整数种子与独立整数 RNG。
+- `phase05_generator_determinism`：重复生成/完整输出与 canonical 对照、固定版本 hash、模拟 RNG 隔离、视觉元数据不改变 Authority hash。
+- `phase05_generated_features`：整数几何、六个饵点、稳定 ID、连接木统一组、能力语义及普通 MapContext。
+- `phase05_playability`：保护区、密度、NPC 采样、锚点/网路指标、主动非法输入和固定重试耗尽。
+- `phase05_seed_sweep`：默认 10,000 seeds，每 seed 生成两次并重新经过双验证。报告写至 artifacts/phase05-seed-sweep.json；注册超时 1800 秒。
+- `phase05_native`：独立开发预览和代表 Seed；全图截图、像素检查、手动 Seed/检查层、默认 pond_v2 不变。不启动比赛，不表示 P5.3 已完成。
+
+独立运行大样本门：`D:\python\python.exe tools/run_tests.py --godot <Godot控制台路径> --suite phase05_seed_sweep --output-directory artifacts/phase05-sweep`。无需逐 Seed 截图或逐文件 SHA256 扫描。

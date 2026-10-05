@@ -7,7 +7,7 @@
 
 用户已确认 0.25.2 社会线索试玩通过。0.25.3 让 NPC 真实误咬钩、自动挣扎、逃脱、断线或被拉起。钓错 NPC 不结束比赛；玩家可趁机吃饵、回巢，钓鱼人需要重新部署。NPC 捕获后暂离生态，延迟生成新 ID 的鱼。
 
-Phase 4 已由用户人工确认；Phase 5 第一轮按[生成契约](docs/architecture/MAP-GENERATION-PROTOTYPE.md)推进。仅开发生成器、验证和独立预览，正常游戏仍使用经典池塘，Snapshot schema16 与 Map Contract v1 保持。
+Phase 4 已由用户人工确认；Phase 5 第一轮按[生成契约](docs/architecture/MAP-GENERATION-PROTOTYPE.md)推进。已完成 P5.0/P5.1 原型与 10,000 个种子验证；运行 `./Preview-Generated-Pond.ps1 -MapSeed 42` 查看独立开发预览，正常游戏仍使用经典池塘，Snapshot schema16 与 Map Contract v1 保持。
 
 0.26.5 新增钓鱼人按住鼠标右键加速左右移竿：基础速度 90 px/s，加速 180 px/s，松开恢复；本地与联机一致。当前源码尚未发布新试玩包，公开包仍为 0.26.4。见[本次验证记录](docs/test-reports/ANGLER-MOVE-BOOST-0.26.5.md)。
 

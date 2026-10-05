@@ -21,3 +21,23 @@ P5.1 布局：GeneratedPondV1 输出 contract-v1 的六个食物候选点、2–
 P5.1 初版可玩性门：先完整结构校验，再检查固定框架、饵点间距/边缘/巢穴距离、保护区、类型预算、覆盖密度、NPC 空间采样、锚点数量/跨度/饵点距离及 24 条默认网口膨胀 AABB 路线。路由指标采用保守矩形近似；不等同于游戏的完整多边形绳路与不同规则参数验证。正常比赛仍不使用生成地图。
 
 10,000 种子（0..9999）每个重复生成两次并独立复验：20,000 项通过，0 接受非法地图、0 非确定性、0 最终失败、10,000 个不同 Authority content hash；总耗时 125.17 秒，生成含双门平均 4.14 ms。初版非法地图/重试测试 17 项通过。统计保存在 docs/test-reports/data/generation-0270/seed-sweep.json，极端布局语料为 corpus.json。跨平台确定性目前仅以整数实现和 Windows 重复生成验证，不宣称已跑另一操作系统。
+
+## 独立开发预览
+
+在仓库目录运行 PowerShell：
+
+```powershell
+.\Preview-Generated-Pond.ps1 -MapSeed 42
+```
+
+或者使用 Godot console：
+
+```powershell
+& 'E:\chrome下载\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe' --path . --script res://tools/preview_generated_pond.gd -- --map-seed=42
+```
+
+预览支持手动 Seed、重新生成同 Seed、随机 Seed、复制 Seed、显示/隐藏检查层。它直接读取 MapContext 和已有像素木石草绘制模块，不创建 WorldSimulation，不启动比赛、不登记地图。检查层显示保护区与能力轮廓；六个标记是候选食物位置，不包含未来食物/Hook 真值。可加 `--preview-output=E:/Fish_catches_people/BaitbreakPixel/artifacts/preview-42.png` 保存图并退出。
+
+生成地图使用独立的 generated_pond_prototype 视觉 profile，避免把经典池塘的固定木纹路径套到新木组。未接入 Watergen；地图轮廓均由 Authority 多边形提供。覆盖率是多边形面积之和除以水域面积（重叠部分重复计入），用于原型预算比较，不是精确并集覆盖率。
+
+代表 Seed：普通 42、开阔 2166、密集 1346、抄网受限 296、饵点分散 937、较聚集 1141、锚点多 64、较少 22。先审查形态与布局，下一轮再进行 P5.2/P5.3 的完整可玩性、全域 routing 和实际比赛。

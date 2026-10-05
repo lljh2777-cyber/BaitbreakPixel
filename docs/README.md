@@ -31,6 +31,7 @@
 
 ## 验证与历史
 
+- [0.27.0 Phase 5 地图生成原型与预览](test-reports/PHASE05-GENERATION-PROTOTYPE-0.27.0.md)
 - [0.26.4 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.26.4.md)
 - [0.26.1 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.26.1.md)
 - [0.26.0 Windows 试玩包与发布核验](test-reports/GITHUB-RELEASE-0.26.0.md)
