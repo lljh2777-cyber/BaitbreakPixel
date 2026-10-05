@@ -15,3 +15,5 @@ Map RNG 使用明确的 31 位整数派生及 Park–Miller 48271 序列，仅�
 ## 分步记录
 
 P5.0：请求/整数随机源测试 603 项通过，既有右键移竿控制 199 项通过，编辑器导入通过。首次 seed_derivation 使用了引擎保留参数名 namespace，解析失败后改名 domain；原日志保留在 artifacts/phase05-step0，复测为 artifacts/phase05-step0-fixed。
+
+P5.1 布局：GeneratedPondV1 输出 contract-v1 的六个食物候选点、2–3 个连接木组、3–5 个石块、5–8 片交互水草。固定次数分区尝试后失败返回空候选；MapGenerator 最多重试 32 次，明确失败不回退。100 个种子逐一重复生成，403 项确定性检查、775 项几何/能力/MapContext 检查与编辑器导入通过（artifacts/phase05-step1）。本步仅结构校验，下一步增加可玩性门与大样本检查。
