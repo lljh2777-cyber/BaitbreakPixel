@@ -19,6 +19,7 @@
 
 报告按版本由新到旧排列，记录当时的测试环境、范围和结果。旧版玩法断言可能已经退役；复现时请结合对应版本。
 
+- [0.26.5 钓鱼人右键加速移竿](ANGLER-MOVE-BOOST-0.26.5.md)
 - [0.26.4 Windows 试玩包与发布核验](GITHUB-RELEASE-0.26.4.md)
 - [0.26.1 Windows 试玩包与发布核验](GITHUB-RELEASE-0.26.1.md)
 - [0.26.0 Windows 试玩包与发布核验](GITHUB-RELEASE-0.26.0.md)

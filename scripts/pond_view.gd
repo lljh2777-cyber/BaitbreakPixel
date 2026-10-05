@@ -267,7 +267,7 @@ func _angler_hud(_t: float) -> void:
 	label_at(Vector2(529,20),"%02d:%02d" % [remaining/60,remaining%60] if world.challenge and world.rules.timer_enabled else ("不限时" if world.challenge else "练习 · F2"),14,CREAM)
 	draw_rect(Rect2(0,327,640,33),INK)
 	label_at(Vector2(12,341),game.angler_hint(),11,GOLD)
-	label_at(Vector2(12,355),"A/D 左右移竿   W/S 收放线   Q 下钩 / 补饵   F 解缠   E 观察 · 左键 A/B",10,Color("9cbbb4"))
+	label_at(Vector2(12,355),"A/D 移竿 · 右键加速   W/S 收放线   Q 下钩   F 解缠   E 观察 · 左键 A/B",10,Color("9cbbb4"))
 	label_at(Vector2(584,350),"H 帮助",10,CREAM)
 	# Opponent checks remain autonomous; never invite the angler to press a fish QTE.
 	panel(Rect2(10,65,151,50))

@@ -35,6 +35,19 @@ func _initialize() -> void:
 		var command: Dictionary=adapter.angler_command(local,Vector2(232,180))
 		check(command[pair[1]],"local adapter emits "+pair[1])
 		Input.action_release(pair[0])
+	var right_button:=InputEventMouseButton.new()
+	right_button.button_index=MOUSE_BUTTON_RIGHT; right_button.pressed=true
+	Input.parse_input_event(right_button); Input.flush_buffered_events()
+	Input.action_press("right")
+	var boosted: Dictionary=adapter.angler_command(local,Vector2(232,180))
+	check(boosted.dash and boosted.walk==1.0,"physical right mouse plus D emits held boost")
+	check(not boosted.drag and boosted.net_events.is_empty(),"right mouse boost does not select net points")
+	Input.action_press("left")
+	check(adapter.angler_command(local,Vector2.ZERO).walk==0,"A and D cancel even while right mouse held")
+	Input.action_release("left"); Input.action_release("right")
+	check(adapter.fish_command(local,Vector2.ZERO).dash,"shared right mouse mapping still boosts fish")
+	right_button.pressed=false; Input.parse_input_event(right_button); Input.flush_buffered_events()
+	check(not adapter.angler_command(local,Vector2.ZERO).dash,"mouse release immediately clears rod boost")
 	pond.free(); local.free()
 	for seed_value in [42,731,2649]:
 		for network in [false,true]:
@@ -77,6 +90,28 @@ func _initialize() -> void:
 			check(p.accept(w.capture_snapshot(),1.0),label+"schema13 snapshot accepted")
 			check(Shore.rig_index(p.sample(1.0))==0 and p.world.angler.free_line_length==w.angler.free_line_length,label+"remote render retains physical ownership/spool")
 			p.dispose()
+			# Keep boost timing independent of the deployed-bait/ownership fixture.
+			w.reset_world({"ruleset":"duel","seed":seed_value,"rules":{"water_strength":0,"hunger_enabled":false,"timer_enabled":false}})
+			x=w.angler.x
+			tick(w,{"walk":1.0,"dash":true},60,network)
+			check(is_equal_approx(w.angler.x-x,180),label+"D plus right mouse moves 180 px in one second")
+			tick(w,{"walk":-1.0,"dash":true},60,network)
+			check(is_equal_approx(w.angler.x,x),label+"boost is symmetric in both directions")
+			tick(w,{"dash":true},10,network)
+			check(is_equal_approx(w.angler.x,x),label+"right mouse alone never moves the rod")
+			tick(w,{"walk":1.0,"dash":false},60,network)
+			check(is_equal_approx(w.angler.x-x,90),label+"releasing boost restores ordinary speed")
+			for invalid in [1,"true",2.0]:
+				var before:float=w.angler.x
+				tick(w,{"walk":1.0,"dash":invalid},1,network)
+				check(is_equal_approx(w.angler.x-before,1.5),label+"non-boolean boost rejected "+str(invalid))
+			var stopped:float=w.angler.x
+			tick(w,Protocol.neutral("angler",w),10,network)
+			check(w.angler.x==stopped,label+"neutral input stops movement and boost")
+			w.angler.x=18; tick(w,{"walk":-1.0,"dash":true},1,network)
+			check(w.angler.x==18,label+"boost left bound")
+			w.angler.x=w.map_context.size.x-52; tick(w,{"walk":1.0,"dash":true},1,network)
+			check(w.angler.x==w.map_context.size.x-52,label+"boost right bound")
 			w.reset_world({"ruleset":"duel","seed":seed_value})
 			check(Shore.rig_index(w)==-1 and w.angler.reel_phase==0 and w.angler.release_phase==0 and w.angler.reel_hand_amount==0,label+"restart fully undeployed")
 			w.free()
@@ -99,6 +134,14 @@ func _initialize() -> void:
 		check(w.angler.feedback_reel_speed(w)==0,"hooked upper line cap suppresses payout: latched=%s" % latched_value)
 		w.rope_length=0; w.fish_line_length=0; w.reel_speed=-36
 		check(w.angler.feedback_reel_speed(w)==0,"hooked lower line cap suppresses reel: latched=%s" % latched_value)
+	var fixed_x:float=w.angler.x
+	w.landing=true; w.angler.update(w,1.0,{"walk":1.0,"dash":true})
+	check(w.angler.x==fixed_x,"boost cannot bypass landing movement lock")
+	w.landing=false; w.net_state="caught"; w.angler.update(w,1.0,{"walk":1.0,"dash":true})
+	check(w.angler.x==fixed_x,"boost cannot bypass captured movement lock")
+	w.net_state="wait"
+	w.rules.angler_speed=120.0; tick(w,{"walk":1.0,"dash":true},30)
+	check(is_equal_approx(w.angler.x-fixed_x,120),"boost respects configured base movement speed")
 	var previous:float=-1
 	for value in [-10.0,0.0,5.0,20.0,50.0,100.0,110.0]:
 		var width:float=View.satiety_bar_width(value)

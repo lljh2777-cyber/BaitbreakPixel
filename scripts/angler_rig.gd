@@ -59,6 +59,7 @@ func configure_map(context: RefCounted) -> void:
 
 const Rules = preload("res://scripts/game_rules.gd")
 const CAST_SECONDS := 0.7
+const MOVE_BOOST := 2.0
 
 func reset() -> void:
 	assert(_map_context!=null,"configure_map must precede angler reset")
@@ -212,7 +213,8 @@ func update(game: Node2D, delta: float, command: Dictionary) -> void:
 	var raw_cursor := Vector2(command.get("target",cursor))
 	cursor=raw_cursor.clamp(_cursor_bounds.position,_cursor_bounds.end)
 	anchor_before=anchor()
-	if not game.line_landing() and game.net_state!="caught": x=clampf(x+clampf(float(command.get("walk",0)),-1,1)*game.rule("angler_speed")*delta,_walk_limits.x,_walk_limits.y)
+	var move_speed: float=game.rule("angler_speed")*(MOVE_BOOST if command.get("dash",false) else 1.0)
+	if not game.line_landing() and game.net_state!="caught": x=clampf(x+clampf(float(command.get("walk",0)),-1,1)*move_speed*delta,_walk_limits.x,_walk_limits.y)
 	var bank_speed := (anchor().x-anchor_before.x)/maxf(delta,0.001)
 	var count := maxi(1,ceili(delta*120))
 	for part in count:

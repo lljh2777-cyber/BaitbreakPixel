@@ -58,7 +58,7 @@ const ITEMS := [
 	{"group":"饵与吸食","id":"hook_immunity","label":"脱钩后保护时间","value":1.8,"min":0.1,"max":8.0,"step":0.1,"unit":"秒","help":"避免刚脱钩立即再次咬钩。"},
 	{"group":"饵与吸食","id":"bait_cycle","label":"换饵等待","value":30.0,"min":5.0,"max":120.0,"step":1.0,"unit":"秒","help":"单人挑战中固定饵料的轮换等待。"},
 	{"group":"饵与吸食","id":"bait_refill","label":"换饵间隔","value":5.0,"min":0.5,"max":30.0,"step":0.5,"unit":"秒","help":"收走饵料后，下一团饵投入前的等待。"},
-	{"group":"收放线","id":"angler_speed","label":"鱼竿左右移动速度","value":90.0,"min":20.0,"max":180.0,"step":2.0,"unit":"像素/秒","help":"影响岸上操作和鱼线惯性。"},
+	{"group":"收放线","id":"angler_speed","label":"鱼竿左右移动速度","value":90.0,"min":20.0,"max":180.0,"step":2.0,"unit":"像素/秒","help":"移竿的基础速度；按住右键时为 2 倍，影响岸上操作和鱼线惯性。"},
 	{"group":"收放线","id":"reel_speed","label":"手动收线速度","value":36.0,"min":5.0,"max":120.0,"step":1.0,"unit":"像素/秒","help":"W 的基础收线速度，发力 QTE 可短暂改变它。"},
 	{"group":"收放线","id":"release_speed","label":"手动放线速度","value":90.0,"min":10.0,"max":240.0,"step":5.0,"unit":"像素/秒","help":"S 的放线速度。"},
 	{"group":"收放线","id":"line_response","label":"收放线响应倍率","value":1.0,"min":0.25,"max":3.0,"step":0.05,"unit":"倍","help":"咬钩前后都生效；越大越快调整线速。"},

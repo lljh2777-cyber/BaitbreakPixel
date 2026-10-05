@@ -58,7 +58,7 @@ func angler_command(_world: Node2D, pointer: Vector2) -> Dictionary:
 	var drag := Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 	if needs_neutral and not held and not drag: needs_neutral=false
 	var result := {
-		"target":pointer,"walk":Input.get_axis("left","right"),
+		"target":pointer,"walk":Input.get_axis("left","right"),"dash":Input.is_action_pressed("dash"),
 		"deploy":Input.is_action_just_pressed("slow"),"reel":Input.is_action_pressed("up"),"release":Input.is_action_pressed("down"),
 		"untangle":Input.is_action_just_pressed("untangle"),
 		"qte":qte_pressed(),

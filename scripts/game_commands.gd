@@ -33,7 +33,7 @@ static func angler(command: Dictionary, previous_cursor: Vector2) -> Dictionary:
 			elif event.get("kind","")=="point" and event.get("point") is Vector2 and event.point.is_finite():
 				events.append({"kind":"point","point":event.point})
 	return {
-		"walk":clampf(number(command.get("walk"),0),-1,1),
+		"walk":clampf(number(command.get("walk"),0),-1,1),"dash":flag(command,"dash"),
 		"target":vector(command.get("target"),previous_cursor),
 		"deploy":flag(command,"deploy"),"reel":flag(command,"reel"),"release":flag(command,"release"),
 		"untangle":flag(command,"untangle"),

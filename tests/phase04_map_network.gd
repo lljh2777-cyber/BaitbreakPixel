@@ -62,7 +62,7 @@ func same_world_without_pause(before: Dictionary, world: Node2D) -> bool:
 	return before==after
 
 func pure_checks() -> void:
-	check(Protocol.BUILD=="0.26.4" and Fish.SCHEMA==2 and World.Snapshot.SCHEMA==16,"exact build, public fish schema2 and authority schema16 remain distinct")
+	check(Protocol.BUILD=="0.26.5" and Fish.SCHEMA==2 and World.Snapshot.SCHEMA==16,"exact build, public fish schema2 and authority schema16 remain distinct")
 	var authority:=World.new(); authority.reset_world({"seed":4262,"ruleset":"duel"})
 	var receiver:=World.new(); receiver.reset_world({"seed":9})
 	for role: String in ["fish","angler"]:
@@ -170,8 +170,19 @@ func live_checks(host_role: String) -> void:
 	check(started,"ENet "+role+" validated start reaches playing")
 	if not started: await cleanup(); return
 	for tick in 24: await frame({"move":Vector2.RIGHT,"walk":1},{"move":Vector2.RIGHT,"walk":1})
+	var rod_input: Dictionary={"walk":1.0,"dash":true}
+	for tick in 12: await frame(rod_input if host_role=="angler" else {},rod_input if role=="angler" else {})
+	var rod_x:float=host.angler.x
+	for tick in 30: await frame(rod_input if host_role=="angler" else {},rod_input if role=="angler" else {})
+	check(is_equal_approx(host.angler.x-rod_x,host.rule("angler_speed")),"ENet "+role+" held right mouse doubles authoritative rod speed")
+	rod_input.dash=false
+	for tick in 12: await frame(rod_input if host_role=="angler" else {},rod_input if role=="angler" else {})
+	rod_x=host.angler.x
+	for tick in 30: await frame(rod_input if host_role=="angler" else {},rod_input if role=="angler" else {})
+	check(is_equal_approx(host.angler.x-rod_x,host.rule("angler_speed")*0.5),"ENet "+role+" releasing right mouse restores authoritative speed")
 	host.match_paused=true; host.network._send_state(true)
 	for tick in 12: await frame()
+	check(client.angler.x==host.angler.x,"ENet "+role+" boosted rod position reaches remote presentation")
 	check(client.rounds_started==1 and host.rounds_started==1 and client.network.local_role==role,"ENet "+role+" initializes exactly one complementary round")
 	check(client.map_context.map_ref==ref() and client.targets==host.targets and client.network.presentation.world.targets==host.targets,"ENet "+role+" client/render world resolve local map geometry")
 	check(client.npc_fishes==NPCPublic.capture(host.npc_fishes) and NPCPublic.valid(client.npc_fishes,1,client.map_context.water),"ENet "+role+" real NPC authority movement synchronizes inside map bounds")

@@ -129,7 +129,7 @@ func _title(frame: Control) -> void:
 	button(frame,"设置",274,func(): open("settings"),false,124)
 	var quit := button(frame,"退出",274,func(): get_tree().quit(),false,124)
 	quit.position.x = 150
-	text(content,"0.26.4 · 地图抽象完成 · P4.6",Vector2(341,280),10,Color("91afa7"))
+	text(content,"0.26.5 · 右键加速移竿",Vector2(341,280),10,Color("91afa7"))
 	text(content,"小鱼 · 吃饵脱身",Vector2(391,119),18,GOLD)
 	text(content,"人类 · 收线抄网",Vector2(391,159),18,GOLD)
 	text(content,"独自练习 · 双人对战",Vector2(375,199),16,GOLD)
@@ -168,7 +168,7 @@ func _help(frame: Control) -> void:
 	]
 	if human:
 		lines=[
-			"A / D 左右移竿 · 浮漂沿横向水域移动",
+			"A / D 左右移竿 · 按住右键以 2 倍速度移动",
 			"Q 下钩；饵用完 / 断线后 Q 重新挂饵",
 			"W 收线 · S 放线，未咬钩时也能调整深度",
 			"F 解缠 · W/S 保持张力 %d–%d%%" % [game.rule("untangle_min")*100,game.rule("untangle_max")*100],

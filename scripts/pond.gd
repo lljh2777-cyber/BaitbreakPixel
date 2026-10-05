@@ -110,7 +110,7 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.26.4 | phase04-map-abstraction-final")
+	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.26.5 | angler-move-boost")
 
 func _register_inputs() -> void:
 	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[], "use":[KEY_E], "slow":[KEY_Q], "qte":[KEY_SPACE], "untangle":[KEY_F]}
@@ -265,7 +265,7 @@ func angler_hint() -> String:
 		if tension<rule("tension_low"): return "鱼正在找机会松口 · 按 W 收线"
 		if latched:
 			return "鱼线缠住 · 解缠恢复 %.1fs，W/S 保持控制" % untangle_cooldown if untangle_cooldown>0 else "鱼线缠住 · F 解缠，W/S 保持张力并按空格判定"
-		return "W 收线 · S 放线 · A/D 左右移竿 · E 观察 · 左键选 A/B"
+		return "W 收线 · S 放线 · A/D 移竿 · 右键加速 · E 观察"
 	if notice_age>0: return notice
 	return "Q 下钩 / 补饵 · W/S 收放线 · E 观察 · 左键选 A/B" if shared_session else "Q 下钩 / 补饵 · W 收线 / S 放线 · E 观察 · 左键选 A/B · F3 玩法规则"
 
