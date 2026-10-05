@@ -695,6 +695,16 @@
       "mode": "headless",
       "timeout_seconds": 180
     },
+    "phase05_playability": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 180
+    },
+    "phase05_seed_sweep": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 1800
+    },
     "phase04_map_definition": {
       "status": "current",
       "mode": "headless",
