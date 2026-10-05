@@ -1,3 +1,4 @@
+- [0.27.5 生成池塘架构](architecture/GENERATED-PONDS.md) · [P5 实施与验证](test-reports/PHASE05-COMPLETION.md)
 - [0.26.4 地图抽象最终架构](architecture/MAP-PRESENTATION-FINAL.md) · [完整验证与复测清单](test-reports/PHASE04-MAP-FINAL-0.26.4.md)
 - [0.26.2 地图存档与联机契约](architecture/MAP-SNAPSHOT-NETWORK.md) · [验证与人工门](test-reports/PHASE04-MAP-SNAPSHOT-NETWORK-0.26.2.md)
 - [0.26.1 Authority MapContext 架构](architecture/MAP-AUTHORITY-CONTEXT.md) · [验证与人工抽查](test-reports/PHASE04-MAP-AUTHORITY-0.26.1.md)

@@ -219,3 +219,13 @@ git archive --format=tar 8831f52ee7daae5d592282d5da432cbd67fccfb0 | tar -x -C ar
 - `phase05_native`：独立开发预览和代表 Seed；全图截图、像素检查、手动 Seed/检查层、默认 pond_v2 不变。不启动比赛，不表示 P5.3 已完成。
 
 独立运行大样本门：`D:\python\python.exe tools/run_tests.py --godot <Godot控制台路径> --suite phase05_seed_sweep --output-directory artifacts/phase05-sweep`。无需逐 Seed 截图或逐文件 SHA256 扫描。
+
+### P5 完整生成地图
+
+- phase05_runtime：真实比赛、完整路由范围、食物、NPC、钩、缠线与回巢。
+- phase05_snapshot / phase05_network：schema17 recipe + hash；冷重建、原子拒绝、两种角色真实 ENet。
+- phase05_watergen_boundary：严格公共几何出口，独立视觉种子与完整局的 Authority / RNG 一致性。
+- phase05_gameplay_native / phase05_ui：五张代表地图的实际 GL 画面与岸边投影，菜单 Seed / R / 新地图 / 设置持久化。
+- tools/phase05_run_gameplay.py：25 map seeds × 20 simulation seeds × 2 controllers，默认规则完整局统计。输出原始 JSONL 与按地图/策略汇总，不进行逐帧 SHA 扫描。
+
+P4 的当前兼容套件已更新为 schema17 / fish schema3，并明确排除新增 recipe 元数据做跨版本玩法比较；原来的几何、状态、RNG、隐私断言保持。

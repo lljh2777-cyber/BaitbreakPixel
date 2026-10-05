@@ -32,4 +32,14 @@ WatergenPublicAdapter 仅接受普通 MapContext，按公共交互目标导出�
 
 验证：phase05_watergen_boundary 298 项（包括三张地图完整局、两组视觉种子下的全 Authority 与 RNG 演化一致）；phase05_gameplay_native 61 项（普通/开阔/密集/极端/手动 Seed 五地图及岸边视角，实际 GL 截图，视觉 Seed 改变像素而不改变状态）。截图已人工查看；这是 agent 的图像审查，不代替用户最终体验确认。
 
-P5.6/P5.7 正在继续，尚未声明完成。
+经典回归也通过：phase04_map_native 44、phase04_map_presentation 442、phase04_shore_projection 3036 项。
+
+## P5.6：玩家入口（0.27.5）
+
+标题提供经典/生成池塘选择、随机/手动/复制 Seed；本地设置保存选择。R 和普通重开保留地图，暂停/结算中的“新地图”显式换 Seed。房主将所选 recipe 带入房间，客户端显示相同 Seed / generator version；连接期间不能本地换图。
+
+- phase05_ui 19 项通过：真实菜单信号、非法/手动 Seed、物理 R 路由、重开、新地图、保存/加载、host 配方和客户端锁定。
+- 原生图像审查发现生成木枝的旧固定 6 px 材质轴会压成深色，现按真实多边形提取材质中心线和宽度。联合组 alpha / 交互轮廓不变。更新后 native 61、presentation 442、wood_fade 57 项通过。
+- 发行 PCK 显式包含 data/watergen/*.json，防止导出丢失视觉配置。试玩说明和源版本同步为 0.27.5。
+
+P5.7 大样本、完整回归与试玩包验证正在收尾。

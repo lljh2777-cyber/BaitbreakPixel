@@ -118,7 +118,7 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.27.3 | generated-map-snapshot-network")
+	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.27.5 | generated-ponds")
 
 func _register_inputs() -> void:
 	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[], "use":[KEY_E], "slow":[KEY_Q], "qte":[KEY_SPACE], "untangle":[KEY_F]}
@@ -153,6 +153,9 @@ func _load_profile() -> void:
 		wins = maxi(0, int(file.get_value("record", "wins", 0)))
 		angler_wins=maxi(0,int(file.get_value("record","angler_wins",0)))
 		saved_rules=RulesStore.load_profile(file)
+		var map_kind:Variant=file.get_value("map","kind","classic")
+		var map_seed:Variant=file.get_value("map","seed",42)
+		if map_kind=="generated" and map_seed is int: select_pond("generated",str(map_seed))
 
 func save_profile() -> void:
 	var file := ConfigFile.new()
@@ -161,6 +164,8 @@ func save_profile() -> void:
 	file.set_value("record", "best", best_score)
 	file.set_value("record", "wins", wins)
 	file.set_value("record","angler_wins",angler_wins)
+	file.set_value("map","kind","generated" if selected_map_source.kind=="generated" else "classic")
+	file.set_value("map","seed",selected_map_source.get("map_seed",42))
 	RulesStore.save_profile(file,saved_rules)
 	save_error = file.save(save_path)
 
@@ -177,12 +182,6 @@ func restart_round() -> void:
 
 func return_to_title() -> void:
 	network.close(true)
-	for argument in OS.get_cmdline_user_args():
-		if argument.begins_with("--map-seed="):
-			var value:String=argument.trim_prefix("--map-seed=")
-			if not value.is_valid_int() or not MapResolver.resolve(MapResolver.generated(value.to_int())).valid:
-				push_error("Invalid generated map seed"); get_tree().quit(1); return
-			selected_map_source=MapResolver.generated(value.to_int())
 	reset(false)
 	menu.open("title")
 
@@ -192,8 +191,36 @@ func _network_changed() -> void:
 	elif network.status in ["waiting","connecting","failed"]: menu.open("room")
 	elif network.status in ["starting","countdown"]: menu.close()
 
+func select_pond(kind:String,seed_text:String="42")->bool:
+	if shared_session or (is_instance_valid(network) and network.active()): return false
+	var source:Dictionary
+	if kind=="classic": source=MapResolver.classic()
+	elif kind=="generated":
+		var value:=seed_text.strip_edges()
+		if value.length()>10 or not value.is_valid_int(): return false
+		source=MapResolver.generated(value.to_int())
+	else: return false
+	if not MapResolver.resolve(source).valid: return false
+	selected_map_source=source
+	return true
+
+func random_map_seed()->int:
+	var value:int=Crypto.new().generate_random_bytes(4).decode_u32(0) & 0x7fffffff
+	if value==selected_map_source.get("map_seed",-1): value=(value+1) & 0x7fffffff
+	return value
+
+func new_map_round()->void:
+	if not select_pond("generated",str(random_map_seed())): return
+	reset(challenge,player_role)
+	save_profile()
+
+func map_caption(source:Dictionary={})->String:
+	var selected:Dictionary=selected_map_source if source.is_empty() else source
+	if selected.get("kind")=="generated": return "生成池塘 · Seed %d · 生成器 v%d" % [selected.map_seed,selected.generator_version]
+	return "经典池塘"
+
 func network_settings() -> Dictionary:
-	return {"rules":Rules.normalize(saved_rules)}
+	return {"rules":Rules.normalize(saved_rules),"map_source":selected_map_source.duplicate(true)}
 
 func rules_preset_path() -> String:
 	return "user://rules-presets-test" if "--test-profile" in OS.get_cmdline_user_args() else "user://rules-presets"

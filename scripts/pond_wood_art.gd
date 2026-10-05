@@ -30,7 +30,7 @@ static func context(obstacle: Dictionary, presentation: RefCounted=null) -> Dict
 		for solid: Dictionary in presentation.solids:
 			if solid.seed==seed_value: points=PackedVector2Array(solid.points); break
 		polygons.append(points)
-		var fallback: Array=[[points[0],points[points.size()/2]],[6.0,6.0]]
+		var fallback: Array=_polygon_controls(points)
 		var controls: Array=SHAPES.get(seed_value,fallback) if presentation.visual_profile_id=="legacy_pond" else fallback
 		shapes.append(_curve(controls,seed_value))
 	var trunk: Dictionary=shapes[0]
@@ -38,6 +38,36 @@ static func context(obstacle: Dictionary, presentation: RefCounted=null) -> Dict
 		var join:=_sample(branch.path[-1],trunk)
 		branch.offset=Vector2(join.across,join.along-branch.length)
 	return {"seed":group[0],"shapes":shapes,"branches":shapes.slice(1),"polygons":polygons,"top":trunk.path[0].y,"legacy_profile":presentation.visual_profile_id=="legacy_pond","floor_y":presentation.floor_y}
+
+# General material centerline from the public silhouette. Unlike the legacy
+# hand-authored paths, generated branches can be mirrored, scaled and slanted.
+static func _polygon_controls(points:PackedVector2Array)->Array:
+	var center:=Vector2.ZERO
+	for p:Vector2 in points: center+=p
+	center/=points.size()
+	var xx:=0.0; var xy:=0.0; var yy:=0.0
+	for p:Vector2 in points:
+		var delta:=p-center
+		xx+=delta.x*delta.x; xy+=delta.x*delta.y; yy+=delta.y*delta.y
+	var axis:=Vector2.from_angle(0.5*atan2(2*xy,xx-yy))
+	var normal:=axis.orthogonal()
+	var low:=INF; var high:=-INF
+	for p:Vector2 in points:
+		var along:=axis.dot(p-center); low=minf(low,along); high=maxf(high,along)
+	var centers:Array=[]; var widths:Array=[]
+	for ratio:float in [0.04,0.30,0.60,0.96]:
+		var cut:=lerpf(low,high,ratio)
+		var left:=INF; var right:=-INF
+		for i in points.size():
+			var a:=points[i]-center; var b:=points[(i+1)%points.size()]-center
+			var da:=axis.dot(a); var db:=axis.dot(b)
+			if absf(db-da)<0.00001 or cut<minf(da,db) or cut>maxf(da,db): continue
+			var across:=normal.dot(a.lerp(b,(cut-da)/(db-da)))
+			left=minf(left,across); right=maxf(right,across)
+		centers.append(center+axis*cut+normal*(left+right)*0.5)
+		widths.append(maxf(2.0,(right-left)*0.5))
+	if widths[0]>widths[-1]: centers.reverse(); widths.reverse()
+	return [centers,widths]
 
 static func _curve(controls: Array, seed_value: int) -> Dictionary:
 	var path: Array[Vector2]=[]
@@ -119,6 +149,16 @@ static func color_at(point: Vector2, tree: Dictionary) -> Color:
 		radius=lerpf(base.radius,sample.radius,weight)
 		normal=Vector2(base.normal).lerp(sample.normal,weight).normalized()
 		if weight>0.5: tip=branch; tip_along=sample.along
+	if not tree.legacy_profile:
+		# Select the material axis of the actual branch under this pixel. A fixed
+		# six-pixel fallback used to clamp broad branches to a flat dark tone.
+		var best:=INF
+		for shape:Dictionary in tree.shapes:
+			var sample:=_sample(point,shape)
+			var distance:float=sample.distance/sample.radius
+			if distance>=best: continue
+			best=distance; along=sample.along; across=sample.across
+			radius=sample.radius; normal=sample.normal; tip=shape; tip_along=sample.along
 	var side:=clampf(across/radius,-1,1)
 	var light:=0.33+sqrt(maxf(0,1-side*side))*0.34+side*normal.dot(Vector2(-0.8,-0.6))*0.21
 	var tone:=0 if light<0.34 else (1 if light<0.49 else (2 if light<0.64 else 3))

@@ -807,7 +807,9 @@
     "phase05_network": {
       "status": "current",
       "mode": "headless",
-      "timeout_seconds": 240
+      "timeout_seconds": 240,
+      "pack_compatible": false,
+      "pack_reason": "Real ENet peer test helper is intentionally excluded from the PCK."
     },
     "phase05_watergen_boundary": {
       "status": "current",
@@ -818,6 +820,11 @@
       "status": "current",
       "mode": "renderer",
       "timeout_seconds": 300
+    },
+    "phase05_ui": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 180
     }
   }
 }

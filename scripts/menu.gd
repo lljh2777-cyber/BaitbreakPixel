@@ -15,6 +15,7 @@ var net_role := "fish"
 var room_status: Label
 var ready_button: Button
 var room_roles: Label
+var room_map: Label
 const CREAM := Color("fff0cd")
 const GOLD := Color("ffd379")
 const MINT := Color("8de0bd")
@@ -75,6 +76,7 @@ func open(which: String) -> void:
 	first_button = null
 	match which:
 		"title": _title(frame)
+		"map": _map_choice(frame)
 		"pause": _pause(frame)
 		"help": _help(frame)
 		"settings": _settings(frame)
@@ -129,7 +131,9 @@ func _title(frame: Control) -> void:
 	button(frame,"设置",274,func(): open("settings"),false,124)
 	var quit := button(frame,"退出",274,func(): get_tree().quit(),false,124)
 	quit.position.x = 150
-	text(content,"0.27.3 · 生成地图联机",Vector2(341,280),10,Color("91afa7"))
+	var maps:=button(content,game.map_caption(),301,func(): open("map"),false,275)
+	maps.position.x=341; maps.add_theme_font_size_override("font_size",10)
+	text(content,"0.27.5 · 程序生成池塘",Vector2(341,280),10,Color("91afa7"))
 	text(content,"小鱼 · 吃饵脱身",Vector2(391,119),18,GOLD)
 	text(content,"人类 · 收线抄网",Vector2(391,159),18,GOLD)
 	text(content,"独自练习 · 双人对战",Vector2(375,199),16,GOLD)
@@ -138,7 +142,11 @@ func _title(frame: Control) -> void:
 func _pause(frame: Control) -> void:
 	text(frame,"水下小憩",Vector2(20,19),24)
 	button(frame,"继续本局",57,close,true)
-	if not game.shared_session: button(frame,"重新开始本局",89,func(): game.restart_round())
+	if not game.shared_session:
+		if game.selected_map_source.kind=="generated":
+			button(frame,"同 Seed 重开 · R",89,func(): game.restart_round(),false,158)
+			var fresh:=button(frame,"新地图",89,func(): game.new_map_round(),false,158); fresh.position.x=188
+		else: button(frame,"重新开始本局",89,func(): game.restart_round())
 	else: text(frame,"联机对局继续运行，菜单不会暂停",Vector2(20,108),12,GOLD)
 	var offset := 0
 	if not game.challenge and not game.shared_session:
@@ -233,6 +241,9 @@ func _result(frame: Control) -> void:
 	text(frame,"危险张力 %.1fs / 拉扯 %.1fs" % [game.round_stats.danger_seconds,game.round_stats.hooked_seconds],Vector2(20,179),12)
 	text(frame,"缠线 %d · 解缠 %d · 下网 %d / 捕获 %d" % [game.round_stats.wrap_good,game.round_stats.unwrap_good,game.net_count,game.net_catches],Vector2(20,199),12,Color("91afa7"))
 	ready_button=button(frame,"准备下一局" if game.shared_session else "再来一局",227,func(): game.restart_round(),true)
+	if not game.shared_session and game.selected_map_source.kind=="generated":
+		ready_button.text="同 Seed 再来一局"; ready_button.size.x=158
+		var fresh:=button(frame,"新地图",227,func(): game.new_map_round(),false,158); fresh.position.x=188
 	button(frame,"离开房间" if game.shared_session else "返回标题",261,func(): game.return_to_title())
 
 func _input(event: InputEvent) -> void:
@@ -247,7 +258,7 @@ func _input(event: InputEvent) -> void:
 			if screen=="settings": game.save_profile()
 			open(previous)
 		elif screen == "pause": close()
-		elif screen=="network": open("title")
+		elif screen in ["network","map"]: open("title")
 		get_viewport().set_input_as_handled()
 
 func _network(frame: Control) -> void:
@@ -278,9 +289,9 @@ func _network(frame: Control) -> void:
 	button(frame,"创建房间",158,func(): game.network.host_game(net_role,int(net_port),game.network_settings()),true,199)
 	var join := button(frame,"加入房间",158,func(): game.network.join_game(net_address,int(net_port)),false,199)
 	join.position.x=239
-	text(frame,"同一电脑：开两个游戏，地址填 127.0.0.1",Vector2(20,204),12,CREAM,418)
-	text(frame,"同一局域网：加入者填写房主电脑的 IP",Vector2(20,226),12,CREAM,418)
-	text(frame,"玩法规则沿用房主已保存设置；房间内锁定",Vector2(20,248),11,Color("91afa7"),418)
+	text(frame,game.map_caption(),Vector2(20,198),12,CREAM,418)
+	text(frame,"加入填写房主 IP；同机填写 127.0.0.1",Vector2(20,222),12,CREAM,418)
+	text(frame,"地图与玩法由房主决定；创建后锁定",Vector2(20,246),11,Color("91afa7"),418)
 	button(frame,"返回",276,func(): open("title"),false,418)
 
 func _room(frame: Control) -> void:
@@ -296,6 +307,12 @@ func _room(frame: Control) -> void:
 		text(frame,"房主 IP："+(" / ".join(ips.slice(0,2)) if not ips.is_empty() else "127.0.0.1"),Vector2(20,160),12,MINT,418)
 		text(frame,"端口 %d · 本机加入填 127.0.0.1" % game.network.port,Vector2(20,183),12,CREAM,418)
 	else: text(frame,"地址 %s : %d" % [game.network.address,game.network.port],Vector2(20,161),12,MINT,418)
+	room_map=text(frame,game.map_caption(game.network.map_source),Vector2(20,194),11,MINT,335)
+	var copy_seed:=button(frame,"复制",190,func():
+		if game.network.map_source.kind=="generated": DisplayServer.clipboard_set(str(game.network.map_source.map_seed))
+	,false,64)
+	copy_seed.position.x=374; copy_seed.size.y=22
+	copy_seed.disabled=game.network.map_source.get("kind")!="generated"
 	var values: Dictionary=game.network.config.get("rules",game.Rules.defaults())
 	button(frame,"查看房主规则 · %d 项自定义" % game.Rules.changed(values).size(),247,func(): open("rules"),false,418)
 	ready_button=button(frame,"准备",218,func(): game.network.set_ready(not game.network.local_ready),true,418)
@@ -308,8 +325,32 @@ func _process(_delta: float) -> void:
 		if is_instance_valid(room_status): room_status.text=net.message
 		if is_instance_valid(room_roles): room_roles.text="你是%s · 对方%s" % ["小鱼" if net.local_role=="fish" else "钓鱼人","已准备" if net.remote_ready else "未准备"]
 		if is_instance_valid(ready_button):
-			ready_button.disabled=net.status!="waiting" or net.remote_id==0
+			ready_button.disabled=net.status!="waiting" or net.remote_id==0 or not net.map_validated
 			ready_button.text="已准备 · 点击取消" if net.local_ready else "准备"
 	elif screen=="result" and game.shared_session and is_instance_valid(ready_button):
 		ready_button.disabled=not net.active()
 		ready_button.text=("已准备 · 等待对方" if net.local_ready else ("对方已准备 · 再来一局" if net.remote_ready else "准备下一局")) if net.active() else "对方已离开"
+
+func _map_choice(frame:Control)->void:
+	text(frame,"选择池塘",Vector2(20,16),24)
+	var mode:=OptionButton.new(); mode.name="MapMode"
+	mode.add_item("经典池塘"); mode.add_item("生成池塘")
+	mode.selected=1 if game.selected_map_source.kind=="generated" else 0
+	mode.position=Vector2(20,57); mode.size=Vector2(326,28); frame.add_child(mode)
+	text(frame,"地图种子 Seed · 0—2147483647",Vector2(20,96),12,MINT)
+	var seed:=LineEdit.new(); seed.name="MapSeed"; seed.max_length=10
+	seed.text=str(game.selected_map_source.get("map_seed",42)); seed.position=Vector2(20,118); seed.size=Vector2(211,28)
+	frame.add_child(seed); seed.editable=mode.selected==1
+	var random_seed:=button(frame,"随机",118,func(): seed.text=str(game.random_map_seed()),false,106); random_seed.position.x=240
+	var copy_seed:=button(frame,"复制 Seed",153,func(): DisplayServer.clipboard_set(seed.text),false,158)
+	var info:=text(frame,"相同 Seed 使用相同布局；R 重开保留地图。",Vector2(20,192),11,CREAM)
+	text(frame,"联机由房主选图，加入者自动使用房主地图。",Vector2(20,211),11,CREAM)
+	var refresh:=func():
+		seed.editable=mode.selected==1; random_seed.disabled=mode.selected!=1; copy_seed.disabled=mode.selected!=1
+	refresh.call(); mode.item_selected.connect(func(_index:int): refresh.call())
+	button(frame,"使用这张地图",247,func():
+		if not game.select_pond("generated" if mode.selected==1 else "classic",seed.text):
+			info.text="请输入 0—2147483647 的整数 Seed"; info.add_theme_color_override("font_color",Color("f58375")); return
+		game.save_profile(); game.return_to_title()
+	,true,158)
+	var back:=button(frame,"返回",247,func(): open("title"),false,158); back.position.x=188
