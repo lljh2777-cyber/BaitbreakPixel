@@ -6,9 +6,10 @@ const FoodProfile = preload("res://scripts/food_profile.gd")
 const NPCFishState = preload("res://scripts/npc_fish_state.gd")
 const NPCHook = preload("res://scripts/npc_hook.gd")
 const NPCPublic = preload("res://scripts/npc_fish_public_state.gd")
+const MapResolver=preload("res://scripts/maps/map_resolver.gd")
 const MapContext = preload("res://scripts/maps/map_context.gd")
-const SCHEMA := 16
-# Schema 16 requires a complete locally resolvable map_ref. Schema 15 and earlier
+const SCHEMA := 17
+# Schema 17 requires recipe + exact locally resolvable map_ref. Earlier schemas
 # are explicitly rejected; no geometry or map identity can be inferred/upgraded.
 const BAIT_PROFILE_VERSION := 3
 const MAX_VALUE_DEPTH := 32
@@ -179,7 +180,7 @@ static func capture(world: Node2D) -> Dictionary:
 	for key in WORLD_FIELDS: state[key]=world.get(key)
 	for key in RIG_FIELDS: rig[key]=world.angler.get(key)
 	# Variant serialization also detaches packed arrays and nested grain/wrap data.
-	return bytes_to_var(var_to_bytes({"schema":SCHEMA,"bait_profile_version":BAIT_PROFILE_VERSION,"map_ref":world.map_context.map_ref,"state":state,"rig":rig,"rng_seed":world.rng.seed,"rng_state":world.rng.state}))
+	return bytes_to_var(var_to_bytes({"schema":SCHEMA,"bait_profile_version":BAIT_PROFILE_VERSION,"map_ref":world.map_context.map_ref,"map_source":world.map_context.map_source,"state":state,"rig":rig,"rng_seed":world.rng.seed,"rng_state":world.rng.state}))
 
 static func plain(value: Variant) -> bool:
 	return _plain(value,[],[MAX_VALUE_NODES],0)
@@ -250,13 +251,14 @@ static func restore_angler_presentation(world: Node2D, snapshot: Dictionary) -> 
 	return _restore(world,snapshot,true)
 
 static func _restore(world: Node2D, snapshot: Dictionary, public_npcs: bool) -> bool:
+	if not snapshot.has("map_ref") or not snapshot.has("map_source"): return false
 	if not snapshot.get("schema") is int: return false
 	if snapshot.schema==15: return false # Deliberate legacy rejection, not a migration.
-	if snapshot.schema!=SCHEMA or snapshot.size()!=7: return false
+	if snapshot.schema!=SCHEMA or snapshot.size()!=8: return false
 	if not snapshot.get("bait_profile_version") is int or snapshot.bait_profile_version!=BAIT_PROFILE_VERSION: return false
 	# Resolve the identity first; never use the current world's geometry to
 	# validate a different snapshot, and never accept supplied geometry fields.
-	var resolved := MapContext.load_ref(snapshot.get("map_ref"))
+	var resolved := MapResolver.resolve_ref(snapshot.get("map_source"),snapshot.get("map_ref"))
 	if not resolved.valid or not plain(snapshot): return false
 	var context: RefCounted=resolved.context
 	if not snapshot.get("state") is Dictionary or not snapshot.get("rig") is Dictionary: return false

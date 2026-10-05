@@ -4,6 +4,7 @@ signal changed
 const Rules=preload("res://scripts/game_rules.gd")
 const Protocol=preload("res://scripts/network_protocol.gd")
 const MapContext=preload("res://scripts/maps/map_context.gd")
+const MapResolver=preload("res://scripts/maps/map_resolver.gd")
 const MapRegistry=preload("res://scripts/maps/map_registry.gd")
 const AnglerNetworkObservation=preload("res://scripts/angler_network_observation.gd")
 const Presentation=preload("res://scripts/network_presentation.gd")
@@ -29,6 +30,7 @@ var config: Dictionary={}
 # A transport connection alone never authorizes ready, simulation or state.
 # This frozen built-in identity is checked at hello, welcome and every round start.
 var map_ref: Dictionary={}
+var map_source: Dictionary={}
 var map_validated := false
 var rejection_deadline := 0
 var local_ready := false
@@ -77,7 +79,7 @@ func _phase(value: String, detail: String = "") -> void:
 
 func host_game(role: String, requested_port: int, settings: Dictionary) -> Error:
 	close()
-	if not _select_map(): return ERR_INVALID_DATA
+	if not _select_map(settings.get("map_source",MapResolver.classic())): return ERR_INVALID_DATA
 	is_host=true
 	local_role="angler" if role=="angler" else "fish"
 	remote_role=other_role(local_role)
@@ -112,20 +114,22 @@ func join_game(host_address: String, requested_port: int) -> Error:
 	_phase("connecting","正在连接房主…")
 	return OK
 
-func _select_map() -> bool:
-	var loaded:=MapContext.load_map()
+func _select_map(source: Dictionary=MapResolver.classic(), reference: Variant=null) -> bool:
+	var loaded:=MapResolver.resolve(source,reference)
 	if not loaded.valid:
 		fail("本机地图无效，无法联机"); return false
+	map_source=loaded.context.map_source
+	map_source.make_read_only()
 	map_ref=loaded.context.map_ref
 	map_ref.make_read_only()
 	return true
 
 func _matching_map(value: Variant) -> bool:
 	# Registry validation checks exact keys/types, not coercive Dictionary equality.
-	return MapRegistry.validate_ref(value).valid and value==map_ref
+	return MapRegistry._ref_shape_error(value).is_empty() and value==map_ref
 
 func _identity_valid(packet: Dictionary) -> bool:
-	return packet.get("build") is String and packet.build==Protocol.BUILD and _matching_map(packet.get("map_ref"))
+	return packet.get("build") is String and packet.build==Protocol.BUILD and _matching_map(packet.get("map_ref")) and MapResolver.same_source(packet.get("map_source"),map_source)
 
 func _reject_handshake(detail: String) -> void:
 	# ENet reliable packets need another service/ack turn before closing the host.
@@ -145,6 +149,7 @@ func _reject_handshake(detail: String) -> void:
 func _world_config() -> Dictionary:
 	var settings:=config.duplicate(true)
 	settings.map_ref=map_ref.duplicate(true)
+	settings.map_source=map_source.duplicate(true)
 	return settings
 
 func _bind_peer() -> void:
@@ -162,7 +167,7 @@ func _connected(id: int) -> void:
 	else:
 		if id!=1: return
 		remote_id=1
-		_send({"kind":"hello","build":Protocol.BUILD,"map_ref":map_ref.duplicate(true)},true,2)
+		_send({"kind":"hello","build":Protocol.BUILD,"map_ref":map_ref.duplicate(true),"map_source":map_source.duplicate(true)},true,2)
 
 func _disconnected(id: int) -> void:
 	if id==remote_id: _finish_disconnect.call_deferred(peer)
@@ -182,6 +187,7 @@ func close(notify_peer: bool = false) -> void:
 	message=""
 	session_id=""
 	map_ref={}
+	map_source={}
 	map_validated=false
 	rejection_deadline=0
 	round_id=0
@@ -266,18 +272,19 @@ func _handle(packet: Dictionary) -> void:
 		rtt_ms=clampi(now()-int(packet.token),0,SILENCE_MS)
 		ping_tokens.erase(packet.token); return
 	if kind=="hello" and is_host and status=="waiting" and not map_validated:
-		if not _identity_valid(packet):
+		if packet.get("build")!=Protocol.BUILD or not MapResolver.resolve_ref(packet.get("map_source"),packet.get("map_ref")).valid:
 			_reject_handshake("版本或地图不兼容，请双方使用 "+Protocol.BUILD+" 版及相同地图"); return
 		map_validated=true
-		_send({"kind":"welcome","session":session_id,"role":remote_role,"config":_peer_config(),"build":Protocol.BUILD,"map_ref":map_ref.duplicate(true),"ready":local_ready},true,2)
+		_send({"kind":"welcome","session":session_id,"role":remote_role,"config":_peer_config(),"build":Protocol.BUILD,"map_ref":map_ref.duplicate(true),"map_source":map_source.duplicate(true),"ready":local_ready},true,2)
 		message="玩家已连接，双方准备后开始"
 		changed.emit(); return
 	if kind=="reject" and not is_host:
 		fail("版本或地图不兼容，请双方使用 "+Protocol.BUILD+" 版及相同地图"); return
 	if kind=="welcome" and not is_host and status=="connecting" and not map_validated:
-		if not _identity_valid(packet): fail("房主版本或地图不兼容"); return
+		if packet.get("build")!=Protocol.BUILD or not MapResolver.resolve_ref(packet.get("map_source"),packet.get("map_ref")).valid: fail("房主版本或地图不兼容"); return
 		if not packet.get("role") in ["fish","angler"] or not packet.get("config") is Dictionary or not packet.get("session") is String or packet.session.is_empty() or not packet.get("ready") is bool: fail("房间信息无效"); return
 		if not Rules.valid(packet.config.get("rules")) or (packet.role=="fish" and not FishNetworkObservation.config_valid(packet.config)): fail("房主玩法规则无效"); return
+		if not _select_map(packet.map_source,packet.map_ref): return
 		session_id=packet.session
 		config=packet.config.duplicate(true)
 		local_role=packet.role
@@ -293,6 +300,7 @@ func _handle(packet: Dictionary) -> void:
 			if not is_host: _receive_chunk(packet)
 		"leave": fail("另一位玩家已离开，本局已停止")
 		"ready":
+			if not _identity_valid(packet): fail("准备地图不兼容"); return
 			if not status in ["waiting","finished"] or packet.get("round")!=round_id or not packet.get("value") is bool: return
 			remote_ready=packet.value
 			changed.emit()
@@ -319,7 +327,7 @@ func _handle(packet: Dictionary) -> void:
 func set_ready(value: bool = true) -> void:
 	if not active() or not map_validated or remote_id==0 or not status in ["waiting","finished"]: return
 	local_ready=value
-	_send({"kind":"ready","session":session_id,"round":round_id,"value":value},true,2)
+	_send({"kind":"ready","build":Protocol.BUILD,"map_ref":map_ref.duplicate(true),"map_source":map_source.duplicate(true),"session":session_id,"round":round_id,"value":value},true,2)
 	changed.emit()
 	if is_host and local_ready and remote_ready: _start_round()
 
@@ -369,7 +377,7 @@ func _receive_start(packet: Dictionary) -> void:
 	if not packet.get("snapshot") is Dictionary: return
 	if not Rules.valid(packet.config.get("rules")) or (local_role=="fish" and not FishNetworkObservation.config_valid(packet.config)): fail("开局规则无效"); return
 	var snapshot := Protocol.unpack_state(packet.snapshot)
-	if snapshot.is_empty() or not _matching_map(snapshot.get("map_ref")) or not (FishNetworkObservation.valid(game,snapshot) if local_role=="fish" else AnglerNetworkObservation.valid(game,snapshot)): fail("初始世界数据无效"); return
+	if snapshot.is_empty() or not _matching_map(snapshot.get("map_ref")) or not MapResolver.same_source(snapshot.get("map_source"),map_source) or not (FishNetworkObservation.valid(game,snapshot) if local_role=="fish" else AnglerNetworkObservation.valid(game,snapshot)): fail("初始世界数据无效"); return
 	round_id=packet.round
 	_reset_round()
 	config=packet.config
@@ -379,7 +387,7 @@ func _receive_start(packet: Dictionary) -> void:
 	received_state_seq=packet.seq
 	countdown=3.0
 	_phase("starting","等待房主开始…")
-	_send({"kind":"start_ack","session":session_id,"round":round_id,"build":Protocol.BUILD,"map_ref":map_ref.duplicate(true)},true,2)
+	_send({"kind":"start_ack","session":session_id,"round":round_id,"build":Protocol.BUILD,"map_ref":map_ref.duplicate(true),"map_source":map_source.duplicate(true)},true,2)
 
 func tick(delta: float, local_command: Dictionary) -> void:
 	if peer==null or not map_validated: return
@@ -536,7 +544,7 @@ func _apply_remote_state(snapshot: Dictionary) -> bool:
 func _state_packet(kind: String) -> Dictionary:
 	state_seq+=1
 	var snapshot: Dictionary=FishNetworkObservation.capture(game) if remote_role=="fish" else AnglerNetworkObservation.capture(game)
-	return {"kind":kind,"session":session_id,"round":round_id,"seq":state_seq,"build":Protocol.BUILD,"map_ref":map_ref.duplicate(true),"snapshot":Protocol.pack_state(snapshot),
+	return {"kind":kind,"session":session_id,"round":round_id,"seq":state_seq,"build":Protocol.BUILD,"map_ref":map_ref.duplicate(true),"map_source":map_source.duplicate(true),"snapshot":Protocol.pack_state(snapshot),
 		"phase":status,"countdown":countdown,"ack":applied_input_seq}
 
 func _send_state(reliable: bool) -> void:
@@ -590,7 +598,7 @@ func _receive_state(packet: Dictionary) -> void:
 	if not (packet.get("countdown") is int or packet.get("countdown") is float) or not is_finite(packet.countdown) or packet.countdown<0 or packet.countdown>3:
 		fail("状态倒计时无效，本局已停止"); return
 	var snapshot := Protocol.unpack_state(packet.snapshot)
-	if snapshot.is_empty() or not _matching_map(snapshot.get("map_ref")) or not _apply_remote_state(snapshot): fail("收到的世界状态无效，本局已停止"); return
+	if snapshot.is_empty() or not _matching_map(snapshot.get("map_ref")) or not MapResolver.same_source(snapshot.get("map_source"),map_source) or not _apply_remote_state(snapshot): fail("收到的世界状态无效，本局已停止"); return
 	received_state_seq=packet.seq
 	applied_input_seq=int(packet.get("ack",0))
 	countdown=clampf(float(packet.get("countdown",0)),0,3)

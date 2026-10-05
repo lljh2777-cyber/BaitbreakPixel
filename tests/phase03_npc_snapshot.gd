@@ -31,7 +31,7 @@ func replay_checks() -> void:
 			var replacement: int=source.spawn_npc()
 			check(replacement==count+2,"saved allocator includes a removed identity")
 		var snapshot: Dictionary=source.capture_snapshot()
-		check(snapshot.schema==16 and snapshot.state.has("npc_fishes") and snapshot.state.hook_target_fish_id==-1,"schema16 explicitly contains separate NPC authority and inactive hook target")
+		check(snapshot.schema==17 and snapshot.state.has("npc_fishes") and snapshot.state.hook_target_fish_id==-1,"schema17 explicitly contains separate NPC authority and inactive hook target")
 		check(receiver.restore_snapshot(snapshot),"restore legal running NPC snapshot count="+str(count))
 		check(var_to_bytes(snapshot)==var_to_bytes(receiver.capture_snapshot()),"restore reproduces exact byte-serialized authority including local RNG and steering")
 		if count>0:
@@ -106,7 +106,7 @@ func social_replay_checks() -> void:
 		social_fixture(source,behavior)
 		check(source.npc_fishes[0].behavior_state==behavior,"public-cue authority fixture reaches "+behavior)
 		var checkpoint: Dictionary=source.capture_snapshot()
-		check(checkpoint.schema==16 and checkpoint.state.has("npc_social_enabled") and checkpoint.state.has("public_hook_cue"),"social extension remains mandatory in schema16 with mandatory current authority shape")
+		check(checkpoint.schema==17 and checkpoint.state.has("npc_social_enabled") and checkpoint.state.has("public_hook_cue"),"social extension remains mandatory in schema17 with mandatory current authority shape")
 		check(receiver.restore_snapshot(checkpoint),"restore actual "+behavior+" checkpoint")
 		check(var_to_bytes(checkpoint)==var_to_bytes(receiver.capture_snapshot()),"restore all private social latches/timers byte-for-byte: "+behavior)
 		var identity: int=source.npc_fishes[0].fish_id

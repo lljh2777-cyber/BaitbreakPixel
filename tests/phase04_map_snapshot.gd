@@ -105,7 +105,7 @@ func roundtrip_and_replay() -> void:
 	var target := make_world()
 	for tick in 180: source.advance_tick({"move":Vector2.RIGHT.rotated(tick*0.04),"suck":tick%7<3},{"walk":sin(tick*0.03)})
 	var snapshot: Dictionary = source.capture_snapshot()
-	check(snapshot.size() == 7 and snapshot.schema == 16 and snapshot.map_ref == source.map_context.map_ref and not snapshot.has("map_id"),"schema16 exact map_ref envelope replaces map_id")
+	check(snapshot.size() == 8 and snapshot.schema == 17 and snapshot.map_ref == source.map_context.map_ref and not snapshot.has("map_id"),"schema17 exact map_ref envelope replaces map_id")
 	check(not snapshot.state.has("targets") and not snapshot.state.has("map_context") and not snapshot.map_ref.has("geometry"),"snapshot carries no map geometry")
 	var context: RefCounted = target.map_context
 	var targets: Array = target.targets
@@ -139,7 +139,7 @@ func adversarial_atomicity() -> void:
 	bad.map_id = "pond_v2"
 	bad.schema = 15
 	reject_unchanged(game,bad,"schema15 explicitly unsupported")
-	for schema in [16.0,"16",15,17]:
+	for schema in [17.0,"17",15,16,18]:
 		bad = copy(snapshot); bad.schema = schema
 		reject_unchanged(game,bad,"schema exact int/version")
 	bad = copy(snapshot); bad.geometry = {"water":Vector2.ZERO}

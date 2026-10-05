@@ -798,6 +798,16 @@
       "status": "current",
       "mode": "headless",
       "timeout_seconds": 240
+    },
+    "phase05_snapshot": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 240
+    },
+    "phase05_network": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 240
     }
   }
 }

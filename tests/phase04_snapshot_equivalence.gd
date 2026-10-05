@@ -34,20 +34,23 @@ func registry_ref() -> Dictionary:
 	return refs[0].duplicate(true) if refs.size()==1 else {}
 
 func envelope_valid(value: Dictionary, kind: String) -> bool:
-	var modern: bool=Snapshot.SCHEMA==16
-	if Snapshot.SCHEMA not in [15,16]: return false
+	var modern: bool=Snapshot.SCHEMA>=16
+	if Snapshot.SCHEMA not in [15,16,17]: return false
 	var expected: Array=["schema","bait_profile_version","map_ref" if modern else "map_id","state","rig","rng_seed","rng_state"]
-	var schema: int=16 if modern else 15
+	var schema: int=Snapshot.SCHEMA
 	var bait_version: int=3
 	if kind=="fish":
 		expected=["format","schema","bait_profile_version","npc_profile_version","map_ref" if modern else "map_id","role","state","rig"]
-		schema=2 if modern else 1
+		schema=3 if Snapshot.SCHEMA==17 else 2 if modern else 1
 		bait_version=1
 		if value.get("format")!="fish-presentation" or value.get("role")!="fish" or value.get("npc_profile_version")!=2: return false
 	elif kind=="angler":
 		expected.append_array(["format","role","npc_profile_version"])
 		if value.get("format")!="angler-presentation" or value.get("role")!="angler" or value.get("npc_profile_version")!=4: return false
 	elif kind!="authority": return false
+	if Snapshot.SCHEMA==17:
+		expected.append("map_source")
+		if value.get("map_source")!={"kind":"built_in","id":"pond_v2","revision":1}: return false
 	if value.size()!=expected.size(): return false
 	for key: String in expected:
 		if not value.has(key): return false
@@ -72,7 +75,8 @@ func gameplay_payload(value: Dictionary, kind: String) -> Dictionary:
 	check(envelope_valid(value,kind),kind+" exact envelope and registry identity before metadata exclusion")
 	var result: Dictionary=value.duplicate(true)
 	result.erase("schema")
-	result.erase("map_ref" if Snapshot.SCHEMA==16 else "map_id")
+	result.erase("map_source")
+	result.erase("map_ref" if Snapshot.SCHEMA>=16 else "map_id")
 	return result
 
 func envelope_metadata(value: Dictionary) -> Dictionary:

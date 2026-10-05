@@ -14,4 +14,12 @@
 
 所有几何身份使用必要的 content_hash；状态重复性直接比较值/序列化字节，无逐文件或逐帧 SHA256 扫描。
 
-P5.4–P5.7 正在继续，尚未声明完成。
+## P5.4：存档与联机（源码 0.27.3）
+
+- Snapshot schema 17 / fish public schema 3：map_source + map_ref 必填。恢复先本地重建、双验证和内容标识核对，再验证/写入状态。旧 schema 明确拒绝。
+- ENet hello 验证客户端已知地图能力；welcome 由房主选择 recipe，客户端本地重建后才可 Ready。Ready / start / ack / state 均严格匹配已选 recipe 与 MapRef；不传几何。
+- tick 路径只核对标量身份；生成上下文缓存有界，不逐帧重新生成或计算 hash。
+- 新测试：phase05_snapshot 126 项，phase05_network 72 项（两种角色、三张地图真实 ENet，另测六类拒绝）。既有 phase04_map_network 282 项、phase04_map_snapshot 298 项和 architecture_v020 60 项通过。
+- 回归：phase02_bait_network 94、phase02_bite_network 136、phase03_npc_snapshot 5463、phase03_npc_network 497、phase04_snapshot_equivalence 8449、phase04_map_equivalence 7589 项通过。既有语义/隐私断言保留，仅更新新 schema / recipe 元数据契约。
+
+P5.5–P5.7 正在继续，尚未声明完成。

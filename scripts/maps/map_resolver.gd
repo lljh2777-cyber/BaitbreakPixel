@@ -15,9 +15,23 @@ static func classic() -> Dictionary:
 static func generated(seed: int) -> Dictionary:
 	return Request.source(Request.create(seed))
 
+static func resolve_ref(source: Variant, reference: Variant) -> Dictionary:
+	if not Registry._ref_shape_error(reference).is_empty(): return _error("invalid map_ref")
+	return resolve(source,reference)
+
+# A cheap scalar comparison against a previously validated immutable identity.
+# No regeneration or content hashing occurs on network ticks.
+static func same_source(value: Variant, selected: Dictionary) -> bool:
+	if not value is Dictionary or value.size()!=selected.size(): return false
+	if value.get_typed_key_builtin()==TYPE_OBJECT or value.get_typed_value_builtin()==TYPE_OBJECT: return false
+	for key in value:
+		if not key is String or not selected.has(key) or typeof(value[key])!=typeof(selected[key]) or value[key]!=selected[key]: return false
+	return true
+
 static func resolve(source: Variant, expected_ref: Variant=null) -> Dictionary:
 	if expected_ref!=null and not Registry._ref_shape_error(expected_ref).is_empty(): return _error("invalid map_ref")
 	if not source is Dictionary or source.get_typed_key_builtin()==TYPE_OBJECT or source.get_typed_value_builtin()==TYPE_OBJECT: return _error("map_source must be plain data")
+	if not source.get("kind") is String: return _error("map_source kind must be a String")
 	for key in source:
 		if not key is String: return _error("map_source keys must be Strings")
 	if source.get("kind")=="built_in":

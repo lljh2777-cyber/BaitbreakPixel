@@ -62,7 +62,7 @@ func same_world_without_pause(before: Dictionary, world: Node2D) -> bool:
 	return before==after
 
 func pure_checks() -> void:
-	check(Protocol.BUILD=="0.27.0" and Fish.SCHEMA==2 and World.Snapshot.SCHEMA==16,"exact build, public fish schema2 and authority schema16 remain distinct")
+	check(Protocol.BUILD=="0.27.3" and Fish.SCHEMA==3 and World.Snapshot.SCHEMA==17,"exact build, public fish schema3 and authority schema17 remain distinct")
 	var authority:=World.new(); authority.reset_world({"seed":4262,"ruleset":"duel"})
 	var receiver:=World.new(); receiver.reset_world({"seed":9})
 	for role: String in ["fish","angler"]:
@@ -124,7 +124,7 @@ func envelope_checks() -> void:
 			var game:=Peer.new(); root.add_child(game); game.reset_world({"seed":13})
 			game.network._select_map(); game.network.map_validated=true; game.network.local_role=role
 			game.network.session_id="envelope"; game.network.status="playing"
-			var packet: Dictionary={"session":"envelope","round":0,"seq":1,"build":Protocol.BUILD,"map_ref":ref(),"phase":"playing","snapshot":Protocol.pack_state(projection(role,authority)),"ack":0,"countdown":0.0}
+			var packet: Dictionary={"session":"envelope","round":0,"seq":1,"build":Protocol.BUILD,"map_ref":ref(),"map_source":World.MapResolver.classic(),"phase":"playing","snapshot":Protocol.pack_state(projection(role,authority)),"ack":0,"countdown":0.0}
 			packet[case.key]=case.value
 			var before: Dictionary=game.capture_snapshot()
 			game.network._receive_state(packet)
@@ -134,7 +134,7 @@ func envelope_checks() -> void:
 			var game:=Peer.new(); root.add_child(game); game.reset_world({"seed":13})
 			game.network._select_map(); game.network.map_validated=true; game.network.local_role=role
 			game.network.session_id="envelope"; game.network.status="playing"
-			game.network._receive_state({"session":"envelope","round":0,"seq":1,"build":Protocol.BUILD,"map_ref":ref(),"phase":"playing","snapshot":Protocol.pack_state(projection(role,authority)),"ack":0,"countdown":value})
+			game.network._receive_state({"session":"envelope","round":0,"seq":1,"build":Protocol.BUILD,"map_ref":ref(),"map_source":World.MapResolver.classic(),"phase":"playing","snapshot":Protocol.pack_state(projection(role,authority)),"ack":0,"countdown":value})
 			check(game.network.status=="playing" and game.network.received_state_seq==1 and game.fish==authority.fish and game.network.countdown==float(value),role+" preserves valid numeric countdown "+str(value))
 			game.free()
 	authority.free()

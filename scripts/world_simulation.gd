@@ -487,7 +487,7 @@ func reset_world(config: Dictionary = {}, definition: Variant = null) -> bool:
 	if definition != null:
 		loaded=MapContext.from_definition(definition)
 	elif config.has("map_source"):
-		loaded=MapResolver.resolve(config.map_source,config.get("map_ref"))
+		loaded=MapResolver.resolve_ref(config.map_source,config.map_ref) if config.has("map_ref") else MapResolver.resolve(config.map_source)
 	elif config.has("map_ref"):
 		loaded=MapContext.load_ref(config.map_ref)
 	else:

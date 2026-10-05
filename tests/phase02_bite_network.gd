@@ -39,13 +39,13 @@ func pure_checks() -> void:
 	var w=fresh(); var replay=World.new(); replay.reset_world()
 	w.advance_tick({},{})
 	var saved:Dictionary=w.capture_snapshot()
-	check(saved.schema==16 and saved.state.bite_cooldown>0 and saved.state.bite_feedback_age>0,"schema16 captures in-flight automatic Bite from a neutral tick")
+	check(saved.schema==17 and saved.state.bite_cooldown>0 and saved.state.bite_feedback_age>0,"schema17 captures in-flight automatic Bite from a neutral tick")
 	check(replay.restore_snapshot(saved),"restore in-flight Bite snapshot")
 	for tick in 70:
 		var command={"suck":tick==32}
 		w.advance_tick(command,{}); replay.advance_tick(Protocol.input("fish",Protocol.decode(Protocol.encode(command)),replay.map_context),{})
 		check(w.capture_snapshot()==replay.capture_snapshot(),"wire/replay deterministic tick "+str(tick))
-	check(w.score==8 and w.score==replay.score and w.satiety==replay.satiety,"schema16 replay repeats automatic intake and preserves exact rewards without Bite input")
+	check(w.score==8 and w.score==replay.score and w.satiety==replay.satiety,"schema17 replay repeats automatic intake and preserves exact rewards without Bite input")
 	for key in ["bite_cooldown","bite_feedback_age"]:
 		for value in [-0.1,NAN,INF,"0",999.0]:
 			var bad=saved.duplicate(true); bad.state[key]=value

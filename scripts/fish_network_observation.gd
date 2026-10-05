@@ -10,11 +10,12 @@ const FoodProfile=preload("res://scripts/food_profile.gd")
 const Effort=preload("res://scripts/effort_check.gd")
 const NPCPublic=preload("res://scripts/npc_fish_public_state.gd")
 const Stats=preload("res://scripts/round_stats.gd")
+const MapResolver=preload("res://scripts/maps/map_resolver.gd")
 const MapContext=preload("res://scripts/maps/map_context.gd")
 const FORMAT := "fish-presentation"
 # Public schema 2 replaces map_id with a locally resolved MapRef. This is not
 # authority snapshot schema 16 or MapDefinition contract_version 1.
-const SCHEMA := 2
+const SCHEMA := 3
 # Required extension guard: schema 1 alone predates public bait archetypes.
 const BAIT_PROFILE_VERSION := 1
 const NPC_PROFILE_VERSION := 2
@@ -106,7 +107,7 @@ static func capture(world: Node2D) -> Dictionary:
 		state.baits.append(visual)
 	# The flashing warning is visible; upcoming cycle timing and reserve order are not.
 	state.cycle_slot=world.cycle_slot if world.cycle_phase=="warning" else -1
-	return bytes_to_var(var_to_bytes({"format":FORMAT,"schema":SCHEMA,"bait_profile_version":BAIT_PROFILE_VERSION,"npc_profile_version":NPC_PROFILE_VERSION,"map_ref":world.map_context.map_ref,"role":"fish","state":state,"rig":rig}))
+	return bytes_to_var(var_to_bytes({"format":FORMAT,"schema":SCHEMA,"bait_profile_version":BAIT_PROFILE_VERSION,"npc_profile_version":NPC_PROFILE_VERSION,"map_ref":world.map_context.map_ref,"map_source":world.map_context.map_source,"role":"fish","state":state,"rig":rig}))
 
 static func _keys(values: Dictionary, fields: Array) -> bool:
 	if values.size()!=fields.size(): return false
@@ -134,13 +135,13 @@ static func _properties(object: Object, values: Dictionary, fields: Array) -> bo
 	return true
 
 static func valid(world: Node2D, snapshot: Dictionary) -> bool:
-	if not _keys(snapshot,["format","schema","bait_profile_version","npc_profile_version","map_ref","role","state","rig"]): return false
+	if not _keys(snapshot,["format","schema","bait_profile_version","npc_profile_version","map_ref","map_source","role","state","rig"]): return false
 	if not snapshot.npc_profile_version is int or snapshot.npc_profile_version!=NPC_PROFILE_VERSION: return false
 	if not snapshot.schema is int: return false
 	if not snapshot.bait_profile_version is int or snapshot.bait_profile_version!=BAIT_PROFILE_VERSION: return false
 	if snapshot.format!=FORMAT or snapshot.schema!=SCHEMA or snapshot.role!="fish" or not Protocol.safe_values(snapshot): return false
 	if not snapshot.state is Dictionary or not snapshot.rig is Dictionary: return false
-	var loaded:=MapContext.load_ref(snapshot.map_ref)
+	var loaded:=MapResolver.resolve_ref(snapshot.map_source,snapshot.map_ref)
 	if not loaded.valid: return false
 	var context: MapContext=loaded.context
 	var state: Dictionary=snapshot.state
@@ -217,7 +218,7 @@ static func apply(world: Node2D, snapshot: Dictionary) -> bool:
 	# Never call authoritative restore with invented secret fields. Validation is
 	# complete before the first mutation, and application has no gameplay side effects.
 	if not valid(world,snapshot): return false
-	var loaded:=MapContext.load_ref(snapshot.map_ref)
+	var loaded:=MapResolver.resolve_ref(snapshot.map_source,snapshot.map_ref)
 	if not loaded.valid: return false
 	if world.map_context.map_ref!=snapshot.map_ref:
 		world._install_snapshot_map_context(loaded.context)
