@@ -6,7 +6,9 @@ const Water = preload("res://scripts/pond_water_art.gd")
 static func background(view: Node2D, world: Node2D, t: float) -> void:
 	var map: RefCounted=view.map_presentation
 	var surface: float=map.surface_y
-	view.draw_texture(view.water_layers.water,Vector2.ZERO)
+	if view.generated_water.enabled:
+		view.generated_water.draw_slot(view,"water",view.camera_offset,t)
+	else: view.draw_texture(view.water_layers.water,Vector2.ZERO)
 	# A quiet irregular far bank above the waterline, rather than repeated blocks.
 	view.draw_rect(Rect2(0,0,map.size.x,surface),Color("a9b8a3"))
 	var bank:=PackedVector2Array([Vector2(0,surface)])
@@ -22,6 +24,14 @@ static func background(view: Node2D, world: Node2D, t: float) -> void:
 			view.draw_rect(Rect2(x,surface+2,15,5),Color("8d8665"))
 			view.draw_rect(Rect2(x+1,surface+2,13,1),Color("c9bb87"))
 			view.draw_rect(Rect2(x+4,surface+4,7,1),Color("736f57"))
+	if view.generated_water.enabled:
+		view.generated_water.draw_slot(view,"distance",view.camera_offset,t)
+		view.generated_water.draw_relief(view,view.camera_offset,true)
+		view.generated_water.draw_slot(view,"surface",view.camera_offset,t)
+		view.generated_water.draw_slot(view,"floor",view.camera_offset,t)
+		view.generated_water.draw_relief(view,view.camera_offset,false)
+		view.generated_water.draw_slot(view,"terrain",view.camera_offset,t)
+		return
 	# Far silhouettes scroll slightly slower than the real interaction geometry.
 	var distance_offset: Vector2=(view.camera_offset*Vector2(0.22,0.08)).round()
 	view.draw_texture(view.water_layers.distance,distance_offset)
@@ -42,7 +52,9 @@ static func floor_layer(view: Node2D) -> void:
 	var map: RefCounted=view.map_presentation
 	var floor: float=map.floor_y
 	view.draw_rect(Rect2(0,floor,map.size.x,map.size.y-floor),Color("365751"))
-	view.draw_texture_rect_region(view.water_layers.floor,Rect2(0,floor,map.size.x,map.size.y-floor),Rect2(0,floor,map.size.x,map.size.y-floor))
+	if view.generated_water.enabled:
+		view.generated_water.draw_slot(view,"floor",view.camera_offset,0.0,Rect2(0,floor,map.size.x,map.size.y-floor))
+	else: view.draw_texture_rect_region(view.water_layers.floor,Rect2(0,floor,map.size.x,map.size.y-floor),Rect2(0,floor,map.size.x,map.size.y-floor))
 	# Contact shadows sit under grounded solids, behind their unchanged sprites.
 	for solid: Dictionary in map.solids:
 		var bounds:=Water.Art.prop_bounds(solid)
@@ -56,6 +68,9 @@ static func floor_layer(view: Node2D) -> void:
 		view.draw_colored_polygon(PackedVector2Array([Vector2(x,y),Vector2(x+3,y-1),Vector2(x+7,y+1),Vector2(x+2,y+2)]),Color("65785c") if index%2 else Color("58674e"))
 
 static func foreground(view: Node2D) -> void:
+	if view.generated_water.enabled:
+		view.generated_water.draw_slot(view,"foreground",view.camera_offset,0.0)
+		return
 	view.draw_texture(view.water_layers.foreground,(-view.camera_offset*Vector2(0.045,0.0)).round())
 
 static func nest(view: Node2D, world: Node2D, t: float) -> void:

@@ -4,6 +4,10 @@ const Camera = preload("res://scripts/pond_camera.gd")
 const Scenery = preload("res://scripts/pond_scenery.gd")
 var camera_offset := Vector2.ZERO
 var water_layers: Dictionary = {}
+const GeneratedWater=preload("res://scripts/watergen/generated_water_appearance.gd")
+var generated_water:=GeneratedWater.new()
+var visual_seed:=713284
+var _prepared_visual_seed:=-1
 
 const Art = preload("res://scripts/pixel_art.gd")
 const Presentation = preload("res://scripts/maps/map_presentation.gd")
@@ -61,7 +65,9 @@ func _ready() -> void:
 # Called at setup and whenever authority/replica display context changes. No
 # geometry export, hashing, or texture construction happens on an unchanged map.
 func prepare_map(context: RefCounted) -> void:
-	if _render_context == context: return
+	if _render_context == context and _prepared_visual_seed==visual_seed: return
+	_prepared_visual_seed=visual_seed
+	if not generated_water.prepare(context,visual_seed): push_warning("Watergen unavailable: "+generated_water.last_error)
 	_render_context = context
 	var next: RefCounted = Presentation.for_context(context)
 	var reuse: bool = next.matches(map_presentation)

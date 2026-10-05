@@ -808,6 +808,16 @@
       "status": "current",
       "mode": "headless",
       "timeout_seconds": 240
+    },
+    "phase05_watergen_boundary": {
+      "status": "current",
+      "mode": "headless",
+      "timeout_seconds": 300
+    },
+    "phase05_gameplay_native": {
+      "status": "current",
+      "mode": "renderer",
+      "timeout_seconds": 300
     }
   }
 }
