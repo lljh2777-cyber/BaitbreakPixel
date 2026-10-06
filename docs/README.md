@@ -1,3 +1,4 @@
+- [自然池塘 M02/A：第二轮根部植物群落](watergen/pond-series/M02-root-pool/round2/REPORT.md) · [前后对照](watergen/pond-series/M02-root-pool/round2/gallery.html)
 - [自然池塘 M01 分层交接](watergen/pond-series/M01-stone-bay/LAYER_HANDOFF.md) · [M02 老根幽潭 A/B](watergen/pond-series/M02-root-pool/round1/gallery.html)
 - [自然池塘 M01/B：第三轮独立装饰动物](watergen/pond-series/M01-stone-bay/round3/REPORT.md) · [原生样片](watergen/pond-series/M01-stone-bay/round3/gallery.html)
 - [自然池塘 M01/B：第二轮植物群落](watergen/pond-series/M01-stone-bay/round2/REPORT.md) · [前后对照](watergen/pond-series/M01-stone-bay/round2/gallery.html)

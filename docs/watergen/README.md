@@ -1,3 +1,5 @@
+[2026-10-06：M02 已选 A · 根部植物群落](pond-series/M02-root-pool/round2/REPORT.md) · [前后对照](pond-series/M02-root-pool/round2/gallery.html)
+
 [2026-10-06：M01 分层交接](pond-series/M01-stone-bay/LAYER_HANDOFF.md) · [M02 老根幽潭 A/B](pond-series/M02-root-pool/round1/gallery.html)
 
 [2026-10-06：M01/B 第三轮独立装饰动物](pond-series/M01-stone-bay/round3/REPORT.md) · [原生样片](pond-series/M01-stone-bay/round3/gallery.html)
