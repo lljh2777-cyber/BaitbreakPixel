@@ -3,7 +3,16 @@ extends Node2D
 ## The single images are concept plates, not layered production environments.
 const Art = preload("res://scripts/pixel_art.gd")
 const Fauna = preload("res://tools/watergen/decorative_fauna_layer.gd")
+const StoneFauna = preload("res://tools/watergen/stone_bay_fauna_layer.gd")
 const STUDIES := {
+	"stone_fauna": {
+		"files": ["res://docs/watergen/pond-series/M01-stone-bay/round2/B-plant-communities.png", "res://docs/watergen/pond-series/M01-stone-bay/round2/B-plant-communities.png"],
+		"titles": ["M01 B · 第二轮植物", "M01 B · 第三轮装饰动物"],
+		"ids": ["PLANTS", "FAUNA"], "tag": "STONE_FAUNA_R3", "initial": 1,
+		"help": "1 植物 / 2 动物   Tab 全景/镜头   方向键   P 样本   G 标记   空格暂停   R 归零   Esc",
+		"footer": "M01/B：3 虾 / 2 岩面蜗牛 / 2 组远景鱼。仅视觉；不运行玩法。",
+		"details": [Vector2(224, 377), Vector2(1110, 170), Vector2(212, 215)],
+		"cameras": [Vector2(0, 120), Vector2(320, 120), Vector2(640, 120), Vector2(0, 0), Vector2(640, 0)]},
 	"terrain": {
 		"files": ["res://docs/watergen/terrain-round1/A-trough-log.png", "res://docs/watergen/terrain-round1/B-stone-bay.png", "res://docs/watergen/terrain-round1/C-root-channel.png"],
 		"titles": ["A · 偏心沟谷与低位倒木", "B · 单侧石坡与开阔沙湾", "C · 斜向浅沟与沉木根盘"],
@@ -26,7 +35,7 @@ const STUDIES := {
 		"footer": "第三轮：3 虾 / 2 蜗牛 / 2 组远景鱼。纯视觉叠加；不运行玩法模拟。",
 		"cameras": [Vector2(0, 120), Vector2(320, 120), Vector2(640, 120), Vector2(0, 0), Vector2(640, 0)]}
 }
-@export_enum("terrain", "plants", "fauna") var study := "terrain"
+@export_enum("terrain", "plants", "fauna", "stone_fauna") var study := "terrain"
 var settings: Dictionary = {}
 var fauna: RefCounted
 var visual_time := 0.0
@@ -58,6 +67,7 @@ func _ready() -> void:
 	font.antialiasing = TextServer.FONT_ANTIALIASING_NONE
 	fish = Art.fish()
 	if study == "fauna": fauna = Fauna.new()
+	elif study == "stone_fauna": fauna = StoneFauna.new()
 	var loaded: Dictionary = {}
 	for file: String in settings.files:
 		if loaded.has(file): plates.append(loaded[file]); continue
@@ -84,7 +94,7 @@ func _process(delta: float) -> void:
 		queue_redraw()
 
 func advance_visual_time(delta: float) -> void:
-	if study != "fauna" or paused or not is_finite(delta) or delta < 0 or delta > 60: return
+	if fauna == null or paused or not is_finite(delta) or delta < 0 or delta > 60: return
 	visual_time = fmod(visual_time + delta, 86400.0)
 	queue_redraw()
 
@@ -111,18 +121,18 @@ func _draw() -> void:
 	if overview: draw_set_transform(Vector2(0, 55), 0, Vector2(0.5, 0.5))
 	else: draw_set_transform(-camera.round())
 	draw_texture_rect(plates[selection], Rect2(0, 0, 1280, 480), false)
-	if study == "fauna" and selection == 1: fauna.draw(self, visual_time)
+	if fauna != null and selection == 1: fauna.draw(self, visual_time)
 	if guides:
 		draw_rect(Rect2(320, 77, 679, 230), Color(0.55, 0.9, 0.76, 0.55), false, 1)
 		# This rectangle is a composition guide, never an Authority boundary.
-		if study == "fauna" and selection == 1: fauna.debug_draw(self, visual_time)
+		if fauna != null and selection == 1: fauna.debug_draw(self, visual_time)
 	if probes: draw_world_probes()
 	draw_set_transform(Vector2.ZERO)
 	if probes and not overview: draw_ui_probes()
 	draw_rect(Rect2(0, 0, 640, 32), INK)
 	label(Vector2(10, 14), settings.titles[selection], 12, Color("a9d0bf"))
 	label(Vector2(310, 14), "构图稿 · 全景" if overview else "构图稿 · 640×360 镜头", 11)
-	if study == "fauna": label(Vector2(488, 14), "%s %.1fs" % ["暂停" if paused else "播放", visual_time], 10)
+	if fauna != null: label(Vector2(488, 14), "%s %.1fs" % ["暂停" if paused else "播放", visual_time], 10)
 	label(Vector2(10, 28), settings.help, 10)
 	draw_rect(Rect2(0, 335, 640, 25), INK)
 	label(Vector2(10, 351), settings.footer, 10)
@@ -201,7 +211,7 @@ func capture_all() -> void:
 		await RenderingServer.frame_post_draw
 		check(repeat.get_data() == get_viewport().get_texture().get_image().get_data(), "repeat frame stable")
 	check(plates.size() == settings.files.size(), "study textures retained; draw never prepares new textures")
-	if study == "fauna": await capture_fauna()
+	if fauna != null: await capture_fauna()
 	var record := {"passed": passed, "failed": failed, "study": study, "scope": "Visual study and fixed readability samples; no gameplay simulation", "production_integration": false, "human_review": "PENDING", "engine": Engine.get_version_info().string}
 	var file := FileAccess.open(output.path_join("results.json"), FileAccess.WRITE)
 	file.store_string(JSON.stringify(record, "\t") + "\n"); file.close()
@@ -248,9 +258,10 @@ func capture_fauna() -> void:
 	await save_world("PLANTS-world", 0, false)
 	await save_world("FAUNA-world", 0, true)
 	await save_world("FAUNA-world-8", 8, true)
-	await save_world("detail-shrimp", 8, true, Vector2i(384, 216), Vector2(174, 337), 3.0)
-	await save_world("detail-snail", 8, true, Vector2i(384, 216), Vector2(435, 312), 3.0)
-	await save_world("detail-school", 8, true, Vector2i(384, 216), Vector2(248, 149), 3.0)
+	var details: Array = settings.get("details", [Vector2(174, 337), Vector2(435, 312), Vector2(248, 149)])
+	await save_world("detail-shrimp", 8, true, Vector2i(384, 216), details[0], 3.0)
+	await save_world("detail-snail", 8, true, Vector2i(384, 216), details[1], 3.0)
+	await save_world("detail-school", 8, true, Vector2i(384, 216), details[2], 3.0)
 	check(fauna.upload_count == 1, "captures and camera changes keep one atlas")
 
 func save_world(name: String, time: float, animals: bool, size := Vector2i(1280, 480), center := Vector2.ZERO, zoom := 1.0) -> void:

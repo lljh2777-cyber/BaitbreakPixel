@@ -1,3 +1,5 @@
+[2026-10-06：M01/B 第三轮独立装饰动物](pond-series/M01-stone-bay/round3/REPORT.md) · [原生样片](pond-series/M01-stone-bay/round3/gallery.html)
+
 [2026-10-06：M01 已选 B · 第二轮植物群落](pond-series/M01-stone-bay/round2/REPORT.md) · [前后对照](pond-series/M01-stone-bay/round2/gallery.html)
 
 [2026-10-06：自然池塘系列 · 逐张设计](pond-series/README.md) · [M01 石阶浅湾 A/B](pond-series/M01-stone-bay/round1/gallery.html)

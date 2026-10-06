@@ -1,0 +1,16 @@
+{
+  "scope": "Native plants vs fauna at t=0; not gameplay acceptance",
+  "world_size": [
+    1280,
+    480
+  ],
+  "changed_pixels": 319,
+  "central_reference_rect": [
+    320,
+    77,
+    679,
+    230
+  ],
+  "central_changed_pixels": 0,
+  "source_plant_image_edited": false
+}

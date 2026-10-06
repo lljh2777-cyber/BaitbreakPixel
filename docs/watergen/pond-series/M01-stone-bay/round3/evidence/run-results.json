@@ -1,0 +1,27 @@
+{
+  "returncode": 0,
+  "timed_out": false,
+  "duration_seconds": 6.016,
+  "launch_error": false,
+  "passed": 97,
+  "failed": 0,
+  "count_basis": "summary",
+  "status": "passed",
+  "reason": "",
+  "command": [
+    "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+    "--path",
+    "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen-v2",
+    "--audio-driver",
+    "Dummy",
+    "--log-file",
+    "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen-v2\\artifacts\\watergen\\m01-fauna-r3-review\\engine.log",
+    "--scene",
+    "res://scenes/watergen/stone_bay_fauna_preview.tscn",
+    "--",
+    "--output=E:/Fish_catches_people/aquatic_system/BaitbreakPixel-watergen-v2/artifacts/watergen/m01-fauna-r3-review",
+    "--capture"
+  ],
+  "study": "stone_fauna",
+  "production_integration": false
+}
