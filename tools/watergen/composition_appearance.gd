@@ -24,13 +24,16 @@ func prepare(context: RefCounted, seed_value: int) -> bool:
 		var baked:=Baker.bake(generated.plan)
 		if not baked.ok: return false
 		var result: Dictionary={"plan":generated.plan,"prepare_us":Time.get_ticks_usec()-start}
-		for layer in ["far","middle","bed"]: result[layer]=ImageTexture.create_from_image(baked[layer])
+		for layer in ["far","anchors","bed","foreground"]: result[layer]=ImageTexture.create_from_image(baked[layer])
 		if studies.size()>=3: studies.erase(studies.keys()[0])
 		studies[key]=result; bake_count+=1
 	study=studies[key]
 	return true
 
-func draw_relief(view: Node2D, camera: Vector2, far: bool) -> void:
-	if study.is_empty() or show_baseline: super.draw_relief(view,camera,far); return
+func draw_blockout(view: Node2D, camera: Vector2, time: float) -> void:
+	# Reuse the quiet water/lighting pass only. All old terrain, repeated logs,
+	# plants and NPCs are intentionally absent from this frozen composition board.
+	draw_slot(view,"water",camera,time)
 	view.draw_set_transform(-camera)
-	view.draw_texture(study.far if far else study.middle,Vector2.ZERO)
+	for layer in ["far","bed","anchors","foreground"]:
+		view.draw_texture(study[layer],Vector2.ZERO)

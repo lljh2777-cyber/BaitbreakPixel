@@ -1,5 +1,5 @@
 extends "res://scripts/pond_view.gd"
-## Reuse every production actor/food/line/QTE/HUD pass; only scenery differs.
+## Frozen composition board. Its authored floor is NOT playable map geometry.
 const StudyAppearance=preload("res://tools/watergen/composition_appearance.gd")
 var choice:="A"
 var overview:=false
@@ -10,12 +10,23 @@ func _init() -> void:
 
 func prepare_map(context: RefCounted) -> void:
 	generated_water.variant=choice
-	# Base view early-outs on identity. Variant is view-local, so explicitly
-	# prepare our scenery and then keep the original prop/plant caches intact.
+	# Production scenery remains available only for the explicit baseline toggle.
 	super.prepare_map(context)
 	generated_water.show_baseline=show_baseline
 	if generated_water.prepare(context,visual_seed) and not generated_water.study.is_empty():
-		bed_texture=generated_water.original_bed if show_baseline else generated_water.study.bed
+		bed_texture=generated_water.original_bed
+
+func _world(t: float) -> void:
+	if show_baseline: super._world(t); return
+	generated_water.draw_blockout(self,camera_offset,t)
+	# Existing public gameplay overlays supply scale/readability checks, while
+	# the paused board does not suggest that these concept slopes are collidable.
+	_winding_fish(t,false)
+	_baits(t,true)
+	_line_back()
+
+func _navigation() -> void:
+	if show_baseline: super._navigation()
 
 func _draw() -> void:
 	if not overview: super._draw(); return

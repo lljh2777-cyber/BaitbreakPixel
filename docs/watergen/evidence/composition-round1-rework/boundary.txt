@@ -1,0 +1,6 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+COMPOSITION_AREA | A | bed=16.10% | foreground=0.90%
+COMPOSITION_AREA | B | bed=17.01% | foreground=1.09%
+COMPOSITION_AREA | C | bed=14.22% | foreground=0.97%
+COMPOSITION_BOUNDARY | passed=64 | failed=0

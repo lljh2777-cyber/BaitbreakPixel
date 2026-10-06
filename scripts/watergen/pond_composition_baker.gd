@@ -12,75 +12,61 @@ static func canvas() -> Image:
 
 static func bake(plan: Dictionary) -> Dictionary:
 	if plan.get("version")!=Plan.VERSION: return {"ok":false,"code":"PLAN"}
-	var far:=canvas(); var middle:=canvas(); var bed:=canvas()
-	_surface(far,plan,"far")
-	_surface(middle,plan,"middle")
-	# Ground each background mass on its own distant bank, never on collision data.
-	for i in plan.rocks.size(): _rock(middle,plan,plan.rocks[i],i)
-	for i in plan.logs.size(): _log(middle,plan,plan.logs[i],i)
+	var far:=canvas(); var anchors:=canvas(); var bed:=canvas(); var foreground:=canvas()
+	_surface(far,plan)
 	_soil(bed,plan)
-	return {"ok":true,"far":far,"middle":middle,"bed":bed}
+	# Only broad grouped rock masses and ONE wood anchor, no ecological dressing.
+	for i in plan.rocks.size(): _rock(anchors,plan,plan.rocks[i],i)
+	for i in plan.logs.size(): _log(anchors,plan,plan.logs[i],i)
+	_foreground(foreground,plan)
+	return {"ok":true,"far":far,"anchors":anchors,"bed":bed,"foreground":foreground}
 
 static func grain(x: int, y: int, salt: int=0) -> float:
 	var n: int=(x*374761393+y*668265263+salt*362437) & 0x7fffffff
 	n=((n ^ (n >> 13))*1274126177) & 0x7fffffff
 	return float((n ^ (n >> 16)) & 0x7fffffff)/2147483647.0
 
-static func _surface(image: Image, plan: Dictionary, layer: String) -> void:
-	var far:=layer=="far"
-	var dark:=Color("244c4c") if far else Color("2b4e50")
-	var light:=Color("557069") if far else Color("647b6a")
+static func rim(plan: Dictionary, x: int) -> int:
+	# At most two pixels of erosion; authored banks determine every broad slope.
+	return roundi(Plan.height(plan.bed,x)+(Field._noise(Vector2(x/29.0,1),4.1)-.5)*4)
+
+static func _surface(image: Image, plan: Dictionary) -> void:
+	var dark:=Color("244d54"); var light:=Color("436367")
 	for x in 1280:
-		var rim:=Plan.height(plan[layer],x)
-		# Broken silt lips with long quiet stretches, not a continuous bright wave.
-		rim+=roundf((Field._noise(Vector2(x/39.0,1),4.1)-0.5)*4)
-		for y in range(maxi(0,floori(rim)),480):
-			var d:=y-rim
-			var coarse:=Field._noise(Vector2(x/43.0,y/17.0),7.4)
-			var speck:=grain(x,y,2)
-			var value:=0.24+coarse*0.30+(1-smoothstep(1,19,d))*0.13
-			if speck>.97: value+=.12
-			elif speck<.035: value-=.10
-			var color:=dark.lerp(light,floorf(value*12)/12.0)
-			color.a=minf(1,(d+2)/5.0)*(0.86 if far else 0.82)
-			if d<0: continue
+		var top:=roundi(Plan.height(plan.far,x))
+		for y in range(top,480):
+			var value:=.35+Field._noise(Vector2(x/97.0,y/43.0),7.4)*.16
+			var color:=dark.lerp(light,floorf(value*16)/16)
+			color.a=.62*minf(1,float(y-top+1)/7)
 			image.set_pixel(x,y,color)
 
 static func _rock(image: Image, plan: Dictionary, spec: Array, index: int) -> void:
 	var rng:=Seed.stream(plan.visual_seed,Plan.VERSION,plan.variant+"/rock",index)
-	var p:=Vector2(spec[0],spec[1]); var w: float=spec[2]; var h: float=spec[3]
-	p.y=maxf(Plan.height(plan.far,p.x-w*.55),Plan.height(plan.far,p.x+w*.55))+13
+	var p:=Vector2(spec[0],0); var w: float=spec[1]; var h: float=spec[2]
+	p.y=Plan.height(plan.bed,p.x)+8
 	var outline:=PackedVector2Array([p+Vector2(-w*.55,6),p+Vector2(-w*.51,-h*.29),p+Vector2(-w*.31,-h*.83),p+Vector2(-w*.10,-h),p+Vector2(w*.20,-h*.95),p+Vector2(w*.46,-h*.48),p+Vector2(w*.54,5)])
-	var pale:=Color("6a7d73"); var dark:=Color("304e52")
+	var pale:=Color("9baba0"); var dark:=Color("304b50")
 	for x in range(maxi(0,int(p.x-w)),mini(1280,int(p.x+w))):
 		for y in range(maxi(0,int(p.y-h)-1),mini(480,int(p.y)+7)):
 			var point:=Vector2(x+.5,y+.5)
 			if not Geometry2D.is_point_in_polygon(point,outline): continue
 			var u: float=(x-p.x)/w; var v: float=(p.y-y)/h
 			var face:=0.22 if u>.05+v*.08 else 0.43 if v<.70-u*.5 else .66
-			face+=Field._noise(Vector2(x/12.0,y/8.0),2.6)*.12-.06
-			var noise:=grain(x,y,index)
-			if noise>.97: face+=.15
-			elif noise<.06: face-=.09
+			face+=Field._noise(Vector2(x/21.0,y/15.0),2.6)*.06-.03
 			var c:=dark.lerp(pale,face)
-			c.a=0.78*clampf((p.y+6-y)/10.0,0,1)
+			c.a=clampf((p.y+6-y)/9.0,0,1)
 			image.set_pixel(x,y,c)
-	# One small flaked seam, kept within the same low-contrast distant material.
+	# Broad facets only. Fine stone texture belongs to a later detail pass.
 	var seam:=p+Vector2(rng.randf_range(-.15,.12)*w,-h*.67)
 	Raster.line(image,seam,seam+Vector2(w*.16,h*.36),Color("3c595b"))
 
 static func _log(image: Image, plan: Dictionary, spec: Dictionary, index: int) -> void:
 	var points:=PackedVector2Array()
 	for p: Array in spec.path: points.append(Vector2(p[0],p[1]))
-	var span:=points[-1]-points[0]
-	var first_shift:=Plan.height(plan.far,points[0].x)-points[0].y
-	var last_shift:=Plan.height(plan.far,points[-1].x)-points[-1].y
-	for i in points.size():
-		points[i].y+=lerpf(first_shift,last_shift,float(i)/(points.size()-1)) if absf(span.x)>absf(span.y)*2 else first_shift
 	var bounds:=Rect2(points[0],Vector2.ZERO)
 	for p: Vector2 in points: bounds=bounds.expand(p)
 	bounds=bounds.grow(spec.width+4)
-	var light:=Color("67796a"); var dark:=Color("294a4e")
+	var light:=Color("a9a87b"); var dark:=Color("354b41")
 	for x in range(maxi(0,int(bounds.position.x)),mini(1280,ceili(bounds.end.x))):
 		for y in range(maxi(0,int(bounds.position.y)),mini(480,ceili(bounds.end.y))):
 			var point:=Vector2(x+.5,y+.5)
@@ -97,43 +83,47 @@ static func _log(image: Image, plan: Dictionary, spec: Dictionary, index: int) -
 				if delta.length()<distance:
 					distance=delta.length(); along=travel+t*edge.length(); side=delta.dot(edge.normalized().orthogonal())
 				travel+=edge.length()
-			var radius: float=spec.width*(.72+.28*(1-clampf(along/maxf(1,travel),0,1)))
-			radius+=(Field._noise(Vector2(along/19.0,1),index+3.2)-.5)*3
+			var radius: float=spec.width*(.43+.57*(1-clampf(along/maxf(1,travel),0,1)))
+			radius+=(Field._noise(Vector2(along/33.0,1),index+3.2)-.5)*4
 			if distance>radius: continue
-			var value:=.30+(1-side/radius)*.19
-			var fibre:=side+Field._noise(Vector2(along/45.0,side/9.0),index+1.1)*5
-			var fissure:=posmod(floori(fibre),6)
-			if fissure<=1 and Field._noise(Vector2(along/22.0,side),1.8)>.27: value-=.13
-			elif fissure==4: value+=.06
-			if grain(x,y,index)>.97: value+=.09
+			# Three broad irregular bark planes; no evenly ruled parallel stripes.
+			var cross:=side/radius+(Field._noise(Vector2(along/67.0,side/13.0),index+1.1)-.5)*.24
+			var value:=.68 if cross<-.55 else .49 if cross<.10 else .30
+			if absf(cross+.26)<.065 and Field._noise(Vector2(along/46.0,1),1.8)>.30: value-=.13
+			value+=(Field._noise(Vector2(along/39.0,side/6.0),3.1)-.5)*.08
 			var color:=dark.lerp(light,value)
-			color.a=.88
+			color.a=1
 			image.set_pixel(x,y,color)
-	# A single broken branch adds direction without multiplying major anchors.
+	# A single connected broken branch establishes the trunk's direction.
 	var at:=points[1]
-	Raster.polygon(image,PackedVector2Array([at+Vector2(-8,3),at+Vector2(-15,-36),at+Vector2(-9,-43),at+Vector2(-2,-13),at+Vector2(7,2)]),Color("3c5956"))
+	Raster.polygon(image,PackedVector2Array([at+Vector2(-8,3),at+Vector2(-24,-31),at+Vector2(-22,-37),at+Vector2(-7,-18),at+Vector2(7,2)]),Color("647155"))
 
 static func _soil(image: Image, plan: Dictionary) -> void:
 	var light:=Color(plan.sediment_light); var dark:=Color(plan.sediment_dark)
 	for x in 1280:
-		var top: int=plan.floor_columns[x]
+		var top:=rim(plan,x)
 		for y in range(top,480):
 			var depth:=y-top
 			var patch:=Field._noise(Vector2(x/49.0,y/22.0),3.3)
 			var fine:=grain(x,y,17)
-			var value:=.30+patch*.33-smoothstep(5,100,depth)*.29
+			var value:=.41+patch*.10-smoothstep(8,110,depth)*.28
 			# Variable-width alluvial cap and patchy exposed soil, no ruled bands.
 			var cap:=3+int(Field._noise(Vector2(x/27.0,2),6.7)*7)
-			if depth<cap: value+=.15*(1-float(depth)/cap)
-			if depth==0: value=.55+patch*.16
-			if fine<.04: value-=.14
-			elif fine>.97: value+=.13
-			var channel_x: float=plan.channel[-1][0]
-			for i in range(plan.channel.size()-1):
-				var a: Array=plan.channel[i]; var b: Array=plan.channel[i+1]
-				if y<=b[1]:
-					channel_x=lerpf(a[0],b[0],clampf((y-a[1])/(b[1]-a[1]),0,1)); break
-			var channel:=1-smoothstep(18,110,absf(x-channel_x))
-			value+=channel*.07
+			if depth<cap: value+=.12*(1-float(depth)/cap)
+			if fine<.016: value-=.09
+			elif fine>.986: value+=.08
 			var c:=dark.lerp(light,clampf(floorf(value*14)/14.0,0,1))
 			image.set_pixel(x,y,c)
+
+static func _foreground(image: Image, plan: Dictionary) -> void:
+	# Local corner wedges only: no connected ridge or high wall across the screen.
+	for contour: Array in plan.foreground:
+		var points:=PackedVector2Array()
+		for p: Array in contour: points.append(Vector2(p[0],p[1]))
+		points.append(Vector2(contour[-1][0],480)); points.append(Vector2(contour[0][0],480))
+		Raster.polygon(image,points,Color("16353b"))
+		for x in range(int(contour[0][0]),mini(1280,int(contour[-1][0]))):
+			var top:=roundi(Plan.height(contour,x))
+			for y in range(top,480):
+				var c:=Color("15343a").lerp(Color("36514c"),.23+(1-smoothstep(0,13,y-top))*.32)
+				image.set_pixel(x,y,c)

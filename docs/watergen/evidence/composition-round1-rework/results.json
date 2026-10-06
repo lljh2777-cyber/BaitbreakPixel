@@ -1,0 +1,50 @@
+[
+  {
+    "returncode": 0,
+    "timed_out": false,
+    "duration_seconds": 5.609,
+    "launch_error": false,
+    "passed": 0,
+    "failed": 0,
+    "count_basis": "log_markers",
+    "status": "passed",
+    "reason": "",
+    "suite": "import"
+  },
+  {
+    "returncode": 0,
+    "timed_out": false,
+    "duration_seconds": 14.5,
+    "launch_error": false,
+    "passed": 64,
+    "failed": 0,
+    "count_basis": "summary",
+    "status": "passed",
+    "reason": "",
+    "suite": "boundary"
+  },
+  {
+    "returncode": 0,
+    "timed_out": false,
+    "duration_seconds": 17.172,
+    "launch_error": false,
+    "passed": 146,
+    "failed": 0,
+    "count_basis": "summary",
+    "status": "passed",
+    "reason": "",
+    "suite": "native"
+  },
+  {
+    "returncode": 0,
+    "timed_out": false,
+    "duration_seconds": 10.156,
+    "launch_error": false,
+    "passed": 2,
+    "failed": 0,
+    "count_basis": "summary",
+    "status": "passed",
+    "reason": "",
+    "suite": "review-ui"
+  }
+]
