@@ -1,0 +1,201 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+OpenGL API 3.3.0 Core Profile Context 23.20.28.03.231124 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon(TM) Graphics
+
+
+
+FAUNA_R3_PASS | requested study plates loaded
+
+FAUNA_R3_PASS | native logical viewport PLANTS-overview
+
+FAUNA_R3_PASS | saved PLANTS-overview
+
+FAUNA_R3_PASS | different composition 0
+
+FAUNA_R3_PASS | native logical viewport PLANTS-0-120-clean
+
+FAUNA_R3_PASS | saved PLANTS-0-120-clean
+
+FAUNA_R3_PASS | native logical viewport PLANTS-0-120-probes
+
+FAUNA_R3_PASS | saved PLANTS-0-120-probes
+
+FAUNA_R3_PASS | probes visible without altering plate
+
+FAUNA_R3_PASS | native logical viewport PLANTS-320-120-clean
+
+FAUNA_R3_PASS | saved PLANTS-320-120-clean
+
+FAUNA_R3_PASS | native logical viewport PLANTS-320-120-probes
+
+FAUNA_R3_PASS | saved PLANTS-320-120-probes
+
+FAUNA_R3_PASS | probes visible without altering plate
+
+FAUNA_R3_PASS | native logical viewport PLANTS-640-120-clean
+
+FAUNA_R3_PASS | saved PLANTS-640-120-clean
+
+FAUNA_R3_PASS | native logical viewport PLANTS-640-120-probes
+
+FAUNA_R3_PASS | saved PLANTS-640-120-probes
+
+FAUNA_R3_PASS | probes visible without altering plate
+
+FAUNA_R3_PASS | native logical viewport PLANTS-0-0-clean
+
+FAUNA_R3_PASS | saved PLANTS-0-0-clean
+
+FAUNA_R3_PASS | native logical viewport PLANTS-0-0-probes
+
+FAUNA_R3_PASS | saved PLANTS-0-0-probes
+
+FAUNA_R3_PASS | probes visible without altering plate
+
+FAUNA_R3_PASS | native logical viewport PLANTS-640-0-clean
+
+FAUNA_R3_PASS | saved PLANTS-640-0-clean
+
+FAUNA_R3_PASS | native logical viewport PLANTS-640-0-probes
+
+FAUNA_R3_PASS | saved PLANTS-640-0-probes
+
+FAUNA_R3_PASS | probes visible without altering plate
+
+FAUNA_R3_PASS | native logical viewport PLANTS-repeat
+
+FAUNA_R3_PASS | saved PLANTS-repeat
+
+FAUNA_R3_PASS | repeat frame stable
+
+FAUNA_R3_PASS | native logical viewport FAUNA-overview
+
+FAUNA_R3_PASS | saved FAUNA-overview
+
+FAUNA_R3_PASS | different composition 1
+
+FAUNA_R3_PASS | native logical viewport FAUNA-0-120-clean
+
+FAUNA_R3_PASS | saved FAUNA-0-120-clean
+
+FAUNA_R3_PASS | native logical viewport FAUNA-0-120-probes
+
+FAUNA_R3_PASS | saved FAUNA-0-120-probes
+
+FAUNA_R3_PASS | probes visible without altering plate
+
+FAUNA_R3_PASS | native logical viewport FAUNA-320-120-clean
+
+FAUNA_R3_PASS | saved FAUNA-320-120-clean
+
+FAUNA_R3_PASS | native logical viewport FAUNA-320-120-probes
+
+FAUNA_R3_PASS | saved FAUNA-320-120-probes
+
+FAUNA_R3_PASS | probes visible without altering plate
+
+FAUNA_R3_PASS | native logical viewport FAUNA-640-120-clean
+
+FAUNA_R3_PASS | saved FAUNA-640-120-clean
+
+FAUNA_R3_PASS | native logical viewport FAUNA-640-120-probes
+
+FAUNA_R3_PASS | saved FAUNA-640-120-probes
+
+FAUNA_R3_PASS | probes visible without altering plate
+
+FAUNA_R3_PASS | native logical viewport FAUNA-0-0-clean
+
+FAUNA_R3_PASS | saved FAUNA-0-0-clean
+
+FAUNA_R3_PASS | native logical viewport FAUNA-0-0-probes
+
+FAUNA_R3_PASS | saved FAUNA-0-0-probes
+
+FAUNA_R3_PASS | probes visible without altering plate
+
+FAUNA_R3_PASS | native logical viewport FAUNA-640-0-clean
+
+FAUNA_R3_PASS | saved FAUNA-640-0-clean
+
+FAUNA_R3_PASS | native logical viewport FAUNA-640-0-probes
+
+FAUNA_R3_PASS | saved FAUNA-640-0-probes
+
+FAUNA_R3_PASS | probes visible without altering plate
+
+FAUNA_R3_PASS | native logical viewport FAUNA-repeat
+
+FAUNA_R3_PASS | saved FAUNA-repeat
+
+FAUNA_R3_PASS | repeat frame stable
+
+FAUNA_R3_PASS | study textures retained; draw never prepares new textures
+
+FAUNA_R3_PASS | before/after share the unchanged plant texture
+
+FAUNA_R3_PASS | one small fauna atlas
+
+FAUNA_R3_PASS | explicit time repeats exactly
+
+FAUNA_R3_PASS | visual time animates the decoration
+
+FAUNA_R3_PASS | local visual seed changes only phases
+
+FAUNA_R3_PASS | invalid time rejected
+
+FAUNA_R3_PASS | all motion avoids the central activity rectangle for 181 samples
+
+FAUNA_R3_PASS | three shrimp, two snails, ten distant fish stay bounded
+
+FAUNA_R3_PASS | distant fish remain smaller and dimmer than player/NPC sprites
+
+FAUNA_R3_PASS | sampling does not mutate habitats or upload textures
+
+FAUNA_R3_PASS | pause freezes the explicit preview clock
+
+FAUNA_R3_PASS | resume advances only local visual time
+
+FAUNA_R3_PASS | native logical viewport FAUNA-time-0
+
+FAUNA_R3_PASS | saved FAUNA-time-0
+
+FAUNA_R3_PASS | native logical viewport FAUNA-time-8
+
+FAUNA_R3_PASS | saved FAUNA-time-8
+
+FAUNA_R3_PASS | native animal animation changes pixels
+
+FAUNA_R3_PASS | native logical viewport FAUNA-seek-0
+
+FAUNA_R3_PASS | saved FAUNA-seek-0
+
+FAUNA_R3_PASS | native seek repeats original frame
+
+FAUNA_R3_PASS | world/detail canvas PLANTS-world
+
+FAUNA_R3_PASS | save world PLANTS-world
+
+FAUNA_R3_PASS | world/detail canvas FAUNA-world
+
+FAUNA_R3_PASS | save world FAUNA-world
+
+FAUNA_R3_PASS | world/detail canvas FAUNA-world-8
+
+FAUNA_R3_PASS | save world FAUNA-world-8
+
+FAUNA_R3_PASS | world/detail canvas detail-shrimp
+
+FAUNA_R3_PASS | save world detail-shrimp
+
+FAUNA_R3_PASS | world/detail canvas detail-snail
+
+FAUNA_R3_PASS | save world detail-snail
+
+FAUNA_R3_PASS | world/detail canvas detail-school
+
+FAUNA_R3_PASS | save world detail-school
+
+FAUNA_R3_PASS | captures and camera changes keep one atlas
+
+FAUNA_R3 | passed=97 | failed=0

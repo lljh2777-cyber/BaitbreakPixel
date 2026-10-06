@@ -2,6 +2,7 @@ extends Node2D
 ## Art studies only. No World, MapContext, collision or observation.
 ## The single images are concept plates, not layered production environments.
 const Art = preload("res://scripts/pixel_art.gd")
+const Fauna = preload("res://tools/watergen/decorative_fauna_layer.gd")
 const STUDIES := {
 	"terrain": {
 		"files": ["res://docs/watergen/terrain-round1/A-trough-log.png", "res://docs/watergen/terrain-round1/B-stone-bay.png", "res://docs/watergen/terrain-round1/C-root-channel.png"],
@@ -16,10 +17,20 @@ const STUDIES := {
 		"ids": ["BASE", "PLANTS"], "tag": "PLANTS_R2", "initial": 1,
 		"help": "1 地势 / 2 植物   Tab 全景/镜头   方向键平移   P 识别样本   G 留白区   Home 居中   Esc",
 		"footer": "第二轮：植物群落。静态构图预览；未运行玩法模拟，尚未添加装饰动物。",
+		"cameras": [Vector2(0, 120), Vector2(320, 120), Vector2(640, 120), Vector2(0, 0), Vector2(640, 0)]},
+	"fauna": {
+		"files": ["res://docs/watergen/plants-round2/A-plant-communities.png", "res://docs/watergen/plants-round2/A-plant-communities.png"],
+		"titles": ["A · 第二轮植物", "A · 第三轮装饰生态"],
+		"ids": ["PLANTS", "FAUNA"], "tag": "FAUNA_R3", "initial": 1,
+		"help": "1 植物 / 2 生态   Tab 全景/镜头   方向键   P 样本   G 标记   空格暂停   R 归零   Esc",
+		"footer": "第三轮：3 虾 / 2 蜗牛 / 2 组远景鱼。纯视觉叠加；不运行玩法模拟。",
 		"cameras": [Vector2(0, 120), Vector2(320, 120), Vector2(640, 120), Vector2(0, 0), Vector2(640, 0)]}
 }
-@export_enum("terrain", "plants") var study := "terrain"
+@export_enum("terrain", "plants", "fauna") var study := "terrain"
 var settings: Dictionary = {}
+var fauna: RefCounted
+var visual_time := 0.0
+var paused := false
 const INK := Color("142e39")
 const CREAM := Color("fff0cd")
 var plates: Array[Texture2D] = []
@@ -46,12 +57,17 @@ func _ready() -> void:
 	font.font_names = PackedStringArray(["Microsoft YaHei", "sans-serif"])
 	font.antialiasing = TextServer.FONT_ANTIALIASING_NONE
 	fish = Art.fish()
+	if study == "fauna": fauna = Fauna.new()
+	var loaded: Dictionary = {}
 	for file: String in settings.files:
+		if loaded.has(file): plates.append(loaded[file]); continue
 		var image := Image.load_from_file(file)
 		if image == null or image.is_empty() or image.get_size() != Vector2i(2048, 768):
 			push_error("Terrain study missing or wrong dimensions: " + file)
 			get_tree().quit(2); return
-		plates.append(ImageTexture.create_from_image(image))
+		var plate := ImageTexture.create_from_image(image)
+		loaded[file] = plate
+		plates.append(plate)
 	for argument in OS.get_cmdline_user_args():
 		if argument == "--capture": capture = true
 		elif argument.begins_with("--output="): output = argument.trim_prefix("--output=").replace("\\", "/").simplify_path()
@@ -59,11 +75,18 @@ func _ready() -> void:
 	queue_redraw()
 
 func _process(delta: float) -> void:
-	if capture or overview: return
+	if capture: return
+	advance_visual_time(delta)
+	if overview: return
 	var direction := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	if direction != Vector2.ZERO:
 		camera = (camera + direction * delta * 180).clamp(Vector2.ZERO, Vector2(640, 120))
 		queue_redraw()
+
+func advance_visual_time(delta: float) -> void:
+	if study != "fauna" or paused or not is_finite(delta) or delta < 0 or delta > 60: return
+	visual_time = fmod(visual_time + delta, 86400.0)
+	queue_redraw()
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if capture or not event.is_pressed() or event.is_echo(): return
@@ -74,6 +97,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		KEY_P: probes = not probes
 		KEY_G: guides = not guides
 		KEY_HOME: camera = Vector2(320, 120)
+		KEY_SPACE: paused = not paused
+		KEY_R: visual_time = 0.0
 		KEY_ESCAPE: get_tree().quit()
 	queue_redraw()
 
@@ -86,15 +111,18 @@ func _draw() -> void:
 	if overview: draw_set_transform(Vector2(0, 55), 0, Vector2(0.5, 0.5))
 	else: draw_set_transform(-camera.round())
 	draw_texture_rect(plates[selection], Rect2(0, 0, 1280, 480), false)
+	if study == "fauna" and selection == 1: fauna.draw(self, visual_time)
 	if guides:
 		draw_rect(Rect2(320, 77, 679, 230), Color(0.55, 0.9, 0.76, 0.55), false, 1)
 		# This rectangle is a composition guide, never an Authority boundary.
+		if study == "fauna" and selection == 1: fauna.debug_draw(self, visual_time)
 	if probes: draw_world_probes()
 	draw_set_transform(Vector2.ZERO)
 	if probes and not overview: draw_ui_probes()
 	draw_rect(Rect2(0, 0, 640, 32), INK)
 	label(Vector2(10, 14), settings.titles[selection], 12, Color("a9d0bf"))
 	label(Vector2(310, 14), "构图稿 · 全景" if overview else "构图稿 · 640×360 镜头", 11)
+	if study == "fauna": label(Vector2(488, 14), "%s %.1fs" % ["暂停" if paused else "播放", visual_time], 10)
 	label(Vector2(10, 28), settings.help, 10)
 	draw_rect(Rect2(0, 335, 640, 25), INK)
 	label(Vector2(10, 351), settings.footer, 10)
@@ -161,7 +189,7 @@ func capture_all() -> void:
 		for location: Vector2 in settings.cameras:
 			camera = location; probes = false
 			var name := "%s-%d" % [id, int(location.x)]
-			if study == "plants": name += "-%d" % int(location.y)
+			if study != "terrain": name += "-%d" % int(location.y)
 			var clean := await save_frame(name + "-clean")
 			probes = true
 			var sample := await save_frame(name + "-probes")
@@ -173,8 +201,76 @@ func capture_all() -> void:
 		await RenderingServer.frame_post_draw
 		check(repeat.get_data() == get_viewport().get_texture().get_image().get_data(), "repeat frame stable")
 	check(plates.size() == settings.files.size(), "study textures retained; draw never prepares new textures")
-	var record := {"passed": passed, "failed": failed, "study": study, "scope": "Static art direction and readability samples only", "production_integration": false, "human_review": "PENDING", "engine": Engine.get_version_info().string}
+	if study == "fauna": await capture_fauna()
+	var record := {"passed": passed, "failed": failed, "study": study, "scope": "Visual study and fixed readability samples; no gameplay simulation", "production_integration": false, "human_review": "PENDING", "engine": Engine.get_version_info().string}
 	var file := FileAccess.open(output.path_join("results.json"), FileAccess.WRITE)
 	file.store_string(JSON.stringify(record, "\t") + "\n"); file.close()
 	print("%s | passed=%d | failed=%d" % [settings.tag, passed, failed])
 	get_tree().quit(1 if failed else 0)
+
+func capture_fauna() -> void:
+	check(plates[0] == plates[1], "before/after share the unchanged plant texture")
+	check(fauna.texture.get_size() == Vector2(96, 8) and fauna.upload_count == 1, "one small fauna atlas")
+	var anchors: Array = [fauna.residents.duplicate(true), fauna.schools.duplicate(true)]
+	var repeat: Array = fauna.sample(8)
+	check(repeat == fauna.sample(8), "explicit time repeats exactly")
+	check(repeat != fauna.sample(0), "visual time animates the decoration")
+	check(repeat != fauna.sample(8, 42), "local visual seed changes only phases")
+	check(fauna.sample(-1).is_empty() and fauna.sample(NAN).is_empty(), "invalid time rejected")
+	var clear := true
+	var bounded := true
+	var count_ok := true
+	var small_fish := true
+	for tick in 181:
+		var frame: Array = fauna.sample(float(tick))
+		count_ok = count_ok and frame.size() == 15
+		for animal: Dictionary in frame:
+			var box := Rect2(animal.position, animal.region.size)
+			clear = clear and not Fauna.CLEAR_ZONE.intersects(box)
+			bounded = bounded and Rect2(0, 0, 1280, 480).encloses(box)
+			if animal.kind == "distant_fish": small_fish = small_fish and box.size == Vector2(8, 3) and animal.opacity < 0.5
+	check(clear, "all motion avoids the central activity rectangle for 181 samples")
+	check(bounded and count_ok, "three shrimp, two snails, ten distant fish stay bounded")
+	check(small_fish, "distant fish remain smaller and dimmer than player/NPC sprites")
+	check(anchors == [fauna.residents, fauna.schools] and fauna.upload_count == 1, "sampling does not mutate habitats or upload textures")
+	visual_time = 8; paused = true; advance_visual_time(0.5)
+	check(visual_time == 8, "pause freezes the explicit preview clock")
+	paused = false; advance_visual_time(0.5)
+	check(visual_time == 8.5, "resume advances only local visual time")
+	overview = false; camera = Vector2(320, 120); selection = 1; probes = false
+	visual_time = 0
+	var zero := await save_frame("FAUNA-time-0")
+	visual_time = 8
+	var later := await save_frame("FAUNA-time-8")
+	check(zero.get_data() != later.get_data(), "native animal animation changes pixels")
+	visual_time = 0
+	check(zero.get_data() == (await save_frame("FAUNA-seek-0")).get_data(), "native seek repeats original frame")
+	await save_world("PLANTS-world", 0, false)
+	await save_world("FAUNA-world", 0, true)
+	await save_world("FAUNA-world-8", 8, true)
+	await save_world("detail-shrimp", 8, true, Vector2i(384, 216), Vector2(174, 337), 3.0)
+	await save_world("detail-snail", 8, true, Vector2i(384, 216), Vector2(435, 312), 3.0)
+	await save_world("detail-school", 8, true, Vector2i(384, 216), Vector2(248, 149), 3.0)
+	check(fauna.upload_count == 1, "captures and camera changes keep one atlas")
+
+func save_world(name: String, time: float, animals: bool, size := Vector2i(1280, 480), center := Vector2.ZERO, zoom := 1.0) -> void:
+	var viewport := SubViewport.new()
+	viewport.size = size
+	viewport.disable_3d = true
+	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	viewport.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_NEAREST
+	add_child(viewport)
+	var canvas := Node2D.new()
+	viewport.add_child(canvas)
+	canvas.draw.connect(func():
+		if zoom != 1.0: canvas.draw_set_transform(Vector2(size) * 0.5 - center * zoom, 0, Vector2.ONE * zoom)
+		canvas.draw_texture_rect(plates[0], Rect2(0, 0, 1280, 480), false)
+		if animals: fauna.draw(canvas, time))
+	canvas.queue_redraw()
+	for frame in 3: await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	var image := viewport.get_texture().get_image()
+	check(image.get_size() == size, "world/detail canvas " + name)
+	var path := output.path_join(name + ".png")
+	check(not FileAccess.file_exists(path) and image.save_png(path) == OK, "save world " + name)
+	viewport.free()

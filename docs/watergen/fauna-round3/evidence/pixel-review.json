@@ -1,0 +1,15 @@
+{
+  "world_size": [
+    1280,
+    480
+  ],
+  "changed_pixels": 319,
+  "central_activity_rect": [
+    320,
+    77,
+    679,
+    230
+  ],
+  "central_pixels_changed": 0,
+  "scope": "Direct RGB comparison of native before/after world captures at visual_time=0; no file hashing."
+}

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>沟谷倒木 · 第三轮装饰生态</title>
+<style>
+:root{color-scheme:dark;--muted:#a6bcb5;--accent:#c8d3a2}*{box-sizing:border-box}body{margin:0;background:#0b1e24;color:#e1e5cf;font:16px/1.7 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1450px;margin:auto;padding:40px 28px 64px}.eyebrow{font-size:12px;letter-spacing:.15em;color:var(--accent)}h1{font-size:clamp(28px,4vw,46px);font-weight:550;line-height:1.25;margin:8px 0 14px}h2{font-size:23px;font-weight:550;margin:34px 0 8px}p{max-width:950px;color:var(--muted)}img{width:100%;height:auto;display:block;image-rendering:pixelated}figure{margin:0;background:#102a31}figcaption{padding:12px 16px;color:var(--muted);font-size:14px}a{color:var(--accent)}button,select{font:inherit;color:inherit;background:#153039;border:1px solid #52716d;padding:7px 12px;border-radius:4px}button{cursor:pointer}button[aria-pressed=true]{border-color:var(--accent);background:#28453e}button:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:3px}.controls{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:16px 0}label{color:var(--muted);font-size:14px}.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}.details{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.note{padding:14px 18px;background:#153039;border-left:3px solid #6a9489;color:var(--muted)}footer{margin-top:30px;padding-top:14px;border-top:1px solid #31515a;font-size:13px;color:var(--muted)}@media(max-width:760px){main{padding:24px 14px}.pair,.details{grid-template-columns:1fr}}
+</style></head><body><main>
+<div class="eyebrow">WATERGEN / DECORATIVE FAUNA / ROUND 03</div>
+<h1>小范围的活动，安静的池底。</h1>
+<p>第二轮植物底图原样保留。3 只小虾沿底部短移，2 只蜗牛停在木石上，两组远景小鱼缓慢游动。它们是独立像素精灵层，避开中央活动区，不响应食物、鱼钩或抄网。</p>
+<div class="controls" aria-label="整世界对照"><button type="button" data-frame="PLANTS-world" aria-pressed="false">第二轮 · 植物</button><button type="button" data-frame="FAUNA-world" aria-pressed="true">第三轮 · 0 秒</button><button type="button" data-frame="FAUNA-world-8" aria-pressed="false">第三轮 · 8 秒</button></div>
+<figure><a id="original" href="evidence/FAUNA-world.png"><img id="world" src="evidence/FAUNA-world.png" width="1280" height="480" alt="植物底图与稀疏装饰动物"><figcaption id="caption">第三轮 · 0 秒。此处是原生捕获帧，动物刻意保持小体型与较低对比。</figcaption></a></figure>
+<p>连续动画可通过<a href="../FAUNA_ROUND3_REPORT.md">报告中的启动命令</a>打开。原生预览支持开关动物、暂停与时间归零；网页按钮比较固定时间的捕获结果。</p>
+<h2>局部近看 · 3 倍像素放大</h2>
+<div class="details"><figure><img src="evidence/detail-shrimp.png" width="384" height="216" alt="带触须与腿的褐色小虾"><figcaption>小虾：14×6 逻辑像素，静候后短移 6–8 像素。</figcaption></figure><figure><img src="evidence/detail-snail.png" width="384" height="216" alt="附着在倒木上的小蜗牛"><figcaption>蜗牛：11×6 逻辑像素，主体停留、触角变化。</figcaption></figure><figure><img src="evidence/detail-school.png" width="384" height="216" alt="蓝青色低对比远景鱼群"><figcaption>远景鱼：8×3 逻辑像素，5 条一组，缓慢限幅游动。</figcaption></figure></div>
+<h2>同镜头可读性对照</h2>
+<div class="controls"><label>镜头 <select id="camera"><option value="320-120">中部</option><option value="0-120">左下坡脚</option><option value="640-120">右下石群</option><option value="0-0">左上远景</option><option value="640-0">右上远景</option></select></label><label>内容 <select id="mode"><option value="clean">纯场景</option><option value="probes">识别样本</option></select></label></div>
+<div class="pair"><figure><img id="before" src="evidence/PLANTS-320-120-clean.png" width="640" height="360" alt="仅植物底图"><figcaption>动物关闭</figcaption></figure><figure><img id="after" src="evidence/FAUNA-320-120-clean.png" width="640" height="360" alt="独立动物图层开启"><figcaption>动物开启</figcaption></figure></div>
+<p class="note">这些是固定识别样本，没有运行比赛模拟。动物仍使用 A 构图的美术挂点，尚未适配真实生成地图。背景植物保持静态；本轮只有新增动物在独立预览中运动。</p>
+<p><a href="../FAUNA_ROUND3_REPORT.md">简短报告与改动文件</a> · <a href="evidence/pixel-review.json">中央留白的原生像素检查</a> · <a href="../plants-round2/gallery.html">第二轮植物对照</a></p>
+<footer>2026-10-06 · feature/watergen-v2 · 正式玩法、地图、协议与版本保持不变。</footer>
+</main><script>
+document.querySelectorAll('[data-frame]').forEach(button=>button.addEventListener('click',()=>{const path='evidence/'+button.dataset.frame+'.png';document.getElementById('world').src=path;document.getElementById('original').href=path;document.getElementById('caption').textContent=button.textContent+'。固定时间的原生捕获帧。';document.querySelectorAll('[data-frame]').forEach(other=>other.setAttribute('aria-pressed',String(other===button)));}));
+function camera(){const suffix=document.getElementById('camera').value+'-'+document.getElementById('mode').value+'.png';document.getElementById('before').src='evidence/PLANTS-'+suffix;document.getElementById('after').src='evidence/FAUNA-'+suffix;}
+document.getElementById('camera').addEventListener('change',camera);document.getElementById('mode').addEventListener('change',camera);
+</script></body></html>

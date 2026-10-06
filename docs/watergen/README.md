@@ -1,3 +1,5 @@
+[2026-10-06：第三轮 · 装饰生态动物](FAUNA_ROUND3_REPORT.md) · [对照与局部样片](fauna-round3/gallery.html)
+
 [2026-10-06：第二轮 · 沟谷倒木植物群落](PLANTS_ROUND2_REPORT.md) · [前后对照](plants-round2/gallery.html)
 
 [2026-10-06：自然池底视觉重做 · 第一轮三套方向](TERRAIN_ROUND1_REPORT.md) · [对照画廊](terrain-round1/gallery.html)

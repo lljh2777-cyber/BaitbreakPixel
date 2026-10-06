@@ -1,4 +1,4 @@
-"""Open or capture standalone terrain / plant art studies. No gameplay run."""
+"""Open or capture standalone terrain / plant / fauna studies. No gameplay run."""
 import argparse
 from datetime import datetime, timedelta, timezone
 import json
@@ -16,11 +16,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--godot', default=os.environ.get('GODOT', 'godot'))
     parser.add_argument('--capture', action='store_true')
-    parser.add_argument('--stage', choices=['terrain', 'plants'], default='terrain')
+    parser.add_argument('--stage', choices=['terrain', 'plants', 'fauna'], default='terrain')
     parser.add_argument('--run-id')
     args = parser.parse_args()
     if args.run_id is None:
-        prefix = 'plants-r2-' if args.stage == 'plants' else 'terrain-r1-'
+        prefix = {'terrain':'terrain-r1-', 'plants':'plants-r2-', 'fauna':'fauna-r3-'}[args.stage]
         args.run_id = prefix + datetime.now(timezone(timedelta(hours=8))).strftime('%Y%m%d-%H%M%S')
     if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{0,79}', args.run_id):
         parser.error('Invalid run id')
@@ -31,7 +31,7 @@ def main():
         directory = output / 'isolated-user' / key.lower()
         directory.mkdir(parents=True, exist_ok=True)
         env[key] = str(directory)
-    scene = 'plant_community_preview' if args.stage == 'plants' else 'terrain_direction_preview'
+    scene = {'terrain':'terrain_direction_preview', 'plants':'plant_community_preview', 'fauna':'decorative_fauna_preview'}[args.stage]
     command = [args.godot, '--path', str(ROOT), '--audio-driver', 'Dummy',
                '--log-file', str(output / 'engine.log'), '--scene',
                f'res://scenes/watergen/{scene}.tscn', '--',
