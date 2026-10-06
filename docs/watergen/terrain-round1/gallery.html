@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>池底地势 · 第一轮三套方向</title>
+<style>
+:root{color-scheme:dark;--ink:#102a31;--muted:#a6bcb5;--accent:#c8d3a2}*{box-sizing:border-box}body{margin:0;background:#0b1e24;color:#e1e5cf;font:16px/1.7 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1450px;margin:auto;padding:40px 28px 64px}.eyebrow{font-size:12px;letter-spacing:.15em;color:var(--accent)}h1{font-size:clamp(28px,4vw,46px);font-weight:550;line-height:1.25;margin:8px 0 14px}p{max-width:860px;color:var(--muted)}nav{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:30px 0 22px}button{font:inherit;text-align:left;cursor:pointer;color:inherit;background:#153039;border:1px solid #31515a;padding:14px 18px;border-radius:6px}button[aria-pressed=true]{border-color:var(--accent);background:#243c3d}button b{display:block;font-size:20px;color:var(--accent)}button span{font-size:13px;color:var(--muted)}img{width:100%;height:auto;display:block;image-rendering:pixelated}.hero{background:var(--ink);border:1px solid #31515a}figcaption{padding:14px 18px;color:var(--muted);font-size:14px}figure{margin:0}h2{font-size:23px;font-weight:550;margin:36px 0 8px}.controls{display:flex;flex-wrap:wrap;gap:14px;margin:16px 0}select{font:inherit;padding:7px 12px;color:inherit;background:#153039;border:1px solid #52716d}label{color:var(--muted);font-size:14px}a{color:var(--accent)}.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}.pair figure{background:var(--ink)}.note{padding:14px 18px;background:#153039;border-left:3px solid #6a9489;margin:20px 0;color:var(--muted)}footer{margin-top:30px;padding-top:14px;border-top:1px solid #31515a;font-size:13px;color:var(--muted)}@media(max-width:760px){main{padding:24px 14px}nav{gap:6px}button{padding:10px}button span{display:none}.pair{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main>
+<div class="eyebrow">WATERGEN / ART DIRECTION / ROUND 01</div>
+<h1>自然池底，从地势开始。</h1>
+<p>这一轮比较坡地、沟谷、沉木与石群的关系。三套构图均从参考风格重新生成，尚未添加植物群落和装饰动物。中央水体保留安静的活动空间。</p>
+<nav aria-label="选择构图方向">
+<button type="button" data-choice="A" aria-pressed="true"><b>A · 沟谷倒木</b><span>偏心低谷 / 长倒木 / 两侧错落高地</span></button>
+<button type="button" data-choice="B" aria-pressed="false"><b>B · 石坡沙湾</b><span>左重右轻 / 沙质缓坡 / 最宽活动空间</span></button>
+<button type="button" data-choice="C" aria-pressed="false"><b>C · 根盘斜沟</b><span>右侧根盘 / 斜向浅沟 / 更深的远景</span></button>
+</nav>
+<figure class="hero"><a id="original" href="A-trough-log.png"><img id="plate" src="A-trough-log.png" width="2048" height="768" alt="方案 A，偏心沟谷与低位倒木"></a><figcaption id="caption">A：长倒木压低在沟谷下部；左右坡长和高度不同，中央水体连续。大形体最有辨识度，推荐作为第二轮基础。</figcaption></figure>
+<h2>放到游戏镜头尺度里看</h2>
+<p>以下是 Godot 实际输出的 640 × 360 预览。鱼使用现有玩家像素贴图；食物、细线、QTE/HUD 为固定可读性样本。它们没有参与玩法模拟，也不代表正式游戏已接入。</p>
+<div class="controls"><label>镜头位置 <select id="camera"><option value="320">中部</option><option value="0">左侧</option><option value="640">右侧</option></select></label></div>
+<div class="pair"><figure><img id="clean" src="evidence/A-320-clean.png" width="640" height="360" alt="地势纯画面"><figcaption>地势与构图</figcaption></figure><figure><img id="probes" src="evidence/A-320-probes.png" width="640" height="360" alt="静态可读性样本叠加"><figcaption>鱼、三种食物色块、细线及 UI 样本</figcaption></figure></div>
+<div class="note">当前是静态构图稿，不是碰撞地图或最终分层素材。选定方向后再制作植物群落与分层画面。A 的倒木附近、C 的右坡附近仍需持续检查细线和食物对比。</div>
+<p><a href="../TERRAIN_ROUND1_REPORT.md">简短报告与改动文件</a> · <a href="prompts.json">完整生成提示词</a></p>
+<noscript><p>浏览器未开启脚本，可直接查看 <a href="A-trough-log.png">方案 A</a>、<a href="B-stone-bay.png">方案 B</a>、<a href="C-root-channel.png">方案 C</a>。</p></noscript>
+<footer>2026-10-06 · feature/watergen-v2 · 正式游戏、真实地图和协议均未修改。</footer>
+</main>
+<script>
+const directions={A:{file:'A-trough-log.png',title:'偏心沟谷与低位倒木',caption:'A：长倒木压低在沟谷下部；左右坡长和高度不同，中央水体连续。大形体最有辨识度，推荐作为第二轮基础。'},B:{file:'B-stone-bay.png',title:'单侧石坡与开阔沙湾',caption:'B：左侧石群集中，右侧只有较小木桩；沙湾最开阔，中央干扰最少，适合更舒展的游动氛围。'},C:{file:'C-root-channel.png',title:'斜向浅沟与沉木根盘',caption:'C：右侧根盘建立近景重量，左侧沉木退入暗部；浅沟斜向延伸，纵深更强，右侧画面更密。'}};
+let choice='A';
+function update(){const d=directions[choice];document.getElementById('plate').src=d.file;document.getElementById('plate').alt='方案 '+choice+'，'+d.title;document.getElementById('original').href=d.file;document.getElementById('caption').textContent=d.caption;const position=document.getElementById('camera').value;for(const mode of ['clean','probes'])document.getElementById(mode).src='evidence/'+choice+'-'+position+'-'+mode+'.png';document.querySelectorAll('[data-choice]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.choice===choice)));}
+document.querySelectorAll('[data-choice]').forEach(button=>button.addEventListener('click',()=>{choice=button.dataset.choice;update();}));document.getElementById('camera').addEventListener('change',update);
+</script>
+</body></html>

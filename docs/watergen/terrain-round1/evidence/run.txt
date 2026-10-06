@@ -1,0 +1,137 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+OpenGL API 3.3.0 Core Profile Context 23.20.28.03.231124 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon(TM) Graphics
+
+
+
+TERRAIN_R1_PASS | three independently generated direction plates loaded
+
+TERRAIN_R1_PASS | native logical viewport A-overview
+
+TERRAIN_R1_PASS | saved A-overview
+
+TERRAIN_R1_PASS | different composition 0
+
+TERRAIN_R1_PASS | native logical viewport A-0-clean
+
+TERRAIN_R1_PASS | saved A-0-clean
+
+TERRAIN_R1_PASS | native logical viewport A-0-probes
+
+TERRAIN_R1_PASS | saved A-0-probes
+
+TERRAIN_R1_PASS | probes visible without altering plate
+
+TERRAIN_R1_PASS | native logical viewport A-320-clean
+
+TERRAIN_R1_PASS | saved A-320-clean
+
+TERRAIN_R1_PASS | native logical viewport A-320-probes
+
+TERRAIN_R1_PASS | saved A-320-probes
+
+TERRAIN_R1_PASS | probes visible without altering plate
+
+TERRAIN_R1_PASS | native logical viewport A-640-clean
+
+TERRAIN_R1_PASS | saved A-640-clean
+
+TERRAIN_R1_PASS | native logical viewport A-640-probes
+
+TERRAIN_R1_PASS | saved A-640-probes
+
+TERRAIN_R1_PASS | probes visible without altering plate
+
+TERRAIN_R1_PASS | native logical viewport A-repeat
+
+TERRAIN_R1_PASS | saved A-repeat
+
+TERRAIN_R1_PASS | repeat frame stable
+
+TERRAIN_R1_PASS | native logical viewport B-overview
+
+TERRAIN_R1_PASS | saved B-overview
+
+TERRAIN_R1_PASS | different composition 1
+
+TERRAIN_R1_PASS | native logical viewport B-0-clean
+
+TERRAIN_R1_PASS | saved B-0-clean
+
+TERRAIN_R1_PASS | native logical viewport B-0-probes
+
+TERRAIN_R1_PASS | saved B-0-probes
+
+TERRAIN_R1_PASS | probes visible without altering plate
+
+TERRAIN_R1_PASS | native logical viewport B-320-clean
+
+TERRAIN_R1_PASS | saved B-320-clean
+
+TERRAIN_R1_PASS | native logical viewport B-320-probes
+
+TERRAIN_R1_PASS | saved B-320-probes
+
+TERRAIN_R1_PASS | probes visible without altering plate
+
+TERRAIN_R1_PASS | native logical viewport B-640-clean
+
+TERRAIN_R1_PASS | saved B-640-clean
+
+TERRAIN_R1_PASS | native logical viewport B-640-probes
+
+TERRAIN_R1_PASS | saved B-640-probes
+
+TERRAIN_R1_PASS | probes visible without altering plate
+
+TERRAIN_R1_PASS | native logical viewport B-repeat
+
+TERRAIN_R1_PASS | saved B-repeat
+
+TERRAIN_R1_PASS | repeat frame stable
+
+TERRAIN_R1_PASS | native logical viewport C-overview
+
+TERRAIN_R1_PASS | saved C-overview
+
+TERRAIN_R1_PASS | different composition 2
+
+TERRAIN_R1_PASS | native logical viewport C-0-clean
+
+TERRAIN_R1_PASS | saved C-0-clean
+
+TERRAIN_R1_PASS | native logical viewport C-0-probes
+
+TERRAIN_R1_PASS | saved C-0-probes
+
+TERRAIN_R1_PASS | probes visible without altering plate
+
+TERRAIN_R1_PASS | native logical viewport C-320-clean
+
+TERRAIN_R1_PASS | saved C-320-clean
+
+TERRAIN_R1_PASS | native logical viewport C-320-probes
+
+TERRAIN_R1_PASS | saved C-320-probes
+
+TERRAIN_R1_PASS | probes visible without altering plate
+
+TERRAIN_R1_PASS | native logical viewport C-640-clean
+
+TERRAIN_R1_PASS | saved C-640-clean
+
+TERRAIN_R1_PASS | native logical viewport C-640-probes
+
+TERRAIN_R1_PASS | saved C-640-probes
+
+TERRAIN_R1_PASS | probes visible without altering plate
+
+TERRAIN_R1_PASS | native logical viewport C-repeat
+
+TERRAIN_R1_PASS | saved C-repeat
+
+TERRAIN_R1_PASS | repeat frame stable
+
+TERRAIN_R1_PASS | three textures retained; draw never prepares new textures
+
+TERRAIN_R1 | passed=65 | failed=0

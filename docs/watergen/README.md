@@ -1,3 +1,5 @@
+[2026-10-06：自然池底视觉重做 · 第一轮三套方向](TERRAIN_ROUND1_REPORT.md) · [对照画廊](terrain-round1/gallery.html)
+
 # Watergen 第二代 · WG-6.2 植物群落
 
 当前开发分支：`feature/watergen-v2`，直接从用户指定的 `feature/dev@c3c24b3`（0.27.5）创建。
