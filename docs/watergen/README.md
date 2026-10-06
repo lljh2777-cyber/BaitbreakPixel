@@ -1,3 +1,5 @@
+[M03/A 第三轮装饰动物](pond-series/M03-reed-sandbar/round3/gallery.html)
+
 [M03/A 第二轮植物群落](pond-series/M03-reed-sandbar/round2/gallery.html)
 
 [M03 芦苇沙洲 A/B 构图](pond-series/M03-reed-sandbar/round1/gallery.html) · [M02 单图分层](pond-series/M02-root-pool/layers/index.html)
