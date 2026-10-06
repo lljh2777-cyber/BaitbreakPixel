@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>沟谷倒木 · 场景分层与交互对应</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1c22;--panel:#112931;--line:#35515a;--text:#e3e8dd;--muted:#acc2be;--gold:#ffd17b}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.65 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1650px;margin:auto;padding:30px 28px 56px}a{color:#b7d9b0}h1{font-size:clamp(27px,3vw,40px);font-weight:600;line-height:1.3;margin:8px 0 12px}h2{font-size:23px;margin:28px 0 10px}p{margin:8px 0 14px}.eyebrow{font-size:12px;letter-spacing:.16em;color:#a9c5b4}.muted,small{color:var(--muted)}.lead{max-width:1040px;color:var(--muted)}.status{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}.status span{padding:6px 12px;border:1px solid var(--line);border-radius:4px}.status strong{color:var(--gold)}button,select{font:inherit;color:inherit;background:#16343c;border:1px solid #506971;border-radius:4px;padding:7px 12px}button{cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible,[role=button]:focus-visible{outline:2px solid #fff3c4;outline-offset:3px}button[aria-pressed=true]{border-color:var(--tone,var(--gold));background:#28434a}.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0}.dot{display:inline-block;background:var(--tone);width:9px;height:9px;border-radius:50%;margin-right:8px}.workspace{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:18px;align-items:start}figure{margin:0;background:#092229;border:1px solid var(--line)}#scene{display:block;width:100%;height:auto;aspect-ratio:8/3}#scene image{image-rendering:pixelated}figcaption{font-size:13px;color:var(--muted);padding:10px 14px;border-top:1px solid var(--line)}.region-outline{pointer-events:none;stroke-width:1.8;vector-effect:non-scaling-stroke;stroke-dasharray:5 4;fill-opacity:.045;stroke-opacity:.26}.selected .region-outline{fill-opacity:.15;stroke-opacity:1;stroke-dasharray:none;stroke-width:2}.marker{cursor:pointer;outline:none}.marker rect{fill:#0b1e25;stroke-width:1.4;vector-effect:non-scaling-stroke}.marker text{font:bold 12px system-ui,sans-serif;text-anchor:middle;dominant-baseline:central}.marker:hover rect,.marker:focus-visible rect{stroke:#fff;stroke-width:3}.selected .marker rect{fill:#37443a;stroke-width:2.5}.marker line{stroke-width:1;vector-effect:non-scaling-stroke}.hide-annotations #annotations{display:none}#clear-zone{fill:none;stroke:#f0efd9;stroke-width:1.5;stroke-dasharray:7 5;vector-effect:non-scaling-stroke;pointer-events:none}.detail{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--gold);padding:17px 18px}.detail h2{font-size:22px;margin:8px 0 12px;line-height:1.4}.detail dl{margin:0}.detail dt{font-size:12px;color:var(--muted);margin-top:14px}.detail dd{margin:3px 0 0;font-size:14px}.tag{font-size:12px;padding:2px 6px;border:1px solid var(--line)}.objects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:14px}.objects button{text-align:left;font-size:13px;line-height:1.45;padding:9px 10px;display:flex;gap:8px;align-items:start}.objects b{color:var(--tone);min-width:27px}.objects button[hidden]{display:none}.note{padding:12px 16px;border-left:3px solid #8da8a0;background:#132c33;color:var(--muted);margin:18px 0}.principles{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.principles article{border-top:1px solid var(--line);padding-top:12px}.principles h3{font-size:17px;margin:0 0 6px}.principles p{font-size:14px;color:var(--muted)}.table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:14px}td,th{border-bottom:1px solid var(--line);padding:12px;text-align:left;vertical-align:top}th{color:var(--muted);font-weight:500}td:first-child{min-width:135px}footer{margin-top:30px;color:var(--muted);font-size:12px}label{display:flex;align-items:center;gap:6px}input{accent-color:#d9cd99}code{font-size:.88em;overflow-wrap:anywhere}@media(max-width:1000px){.workspace{grid-template-columns:1fr}.detail dl{display:grid;grid-template-columns:100px 1fr;gap:8px}.detail dt,.detail dd{margin:0}.objects{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){main{padding:22px 13px}.principles{grid-template-columns:1fr}.controls{gap:7px}.controls button{font-size:13px;padding:7px 9px}.objects{grid-template-columns:1fr}.detail dl{grid-template-columns:1fr}.detail dt{margin-top:10px}}
+</style>
+</head>
+<body><main>
+<div class="eyebrow">WATERGEN / SCENE LAYERS / MERGE PLANNING</div>
+<h1>离镜头近，不等于能交互。</h1>
+<p class="lead">以 A「沟谷倒木」第三轮样片为底图，将画面深度与玩法属性分开。蓝色是远景、绿色是中景装饰、紫色是近景框景；金色只标出需要适配已有交互对象的外观，尚未绑定。</p>
+<div class="status"><span>当前样片：<strong>全部为视觉</strong></span><span>待绑定类别：<strong>木头 / 大石 / 少量高草</strong></span><span>本轮：分层方案与合并约定</span></div>
+<nav class="controls" id="filters" aria-label="筛选场景类别"><button type="button" data-group="all" aria-pressed="true">全部标记</button></nav>
+<div class="controls"><label>查看范围 <select id="camera"><option value="0 0 1280 480">整幅构图</option><option value="320 120 640 360">中央沟底</option><option value="0 120 640 360">左侧坡脚</option><option value="640 120 640 360">右侧石群</option></select></label><label><input id="annotations-toggle" type="checkbox" checked>显示标记</label><label><input id="clear-toggle" type="checkbox">中央留白参考区</label><span class="muted" id="count"></span></div>
+<div class="workspace"><div>
+<figure>
+<svg id="scene" viewBox="0 0 1280 480" xmlns="http://www.w3.org/2000/svg" aria-labelledby="scene-title scene-desc">
+<title id="scene-title">沟谷倒木的场景分层与交互规划</title>
+<desc id="scene-desc">点击编号或下方对象列表查看说明。色块仅表示美术拆分范围，不是碰撞边界；金色对象也尚未获得交互。</desc>
+<image href="../fauna-round3/evidence/FAUNA-world.png" x="0" y="0" width="1280" height="480"/>
+<rect id="clear-zone" x="320" y="77" width="679" height="230" visibility="hidden"/>
+<g id="annotations"></g>
+</svg>
+<figcaption>原图保持不变。编号与色块是美术语义标注，部分区域有叠层；不是精确抠图、真实地形或碰撞多边形。放大范围可查看局部。</figcaption>
+</figure>
+<div class="objects" id="objects" aria-label="场景对象列表"></div>
+</div>
+<aside class="detail" id="detail" aria-live="polite">
+<span class="tag" id="detail-id"></span><h2 id="detail-name"></h2>
+<dl><dt>画面层次</dt><dd id="detail-depth"></dd><dt>现在的状态</dt><dd id="detail-current"></dd><dt>合并后的约定</dt><dd id="detail-after_merge"></dd><dt>放置与绘制</dt><dd id="detail-placement"></dd><dt>对不上时</dt><dd id="detail-fallback"></dd><dt>资产拆分建议</dt><dd><code id="detail-asset"></code></dd></dl>
+</aside></div>
+<noscript><p class="note">交互标注需要 JavaScript。完整分类也可在下方表格和合并说明中阅读。</p></noscript>
+<p class="note">当前地势与植物仍烘焙在一张图片内，仅动物已独立成层。本页展示的是拆分与绑定方案；开关标记不会隐藏原图中的物体，也不表示已经制作了透明分层素材。</p>
+<h2>哪些能用，哪些只用来观看</h2>
+<div class="table-wrap"><table><thead><tr><th>类别</th><th>图中对象</th><th>合并时的玩法约定</th></tr></thead><tbody>
+<tr><td>背景 / B01–B03</td><td>水色光束、远岸木石、植物剪影、浮叶垂根</td><td>始终纯装饰。没有缠线、碰撞、减速或抄网阻挡。</td></tr>
+<tr><td>中景装饰 / D01–D03</td><td>坡地、沟底、沙泥、小碎石、低矮群落、苔藻附生物</td><td>始终纯装饰。坡地不能改可游区；附生物跟宿主同步淡化。</td></tr>
+<tr><td>交互外观候选 / I01–I03</td><td>近处倒木/断桩、大石、指定高草丛</td><td>匹配现有真实 target 才沿用其能力。外观服从现有位置和形状，不凭图片新增交互。</td></tr>
+<tr><td>近景装饰 / F01</td><td>底沿及两角深色土沿、草叶</td><td>纯框景。前景不等于可交互，限制遮挡，避开巢穴和识别通道。</td></tr>
+<tr><td>装饰动物 / E01–E03</td><td>3 只虾、2 只蜗牛、两组远景小鱼</td><td>不可吃、不可钓，不参与 NPC AI、碰撞和快照。与游戏原有 NPC 区分。</td></tr>
+</tbody></table></div>
+<h2>合并时必须保留的三个边界</h2>
+<div class="principles"><article><h3>01 · 真实地图决定交互</h3><p>已有木、石、草的 ID、形状和能力不变。这里的长倒木如果对不上地图，就重做外观构图，不把分散目标连成一个新障碍。</p></article><article><h3>02 · 保留原来的绘制穿插</h3><p>缠线、束草、鱼与食物已有前后绘制通道；不能简单把全部植物压到玩家上方。木石附生物使用同一宿主透明度。</p></article><article><h3>03 · 可读性与隐藏信息</h3><p>每张真实地图按公开巢穴、出生点、候选饵位及镜头约束布置装饰。装饰不接收隐藏钩位，不因真假钩改变布局或运动。</p></article></div>
+<p><a href="../SCENE_LAYER_INTERACTION_MAP.md">完整分类、现有能力与合并步骤</a> · <a href="scene-plan.js">结构化规划数据</a> · <a href="overview.svg">静态编号图</a> · <a href="../fauna-round3/gallery.html">回到第三轮画廊</a></p>
+<footer>2026-10-06 · feature/watergen-v2 · 标注基于 1280×480 美术坐标；没有修改主游戏、真实地图或协议。</footer>
+</main>
+<script src="scene-plan.js"></script>
+<script>
+'use strict';
+const plan=window.WATERGEN_SCENE_PLAN;
+const NS='http://www.w3.org/2000/svg';
+const groupById=new Map(plan.groups.map(group=>[group.id,group]));
+const shapes=new Map(), buttons=new Map();
+let selected='I01', activeGroup='all';
+function svgNode(name,attributes){const node=document.createElementNS(NS,name);for(const [key,value] of Object.entries(attributes))node.setAttribute(key,value);return node;}
+for(const group of plan.groups){
+  const button=document.createElement('button');button.type='button';button.dataset.group=group.id;button.style.setProperty('--tone',group.color);button.setAttribute('aria-pressed','false');
+  const dot=document.createElement('span');dot.className='dot';dot.setAttribute('aria-hidden','true');button.append(dot,group.name);document.getElementById('filters').append(button);
+}
+for(const region of plan.regions){
+  const color=groupById.get(region.group).color;
+  const shape=svgNode('g',{'data-region':region.id});
+  for(const points of region.areas)shape.append(svgNode('polygon',{points:points.map(point=>point.join(',')).join(' '),class:'region-outline',fill:color,stroke:color}));
+  const marker=svgNode('g',{class:'marker',transform:`translate(${region.pin[0]},${region.pin[1]})`,tabindex:'0',role:'button','aria-label':`${region.id} ${region.name}`,'aria-pressed':'false'});
+  marker.append(svgNode('rect',{x:-21,y:-12,width:42,height:24,rx:4,stroke:color}));
+  const text=svgNode('text',{x:0,y:0,fill:color});text.textContent=region.id;marker.append(text);
+  marker.addEventListener('click',()=>select(region.id));marker.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();select(region.id);}});
+  shape.append(marker);document.getElementById('annotations').append(shape);shapes.set(region.id,shape);
+  const button=document.createElement('button');button.type='button';button.style.setProperty('--tone',color);button.setAttribute('aria-pressed','false');
+  const id=document.createElement('b');id.textContent=region.id;const label=document.createElement('span');label.textContent=region.name;button.append(id,label);button.addEventListener('click',()=>select(region.id));
+  document.getElementById('objects').append(button);buttons.set(region.id,button);
+}
+function select(id){
+  selected=id;const region=plan.regions.find(item=>item.id===id);document.getElementById('detail').style.borderTopColor=groupById.get(region.group).color;
+  for(const field of ['id','name','depth','current','after_merge','placement','fallback','asset'])document.getElementById('detail-'+field).textContent=region[field];
+  for(const item of plan.regions){const active=item.id===id;shapes.get(item.id).classList.toggle('selected',active);shapes.get(item.id).querySelector('.marker').setAttribute('aria-pressed',String(active));buttons.get(item.id).setAttribute('aria-pressed',String(active));}
+  // Draw the chosen annotation last so overlapping semantic regions stay legible.
+  document.getElementById('annotations').append(shapes.get(id));
+}
+function filter(group){
+  activeGroup=group;let visible=0;
+  for(const region of plan.regions){const show=group==='all'||region.group===group;shapes.get(region.id).style.display=show?'':'none';buttons.get(region.id).hidden=!show;if(show)visible++;}
+  document.querySelectorAll('[data-group]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.group===group)));
+  if(group!=='all'&&plan.regions.find(region=>region.id===selected).group!==group)select(plan.regions.find(region=>region.group===group).id);
+  document.getElementById('count').textContent=`${visible} 类标记 · 均非碰撞范围`;
+}
+document.getElementById('filters').addEventListener('click',event=>{const button=event.target.closest('button[data-group]');if(button)filter(button.dataset.group);});
+document.getElementById('annotations-toggle').addEventListener('change',event=>document.getElementById('scene').classList.toggle('hide-annotations',!event.target.checked));
+document.getElementById('clear-toggle').addEventListener('change',event=>document.getElementById('clear-zone').setAttribute('visibility',event.target.checked?'visible':'hidden'));
+document.getElementById('camera').addEventListener('change',event=>{document.getElementById('scene').setAttribute('viewBox',event.target.value);document.getElementById('scene').style.aspectRatio=event.target.value==='0 0 1280 480'?'8/3':'16/9';});
+select(selected);filter(activeGroup);
+</script>
+</body></html>

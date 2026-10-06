@@ -1,3 +1,5 @@
+[2026-10-06：场景分层与交互对应](SCENE_LAYER_INTERACTION_MAP.md) · [交互标注图](scene-layer-map/index.html)
+
 [2026-10-06：第三轮 · 装饰生态动物](FAUNA_ROUND3_REPORT.md) · [对照与局部样片](fauna-round3/gallery.html)
 
 [2026-10-06：第二轮 · 沟谷倒木植物群落](PLANTS_ROUND2_REPORT.md) · [前后对照](plants-round2/gallery.html)
