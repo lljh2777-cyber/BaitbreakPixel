@@ -1,3 +1,5 @@
+[2026-10-06：自然池塘系列 · 逐张设计](pond-series/README.md) · [M01 石阶浅湾 A/B](pond-series/M01-stone-bay/round1/gallery.html)
+
 [2026-10-06：场景分层与交互对应](SCENE_LAYER_INTERACTION_MAP.md) · [交互标注图](scene-layer-map/index.html)
 
 [2026-10-06：第三轮 · 装饰生态动物](FAUNA_ROUND3_REPORT.md) · [对照与局部样片](fauna-round3/gallery.html)

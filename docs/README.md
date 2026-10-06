@@ -1,3 +1,4 @@
+- [自然池塘系列：逐张设计](watergen/pond-series/README.md) · [M01 石阶浅湾 A/B](watergen/pond-series/M01-stone-bay/round1/gallery.html)
 - [自然池塘场景：分层与交互对应](watergen/SCENE_LAYER_INTERACTION_MAP.md) · [交互标注图](watergen/scene-layer-map/index.html)
 - [自然池底视觉重做：第三轮装饰生态](watergen/FAUNA_ROUND3_REPORT.md) · [前后对照](watergen/fauna-round3/gallery.html)
 - [自然池底视觉重做：第二轮植物群落](watergen/PLANTS_ROUND2_REPORT.md) · [前后对照](watergen/plants-round2/gallery.html)
