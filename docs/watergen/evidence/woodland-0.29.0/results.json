@@ -1,0 +1,62 @@
+[
+  {
+    "returncode": 0,
+    "timed_out": false,
+    "duration_seconds": 5.437,
+    "launch_error": false,
+    "passed": 0,
+    "failed": 0,
+    "count_basis": "log_markers",
+    "status": "passed",
+    "reason": "",
+    "suite": "import"
+  },
+  {
+    "returncode": 0,
+    "timed_out": false,
+    "duration_seconds": 5.359,
+    "launch_error": false,
+    "passed": 139,
+    "failed": 0,
+    "count_basis": "summary",
+    "status": "passed",
+    "reason": "",
+    "suite": "contract"
+  },
+  {
+    "returncode": 0,
+    "timed_out": false,
+    "duration_seconds": 5.0,
+    "launch_error": false,
+    "passed": 18,
+    "failed": 0,
+    "count_basis": "summary",
+    "status": "passed",
+    "reason": "",
+    "suite": "network"
+  },
+  {
+    "returncode": 0,
+    "timed_out": false,
+    "duration_seconds": 3.047,
+    "launch_error": false,
+    "passed": 13,
+    "failed": 0,
+    "count_basis": "summary",
+    "status": "passed",
+    "reason": "",
+    "suite": "ui"
+  },
+  {
+    "returncode": 0,
+    "timed_out": false,
+    "duration_seconds": 8.188,
+    "launch_error": false,
+    "passed": 28,
+    "failed": 0,
+    "count_basis": "summary",
+    "status": "passed",
+    "reason": "",
+    "suite": "native"
+  }
+]

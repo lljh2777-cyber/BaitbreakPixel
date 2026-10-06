@@ -33,8 +33,8 @@ func append_record(stream: PackedByteArray, value: Variant) -> void:
 	stream.append_array(payload)
 
 func registry_ref() -> Dictionary:
-	var refs: Array=Registry.available_refs()
-	check(refs.size()==1,"closed built-in registry contains exactly one map")
+	var refs: Array=Registry.available_refs().filter(func(ref: Dictionary) -> bool: return ref.id=="pond_v2")
+	check(refs.size()==1,"classic equivalence witness has exactly one classic map")
 	return refs[0].duplicate(true) if refs.size()==1 else {}
 
 func envelope_valid(value: Dictionary, kind: String) -> bool:
@@ -61,7 +61,7 @@ func envelope_valid(value: Dictionary, kind: String) -> bool:
 	if not value.schema is int or value.schema!=schema: return false
 	if not value.bait_profile_version is int or value.bait_profile_version!=bait_version: return false
 	if not value.state is Dictionary or not value.rig is Dictionary: return false
-	var refs: Array=Registry.available_refs()
+	var refs: Array=Registry.available_refs().filter(func(ref: Dictionary) -> bool: return ref.id=="pond_v2")
 	if refs.size()!=1: return false
 	var reference: Dictionary=refs[0]
 	if reference.keys()!=["id","revision","contract_version","content_hash"]: return false

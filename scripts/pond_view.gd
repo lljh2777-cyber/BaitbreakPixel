@@ -8,6 +8,8 @@ const BedArt=preload("res://scripts/pond_bed_art.gd")
 var bed_texture: ImageTexture
 const GeneratedWater=preload("res://scripts/watergen/generated_water_appearance.gd")
 var generated_water:=GeneratedWater.new()
+const WoodlandArt=preload("res://scripts/watergen/woodland_pond_art.gd")
+var woodland:=WoodlandArt.new()
 var visual_seed:=713284
 var _prepared_visual_seed:=-1
 
@@ -75,6 +77,13 @@ func prepare_map(context: RefCounted) -> void:
 	var reuse: bool = next.matches(map_presentation)
 	map_presentation = next
 	if reuse: return
+	woodland.prepare(context,map_presentation)
+	if woodland.active:
+		bed_texture=woodland.bundle.bed
+		water_layers={}
+		props.assign(woodland.bundle.props)
+		plant_frames=woodland.bundle.plants.duplicate()
+		return
 	bed_texture=BedArt.bake(context) if context.has_relief else null
 	water_layers = Scenery.Water.layers(map_presentation)
 	props = Art.scene_props(map_presentation)
@@ -83,6 +92,10 @@ func prepare_map(context: RefCounted) -> void:
 		var frames: Array[Dictionary] = []
 		for frame in range(8): frames.append(_make_plant_layer(frame*TAU/12.0,index))
 		plant_frames.append(frames)
+
+func _process(delta: float) -> void:
+	if woodland.active and is_instance_valid(game) and not game.paused:
+		woodland.visual_time+=delta
 
 func label_at(point: Vector2, text: String, size: int = 12, color: Color = CREAM) -> void:
 	draw_string(font, point.round(), text, HORIZONTAL_ALIGNMENT_LEFT, -1, size, color)
@@ -133,9 +146,11 @@ func _world(t: float) -> void:
 		var opacity:=1.0
 		for index: int in prop.targets: opacity=minf(opacity,world.target_opacity[index])
 		draw_texture(prop.texture,prop.position,Color(1,1,1,opacity))
+	if woodland.active: woodland.draw_attached(self,world.target_opacity)
 	_plants(t,false)
 	Scenery.foreground(self)
 	if bed_texture!=null: Scenery.floor_layer(self)
+	if woodland.active: woodland.draw_foreground(self)
 	Scenery.nest(self,world,t)
 
 func _npc_fishes(t: float) -> void:

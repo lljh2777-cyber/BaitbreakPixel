@@ -4,6 +4,7 @@ extends RefCounted
 const Water = preload("res://scripts/pond_water_art.gd")
 
 static func background(view: Node2D, world: Node2D, t: float) -> void:
+	if view.woodland.active: view.woodland.draw_background(view); return
 	var map: RefCounted=view.map_presentation
 	var surface: float=map.surface_y
 	if view.generated_water.enabled:
@@ -71,6 +72,7 @@ static func floor_layer(view: Node2D) -> void:
 		view.draw_colored_polygon(PackedVector2Array([Vector2(x,y),Vector2(x+3,y-1),Vector2(x+7,y+1),Vector2(x+2,y+2)]),Color("65785c") if index%2 else Color("58674e"))
 
 static func foreground(view: Node2D) -> void:
+	if view.woodland.active: return
 	if view.generated_water.enabled:
 		view.generated_water.draw_slot(view,"foreground",view.camera_offset,0.0)
 		return

@@ -21,10 +21,21 @@ static func draw(view: Node2D, world: Node2D, t: float) -> void:
 	view.draw_set_transform(Vector2.ZERO)
 	view.draw_rect(Rect2(0,0,640,360),INK)
 	view.draw_set_transform(-offset)
-	var bands:=maxi(2,ceili((map.floor_y-map.surface_y)/29.0))
-	for band in bands:
-		view.draw_rect(Rect2(0,map.surface_y+band*29,map.size.x,29),Color("285e68").lerp(Color("153d4e"),band/float(bands-1)))
-	view.draw_rect(Rect2(0,map.surface_y-2,map.size.x,2),Color("64958f"))
+	if view.woodland.active:
+		view.woodland.draw_background(view)
+		# Assemble the complete plate before applying the observation veil. Tinting
+		# individual image crops would reveal their polygon edges in open water.
+		for prop in view.props: view.draw_texture(prop.texture,prop.position)
+		for frames in view.plant_frames:
+			var sprite: Dictionary=frames[0]
+			view.draw_texture(sprite.texture,sprite.position)
+		view.draw_texture(view.bed_texture,Vector2.ZERO)
+		view.woodland.draw_foreground(view)
+	else:
+		var bands:=maxi(2,ceili((map.floor_y-map.surface_y)/29.0))
+		for band in bands:
+			view.draw_rect(Rect2(0,map.surface_y+band*29,map.size.x,29),Color("285e68").lerp(Color("153d4e"),band/float(bands-1)))
+		view.draw_rect(Rect2(0,map.surface_y-2,map.size.x,2),Color("64958f"))
 	# A sparse, native-pixel veil preserves edges without a blur filter.
 	for tile_y in range(int(map.water.position.y-4),int(map.floor_y),16):
 		for tile_x in range(0,int(map.size.x),16):
@@ -34,8 +45,10 @@ static func draw(view: Node2D, world: Node2D, t: float) -> void:
 		var p: Vector2=Vector2(posmod(index*79,int(map.size.x)),map.water.position.y+2+posmod(index*41,maxi(1,int(map.water.size.y-8))))+world.water_offset(Vector2(index*17,map.water.position.y+112))
 		view.draw_line(p.round(),(p+Vector2(5+index%4,0)).round(),Color(0.47,0.71,0.68,0.15),1)
 	for prop in view.props:
-		view.draw_texture(prop.texture,prop.position,Color(0.58,0.72,0.69,0.9))
-	for plant in map.plants:
+		if not view.woodland.active: view.draw_texture(prop.texture,prop.position,Color(0.58,0.72,0.69,0.9))
+	for plant_index in map.plants.size():
+		var plant: Dictionary=map.plants[plant_index]
+		if view.woodland.active: continue
 		for stem in range(3):
 			var origin := Vector2(plant.x,plant.y)
 			if plant.has("root_y"):
@@ -46,8 +59,9 @@ static func draw(view: Node2D, world: Node2D, t: float) -> void:
 			for leaf in range(1,4):
 				var p := origin.lerp(top,leaf/4.0).round()
 				view.draw_line(p,p+Vector2(7 if (leaf+stem)%2 else -7,-6),Color("3c746d"),1)
-	if view.bed_texture!=null: view.draw_texture(view.bed_texture,Vector2.ZERO,Color("b3cac0"))
-	else: view.draw_rect(Rect2(0,map.floor_y,map.size.x,30),Color("405b59"))
+	if not view.woodland.active:
+		if view.bed_texture!=null: view.draw_texture(view.bed_texture,Vector2.ZERO,Color("b3cac0"))
+		else: view.draw_rect(Rect2(0,map.floor_y,map.size.x,30),Color("405b59"))
 	view.shore.draw_observed_npcs(view,world)
 	# Silhouettes are approximate in position and contain no face, stamina or food detail.
 	var visibility := Net.visibility(world,world.fish)

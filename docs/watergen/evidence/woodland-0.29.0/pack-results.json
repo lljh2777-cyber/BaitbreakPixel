@@ -1,0 +1,36 @@
+[
+  {
+    "returncode": 0,
+    "timed_out": false,
+    "duration_seconds": 5.11,
+    "launch_error": false,
+    "passed": 139,
+    "failed": 0,
+    "count_basis": "summary",
+    "status": "passed",
+    "reason": "",
+    "suite": "contract"
+  },
+  {
+    "returncode": 0,
+    "timed_out": false,
+    "duration_seconds": 7.688,
+    "launch_error": false,
+    "passed": 28,
+    "failed": 0,
+    "count_basis": "summary",
+    "status": "passed",
+    "reason": "",
+    "suite": "native"
+  },
+  {
+    "returncode": 0,
+    "timed_out": false,
+    "duration_seconds": 4.89,
+    "launch_error": false,
+    "suite": "exe",
+    "passed": 1,
+    "failed": 0,
+    "status": "passed"
+  }
+]

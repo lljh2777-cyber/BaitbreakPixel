@@ -12,6 +12,9 @@ static var _contexts: Dictionary={}
 static func classic() -> Dictionary:
 	return {"kind":"built_in","id":Registry.DEFAULT_MAP_ID,"revision":Registry.DEFAULT_REVISION}
 
+static func woodland() -> Dictionary:
+	return {"kind":"built_in","id":Registry.Woodland.ID,"revision":1}
+
 static func generated(seed: int, version: int=1) -> Dictionary:
 	return Request.source(Request.create(seed,version))
 

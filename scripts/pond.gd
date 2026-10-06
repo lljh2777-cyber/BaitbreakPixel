@@ -3,7 +3,7 @@ extends "res://scripts/world_simulation.gd"
 # Local application adapter. The base simulation has no input, menus, audio or profile I/O.
 const RulesStore = preload("res://scripts/rules_store.gd")
 var saved_rules := Rules.defaults()
-var selected_map_source: Dictionary=MapResolver.classic()
+var selected_map_source: Dictionary=MapResolver.woodland()
 
 const View = preload("res://scripts/pond_view.gd")
 const Menus = preload("res://scripts/menu.gd")
@@ -118,7 +118,7 @@ func _ready() -> void:
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--capture-") and not argument.begins_with("--capture-output="):
 			capture_mode = argument.trim_prefix("--capture-")
-	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.28.1 | grounded-pond-relief")
+	print("PIXEL_READY | asymmetric-2d | 640x360 | v0.29.0 | authored-woodland-pond")
 
 func _register_inputs() -> void:
 	var mapping := {"left":[KEY_A, KEY_LEFT], "right":[KEY_D, KEY_RIGHT], "up":[KEY_W, KEY_UP], "down":[KEY_S, KEY_DOWN], "dash":[], "use":[KEY_E], "slow":[KEY_Q], "qte":[KEY_SPACE], "untangle":[KEY_F]}
@@ -153,9 +153,9 @@ func _load_profile() -> void:
 		wins = maxi(0, int(file.get_value("record", "wins", 0)))
 		angler_wins=maxi(0,int(file.get_value("record","angler_wins",0)))
 		saved_rules=RulesStore.load_profile(file)
-		var map_kind:Variant=file.get_value("map","kind","classic")
-		var map_seed:Variant=file.get_value("map","seed",42)
-		if map_kind=="generated" and map_seed is int: select_pond("generated",str(map_seed))
+		# Migrate old random-map preferences to the new fixed scene once.
+		var classic: bool=file.get_value("map","scene_version",0)==1 and file.get_value("map","kind","woodland")=="classic"
+		select_pond("classic" if classic else "woodland")
 
 func save_profile() -> void:
 	var file := ConfigFile.new()
@@ -164,7 +164,8 @@ func save_profile() -> void:
 	file.set_value("record", "best", best_score)
 	file.set_value("record", "wins", wins)
 	file.set_value("record","angler_wins",angler_wins)
-	file.set_value("map","kind","generated" if selected_map_source.kind=="generated" else "classic")
+	file.set_value("map","kind","woodland" if selected_map_source.get("id")=="woodland_pond" else "generated" if selected_map_source.kind=="generated" else "classic")
+	file.set_value("map","scene_version",1)
 	file.set_value("map","seed",selected_map_source.get("map_seed",42))
 	RulesStore.save_profile(file,saved_rules)
 	save_error = file.save(save_path)
@@ -194,7 +195,8 @@ func _network_changed() -> void:
 func select_pond(kind:String,seed_text:String="42")->bool:
 	if shared_session or (is_instance_valid(network) and network.active()): return false
 	var source:Dictionary
-	if kind=="classic": source=MapResolver.classic()
+	if kind=="woodland": source=MapResolver.woodland()
+	elif kind=="classic": source=MapResolver.classic()
 	elif kind=="generated":
 		var value:=seed_text.strip_edges()
 		if value.length()>10 or not value.is_valid_int(): return false
@@ -217,7 +219,7 @@ func new_map_round()->void:
 func map_caption(source:Dictionary={})->String:
 	var selected:Dictionary=selected_map_source if source.is_empty() else source
 	if selected.get("kind")=="generated": return "生成池塘 · Seed %d · 生成器 v%d" % [selected.map_seed,selected.generator_version]
-	return "经典池塘"
+	return "自然池塘 · 沟谷倒木" if selected.get("id")=="woodland_pond" else "经典池塘"
 
 func network_settings() -> Dictionary:
 	return {"rules":Rules.normalize(saved_rules),"map_source":selected_map_source.duplicate(true)}

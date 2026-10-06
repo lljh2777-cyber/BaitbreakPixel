@@ -6,7 +6,7 @@ const Bed = preload("res://scripts/maps/pond_bed.gd")
 const Registry = preload("res://scripts/maps/map_registry.gd")
 const Validator = preload("res://scripts/maps/map_validator.gd")
 const Geometry = preload("res://scripts/maps/map_geometry.gd")
-static var _registered_context: RefCounted = null
+static var _registered_contexts: Dictionary = {}
 
 # Godot read-only Array/Dictionary does NOT freeze nested packed arrays. Therefore
 # collection getters and lookup records are detached setup/export snapshots, not
@@ -19,7 +19,7 @@ var map_source: Dictionary:
 	get: return _source.duplicate(true)
 	set(_value): pass
 var routing_profile: String:
-	get: return "generated_pond_v1" if _source.get("kind")=="generated" else "legacy_pond"
+	get: return "generated_pond_v1" if _source.get("kind")=="generated" or _data.presentation.visual_profile_id=="woodland_pond_art" else "legacy_pond"
 	set(_value): pass
 var _floor_profile := PackedVector2Array()
 var floor_profile: PackedVector2Array:
@@ -113,14 +113,15 @@ static func load_ref(value: Variant) -> Dictionary:
 	var validation := Registry.validate_ref(value)
 	if not validation.valid:
 		return {"valid":false,"errors":validation.errors.duplicate(),"context":null}
-	if _registered_context == null:
+	var key: String=value.id+":"+str(value.revision)
+	if not _registered_contexts.has(key):
 		var loaded := Registry.load_ref(value)
 		if not loaded.valid:
 			return {"valid":false,"errors":loaded.errors.duplicate(),"context":null}
 		var built := from_definition(loaded.definition)
 		if not built.valid: return built
-		_registered_context = built.context
-	return {"valid":true,"errors":[],"context":_registered_context}
+		_registered_contexts[key] = built.context
+	return {"valid":true,"errors":[],"context":_registered_contexts[key]}
 
 # Also permits validated, unregistered definitions for isolated tests. This does
 # not register a map, add selection UI, or change snapshot/network acceptance.

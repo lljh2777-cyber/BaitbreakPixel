@@ -1,0 +1,25 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+NETWORK_PHASE | host=true | waiting | 房间已创建，等待另一位玩家
+NETWORK_PHASE | host=false | connecting | 正在连接房主…
+NETWORK_PHASE | host=false | waiting | 已进入房间，双方准备后开始
+NETWORK_PHASE | host=true | starting | 等待对方载入池塘…
+NETWORK_PHASE | host=false | starting | 等待房主开始…
+NETWORK_PHASE | host=true | countdown |
+NETWORK_PHASE | host=false | countdown |
+NETWORK_PHASE | host=true | playing |
+NETWORK_PHASE | host=false | playing |
+NETWORK_STOP | host=false | 状态版本或地图不兼容
+NETWORK_PHASE | host=false | failed | 状态版本或地图不兼容
+NETWORK_PHASE | host=true | waiting | 房间已创建，等待另一位玩家
+NETWORK_PHASE | host=false | connecting | 正在连接房主…
+NETWORK_PHASE | host=false | waiting | 已进入房间，双方准备后开始
+NETWORK_PHASE | host=true | starting | 等待对方载入池塘…
+NETWORK_PHASE | host=false | starting | 等待房主开始…
+NETWORK_PHASE | host=true | countdown |
+NETWORK_PHASE | host=false | countdown |
+NETWORK_PHASE | host=true | playing |
+NETWORK_PHASE | host=false | playing |
+NETWORK_STOP | host=false | 状态版本或地图不兼容
+NETWORK_PHASE | host=false | failed | 状态版本或地图不兼容
+WOODLAND_NETWORK | passed=18 | failed=0

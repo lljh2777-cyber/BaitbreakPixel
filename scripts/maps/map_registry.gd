@@ -1,33 +1,37 @@
 extends RefCounted
 
 const PondV2 = preload("res://scripts/maps/pond_v2_map.gd")
+const Woodland = preload("res://scripts/maps/woodland_pond_map.gd")
 const Validator = preload("res://scripts/maps/map_validator.gd")
 const DEFAULT_MAP_ID := "pond_v2"
 const DEFAULT_REVISION := 1
-static var _validated_definition: Dictionary = {}
+static var _validated_definitions: Dictionary = {}
 
 # Closed built-in registry: no test fixture, generated map or file loader is exposed.
 # A failed lookup/validation returns an explicit error and no partial definition.
 static func load_map(map_id: String = DEFAULT_MAP_ID, revision: int = DEFAULT_REVISION) -> Dictionary:
-	if map_id != DEFAULT_MAP_ID or revision != DEFAULT_REVISION:
+	if map_id not in [DEFAULT_MAP_ID,Woodland.ID] or revision != DEFAULT_REVISION:
 		return {"valid":false,"errors":["unknown map id or revision"],"definition":{}}
-	var validation := _ensure_definition()
+	var validation := _ensure_definition(map_id)
 	if not validation.valid: return {"valid":false,"errors":validation.errors.duplicate(),"definition":{}}
-	return {"valid":true,"errors":[],"definition":_validated_definition.duplicate(true)}
+	return {"valid":true,"errors":[],"definition":_validated_definitions[map_id].duplicate(true)}
 
 # Built-in script data cannot change during the process. Cache once; packet
 # identity checks never rehash or reconstruct polygons on the tick path.
-static func _ensure_definition() -> Dictionary:
-	if not _validated_definition.is_empty(): return {"valid":true,"errors":[]}
-	var definition := PondV2.create()
+static func _ensure_definition(map_id: String=DEFAULT_MAP_ID) -> Dictionary:
+	if _validated_definitions.has(map_id): return {"valid":true,"errors":[]}
+	var definition := Woodland.create() if map_id==Woodland.ID else PondV2.create()
 	var validation := Validator.validate(definition)
-	if validation.valid: _validated_definition = definition.duplicate(true)
+	if validation.valid: _validated_definitions[map_id] = definition.duplicate(true)
 	return validation
 
 static func available_refs() -> Array[Dictionary]:
-	var loaded := load_map()
-	if not loaded.valid: return []
-	return [loaded.definition.meta.duplicate(true)]
+	var refs: Array[Dictionary]=[]
+	for map_id: String in [DEFAULT_MAP_ID,Woodland.ID]:
+		var loaded := load_map(map_id)
+		if not loaded.valid: return []
+		refs.append(loaded.definition.meta.duplicate(true))
+	return refs
 
 # A MapRef is an identity claim, never a source of geometry. Validate its complete
 # scalar shape before any lookup; objects, nested containers and typed Object
@@ -40,11 +44,11 @@ static func load_ref(value: Variant) -> Dictionary:
 static func validate_ref(value: Variant) -> Dictionary:
 	var error := _ref_shape_error(value)
 	if not error.is_empty(): return {"valid":false,"errors":[error]}
-	if value.id != DEFAULT_MAP_ID or value.revision != DEFAULT_REVISION:
+	if value.id not in [DEFAULT_MAP_ID,Woodland.ID] or value.revision != DEFAULT_REVISION:
 		return {"valid":false,"errors":["unknown map id or revision"]}
-	var validation := _ensure_definition()
+	var validation := _ensure_definition(value.id)
 	if not validation.valid: return validation
-	var local: Dictionary = _validated_definition.meta
+	var local: Dictionary = _validated_definitions[value.id].meta
 	if value.contract_version != local.contract_version:
 		return {"valid":false,"errors":["unsupported map contract version"]}
 	if value.content_hash != local.content_hash:

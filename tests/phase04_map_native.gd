@@ -89,7 +89,7 @@ func run() -> void:
 	setup_map()
 	var restored:=await render("pond-after-fixture")
 	check(restored.get_data()==pond.get_data(),"returning to pond removes stale fixture geometry and preserves every pixel")
-	check(Registry.available_refs().size()==1 and Registry.available_refs()[0].id=="pond_v2","fixture never becomes a player map")
+	check(Registry.available_refs().size()==2 and Registry.available_refs()[0].id=="pond_v2" and Registry.available_refs()[1].id=="woodland_pond","fixture never becomes a player map")
 	print("PHASE04_MAP_NATIVE | passed=%d | failed=%d"%[passed,failed])
 	quit(1 if failed else 0)
 

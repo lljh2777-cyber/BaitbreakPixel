@@ -231,3 +231,9 @@ git archive --format=tar 8831f52ee7daae5d592282d5da432cbd67fccfb0 | tar -x -C ar
 P4 的当前兼容套件已更新为 schema17 / fish schema3，并明确排除新增 recipe 元数据做跨版本玩法比较；原来的几何、状态、RNG、隐私断言保持。
 
 完整矩阵复现：`D:\python\python.exe tools/phase05_run_gameplay.py --godot <Godot控制台路径> --output artifacts/p5-gameplay-new`。输出目录必须为空，保留全部 1,000 行。`tools/phase05_recheck_gameplay.py` 专门保留并复查本轮早期测试器误判记录；正常 v2 新运行不需要这一步。少量性能测量用图形模式运行 `tools/phase05_benchmark.gd -- --output=<新文件>`。P5 最终证据与包说明见 [完成报告](../docs/test-reports/PHASE05-COMPLETION.md)。
+
+## 固定自然池塘（0.29.0）
+
+`D:\python\python.exe tools/watergen/run_woodland_checks.py --godot "Godot控制台路径"`：有超时的编辑器导入、固定地图约束/缠线、双角色真实 ENet、默认入口/选图/偏好迁移和原生截图。结果保存在 `artifacts/woodland-integration`。
+
+`phase05_ui` 入口现在覆盖替代后的固定选图界面；旧 Seed UI 已撤下。经典字节等价见证按 `pond_v2` 筛选唯一经典定义，同时注册表与原生检查覆盖新增的第二张内置地图；没有将经典地图内容或协议 schema 放宽。

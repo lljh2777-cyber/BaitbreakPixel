@@ -62,7 +62,7 @@ func same_world_without_pause(before: Dictionary, world: Node2D) -> bool:
 	return before==after
 
 func pure_checks() -> void:
-	check(Protocol.BUILD=="0.28.1" and Fish.SCHEMA==3 and World.Snapshot.SCHEMA==17,"exact build, public fish schema3 and authority schema17 remain distinct")
+	check(Protocol.BUILD=="0.29.0" and Fish.SCHEMA==3 and World.Snapshot.SCHEMA==17,"exact build, public fish schema3 and authority schema17 remain distinct")
 	var authority:=World.new(); authority.reset_world({"seed":4262,"ruleset":"duel"})
 	var receiver:=World.new(); receiver.reset_world({"seed":9})
 	for role: String in ["fish","angler"]:
