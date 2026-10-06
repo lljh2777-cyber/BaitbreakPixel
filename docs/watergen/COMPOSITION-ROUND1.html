@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>水下构图 · 第一轮 A / B / C</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#102930;color:#dce7db;font:16px/1.6 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1360px;margin:auto;padding:36px 28px}small{color:#91b0a7;letter-spacing:.1em}h1{font-size:32px;margin:6px 0 12px}p{color:#a9c0b6;max-width:970px}.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:26px 0 20px}button,select{font:inherit;background:#1b3940;color:inherit;border:1px solid #3c5a5f;border-radius:8px;padding:10px 16px;cursor:pointer}button:hover{border-color:#adc3a0}button[aria-pressed=true]{background:#345249;border-color:#bac5a2}.choices button{text-align:left;padding:18px}.choices strong{font-size:20px;display:block}.choices span{display:block;color:#b1c4b9;font-size:14px;margin-top:4px}.controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:16px 0}figure{margin:0;border:1px solid #3a5558;background:#0c242c;border-radius:10px;overflow:hidden}figure img{display:block;width:100%;image-rendering:pixelated;object-fit:contain;min-height:230px}figure.native img{max-width:960px;margin:auto}figcaption{padding:12px 18px;color:#b6cabc;font-size:14px;border-top:1px solid #3a5558}.note{font-size:14px;margin-top:18px}a{color:#bad6c0}@media(max-width:760px){main{padding:20px 12px}.choices{grid-template-columns:1fr}.choices button{padding:12px}h1{font-size:26px}}
+</style>
+<main><small>BAITBREAK PIXEL / COMPOSITION STUDIES / ROUND 01</small>
+<h1>先选空间，再长生态</h1>
+<p>三套方向使用相同地图、镜头和局面。先比较两岸、坡地与大形体的关系；植物群落和装饰动物留待后两轮。</p>
+<div class="choices">
+<button data-choice="A" aria-pressed="true"><strong>A · 宽谷倒木</strong><span>横木串联两岸，中央上方通透。最接近参考图的沟谷构图。</span></button>
+<button data-choice="B" aria-pressed="false"><strong>B · 偏岸石坡</strong><span>右侧大石与斜木形成重心，左侧缓滩保持开阔。</span></button>
+<button data-choice="C" aria-pressed="false"><strong>C · 浅滩泥台</strong><span>两端短木收边，宽浅滩给中央活动区留出更多空隙。</span></button>
+</div>
+<div class="controls"><label>地图 <select id="seed"><option>42</option><option>1346</option></select></label>
+<label>视角 <select id="mode"><option value="wide">全景构图</option><option value="game">实际游戏 / HUD</option><option value="qte">鱼线 / QTE</option></select></label>
+<button id="baseline" aria-pressed="false">显示原版</button><span id="label"></span></div>
+<figure id="frame"><img id="scene" alt="A 方案全景"><figcaption id="caption"></figcaption></figure>
+<p class="note">近处可碰撞池底与交互木石保持原样；新沟谷和大木石属于远景装饰。新增土层材质只覆盖原有地面。当前是第一轮构图草稿，尚未替换正式游戏。</p>
+<p class="note">可用 A / B / C 键切换方案，空格切换原版。选定后在聊天里回复方案字母。<a href="COMPOSITION-ROUND1.md">查看简短报告与玩法隔离检查</a></p>
+</main>
+<script>
+let choice='A',baseline=false;const seed=document.querySelector('#seed'),mode=document.querySelector('#mode'),image=document.querySelector('#scene');
+const names={A:'宽谷倒木',B:'偏岸石坡',C:'浅滩泥台'};
+function render(){const s=seed.value,m=mode.value;const file=baseline?(m==='qte'?`seed-${s}-qte-baseline.png`:`seed-${s}-baseline-${m}.png`):`seed-${s}-${choice}-${m}.png`;image.src=`evidence/composition-round1/${file}`;image.alt=`Seed ${s} · ${baseline?'原版':choice+' '+names[choice]} · ${m}`;document.querySelector('#label').textContent=baseline?'原版':choice+' · '+names[choice];document.querySelector('#caption').textContent=`Seed ${s} · 同一冻结局面 · ${m==='wide'?'1280 × 480 全景':'640 × 360 实际游戏画面'}`;document.querySelector('#frame').classList.toggle('native',m!=='wide');document.querySelector('#baseline').setAttribute('aria-pressed',baseline);document.querySelector('#baseline').textContent=baseline?'返回方案':'显示原版';document.querySelectorAll('[data-choice]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.choice===choice&&!baseline))}
+document.querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>{choice=b.dataset.choice;baseline=false;render()});seed.onchange=mode.onchange=render;document.querySelector('#baseline').onclick=()=>{baseline=!baseline;render()};document.addEventListener('keydown',e=>{if(e.target.tagName==='SELECT')return;const k=e.key.toUpperCase();if(names[k]){choice=k;baseline=false;render()}else if(e.code==='Space'){e.preventDefault();baseline=!baseline;render()}});render();
+</script></html>
