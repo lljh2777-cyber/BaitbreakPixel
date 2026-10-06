@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>沟谷倒木 · 第二轮植物群落</title>
+<style>
+:root{color-scheme:dark;--ink:#102a31;--muted:#a6bcb5;--accent:#c8d3a2}*{box-sizing:border-box}body{margin:0;background:#0b1e24;color:#e1e5cf;font:16px/1.7 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1450px;margin:auto;padding:40px 28px 64px}.eyebrow{font-size:12px;letter-spacing:.15em;color:var(--accent)}h1{font-size:clamp(28px,4vw,46px);font-weight:550;line-height:1.25;margin:8px 0 14px}h2{font-size:23px;font-weight:550;margin:34px 0 8px}p{max-width:920px;color:var(--muted)}img{width:100%;height:auto;display:block;image-rendering:pixelated}figure{margin:0;background:var(--ink)}figcaption{padding:12px 16px;color:var(--muted);font-size:14px}a{color:var(--accent)}button,select{font:inherit;color:inherit;background:#153039;border:1px solid #52716d;padding:7px 12px;border-radius:4px}button{cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}.controls{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:16px 0}label{color:var(--muted);font-size:14px}input[type=range]{width:min(440px,65vw);accent-color:#a2c49e}.compare{position:relative;overflow:hidden;border:1px solid #31515a}.compare .after{position:absolute;inset:0;clip-path:inset(0 50% 0 0)}.divider{position:absolute;left:50%;top:0;bottom:0;border-left:2px solid #d8e3bf;pointer-events:none}.badge{position:absolute;top:10px;padding:4px 9px;background:#102a31e8;font-size:12px;pointer-events:none}.badge.left{left:10px}.badge.right{right:10px}.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}.habitats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}.habitats div,.note{background:#153039;padding:14px 18px}.habitats b{display:block;color:var(--accent)}.habitats span{font-size:14px;color:var(--muted)}.note{border-left:3px solid #6a9489;color:var(--muted)}footer{margin-top:30px;padding-top:14px;border-top:1px solid #31515a;font-size:13px;color:var(--muted)}@media(max-width:760px){main{padding:24px 14px}.pair,.habitats{grid-template-columns:1fr}.controls{gap:8px}}
+</style></head>
+<body><main>
+<div class="eyebrow">WATERGEN / PLANT COMMUNITIES / ROUND 02</div>
+<h1>沿着坡脚、木石与浅沟生长。</h1>
+<p>沿用 A「沟谷倒木」继续第二轮。高草留在两侧，矮草和细藻进入浅沟，苔藻与附生植物贴着木石；顶部两端补浮叶和垂根。中央活动水体仍然连通，这轮尚未加入装饰动物。</p>
+<div class="controls"><button type="button" data-reveal="0">第一轮地势</button><button type="button" data-reveal="100">第二轮植物</button><button type="button" data-reveal="50">一半一半</button></div>
+<figure>
+<div class="compare"><img src="../terrain-round1/A-trough-log.png" width="2048" height="768" alt="第一轮，地势与倒木"><img class="after" id="after" src="A-plant-communities.png" width="2048" height="768" alt="第二轮，沿地势生长的植物群落"><div class="divider" id="divider"></div><span class="badge left" id="after-label">第二轮 · 植物</span><span class="badge right" id="before-label">第一轮 · 地势</span></div>
+<figcaption><label for="reveal">左右对照：第二轮显示比例 <output id="percentage">50%</output></label><br><input id="reveal" type="range" min="0" max="100" value="50" aria-label="第二轮植物画面显示比例"></figcaption>
+</figure>
+<p><a href="A-plant-communities.png">打开第二轮原图</a> · <a href="../terrain-round1/A-trough-log.png">打开第一轮原图</a></p>
+<div class="habitats"><div><b>坡脚与石边</b><span>细长高草、宽叶簇、低矮莲座；丛簇大小与间距不均匀。</span></div><div><b>倒木与浅沟</b><span>断续苔藻、附生细叶、短垂藻和地毯藻；木纹与泥地仍可见。</span></div><div><b>远景与水面</b><span>低对比剪影拉开距离，浮叶垂根只在顶部外缘形成框景。</span></div></div>
+<h2>同一镜头，前后对照</h2>
+<p>Godot 原生 640 × 360 画面。识别样本包括现有玩家鱼贴图、固定食物色块、细线和 UI 面板；没有运行玩法模拟。</p>
+<div class="controls"><label>镜头 <select id="camera"><option value="320-120">中部</option><option value="0-120">左下坡脚</option><option value="640-120">右下石群</option><option value="0-0">左上浮叶</option><option value="640-0">右上垂根</option></select></label><label>内容 <select id="mode"><option value="clean">纯场景</option><option value="probes">识别样本</option></select></label></div>
+<div class="pair"><figure><img id="base-camera" src="evidence/BASE-320-120-clean.png" width="640" height="360" alt="第一轮同镜头"><figcaption>第一轮 · 地势</figcaption></figure><figure><img id="plants-camera" src="evidence/PLANTS-320-120-clean.png" width="640" height="360" alt="第二轮同镜头"><figcaption>第二轮 · 植物群落</figcaption></figure></div>
+<p class="note">本轮交付的是静态植物构图与独立预览，植物挂点依据图中的视觉地势。尚未拆为动态植被、独立视差图层，或接入真实生成地图。正式碰撞、饵位、鱼线和 NPC 均未修改。</p>
+<p><a href="../PLANTS_ROUND2_REPORT.md">简短报告与改动文件</a> · <a href="prompt.json">内置 image_gen 编辑提示词</a> · <a href="../terrain-round1/gallery.html">第一轮三方案</a></p>
+<footer>2026-10-06 · feature/watergen-v2 · 第二轮植物；第三轮装饰动物待后续继续。</footer>
+</main>
+<script>
+const range=document.getElementById('reveal');
+function reveal(){const n=Number(range.value);document.getElementById('after').style.clipPath='inset(0 '+(100-n)+'% 0 0)';document.getElementById('divider').style.left=n+'%';document.getElementById('percentage').textContent=n+'%';document.getElementById('after-label').hidden=n===0;document.getElementById('before-label').hidden=n===100;}
+range.addEventListener('input',reveal);document.querySelectorAll('[data-reveal]').forEach(b=>b.addEventListener('click',()=>{range.value=b.dataset.reveal;reveal();}));
+function camera(){const suffix=document.getElementById('camera').value+'-'+document.getElementById('mode').value+'.png';document.getElementById('base-camera').src='evidence/BASE-'+suffix;document.getElementById('plants-camera').src='evidence/PLANTS-'+suffix;}
+document.getElementById('camera').addEventListener('change',camera);document.getElementById('mode').addEventListener('change',camera);
+</script></body></html>

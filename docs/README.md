@@ -1,3 +1,4 @@
+- [自然池底视觉重做：第二轮植物群落](watergen/PLANTS_ROUND2_REPORT.md) · [前后对照](watergen/plants-round2/gallery.html)
 - [自然池底视觉重做：第一轮地势与大构图](watergen/TERRAIN_ROUND1_REPORT.md) · [三套方向](watergen/terrain-round1/gallery.html)
 - [Watergen 第二代 WG-6.2：真实地形植物群落](watergen/WG62_README.md) · [验证与样片](watergen/WG62_REPORT.md)
 - [0.27.5 生成池塘架构](architecture/GENERATED-PONDS.md) · [P5 实施与验证](test-reports/PHASE05-COMPLETION.md)

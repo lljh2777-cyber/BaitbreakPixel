@@ -1,10 +1,25 @@
 extends Node2D
-## Round-one art studies only. No World, MapContext, collision or observation.
+## Art studies only. No World, MapContext, collision or observation.
 ## The single images are concept plates, not layered production environments.
 const Art = preload("res://scripts/pixel_art.gd")
-const FILES := ["A-trough-log.png", "B-stone-bay.png", "C-root-channel.png"]
-const TITLES := ["A · 偏心沟谷与低位倒木", "B · 单侧石坡与开阔沙湾", "C · 斜向浅沟与沉木根盘"]
-const CAMERAS := [Vector2(0, 120), Vector2(320, 120), Vector2(640, 120)]
+const STUDIES := {
+	"terrain": {
+		"files": ["res://docs/watergen/terrain-round1/A-trough-log.png", "res://docs/watergen/terrain-round1/B-stone-bay.png", "res://docs/watergen/terrain-round1/C-root-channel.png"],
+		"titles": ["A · 偏心沟谷与低位倒木", "B · 单侧石坡与开阔沙湾", "C · 斜向浅沟与沉木根盘"],
+		"ids": ["A", "B", "C"], "tag": "TERRAIN_R1", "initial": 0,
+		"help": "1 / 2 / 3 方案   Tab 全景/镜头   方向键平移   P 识别样本   G 留白区   Home 居中   Esc",
+		"footer": "第一轮：地势与大构图。样本为静态视觉检查；此画面没有运行玩法模拟。",
+		"cameras": [Vector2(0, 120), Vector2(320, 120), Vector2(640, 120)]},
+	"plants": {
+		"files": ["res://docs/watergen/terrain-round1/A-trough-log.png", "res://docs/watergen/plants-round2/A-plant-communities.png"],
+		"titles": ["A · 第一轮地势", "A · 第二轮植物群落"],
+		"ids": ["BASE", "PLANTS"], "tag": "PLANTS_R2", "initial": 1,
+		"help": "1 地势 / 2 植物   Tab 全景/镜头   方向键平移   P 识别样本   G 留白区   Home 居中   Esc",
+		"footer": "第二轮：植物群落。静态构图预览；未运行玩法模拟，尚未添加装饰动物。",
+		"cameras": [Vector2(0, 120), Vector2(320, 120), Vector2(640, 120), Vector2(0, 0), Vector2(640, 0)]}
+}
+@export_enum("terrain", "plants") var study := "terrain"
+var settings: Dictionary = {}
 const INK := Color("142e39")
 const CREAM := Color("fff0cd")
 var plates: Array[Texture2D] = []
@@ -21,15 +36,18 @@ var passed := 0
 var failed := 0
 
 func _ready() -> void:
+	if not STUDIES.has(study): push_error("Unknown visual study"); get_tree().quit(2); return
+	settings = STUDIES[study]
+	selection = settings.initial
 	get_window().size = Vector2i(1280, 720)
-	get_window().title = "Watergen | terrain direction studies | round 1"
+	get_window().title = "Watergen | " + settings.tag + " | visual study"
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	font = SystemFont.new()
 	font.font_names = PackedStringArray(["Microsoft YaHei", "sans-serif"])
 	font.antialiasing = TextServer.FONT_ANTIALIASING_NONE
 	fish = Art.fish()
-	for file: String in FILES:
-		var image := Image.load_from_file("res://docs/watergen/terrain-round1/" + file)
+	for file: String in settings.files:
+		var image := Image.load_from_file(file)
 		if image == null or image.is_empty() or image.get_size() != Vector2i(2048, 768):
 			push_error("Terrain study missing or wrong dimensions: " + file)
 			get_tree().quit(2); return
@@ -50,7 +68,8 @@ func _process(delta: float) -> void:
 func _unhandled_key_input(event: InputEvent) -> void:
 	if capture or not event.is_pressed() or event.is_echo(): return
 	match event.keycode:
-		KEY_1, KEY_2, KEY_3: selection = event.keycode - KEY_1
+		KEY_1, KEY_2, KEY_3:
+			if event.keycode - KEY_1 < plates.size(): selection = event.keycode - KEY_1
 		KEY_TAB: overview = not overview
 		KEY_P: probes = not probes
 		KEY_G: guides = not guides
@@ -62,7 +81,7 @@ func label(p: Vector2, text: String, size := 11, color := CREAM) -> void:
 	draw_string(font, p, text, HORIZONTAL_ALIGNMENT_LEFT, -1, size, color)
 
 func _draw() -> void:
-	if plates.size() != 3: return
+	if settings.is_empty() or plates.size() != settings.files.size(): return
 	draw_rect(Rect2(0, 0, 640, 360), INK)
 	if overview: draw_set_transform(Vector2(0, 55), 0, Vector2(0.5, 0.5))
 	else: draw_set_transform(-camera.round())
@@ -74,11 +93,11 @@ func _draw() -> void:
 	draw_set_transform(Vector2.ZERO)
 	if probes and not overview: draw_ui_probes()
 	draw_rect(Rect2(0, 0, 640, 32), INK)
-	label(Vector2(10, 14), TITLES[selection], 12, Color("a9d0bf"))
+	label(Vector2(10, 14), settings.titles[selection], 12, Color("a9d0bf"))
 	label(Vector2(310, 14), "构图稿 · 全景" if overview else "构图稿 · 640×360 镜头", 11)
-	label(Vector2(10, 28), "1 / 2 / 3 方案   Tab 全景/镜头   方向键平移   P 识别样本   G 留白区   Home 居中   Esc", 10)
+	label(Vector2(10, 28), settings.help, 10)
 	draw_rect(Rect2(0, 335, 640, 25), INK)
-	label(Vector2(10, 351), "第一轮：地势与大构图。样本为静态视觉检查；此画面没有运行玩法模拟。", 10)
+	label(Vector2(10, 351), settings.footer, 10)
 
 func draw_world_probes() -> void:
 	# Real player sprite; other samples deliberately use fixed public visual values.
@@ -112,8 +131,8 @@ func draw_ui_probes() -> void:
 	label(Vector2(18, 180), "仅检查对比与视觉干扰", 10)
 
 func check(condition: bool, message: String) -> void:
-	if condition: passed += 1; print("TERRAIN_R1_PASS | ", message)
-	else: failed += 1; push_error("TERRAIN_R1_FAIL | " + message)
+	if condition: passed += 1; print(settings.tag, "_PASS | ", message)
+	else: failed += 1; push_error(settings.tag + "_FAIL | " + message)
 
 func save_frame(name: String) -> Image:
 	queue_redraw()
@@ -130,29 +149,32 @@ func capture_all() -> void:
 	if DisplayServer.get_name() == "headless" or not output.begins_with(prefix):
 		push_error("Native renderer and artifact run directory required"); get_tree().quit(2); return
 	DirAccess.make_dir_recursive_absolute(output)
-	check(plates.size() == 3, "three independently generated direction plates loaded")
+	check(plates.size() == settings.files.size(), "requested study plates loaded")
 	var previous := PackedByteArray()
-	for index in 3:
+	for index in plates.size():
+		var id: String = settings.ids[index]
 		selection = index; overview = true; probes = false
-		var image := await save_frame("%s-overview" % char(65 + index))
+		var image := await save_frame(id + "-overview")
 		check(previous != image.get_data(), "different composition " + str(index))
 		previous = image.get_data()
 		overview = false
-		for location in CAMERAS:
+		for location: Vector2 in settings.cameras:
 			camera = location; probes = false
-			var clean := await save_frame("%s-%d-clean" % [char(65 + index), int(location.x)])
+			var name := "%s-%d" % [id, int(location.x)]
+			if study == "plants": name += "-%d" % int(location.y)
+			var clean := await save_frame(name + "-clean")
 			probes = true
-			var sample := await save_frame("%s-%d-probes" % [char(65 + index), int(location.x)])
+			var sample := await save_frame(name + "-probes")
 			check(clean.get_data() != sample.get_data(), "probes visible without altering plate")
 		# Redrawing a static frame must be identical, including panel and line samples.
-		var repeat := await save_frame("%s-repeat" % char(65 + index))
+		var repeat := await save_frame(id + "-repeat")
 		queue_redraw()
 		for frame in 3: await get_tree().process_frame
 		await RenderingServer.frame_post_draw
 		check(repeat.get_data() == get_viewport().get_texture().get_image().get_data(), "repeat frame stable")
-	check(plates.size() == 3, "three textures retained; draw never prepares new textures")
-	var record := {"passed": passed, "failed": failed, "scope": "Round-one static art direction and readability samples only", "production_integration": false, "human_review": "PENDING", "engine": Engine.get_version_info().string}
+	check(plates.size() == settings.files.size(), "study textures retained; draw never prepares new textures")
+	var record := {"passed": passed, "failed": failed, "study": study, "scope": "Static art direction and readability samples only", "production_integration": false, "human_review": "PENDING", "engine": Engine.get_version_info().string}
 	var file := FileAccess.open(output.path_join("results.json"), FileAccess.WRITE)
 	file.store_string(JSON.stringify(record, "\t") + "\n"); file.close()
-	print("TERRAIN_R1 | passed=%d | failed=%d" % [passed, failed])
+	print("%s | passed=%d | failed=%d" % [settings.tag, passed, failed])
 	get_tree().quit(1 if failed else 0)

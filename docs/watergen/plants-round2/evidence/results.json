@@ -1,0 +1,9 @@
+{
+	"engine": "4.7.2-stable (official)",
+	"failed": 0,
+	"human_review": "PENDING",
+	"passed": 64,
+	"production_integration": false,
+	"scope": "Static art direction and readability samples only",
+	"study": "plants"
+}

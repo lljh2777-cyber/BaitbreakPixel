@@ -1,0 +1,135 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+OpenGL API 3.3.0 Core Profile Context 23.20.28.03.231124 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon(TM) Graphics
+
+
+
+PLANTS_R2_PASS | requested study plates loaded
+
+PLANTS_R2_PASS | native logical viewport BASE-overview
+
+PLANTS_R2_PASS | saved BASE-overview
+
+PLANTS_R2_PASS | different composition 0
+
+PLANTS_R2_PASS | native logical viewport BASE-0-120-clean
+
+PLANTS_R2_PASS | saved BASE-0-120-clean
+
+PLANTS_R2_PASS | native logical viewport BASE-0-120-probes
+
+PLANTS_R2_PASS | saved BASE-0-120-probes
+
+PLANTS_R2_PASS | probes visible without altering plate
+
+PLANTS_R2_PASS | native logical viewport BASE-320-120-clean
+
+PLANTS_R2_PASS | saved BASE-320-120-clean
+
+PLANTS_R2_PASS | native logical viewport BASE-320-120-probes
+
+PLANTS_R2_PASS | saved BASE-320-120-probes
+
+PLANTS_R2_PASS | probes visible without altering plate
+
+PLANTS_R2_PASS | native logical viewport BASE-640-120-clean
+
+PLANTS_R2_PASS | saved BASE-640-120-clean
+
+PLANTS_R2_PASS | native logical viewport BASE-640-120-probes
+
+PLANTS_R2_PASS | saved BASE-640-120-probes
+
+PLANTS_R2_PASS | probes visible without altering plate
+
+PLANTS_R2_PASS | native logical viewport BASE-0-0-clean
+
+PLANTS_R2_PASS | saved BASE-0-0-clean
+
+PLANTS_R2_PASS | native logical viewport BASE-0-0-probes
+
+PLANTS_R2_PASS | saved BASE-0-0-probes
+
+PLANTS_R2_PASS | probes visible without altering plate
+
+PLANTS_R2_PASS | native logical viewport BASE-640-0-clean
+
+PLANTS_R2_PASS | saved BASE-640-0-clean
+
+PLANTS_R2_PASS | native logical viewport BASE-640-0-probes
+
+PLANTS_R2_PASS | saved BASE-640-0-probes
+
+PLANTS_R2_PASS | probes visible without altering plate
+
+PLANTS_R2_PASS | native logical viewport BASE-repeat
+
+PLANTS_R2_PASS | saved BASE-repeat
+
+PLANTS_R2_PASS | repeat frame stable
+
+PLANTS_R2_PASS | native logical viewport PLANTS-overview
+
+PLANTS_R2_PASS | saved PLANTS-overview
+
+PLANTS_R2_PASS | different composition 1
+
+PLANTS_R2_PASS | native logical viewport PLANTS-0-120-clean
+
+PLANTS_R2_PASS | saved PLANTS-0-120-clean
+
+PLANTS_R2_PASS | native logical viewport PLANTS-0-120-probes
+
+PLANTS_R2_PASS | saved PLANTS-0-120-probes
+
+PLANTS_R2_PASS | probes visible without altering plate
+
+PLANTS_R2_PASS | native logical viewport PLANTS-320-120-clean
+
+PLANTS_R2_PASS | saved PLANTS-320-120-clean
+
+PLANTS_R2_PASS | native logical viewport PLANTS-320-120-probes
+
+PLANTS_R2_PASS | saved PLANTS-320-120-probes
+
+PLANTS_R2_PASS | probes visible without altering plate
+
+PLANTS_R2_PASS | native logical viewport PLANTS-640-120-clean
+
+PLANTS_R2_PASS | saved PLANTS-640-120-clean
+
+PLANTS_R2_PASS | native logical viewport PLANTS-640-120-probes
+
+PLANTS_R2_PASS | saved PLANTS-640-120-probes
+
+PLANTS_R2_PASS | probes visible without altering plate
+
+PLANTS_R2_PASS | native logical viewport PLANTS-0-0-clean
+
+PLANTS_R2_PASS | saved PLANTS-0-0-clean
+
+PLANTS_R2_PASS | native logical viewport PLANTS-0-0-probes
+
+PLANTS_R2_PASS | saved PLANTS-0-0-probes
+
+PLANTS_R2_PASS | probes visible without altering plate
+
+PLANTS_R2_PASS | native logical viewport PLANTS-640-0-clean
+
+PLANTS_R2_PASS | saved PLANTS-640-0-clean
+
+PLANTS_R2_PASS | native logical viewport PLANTS-640-0-probes
+
+PLANTS_R2_PASS | saved PLANTS-640-0-probes
+
+PLANTS_R2_PASS | probes visible without altering plate
+
+PLANTS_R2_PASS | native logical viewport PLANTS-repeat
+
+PLANTS_R2_PASS | saved PLANTS-repeat
+
+PLANTS_R2_PASS | repeat frame stable
+
+PLANTS_R2_PASS | study textures retained; draw never prepares new textures
+
+PLANTS_R2 | passed=64 | failed=0

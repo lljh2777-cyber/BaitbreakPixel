@@ -1,4 +1,4 @@
-"""Open or capture the three standalone terrain art directions. No gameplay run."""
+"""Open or capture standalone terrain / plant art studies. No gameplay run."""
 import argparse
 from datetime import datetime, timedelta, timezone
 import json
@@ -16,8 +16,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--godot', default=os.environ.get('GODOT', 'godot'))
     parser.add_argument('--capture', action='store_true')
-    parser.add_argument('--run-id', default='terrain-r1-' + datetime.now(timezone(timedelta(hours=8))).strftime('%Y%m%d-%H%M%S'))
+    parser.add_argument('--stage', choices=['terrain', 'plants'], default='terrain')
+    parser.add_argument('--run-id')
     args = parser.parse_args()
+    if args.run_id is None:
+        prefix = 'plants-r2-' if args.stage == 'plants' else 'terrain-r1-'
+        args.run_id = prefix + datetime.now(timezone(timedelta(hours=8))).strftime('%Y%m%d-%H%M%S')
     if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]{0,79}', args.run_id):
         parser.error('Invalid run id')
     output = ROOT / 'artifacts/watergen' / args.run_id
@@ -27,15 +31,16 @@ def main():
         directory = output / 'isolated-user' / key.lower()
         directory.mkdir(parents=True, exist_ok=True)
         env[key] = str(directory)
+    scene = 'plant_community_preview' if args.stage == 'plants' else 'terrain_direction_preview'
     command = [args.godot, '--path', str(ROOT), '--audio-driver', 'Dummy',
                '--log-file', str(output / 'engine.log'), '--scene',
-               'res://scenes/watergen/terrain_direction_preview.tscn', '--',
+               f'res://scenes/watergen/{scene}.tscn', '--',
                '--output=' + output.as_posix()]
     if args.capture:
         command.append('--capture')
     result = classify(run_bounded(command, 120 if args.capture else 43200, ROOT, env), expect_summary=args.capture)
     (output / 'run.log').write_text(result.pop('output'), encoding='utf-8')
-    result.update(command=command, production_integration=False)
+    result.update(command=command, study=args.stage, production_integration=False)
     (output / 'run-results.json').write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
     print(f"{result['status']}: {result['passed']} passed, {result['failed']} failed; {output}", flush=True)
     if result['status'] != 'passed':

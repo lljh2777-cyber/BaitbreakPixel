@@ -1,0 +1,27 @@
+{
+  "returncode": 0,
+  "timed_out": false,
+  "duration_seconds": 3.937,
+  "launch_error": false,
+  "passed": 64,
+  "failed": 0,
+  "count_basis": "summary",
+  "status": "passed",
+  "reason": "",
+  "command": [
+    "E:\\chrome下载\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+    "--path",
+    "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen-v2",
+    "--audio-driver",
+    "Dummy",
+    "--log-file",
+    "E:\\Fish_catches_people\\aquatic_system\\BaitbreakPixel-watergen-v2\\artifacts\\watergen\\plants-r2-review\\engine.log",
+    "--scene",
+    "res://scenes/watergen/plant_community_preview.tscn",
+    "--",
+    "--output=E:/Fish_catches_people/aquatic_system/BaitbreakPixel-watergen-v2/artifacts/watergen/plants-r2-review",
+    "--capture"
+  ],
+  "study": "plants",
+  "production_integration": false
+}
