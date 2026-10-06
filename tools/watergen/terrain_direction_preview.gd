@@ -4,7 +4,16 @@ extends Node2D
 const Art = preload("res://scripts/pixel_art.gd")
 const Fauna = preload("res://tools/watergen/decorative_fauna_layer.gd")
 const StoneFauna = preload("res://tools/watergen/stone_bay_fauna_layer.gd")
+const RootFauna = preload("res://tools/watergen/root_pool_fauna_layer.gd")
 const STUDIES := {
+	"root_fauna": {
+		"files": ["res://docs/watergen/pond-series/M02-root-pool/round2/A-root-communities.png", "res://docs/watergen/pond-series/M02-root-pool/round2/A-root-communities.png"],
+		"titles": ["M02 A · 第二轮植物", "M02 A · 第三轮装饰动物"],
+		"ids": ["PLANTS", "FAUNA"], "tag": "ROOT_FAUNA_R3", "initial": 1,
+		"help": "1 植物 / 2 动物   Tab 全景/镜头   方向键   P 样本   G 标记   空格暂停   R 归零   Esc",
+		"footer": "M02/A：3 虾 / 2 木石蜗牛 / 2 组远景鱼。仅视觉；不运行玩法。",
+		"details": [Vector2(384, 372), Vector2(278, 166), Vector2(480, 339)],
+		"cameras": [Vector2(0, 120), Vector2(320, 120), Vector2(640, 120), Vector2(0, 0), Vector2(640, 0)]},
 	"stone_fauna": {
 		"files": ["res://docs/watergen/pond-series/M01-stone-bay/round2/B-plant-communities.png", "res://docs/watergen/pond-series/M01-stone-bay/round2/B-plant-communities.png"],
 		"titles": ["M01 B · 第二轮植物", "M01 B · 第三轮装饰动物"],
@@ -35,7 +44,7 @@ const STUDIES := {
 		"footer": "第三轮：3 虾 / 2 蜗牛 / 2 组远景鱼。纯视觉叠加；不运行玩法模拟。",
 		"cameras": [Vector2(0, 120), Vector2(320, 120), Vector2(640, 120), Vector2(0, 0), Vector2(640, 0)]}
 }
-@export_enum("terrain", "plants", "fauna", "stone_fauna") var study := "terrain"
+@export_enum("terrain", "plants", "fauna", "stone_fauna", "root_fauna") var study := "terrain"
 var settings: Dictionary = {}
 var fauna: RefCounted
 var visual_time := 0.0
@@ -68,6 +77,7 @@ func _ready() -> void:
 	fish = Art.fish()
 	if study == "fauna": fauna = Fauna.new()
 	elif study == "stone_fauna": fauna = StoneFauna.new()
+	elif study == "root_fauna": fauna = RootFauna.new()
 	var loaded: Dictionary = {}
 	for file: String in settings.files:
 		if loaded.has(file): plates.append(loaded[file]); continue
